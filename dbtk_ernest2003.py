@@ -70,3 +70,4 @@ for line in main_table:
                  float(gestation_period), float(newborn_mass), float(wean_age),
                  float(wean_mass), float(afr), float(max_lifespan),
                  float(litter_size), float(litters_peryear), refs))
+main_table.close()
