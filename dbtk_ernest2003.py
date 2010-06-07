@@ -21,9 +21,9 @@ if mysqlport == '':
 
 # Create the Database
 connection = dbapi.connect(host = hostname,
-                           port = mysqlport,
+                           port = int(mysqlport),
                            user = username,
-                           passwd = password)          #FIXME: request username and password from user
+                           passwd = password)
 cursor = connection.cursor()
 cursor.execute("DROP DATABASE IF EXISTS MammalLifeHistory")
 cursor.execute("CREATE DATABASE MammalLifeHistory")
