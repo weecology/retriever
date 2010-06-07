@@ -7,11 +7,23 @@
 
 import urllib
 import MySQLdb as dbapi
+import getpass
+
+# Get database information
+username = raw_input("Enter your MySQL username: ")
+password = getpass.getpass("Enter your MySQL password: ")
+hostname = raw_input("Enter your MySQL host or press Enter for the default (localhost): ")
+if hostname == '':
+    hostname = 'localhost'
+mysqlport = raw_input("Enter your MySQL port (or press Enter for the default (3306): ")
+if mysqlport == '':
+    mysqlport = 3306
 
 # Create the Database
-connection = dbapi.connect(host = "localhost",
-                    user = "ethan",
-                    passwd = "testpass")          #FIXME: request username and password from user
+connection = dbapi.connect(host = hostname,
+                           port = mysqlport,
+                           user = username,
+                           passwd = password)          #FIXME: request username and password from user
 cursor = connection.cursor()
 cursor.execute("DROP DATABASE IF EXISTS MammalLifeHistory")
 cursor.execute("CREATE DATABASE MammalLifeHistory")
