@@ -3,24 +3,14 @@
 
 # Usage: python /file/path/to/dbtk_ernest2003.py
 
-# To Do: Replace -999 with Null
+# TO DO: Replace -999 with Null
+# TO DO: Eventually pull get_database_info into a separate module
 
 import urllib
 import MySQLdb as dbapi
-import getpass
-
-def get_database_info():
-    """Get login information for MySQL database"""
-    username = raw_input("Enter your MySQL username: ")
-    password = getpass.getpass("Enter your MySQL password: ")
-    hostname = raw_input("Enter your MySQL host or press Enter for the default (localhost): ")
-    if hostname == '':
-        hostname = 'localhost'
-    mysqlport = raw_input("Enter your MySQL port (or press Enter for the default (3306): ")
-    if mysqlport == '':
-        mysqlport = 3306
-    mysqlport = int(mysqlport)
-    return [username, password, hostname, mysqlport]
+import sys
+sys.path.append("/home/ethan/Dropbox/Ecoinformatics/Database Toolkits/Code")
+from dbtk_tools import *
 
 # Create the Database
 databaseinfo = get_database_info()
@@ -53,7 +43,6 @@ cursor.execute("""
     """)
 
 url = "http://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"
-
 main_table = urllib.urlopen(url)
 
 # Skip over the header line by reading it before processing
