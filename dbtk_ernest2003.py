@@ -10,10 +10,10 @@ import urllib
 import MySQLdb as dbapi
 import sys
 sys.path.append("/home/ethan/Dropbox/Ecoinformatics/Database Toolkits/Code")
-from dbtk_tools import *
+import dbtk_tools
 
 # Create the Database
-databaseinfo = get_database_info()
+databaseinfo = dbtk_tools.get_database_info()
 connection = dbapi.connect(host = databaseinfo[2],
                            port = databaseinfo[3],
                            user = databaseinfo[0],
