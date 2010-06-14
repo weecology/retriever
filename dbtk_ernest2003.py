@@ -4,12 +4,9 @@
 # Usage: python /file/path/to/dbtk_ernest2003.py
 
 # TO DO: Replace -999 with Null
-# TO DO: Eventually pull get_database_info into a separate module
 
 import urllib
 import MySQLdb as dbapi
-import sys
-sys.path.append("/home/ethan/Dropbox/Ecoinformatics/Database Toolkits/Code")
 import dbtk_tools
 
 # Create the Database
