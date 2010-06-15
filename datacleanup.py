@@ -30,7 +30,8 @@ def emptyvaltonull(datain):
 
 def correct_invalid_value(datain):
     try:
-        if int(datain) == -999:
+        val = int(float(datain))        
+        if val == -999:            
             return None
         else:
             return datain
