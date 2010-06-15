@@ -8,6 +8,7 @@
 import urllib
 import MySQLdb as dbapi
 import dbtk_tools
+import datacleanup
 
 # Create the Database
 databaseinfo = dbtk_tools.get_database_info()
@@ -56,8 +57,9 @@ for line in main_table:
         cursor.execute("""
             INSERT INTO species VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
             %s, %s, %s, %s)
-            """,(species_id, sporder, family, genus, species, float(mass),
+            """,[datacleanup.correct_invalid_value(value) for value in
+                 [species_id, sporder, family, genus, species, float(mass),
                  float(gestation_period), float(newborn_mass), float(wean_age),
                  float(wean_mass), float(afr), float(max_lifespan),
-                 float(litter_size), float(litters_peryear), refs))
+                 float(litter_size), float(litters_peryear), refs]])
 main_table.close()

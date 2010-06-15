@@ -27,3 +27,12 @@ def emptyvaltonull(datain):
         dataout.append(line)
         line = input_file.readline()
     return dataout
+
+def correct_invalid_value(datain):
+    try:
+        if int(datain) == -999:
+            return None
+        else:
+            return datain
+    except ValueError:
+        return datain
