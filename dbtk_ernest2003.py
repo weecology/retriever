@@ -5,13 +5,15 @@
 
 import dbtk_from_txt
 
-# Create the Database
+# Variables to get text file/create database
 dbname = "MammalLifeHistory"
 tablename = "species"
 pk = "species_id"
 url = "http://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"
 delimiter = None
 
+# Database column names and their data types. Use data type "skip" to skip the value, and
+# "combine" to merge a string value into the previous column
 dbcolumns=[("species_id"        ,   "INT(5) NOT NULL AUTO_INCREMENT"),
            ("sporder"           ,   "CHAR(20)"),
            ("family"            ,   "CHAR(20)"),

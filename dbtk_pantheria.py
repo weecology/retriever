@@ -1,17 +1,18 @@
-# Database Toolkit for Ernest 2003 Ecological Archives
-# Mammalian Life History Database
+# Database Toolkit for Pantheria dataset
 
-# Usage: python /file/path/to/dbtk_ernest2003.py
+# Usage: python /file/path/to/dbtk_pantheria.py
 
 import dbtk_from_txt
 
-# Create the Database
+# Variables to get text file/create database
 dbname = "Pantheria"
 tablename = "pantheria"
 pk = "species_id"
 url = "http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt"
 delimiter = None
 
+# Database column names and their data types. Use data type "skip" to skip the value, and
+# "combine" to merge a string value into the previous column
 dbcolumns=[("species_id"        ,    "INT(5) NOT NULL AUTO_INCREMENT"),
            ("sporder"           ,    "CHAR(20)"),
            ("family"            ,    "CHAR(20)"),
