@@ -3,8 +3,6 @@
 
 # Usage: python /file/path/to/dbtk_ernest2003.py
 
-# TO DO: Replace -999 with Null
-
 import urllib
 import MySQLdb as dbapi
 import dbtk_tools
