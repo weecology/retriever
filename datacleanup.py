@@ -7,7 +7,7 @@
 # the empty values with MySQL's NULL indicator /N.
 
 # TO DO - test new implementation
-# TO DO - add ability to select delimitor other than commas
+# TO DO - add ability to select delimiter other than commas
 # TO DO - write tests
 
 def emptyvaltonull(datain):

@@ -5,7 +5,7 @@
 #     dbname - the name to use for the new database. If it exists, it will be dropped.
 #     tablename - the name to use for the new table.
 #     pk - the name of the value to be used as primary key. If None, no primary key will
-#          be used.
+#          be used. The primary key must be the first column in dbcolumns.
 #     url - the URL of the text file.
 #     delimiter - the delimiter used in the text file. If None, whitespace will be assumed.
 #     dbcolumns - a list of tuples, containing each column name and its MySQL data type.
@@ -18,8 +18,12 @@ import urllib
 import MySQLdb as dbapi
 import dbtk_tools
 import datacleanup
+import warnings
+import sys
 
 def setup(dbname, tablename, pk, url, delimiter, dbcolumns):
+    warnings.filterwarnings("ignore")
+    
     # Connect to the database
     databaseinfo = dbtk_tools.get_database_info()
     connection = dbapi.connect(host = databaseinfo[2],
@@ -41,7 +45,8 @@ def setup(dbname, tablename, pk, url, delimiter, dbcolumns):
     else:
         createstatement = createstatement.rstrip(', ')    
     createstatement += ")"  
-        
+    
+    print "Creating table " + tablename + " in database " + dbname + " . . ."
     cursor.execute(createstatement)
     
     main_table = urllib.urlopen(url)
@@ -49,8 +54,10 @@ def setup(dbname, tablename, pk, url, delimiter, dbcolumns):
     # Skip over the header line by reading it before processing
     line = main_table.readline()
     
-    species_id = 0
+    print "Inserting rows: "
+    species_id = 0    
     for line in main_table:
+        
         line = line.strip()
         if line:
             # If there is a primary key specified, add an auto-incrementing integer            
@@ -76,8 +83,12 @@ def setup(dbname, tablename, pk, url, delimiter, dbcolumns):
             insertstatement = "INSERT INTO " + tablename + " VALUES ("
             for value in linevalues:
                 insertstatement += "%s, "
-            insertstatement = insertstatement.rstrip(", ") + ")"        
+            insertstatement = insertstatement.rstrip(", ") + ")"
+                        
+            sys.stdout.write(str(species_id) + "\b" * len(str(species_id)))
             cursor.execute(insertstatement, 
                            # Run correct_invalid_value on each value before insertion
                            [datacleanup.correct_invalid_value(value) for value in linevalues])
+            
+    print "\n Done!"
     main_table.close()    
