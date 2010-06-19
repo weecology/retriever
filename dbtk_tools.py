@@ -17,17 +17,21 @@ def get_database_info():
         for opt, arg in opts:                
             if opt in ("-u", "--user"):      
                 username = arg                            
+                print "User: " + username
             elif opt in ("-p", "--password"):     
                 password = arg
+                print "Password: " + "*" * len(password)
             elif opt in ("-h", "--host"): 
                 hostname = arg
                 if arg == "":
                     hostname = "localhost"
+                print "Host: " + hostname
             elif opt in ("-o", "--port"): 
                 try:
                     sqlport = int(arg)
                 except ValueError:
-                    sqlport = 3306 
+                    sqlport = 3306
+                print "Port: " + str(sqlport) 
     except getopt.GetoptError:
         pass
                     

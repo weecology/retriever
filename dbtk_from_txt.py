@@ -1,7 +1,9 @@
 # Database Toolkit from text file
 # Run the setup function to create a MySQL database from a delimited text file.
-# Usage: python dbtk_script.py [-u username] [--user=username] [-p password] [--password=password]
-#                              [-h {hostname} (default=localhost)] [--host=hostname] [-o {port} (default=3306) [--port=port]
+# Usage: python dbtk_scriptname.py [-u username] [--user=username] 
+#                                  [-p password] [--password=password]
+#                                  [-h {hostname} (default=localhost)] [--host=hostname] 
+#                                  [-o {port} (default=3306)] [--port=port]
 #
 # Variables:
 #     dbname - the name to use for the new database. If it exists, it will be dropped.
