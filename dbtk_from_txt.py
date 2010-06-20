@@ -21,7 +21,6 @@ Variables:
 """
 
 import urllib
-import MySQLdb as dbapi
 import dbtk_tools
 import datacleanup
 import warnings
@@ -31,12 +30,7 @@ def setup(dbname, tablename, pk, url, delimiter, dbcolumns):
     warnings.filterwarnings("ignore")
     
     # Connect to the database
-    databaseinfo = dbtk_tools.get_database_info()
-    connection = dbapi.connect(host = databaseinfo[2],
-                               port = databaseinfo[3],
-                               user = databaseinfo[0],
-                               passwd = databaseinfo[1])
-    cursor = connection.cursor() 
+    cursor = dbtk_tools.connect_to_database()
     cursor.execute("DROP DATABASE IF EXISTS " + dbname)
     cursor.execute("CREATE DATABASE " + dbname)
     cursor.execute("USE " + dbname)
