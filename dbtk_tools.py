@@ -52,3 +52,13 @@ def manual_input(username, password, hostname, sqlport):
             sqlport = 3306
         sqlport = int(sqlport)
     return [username, password, hostname, sqlport]
+
+def connect_to_database():
+    """Connect to a database management system and return the cursor"""
+    databaseinfo = get_database_info()
+    connection = dbapi.connect(host = databaseinfo[2],
+                               port = databaseinfo[3],
+                               user = databaseinfo[0],
+                               passwd = databaseinfo[1])
+    cursor = connection.cursor()
+    return cursor
