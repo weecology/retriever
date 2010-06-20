@@ -1,7 +1,8 @@
-# Database Toolkit for Pantheria dataset
+"""Database Toolkit for Pantheria dataset
 
-# Usage: python /file/path/to/dbtk_pantheria.py
+Usage: python /file/path/to/dbtk_pantheria.py
 
+"""
 import dbtk_from_txt
 
 # Variables to get text file/create database

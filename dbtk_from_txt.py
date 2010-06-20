@@ -1,22 +1,24 @@
-# Database Toolkit from text file
-# Run the setup function to create a MySQL database from a delimited text file.
-# Usage: python dbtk_scriptname.py [-u username] [--user=username] 
-#                                  [-p password] [--password=password]
-#                                  [-h {hostname} (default=localhost)] [--host=hostname] 
-#                                  [-o {port} (default=3306)] [--port=port]
-#
-# Variables:
-#     dbname - the name to use for the new database. If it exists, it will be dropped.
-#     tablename - the name to use for the new table.
-#     pk - the name of the value to be used as primary key. If None, no primary key will
-#          be used. The primary key must be the first column in dbcolumns.
-#     url - the URL of the text file.
-#     delimiter - the delimiter used in the text file. If None, whitespace will be assumed.
-#     dbcolumns - a list of tuples, containing each column name and its MySQL data type.
-#                 The number of values in each row of the text file must correspond with
-#                 the number of columns defined. Use "skip" as data type to not create a
-#                 column for the value, and "combine" to append a string to the value of
-#                 the previous column (instead of creating a new column).
+"""Create Database Toolkit from text file
+
+Run the setup function to create a MySQL database from a delimited text file.
+Usage: python dbtk_scriptname.py [-u username] [--user=username] 
+                                 [-p password] [--password=password]
+                                 [-h {hostname} (default=localhost)] [--host=hostname] 
+                                 [-o {port} (default=3306)] [--port=port]
+
+Variables:
+    dbname - the name to use for the new database. If it exists, it will be dropped.
+    tablename - the name to use for the new table.
+    pk - the name of the value to be used as primary key. If None, no primary key will
+         be used. The primary key must be the first column in dbcolumns.
+    url - the URL of the text file.
+    delimiter - the delimiter used in the text file. If None, whitespace will be assumed.
+    dbcolumns - a list of tuples, containing each column name and its MySQL data type.
+                The number of values in each row of the text file must correspond with
+                the number of columns defined. Use "skip" as data type to not create a
+                column for the value, and "combine" to append a string to the value of
+                the previous column (instead of creating a new column).
+"""
 
 import urllib
 import MySQLdb as dbapi
