@@ -1,5 +1,6 @@
-"""Database Toolkit for Ernest 2003 Ecological Archives
-Mammalian Life History Database
+"""Database Toolkit for Mammalian Life History Database
+Setup and install the Mammalian Life History Database published by Ernest
+(2003) in Ecological Archives. 
 
 Usage: python dbtk_ernest2003.py [-u username] [--user=username] 
                                  [-p password] [--password=password]
