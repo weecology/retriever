@@ -1,9 +1,10 @@
 """Database Toolkit for Pantheria dataset
 
-Usage: python dbtk_pantheria.py [-u username] [--user=username] 
-                                [-p password] [--password=password]
-                                [-h {hostname} (default=localhost)] [--host=hostname] 
-                                [-o {port} (default=3306)] [--port=port]
+Usage: python dbtk_pantheria.py  [-e engine (mysql, postgresql, etc.)] [--engine=engine]
+                                 [-u username] [--user=username] 
+                                 [-p password] [--password=password]
+                                 [-h {hostname} (default=localhost)] [--host=hostname] 
+                                 [-o {port} (default=3306)] [--port=port]
 
 """
 
@@ -83,6 +84,7 @@ table.columns=[("species_id"            ,   ("pk",)         ),
                ("AET_mean"              ,   ("double",)     ),
                ("PET_mean"              ,   ("double",)     )]
 
-db.engine = dbtk_tools.choose_engine()
+db.opts = dbtk_tools.get_opts()
+db.engine = dbtk_tools.choose_engine(db)
 db.cursor = dbtk_tools.get_cursor(db)
 dbtk_tools.create_table(db, table)
