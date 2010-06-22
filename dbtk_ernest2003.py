@@ -12,29 +12,31 @@ Usage: python dbtk_ernest2003.py [-u username] [--user=username]
 import dbtk_tools
 
 # Variables to get text file/create database
-dbinfo = dbtk_tools.db_info()
-dbinfo.dbname = "MammalLifeHistory"
-dbinfo.tablename = "species"
-dbinfo.pk = "species_id"
-dbinfo.url = "http://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"
+db = dbtk_tools.db_info()
+table = dbtk_tools.table_info()
+db.dbname = "MammalLifeHistory"
+table.tablename = "species"
+table.pk = "species_id"
+table.sourceurl = "http://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"
 
 # Database column names and their data types. Use data type "skip" to skip the value, and
 # "combine" to merge a string value into the previous column
-dbinfo.dbcolumns=[("species_id"        ,   "INT(5) NOT NULL AUTO_INCREMENT"),
-                  ("sporder"           ,   "CHAR(20)"),
-                  ("family"            ,   "CHAR(20)"),
-                  ("genus"             ,   "CHAR(20)"),
-                  ("species"           ,   "CHAR(20)"),
-                  ("mass"              ,   "DECIMAL(11,2)"),
-                  ("gestation_period"  ,   "DECIMAL(5,2)"),
-                  ("newborn_mass"      ,   "DECIMAL(9,2)"),
-                  ("wean_age"          ,   "DECIMAL(5,2)"),
-                  ("wean_mass"         ,   "DECIMAL(10,2)"),
-                  ("afr"               ,   "DECIMAL(5,2)"),
-                  ("max_lifespan"      ,   "DECIMAL(6,2)"),
-                  ("litter_size"       ,   "DECIMAL(5,2)"),
-                  ("litters_peryear"   ,   "DECIMAL(5,2)"),
-                  ("refs"              ,   "CHAR(30)")]
-    
-dbinfo.cursor = dbtk_tools.get_cursor_mysql()
-dbtk_tools.setup(dbinfo)
+table.columns=[("species_id"            ,   ("pk",)         ),
+               ("sporder"               ,   ("char", 20)    ),
+               ("family"                ,   ("char", 20)    ),
+               ("genus"                 ,   ("char", 20)    ),
+               ("species"               ,   ("char", 20)    ),
+               ("mass"                  ,   ("double",)     ),
+               ("gestation_period"      ,   ("double",)     ),
+               ("newborn_mass"          ,   ("double",)     ),
+               ("wean_age"              ,   ("double",)     ),
+               ("wean_mass"             ,   ("double",)     ),
+               ("afr"                   ,   ("double",)     ),
+               ("max_lifespan"          ,   ("double",)     ),
+               ("litter_size"           ,   ("double",)     ),
+               ("litters_peryear"       ,   ("double",)     ),
+               ("refs"                  ,   ("char", 30)    )]
+
+db.engine = dbtk_tools.choose_engine()
+db.cursor = dbtk_tools.get_cursor(db)
+dbtk_tools.create_table(db, table)
