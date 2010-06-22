@@ -37,12 +37,13 @@ class table_info:
     delimiter = None
     columns = []
     drop = True
+    header_rows = 1
 
 def create_table(db, table):
     """Creates a database based on settings supplied in dbinfo object"""
     warnings.filterwarnings("ignore")
     
-    # Connect to the database
+    # Create the database/schema
     if db.engine == "postgresql":
         object = "SCHEMA"
     else:
@@ -75,7 +76,9 @@ def create_table(db, table):
     main_table = urllib.urlopen(table.sourceurl)
     
     # Skip over the header line by reading it before processing
-    line = main_table.readline()
+    if table.header_rows > 0:
+        for i in range(table.header_rows):
+            line = main_table.readline()
     
     print "Inserting rows: "
     species_id = 0    
@@ -140,9 +143,13 @@ def convert_data_type(engine, datatype):
                                  "varchar(%s)", 
                                  "bit"]
     mydatatypes = dbdatatypes[engine.lower()]
-    type = mydatatypes[datatypes[datatype[0]]]
-    if len(datatype) > 1 and "%s" in type:
-        type = type % datatype[1]    
+    thisvartype = datatypes[datatype[0]]
+    if thisvartype > -1:
+        type = mydatatypes[thisvartype]
+        if len(datatype) > 1 and "%s" in type:
+            type = type % datatype[1]
+    else:
+        type = datatype[0]    
     return type
 
 def choose_engine():
@@ -166,7 +173,7 @@ def get_cursor(db):
         return get_cursor_pgsql()
     
 def get_cursor_mysql():
-    """Get login information for MySQL/PostgreSQL database"""
+    """Get login information for MySQL database"""
     import MySQLdb as dbapi
         
     username = ""
