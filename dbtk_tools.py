@@ -18,7 +18,6 @@ db_info variables:
 import getpass
 import getopt
 import urllib
-import dbtk_tools
 import datacleanup
 import warnings
 import sys
