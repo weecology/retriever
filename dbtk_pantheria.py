@@ -10,71 +10,79 @@ Usage: python dbtk_pantheria.py [-u username] [--user=username]
 import dbtk_tools
 
 # Variables to get text file/create database
-dbinfo = dbtk_tools.db_info()
-dbinfo.dbname = "Pantheria"
-dbinfo.tablename = "pantheria"
-dbinfo.pk = "species_id"
-dbinfo.url = "http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt"
+db = dbtk_tools.db_info()
+table = dbtk_tools.table_info()
+db.dbname = "Pantheria"
+table.tablename = "pantheria"
+table.pk = "species_id"
+table.sourceurl = "http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt"
 
-# Database column names and their data types. Use data type "skip" to skip the value,
-# and "combine" to merge a string value into the previous column
-dbinfo.dbcolumns=[("species_id"            ,   "INT(5) NOT NULL AUTO_INCREMENT"),
-                  ("sporder"               ,   "VARCHAR(20)"),
-                  ("family"                ,   "VARCHAR(20)"),
-                  ("genus"                 ,   "VARCHAR(20)"),
-                  ("species"               ,   "VARCHAR(20)"),
-                  ("binomial"              ,   "VARCHAR(50)"),
-                  ("binomial 2"            ,   "combine"),
-                  ("activity_cycle"        ,   "INT(5)"),
-                  ("body_mass"             ,   "DOUBLE"),
-                  ("forearm_length"        ,   "DOUBLE"),
-                  ("head_body_length"      ,   "DOUBLE"),
-                  ("age_eye_opening"       ,   "DOUBLE"),
-                  ("age_first_birth"       ,   "DOUBLE"),
-                  ("met_rate_mL02hr"       ,   "DOUBLE"),
-                  ("met_rate_mass_g"       ,   "DOUBLE"),
-                  ("diet_breadth"          ,   "INT(5)"),
-                  ("dispersal_age"         ,   "DOUBLE"),
-                  ("gestation_len"         ,   "DOUBLE"),
-                  ("habitat_breadth"       ,   "INT(5)"),
-                  ("home_range"            ,   "DOUBLE"),
-                  ("home_range_indiv"      ,   "DOUBLE"),
-                  ("interbirth_interval"   ,   "DOUBLE"),
-                  ("litter_size"           ,   "DOUBLE"),
-                  ("litters_per_year"      ,   "DOUBLE"),
-                  ("max_longevity"         ,   "DOUBLE"),
-                  ("neonate_body_mass"     ,   "DOUBLE"),
-                  ("neonate_head_body_len" ,   "DOUBLE"),
-                  ("pop_density"           ,   "DOUBLE"),
-                  ("pop_grp_size"          ,   "DOUBLE"),
-                  ("sexual_maturity_age"   ,   "DOUBLE"),
-                  ("social_group_size"     ,   "DOUBLE"),
-                  ("teat_number"           ,   "INT(5)"),
-                  ("terrestriality"        ,   "INT(5)"),
-                  ("trophic_level"         ,   "INT(5)"),
-                  ("weaning_age"           ,   "DOUBLE"),
-                  ("weaning_body_mass"     ,   "DOUBLE"),
-                  ("weaning_head_body_len" ,   "DOUBLE"),
-                  ("refs"                  ,   "VARCHAR(500)"),
-                  ("adult_body_mass_ext"   ,   "DOUBLE"),
-                  ("litters_per_year_ext"  ,   "DOUBLE"),
-                  ("neonate_body_mass_ext" ,   "DOUBLE"),
-                  ("weaning_body_mass_ext" ,   "DOUBLE"),
-                  ("GR_area"               ,   "DOUBLE"),
-                  ("GR_max_lat"            ,   "DOUBLE"),
-                  ("GR_min_lat"            ,   "DOUBLE"),
-                  ("GR_mid_range_lat"      ,   "DOUBLE"),
-                  ("GR_max_long"           ,   "DOUBLE"),
-                  ("GR_min_long"           ,   "DOUBLE"),
-                  ("GR_mid_range_long"     ,   "DOUBLE"),
-                  ("hu_pop_den_min"        ,   "DOUBLE"),
-                  ("hu_pop_den_mean"       ,   "DOUBLE"),
-                  ("hu_pop_den_5p"         ,   "DOUBLE"),
-                  ("hu_pop_den_change"     ,   "DOUBLE"),
-                  ("precip_mean"           ,   "DOUBLE"),
-                  ("temp_mean"             ,   "DOUBLE"),
-                  ("AET_mean"              ,   "DOUBLE"),
-                  ("PET_mean"              ,   "DOUBLE")]
+# Database column names and their data types.
+# Data type is a tuple, with the first value specifying the type:
+#     pk     - primary key
+#     int    - integer
+#     double - double precision
+#     char   - string
+#     but    - binary
+# The second part of the type specifies the length and is optional
+table.columns=[("species_id"            ,   ("pk",)         ),
+               ("sporder"               ,   ("char", 20)    ),
+               ("family"                ,   ("char", 20)    ),
+               ("genus"                 ,   ("char", 20)    ),
+               ("species"               ,   ("char", 20)    ),
+               ("binomial"              ,   ("char", 50)    ),
+               ("binomial 2"            ,   ("combine",)    ),
+               ("activity_cycle"        ,   ("double",)     ),
+               ("body_mass"             ,   ("double",)     ),
+               ("forearm_length"        ,   ("double",)     ),
+               ("head_body_length"      ,   ("double",)     ),
+               ("age_eye_opening"       ,   ("double",)     ),
+               ("age_first_birth"       ,   ("double",)     ),
+               ("met_rate_mL02hr"       ,   ("double",)     ),
+               ("met_rate_mass_g"       ,   ("double",)     ),
+               ("diet_breadth"          ,   ("double",)     ),
+               ("dispersal_age"         ,   ("double",)     ),
+               ("gestation_len"         ,   ("double",)     ),
+               ("habitat_breadth"       ,   ("double",)     ),
+               ("home_range"            ,   ("double",)     ),
+               ("home_range_indiv"      ,   ("double",)     ),
+               ("interbirth_interval"   ,   ("double",)     ),
+               ("litter_size"           ,   ("double",)     ),
+               ("litters_per_year"      ,   ("double",)     ),
+               ("max_longevity"         ,   ("double",)     ),
+               ("neonate_body_mass"     ,   ("double",)     ),
+               ("neonate_head_body_len" ,   ("double",)     ),
+               ("pop_density"           ,   ("double",)     ),
+               ("pop_grp_size"          ,   ("double",)     ),
+               ("sexual_maturity_age"   ,   ("double",)     ),
+               ("social_group_size"     ,   ("double",)     ),
+               ("teat_number"           ,   ("double",)     ),
+               ("terrestriality"        ,   ("double",)     ),
+               ("trophic_level"         ,   ("double",)     ),
+               ("weaning_age"           ,   ("double",)     ),
+               ("weaning_body_mass"     ,   ("double",)     ),
+               ("weaning_head_body_len" ,   ("double",)     ),
+               ("refs"                  ,   ("char", 500)   ),
+               ("adult_body_mass_ext"   ,   ("double",)     ),
+               ("litters_per_year_ext"  ,   ("double",)     ),
+               ("neonate_body_mass_ext" ,   ("double",)     ),
+               ("weaning_body_mass_ext" ,   ("double",)     ),
+               ("GR_area"               ,   ("double",)     ),
+               ("GR_max_lat"            ,   ("double",)     ),
+               ("GR_min_lat"            ,   ("double",)     ),
+               ("GR_mid_range_lat"      ,   ("double",)     ),
+               ("GR_max_long"           ,   ("double",)     ),
+               ("GR_min_long"           ,   ("double",)     ),
+               ("GR_mid_range_long"     ,   ("double",)     ),
+               ("hu_pop_den_min"        ,   ("double",)     ),
+               ("hu_pop_den_mean"       ,   ("double",)     ),
+               ("hu_pop_den_5p"         ,   ("double",)     ),
+               ("hu_pop_den_change"     ,   ("double",)     ),
+               ("precip_mean"           ,   ("double",)     ),
+               ("temp_mean"             ,   ("double",)     ),
+               ("AET_mean"              ,   ("double",)     ),
+               ("PET_mean"              ,   ("double",)     )]
 
-dbinfo.cursor = dbtk_tools.get_cursor_mysql()
-dbtk_tools.setup(dbinfo)    
+db.engine = dbtk_tools.choose_engine()
+db.cursor = dbtk_tools.get_cursor(db)
+dbtk_tools.create_table(db, table)
