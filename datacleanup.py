@@ -28,7 +28,7 @@ def emptyvaltonull(datain):
         while line.find(",,") != -1:	
             line = line.replace(",,", ",\N,")
         dataout.append(line)
-        line = input_file.readline()
+        line = datain.readline()
     return dataout
 
 def correct_invalid_value(datain):
