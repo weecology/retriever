@@ -1,5 +1,5 @@
 """Database Toolkit tools
-Call the Setup function to create a database from a delimited text file.
+Functions to create a database from a delimited text file.
 
 Supported database engines: MySQL, PostgreSQL
 
@@ -170,7 +170,7 @@ def convert_data_type(engine, datatype):
     if thisvartype > -1:
         type = mydatatypes[thisvartype]
         if len(datatype) > 1:
-            type += "(" + datatype[1] + ")"
+            type += "(" + str(datatype[1]) + ")"
     else:
         type = datatype[0]    
     return type
@@ -259,7 +259,8 @@ def get_cursor_mysql(db):
     if db.opts["username"] == "":
         db.opts["username"] = raw_input("Enter your MySQL username: ")
     if db.opts["password"] == "":
-        db.opts["password"] = getpass.getpass("Enter your MySQL password: ")
+        print "Enter your MySQL password: "
+        db.opts["password"] = getpass.getpass(" ")
     if db.opts["hostname"] == "":
         db.opts["hostname"] = raw_input("Enter your MySQL host or press Enter for the default (localhost): ")
     if db.opts["sqlport"] == "":
@@ -286,7 +287,8 @@ def get_cursor_pgsql(db):
     if db.opts["username"] == "":
         db.opts["username"] = raw_input("Enter your PostgreSQL username: ")
     if db.opts["password"] == "":
-        db.opts["password"] = getpass.getpass("Enter your PostgreSQL password: ")
+        print "Enter your PostgreSQL password: "
+        db.opts["password"] = getpass.getpass(" ")
     if db.opts["hostname"] == "":
         db.opts["hostname"] = raw_input("Enter your PostgreSQL host or press Enter for the default (localhost): ")
     if db.opts["sqlport"] == "":
