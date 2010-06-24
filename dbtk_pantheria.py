@@ -18,7 +18,7 @@ create_database(db)
 table = table_info()
 table.tablename = "pantheria"
 table.pk = "species_id"
-table.sourceurl = "http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt"
+table.source = open_url(table, "http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt")
 table.cleanup = datacleanup.correct_invalid_value
 
 table.columns=[("species_id"            ,   ("pk",)         ),

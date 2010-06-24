@@ -18,7 +18,7 @@ create_database(db)
 table = table_info()
 table.tablename = ""
 table.pk = "species_id"
-table.sourceurl = ""
+table.source = open_url(table, "")
 table.cleanup = datacleanup.correct_invalid_value
 
 table.columns=[]
