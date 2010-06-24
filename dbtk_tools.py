@@ -22,7 +22,7 @@ table variables:
     drop - if the table already exists, should it be dropped?
     pk - the name of the value to be used as primary key. If None, no primary key will
          be used. The primary key must be the first column in dbcolumns.
-    sourceurl - the URL of the text file.
+    source - the open file or url containing the data
     delimiter - the delimiter used in the text file. If None, whitespace will be assumed.
     header_rows - number of header rows to be skipped
     cleanup - the name of the cleanup function to be used (or no_cleanup for none)
@@ -61,7 +61,7 @@ class table_info:
     """Information about table to be passed to dbtk_tools.create_table"""
     tablename = ""
     pk = None
-    sourceurl = ""
+    lines = []
     delimiter = None
     columns = []
     drop = True
@@ -90,16 +90,9 @@ def create_table(db, table):
     print "Creating table " + table.tablename + " in database " + db.dbname + " . . ."
     db.cursor.execute(createstatement)
     
-    main_table = urllib.urlopen(table.sourceurl)
-    
-    # Skip over the header line by reading it before processing
-    if table.header_rows > 0:
-        for i in range(table.header_rows):
-            line = main_table.readline()
-    
     print "Inserting rows: "
     species_id = 0    
-    for line in main_table:
+    for line in table.source:
         
         line = line.strip()
         if line:
@@ -136,7 +129,16 @@ def create_table(db, table):
                            [table.cleanup(value) for value in linevalues])
             
     print "\n Done!"
-    main_table.close()
+    table.source.close()
+    
+def open_url(table, url):
+    source = urllib.urlopen(url)
+    
+    # Skip over the header line by reading it before processing
+    if table.header_rows > 0:
+        for i in range(table.header_rows):
+            line = source.readline()
+    return source
     
 def drop_statement(engine, objecttype, objectname):
     dropstatement = "DROP %s IF EXISTS %s" % (objecttype, objectname)

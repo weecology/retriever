@@ -20,7 +20,7 @@ create_database(db)
 table = table_info()
 table.tablename = "species"
 table.pk = "species_id"
-table.sourceurl = "http://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"
+table.source = open_url(table, "http://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt")
 table.cleanup = datacleanup.correct_invalid_value
 
 # Database column names and their data types. Use data type "skip" to skip the value, and
