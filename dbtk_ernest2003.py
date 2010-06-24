@@ -7,6 +7,7 @@ See dbtk_tools.py for usage
 """
 
 from dbtk_tools import *
+import datacleanup
 
 # Variables to get text file/create database
 db = db_info()
@@ -20,6 +21,7 @@ table = table_info()
 table.tablename = "species"
 table.pk = "species_id"
 table.sourceurl = "http://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"
+table.cleanup = datacleanup.correct_invalid_value
 
 # Database column names and their data types. Use data type "skip" to skip the value, and
 # "combine" to merge a string value into the previous column

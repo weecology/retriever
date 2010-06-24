@@ -5,6 +5,7 @@ See dbtk_tools.py for usage
 """
 
 from dbtk_tools import *
+import datacleanup
 
 # Variables to get text file/create database
 db = db_info()
@@ -18,5 +19,7 @@ table = table_info()
 table.tablename = ""
 table.pk = "species_id"
 table.sourceurl = ""
+table.cleanup = datacleanup.correct_invalid_value
+
 table.columns=[]
 create_table(db, table)

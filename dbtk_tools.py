@@ -25,6 +25,7 @@ table variables:
     sourceurl - the URL of the text file.
     delimiter - the delimiter used in the text file. If None, whitespace will be assumed.
     header_rows - number of header rows to be skipped
+    cleanup - the name of the cleanup function to be used (or no_cleanup for none)
     dbcolumns - a list of tuples, containing each column name and its data type.
                 The number of values in each row of the text file must correspond with
                 the number of columns defined.
@@ -42,9 +43,11 @@ table variables:
 import getpass
 import getopt
 import urllib
-import datacleanup
 import warnings
 import sys
+
+def no_cleanup(value):
+    return value 
 
 class db_info:
     """Information about database to be passed to dbtk_tools.create_table"""
@@ -63,6 +66,7 @@ class table_info:
     columns = []
     drop = True
     header_rows = 1
+    cleanup = no_cleanup
 
 def create_table(db, table):
     """Creates a database based on settings supplied in dbinfo object"""
@@ -129,7 +133,7 @@ def create_table(db, table):
             sys.stdout.write(str(species_id) + "\b" * len(str(species_id)))
             db.cursor.execute(insertstatement, 
                            # Run correct_invalid_value on each value before insertion
-                           [datacleanup.correct_invalid_value(value) for value in linevalues])
+                           [table.cleanup(value) for value in linevalues])
             
     print "\n Done!"
     main_table.close()
@@ -197,7 +201,7 @@ def get_opts():
     except getopt.GetoptError:
         pass
     
-    return optsdict    
+    return optsdict   
 
 def choose_engine(db):    
     engine= db.opts["engine"]
