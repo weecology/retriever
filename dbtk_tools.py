@@ -1,18 +1,42 @@
 """Database Toolkit tools
 Call the Setup function to create a database from a delimited text file.
 
-db_info variables:
+Supported database engines: MySQL, PostgreSQL
+
+Usage: python dbtk_ernest2003.py [-e engine (mysql, postgresql, etc.)] [--engine=engine]
+                                 [-u username] [--user=username] 
+                                 [-p password] [--password=password]
+                                 [-h {hostname} (default=localhost)] [--host=hostname] 
+                                 [-o {port}] [--port=port]
+                                 [-d {databasename}] [--db=databasename]
+
+db variables:
     dbname - the name to use for the new database. If it exists, it will be dropped.
+    drop - if the database already exists, should it be dropped?     
+    opts - list of variables supplied from command line arguments or manually input
+    engine - specifies the database engine (MySQL, PostgreSQL, etc.)
+    cursor - a cursor from the database connection    
+
+table variables:
     tablename - the name to use for the new table.
+    drop - if the table already exists, should it be dropped?
     pk - the name of the value to be used as primary key. If None, no primary key will
          be used. The primary key must be the first column in dbcolumns.
-    url - the URL of the text file.
+    sourceurl - the URL of the text file.
     delimiter - the delimiter used in the text file. If None, whitespace will be assumed.
-    dbcolumns - a list of tuples, containing each column name and its MySQL data type.
+    header_rows - number of header rows to be skipped
+    dbcolumns - a list of tuples, containing each column name and its data type.
                 The number of values in each row of the text file must correspond with
-                the number of columns defined. Use "skip" as data type to not create a
-                column for the value, and "combine" to append a string to the value of
-                the previous column (instead of creating a new column).
+                the number of columns defined.
+                Data type is also a tuple, with the first value specifying the type.
+                (The second part of the type specifies the length and is optional)
+                    pk      - primary key
+                    int     - integer
+                    double  - double precision
+                    char    - string
+                    but     - binary
+                    skip    - ignore this row
+                    combine - append this row's data to the data of the previous row 
 """
 
 import getpass
@@ -42,19 +66,7 @@ class table_info:
 
 def create_table(db, table):
     """Creates a database based on settings supplied in dbinfo object"""
-    warnings.filterwarnings("ignore")
-    
-    # Create the database/schema
-    if db.engine == "postgresql":
-        object = "SCHEMA"
-    else:
-        object = "DATABASE"
-            
-    if db.drop:
-        db.cursor.execute(drop_statement(db.engine, object, db.dbname))
-        db.cursor.execute("CREATE " + object + " " + db.dbname)
-    else:
-        db.cursor.execute("CREATE " + object + " IF NOT EXISTS " + db.dbname)        
+    warnings.filterwarnings("ignore")        
     
     # Create the table
     if table.drop:
@@ -211,6 +223,19 @@ def get_cursor(db):
         return get_cursor_mysql(db)
     elif engine == "postgresql": 
         return get_cursor_pgsql(db)
+    
+def create_database(db):
+    # Create the database/schema
+    if db.engine == "postgresql":
+        object = "SCHEMA"
+    else:
+        object = "DATABASE"
+            
+    if db.drop:
+        db.cursor.execute(drop_statement(db.engine, object, db.dbname))
+        db.cursor.execute("CREATE " + object + " " + db.dbname)
+    else:
+        db.cursor.execute("CREATE " + object + " IF NOT EXISTS " + db.dbname)    
     
 def get_cursor_mysql(db):
     """Get login information for MySQL database"""
