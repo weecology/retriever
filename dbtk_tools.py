@@ -135,8 +135,11 @@ def create_table(db, table):
 def open_url(table, url):
     """Returns an opened file from a URL, skipping the header lines"""
     source = urllib.urlopen(url)
-    
-    # Skip over the header line by reading it before processing
+    source = skip_header(table, source)
+    return source
+
+def skip_header(table,source):
+    """Skip over the header line by reading it before processing"""
     if table.header_rows > 0:
         for i in range(table.header_rows):
             line = source.readline()
