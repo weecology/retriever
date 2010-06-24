@@ -35,7 +35,7 @@ table variables:
                     int     - integer
                     double  - double precision
                     char    - string
-                    but     - binary
+                    bit     - binary
                     skip    - ignore this row
                     combine - append this row's data to the data of the previous row 
 """
@@ -47,6 +47,7 @@ import warnings
 import sys
 
 def no_cleanup(value):
+    """Default cleanup function, returns the unchanged value"""
     return value 
 
 class db_info:
@@ -69,7 +70,7 @@ class table_info:
     cleanup = no_cleanup
 
 def create_table(db, table):
-    """Creates a database based on settings supplied in dbinfo object"""
+    """Creates a table based on settings supplied in table object"""
     warnings.filterwarnings("ignore")        
     
     # Create the table
@@ -132,6 +133,7 @@ def create_table(db, table):
     table.source.close()
     
 def open_url(table, url):
+    """Returns an opened file from a URL, skipping the header lines"""
     source = urllib.urlopen(url)
     
     # Skip over the header line by reading it before processing
@@ -141,37 +143,40 @@ def open_url(table, url):
     return source
     
 def drop_statement(engine, objecttype, objectname):
+    """Returns a db engine specific drop statement"""
     dropstatement = "DROP %s IF EXISTS %s" % (objecttype, objectname)
     if engine == "postgresql":
         dropstatement += " CASCADE"
     return dropstatement
     
 def convert_data_type(engine, datatype):
+    """Converts DBTK generic data types to db engine specific data types"""
     datatypes = dict()
     datatypes["pk"], datatypes["int"], datatypes["double"], datatypes["char"], datatypes["bit"] = range(5)
     datatypes["combine"], datatypes["skip"] = [-1, -1]
     dbdatatypes = dict()    
     dbdatatypes["mysql"] = ["INT(5) NOT NULL AUTO_INCREMENT", 
-                            "INT(%s)", 
+                            "INT", 
                             "DOUBLE", 
-                            "VARCHAR(%s)", 
+                            "VARCHAR", 
                             "BIT"]
     dbdatatypes["postgresql"] = ["integer PRIMARY KEY", 
-                                 "integer(%s)", 
+                                 "integer", 
                                  "double precision", 
-                                 "varchar(%s)", 
+                                 "varchar", 
                                  "bit"]
     mydatatypes = dbdatatypes[engine.lower()]
     thisvartype = datatypes[datatype[0]]
     if thisvartype > -1:
         type = mydatatypes[thisvartype]
-        if len(datatype) > 1 and "%s" in type:
-            type = type % datatype[1]
+        if len(datatype) > 1:
+            type += "(" + datatype[1] + ")"
     else:
         type = datatype[0]    
     return type
 
 def get_opts():
+    """Checks for command line arguments"""
     optsdict = dict()
     for i in ["engine", "username", "password", "hostname", "sqlport", "database"]:
         optsdict[i] = ""
@@ -205,7 +210,8 @@ def get_opts():
     
     return optsdict   
 
-def choose_engine(db):    
+def choose_engine(db):
+    """Prompts the user to select a database engine"""    
     engine= db.opts["engine"]
     
     if engine == "":
@@ -224,6 +230,7 @@ def choose_engine(db):
     return engine
     
 def get_cursor(db):
+    """Returns a db cursor based on the selected db engine"""
     engine = db.engine
     if engine == "mysql":
         return get_cursor_mysql(db)
@@ -231,6 +238,7 @@ def get_cursor(db):
         return get_cursor_pgsql(db)
     
 def create_database(db):
+    """Creates a database/schema based on settings supplied in table object"""
     # Create the database/schema
     if db.engine == "postgresql":
         object = "SCHEMA"
