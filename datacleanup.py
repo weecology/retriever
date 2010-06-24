@@ -10,26 +10,9 @@ the empty values with MySQL's NULL indicator /N.
 
 # TO DO - write tests
 
-def emptyvaltonull(line):
-    """Convert empty fields in comma delimited text to MySQL NULL indicator /N
-    
-    Keyword arguments:
-    datain = a list of strings where each string is one line of the datafile
-              
-    """
-    # TO DO - test new implementation
-    # TO DO - add ability to select delimiter other than commas
-
-    if line[0] == ',':
-        line = '\N'+line
-    while line.find(",,") != -1:	
-        line = line.replace(",,", ",\N,")
-    return line
-
-def correct_invalid_value(datain):
+def correct_invalid_value(datain, nullindicators):
     try:
-        val = int(float(datain))        
-        if val == -999:            
+        if set([datain]).issubset(nullindicators):            
             return None
         else:
             return datain
