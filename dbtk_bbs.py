@@ -8,14 +8,14 @@ from dbtk_tools import *
 import datacleanup
 
 # Variables to get text file/create database
-db = db_info()
+db = Database()
 db.dbname = "BBS"
 db.opts = get_opts()
 db.engine = choose_engine(db)
 db.cursor = get_cursor(db)
 create_database(db)
 
-table = table_info()
+table = Table()
 table.tablename = ""
 table.pk = "species_id"
 table.source = open_url(table, "")

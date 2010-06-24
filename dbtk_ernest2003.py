@@ -10,14 +10,14 @@ from dbtk_tools import *
 import datacleanup
 
 # Variables to get text file/create database
-db = db_info()
+db = Database()
 db.dbname = "MammalLifeHistory"
 db.opts = get_opts()
 db.engine = choose_engine(db)
 db.cursor = get_cursor(db)
 create_database(db)
 
-table = table_info()
+table = Table()
 table.tablename = "species"
 table.pk = "species_id"
 table.source = open_url(table, "http://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt")
