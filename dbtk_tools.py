@@ -68,6 +68,7 @@ class Table:
     drop = True
     header_rows = 1
     cleanup = no_cleanup
+    nullindicators = set()
 
 def create_table(db, table):
     """Creates a table based on settings supplied in table object"""
@@ -127,7 +128,7 @@ def create_table(db, table):
             sys.stdout.write(str(species_id) + "\b" * len(str(species_id)))
             db.cursor.execute(insertstatement, 
                            # Run correct_invalid_value on each value before insertion
-                           [table.cleanup(value) for value in linevalues])
+                           [table.cleanup(value, table.nullindicators) for value in linevalues])
             
     print "\n Done!"
     table.source.close()

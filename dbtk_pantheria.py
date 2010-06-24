@@ -20,6 +20,7 @@ table.tablename = "pantheria"
 table.pk = "species_id"
 table.source = open_url(table, "http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt")
 table.cleanup = datacleanup.correct_invalid_value
+table.nullindicators = set(["-999", "-999.00", -999])
 
 table.columns=[("species_id"            ,   ("pk",)         ),
                ("sporder"               ,   ("char", 20)    ),
