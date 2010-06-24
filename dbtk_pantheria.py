@@ -1,31 +1,24 @@
 """Database Toolkit for Pantheria dataset
 
-Usage: python dbtk_pantheria.py  [-e engine (mysql, postgresql, etc.)] [--engine=engine]
-                                 [-u username] [--user=username] 
-                                 [-p password] [--password=password]
-                                 [-h {hostname} (default=localhost)] [--host=hostname] 
-                                 [-o {port} (default=3306)] [--port=port]
+See dbtk_tools.py for usage
 
 """
 
-import dbtk_tools
+from dbtk_tools import *
 
 # Variables to get text file/create database
-db = dbtk_tools.db_info()
-table = dbtk_tools.table_info()
+db = db_info()
 db.dbname = "Pantheria"
+db.opts = get_opts()
+db.engine = choose_engine(db)
+db.cursor = get_cursor(db)
+create_database(db)
+
+table = table_info()
 table.tablename = "pantheria"
 table.pk = "species_id"
 table.sourceurl = "http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt"
 
-# Database column names and their data types.
-# Data type is a tuple, with the first value specifying the type:
-#     pk     - primary key
-#     int    - integer
-#     double - double precision
-#     char   - string
-#     but    - binary
-# The second part of the type specifies the length and is optional
 table.columns=[("species_id"            ,   ("pk",)         ),
                ("sporder"               ,   ("char", 20)    ),
                ("family"                ,   ("char", 20)    ),
@@ -83,8 +76,4 @@ table.columns=[("species_id"            ,   ("pk",)         ),
                ("temp_mean"             ,   ("double",)     ),
                ("AET_mean"              ,   ("double",)     ),
                ("PET_mean"              ,   ("double",)     )]
-
-db.opts = dbtk_tools.get_opts()
-db.engine = dbtk_tools.choose_engine(db)
-db.cursor = dbtk_tools.get_cursor(db)
-dbtk_tools.create_table(db, table)
+create_table(db, table)
