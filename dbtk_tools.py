@@ -50,7 +50,7 @@ def no_cleanup(value):
     """Default cleanup function, returns the unchanged value"""
     return value 
 
-class db_info:
+class Database:
     """Information about database to be passed to dbtk_tools.create_table"""
     dbname = ""
     engine = "MySQL"
@@ -58,7 +58,7 @@ class db_info:
     drop = True
     opts = dict()
     
-class table_info:
+class Table:
     """Information about table to be passed to dbtk_tools.create_table"""
     tablename = ""
     pk = None
