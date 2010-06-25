@@ -34,7 +34,7 @@ table.nullindicators = set(['', 0, '0'])
 #     char   - string
 #     but    - binary
 # The second part of the type specifies the length and is optional
-table.columns=[("ID"                    ,   ("int",)        ),
+table.columns=[("ID"                    ,   ("pk",)        ),
                ("month"                 ,   ("int",)        ),
                ("day"                   ,   ("int",)        ),
                ("year"                  ,   ("int",)        ),
