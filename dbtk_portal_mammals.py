@@ -19,7 +19,8 @@ create_database(db)
 
 table = Table()
 table.tablename = "main"
-table.pk = "species_id"
+table.pk = "ID"
+table.hasindex = True
 table.source = open_url(table, "http://esapubs.org/archive/ecol/E090/118/Portal_rodent_19772002.csv")
 table.delimiter = ","
 table.cleanup = datacleanup.correct_invalid_value
@@ -33,8 +34,7 @@ table.nullindicators = set(['', 0, '0'])
 #     char   - string
 #     but    - binary
 # The second part of the type specifies the length and is optional
-table.columns=[("species_id"            ,   ("pk",)        ),
-               ("ID"                    ,   ("int",)        ),
+table.columns=[("ID"                    ,   ("int",)        ),
                ("month"                 ,   ("int",)        ),
                ("day"                   ,   ("int",)        ),
                ("year"                  ,   ("int",)        ),
