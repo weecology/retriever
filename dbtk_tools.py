@@ -62,6 +62,7 @@ class Table:
     """Information about table to be passed to dbtk_tools.create_table"""
     tablename = ""
     pk = None
+    hasindex = False
     lines = []
     delimiter = None
     columns = []
@@ -98,9 +99,9 @@ def create_table(db, table):
         
         line = line.strip()
         if line:
-            # If there is a primary key specified, add an auto-incrementing integer            
-            if table.pk:
-                species_id += 1
+            # If there is a primary key specified, add an auto-incrementing integer
+            species_id += 1            
+            if not table.hasindex:                
                 linevalues = [species_id]
                 column = 0
             else:
