@@ -22,7 +22,6 @@ table.tablename = "species"
 table.pk = "species_id"
 table.source = open_url(table, "http://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt")
 table.cleanup = datacleanup.correct_invalid_value
-table.nullindicators = set(["-999", "-999.00", -999])
 
 # Database column names and their data types. Use data type "skip" to skip the value, and
 # "combine" to merge a string value into the previous column
