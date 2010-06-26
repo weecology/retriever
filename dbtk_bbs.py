@@ -61,43 +61,44 @@ shortstate = ""
 create_table(db, table)
 
 for state in stateslist:
-    #try:
-    if len(state) > 2:
-        shortstate = state[0:7]
-    else:        
-        state, shortstate = state[0], state[1]
-        
-    print "Downloading and decompressing data from " + state + " . . ."
-    url = "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/C" + shortstate + ".exe"
-    archivename = url.split('/')[-1]
-    webFile = urllib.urlopen(url)    
-    localFile = open(archivename, 'w')
-    localFile.write(webFile.read())
-    localFile.close()
-    webFile.close()    
-    
-    localZip = zipfile.ZipFile(archivename)    
-    filename = "C" + shortstate + ".csv"
-    if db.engine == "mysql" or db.engine == "postgresql":        
-        localFile = localZip.extract(filename)    
-        insert_data_from_file(db, table, filename)        
-        localZip.close()
-    
-        os.remove(filename)            
-    else:
-        localFile = localZip.open(filename)
-        table.source = localFile
-        skip_rows(1, table.source)
-    
-        rows = add_to_table(db, table)
-
+    try:
+        if len(state) > 2:
+            shortstate = state[0:7]
+        else:        
+            state, shortstate = state[0], state[1]
+            
+        print "Downloading and decompressing data from " + state + " . . ."
+        url = "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/C" + shortstate + ".exe"
+        archivename = url.split('/')[-1]
+        webFile = urllib.urlopen(url)    
+        localFile = open(archivename, 'w')
+        localFile.write(webFile.read())
         localFile.close()
-        localZip.close()  
+        webFile.close()    
+        
+        localZip = zipfile.ZipFile(archivename)    
+        filename = "C" + shortstate + ".csv"
+        if db.engine == "mysql" or db.engine == "postgresql":        
+            localFile = localZip.extract(filename)    
+            insert_data_from_file(db, table, filename)        
+            localZip.close()
+        
+            os.remove(filename)            
+        else:
+            localFile = localZip.open(filename)
+            table.source = localFile
+            skip_rows(1, table.source)
+        
+            rows = add_to_table(db, table)
     
-        table.startindex = rows
-    
-    os.remove(archivename)  
+            localFile.close()
+            localZip.close()  
+        
+            table.startindex = rows
+        
+        os.remove(archivename)  
                 
-    #except:
-        #print "There was an error in " + state + "."
-    
+    except:
+        print "There was an error in " + state + "."
+
+print 'Done!'    

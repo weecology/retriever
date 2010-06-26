@@ -1,7 +1,7 @@
 """Database Toolkit tools
 Functions to create a database from a delimited text file.
 
-Supported database engines: MySQL, PostgreSQL
+Supported database engines: MySQL, PostgreSQL, SQLite
 
 Usage: python dbtk_ernest2003.py [-e engine (mysql, postgresql, etc.)] [--engine=engine]
                                  [-u username] [--user=username] 
@@ -22,6 +22,8 @@ table variables:
     drop - if the table already exists, should it be dropped?
     pk - the name of the value to be used as primary key. If None, no primary key will
          be used. The primary key must be the first column in dbcolumns.
+    hasindex - True if the database file already includes an index
+    startindex - the number of rows already entered into a table
     source - the open file or url containing the data
     delimiter - the delimiter used in the text file. If None, whitespace will be assumed.
     header_rows - number of header rows to be skipped
@@ -71,7 +73,22 @@ class Table:
     drop = True
     header_rows = 1
     cleanup = no_cleanup
-    nullindicators = set()
+    nullindicators = set(["-999", "-999.00", -999])
+
+def create_database(db):
+    """Creates a database/schema based on settings supplied in table object"""
+    # Create the database/schema
+    if db.engine == "postgresql":
+        object = "SCHEMA"
+    else:
+        object = "DATABASE"
+    
+    if db.engine != "sqlite":   
+        if db.drop:
+            db.cursor.execute(drop_statement(db.engine, object, db.dbname))
+            db.cursor.execute("CREATE " + object + " " + db.dbname)
+        else:
+            db.cursor.execute("CREATE " + object + " IF NOT EXISTS " + db.dbname)    
 
 def create_table(db, table):
     """Creates a table based on settings supplied in table object"""
@@ -79,10 +96,10 @@ def create_table(db, table):
     
     # Create the table
     if table.drop:
-        db.cursor.execute(drop_statement(db.engine, "TABLE", db.dbname + "." + table.tablename))
-        createstatement = "CREATE TABLE " + db.dbname + "." + table.tablename + "("
+        db.cursor.execute(drop_statement(db.engine, "TABLE", tablename(db, table)))
+        createstatement = "CREATE TABLE " + tablename(db, table) + "("
     else:
-        createstatement = "CREATE TABLE IF NOT EXISTS " + db.dbname + "." + table.tablename + "("    
+        createstatement = "CREATE TABLE IF NOT EXISTS " + tablename(db, table) + "("    
     for item in table.columns:
         if (item[1][0] != "skip") and (item[1][0] != "combine"):
             createstatement += item[0] + " " + convert_data_type(db.engine, item[1]) + ", "    
@@ -104,14 +121,13 @@ def add_to_table(db, table):
         
         line = line.strip()
         if line:
-            # If there is a primary key specified, add an auto-incrementing integer
             record_id += 1            
-            if not table.hasindex:                
-                linevalues = [record_id]
+            linevalues = []
+            if table.pk:
                 column = 0
             else:
-                linevalues = []
-                column = -1 
+                column = -1
+             
             for value in line.split(table.delimiter):
                 column += 1
                 thiscolumn = table.columns[column][1][0]
@@ -126,48 +142,71 @@ def add_to_table(db, table):
                     linevalues.append(value) 
                         
             # Build insert statement with the correct # of values
-            insertstatement = "INSERT INTO " + db.dbname + "." + table.tablename + " VALUES ("
-            for value in linevalues:
+            columns = get_insert_columns(db, table)
+            columncount = len(get_insert_columns(db, table, False))
+            insertstatement = "INSERT INTO " + tablename(db, table)
+            insertstatement += " (" + columns + ")"  
+            insertstatement += " VALUES ("
+            for i in range(0, columncount):
                 insertstatement += "%s, "
             insertstatement = insertstatement.rstrip(", ") + ");"
-
             sys.stdout.write(str(record_id) + "\b" * len(str(record_id)))
-            db.cursor.execute(insertstatement, 
-                           # Run correct_invalid_value on each value before insertion
-                           [table.cleanup(value, table.nullindicators) for value in linevalues])
+            # Run correct_invalid_value on each value before insertion
+            cleanvalues = [format_insert_value(table.cleanup(value, db, table)) for value in linevalues]
+            insertstatement %= tuple(cleanvalues)
+            db.cursor.execute(insertstatement)
             
     print "\n Done!"
     table.source.close()
     return record_id
+
+def format_insert_value(value):
+    print value
+    if value:
+        return "'" + str(value) + "'"
+    else:
+        return "null"
     
 def insert_data_from_file(db, table, filename):
     print "Inserting data from " + filename + " . . ."
         
-    variables = ""
-    for item in table.columns:
-        if (item[1][0] != "skip") and (item[1][0] != 
-        "combine") and (item[1][0] != "pk" or table.hasindex == True):
-            variables += item[0] + ", "    
-        
-    variables = variables.rstrip(', ')    
+    columns = get_insert_columns(db, table)    
     
     if db.engine == "mysql":   
         statement = """        
 LOAD DATA LOCAL INFILE '""" + filename + """'
-INTO TABLE """ + db.dbname + "." + table.tablename + """
+INTO TABLE """ + tablename(db, table) + """
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\\n'
 IGNORE 1 LINES 
-(""" + variables + ")"
+(""" + columns + ")"
     elif db.engine == "postgresql":
         filename = os.path.abspath(filename)
         statement = """
-COPY """ + db.dbname + "." + table.tablename + " (" + variables + """)
+COPY """ + tablename(db, table) + " (" + variables + """)
 FROM '""" + filename + """'
 WITH DELIMITER ','
 CSV HEADER"""
     
     db.cursor.execute(statement)    
+    
+def tablename(db, table):
+    if db.engine == "mysql" or db.engine=="postgresql":
+        return db.dbname + "." + table.tablename
+    elif db.engine == "sqlite":
+        return table.tablename
+    
+def get_insert_columns(db, table, join=True):
+    columns = ""
+    for item in table.columns:
+        if (item[1][0] != "skip") and (item[1][0] !="combine") and (item[1][0] != 
+                                                        "pk" or table.hasindex == True):
+            columns += item[0] + ", "            
+    columns = columns.rstrip(', ')
+    if join:
+        return columns
+    else:
+        return columns.lstrip("(").rstrip(")").split(",")    
     
 def open_url(table, url):
     """Returns an opened file from a URL, skipping the header lines"""
@@ -205,6 +244,12 @@ def convert_data_type(engine, datatype):
                                  "double precision", 
                                  "varchar", 
                                  "bit"]
+    dbdatatypes["sqlite"] = ["INTEGER PRIMARY KEY",
+                             "INTEGER",
+                             "REAL",
+                             "TEXT",
+                             "INTEGER"
+                             ]
     mydatatypes = dbdatatypes[engine.lower()]
     thisvartype = datatypes[datatype[0]]
     if thisvartype > -1:
@@ -258,6 +303,7 @@ def choose_engine(db):
         print "Choose a database engine:"
         print "    (m) MySQL"
         print "    (p) PostgreSQL"
+        print "    (s) SQLite"
         engine = raw_input(": ")
         engine = engine.lower()
     
@@ -265,6 +311,8 @@ def choose_engine(db):
         engine = "mysql"
     elif engine == "p":
         engine = "postgresql"
+    elif engine == "s":
+        engine = "sqlite"
         
     print "Using " + engine + " database."
     return engine
@@ -276,20 +324,9 @@ def get_cursor(db):
         return get_cursor_mysql(db)
     elif engine == "postgresql": 
         return get_cursor_pgsql(db)
+    elif engine == "sqlite":
+        return get_cursor_sqlite(db)
     
-def create_database(db):
-    """Creates a database/schema based on settings supplied in table object"""
-    # Create the database/schema
-    if db.engine == "postgresql":
-        object = "SCHEMA"
-    else:
-        object = "DATABASE"
-            
-    if db.drop:
-        db.cursor.execute(drop_statement(db.engine, object, db.dbname))
-        db.cursor.execute("CREATE " + object + " " + db.dbname)
-    else:
-        db.cursor.execute("CREATE " + object + " IF NOT EXISTS " + db.dbname)    
     
 def get_cursor_mysql(db):
     """Get login information for MySQL database"""
@@ -351,5 +388,20 @@ def get_cursor_pgsql(db):
                                password = db.opts["password"],
                                database = db.opts["database"])
     connection.set_isolation_level(0)    
+    cursor = connection.cursor()    
+    return cursor
+
+def get_cursor_sqlite(db):
+    """Get login information for SQLite database"""
+    import sqlite3 as dbapi    
+        
+    # If any parameters are missing, input them manually
+    if db.opts["database"] == "":
+        db.opts["database"] = raw_input("Enter the filename of your SQLite database: ")
+    
+    if db.opts["database"] in ["", "default"]:
+        db.opts["database"] = "sqlite"        
+    
+    connection = dbapi.connect(db.opts["database"])    
     cursor = connection.cursor()    
     return cursor

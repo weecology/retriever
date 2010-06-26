@@ -10,9 +10,9 @@ the empty values with MySQL's NULL indicator /N.
 
 # TO DO - write tests
 
-def correct_invalid_value(datain, nullindicators):
+def correct_invalid_value(datain, db, table):
     try:
-        if set([datain]).issubset(nullindicators):            
+        if set([datain]).issubset(table.nullindicators):            
             return None
         else:
             return datain
