@@ -44,6 +44,7 @@ import getpass
 import getopt
 import urllib
 import warnings
+import os
 import sys
 
 def no_cleanup(value):
@@ -140,7 +141,7 @@ def add_to_table(db, table):
     return record_id
     
 def insert_data_from_file(db, table, filename):
-    print "Inserting data . . ."
+    print "Inserting data from " + filename + " . . ."
         
     variables = ""
     for item in table.columns:
@@ -149,15 +150,23 @@ def insert_data_from_file(db, table, filename):
             variables += item[0] + ", "    
         
     variables = variables.rstrip(', ')    
-       
-    statement = """        
+    
+    if db.engine == "mysql":   
+        statement = """        
 LOAD DATA LOCAL INFILE '""" + filename + """'
-INTO TABLE """ + table.tablename + """
+INTO TABLE """ + db.dbname + "." + table.tablename + """
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\\n'
 IGNORE 1 LINES 
-(""" + variables + ")" 
-        
+(""" + variables + ")"
+    elif db.engine == "postgresql":
+        filename = os.path.abspath(filename)
+        statement = """
+COPY """ + db.dbname + "." + table.tablename + " (" + variables + """)
+FROM '""" + filename + """'
+WITH DELIMITER ','
+CSV HEADER"""
+    
     db.cursor.execute(statement)    
     
 def open_url(table, url):
@@ -191,7 +200,7 @@ def convert_data_type(engine, datatype):
                             "DOUBLE", 
                             "VARCHAR", 
                             "BIT"]
-    dbdatatypes["postgresql"] = ["integer PRIMARY KEY", 
+    dbdatatypes["postgresql"] = ["SERIAL PRIMARY KEY", 
                                  "integer", 
                                  "double precision", 
                                  "varchar", 
