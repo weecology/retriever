@@ -93,8 +93,11 @@ def create_table(db, table):
     
     print "Creating table " + table.tablename + " in database " + db.dbname + " . . ."
     db.cursor.execute(createstatement)
-    
+    return add_to_table(db, table)
+
+def add_to_table(db, table):
     print "Inserting rows: "
+    
     record_id = table.startindex    
     for line in table.source:
         
@@ -135,6 +138,7 @@ def create_table(db, table):
     print "\n Done!"
     table.source.close()
     return record_id
+    
     
 def open_url(table, url):
     """Returns an opened file from a URL, skipping the header lines"""
