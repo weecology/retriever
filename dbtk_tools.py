@@ -63,6 +63,7 @@ class Table:
     tablename = ""
     pk = None
     hasindex = False
+    startindex = 0
     lines = []
     delimiter = None
     columns = []
@@ -94,15 +95,15 @@ def create_table(db, table):
     db.cursor.execute(createstatement)
     
     print "Inserting rows: "
-    species_id = 0    
+    record_id = table.startindex    
     for line in table.source:
         
         line = line.strip()
         if line:
             # If there is a primary key specified, add an auto-incrementing integer
-            species_id += 1            
+            record_id += 1            
             if not table.hasindex:                
-                linevalues = [species_id]
+                linevalues = [record_id]
                 column = 0
             else:
                 linevalues = []
@@ -126,24 +127,25 @@ def create_table(db, table):
                 insertstatement += "%s, "
             insertstatement = insertstatement.rstrip(", ") + ");"
 
-            sys.stdout.write(str(species_id) + "\b" * len(str(species_id)))
+            sys.stdout.write(str(record_id) + "\b" * len(str(record_id)))
             db.cursor.execute(insertstatement, 
                            # Run correct_invalid_value on each value before insertion
                            [table.cleanup(value, table.nullindicators) for value in linevalues])
             
     print "\n Done!"
     table.source.close()
+    return record_id
     
 def open_url(table, url):
     """Returns an opened file from a URL, skipping the header lines"""
     source = urllib.urlopen(url)
-    source = skip_header(table, source)
+    source = skip_rows(table.header_rows, source)
     return source
 
-def skip_header(table,source):
+def skip_rows(rows,source):
     """Skip over the header line by reading it before processing"""
-    if table.header_rows > 0:
-        for i in range(table.header_rows):
+    if rows > 0:
+        for i in range(rows):
             line = source.readline()
     return source
     
