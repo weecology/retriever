@@ -43,7 +43,7 @@ stateslist = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorad
               "Connecticut", "Delaware", "Florida", "Georgia", "Idaho",
               "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine",
               "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi",
-              "Missouri", "Montana", "Nebraskas", "Nevada", 
+              "Missouri", "Montana", "Nebraska", "Nevada", 
               ["New Hampshire", "NHampsh"], ["New Jersey", "NJersey"],
               ["New Mexico", "NMexico"], ["New York", "NYork"], 
               ["North Carolina", "NCaroli"], ["North Dakota", "NDakota"], "Ohio", 
@@ -56,30 +56,36 @@ stateslist = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorad
               "Ontario", ["Prince Edward Island", "PEI"], "Quebec", "Saskatchewan",
               "Yukon"]
 
+state = ""
+shortstate = ""
 for state in stateslist:
-    if len(state) > 2:
-        shortstate = state[0:7]
-    else:
-        shortstate = state[1]
+    try:
+        if len(state) > 2:
+            shortstate = state[0:7]
+        else:        
+            state, shortstate = state[0], state[1]
+            
+        print "Downloading and decompressing data from " + state + " . . ."
+        url = "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/C" + shortstate + ".exe"
+        filename = url.split('/')[-1]
+        webFile = urllib.urlopen(url)    
+        localFile = open(filename, 'w')
+        localFile.write(webFile.read())
+        localFile.close()
+        webFile.close()    
         
-    print "Downloading and decompressing data from " + state + " . . ."
-    url = "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/C" + shortstate + ".exe"
-    filename = url.split('/')[-1]
-    webFile = urllib.urlopen(url)    
-    localFile = open(filename, 'w')
-    localFile.write(webFile.read())
-    localFile.close()
-    webFile.close()    
+        localZip = zipfile.ZipFile(filename)
+        localFile = localZip.open("C" + shortstate + ".csv")
+        table.source = localFile
+        skip_rows(1, table.source)
+        rows = create_table(db, table)
+        localFile.close()
+        localZip.close()
+        
+        os.remove(filename)  
+        
+        table.startindex = rows
+        table.drop = False
+    except:
+        print "There was an error in " + shortstate + "."
     
-    localZip = zipfile.ZipFile(filename)
-    localFile = localZip.open("C" + shortstate + ".csv")
-    table.source = localFile
-    skip_rows(1, table.source)
-    rows = create_table(db, table)
-    localFile.close()
-    localZip.close()
-    
-    os.remove(filename)  
-    
-    table.startindex = rows
-    table.drop = False
