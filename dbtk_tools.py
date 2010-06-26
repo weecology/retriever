@@ -93,7 +93,7 @@ def create_table(db, table):
     
     print "Creating table " + table.tablename + " in database " + db.dbname + " . . ."
     db.cursor.execute(createstatement)
-    return add_to_table(db, table)
+    #return add_to_table(db, table)
 
 def add_to_table(db, table):
     print "Inserting rows: "
@@ -139,6 +139,26 @@ def add_to_table(db, table):
     table.source.close()
     return record_id
     
+def insert_data_from_file(db, table, filename):
+    print "Inserting data . . ."
+        
+    variables = ""
+    for item in table.columns:
+        if (item[1][0] != "skip") and (item[1][0] != 
+        "combine") and (item[1][0] != "pk" or table.hasindex == True):
+            variables += item[0] + ", "    
+        
+    variables = variables.rstrip(', ')    
+       
+    statement = """        
+LOAD DATA LOCAL INFILE '""" + filename + """'
+INTO TABLE """ + table.tablename + """
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\\n'
+IGNORE 1 LINES 
+(""" + variables + ")" 
+        
+    db.cursor.execute(statement)    
     
 def open_url(table, url):
     """Returns an opened file from a URL, skipping the header lines"""
@@ -183,7 +203,7 @@ def convert_data_type(engine, datatype):
         if len(datatype) > 1:
             type += "(" + str(datatype[1]) + ")"
     else:
-        type = datatype[0]    
+        type = ""    
     return type
 
 def get_opts():

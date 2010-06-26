@@ -80,3 +80,4 @@ table.columns=[("species_id"            ,   ("pk",)         ),
                ("AET_mean"              ,   ("double",)     ),
                ("PET_mean"              ,   ("double",)     )]
 create_table(db, table)
+add_to_table(db, table)

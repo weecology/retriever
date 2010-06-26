@@ -58,7 +58,8 @@ stateslist = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorad
 
 state = ""
 shortstate = ""
-created = False
+create_table(db, table)
+
 for state in stateslist:
     try:
         if len(state) > 2:
@@ -68,28 +69,37 @@ for state in stateslist:
             
         print "Downloading and decompressing data from " + state + " . . ."
         url = "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/C" + shortstate + ".exe"
-        filename = url.split('/')[-1]
+        archivename = url.split('/')[-1]
         webFile = urllib.urlopen(url)    
-        localFile = open(filename, 'w')
+        localFile = open(archivename, 'w')
         localFile.write(webFile.read())
         localFile.close()
         webFile.close()    
         
-        localZip = zipfile.ZipFile(filename)
-        localFile = localZip.open("C" + shortstate + ".csv")
-        table.source = localFile
-        skip_rows(1, table.source)
-        if created:
-            rows = add_to_table(db, table)
+        localZip = zipfile.ZipFile(archivename)    
+        filename = "C" + shortstate + ".csv"
+        if db.engine == "mysql":
+            db.cursor.execute("USE " + db.dbname)
+        
+            localFile = localZip.extract(filename)    
+            insert_data_from_file(db, table, filename)        
+            localZip.close()
+        
+            os.remove(filename)            
         else:
-            rows = create_table(db, table)
-            created = True
-        localFile.close()
-        localZip.close()
+            localFile = localZip.open(filename)
+            table.source = localFile
+            skip_rows(1, table.source)
         
-        os.remove(filename)  
+            rows = add_to_table(db, table)
+    
+            localFile.close()
+            localZip.close()  
         
-        table.startindex = rows        
+            table.startindex = rows
+        
+        os.remove(archivename)  
+                
     except:
         print "There was an error in " + state + "."
     
