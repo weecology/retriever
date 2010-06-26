@@ -58,6 +58,7 @@ stateslist = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorad
 
 state = ""
 shortstate = ""
+created = False
 for state in stateslist:
     try:
         if len(state) > 2:
@@ -78,14 +79,17 @@ for state in stateslist:
         localFile = localZip.open("C" + shortstate + ".csv")
         table.source = localFile
         skip_rows(1, table.source)
-        rows = create_table(db, table)
+        if created:
+            rows = add_to_table(db, table)
+        else:
+            rows = create_table(db, table)
+            created = True
         localFile.close()
         localZip.close()
         
         os.remove(filename)  
         
-        table.startindex = rows
-        table.drop = False
+        table.startindex = rows        
     except:
-        print "There was an error in " + shortstate + "."
+        print "There was an error in " + state + "."
     
