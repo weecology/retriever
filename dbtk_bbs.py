@@ -52,7 +52,7 @@ stateslist = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorad
               "Texas", "Utah", "Vermont", "Virginia", "Washington", 
               ["West Virginia", "W_Virgi"], "Wisconsin", "Wyoming", "Alberta", 
               ["British Columbia", "BritCol"], "Manitoba", ["New Brunswick", "NBrunsw"], 
-              ["Northwest Territories", "NWTerri"], ["Newfoundland", "Newfound"], 
+              ["Northwest Territories", "NWTerri"], "Newfoundland", 
               ["Nova Scotia", "NovaSco"], "Nunavut", "Ontario", 
               ["Prince Edward Island", "PEI"], "Quebec", "Saskatchewan", "Yukon"]
 
