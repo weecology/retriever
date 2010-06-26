@@ -40,7 +40,7 @@ table.columns=[("record_id"             ,   ("pk",)         ),
                ("SpeciesTotal"          ,   ("int",)        )]
 
 stateslist = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado",
-              "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho",
+              "Connecticut", "Delaware", "Florida", "Georgia", "Idaho",
               "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine",
               "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi",
               "Missouri", "Montana", "Nebraskas", "Nevada", 
@@ -81,5 +81,5 @@ for state in stateslist:
     
     os.remove(filename)  
     
-    table.startindex += rows
+    table.startindex = rows
     table.drop = False
