@@ -42,3 +42,4 @@ table.columns=[("species_id"            ,   ("pk",)         ),
                ("litters_peryear"       ,   ("double",)     ),
                ("refs"                  ,   ("char", 30)    )]
 create_table(db, table)
+add_to_table(db, table)

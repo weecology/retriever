@@ -64,3 +64,4 @@ table.columns=[("ID"                    ,   ("pk",)        ),
                ("note4"                 ,   ("char", 2)     ),
                ("note5"                 ,   ("char", 1)     )]
 create_table(db, table)
+add_to_table(db, table)
