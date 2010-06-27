@@ -15,7 +15,7 @@ engine.opts = opts
 db = Database()
 db.dbname = "Pantheria"
 engine.db = db
-engine.cursor = engine.get_cursor()
+engine.get_cursor()
 engine.create_db()
 
 table = Table()
