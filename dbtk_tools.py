@@ -105,10 +105,12 @@ class Engine():
                             
                 # Build insert statement with the correct # of values                
                 cleanvalues = [self.format_insert_value(self.table.cleanup(value, self)) for value in linevalues]
-                insertstatement = self.insert_statement(cleanvalues) 
+                insertstatement = self.insert_statement(cleanvalues)
+                print insertstatement 
                 self.cursor.execute(insertstatement)
                 
         print "\n Done!"
+        self.connection.commit()
         self.table.source.close()    
     def convert_data_type(self, datatype):
         """Converts DBTK generic data types to db engine specific data types"""
@@ -143,9 +145,9 @@ class Engine():
     def create_table_statement(self):
         if self.table.drop:
             self.cursor.execute(self.drop_statement("TABLE", self.tablename()))
-            createstatement = "CREATE TABLE " + self.tablename() + "("
+            createstatement = "CREATE TABLE " + self.tablename() + " ("
         else:
-            createstatement = "CREATE TABLE IF NOT EXISTS " + self.tablename() + "("    
+            createstatement = "CREATE TABLE IF NOT EXISTS " + self.tablename() + " ("    
         for item in self.table.columns:
             if (item[1][0] != "skip") and (item[1][0] != "combine"):
                 createstatement += item[0] + " " + self.convert_data_type(item[1]) + ", "    
@@ -200,6 +202,8 @@ class Engine():
         return source
     def tablename(self):        
         return self.db.dbname + "." + self.table.tablename
+    def connection(self):
+        pass
     def cursor(self):
         pass
 
@@ -253,12 +257,11 @@ IGNORE 1 LINES
         self.opts["sqlport"] = int(self.opts["sqlport"])
             
         # Connect to database
-        connection = dbapi.connect(host = self.opts["hostname"],
-                                   port = self.opts["sqlport"],
-                                   user = self.opts["username"],
-                                   passwd = self.opts["password"])    
-        cursor = connection.cursor()
-        return cursor    
+        self.connection = dbapi.connect(host = self.opts["hostname"],
+                                        port = self.opts["sqlport"],
+                                        user = self.opts["username"],
+                                        passwd = self.opts["password"])     
+        self.cursor = self.connection.cursor()    
 
 
 class PostgreSQLEngine(Engine):
@@ -284,7 +287,8 @@ COPY """ + self.tablename() + " (" + columns + """)
 FROM '""" + filename + """'
 WITH DELIMITER ','
 CSV HEADER"""
-        self.cursor.execute(statement)        
+        self.cursor.execute(statement)
+        self.connection.commit()        
     def get_cursor(self):
         import psycopg2 as dbapi    
         
@@ -311,14 +315,12 @@ CSV HEADER"""
             self.opts["database"] = "postgres"
             
         # Connect to database
-        connection = dbapi.connect(host = self.opts["hostname"],
-                                   port = self.opts["sqlport"],
-                                   user = self.opts["username"],
-                                   password = self.opts["password"],
-                                   database = self.opts["database"])
-        connection.set_isolation_level(0)    
-        cursor = connection.cursor()    
-        return cursor
+        self.connection = dbapi.connect(host = self.opts["hostname"],
+                                        port = self.opts["sqlport"],
+                                        user = self.opts["username"],
+                                        password = self.opts["password"],
+                                        database = self.opts["database"])        
+        self.cursor = self.connection.cursor()    
 
 
 class SQLiteEngine(Engine):
@@ -331,7 +333,7 @@ class SQLiteEngine(Engine):
     def create_db(self):
         return None
     def tablename(self):        
-        return self.table.tablename    
+        return "'" + self.table.tablename + "'"    
     def get_cursor(self):
         import sqlite3 as dbapi    
             
@@ -341,12 +343,11 @@ class SQLiteEngine(Engine):
         
         # Set defaults
         if self.opts["database"] in ["", "default"]:
-            self.opts["database"] = "sqlite"        
+            self.opts["database"] = "sqlite.db"        
         
         # Connect to database
-        connection = dbapi.connect(self.opts["database"])    
-        cursor = connection.cursor()    
-        return cursor               
+        self.connection = dbapi.connect(self.opts["database"])
+        self.cursor = self.connection.cursor()               
 
 
 def get_opts():
