@@ -66,32 +66,32 @@ engine.table = table
 engine.create_table()
 
 for state in stateslist:
-    #try:
-    if len(state) > 2:
-        shortstate = state[0:7]
-    else:        
-        state, shortstate = state[0], state[1]
-        
-    print "Downloading and decompressing data from " + state + " . . ."
-    url = "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/C" + shortstate + ".exe"
-    archivename = url.split('/')[-1]
-    webFile = urllib.urlopen(url)    
-    localFile = open(archivename, 'w')
-    localFile.write(webFile.read())
-    localFile.close()
-    webFile.close()    
-    
-    localZip = zipfile.ZipFile(archivename)    
-    filename = "C" + shortstate + ".csv"
+    try:
+        if len(state) > 2:
+            shortstate = state[0:7]
+        else:        
+            state, shortstate = state[0], state[1]
             
-    localFile = localZip.extract(filename)    
-    engine.insert_data_from_file(filename)        
-    localZip.close()
-    
-    os.remove(filename)                                        
-    os.remove(archivename)  
+        print "Downloading and decompressing data from " + state + " . . ."
+        url = "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/C" + shortstate + ".exe"
+        archivename = url.split('/')[-1]
+        webFile = urllib.urlopen(url)    
+        localFile = open(archivename, 'w')
+        localFile.write(webFile.read())
+        localFile.close()
+        webFile.close()    
+        
+        localZip = zipfile.ZipFile(archivename)    
+        filename = "C" + shortstate + ".csv"
                 
-    #except:
-        #print "There was an error in " + state + "."
+        localFile = localZip.extract(filename)    
+        engine.insert_data_from_file(filename)        
+        localZip.close()
+        
+        os.remove(filename)                                        
+        os.remove(archivename)  
+                
+    except:
+        print "There was an error in " + state + "."
 
 print 'Done!'    
