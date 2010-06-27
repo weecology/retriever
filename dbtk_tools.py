@@ -106,7 +106,6 @@ class Engine():
                 # Build insert statement with the correct # of values                
                 cleanvalues = [self.format_insert_value(self.table.cleanup(value, self)) for value in linevalues]
                 insertstatement = self.insert_statement(cleanvalues)
-                print insertstatement 
                 self.cursor.execute(insertstatement)
                 
         print "\n Done!"
