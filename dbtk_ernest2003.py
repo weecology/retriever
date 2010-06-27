@@ -10,17 +10,19 @@ from dbtk_tools import *
 import datacleanup
 
 # Variables to get text file/create database
+opts = get_opts()
+engine = choose_engine(opts)
+engine.opts = opts
+
 db = Database()
 db.dbname = "MammalLifeHistory"
-db.opts = get_opts()
-db.engine = choose_engine(db)
-db.cursor = get_cursor(db)
-create_database(db)
+engine.db = db
+engine.cursor = engine.get_cursor()
+engine.create_db()
 
 table = Table()
 table.tablename = "species"
 table.pk = "species_id"
-table.source = open_url(table, "http://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt")
 table.cleanup = datacleanup.correct_invalid_value
 
 # Database column names and their data types. Use data type "skip" to skip the value, and
@@ -40,5 +42,8 @@ table.columns=[("species_id"            ,   ("pk",)         ),
                ("litter_size"           ,   ("double",)     ),
                ("litters_peryear"       ,   ("double",)     ),
                ("refs"                  ,   ("char", 30)    )]
-create_table(db, table)
-add_to_table(db, table)
+engine.table = table
+engine.table.source = engine.open_url("http://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt")
+
+engine.create_table()
+engine.add_to_table()

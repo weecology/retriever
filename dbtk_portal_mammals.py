@@ -10,18 +10,20 @@ from dbtk_tools import *
 import datacleanup
 
 # Variables to get text file/create database
+opts = get_opts()
+engine = choose_engine(opts)
+engine.opts = opts
+
 db = Database()
 db.dbname = "PortalProjectMammals"
-db.opts = get_opts()
-db.engine = choose_engine(db)
-db.cursor = get_cursor(db)
-create_database(db)
+engine.db = db
+engine.cursor = engine.get_cursor()
+engine.create_db()
 
 table = Table()
 table.tablename = "main"
 table.pk = "ID"
 table.hasindex = True
-table.source = open_url(table, "http://esapubs.org/archive/ecol/E090/118/Portal_rodent_19772002.csv")
 table.delimiter = ","
 table.cleanup = datacleanup.correct_invalid_value
 table.nullindicators = set(['', 0, '0'])
@@ -63,5 +65,8 @@ table.columns=[("ID"                    ,   ("pk",)        ),
                ("neststake"             ,   ("char", 2)     ),
                ("note4"                 ,   ("char", 2)     ),
                ("note5"                 ,   ("char", 1)     )]
-create_table(db, table)
-add_to_table(db, table)
+engine.table = table
+engine.table.source = engine.open_url("http://esapubs.org/archive/ecol/E090/118/Portal_rodent_19772002.csv")
+
+engine.create_table()
+engine.add_to_table()

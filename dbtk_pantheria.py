@@ -8,17 +8,19 @@ from dbtk_tools import *
 import datacleanup
 
 # Variables to get text file/create database
+opts = get_opts()
+engine = choose_engine(opts)
+engine.opts = opts
+
 db = Database()
 db.dbname = "Pantheria"
-db.opts = get_opts()
-db.engine = choose_engine(db)
-db.cursor = get_cursor(db)
-create_database(db)
+engine.db = db
+engine.cursor = engine.get_cursor()
+engine.create_db()
 
 table = Table()
 table.tablename = "pantheria"
 table.pk = "species_id"
-table.source = open_url(table, "http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt")
 table.cleanup = datacleanup.correct_invalid_value
 
 table.columns=[("species_id"            ,   ("pk",)         ),
@@ -78,5 +80,8 @@ table.columns=[("species_id"            ,   ("pk",)         ),
                ("temp_mean"             ,   ("double",)     ),
                ("AET_mean"              ,   ("double",)     ),
                ("PET_mean"              ,   ("double",)     )]
-create_table(db, table)
-add_to_table(db, table)
+engine.table = table
+engine.table.source = engine.open_url("http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt")
+
+engine.create_table()
+engine.add_to_table()
