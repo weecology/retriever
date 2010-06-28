@@ -14,9 +14,7 @@ class DbTk_Portal_Mammals(DbTk):
     url = "http://www.pwrc.usgs.gov/BBS/"
     def download(self, engine=None):
         # Variables to get text file/create database
-        if not engine:
-            opts = get_opts()        
-            engine = choose_engine(opts)
+        engine = self.checkengine(engine)
         
         db = Database()
         db.dbname = "PortalProjectMammals"

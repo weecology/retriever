@@ -11,10 +11,8 @@ class DbTk_Pantheria(DbTk):
     name = "Pantheria"
     url = ""
     def download(self, engine=None):            
-        # Variables to get text file/create database
-        if not engine:
-            opts = get_opts()        
-            engine = choose_engine(opts)
+        # Variables to get text file/create database        
+        engine = self.checkengine(engine)
         
         db = Database()
         db.dbname = "Pantheria"
