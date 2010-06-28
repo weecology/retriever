@@ -12,12 +12,11 @@ import datacleanup
 class DbTk_Ernest(DbTk):
     name = "Mammalian Life History Database"
     url = ""
-    def Download(self, engine=None):    
+    def download(self, engine=None):    
         # Variables to get text file/create database
-        opts = get_opts()
-        if not engine:        
+        if not engine:
+            opts = get_opts()        
             engine = choose_engine(opts)
-        engine.opts = opts
         
         db = Database()
         db.dbname = "MammalLifeHistory"
@@ -56,4 +55,4 @@ class DbTk_Ernest(DbTk):
         
 if __name__ == "__main__":
     me = DbTk_Ernest()
-    me.Download()        
+    me.download()

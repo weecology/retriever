@@ -386,19 +386,23 @@ def get_opts():
 
 def choose_engine(opts):
     """Prompts the user to select a database engine"""    
-    engine = opts["engine"]
+    enginename = opts["engine"]
     
-    if engine == "":
+    if enginename == "":
         print "Choose a database engine:"
         print "    (m) MySQL"
         print "    (p) PostgreSQL"
         print "    (s) SQLite"
-        engine = raw_input(": ")
-        engine = engine.lower()
+        enginename = raw_input(": ")
+        enginename = enginename.lower()
     
-    if engine == "mysql" or engine == "m" or engine == "":
-        return MySQLEngine()
-    elif engine == "postgresql" or engine == "p":
-        return PostgreSQLEngine()
-    elif engine == "sqlite" or engine == "s":
-        return SQLiteEngine()
+    engine = Engine()
+    if enginename == "mysql" or enginename == "m" or enginename == "":
+        engine = MySQLEngine()
+    elif enginename == "postgresql" or enginename == "p":
+        engine = PostgreSQLEngine()
+    elif enginename == "sqlite" or enginename == "s":
+        engine = SQLiteEngine()
+        
+    engine.opts = opts
+    return engine
