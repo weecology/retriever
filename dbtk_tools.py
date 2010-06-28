@@ -59,6 +59,11 @@ class DbTk:
     url = ""
     def download(self, engine=None):
         pass
+    def checkengine(self, engine=None):
+        if not engine:
+            opts = get_opts()        
+            engine = choose_engine(opts)
+        return engine
 
 class Database:
     """Information about database to be passed to dbtk_tools.create_table"""
@@ -86,6 +91,7 @@ class Engine():
     table = None
     connection = None
     cursor = None
+    keep_raw_data = False
     def add_to_table(self):
         print "Inserting rows: "
     
@@ -171,7 +177,17 @@ class Engine():
         if value:
             return "'" + str(value) + "'"
         else:
-            return "null"    
+            return "null"
+    def get_input(self):
+        for opt in self.required_opts:
+            if self.opts[opt[0]] == "":
+                if opt[0] == "password":
+                    print opt[1]
+                    self.opts[opt[0]] = getpass.getpass(" ")
+                else:
+                    self.opts[opt[0]] = raw_input(opt[1])
+            if self.opts[opt[0]] in ["", "default"]:
+                self.opts[opt[0]] = opt[2]    
     def get_insert_columns(self, join=True):
         columns = ""
         for item in self.table.columns:
@@ -220,6 +236,10 @@ class MySQLEngine(Engine):
                  "DOUBLE", 
                  "VARCHAR", 
                  "BIT"]
+    required_opts = [["username", "Enter your MySQL username: ", "root"],
+                     ["password", "Enter your password: ", ""],
+                     ["hostname", "Enter your MySQL host or press Enter for the default (localhost): ", "localhost"],
+                     ["sqlport", "Enter your MySQL port or press Enter for the default (3306): ", 3306]]
     def insert_data_from_file(self, filename):
         print "Inserting data from " + filename + " . . ."
             
@@ -235,26 +255,7 @@ IGNORE 1 LINES
         self.cursor.execute(statement)            
     def get_cursor(self):
         import MySQLdb as dbapi
-                        
-        # If any parameters are missing, input them manually
-        if self.opts["username"] == "":
-            self.opts["username"] = raw_input("Enter your MySQL username: ")
-        if self.opts["password"] == "":
-            print "Enter your MySQL password: "
-            self.opts["password"] = getpass.getpass(" ")
-        if self.opts["hostname"] == "":
-            self.opts["hostname"] = raw_input("Enter your MySQL host or press Enter for the default (localhost): ")
-        if self.opts["sqlport"] == "":
-            self.opts["sqlport"] = raw_input("Enter your MySQL port or press Enter for the default (3306): ")
-            
-        # Set defaults
-        if self.opts["hostname"] in ["", "default"]:
-            self.opts["hostname"] = "localhost"
-        if self.opts["sqlport"] in ["", "default"]:
-            self.opts["sqlport"] = "3306"        
-        self.opts["sqlport"] = int(self.opts["sqlport"])
-            
-        # Connect to database
+        self.get_input()                
         self.connection = dbapi.connect(host = self.opts["hostname"],
                                         port = self.opts["sqlport"],
                                         user = self.opts["username"],
@@ -268,7 +269,12 @@ class PostgreSQLEngine(Engine):
                  "integer", 
                  "double precision", 
                  "varchar", 
-                 "bit"]    
+                 "bit"]
+    required_opts = [["username", "Enter your PostgreSQL username: ", "postgres"],
+             ["password", "Enter your password: ", ""],
+             ["hostname", "Enter your PostgreSQL host or press Enter for the default (localhost): ", "localhost"],
+             ["sqlport", "Enter your PostgreSQL port or press Enter for the default (5432): ", 5432],
+             ["database", "Enter your PostgreSQL database name or press Enter for the default (postgres): ", 5432]]
     def create_db_statement(self):
         """Creates a schema based on settings supplied in db object"""
         return Engine.create_db_statement(self).replace(" DATABASE ", " SCHEMA ")
@@ -289,30 +295,7 @@ CSV HEADER"""
         self.connection.commit()        
     def get_cursor(self):
         import psycopg2 as dbapi    
-        
-        # If any parameters are missing, input them manually
-        if self.opts["username"] == "":
-            self.opts["username"] = raw_input("Enter your PostgreSQL username: ")
-        if self.opts["password"] == "":
-            print "Enter your PostgreSQL password: "
-            self.opts["password"] = getpass.getpass(" ")
-        if self.opts["hostname"] == "":
-            self.opts["hostname"] = raw_input("Enter your PostgreSQL host or press Enter for the default (localhost): ")
-        if self.opts["sqlport"] == "":
-            self.opts["sqlport"] = raw_input("Enter your PostgreSQL port or press Enter for the default (5432): ")
-        if self.opts["database"] == "":
-            self.opts["database"] = raw_input("Enter your PostgreSQL database name or press Enter for the default (postgres): ")
-        
-        # Set defaults
-        if self.opts["hostname"] in ["", "default"]:
-            self.opts["hostname"] = "localhost"
-        if self.opts["sqlport"] in ["", "default"]:
-            self.opts["sqlport"] = "5432"        
-        self.opts["sqlport"] = int(self.opts["sqlport"])
-        if self.opts["database"] in ["", "default"]:
-            self.opts["database"] = "postgres"
-            
-        # Connect to database
+        self.get_input()            
         self.connection = dbapi.connect(host = self.opts["hostname"],
                                         port = self.opts["sqlport"],
                                         user = self.opts["username"],
@@ -328,22 +311,14 @@ class SQLiteEngine(Engine):
                  "REAL",
                  "TEXT",
                  "INTEGER"]
+    required_opts = [["database", "Enter the filename of your SQLite database: ", "sqlite.db"]]
     def create_db(self):
         return None
     def tablename(self):        
         return "'" + self.table.tablename + "'"    
     def get_cursor(self):
         import sqlite3 as dbapi    
-            
-        # If any parameters are missing, input them manually
-        if self.opts["database"] == "":
-            self.opts["database"] = raw_input("Enter the filename of your SQLite database: ")
-        
-        # Set defaults
-        if self.opts["database"] in ["", "default"]:
-            self.opts["database"] = "sqlite.db"        
-        
-        # Connect to database
+        self.get_input()
         self.connection = dbapi.connect(self.opts["database"])
         self.cursor = self.connection.cursor()               
 
