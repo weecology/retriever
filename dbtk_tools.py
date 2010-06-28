@@ -54,6 +54,12 @@ def no_cleanup(value):
     """Default cleanup function, returns the unchanged value"""
     return value 
 
+class DbTk:
+    name = ""
+    url = ""
+    def download(self, engine=None):
+        pass
+
 class Database:
     """Information about database to be passed to dbtk_tools.create_table"""
     dbname = ""
@@ -76,6 +82,10 @@ class Table:
     
 class Engine():
     name = ""
+    db = None
+    table = None
+    connection = None
+    cursor = None
     def add_to_table(self):
         print "Inserting rows: "
     
@@ -138,8 +148,8 @@ class Engine():
             createstatement = "CREATE DATABASE IF NOT EXISTS " + db.dbname
         return createstatement
     def create_table(self):
-        createstatement = self.create_table_statement()
         print "Creating table " + self.table.tablename + " in database " + self.db.dbname + " . . ."
+        createstatement = self.create_table_statement()            
         self.cursor.execute(createstatement)
     def create_table_statement(self):
         if self.table.drop:
@@ -175,7 +185,7 @@ class Engine():
             return columns.lstrip("(").rstrip(")").split(", ")
     def insert_data_from_file(self, filename):
         self.table.source = self.skip_rows(self.table.header_rows, open(filename, "r"))
-        self.add_to_table()        
+        self.add_to_table()
     def insert_statement(self, values):
         columns = self.get_insert_columns()
         columncount = len(self.get_insert_columns(False))
@@ -201,25 +211,15 @@ class Engine():
         return source
     def tablename(self):        
         return self.db.dbname + "." + self.table.tablename
-    def connection(self):
-        pass
-    def cursor(self):
-        pass
 
 
 class MySQLEngine(Engine):
     name = "mysql"
-    datatypes = ["INT(5) NOT NULL AUTO_INCREMENT", 
+    datatypes = ["INT(5) NOT NULL AUTO_INCREMENT PRIMARY KEY", 
                  "INT", 
                  "DOUBLE", 
                  "VARCHAR", 
                  "BIT"]
-    def create_table_statement(self):
-        createstatement = Engine.create_table_statement(self)
-        if self.table.pk:
-            createstatement = createstatement.rstrip(");")
-            createstatement += ", PRIMARY KEY (" + self.table.pk + ") )"
-        return createstatement
     def insert_data_from_file(self, filename):
         print "Inserting data from " + filename + " . . ."
             
@@ -232,8 +232,7 @@ LINES TERMINATED BY '\\n'
 IGNORE 1 LINES 
 (""" + columns + ")"
         
-        self.cursor.execute(statement)        
-    
+        self.cursor.execute(statement)            
     def get_cursor(self):
         import MySQLdb as dbapi
                         
