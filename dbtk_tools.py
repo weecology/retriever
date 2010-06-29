@@ -83,7 +83,7 @@ class Table:
     drop = True
     header_rows = 1
     cleanup = no_cleanup
-    nullindicators = set(["-999", "-999.00", -999])
+    nullindicators = []
     
 class Engine():
     name = ""
@@ -92,6 +92,8 @@ class Engine():
     connection = None
     cursor = None
     keep_raw_data = False
+    datatypes = []
+    required_opts = []
     def add_to_table(self):
         print "Inserting rows: "
     
@@ -185,7 +187,7 @@ class Engine():
                     print opt[1]
                     self.opts[opt[0]] = getpass.getpass(" ")
                 elif opt[0] == "sqlport":
-                    self.opts[opt[0]] = int(raw_input(opt[1]))
+                    self.opts[opt[0]] = int(raw_input(opt[1]))                    
                 else:
                     self.opts[opt[0]] = raw_input(opt[1])
             if self.opts[opt[0]] in ["", "default"]:
@@ -232,7 +234,7 @@ class Engine():
 
 
 class MySQLEngine(Engine):
-    name = "mysql"
+    name = "MySQL"
     datatypes = ["INT(5) NOT NULL AUTO_INCREMENT PRIMARY KEY", 
                  "INT", 
                  "DOUBLE", 
@@ -266,7 +268,7 @@ IGNORE 1 LINES
 
 
 class PostgreSQLEngine(Engine):
-    name = "postgresql"
+    name = "PostgreSQL"
     datatypes = ["SERIAL PRIMARY KEY", 
                  "integer", 
                  "double precision", 
@@ -307,7 +309,7 @@ CSV HEADER"""
 
 
 class SQLiteEngine(Engine):
-    name = "sqlite"
+    name = "SQLite"
     datatypes = ["INTEGER PRIMARY KEY",
                  "INTEGER",
                  "REAL",
