@@ -52,7 +52,7 @@ warnings.filterwarnings("ignore")
 
 def no_cleanup(value):
     """Default cleanup function, returns the unchanged value"""
-    return value 
+    return value
 
 class DbTk:
     name = ""
@@ -261,7 +261,7 @@ IGNORE 1 LINES
         import MySQLdb as dbapi
         self.get_input()                
         self.connection = dbapi.connect(host = self.opts["hostname"],
-                                        port = self.opts["sqlport"],
+                                        port = int(self.opts["sqlport"]),
                                         user = self.opts["username"],
                                         passwd = self.opts["password"])     
         self.cursor = self.connection.cursor()    
@@ -278,7 +278,7 @@ class PostgreSQLEngine(Engine):
              ["password", "Enter your password: ", ""],
              ["hostname", "Enter your PostgreSQL host or press Enter for the default (localhost): ", "localhost"],
              ["sqlport", "Enter your PostgreSQL port or press Enter for the default (5432): ", 5432],
-             ["database", "Enter your PostgreSQL database name or press Enter for the default (postgres): ", 5432]]
+             ["database", "Enter your PostgreSQL database name or press Enter for the default (postgres): ", "postgres"]]
     def create_db_statement(self):
         """Creates a schema based on settings supplied in db object"""
         return Engine.create_db_statement(self).replace(" DATABASE ", " SCHEMA ")
@@ -301,7 +301,7 @@ CSV HEADER"""
         import psycopg2 as dbapi    
         self.get_input()            
         self.connection = dbapi.connect(host = self.opts["hostname"],
-                                        port = self.opts["sqlport"],
+                                        port = int(self.opts["sqlport"]),
                                         user = self.opts["username"],
                                         password = self.opts["password"],
                                         database = self.opts["database"])        
