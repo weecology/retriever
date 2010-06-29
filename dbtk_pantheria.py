@@ -10,6 +10,7 @@ import datacleanup
 class DbTk_Pantheria(DbTk):
     name = "Pantheria"
     url = ""
+    required_opts = []
     def download(self, engine=None):            
         # Variables to get text file/create database        
         engine = self.checkengine(engine)
@@ -22,8 +23,9 @@ class DbTk_Pantheria(DbTk):
         
         table = Table()
         table.tablename = "pantheria"
-        table.pk = "species_id"
+        table.pk = "species_id"        
         table.cleanup = datacleanup.correct_invalid_value
+        table.nullindicators = ["-999", "-999.00", -999]
         
         table.columns=[("species_id"            ,   ("pk",)         ),
                        ("sporder"               ,   ("char", 20)    ),

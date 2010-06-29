@@ -13,6 +13,7 @@ import datacleanup
 class DbTk_BBS(DbTk):
     name = "USGS North American Breeding Bird Survey"
     url = "http://www.pwrc.usgs.gov/BBS/"
+    required_opts = []
     def download(self, engine=None):    
         # Variables to get text file/create database
         engine = self.checkengine(engine)

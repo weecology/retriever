@@ -12,6 +12,7 @@ import datacleanup
 class DbTk_Ernest(DbTk):
     name = "Mammalian Life History Database"
     url = ""
+    required_opts = []
     def download(self, engine=None):    
         # Variables to get text file/create database
         engine = self.checkengine(engine)
@@ -24,8 +25,9 @@ class DbTk_Ernest(DbTk):
         
         table = Table()
         table.tablename = "species"
-        table.pk = "species_id"
+        table.pk = "species_id"        
         table.cleanup = datacleanup.correct_invalid_value
+        table.nullindicators = ["-999", "-999.00", -999]
         
         # Database column names and their data types. Use data type "skip" to skip the value, and
         # "combine" to merge a string value into the previous column
