@@ -6,8 +6,9 @@ See dbtk_tools.py for usage
 
 """
 
-from dbtk_tools import *
 import datacleanup
+from dbtk_tools import *
+import dbtk_ui
 
 class DbTk_Ernest(DbTk):
     name = "Mammalian Life History Database"
@@ -54,5 +55,8 @@ class DbTk_Ernest(DbTk):
         
         
 if __name__ == "__main__":
-    me = DbTk_Ernest()
-    me.download()
+    me = [DbTk_Ernest()]
+    if len(sys.argv) == 1:                
+        dbtk_ui.launch_wizard(me)
+    else:
+        me[0].download()

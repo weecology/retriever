@@ -4,8 +4,9 @@ See dbtk_tools.py for usage
 
 """
 
-from dbtk_tools import *
 import datacleanup
+from dbtk_tools import *
+import dbtk_ui
 
 class DbTk_Pantheria(DbTk):
     name = "Pantheria"
@@ -92,5 +93,8 @@ class DbTk_Pantheria(DbTk):
         
         
 if __name__ == "__main__":
-    me = DbTk_Pantheria()
-    me.download()
+    me = [DbTk_Pantheria()]
+    if len(sys.argv) == 1:                
+        dbtk_ui.launch_wizard(me)
+    else:
+        me[0].download()
