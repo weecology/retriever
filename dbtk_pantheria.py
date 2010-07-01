@@ -95,6 +95,6 @@ class DbTk_Pantheria(DbTk):
 if __name__ == "__main__":
     me = DbTk_Pantheria()
     if len(sys.argv) == 1:                
-        dbtk_ui.launch_wizard([me])
+        dbtk_ui.launch_wizard([me], all_engines)
     else:
         me.download()

@@ -2,7 +2,7 @@ import wx
 import wx.wizard
 from dbtk_tools import *
 
-def launch_wizard(dbtk_list):
+def launch_wizard(dbtk_list, engine_list):
     print "Launching Database Toolkit wizard . . ."    
     
     class TitledPage(wx.wizard.WizardPageSimple):
