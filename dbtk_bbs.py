@@ -4,11 +4,12 @@ See dbtk_tools.py for usage
 
 """
 
-from dbtk_tools import *
 import os
 import urllib
 import zipfile
 import datacleanup
+from dbtk_tools import *
+import dbtk_ui
 
 class DbTk_BBS(DbTk):
     name = "USGS North American Breeding Bird Survey"
@@ -169,5 +170,8 @@ class DbTk_BBS(DbTk):
         
         
 if __name__ == "__main__":
-    me = DbTk_BBS()
-    me.download()
+    me = [DbTk_BBS()]
+    if len(sys.argv) == 1:                
+        dbtk_ui.launch_wizard(me)
+    else:
+        me[0].download()
