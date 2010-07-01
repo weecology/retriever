@@ -39,11 +39,11 @@ class DbTk_Portal_Mammals(DbTk):
         #     char   - string
         #     but    - binary
         # The second part of the type specifies the length and is optional
-        table.columns=[("ID"                    ,   ("pk",)        ),
+        table.columns=[("ID"                    ,   ("pk",)         ),
                        ("month"                 ,   ("int",)        ),
                        ("day"                   ,   ("int",)        ),
                        ("year"                  ,   ("int",)        ),
-                       ("period"                ,   ("double",)        ),
+                       ("period"                ,   ("double",)     ),
                        ("plot"                  ,   ("int",)        ),
                        ("note1"                 ,   ("int",)        ),
                        ("stake"                 ,   ("int",)        ),
@@ -58,7 +58,7 @@ class DbTk_Portal_Mammals(DbTk):
                        ("lactation"             ,   ("char", 2)     ),
                        ("hindfoot"              ,   ("int",)        ),
                        ("weight"                ,   ("int",)        ),
-                       ("tag"                   ,   ("char", 10)     ),
+                       ("tag"                   ,   ("char", 10)    ),
                        ("newtag"                ,   ("char", 2)     ),
                        ("secondtag"             ,   ("char", 8)     ),
                        ("newsecondtag"          ,   ("char", 2)     ),
