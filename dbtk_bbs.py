@@ -171,7 +171,7 @@ class DbTk_BBS(DbTk):
             
             print 'Done!'
         except zipfile.BadZipfile:
-            if platform.architecture() == ["64bit", "WindowsPE"]:                
+            if platform.architecture() == ("64bit", "WindowsPE"):                
                 print "The archives used by the USGS Breeding Bird Survey are not compatible with 64-bit Windows."
             else:
                 print "There was an unexpected error in the Breeding Bird Survey archives."
