@@ -59,6 +59,17 @@ class ConnectionInfoPage(TitledPage):
                 self.fields.Layout()
                 self.sizer.Add(self.fields)
                 self.sizer.Layout()
+                
+                
+class DatasetPage(TitledPage):
+    def __init__(self, parent, title, label):        
+        TitledPage.__init__(self, parent, title, label)
+        self.scriptlist = wx.CheckListBox(self, -1, choices=[script.name for script in dbtk_list])
+        self.sizer.Add(self.scriptlist)
+        self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CheckValues)
+    def CheckValues(self, evt):  
+        if len(self.scriptlist.GetCheckedStrings()) == 0 and evt.Direction:
+            evt.Veto()
                     
         
 class Wizard(wx.wizard.Wizard):
@@ -88,9 +99,7 @@ page[1].sizer.Add(page[1].dblist,
 page.append(ConnectionInfoPage(wizard, "Connection Info", "Please enter the following connection information: \n"))
 page[1].Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, page[2].Draw)
 
-page.append(TitledPage(wizard, "Select Datasets", "Check each dataset to be downloaded:"))
-page[3].scriptlist = wx.CheckListBox(page[3], -1, choices=[script.name for script in dbtk_list])
-page[3].sizer.Add(page[3].scriptlist)
+page.append(DatasetPage(wizard, "Select Datasets", "Check each dataset to be downloaded:"))
 
 page.append(TitledPage(wizard, "Finished", "That's it! Click next to download and install your data."))
 page[4].sizer.Add(wx.StaticText(page[4], -1, ))
