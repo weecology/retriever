@@ -170,7 +170,7 @@ class DbTk_BBS(DbTk):
         
         
 if __name__ == "__main__":
-    me = [DbTk_BBS()]
+    me = DbTk_BBS()
     if len(sys.argv) == 1:                
         dbtk_ui.launch_wizard([me])
     else:
