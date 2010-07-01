@@ -385,3 +385,5 @@ def choose_engine(opts):
         
     engine.opts = opts
     return engine
+
+engine_list = [MySQLEngine(), PostgreSQLEngine(), SQLiteEngine()]

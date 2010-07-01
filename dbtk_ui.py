@@ -3,8 +3,7 @@ import wx.wizard
 from dbtk_tools import *
 
 def launch_wizard(dbtk_list):
-    print "Launching Database Toolkit wizard . . ."
-    engine_list = [MySQLEngine(), PostgreSQLEngine(), SQLiteEngine()]
+    print "Launching Database Toolkit wizard . . ."    
     
     class TitledPage(wx.wizard.WizardPageSimple):
         def __init__(self, parent, title, label):
