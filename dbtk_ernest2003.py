@@ -55,8 +55,8 @@ class DbTk_Ernest(DbTk):
         
         
 if __name__ == "__main__":
-    me = [DbTk_Ernest()]
+    me = DbTk_Ernest()
     if len(sys.argv) == 1:                
-        dbtk_ui.launch_wizard(me)
+        dbtk_ui.launch_wizard([me])
     else:
-        me[0].download()
+        me.download()
