@@ -124,11 +124,14 @@ Supported database systems currently include:\n\n""" + ", ".join([db.name for db
         engine.get_cursor()
         
         for script in dbtk_list:
-            dl = False
-            if len(dbtk_list) > 1:
-                if script.name in page[3].scriptlist.GetCheckedStrings():
+            try:
+                dl = False
+                if len(dbtk_list) > 1:
+                    if script.name in page[3].scriptlist.GetCheckedStrings():
+                        dl = True
+                else:
                     dl = True
-            else:
-                dl = True
-            if dl:
-                script.download(engine)              
+                if dl:
+                    script.download(engine)              
+            except:
+                print "There was an error downloading " + script.name
