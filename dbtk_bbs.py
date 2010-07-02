@@ -170,11 +170,8 @@ class DbTk_BBS(DbTk):
                     print "There was an error in " + state + "."
             
             print 'Done!'
-        except zipfile.BadZipfile:
-            if platform.architecture() == ("64bit", "WindowsPE"):                
-                print "The archives used by the USGS Breeding Bird Survey are not compatible with 64-bit Windows."
-            else:
-                print "There was an unexpected error in the Breeding Bird Survey archives."
+        except zipfile.BadZipfile:            
+            print "There was an unexpected error in the Breeding Bird Survey archives."
             raise    
         
         
