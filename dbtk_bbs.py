@@ -52,7 +52,7 @@ class DbTk_BBS(DbTk):
             url = "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CRoutes.exe"
             archivename = "CRoutes.exe"
             webFile = urllib.urlopen(url)    
-            localFile = open("CRoutes.exe", 'w')
+            localFile = open("CRoutes.exe", 'wb')
             localFile.write(webFile.read())
             localFile.close()
             webFile.close()    
@@ -85,7 +85,7 @@ class DbTk_BBS(DbTk):
             
             url = "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/SpeciesList.txt"
             webFile = urllib.urlopen(url)    
-            localFile = open("SpeciesList.txt", 'w')
+            localFile = open("SpeciesList.txt", 'wb')
             localFile.write(webFile.read())
             localFile.close()
             webFile.close()    
@@ -151,7 +151,7 @@ class DbTk_BBS(DbTk):
                     url = "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/C" + shortstate + ".exe"
                     archivename = url.split('/')[-1]
                     webFile = urllib.urlopen(url)    
-                    localFile = open(archivename, 'w')
+                    localFile = open(archivename, 'wb')
                     localFile.write(webFile.read())
                     localFile.close()
                     webFile.close()    
