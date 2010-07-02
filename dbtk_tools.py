@@ -185,9 +185,7 @@ class Engine():
             if self.opts[opt[0]] == "":
                 if opt[0] == "password":
                     print opt[1]
-                    self.opts[opt[0]] = getpass.getpass(" ")
-                elif opt[0] == "sqlport":
-                    self.opts[opt[0]] = raw_input(opt[1])                    
+                    self.opts[opt[0]] = getpass.getpass(" ")                
                 else:
                     self.opts[opt[0]] = raw_input(opt[1])
             if self.opts[opt[0]] in ["", "default"]:
