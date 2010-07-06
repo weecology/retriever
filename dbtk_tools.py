@@ -188,7 +188,11 @@ class Engine():
         if str(value).lower() == "null":
             return "null"
         elif value:
-            return "'" + str(value) + "'" 
+            quotes = ["'", '"']
+            if value[0] == value[-1] and value[0] in quotes:
+                return str(value) 
+            else:
+                return "'" + str(value) + "'" 
         else:
             return "null"
     def get_input(self):
@@ -204,9 +208,10 @@ class Engine():
     def get_insert_columns(self, join=True):
         columns = ""
         for item in self.table.columns:
-            if (item[1][0] != "skip") and (item[1][0] !="combine") and (self.table.hasindex == True
-                                                                    or item[1][0][0:3] != "pk-"):
-                columns += item[0] + ", "            
+            thistype = item[1][0]
+            if (thistype != "skip") and (thistype !="combine") and (self.table.hasindex == True
+                                                                    or thistype[0:3] != "pk-"):
+                columns += item[0] + ", "
         columns = columns.rstrip(', ')
         if join:
             return columns
