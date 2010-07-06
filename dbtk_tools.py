@@ -50,7 +50,7 @@ import sys
 
 warnings.filterwarnings("ignore")
 
-def no_cleanup(value):
+def no_cleanup(value, engine):
     """Default cleanup function, returns the unchanged value"""
     return value
 
