@@ -12,7 +12,6 @@ import dbtk_ui
 
 class DbTk_Portal_Mammals(DbTk):
     name = "Portal Project Mammals"
-    url = "http://www.pwrc.usgs.gov/BBS/"
     required_opts = []
     def download(self, engine=None):
         # Variables to get text file/create database
