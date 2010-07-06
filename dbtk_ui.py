@@ -62,7 +62,9 @@ def launch_wizard(dbtk_list, engine_list):
     class DatasetPage(TitledPage):
         def __init__(self, parent, title, label):        
             TitledPage.__init__(self, parent, title, label)
-            self.scriptlist = wx.CheckListBox(self, -1, choices=[script.name for script in dbtk_list])
+            scripts = [script.name for script in dbtk_list]
+            self.scriptlist = wx.CheckListBox(self, -1, choices=scripts)
+            self.scriptlist.SetCheckedStrings(scripts)
             self.sizer.Add(self.scriptlist)
             self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CheckValues)
         def CheckValues(self, evt):  
