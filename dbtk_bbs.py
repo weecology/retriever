@@ -7,7 +7,6 @@ See dbtk_tools.py for usage
 import os
 import urllib
 import zipfile
-import datacleanup
 from dbtk_tools import *
 import dbtk_ui
 import platform
@@ -32,7 +31,6 @@ class DbTk_BBS(DbTk):
             table.tablename = "routes"
             table.pk = "route_id"
             table.delimiter = ","
-            table.cleanup = datacleanup.correct_invalid_value
             
             table.columns=[("route_id"              ,   ("pk",)         ),
                            ("countrynum"            ,   ("int",)        ),
@@ -50,9 +48,9 @@ class DbTk_BBS(DbTk):
             engine.create_table()
             
             url = "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CRoutes.exe"
-            archivename = "CRoutes.exe"
+            archivename = url.split('/')[-1]
             webFile = urllib.urlopen(url)    
-            localFile = open("CRoutes.exe", 'wb')
+            localFile = open(archivename, 'wb')
             localFile.write(webFile.read())
             localFile.close()
             webFile.close()    
@@ -66,41 +64,98 @@ class DbTk_BBS(DbTk):
             localZip.close()
             
             os.remove(filename)                                        
-            os.remove(archivename)  
+            os.remove(archivename)
             
-            # Species table
-            """table = Table()
-            table.tablename = "species"
-            table.pk = "species_id"
+            
+            # Weather table
+            table = Table()
+            table.tablename = "weather"
+            table.pk = "weather_id"
+            table.delimiter = ","
             table.hasindex = True
-            table.cleanup = datacleanup.correct_invalid_value
             
-            table.columns=[("seq"                   ,   ("skip",)       ),
-                           ("species_id"            ,   ("pk",)         ),
-                           ("enname"                ,   ("char",)       ),
-                           ("frname"                ,   ("char",)       ),
-                           ("spname"                ,   ("char",)       )]
+            table.columns=[("routedataid"           ,   ("pk",)         ),
+                           ("countrynum"            ,   ("int",)        ),
+                           ("statenum"              ,   ("int",)        ),
+                           ("Route"                 ,   ("int",)        ),
+                           ("RPID"                  ,   ("int",)        ),
+                           ("Year"                  ,   ("int",)        ),
+                           ("Month"                 ,   ("int",)        ),
+                           ("Day"                   ,   ("int",)        ),
+                           ("ObsN"                  ,   ("int",)        ),
+                           ("TotalSpp"              ,   ("int",)        ),
+                           ("StartTemp"             ,   ("int",)        ),
+                           ("EndTemp"               ,   ("int",)        ),                           
+                           ("TempScale"             ,   ("char",1)      ),
+                           ("StartWind"             ,   ("int",)        ),
+                           ("EndWind"               ,   ("int",)        ),
+                           ("StartSky"              ,   ("int",)        ),
+                           ("EndSky"                ,   ("int",)        ),
+                           ("StartTime"             ,   ("int",)        ),
+                           ("EndTime"               ,   ("int",)        ),
+                           ("Assistant"             ,   ("int",)        ),
+                           ("RunType"               ,   ("int",)        )]
             engine.table = table
             engine.create_table()
             
-            url = "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/SpeciesList.txt"
+            url = "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CWeather.exe"
+            archivename = url.split('/')[-1]
             webFile = urllib.urlopen(url)    
-            localFile = open("SpeciesList.txt", 'wb')
+            localFile = open(archivename, 'wb')
             localFile.write(webFile.read())
             localFile.close()
             webFile.close()    
             
-            filename = "SpeciesList.txt"            
-            engine.insert_data_from_file(filename)        
             
-            os.remove(filename)"""
+            localZip = zipfile.ZipFile(archivename)    
+            filename = "weather.csv"
+                    
+            localFile = localZip.extract(filename)    
+            engine.insert_data_from_file(filename)        
+            localZip.close()
+            
+            os.remove(filename)                                        
+            os.remove(archivename)
+            
+            """# Species table
+            table = Table()
+            table.tablename = "species"
+            table.pk = "species_id"
+            table.delimiter = ","
+            table.hasindex = True
+            table.cleanup = datacleanup.correct_invalid_value
+            
+            table.columns=[("routedataid"           ,   ("pk",)         ),
+                           ("countrynum"            ,   ("int",)        ),
+                           ("statenum"              ,   ("int",)        )]
+            engine.table = table
+            engine.create_table()
+            
+            url = "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CWeather.exe"
+            archivename = url.split('/')[-1]
+            webFile = urllib.urlopen(url)    
+            localFile = open(archivename, 'wb')
+            localFile.write(webFile.read())
+            localFile.close()
+            webFile.close()    
+            
+            
+            localZip = zipfile.ZipFile(archivename)    
+            filename = "weather.csv"
+                    
+            localFile = localZip.extract(filename)    
+            engine.insert_data_from_file(filename)        
+            localZip.close()
+            
+            os.remove(filename)                                        
+            os.remove(archivename)
+            """
             
             # Counts table
             table = Table()
             table.tablename = "counts"
             table.pk = "record_id"
             table.delimiter = ","
-            table.cleanup = datacleanup.correct_invalid_value
             
             table.columns=[("record_id"             ,   ("pk",)         ),
                            ("countrynum"            ,   ("int",)        ),

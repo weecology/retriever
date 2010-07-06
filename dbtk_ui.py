@@ -134,3 +134,4 @@ Supported database systems currently include:\n\n""" + ", ".join([db.name for db
                     script.download(engine)              
             except:
                 print "There was an error downloading " + script.name
+                raise
