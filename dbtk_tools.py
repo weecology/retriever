@@ -50,10 +50,6 @@ import sys
 
 warnings.filterwarnings("ignore")
 
-def no_cleanup(value, engine):
-    """Default cleanup function, returns the unchanged value"""
-    return value
-
 class DbTk:
     name = ""
     url = ""
@@ -82,8 +78,12 @@ class Table:
     columns = []
     drop = True
     header_rows = 1
-    cleanup = no_cleanup
     nullindicators = []
+    def __init__(self):        
+        self.cleanup = self.no_cleanup        
+    def no_cleanup(self, value, engine):
+        """Default cleanup function, returns the unchanged value"""
+        return value
     
 class Engine():
     name = ""
@@ -243,18 +243,21 @@ class MySQLEngine(Engine):
                      ["hostname", "Enter your MySQL host or press Enter for the default (localhost): ", "localhost"],
                      ["sqlport", "Enter your MySQL port or press Enter for the default (3306): ", 3306]]
     def insert_data_from_file(self, filename):
-        print "Inserting data from " + filename + " . . ."
-            
-        columns = self.get_insert_columns()            
-        statement = """        
+        if self.table.cleanup == self.table.no_cleanup:
+            print "Inserting data from " + filename + " . . ."
+                
+            columns = self.get_insert_columns()            
+            statement = """        
 LOAD DATA LOCAL INFILE '""" + filename + """'
 INTO TABLE """ + self.tablename() + """
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\\n'
 IGNORE 1 LINES 
 (""" + columns + ")"
-        
-        self.cursor.execute(statement)            
+            
+            self.cursor.execute(statement)
+        else:
+            return Engine.insert_data_from_file(self, filename)            
     def get_cursor(self):
         import MySQLdb as dbapi
         self.get_input()                
@@ -284,17 +287,20 @@ class PostgreSQLEngine(Engine):
         dropstatement = Engine.drop_statement(self, objecttype, objectname) + " CASCADE;"
         return dropstatement.replace(" DATABASE ", " SCHEMA ")
     def insert_data_from_file(self, filename):
-        print "Inserting data from " + filename + " . . ."
-            
-        columns = self.get_insert_columns()    
-        filename = os.path.abspath(filename)
-        statement = """
+        if self.table.cleanup == self.table.no_cleanup and self.table.delimiter == ",":
+            print "Inserting data from " + filename + " . . ."
+                
+            columns = self.get_insert_columns()    
+            filename = os.path.abspath(filename)
+            statement = """
 COPY """ + self.tablename() + " (" + columns + """)
 FROM '""" + filename + """'
 WITH DELIMITER ','
 CSV HEADER"""
-        self.cursor.execute(statement)
-        self.connection.commit()        
+            self.cursor.execute(statement)
+            self.connection.commit()
+        else:
+            return Engine.insert_data_from_file(self, filename)                
     def get_cursor(self):
         import psycopg2 as dbapi    
         self.get_input()            
