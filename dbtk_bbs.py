@@ -32,7 +32,7 @@ class DbTk_BBS(DbTk):
             table.pk = "route_id"
             table.delimiter = ","
             
-            table.columns=[("route_id"              ,   ("pk",)         ),
+            table.columns=[("route_id"              ,   ("pk-auto",)    ),
                            ("countrynum"            ,   ("int",)        ),
                            ("statenum"              ,   ("int",)        ),
                            ("Route"                 ,   ("int",)        ),
@@ -82,7 +82,7 @@ class DbTk_BBS(DbTk):
             table.cleanup = weather_cleanup
                 
             
-            table.columns=[("routedataid"           ,   ("pk",)         ),
+            table.columns=[("routedataid"           ,   ("pk-auto",)    ),
                            ("countrynum"            ,   ("int",)        ),
                            ("statenum"              ,   ("int",)        ),
                            ("Route"                 ,   ("int",)        ),
@@ -165,7 +165,7 @@ class DbTk_BBS(DbTk):
             table.pk = "record_id"
             table.delimiter = ","
             
-            table.columns=[("record_id"             ,   ("pk",)         ),
+            table.columns=[("record_id"             ,   ("pk-auto",)    ),
                            ("countrynum"            ,   ("int",)        ),
                            ("statenum"              ,   ("int",)        ),
                            ("Route"                 ,   ("int",)        ),

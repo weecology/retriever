@@ -28,7 +28,7 @@ class DbTk_Pantheria(DbTk):
         table.cleanup = datacleanup.correct_invalid_value
         table.nullindicators = ["-999", "-999.00", -999]
         
-        table.columns=[("species_id"            ,   ("pk",)         ),
+        table.columns=[("species_id"            ,   ("pk-auto",)    ),
                        ("sporder"               ,   ("char", 20)    ),
                        ("family"                ,   ("char", 20)    ),
                        ("genus"                 ,   ("char", 20)    ),

@@ -30,7 +30,7 @@ class DbTk_Portal_Mammals(DbTk):
         table.hasindex = True
         table.delimiter = ","
         table.header_rows = 0
-        table.columns=[("PlotID"                ,   ("pk",)         ),
+        table.columns=[("PlotID"                ,   ("pk-auto",)    ),
                        ("PlotTypeAlphaCode"     ,   ("char", 2)     ),
                        ("PlotTypeNumCode"       ,   ("int",)        ),
                        ("PlotTypeDescript"      ,   ("char", 30)    )]
@@ -46,7 +46,7 @@ class DbTk_Portal_Mammals(DbTk):
         table.hasindex = False
         table.delimiter = ";"
         table.header_rows = 1
-        table.columns=[("SpeciesID"             ,   ("pk",)         ),
+        table.columns=[("SpeciesID"             ,   ("pk-auto",)    ),
                        ("SpeciesCode"           ,   ("char", 2)     ),
                        ("OldSpeciesIDs"         ,   ("char", 20)    ),
                        ("ScientificName"        ,   ("char", 50)    ),
@@ -68,7 +68,7 @@ class DbTk_Portal_Mammals(DbTk):
         table.delimiter = ","
         table.cleanup = datacleanup.correct_invalid_value
         table.nullindicators = set(['', 0, '0'])
-        table.columns=[("ID"                    ,   ("pk",)         ),
+        table.columns=[("ID"                    ,   ("pk-auto",)    ),
                        ("month"                 ,   ("int",)        ),
                        ("day"                   ,   ("int",)        ),
                        ("year"                  ,   ("int",)        ),

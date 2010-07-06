@@ -94,6 +94,7 @@ class Engine():
     keep_raw_data = False
     datatypes = []
     required_opts = []
+    pkformat = "%s PRIMARY KEY"
     def add_to_table(self):
         print "Inserting rows: "
     
@@ -133,16 +134,23 @@ class Engine():
     def convert_data_type(self, datatype):
         """Converts DBTK generic data types to db engine specific data types"""
         datatypes = dict()
-        datatypes["pk"], datatypes["int"], datatypes["double"], datatypes["char"], datatypes["bit"] = range(5)
+        thistype = datatype[0]
+        thispk = False
+        if thistype[0:3] == "pk-":
+            thistype = thistype.lstrip("pk-")
+            thispk = True
+        datatypes["auto"], datatypes["int"], datatypes["double"], datatypes["char"], datatypes["bit"] = range(5)
         datatypes["combine"], datatypes["skip"] = [-1, -1]        
         mydatatypes = self.datatypes
-        thisvartype = datatypes[datatype[0]]
+        thisvartype = datatypes[thistype]
         if thisvartype > -1:
             type = mydatatypes[thisvartype]
             if len(datatype) > 1:
                 type += "(" + str(datatype[1]) + ")"
         else:
-            type = ""    
+            type = ""
+        if thispk:
+            type = self.pkformat % type
         return type    
     def create_db(self):
         """Creates a database based on settings supplied in db object"""
@@ -196,8 +204,8 @@ class Engine():
     def get_insert_columns(self, join=True):
         columns = ""
         for item in self.table.columns:
-            if (item[1][0] != "skip") and (item[1][0] !="combine") and (item[1][0] != 
-                                                    "pk" or self.table.hasindex == True):
+            if (item[1][0] != "skip") and (item[1][0] !="combine") and (item[1][0][0:3] != 
+                                                    "pk-" or self.table.hasindex == True):
                 columns += item[0] + ", "            
         columns = columns.rstrip(', ')
         if join:
@@ -235,7 +243,7 @@ class Engine():
 
 class MySQLEngine(Engine):
     name = "MySQL"
-    datatypes = ["INT(5) NOT NULL AUTO_INCREMENT PRIMARY KEY", 
+    datatypes = ["INT(5) NOT NULL AUTO_INCREMENT", 
                  "INT", 
                  "DOUBLE", 
                  "VARCHAR", 
@@ -272,11 +280,11 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
 
 class PostgreSQLEngine(Engine):
     name = "PostgreSQL"
-    datatypes = ["SERIAL PRIMARY KEY", 
+    datatypes = ["serial", 
                  "integer", 
                  "double precision", 
                  "varchar", 
-                 "bit"]
+                 "bit"]    
     required_opts = [["username", "Enter your PostgreSQL username: ", "postgres"],
              ["password", "Enter your password: ", ""],
              ["hostname", "Enter your PostgreSQL host or press Enter for the default (localhost): ", "localhost"],
@@ -324,7 +332,7 @@ CSV HEADER"""
 
 class SQLiteEngine(Engine):
     name = "SQLite"
-    datatypes = ["INTEGER PRIMARY KEY",
+    datatypes = ["INTEGER",
                  "INTEGER",
                  "REAL",
                  "TEXT",
