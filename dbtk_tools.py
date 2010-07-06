@@ -124,6 +124,7 @@ class Engine():
                 # Build insert statement with the correct # of values                
                 cleanvalues = [self.format_insert_value(self.table.cleanup(value, self)) for value in linevalues]
                 insertstatement = self.insert_statement(cleanvalues)
+                sys.stdout.write(str(self.table.record_id) + "\b" * len(str(self.table.record_id)))
                 self.cursor.execute(insertstatement)
                 
         print "\n Done!"
@@ -176,8 +177,10 @@ class Engine():
         dropstatement = "DROP %s IF EXISTS %s" % (objecttype, objectname)
         return dropstatement
     def format_insert_value(self, value):
-        if value:
-            return "'" + str(value) + "'"
+        if str(value).lower() == "null":
+            return "null"
+        elif value:
+            return "'" + str(value) + "'" 
         else:
             return "null"
     def get_input(self):
@@ -202,7 +205,7 @@ class Engine():
         else:
             return columns.lstrip("(").rstrip(")").split(", ")
     def insert_data_from_file(self, filename):
-        self.table.source = self.skip_rows(self.table.header_rows, open(filename, "r"))
+        self.table.source = self.skip_rows(self.table.header_rows, open(filename, "r"))        
         self.add_to_table()
     def insert_statement(self, values):
         columns = self.get_insert_columns()
@@ -212,8 +215,7 @@ class Engine():
         insertstatement += " VALUES ("
         for i in range(0, columncount):
             insertstatement += "%s, "
-        insertstatement = insertstatement.rstrip(", ") + ");"
-        sys.stdout.write(str(self.table.record_id) + "\b" * len(str(self.table.record_id)))
+        insertstatement = insertstatement.rstrip(", ") + ");"        
         # Run correct_invalid_value on each value before insertion
         insertstatement %= tuple(values)
         return insertstatement
@@ -252,7 +254,7 @@ LOAD DATA LOCAL INFILE '""" + filename + """'
 INTO TABLE """ + self.tablename() + """
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\\n'
-IGNORE 1 LINES 
+IGNORE """ + str(self.table.header_rows) + """ LINES 
 (""" + columns + ")"
             
             self.cursor.execute(statement)
@@ -271,7 +273,7 @@ IGNORE 1 LINES
 class PostgreSQLEngine(Engine):
     name = "PostgreSQL"
     datatypes = ["SERIAL PRIMARY KEY", 
-                 "integer", 
+                 "integer NULL", 
                  "double precision", 
                  "varchar", 
                  "bit"]
@@ -283,11 +285,15 @@ class PostgreSQLEngine(Engine):
     def create_db_statement(self):
         """Creates a schema based on settings supplied in db object"""
         return Engine.create_db_statement(self).replace(" DATABASE ", " SCHEMA ")
+    def create_table(self):
+        Engine.create_table(self)
+        self.connection.commit()
     def drop_statement(self, objecttype, objectname):
         dropstatement = Engine.drop_statement(self, objecttype, objectname) + " CASCADE;"
-        return dropstatement.replace(" DATABASE ", " SCHEMA ")
+        return dropstatement.replace(" DATABASE ", " SCHEMA ")    
     def insert_data_from_file(self, filename):
-        if self.table.cleanup == self.table.no_cleanup and self.table.delimiter == ",":
+        if ([self.table.cleanup, self.table.delimiter, self.table.header_rows] == 
+                                                        [self.table.no_cleanup, ",", 1]):        
             print "Inserting data from " + filename + " . . ."
                 
             columns = self.get_insert_columns()    
@@ -297,8 +303,12 @@ COPY """ + self.tablename() + " (" + columns + """)
 FROM '""" + filename + """'
 WITH DELIMITER ','
 CSV HEADER"""
-            self.cursor.execute(statement)
-            self.connection.commit()
+            try:
+                self.cursor.execute(statement)
+                self.connection.commit()
+            except:
+                self.connection.rollback()
+                return Engine.insert_data_from_file(self, filename)
         else:
             return Engine.insert_data_from_file(self, filename)                
     def get_cursor(self):

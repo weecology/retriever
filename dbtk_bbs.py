@@ -73,6 +73,14 @@ class DbTk_BBS(DbTk):
             table.pk = "weather_id"
             table.delimiter = ","
             table.hasindex = True
+            def weather_cleanup(value, engine):
+                if value == "N":
+                    return None
+                elif ":" in value:
+                    return value.translate(None, ":")             
+                return value
+            table.cleanup = weather_cleanup
+                
             
             table.columns=[("routedataid"           ,   ("pk",)         ),
                            ("countrynum"            ,   ("int",)        ),
