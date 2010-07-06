@@ -273,7 +273,7 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
 class PostgreSQLEngine(Engine):
     name = "PostgreSQL"
     datatypes = ["SERIAL PRIMARY KEY", 
-                 "integer NULL", 
+                 "integer", 
                  "double precision", 
                  "varchar", 
                  "bit"]
