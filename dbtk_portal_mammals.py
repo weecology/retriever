@@ -24,6 +24,44 @@ class DbTk_Portal_Mammals(DbTk):
         engine.get_cursor()
         engine.create_db()
         
+        #Plots table
+        table = Table()
+        table.tablename = "Plots"
+        table.pk = "PlotID"
+        table.hasindex = True
+        table.delimiter = ","
+        table.header_rows = 0
+        table.columns=[("PlotID"                ,   ("pk",)         ),
+                       ("PlotTypeAlphaCode"     ,   ("char", 2)     ),
+                       ("PlotTypeNumCode"       ,   ("int",)        ),
+                       ("PlotTypeDescript"      ,   ("char", 30)    )]
+        engine.table = table
+        engine.table.source = engine.open_url("http://wiki.ecologicaldata.org/sites/default/files/portal_plots.txt")
+        engine.create_table()
+        engine.add_to_table()
+        
+        #Species table
+        table = Table()
+        table.tablename = "Species"
+        table.pk = "SpeciesID"
+        table.hasindex = False
+        table.delimiter = ";"
+        table.header_rows = 1
+        table.columns=[("SpeciesID"             ,   ("pk",)         ),
+                       ("SpeciesCode"           ,   ("char", 2)     ),
+                       ("OldSpeciesIDs"         ,   ("char", 20)    ),
+                       ("ScientificName"        ,   ("char", 50)    ),
+                       ("Taxon"                 ,   ("char", 30)    ),
+                       ("CommonName"            ,   ("char", 50)    ),
+                       ("Unknown"               ,   ("int",)        ),
+                       ("Rodent"                ,   ("int",)        ),
+                       ("ShrublandAffiliated"   ,   ("int",)        )]
+        engine.table = table
+        engine.table.source = engine.open_url("http://wiki.ecologicaldata.org/sites/default/files/portal_species.txt")
+        engine.create_table()
+        engine.add_to_table()
+        
+        # Main table
         table = Table()
         table.tablename = "main"
         table.pk = "ID"
@@ -31,15 +69,6 @@ class DbTk_Portal_Mammals(DbTk):
         table.delimiter = ","
         table.cleanup = datacleanup.correct_invalid_value
         table.nullindicators = set(['', 0, '0'])
-        
-        # Database column names and their data types.
-        # Data type is a tuple, with the first value specifying the type:
-        #     pk     - primary key
-        #     int    - integer
-        #     double - double precision
-        #     char   - string
-        #     but    - binary
-        # The second part of the type specifies the length and is optional
         table.columns=[("ID"                    ,   ("pk",)         ),
                        ("month"                 ,   ("int",)        ),
                        ("day"                   ,   ("int",)        ),
@@ -71,11 +100,9 @@ class DbTk_Portal_Mammals(DbTk):
                        ("note5"                 ,   ("char", 1)     )]
         engine.table = table
         engine.table.source = engine.open_url("http://esapubs.org/archive/ecol/E090/118/Portal_rodent_19772002.csv")
-        
         engine.create_table()
         engine.add_to_table()
-        
-        
+
 if __name__ == "__main__":
     me = DbTk_Portal_Mammals()
     if len(sys.argv) == 1:
