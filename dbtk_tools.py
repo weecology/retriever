@@ -204,8 +204,8 @@ class Engine():
     def get_insert_columns(self, join=True):
         columns = ""
         for item in self.table.columns:
-            if (item[1][0] != "skip") and (item[1][0] !="combine") and (item[1][0][0:3] != 
-                                                    "pk-" or self.table.hasindex == True):
+            if (item[1][0] != "skip") and (item[1][0] !="combine") and (self.table.hasindex == True
+                                                                    or item[1][0][0:3] != "pk-"):
                 columns += item[0] + ", "            
         columns = columns.rstrip(', ')
         if join:
