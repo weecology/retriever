@@ -32,7 +32,7 @@ class DbTk_Ernest(DbTk):
         
         # Database column names and their data types. Use data type "skip" to skip the value, and
         # "combine" to merge a string value into the previous column
-        table.columns=[("species_id"            ,   ("pk",)         ),
+        table.columns=[("species_id"            ,   ("pk-auto",)    ),
                        ("sporder"               ,   ("char", 20)    ),
                        ("family"                ,   ("char", 20)    ),
                        ("genus"                 ,   ("char", 20)    ),
