@@ -192,7 +192,6 @@ class Engine():
             for width in self.table.fixedwidth:
                 values.append(line[pos:pos+width].strip())
                 pos += width
-            print values
             return values
         else:
             return line.split(self.table.delimiter)
