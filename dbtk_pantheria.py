@@ -23,8 +23,7 @@ class DbTk_Pantheria(DbTk):
         engine.create_db()
         
         table = Table()
-        table.tablename = "pantheria"
-        table.pk = "species_id"        
+        table.tablename = "pantheria"        
         table.cleanup = datacleanup.correct_invalid_value
         table.nullindicators = ["-999", "-999.00", -999]
         

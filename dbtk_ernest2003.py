@@ -25,8 +25,7 @@ class DbTk_Ernest(DbTk):
         engine.create_db()
         
         table = Table()
-        table.tablename = "species"
-        table.pk = "species_id"        
+        table.tablename = "species"        
         table.cleanup = datacleanup.correct_invalid_value
         table.nullindicators = ["-999", "-999.00", -999]
         
