@@ -9,7 +9,6 @@ import urllib
 import zipfile
 from dbtk_tools import *
 import dbtk_ui
-import platform
 
 class DbTk_BBS(DbTk):
     name = "USGS North American Breeding Bird Survey"

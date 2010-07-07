@@ -185,14 +185,15 @@ class Engine():
         dropstatement = "DROP %s IF EXISTS %s" % (objecttype, objectname)
         return dropstatement
     def format_insert_value(self, value):
-        if str(value).lower() == "null":
+        strvalue = str(value)
+        if strvalue.lower() == "null":
             return "null"
         elif value:
-            quotes = ["'", '"']
-            if value[0] == value[-1] and value[0] in quotes:
-                return str(value) 
+            quotes = ["'", '"']            
+            if strvalue[0] == strvalue[-1] and strvalue[0] in quotes:
+                return "'" + strvalue.strip(''.join(quotes)) + "'" 
             else:
-                return "'" + str(value) + "'" 
+                return "'" + strvalue + "'" 
         else:
             return "null"
     def get_input(self):
