@@ -70,7 +70,7 @@ class Database:
 class Table:
     """Information about table to be passed to dbtk_tools.create_table"""
     tablename = ""
-    pk = None
+    pk = True
     hasindex = False
     record_id = 0
     lines = []
@@ -79,6 +79,7 @@ class Table:
     drop = True
     header_rows = 1
     nullindicators = []
+    fixedwidth = False
     def __init__(self):        
         self.cleanup = self.no_cleanup        
     def no_cleanup(self, value, engine):
@@ -109,7 +110,7 @@ class Engine():
                 else:
                     column = -1
                  
-                for value in line.split(self.table.delimiter):
+                for value in self.extract_values(line):
                     column += 1
                     thiscolumn = self.table.columns[column][1][0]
                     # If data type is "skip" ignore the value
@@ -130,7 +131,7 @@ class Engine():
                 
         print "\n Done!"
         self.connection.commit()
-        self.table.source.close()    
+        self.table.source.close()
     def convert_data_type(self, datatype):
         """Converts DBTK generic data types to db engine specific data types"""
         datatypes = dict()
@@ -166,7 +167,7 @@ class Engine():
         return createstatement
     def create_table(self):
         print "Creating table " + self.table.tablename + " in database " + self.db.dbname + " . . ."
-        createstatement = self.create_table_statement()            
+        createstatement = self.create_table_statement()
         self.cursor.execute(createstatement)
     def create_table_statement(self):
         if self.table.drop:
@@ -184,6 +185,17 @@ class Engine():
     def drop_statement(self, objecttype, objectname):
         dropstatement = "DROP %s IF EXISTS %s" % (objecttype, objectname)
         return dropstatement
+    def extract_values(self, line):
+        if self.table.fixedwidth:
+            pos = 0
+            values = []
+            for width in self.table.fixedwidth:
+                values.append(line[pos:pos+width].strip())
+                pos += width
+            print values
+            return values
+        else:
+            return line.split(self.table.delimiter)
     def format_insert_value(self, value):
         strvalue = str(value)
         if strvalue.lower() == "null":

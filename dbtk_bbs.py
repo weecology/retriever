@@ -28,7 +28,6 @@ class DbTk_BBS(DbTk):
             # Routes table
             table = Table()
             table.tablename = "routes"
-            table.pk = "route_id"
             table.delimiter = ","
             
             table.columns=[("route_id"              ,   ("pk-auto",)    ),
@@ -69,7 +68,6 @@ class DbTk_BBS(DbTk):
             # Weather table
             table = Table()
             table.tablename = "weather"
-            table.pk = "weather_id"
             table.delimiter = ","
             table.hasindex = True
             def weather_cleanup(value, engine):
@@ -124,44 +122,28 @@ class DbTk_BBS(DbTk):
             os.remove(filename)                                        
             os.remove(archivename)
             
-            """# Species table
+            
+            # Region_codes table
             table = Table()
-            table.tablename = "species"
-            table.pk = "species_id"
-            table.delimiter = ","
-            table.hasindex = True
-            table.cleanup = datacleanup.correct_invalid_value
+            table.tablename = "region_codes"
+            table.pk = False
+            table.header_rows = 11
             
-            table.columns=[("routedataid"           ,   ("pk",)         ),
-                           ("countrynum"            ,   ("int",)        ),
-                           ("statenum"              ,   ("int",)        )]
-            engine.table = table
-            engine.create_table()
+            table.columns=[("countrynum"            ,   ("int",)        ),
+                           ("regioncode"            ,   ("int",)        ),
+                           ("regionname"            ,   ("char",30)     )]
+            table.fixedwidth = [11, 11, 30]
             
-            url = "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CWeather.exe"
-            archivename = url.split('/')[-1]
-            webFile = urllib.urlopen(url)    
-            localFile = open(archivename, 'wb')
-            localFile.write(webFile.read())
-            localFile.close()
-            webFile.close()    
+            engine.table = table                        
+            engine.table.source = engine.open_url("ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/RegionCodes.txt")
             
-            
-            localZip = zipfile.ZipFile(archivename)    
-            filename = "weather.csv"
-                    
-            localFile = localZip.extract(filename)    
-            engine.insert_data_from_file(filename)        
-            localZip.close()
-            
-            os.remove(filename)                                        
-            os.remove(archivename)
-            """
+            engine.create_table()        
+            engine.add_to_table()            
+                        
             
             # Counts table
             table = Table()
             table.tablename = "counts"
-            table.pk = "record_id"
             table.delimiter = ","
             
             table.columns=[("record_id"             ,   ("pk-auto",)    ),

@@ -26,7 +26,6 @@ class DbTk_Portal_Mammals(DbTk):
         #Plots table
         table = Table()
         table.tablename = "Plots"
-        table.pk = "PlotID"
         table.hasindex = True
         table.delimiter = ","
         table.header_rows = 0
@@ -42,7 +41,6 @@ class DbTk_Portal_Mammals(DbTk):
         #Species table
         table = Table()
         table.tablename = "Species"
-        table.pk = "SpeciesID"
         table.hasindex = True
         table.delimiter = ";"
         table.header_rows = 1
@@ -62,7 +60,6 @@ class DbTk_Portal_Mammals(DbTk):
         # Main table
         table = Table()
         table.tablename = "main"
-        table.pk = "ID"
         table.hasindex = True
         table.delimiter = ","
         table.cleanup = datacleanup.correct_invalid_value
