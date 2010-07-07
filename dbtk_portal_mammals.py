@@ -43,11 +43,10 @@ class DbTk_Portal_Mammals(DbTk):
         table = Table()
         table.tablename = "Species"
         table.pk = "SpeciesID"
-        table.hasindex = False
+        table.hasindex = True
         table.delimiter = ";"
         table.header_rows = 1
-        table.columns=[("SpeciesID"             ,   ("pk-auto",)    ),
-                       ("SpeciesCode"           ,   ("char", 2)     ),
+        table.columns=[("SpeciesCode"           ,   ("pk-char", 2)  ),
                        ("OldSpeciesIDs"         ,   ("char", 20)    ),
                        ("ScientificName"        ,   ("char", 50)    ),
                        ("Taxon"                 ,   ("char", 30)    ),
