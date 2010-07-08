@@ -6,6 +6,62 @@ from dbtk_tools import *
 def launch_wizard(dbtk_list, engine_list):
     print "Launching Database Toolkit wizard . . ."
     
+    def download_scripts():
+        engine = page[2].engine
+        options = page[2].option
+        opts = dict()
+        for key in options.keys():
+            opts[key] = options[key].GetValue()
+        engine.opts = opts
+        engine.get_cursor()
+        
+        scripts = []
+        for script in dbtk_list:
+            dl = False
+            if len(dbtk_list) > 1:
+                if script.name in page[3].scriptlist.GetCheckedStrings():
+                    dl = True
+            else:
+                dl = True
+            if dl:
+                scripts.append(script)
+        dialog = wx.ProgressDialog('Download Progress', 'Downloading datasets . . . . . . . . . . . . . .\n', 
+                                   maximum = (len(scripts) * 1000))
+        dialog.Show()
+        scriptnum = 0
+        class m_float():        
+            def __init__(self, value):
+                """Creates a mutable float"""
+                self.value = float(value)
+            def set(self, value):
+                self.value = float(value)
+            def approach(self, value):
+                """Causes the value to become closer to, but not reach, the maximum value"""
+                if value > self.value:
+                    self.value += (value - self.value) / 1000
+        prog = m_float(0)
+        class update_dialog:
+            def write(self, s):                
+                txt = s.strip().translate(None, "\b")
+                if txt:
+                    prog.approach((int(prog.value / 1000) + 1) * 1000)
+                    dialog.Update(int(prog.value), msg + "\n" + txt)
+        sys.stdout = update_dialog()
+        for script in scripts:
+            scriptnum += 1
+            prog.set((scriptnum - 1) * 1000)
+            msg = "Downloading " + script.name
+            if len(scripts) > 0:
+                msg += " (" + str(scriptnum) + " of " + str(len(scripts)) + ")" 
+            msg += " . . ."                               
+            try:
+                script.download(engine)
+            except:
+                print "There was an error downloading " + script.name
+                raise
+        dialog.Update(len(scripts) * 1000, "Finished!")        
+    
+    
     class TitledPage(wx.wizard.WizardPageSimple):
         def __init__(self, parent, title, label):
             wx.wizard.WizardPageSimple.__init__(self, parent)
@@ -29,7 +85,7 @@ def launch_wizard(dbtk_list, engine_list):
             self.sel = ""
             self.fields = wx.BoxSizer(wx.VERTICAL)
         def Draw(self, evt):
-            if len(page[1].dblist.GetStringSelection()) == 0 and evt.GetDirection():
+            if len(page[1].dblist.GetStringSelection()) == 0 and evt.Direction:
                 evt.Veto()                  
             else:
                 if self.sel != page[1].dblist.GetStringSelection():
@@ -86,46 +142,8 @@ def launch_wizard(dbtk_list, engine_list):
             TitledPage.__init__(self, parent, title, label)
             self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.Download)            
         def Download(self, evt):
-            engine = page[2].engine
-            options = page[2].option
-            opts = dict()
-            for key in options.keys():
-                opts[key] = options[key].GetValue()
-            engine.opts = opts
-            engine.get_cursor()
-            
-            scripts = []
-            for script in dbtk_list:
-                dl = False
-                if len(dbtk_list) > 1:
-                    if script.name in page[3].scriptlist.GetCheckedStrings():
-                        dl = True
-                else:
-                    dl = True
-                if dl:
-                    scripts.append(script)
-            dialog = wx.ProgressDialog('Download Progress', 'Downloading datasets . . . . . . . . . . . . . .\n', 
-                                       maximum = len(scripts))
-            dialog.Show()
-            scriptnum = 0
-            class update_dialog:
-                def write(self, s):
-                    txt = s.strip().translate(None, "\b")
-                    if txt:                    
-                        dialog.Update(scriptnum - 1, msg + "\n" + txt)
-            sys.stdout = update_dialog()
-            for script in scripts:
-                scriptnum += 1
-                msg = "Downloading " + script.name
-                if len(scripts) > 0:
-                    msg += " (" + str(scriptnum) + " of " + str(len(scripts)) + ")" 
-                msg += " . . ."                               
-                try:
-                    script.download(engine)
-                except:
-                    print "There was an error downloading " + script.name
-                    raise
-            dialog.Update(len(scripts), "Finished!")        
+            if evt.Direction:
+                download_scripts()
             
                                 
     class Wizard(wx.wizard.Wizard):
