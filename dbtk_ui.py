@@ -1,3 +1,4 @@
+import sys
 import wx
 import wx.wizard
 from dbtk_tools import *
@@ -103,17 +104,22 @@ def launch_wizard(dbtk_list, engine_list):
                     dl = True
                 if dl:
                     scripts.append(script)
-            dialog = wx.ProgressDialog('Download Progress', 'Downloading datasets . . . . . . . . . . . . . .', 
+            dialog = wx.ProgressDialog('Download Progress', 'Downloading datasets . . . . . . . . . . . . . .\n', 
                                        maximum = len(scripts))
             dialog.Show()
-            scriptnum = 0              
+            scriptnum = 0
+            class update_dialog:
+                def write(self, s):
+                    txt = s.strip().translate(None, "\b")
+                    if txt:                    
+                        dialog.Update(scriptnum - 1, msg + "\n" + txt)
+            sys.stdout = update_dialog()
             for script in scripts:
                 scriptnum += 1
                 msg = "Downloading " + script.name
                 if len(scripts) > 0:
                     msg += " (" + str(scriptnum) + " of " + str(len(scripts)) + ")" 
                 msg += " . . ."                               
-                dialog.Update(scriptnum - 1, msg)
                 try:
                     script.download(engine)
                 except:

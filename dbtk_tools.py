@@ -96,9 +96,7 @@ class Engine():
     datatypes = []
     required_opts = []
     pkformat = "%s PRIMARY KEY"
-    def add_to_table(self):
-        print "Inserting rows: "
-    
+    def add_to_table(self):        
         for line in self.table.source:
             
             line = line.strip()
@@ -126,7 +124,8 @@ class Engine():
                 # Build insert statement with the correct # of values                
                 cleanvalues = [self.format_insert_value(self.table.cleanup(value, self)) for value in linevalues]
                 insertstatement = self.insert_statement(cleanvalues)
-                sys.stdout.write(str(self.table.record_id) + "\b" * len(str(self.table.record_id)))
+                inserting = "Inserting rows: "
+                sys.stdout.write(inserting + str(self.table.record_id) + "\b" * (len(str(self.table.record_id)) + len(inserting)))
                 self.cursor.execute(insertstatement)
                 
         print "\n Done!"
