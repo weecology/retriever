@@ -3,7 +3,7 @@ import wx.wizard
 from dbtk_tools import *
 
 def launch_wizard(dbtk_list, engine_list):
-    print "Launching Database Toolkit wizard . . ."    
+    print "Launching Database Toolkit wizard . . ."
     
     class TitledPage(wx.wizard.WizardPageSimple):
         def __init__(self, parent, title, label):
@@ -70,14 +70,63 @@ def launch_wizard(dbtk_list, engine_list):
         def CheckValues(self, evt):  
             if len(self.scriptlist.GetCheckedStrings()) == 0 and evt.Direction:
                 evt.Veto()
-                        
+
+
+    class LastPage(TitledPage):
+        def __init__(self, parent, title, label):
+            TitledPage.__init__(self, parent, title, label)
+            self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGED, self.DisableBackButton)
+        def DisableBackButton(self, evt):
+            wizard.FindWindowById(wx.ID_BACKWARD).Enable(False)            
+                
+    
+    class DownloadPage(TitledPage):
+        def __init__(self, parent, title, label):
+            TitledPage.__init__(self, parent, title, label)
+            self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.Download)            
+        def Download(self, evt):
+            engine = page[2].engine
+            options = page[2].option
+            opts = dict()
+            for key in options.keys():
+                opts[key] = options[key].GetValue()
+            engine.opts = opts
+            engine.get_cursor()
             
+            scripts = []
+            for script in dbtk_list:
+                dl = False
+                if len(dbtk_list) > 1:
+                    if script.name in page[3].scriptlist.GetCheckedStrings():
+                        dl = True
+                else:
+                    dl = True
+                if dl:
+                    scripts.append(script)
+            dialog = wx.ProgressDialog('Download Progress', 'Downloading datasets . . . . . . . . . . . . . .', 
+                                       maximum = len(scripts))
+            dialog.Show()
+            scriptnum = 0              
+            for script in scripts:
+                scriptnum += 1
+                msg = "Downloading " + script.name
+                if len(scripts) > 0:
+                    msg += " (" + str(scriptnum) + " of " + str(len(scripts)) + ")" 
+                msg += " . . ."                               
+                dialog.Update(scriptnum - 1, msg)
+                try:
+                    script.download(engine)
+                except:
+                    print "There was an error downloading " + script.name
+                    raise
+            dialog.Update(len(scripts), "Finished!")        
+            
+                                
     class Wizard(wx.wizard.Wizard):
-        def OnInit(self):
-            wx.MessageBox("HI")
-        pass
-            
-    app = wx.App(False)
+        pass        
+    
+    app = wx.PySimpleApp(False)
+    
     wizard = Wizard(None, -1, "Database Toolkit Wizard")
     page = []
     if len(dbtk_list) > 1:
@@ -108,32 +157,13 @@ Supported database systems currently include:\n\n""" + ", ".join([db.name for db
     if len(dbtk_list) > 1:
         page.append(DatasetPage(wizard, "Select Datasets", "Check each dataset to be downloaded:\n"))
     
-    page.append(TitledPage(wizard, "Finished", "That's it! Click next to download and install your data."))
+    page.append(DownloadPage(wizard, "Finished", "That's it! Click Next to download and install your data."))
+    
+    page.append(LastPage(wizard, "Finished", "Your downloads are complete. Click Finish to exit."))
     
     for i in range(len(page) - 1):
         wx.wizard.WizardPageSimple_Chain(page[i], page[i + 1])
         
-    wizard.FitToPage(page[0])
-    
-    if wizard.RunWizard(page[0]):
-        engine = page[2].engine
-        options = page[2].option
-        opts = dict()
-        for key in options.keys():
-            opts[key] = options[key].GetValue()
-        engine.opts = opts
-        engine.get_cursor()
-        
-        for script in dbtk_list:
-            try:
-                dl = False
-                if len(dbtk_list) > 1:
-                    if script.name in page[3].scriptlist.GetCheckedStrings():
-                        dl = True
-                else:
-                    dl = True
-                if dl:
-                    script.download(engine)              
-            except:
-                print "There was an error downloading " + script.name
-                raise
+    wizard.FitToPage(page[0])    
+    wizard.RunWizard(page[0])        
+    wizard.Destroy()
