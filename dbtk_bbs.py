@@ -133,7 +133,6 @@ class DbTk_BBS(DbTk):
                 newvalue = str(value)
                 for key in replace.keys():
                     if key in newvalue:
-                        print key, replace[key]
                         newvalue = newvalue.replace(key, replace[key])
                 return newvalue
             table.cleanup = regioncodes_cleanup
