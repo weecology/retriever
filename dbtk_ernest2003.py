@@ -26,8 +26,8 @@ class DbTk_Ernest(DbTk):
         
         table = Table()
         table.tablename = "species"        
-        table.cleanup = datacleanup.correct_invalid_value
-        table.nullindicators = ["-999", "-999.00", -999]
+        table.cleanup = Cleanup(datacleanup.correct_invalid_value, 
+                                {"nulls":("-999", "-999.00", -999)} )
         
         # Database column names and their data types. Use data type "skip" to skip the value, and
         # "combine" to merge a string value into the previous column

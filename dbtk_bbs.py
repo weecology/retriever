@@ -76,7 +76,7 @@ class DbTk_BBS(DbTk):
                 elif ":" in value:
                     return value.translate(None, ":")             
                 return value
-            table.cleanup = weather_cleanup
+            table.cleanup = Cleanup(weather_cleanup, None)
                 
             
             table.columns=[("routedataid"           ,   ("pk-auto",)    ),
@@ -136,7 +136,7 @@ class DbTk_BBS(DbTk):
                     if key in newvalue:
                         newvalue = newvalue.replace(key, replace[key])
                 return newvalue
-            table.cleanup = regioncodes_cleanup
+            table.cleanup = Cleanup(regioncodes_cleanup, None)
             
             table.columns=[("countrynum"            ,   ("int",)        ),
                            ("regioncode"            ,   ("int",)        ),

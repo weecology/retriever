@@ -10,11 +10,11 @@ the empty values with MySQL's NULL indicator /N.
 
 # TO DO - write tests
 
-def correct_invalid_value(datain, engine):
+def correct_invalid_value(value, args):
     try:
-        if set([datain]).issubset(engine.table.nullindicators):            
+        if value in args["nulls"]:            
             return None
         else:
-            return datain
+            return value
     except ValueError:
-        return datain
+        return value
