@@ -44,7 +44,7 @@ def launch_wizard(dbtk_list, engine_list):
             def write(self, s):                
                 txt = s.strip().translate(None, "\b")
                 if txt:
-                    prog.approach((int(prog.value / 1000) + 1) * 1000)
+                    prog.approach(scriptnum * 1000)
                     dialog.Update(int(prog.value), msg + "\n" + txt)
         sys.stdout = update_dialog()
         for script in scripts:
