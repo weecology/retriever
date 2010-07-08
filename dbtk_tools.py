@@ -73,7 +73,6 @@ class Table:
     pk = True
     hasindex = False
     record_id = 0
-    lines = []
     delimiter = None
     columns = []
     drop = True
@@ -246,6 +245,14 @@ class Engine():
     def open_url(self, url):
         """Returns an opened file from a URL, skipping the header lines"""
         source = self.skip_rows(self.table.header_rows, urllib.urlopen(url))
+        if self.keep_raw_data:
+            # Save a copy of the file locally            
+            filename = url.split('/')[-1]
+            print "Saving a copy of " + filename + " . . ."
+            webFile = urllib.urlopen(url)   
+            localFile = open(filename, 'wb')
+            localFile.write(webFile.read())
+            localFile.close()
         return source    
     def skip_rows(self, rows, source):
         """Skip over the header lines by reading them before processing"""

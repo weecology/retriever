@@ -9,6 +9,7 @@ def launch_wizard(dbtk_list, engine_list):
     def download_scripts():
         engine = page[2].engine
         options = page[2].option
+        engine.keep_raw_data = page[1].keepdata.Value
         opts = dict()
         for key in options.keys():
             opts[key] = options[key].GetValue()
@@ -162,6 +163,9 @@ Supported database systems currently include:\n\n""" + ", ".join([db.name for db
     page[1].dblist.SetSelection(0)
     page[1].sizer.Add(page[1].dblist,
                       0, wx.EXPAND | wx.ALL, 5)
+    page[1].keepdata = wx.CheckBox(page[1], -1, "Keep raw data files")
+    page[1].sizer.Add(wx.StaticText(page[1], -1, "\n"))
+    page[1].sizer.Add(page[1].keepdata)    
     
     page.append(ConnectionInfoPage(wizard, "Connection Info", "Please enter the following connection information: \n"))
     page[1].Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, page[2].Draw)

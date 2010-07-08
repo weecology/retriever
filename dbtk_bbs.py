@@ -119,7 +119,8 @@ class DbTk_BBS(DbTk):
             engine.insert_data_from_file(filename)        
             localZip.close()
             
-            os.remove(filename)                                        
+            if not engine.keep_raw_data:
+                os.remove(filename)                                        
             os.remove(archivename)
 
             
@@ -215,7 +216,8 @@ class DbTk_BBS(DbTk):
                     engine.insert_data_from_file(filename)        
                     localZip.close()
                     
-                    os.remove(filename)                                        
+                    if not engine.keep_raw_data:
+                        os.remove(filename)                                        
                     os.remove(archivename)  
                             
                 except:
