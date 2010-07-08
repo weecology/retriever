@@ -64,7 +64,7 @@ class DbTk_BBS(DbTk):
             os.remove(filename)                                        
             os.remove(archivename)
             
-            
+
             # Weather table
             table = Table()
             table.tablename = "weather"
@@ -121,13 +121,22 @@ class DbTk_BBS(DbTk):
             
             os.remove(filename)                                        
             os.remove(archivename)
-            
+
             
             # Region_codes table
             table = Table()
             table.tablename = "region_codes"
             table.pk = False
             table.header_rows = 11
+            def regioncodes_cleanup(value, engine):
+                replace = {chr(225):"a", chr(233):"e", chr(237):"i", chr(243):"o"}
+                newvalue = str(value)
+                for key in replace.keys():
+                    if key in newvalue:
+                        print key, replace[key]
+                        newvalue = newvalue.replace(key, replace[key])
+                return newvalue
+            table.cleanup = regioncodes_cleanup
             
             table.columns=[("countrynum"            ,   ("int",)        ),
                            ("regioncode"            ,   ("int",)        ),
