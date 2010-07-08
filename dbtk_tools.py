@@ -60,6 +60,14 @@ class DbTk:
             opts = get_opts()        
             engine = choose_engine(opts)
         return engine
+    
+class Cleanup:
+    def __init__(self, function, args):
+        self.function = function
+        self.args = args
+    def no_cleanup(value):
+        """Default cleanup function, returns the unchanged value"""
+        return value        
 
 class Database:
     """Information about database to be passed to dbtk_tools.create_table"""
@@ -77,13 +85,9 @@ class Table:
     columns = []
     drop = True
     header_rows = 1
-    nullindicators = []
     fixedwidth = False
     def __init__(self):        
-        self.cleanup = self.no_cleanup        
-    def no_cleanup(self, value, engine):
-        """Default cleanup function, returns the unchanged value"""
-        return value
+        self.cleanup = Cleanup(Cleanup.no_cleanup, None)        
     
 class Engine():
     name = ""
@@ -121,7 +125,9 @@ class Engine():
                         linevalues.append(value) 
                             
                 # Build insert statement with the correct # of values                
-                cleanvalues = [self.format_insert_value(self.table.cleanup(value, self)) for value in linevalues]
+                cleanvalues = [self.format_insert_value(self.table.cleanup.function(value, 
+                                                                                    self.table.cleanup.args)) 
+                               for value in linevalues]
                 insertstatement = self.insert_statement(cleanvalues)
                 inserting = "Inserting rows: "
                 sys.stdout.write(inserting + str(self.table.record_id) + "\b" * (len(str(self.table.record_id)) + len(inserting)))
@@ -276,7 +282,7 @@ class MySQLEngine(Engine):
                      ["hostname", "Enter your MySQL host or press Enter for the default (localhost): ", "localhost"],
                      ["sqlport", "Enter your MySQL port or press Enter for the default (3306): ", 3306]]
     def insert_data_from_file(self, filename):
-        if self.table.cleanup == self.table.no_cleanup:
+        if self.table.cleanup.function == Cleanup.no_cleanup:
             print "Inserting data from " + filename + " . . ."
                 
             columns = self.get_insert_columns()            
@@ -323,8 +329,8 @@ class PostgreSQLEngine(Engine):
         dropstatement = Engine.drop_statement(self, objecttype, objectname) + " CASCADE;"
         return dropstatement.replace(" DATABASE ", " SCHEMA ")    
     def insert_data_from_file(self, filename):
-        if ([self.table.cleanup, self.table.delimiter, self.table.header_rows] == 
-                                                        [self.table.no_cleanup, ",", 1]):        
+        if ([self.table.cleanup.function, self.table.delimiter, self.table.header_rows] == 
+                                                        [Cleanup.no_cleanup, ",", 1]):        
             print "Inserting data from " + filename + " . . ."
                 
             columns = self.get_insert_columns()    
