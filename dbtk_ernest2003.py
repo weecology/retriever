@@ -59,3 +59,4 @@ if __name__ == "__main__":
         dbtk_ui.launch_wizard([me], all_engines)
     else:
         me.download()
+        final_cleanup()

@@ -203,12 +203,7 @@ class Engine():
                 pos += width
             return values
         else:
-            return line.split(self.table.delimiter)
-    def final_cleanup(self):
-        try:
-            os.rmdir(raw_data_location)
-        except OSError:
-            pass
+            return line.split(self.table.delimiter)    
     def format_insert_value(self, value):
         strvalue = str(value)
         if strvalue.lower() == "null":
@@ -449,3 +444,9 @@ def choose_engine(opts):
     return engine
 
 all_engines = [MySQLEngine(), PostgreSQLEngine(), SQLiteEngine()]
+
+def final_cleanup():
+    try:
+        os.rmdir(raw_data_location)
+    except OSError:
+        pass
