@@ -46,26 +46,8 @@ class DbTk_BBS(DbTk):
             engine.table = table
             engine.create_table()
             
-            url = "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CRoutes.exe"
-            archivename = os.path.join(raw_data_location, url.split('/')[-1])
-            webFile = urllib.urlopen(url)    
-            localFile = open(archivename, 'wb')
-            localFile.write(webFile.read())
-            localFile.close()
-            webFile.close()    
-            
-            
-            localZip = zipfile.ZipFile(archivename)    
-            filename = "routes.csv"
-            fileloc = os.path.join(raw_data_location, filename)
-                    
-            localFile = localZip.extract(filename, raw_data_location)    
-            engine.insert_data_from_file(fileloc)        
-            localZip.close()
-            
-            if not engine.keep_raw_data:
-                os.remove(fileloc)                              
-            os.remove(archivename)
+            engine.insert_data_from_archive("ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CRoutes.exe",
+                                            "routes.csv")
             
 
             # Weather table
@@ -106,27 +88,9 @@ class DbTk_BBS(DbTk):
             engine.table = table
             engine.create_table()
             
-            url = "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CWeather.exe"
-            archivename = os.path.join(raw_data_location, url.split('/')[-1])
-            webFile = urllib.urlopen(url)    
-            localFile = open(archivename, 'wb')
-            localFile.write(webFile.read())
-            localFile.close()
-            webFile.close()    
+            engine.insert_data_from_archive("ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CWeather.exe", 
+                                            "weather.csv")
             
-            
-            localZip = zipfile.ZipFile(archivename)    
-            filename = "weather.csv"
-            fileloc = os.path.join(raw_data_location, filename)
-                    
-            localFile = localZip.extract(filename, raw_data_location)    
-            engine.insert_data_from_file(fileloc)
-            localZip.close()
-            
-            if not engine.keep_raw_data:
-                os.remove(fileloc)                
-            os.remove(archivename)
-
             
             # Region_codes table
             table = Table()
@@ -205,25 +169,8 @@ class DbTk_BBS(DbTk):
                         state, shortstate = state[0], state[1]
                         
                     print "Downloading and decompressing data from " + state + " . . ."
-                    url = "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/C" + shortstate + ".exe"
-                    archivename = os.path.join(raw_data_location, url.split('/')[-1])
-                    webFile = urllib.urlopen(url)    
-                    localFile = open(archivename, 'wb')
-                    localFile.write(webFile.read())
-                    localFile.close()
-                    webFile.close()    
-                    
-                    localZip = zipfile.ZipFile(archivename)
-                    filename = "C" + shortstate + ".csv"
-                    fileloc = os.path.join(raw_data_location, filename)
-                            
-                    localFile = localZip.extract(filename, raw_data_location)    
-                    engine.insert_data_from_file(fileloc)        
-                    localZip.close()
-                    
-                    if not engine.keep_raw_data:
-                        os.remove(fileloc)                     
-                    os.remove(archivename)  
+                    engine.insert_data_from_archive("ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/C" + shortstate + ".exe", 
+                                                    "C" + shortstate + ".csv")
                             
                 except:
                     print "There was an error in " + state + "."
