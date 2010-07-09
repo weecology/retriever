@@ -258,7 +258,7 @@ class Engine():
         source = self.skip_rows(self.table.header_rows, urllib.urlopen(url))
         if self.keep_raw_data:
             # Save a copy of the file locally
-            self.Create_raw_data_dir()            
+            self.create_raw_data_dir()            
             filename = url.split('/')[-1]
             print "Saving a copy of " + filename + " . . ."
             webFile = urllib.urlopen(url)   
