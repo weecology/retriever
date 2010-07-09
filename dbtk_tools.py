@@ -238,6 +238,24 @@ class Engine():
             return columns
         else:
             return columns.lstrip("(").rstrip(")").split(", ")
+    def insert_data_from_archive(self, url, filename):
+        archivename = os.path.join(raw_data_location, url.split('/')[-1])
+        webFile = urllib.urlopen(url)    
+        localFile = open(archivename, 'wb')
+        localFile.write(webFile.read())
+        localFile.close()
+        webFile.close()    
+                
+        localZip = zipfile.ZipFile(archivename)    
+        fileloc = os.path.join(raw_data_location, filename)
+                
+        localFile = localZip.extract(filename, raw_data_location)    
+        engine.insert_data_from_file(fileloc)
+        localZip.close()
+        
+        if not engine.keep_raw_data:
+            os.remove(fileloc)                
+        os.remove(archivename)        
     def insert_data_from_file(self, filename):
         self.table.source = self.skip_rows(self.table.header_rows, open(filename, "r"))        
         self.add_to_table()
@@ -252,7 +270,7 @@ class Engine():
         insertstatement = insertstatement.rstrip(", ") + ");"        
         # Run correct_invalid_value on each value before insertion
         insertstatement %= tuple(values)
-        return insertstatement
+        return insertstatement        
     def open_url(self, url):
         """Returns an opened file from a URL, skipping the header lines"""
         source = self.skip_rows(self.table.header_rows, urllib.urlopen(url))
