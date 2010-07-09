@@ -47,6 +47,7 @@ import urllib
 import warnings
 import os
 import sys
+import zipfile
 
 warnings.filterwarnings("ignore")
 
@@ -67,9 +68,10 @@ class Cleanup:
     def __init__(self, function, args):
         self.function = function
         self.args = args
-    def no_cleanup(value):
-        """Default cleanup function, returns the unchanged value"""
-        return value        
+
+def no_cleanup(value, args):
+    """Default cleanup function, returns the unchanged value"""
+    return value        
 
 class Database:
     """Information about database to be passed to dbtk_tools.create_table"""
@@ -89,7 +91,7 @@ class Table:
     header_rows = 1
     fixedwidth = False
     def __init__(self):        
-        self.cleanup = Cleanup(Cleanup.no_cleanup, None)        
+        self.cleanup = Cleanup(no_cleanup, None)        
     
 class Engine():
     name = ""
@@ -98,6 +100,7 @@ class Engine():
     connection = None
     cursor = None
     keep_raw_data = False
+    use_local = True
     datatypes = []
     required_opts = []
     pkformat = "%s PRIMARY KEY"
@@ -203,7 +206,9 @@ class Engine():
                 pos += width
             return values
         else:
-            return line.split(self.table.delimiter)    
+            return line.split(self.table.delimiter)
+    def format_filename(self, filename):
+        return os.path.join(raw_data_location, self.scriptname + " - " + filename)
     def format_insert_value(self, value):
         strvalue = str(value)
         if strvalue.lower() == "null":
@@ -239,26 +244,56 @@ class Engine():
         else:
             return columns.lstrip("(").rstrip(")").split(", ")
     def insert_data_from_archive(self, url, filename):
-        archivename = os.path.join(raw_data_location, url.split('/')[-1])
-        webFile = urllib.urlopen(url)    
-        localFile = open(archivename, 'wb')
-        localFile.write(webFile.read())
-        localFile.close()
-        webFile.close()    
+        if self.use_local and os.path.isfile(self.format_filename(filename)):
+            # Use local copy
+            print "Using local copy of " + filename
+            self.insert_data_from_file(self.format_filename(filename))            
+        else:
+            self.create_raw_data_dir()
+            
+            archivename = os.path.join(raw_data_location, url.split('/')[-1])
+            web_file = urllib.urlopen(url)    
+            local_zip = open(archivename, 'wb')
+            local_zip.write(web_file.read())
+            local_zip.close()
+            web_file.close()    
+                    
+            local_zip = zipfile.ZipFile(archivename)
+            fileloc = self.format_filename(filename)
+                    
+            open_zip = local_zip.open(filename)
+            unzipped_file = open(fileloc, 'wb')
+            unzipped_file.write(open_zip.read())
+            unzipped_file.close()
+            open_zip.close()
+            
+            local_zip.close()
+            os.remove(archivename)
                 
-        localZip = zipfile.ZipFile(archivename)    
-        fileloc = os.path.join(raw_data_location, filename)
-                
-        localFile = localZip.extract(filename, raw_data_location)    
-        engine.insert_data_from_file(fileloc)
-        localZip.close()
-        
-        if not engine.keep_raw_data:
-            os.remove(fileloc)                
-        os.remove(archivename)        
+            self.insert_data_from_file(fileloc)            
+            
+            if not self.keep_raw_data:
+                os.remove(fileloc)            
     def insert_data_from_file(self, filename):
         self.table.source = self.skip_rows(self.table.header_rows, open(filename, "r"))        
         self.add_to_table()
+    def insert_data_from_url(self, url):
+        filename = url.split('/')[-1]
+        if self.use_local and os.path.isfile(self.format_filename(filename)):
+            # Use local copy
+            print "Using local copy of " + filename
+            self.insert_data_from_file(self.format_filename(filename))            
+        else:
+            self.table.source = self.skip_rows(self.table.header_rows, urllib.urlopen(url))
+            if self.keep_raw_data:
+                # Save a copy of the file locally
+                self.create_raw_data_dir()                        
+                print "Saving a copy of " + filename + " . . ."
+                webFile = urllib.urlopen(url)   
+                localFile = open(self.format_filename(filename), 'wb')
+                localFile.write(webFile.read())
+                localFile.close()
+            self.add_to_table()
     def insert_statement(self, values):
         columns = self.get_insert_columns()
         columncount = len(self.get_insert_columns(False))
@@ -271,19 +306,6 @@ class Engine():
         # Run correct_invalid_value on each value before insertion
         insertstatement %= tuple(values)
         return insertstatement        
-    def open_url(self, url):
-        """Returns an opened file from a URL, skipping the header lines"""
-        source = self.skip_rows(self.table.header_rows, urllib.urlopen(url))
-        if self.keep_raw_data:
-            # Save a copy of the file locally
-            self.create_raw_data_dir()            
-            filename = url.split('/')[-1]
-            print "Saving a copy of " + filename + " . . ."
-            webFile = urllib.urlopen(url)   
-            localFile = open(os.path.join("raw_data", filename), 'wb')
-            localFile.write(webFile.read())
-            localFile.close()
-        return source    
     def skip_rows(self, rows, source):
         """Skip over the header lines by reading them before processing"""
         if rows > 0:
@@ -306,7 +328,7 @@ class MySQLEngine(Engine):
                      ["hostname", "Enter your MySQL host or press Enter for the default (localhost): ", "localhost"],
                      ["sqlport", "Enter your MySQL port or press Enter for the default (3306): ", 3306]]
     def insert_data_from_file(self, filename):
-        if self.table.cleanup.function == Cleanup.no_cleanup:
+        if self.table.cleanup.function == no_cleanup:
             print "Inserting data from " + filename + " . . ."
                 
             columns = self.get_insert_columns()            
@@ -354,7 +376,7 @@ class PostgreSQLEngine(Engine):
         return dropstatement.replace(" DATABASE ", " SCHEMA ")    
     def insert_data_from_file(self, filename):
         if ([self.table.cleanup.function, self.table.delimiter, self.table.header_rows] == 
-                                                        [Cleanup.no_cleanup, ",", 1]):        
+                                                        [no_cleanup, ",", 1]):        
             print "Inserting data from " + filename + " . . ."
                 
             columns = self.get_insert_columns()    

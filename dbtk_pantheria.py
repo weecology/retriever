@@ -15,6 +15,7 @@ class DbTk_Pantheria(DbTk):
     def download(self, engine=None):            
         # Variables to get text file/create database        
         engine = self.checkengine(engine)
+        engine.scriptname = self.name
         
         db = Database()
         db.dbname = "Pantheria"
@@ -85,10 +86,9 @@ class DbTk_Pantheria(DbTk):
                        ("AET_mean"              ,   ("double",)     ),
                        ("PET_mean"              ,   ("double",)     )]
         engine.table = table
-        engine.table.source = engine.open_url("http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt")
-        
         engine.create_table()
-        engine.add_to_table()
+        
+        engine.insert_data_from_url("http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt")        
         
         
 if __name__ == "__main__":
