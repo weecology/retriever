@@ -43,10 +43,12 @@ def launch_wizard(dbtk_list, engine_list):
                 msg += " (" + str(scriptnum) + " of " + str(len(scripts)) + ")" 
             msg += " . . ."                               
             try:
-                script.download(engine)
+                script.download(engine)                
             except:
                 print "There was an error downloading " + script.name
                 raise
+        print "Finishing . . ."
+        final_cleanup()
         dialog.Update(len(scripts), "Finished!")        
     
     

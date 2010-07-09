@@ -97,6 +97,7 @@ class DbTk_Portal_Mammals(DbTk):
         engine.table.source = engine.open_url("http://esapubs.org/archive/ecol/E090/118/Portal_rodent_19772002.csv")
         engine.create_table()
         engine.add_to_table()
+        
 
 if __name__ == "__main__":
     me = DbTk_Portal_Mammals()
@@ -104,3 +105,4 @@ if __name__ == "__main__":
         dbtk_ui.launch_wizard([me], all_engines)
     else:
         me.download()
+        final_cleanup()
