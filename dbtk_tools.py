@@ -50,6 +50,8 @@ import sys
 
 warnings.filterwarnings("ignore")
 
+raw_data_location = "raw_data"
+
 class DbTk:
     name = ""
     url = ""
@@ -169,6 +171,9 @@ class Engine():
         else:
             createstatement = "CREATE DATABASE IF NOT EXISTS " + db.dbname
         return createstatement
+    def create_raw_data_dir(self):
+        if not os.path.exists(raw_data_location):
+            os.makedirs(raw_data_location)
     def create_table(self):
         print "Creating table " + self.table.tablename + " in database " + self.db.dbname + " . . ."
         createstatement = self.create_table_statement()
@@ -199,6 +204,11 @@ class Engine():
             return values
         else:
             return line.split(self.table.delimiter)
+    def final_cleanup(self):
+        try:
+            os.rmdir(raw_data_location)
+        except OSError:
+            pass
     def format_insert_value(self, value):
         strvalue = str(value)
         if strvalue.lower() == "null":
@@ -252,11 +262,12 @@ class Engine():
         """Returns an opened file from a URL, skipping the header lines"""
         source = self.skip_rows(self.table.header_rows, urllib.urlopen(url))
         if self.keep_raw_data:
-            # Save a copy of the file locally            
+            # Save a copy of the file locally
+            self.Create_raw_data_dir()            
             filename = url.split('/')[-1]
             print "Saving a copy of " + filename + " . . ."
             webFile = urllib.urlopen(url)   
-            localFile = open(filename, 'wb')
+            localFile = open(os.path.join("raw_data", filename), 'wb')
             localFile.write(webFile.read())
             localFile.close()
         return source    

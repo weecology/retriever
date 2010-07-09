@@ -18,6 +18,7 @@ class DbTk_BBS(DbTk):
         try:
             # Variables to get text file/create database
             engine = self.checkengine(engine)
+            engine.create_raw_data_dir()
             
             db = Database()
             db.dbname = "BBS"
@@ -46,7 +47,7 @@ class DbTk_BBS(DbTk):
             engine.create_table()
             
             url = "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CRoutes.exe"
-            archivename = url.split('/')[-1]
+            archivename = os.path.join(raw_data_location, url.split('/')[-1])
             webFile = urllib.urlopen(url)    
             localFile = open(archivename, 'wb')
             localFile.write(webFile.read())
@@ -56,12 +57,14 @@ class DbTk_BBS(DbTk):
             
             localZip = zipfile.ZipFile(archivename)    
             filename = "routes.csv"
+            fileloc = os.path.join(raw_data_location, filename)
                     
-            localFile = localZip.extract(filename)    
-            engine.insert_data_from_file(filename)        
+            localFile = localZip.extract(filename, raw_data_location)    
+            engine.insert_data_from_file(fileloc)        
             localZip.close()
             
-            os.remove(filename)                                        
+            if not engine.keep_raw_data:
+                os.remove(fileloc)                              
             os.remove(archivename)
             
 
@@ -104,7 +107,7 @@ class DbTk_BBS(DbTk):
             engine.create_table()
             
             url = "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CWeather.exe"
-            archivename = url.split('/')[-1]
+            archivename = os.path.join(raw_data_location, url.split('/')[-1])
             webFile = urllib.urlopen(url)    
             localFile = open(archivename, 'wb')
             localFile.write(webFile.read())
@@ -114,13 +117,14 @@ class DbTk_BBS(DbTk):
             
             localZip = zipfile.ZipFile(archivename)    
             filename = "weather.csv"
+            fileloc = os.path.join(raw_data_location, filename)
                     
-            localFile = localZip.extract(filename)    
-            engine.insert_data_from_file(filename)        
+            localFile = localZip.extract(filename, raw_data_location)    
+            engine.insert_data_from_file(fileloc)
             localZip.close()
             
             if not engine.keep_raw_data:
-                os.remove(filename)                                        
+                os.remove(fileloc)                
             os.remove(archivename)
 
             
@@ -202,22 +206,23 @@ class DbTk_BBS(DbTk):
                         
                     print "Downloading and decompressing data from " + state + " . . ."
                     url = "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/C" + shortstate + ".exe"
-                    archivename = url.split('/')[-1]
+                    archivename = os.path.join(raw_data_location, url.split('/')[-1])
                     webFile = urllib.urlopen(url)    
                     localFile = open(archivename, 'wb')
                     localFile.write(webFile.read())
                     localFile.close()
                     webFile.close()    
                     
-                    localZip = zipfile.ZipFile(archivename)    
+                    localZip = zipfile.ZipFile(archivename)
                     filename = "C" + shortstate + ".csv"
+                    fileloc = os.path.join(raw_data_location, filename)
                             
-                    localFile = localZip.extract(filename)    
-                    engine.insert_data_from_file(filename)        
+                    localFile = localZip.extract(filename, raw_data_location)    
+                    engine.insert_data_from_file(fileloc)        
                     localZip.close()
                     
                     if not engine.keep_raw_data:
-                        os.remove(filename)                                        
+                        os.remove(fileloc)                     
                     os.remove(archivename)  
                             
                 except:
