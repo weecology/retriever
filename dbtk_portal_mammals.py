@@ -16,6 +16,7 @@ class DbTk_Portal_Mammals(DbTk):
     def download(self, engine=None):
         # Variables to get text file/create database
         engine = self.checkengine(engine)
+        engine.scriptname = self.name
         
         db = Database()
         db.dbname = "PortalProjectMammals"
@@ -34,9 +35,10 @@ class DbTk_Portal_Mammals(DbTk):
                        ("PlotTypeNumCode"       ,   ("int",)        ),
                        ("PlotTypeDescript"      ,   ("char", 30)    )]
         engine.table = table
-        engine.table.source = engine.open_url("http://wiki.ecologicaldata.org/sites/default/files/portal_plots.txt")
         engine.create_table()
-        engine.add_to_table()
+        
+        engine.insert_data_from_url("http://wiki.ecologicaldata.org/sites/default/files/portal_plots.txt")        
+        
         
         #Species table
         table = Table()
@@ -53,9 +55,10 @@ class DbTk_Portal_Mammals(DbTk):
                        ("Rodent"                ,   ("int",)        ),
                        ("ShrublandAffiliated"   ,   ("int",)        )]
         engine.table = table
-        engine.table.source = engine.open_url("http://wiki.ecologicaldata.org/sites/default/files/portal_species.txt")
         engine.create_table()
-        engine.add_to_table()
+        
+        engine.insert_data_from_url("http://wiki.ecologicaldata.org/sites/default/files/portal_species.txt")
+        
         
         # Main table
         table = Table()
@@ -94,9 +97,9 @@ class DbTk_Portal_Mammals(DbTk):
                        ("note4"                 ,   ("char", 2)     ),
                        ("note5"                 ,   ("char", 1)     )]
         engine.table = table
-        engine.table.source = engine.open_url("http://esapubs.org/archive/ecol/E090/118/Portal_rodent_19772002.csv")
         engine.create_table()
-        engine.add_to_table()
+        
+        engine.insert_data_from_url("http://esapubs.org/archive/ecol/E090/118/Portal_rodent_19772002.csv")
         
 
 if __name__ == "__main__":

@@ -17,6 +17,7 @@ class DbTk_Ernest(DbTk):
     def download(self, engine=None):    
         # Variables to get text file/create database
         engine = self.checkengine(engine)
+        engine.scriptname = self.name
         
         db = Database()
         db.dbname = "MammalLifeHistory"
@@ -47,10 +48,9 @@ class DbTk_Ernest(DbTk):
                        ("litters_peryear"       ,   ("double",)     ),
                        ("refs"                  ,   ("char", 30)    )]
         engine.table = table
-        engine.table.source = engine.open_url("http://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt")
-        
         engine.create_table()
-        engine.add_to_table()
+        
+        engine.insert_data_from_url("http://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt")
         
         
 if __name__ == "__main__":

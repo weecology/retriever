@@ -18,7 +18,7 @@ class DbTk_BBS(DbTk):
         try:
             # Variables to get text file/create database
             engine = self.checkengine(engine)
-            engine.create_raw_data_dir()
+            engine.scriptname = self.name            
             
             db = Database()
             db.dbname = "BBS"
@@ -111,11 +111,10 @@ class DbTk_BBS(DbTk):
                            ("regionname"            ,   ("char",30)     )]
             table.fixedwidth = [11, 11, 30]
             
-            engine.table = table                        
-            engine.table.source = engine.open_url("ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/RegionCodes.txt")
-            
-            engine.create_table()        
-            engine.add_to_table()            
+            engine.table = table
+            engine.create_table()
+                                    
+            engine.insert_data_from_url("ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/RegionCodes.txt")            
                         
             
             # Counts table
