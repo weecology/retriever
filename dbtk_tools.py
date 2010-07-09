@@ -54,6 +54,8 @@ warnings.filterwarnings("ignore")
 raw_data_location = "raw_data"
 
 class DbTk:
+    """This class represents a database toolkit script. Scripts should inherit from this class
+    and execute their code in the download method."""
     name = ""
     url = ""
     def download(self, engine=None):
@@ -65,22 +67,24 @@ class DbTk:
         return engine
     
 class Cleanup:
+    """This class represents a custom cleanup function and a dictionary of arguments
+    to be passed to that function."""
     def __init__(self, function, args):
         self.function = function
         self.args = args
 
 def no_cleanup(value, args):
-    """Default cleanup function, returns the unchanged value"""
+    """Default cleanup function, returns the unchanged value."""
     return value        
 
 class Database:
-    """Information about database to be passed to dbtk_tools.create_table"""
+    """Information about a database."""
     dbname = ""
     drop = True
     opts = dict()
     
 class Table:
-    """Information about table to be passed to dbtk_tools.create_table"""
+    """Information about a database table."""
     tablename = ""
     pk = True
     hasindex = False
@@ -94,6 +98,7 @@ class Table:
         self.cleanup = Cleanup(no_cleanup, None)        
     
 class Engine():
+    """A generic database system. Specific database platforms will inherit from this class."""
     name = ""
     db = None
     table = None
@@ -104,7 +109,8 @@ class Engine():
     datatypes = []
     required_opts = []
     pkformat = "%s PRIMARY KEY"
-    def add_to_table(self):        
+    def add_to_table(self):
+        """This function adds data to a table from one or more lines specified in engine.table.source."""        
         for line in self.table.source:
             
             line = line.strip()
@@ -142,7 +148,7 @@ class Engine():
         self.connection.commit()
         self.table.source.close()
     def convert_data_type(self, datatype):
-        """Converts DBTK generic data types to db engine specific data types"""
+        """Converts DBTK generic data types to database platform specific data types"""
         datatypes = dict()
         thistype = datatype[0]
         thispk = False
@@ -163,11 +169,12 @@ class Engine():
             type = self.pkformat % type
         return type    
     def create_db(self):
-        """Creates a database based on settings supplied in db object"""
+        """Creates a new database based on settings supplied in Database object engine.db"""
         print "Creating database " + self.db.dbname + " . . ."
         # Create the database    
         self.cursor.execute(self.create_db_statement())
     def create_db_statement(self):
+        """Returns a SQL statement to create a database."""
         if self.db.drop:
             self.cursor.execute(self.drop_statement("DATABASE", self.db.dbname))
             createstatement = "CREATE DATABASE " + self.db.dbname
@@ -175,13 +182,16 @@ class Engine():
             createstatement = "CREATE DATABASE IF NOT EXISTS " + db.dbname
         return createstatement
     def create_raw_data_dir(self):
+        """Checks to see if the archive directory exists and creates it if necessary."""
         if not os.path.exists(raw_data_location):
             os.makedirs(raw_data_location)
     def create_table(self):
+        """Creates a new database table based on settings supplied in Table object engine.table."""
         print "Creating table " + self.table.tablename + " in database " + self.db.dbname + " . . ."
         createstatement = self.create_table_statement()
         self.cursor.execute(createstatement)
     def create_table_statement(self):
+        """Returns a SQL statement to create a table."""
         if self.table.drop:
             self.cursor.execute(self.drop_statement("TABLE", self.tablename()))
             createstatement = "CREATE TABLE " + self.tablename() + " ("
@@ -195,9 +205,11 @@ class Engine():
         createstatement += " );"
         return createstatement
     def drop_statement(self, objecttype, objectname):
+        """Returns a drop table or database SQL statement."""
         dropstatement = "DROP %s IF EXISTS %s" % (objecttype, objectname)
         return dropstatement
     def extract_values(self, line):
+        """Given a line of data, this function returns a list of the individual data values."""
         if self.table.fixedwidth:
             pos = 0
             values = []
@@ -208,8 +220,10 @@ class Engine():
         else:
             return line.split(self.table.delimiter)
     def format_filename(self, filename):
+        """Returns the full path of a file in the archive directory."""
         return os.path.join(raw_data_location, self.scriptname + " - " + filename)
     def format_insert_value(self, value):
+        """Formats a value for an insert statement, for example by surrounding it in single quotes."""
         strvalue = str(value)
         if strvalue.lower() == "null":
             return "null"
@@ -222,6 +236,7 @@ class Engine():
         else:
             return "null"
     def get_input(self):
+        """Manually get user input for connection information when script is run from terminal."""
         for opt in self.required_opts:
             if self.opts[opt[0]] == "":
                 if opt[0] == "password":
@@ -232,6 +247,7 @@ class Engine():
             if self.opts[opt[0]] in ["", "default"]:
                 self.opts[opt[0]] = opt[2]    
     def get_insert_columns(self, join=True):
+        """Gets a set of column names for insert statements."""
         columns = ""
         for item in self.table.columns:
             thistype = item[1][0]
@@ -244,6 +260,8 @@ class Engine():
         else:
             return columns.lstrip("(").rstrip(")").split(", ")
     def insert_data_from_archive(self, url, filename):
+        """Insert data from a file located in an online archive. This function extracts the
+        file, inserts the data, and deletes the file if raw data archiving is not set."""
         if self.use_local and os.path.isfile(self.format_filename(filename)):
             # Use local copy
             print "Using local copy of " + filename
@@ -275,26 +293,34 @@ class Engine():
             if not self.keep_raw_data:
                 os.remove(fileloc)            
     def insert_data_from_file(self, filename):
+        """The default function to insert data from a file. This function simply inserts the 
+        data row by row. Database platforms with support for inserting bulk data from files
+        can override this function."""
         self.table.source = self.skip_rows(self.table.header_rows, open(filename, "r"))        
         self.add_to_table()
     def insert_data_from_url(self, url):
+        """Insert data from a web resource, such as a text file."""
         filename = url.split('/')[-1]
         if self.use_local and os.path.isfile(self.format_filename(filename)):
             # Use local copy
             print "Using local copy of " + filename
             self.insert_data_from_file(self.format_filename(filename))            
         else:
-            self.table.source = self.skip_rows(self.table.header_rows, urllib.urlopen(url))
             if self.keep_raw_data:
-                # Save a copy of the file locally
+                # Save a copy of the file locally, then load from that file
                 self.create_raw_data_dir()                        
                 print "Saving a copy of " + filename + " . . ."
                 webFile = urllib.urlopen(url)   
                 localFile = open(self.format_filename(filename), 'wb')
                 localFile.write(webFile.read())
                 localFile.close()
-            self.add_to_table()
+                self.insert_data_from_file(self.format_filename(filename))
+            else:
+                # Don't save the file, just load it from the web resource
+                self.table.source = self.skip_rows(self.table.header_rows, urllib.urlopen(url))
+                self.add_to_table()
     def insert_statement(self, values):
+        """Returns a SQL statement to insert a set of values."""
         columns = self.get_insert_columns()
         columncount = len(self.get_insert_columns(False))
         insertstatement = "INSERT INTO " + self.tablename()
@@ -307,16 +333,18 @@ class Engine():
         insertstatement %= tuple(values)
         return insertstatement        
     def skip_rows(self, rows, source):
-        """Skip over the header lines by reading them before processing"""
+        """Skip over the header lines by reading them before processing."""
         if rows > 0:
             for i in range(rows):
                 line = source.readline()
         return source
-    def tablename(self):        
+    def tablename(self):
+        """Returns the full tablename in the format db.table."""        
         return self.db.dbname + "." + self.table.tablename
 
 
 class MySQLEngine(Engine):
+    """Engine instance for MySQL."""
     name = "MySQL"
     datatypes = ["INT(5) NOT NULL AUTO_INCREMENT", 
                  "INT", 
@@ -328,6 +356,7 @@ class MySQLEngine(Engine):
                      ["hostname", "Enter your MySQL host or press Enter for the default (localhost): ", "localhost"],
                      ["sqlport", "Enter your MySQL port or press Enter for the default (3306): ", 3306]]
     def insert_data_from_file(self, filename):
+        """Calls MySQL "LOAD DATA LOCAL INFILE" statement to perform a bulk insert."""
         if self.table.cleanup.function == no_cleanup:
             print "Inserting data from " + filename + " . . ."
                 
@@ -344,6 +373,7 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
         else:
             return Engine.insert_data_from_file(self, filename)            
     def get_cursor(self):
+        """Gets the db connection and cursor."""
         import MySQLdb as dbapi
         self.get_input()                
         self.connection = dbapi.connect(host = self.opts["hostname"],
@@ -354,6 +384,7 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
 
 
 class PostgreSQLEngine(Engine):
+    """Engine instance for PostgreSQL."""
     name = "PostgreSQL"
     datatypes = ["serial", 
                  "integer", 
@@ -366,15 +397,18 @@ class PostgreSQLEngine(Engine):
              ["sqlport", "Enter your PostgreSQL port or press Enter for the default (5432): ", 5432],
              ["database", "Enter your PostgreSQL database name or press Enter for the default (postgres): ", "postgres"]]
     def create_db_statement(self):
-        """Creates a schema based on settings supplied in db object"""
+        """In PostgreSQL, the equivalent of a SQL database is a schema."""
         return Engine.create_db_statement(self).replace(" DATABASE ", " SCHEMA ")
     def create_table(self):
+        """PostgreSQL needs to commit operations individually."""
         Engine.create_table(self)
         self.connection.commit()
     def drop_statement(self, objecttype, objectname):
+        """In PostgreSQL, the equivalent of a SQL database is a schema."""
         dropstatement = Engine.drop_statement(self, objecttype, objectname) + " CASCADE;"
         return dropstatement.replace(" DATABASE ", " SCHEMA ")    
     def insert_data_from_file(self, filename):
+        """Use PostgreSQL's "COPY FROM" statement to perform a bulk insert."""
         if ([self.table.cleanup.function, self.table.delimiter, self.table.header_rows] == 
                                                         [no_cleanup, ",", 1]):        
             print "Inserting data from " + filename + " . . ."
@@ -395,6 +429,7 @@ CSV HEADER"""
         else:
             return Engine.insert_data_from_file(self, filename)                
     def get_cursor(self):
+        """Gets the db connection and cursor."""
         import psycopg2 as dbapi    
         self.get_input()            
         self.connection = dbapi.connect(host = self.opts["hostname"],
@@ -406,6 +441,7 @@ CSV HEADER"""
 
 
 class SQLiteEngine(Engine):
+    """Engine instance for SQLite."""
     name = "SQLite"
     datatypes = ["INTEGER",
                  "INTEGER",
@@ -414,10 +450,13 @@ class SQLiteEngine(Engine):
                  "INTEGER"]
     required_opts = [["database", "Enter the filename of your SQLite database: ", "sqlite.db"]]
     def create_db(self):
+        """SQLite doesn't create databases; each database is a file and needs a separate connection."""
         return None
-    def tablename(self):        
+    def tablename(self):
+        """The database file is specifically connected to, so database.table is not necessary."""        
         return "'" + self.table.tablename + "'"    
     def get_cursor(self):
+        """Gets the db connection and cursor."""
         import sqlite3 as dbapi    
         self.get_input()
         self.connection = dbapi.connect(self.opts["database"])
@@ -486,6 +525,7 @@ def choose_engine(opts):
 all_engines = [MySQLEngine(), PostgreSQLEngine(), SQLiteEngine()]
 
 def final_cleanup():
+    """Perform final cleanup operations after all scripts have run."""
     try:
         os.rmdir(raw_data_location)
     except OSError:

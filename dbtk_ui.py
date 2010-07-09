@@ -7,6 +7,7 @@ def launch_wizard(dbtk_list, engine_list):
     print "Launching Database Toolkit wizard . . ."
     
     def download_scripts():
+        """This function is called to download all selected scripts."""
         engine = page[2].engine
         options = page[2].option
         engine.keep_raw_data = page[1].keepdata.Value
@@ -31,11 +32,15 @@ def launch_wizard(dbtk_list, engine_list):
                                    maximum = len(scripts))
         dialog.Show()
         scriptnum = 0
+        
         class update_dialog:
+            """This function is called whenever the print statement is used, and redirects the output
+            to the progress dialog."""
             def write(self, s):                
                 txt = s.strip().translate(None, "\b")
                 if txt:
                     dialog.Update(scriptnum - 1, msg + "\n" + txt)
+                    
         sys.stdout = update_dialog()
         for script in scripts:
             scriptnum += 1
@@ -54,6 +59,7 @@ def launch_wizard(dbtk_list, engine_list):
     
     
     class TitledPage(wx.wizard.WizardPageSimple):
+        """A standard wizard page with a title and label."""
         def __init__(self, parent, title, label):
             wx.wizard.WizardPageSimple.__init__(self, parent)
             self.sizer = wx.BoxSizer(wx.VERTICAL)
@@ -69,6 +75,7 @@ def launch_wizard(dbtk_list, engine_list):
     
     
     class ConnectionInfoPage(TitledPage):
+        """The connection info page."""
         def __init__(self, parent, title, label):
             TitledPage.__init__(self, parent, title, label)
             #wx.wizard.EVT_WIZARD_PAGE_CHANGING(self, self.GetId(), self.Draw())        
@@ -76,6 +83,8 @@ def launch_wizard(dbtk_list, engine_list):
             self.sel = ""
             self.fields = wx.BoxSizer(wx.VERTICAL)
         def Draw(self, evt):
+            """When the page is drawn, it may need to update its fields if the selected 
+            database has changed."""
             if len(page[1].dblist.GetStringSelection()) == 0 and evt.Direction:
                 evt.Veto()                  
             else:
@@ -108,6 +117,7 @@ def launch_wizard(dbtk_list, engine_list):
     
     
     class DatasetPage(TitledPage):
+        """The dataset selection page."""
         def __init__(self, parent, title, label):        
             TitledPage.__init__(self, parent, title, label)
             scripts = [script.name for script in dbtk_list]
@@ -116,34 +126,35 @@ def launch_wizard(dbtk_list, engine_list):
             self.sizer.Add(self.scriptlist)
             self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CheckValues)
         def CheckValues(self, evt):  
+            """Users can't continue from this page without checking at least one dataset."""
             if len(self.scriptlist.GetCheckedStrings()) == 0 and evt.Direction:
                 evt.Veto()
 
 
     class LastPage(TitledPage):
+        """The final page."""
         def __init__(self, parent, title, label):
             TitledPage.__init__(self, parent, title, label)
             self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGED, self.DisableBackButton)
         def DisableBackButton(self, evt):
+            """After downloading, the user cannot go back."""
             wizard.FindWindowById(wx.ID_BACKWARD).Enable(False)            
                 
     
     class DownloadPage(TitledPage):
+        """The download page."""
         def __init__(self, parent, title, label):
             TitledPage.__init__(self, parent, title, label)
             self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.Download)            
         def Download(self, evt):
+            """Clicking next will trigger the dataset download function before proceeding."""
             if evt.Direction:
                 download_scripts()
-            
-                                
-    class Wizard(wx.wizard.Wizard):
-        pass        
     
     
     app = wx.PySimpleApp(False)
     
-    wizard = Wizard(None, -1, "Database Toolkit Wizard")
+    wizard = wx.wizard.Wizard(None, -1, "Database Toolkit Wizard")
     page = []
     if len(dbtk_list) > 1:
         dataset = "common ecological datasets"
@@ -189,5 +200,6 @@ Supported database systems currently include:\n\n""" + ", ".join([db.name for db
         wx.wizard.WizardPageSimple_Chain(page[i], page[i + 1])
         
     wizard.FitToPage(page[0])    
+
     wizard.RunWizard(page[0])        
     wizard.Destroy()
