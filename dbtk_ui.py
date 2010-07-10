@@ -1,7 +1,11 @@
+"""Database Toolkit UI
+This module contains the UI elements of the database toolkit platform.
+"""
+
 import sys
 import wx
 import wx.wizard
-from dbtk_tools import *
+from dbtk_models import *
 
 def launch_wizard(dbtk_list, engine_list):
     print "Launching Database Toolkit wizard . . ."        
