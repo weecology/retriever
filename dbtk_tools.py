@@ -19,7 +19,7 @@ class DbTk:
         if not engine:
             opts = get_opts()        
             engine = choose_engine(opts)
-            engine.script = self
+        engine.script = self            
         return engine
     
     
