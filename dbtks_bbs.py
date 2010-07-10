@@ -8,13 +8,13 @@ from dbtk_ui import *
 
 class DbTk_BBS(DbTk):
     name = "USGS North American Breeding Bird Survey"
+    shortname = "BBS"
     url = "http://www.pwrc.usgs.gov/BBS/"
     required_opts = []
     def download(self, engine=None):    
         try:
             # Variables to get text file/create database
-            engine = self.checkengine(engine)
-            engine.scriptname = self.name            
+            engine = self.checkengine(engine)            
             
             db = Database()
             db.dbname = "BBS"

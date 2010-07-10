@@ -59,7 +59,7 @@ class Engine():
     datatypes = []
     required_opts = []
     pkformat = "%s PRIMARY KEY"
-    scriptname = ""    
+    script = None    
     def add_to_table(self):
         """This function adds data to a table from one or more lines specified in engine.table.source."""        
         for line in self.table.source:
@@ -172,7 +172,7 @@ class Engine():
             return line.split(self.table.delimiter)
     def format_filename(self, filename):
         """Returns the full path of a file in the archive directory."""
-        return os.path.join(raw_data_location, self.scriptname + " - " + filename)
+        return os.path.join(raw_data_location, self.script.shortname + " - " + filename)
     def format_insert_value(self, value):
         """Formats a value for an insert statement, for example by surrounding it in single quotes."""
         strvalue = str(value)
