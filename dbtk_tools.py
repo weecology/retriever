@@ -20,6 +20,16 @@ class DbTk:
             engine = choose_engine(opts)
         return engine
     
+    
+def correct_invalid_value(value, args):
+    try:
+        if value in args["nulls"]:            
+            return None
+        else:
+            return value
+    except ValueError:
+        return value    
+    
 
 def final_cleanup():
     """Perform final cleanup operations after all scripts have run."""

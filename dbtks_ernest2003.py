@@ -3,7 +3,6 @@ Setup and install the Mammalian Life History Database published by Ernest
 (2003) in Ecological Archives. 
 """
 
-import datacleanup
 from dbtk_ui import *
 
 class DbTk_Ernest(DbTk):
@@ -23,8 +22,7 @@ class DbTk_Ernest(DbTk):
         
         table = Table()
         table.tablename = "species"        
-        table.cleanup = Cleanup(datacleanup.correct_invalid_value, 
-                                {"nulls":("-999", "-999.00", -999)} )
+        table.cleanup = Cleanup(correct_invalid_value, {"nulls":("-999", "-999.00", -999)} )
         
         # Database column names and their data types. Use data type "skip" to skip the value, and
         # "combine" to merge a string value into the previous column
