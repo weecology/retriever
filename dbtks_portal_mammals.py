@@ -62,8 +62,7 @@ class DbTk_Portal_Mammals(DbTk):
         table.tablename = "main"
         table.hasindex = True
         table.delimiter = ","
-        table.cleanup = Cleanup(datacleanup.correct_invalid_value, 
-                                {"nulls":('', 0, '0')} )        
+        table.cleanup = Cleanup(correct_invalid_value, {"nulls":('', 0, '0')} )        
         table.columns=[("ID"                    ,   ("pk-auto",)    ),
                        ("month"                 ,   ("int",)        ),
                        ("day"                   ,   ("int",)        ),

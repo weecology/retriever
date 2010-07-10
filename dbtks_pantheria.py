@@ -1,7 +1,6 @@
 """Database Toolkit for Pantheria dataset
 """
 
-import datacleanup
 from dbtk_ui import *
 
 class DbTk_Pantheria(DbTk):
@@ -21,8 +20,7 @@ class DbTk_Pantheria(DbTk):
         
         table = Table()
         table.tablename = "pantheria"        
-        table.cleanup = Cleanup(datacleanup.correct_invalid_value, 
-                                {"nulls":("-999", "-999.00", -999)} )
+        table.cleanup = Cleanup(correct_invalid_value, {"nulls":("-999", "-999.00", -999)} )
         
         table.columns=[("species_id"            ,   ("pk-auto",)    ),
                        ("sporder"               ,   ("char", 20)    ),

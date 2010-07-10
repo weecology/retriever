@@ -236,10 +236,10 @@ class Engine():
             unzipped_file.close()
             open_zip.close()
             
-            local_zip.close()
-            os.remove(archivename)
-                
-            self.insert_data_from_file(fileloc)            
+            local_zip.close()                            
+            self.insert_data_from_file(fileloc)
+            
+            os.remove(archivename)            
             
             if not self.keep_raw_data:
                 os.remove(fileloc)            
@@ -326,4 +326,4 @@ def get_opts():
     except getopt.GetoptError:
         pass
     
-    return optsdict       
+    return optsdict
