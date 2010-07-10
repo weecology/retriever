@@ -4,8 +4,7 @@
 import os
 import urllib
 import zipfile
-from dbtk_models import *
-import dbtk_ui
+from dbtk_ui import *
 
 class DbTk_BBS(DbTk):
     name = "USGS North American Breeding Bird Survey"
@@ -180,7 +179,7 @@ class DbTk_BBS(DbTk):
 if __name__ == "__main__":
     me = DbTk_BBS()
     if len(sys.argv) == 1:                
-        dbtk_ui.launch_wizard([me], all_engines)
+        launch_wizard([me], all_engines)
     else:
         me.download()
         final_cleanup()

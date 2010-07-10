@@ -2,8 +2,7 @@
 """
 
 import datacleanup
-from dbtk_engines import *
-import dbtk_ui
+from dbtk_ui import *
 
 class DbTk_Pantheria(DbTk):
     name = "Pantheria"
@@ -91,7 +90,7 @@ class DbTk_Pantheria(DbTk):
 if __name__ == "__main__":
     me = DbTk_Pantheria()
     if len(sys.argv) == 1:                
-        dbtk_ui.launch_wizard([me], all_engines)
+        launch_wizard([me], all_engines)
     else:
         me.download()
         final_cleanup()
