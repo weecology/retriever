@@ -11,6 +11,7 @@ class DbTk:
     """This class represents a database toolkit script. Scripts should inherit from this class
     and execute their code in the download method."""
     name = ""
+    shortname = ""
     url = ""
     def download(self, engine=None):
         pass
@@ -18,6 +19,7 @@ class DbTk:
         if not engine:
             opts = get_opts()        
             engine = choose_engine(opts)
+            engine.script = self
         return engine
     
     

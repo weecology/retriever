@@ -9,11 +9,11 @@ from dbtk_ui import *
 
 class DbTk_Portal_Mammals(DbTk):
     name = "Portal Project Mammals"
+    shortname = "PortalMammals"
     required_opts = []
     def download(self, engine=None):
         # Variables to get text file/create database
         engine = self.checkengine(engine)
-        engine.scriptname = self.name
         
         db = Database()
         db.dbname = "PortalProjectMammals"
