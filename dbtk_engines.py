@@ -124,4 +124,29 @@ class SQLiteEngine(Engine):
         self.connection = dbapi.connect(self.opts["database"])
         self.cursor = self.connection.cursor()
         
+        
+def choose_engine(opts):
+    """Prompts the user to select a database engine"""    
+    enginename = opts["engine"]
+    
+    if enginename == "":
+        print "Choose a database engine:"
+        print "    (m) MySQL"
+        print "    (p) PostgreSQL"
+        print "    (s) SQLite"
+        enginename = raw_input(": ")
+        enginename = enginename.lower()
+    
+    engine = Engine()
+    if enginename == "mysql" or enginename == "m" or enginename == "":
+        engine = MySQLEngine()
+    elif enginename == "postgresql" or enginename == "p":
+        engine = PostgreSQLEngine()
+    elif enginename == "sqlite" or enginename == "s":
+        engine = SQLiteEngine()
+        
+    engine.opts = opts
+    return engine        
+        
+
 all_engines = [MySQLEngine(), PostgreSQLEngine(), SQLiteEngine()]

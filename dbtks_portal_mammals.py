@@ -5,8 +5,7 @@ Dataset published by Ernest et al. 2009 in Ecological Archives.
 #TO DO - confirm column reversal with authors and correct
 
 import datacleanup
-from dbtk_engines import *
-import dbtk_ui
+from dbtk_ui import *
 
 class DbTk_Portal_Mammals(DbTk):
     name = "Portal Project Mammals"
@@ -103,7 +102,7 @@ class DbTk_Portal_Mammals(DbTk):
 if __name__ == "__main__":
     me = DbTk_Portal_Mammals()
     if len(sys.argv) == 1:
-        dbtk_ui.launch_wizard([me], all_engines)
+        launch_wizard([me], all_engines)
     else:
         me.download()
         final_cleanup()

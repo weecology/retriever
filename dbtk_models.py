@@ -1,29 +1,20 @@
 """Database Toolkit Data Model
 This module contains basic class definitions for the Database Toolkit platform.
 
-     DbTk: Represents a DBTK script.
  Database: Represents a database to be created.
     Table: Represents an individual table in a Database.
    Engine: Contains the Database and Table objects and database platform-specific methods to
            manipulate databases.
 """
 
+import sys
+import os
+import getpass
+import getopt
 import zipfile
 import urllib
-from dbtk_tools import *
 
-class DbTk:
-    """This class represents a database toolkit script. Scripts should inherit from this class
-    and execute their code in the download method."""
-    name = ""
-    url = ""
-    def download(self, engine=None):
-        pass
-    def checkengine(self, engine=None):
-        if not engine:
-            opts = get_opts()        
-            engine = choose_engine(opts)
-        return engine
+raw_data_location = "raw_data"
     
 class Cleanup:
     """This class represents a custom cleanup function and a dictionary of arguments
@@ -301,3 +292,38 @@ class Engine():
     def tablename(self):
         """Returns the full tablename in the format db.table."""        
         return self.db.dbname + "." + self.table.tablename
+    
+def get_opts():
+    """Checks for command line arguments"""
+    optsdict = dict()
+    for i in ["engine", "username", "password", "hostname", "sqlport", "database"]:
+        optsdict[i] = ""
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "e:u:p:hod", ["engine=", "user=", "password=", "host=", "port=", "database="])        
+        for opt, arg in opts:            
+            if opt in ("-e", "--engine"):      
+                optsdict["engine"] = arg                            
+            if opt in ("-u", "--user"):      
+                optsdict["username"] = arg                            
+            elif opt in ("-p", "--password"):     
+                optsdict["password"] = arg
+            elif opt in ("-h", "--host"):                 
+                if arg == "":
+                    optsdict["hostname"] = "default"
+                else:
+                    optsdict["hostname"] = arg
+            elif opt in ("-o", "--port"): 
+                try:
+                    optsdict["sqlport"] = int(arg)
+                except ValueError:
+                    optsdict["sqlport"] = "default"                 
+            elif opt in ("-d", "--database"): 
+                if arg == "":
+                    optsdict["database"] = "default"
+                else:
+                    optsdict["database"] = arg                                 
+                 
+    except getopt.GetoptError:
+        pass
+    
+    return optsdict       
