@@ -4,58 +4,7 @@ import wx.wizard
 from dbtk_tools import *
 
 def launch_wizard(dbtk_list, engine_list):
-    print "Launching Database Toolkit wizard . . ."
-    
-    def download_scripts():
-        """This function is called to download all selected scripts."""
-        engine = page[2].engine
-        options = page[2].option
-        engine.keep_raw_data = page[1].keepdata.Value
-        engine.use_local = page[1].uselocal
-        opts = dict()
-        for key in options.keys():
-            opts[key] = options[key].GetValue()
-        engine.opts = opts
-        engine.get_cursor()
-        
-        scripts = []
-        for script in dbtk_list:
-            dl = False
-            if len(dbtk_list) > 1:
-                if script.name in page[3].scriptlist.GetCheckedStrings():
-                    dl = True
-            else:
-                dl = True
-            if dl:
-                scripts.append(script)
-        dialog = wx.ProgressDialog('Download Progress', 'Downloading datasets . . . . . . . . . . . . . .\n', 
-                                   maximum = len(scripts))
-        dialog.Show()
-        scriptnum = 0
-        
-        class update_dialog:
-            """This function is called whenever the print statement is used, and redirects the output
-            to the progress dialog."""
-            def write(self, s):                
-                txt = s.strip().translate(None, "\b")
-                if txt:
-                    dialog.Update(scriptnum - 1, msg + "\n" + txt)
-                    
-        sys.stdout = update_dialog()
-        for script in scripts:
-            scriptnum += 1
-            msg = "Downloading " + script.name
-            if len(scripts) > 0:
-                msg += " (" + str(scriptnum) + " of " + str(len(scripts)) + ")" 
-            msg += " . . ."                               
-            try:
-                script.download(engine)                
-            except:
-                print "There was an error downloading " + script.name
-                raise
-        print "Finishing . . ."
-        final_cleanup()
-        dialog.Update(len(scripts), "Finished!")        
+    print "Launching Database Toolkit wizard . . ."        
     
     
     class TitledPage(wx.wizard.WizardPageSimple):
@@ -128,28 +77,7 @@ def launch_wizard(dbtk_list, engine_list):
         def CheckValues(self, evt):  
             """Users can't continue from this page without checking at least one dataset."""
             if len(self.scriptlist.GetCheckedStrings()) == 0 and evt.Direction:
-                evt.Veto()
-
-
-    class LastPage(TitledPage):
-        """The final page."""
-        def __init__(self, parent, title, label):
-            TitledPage.__init__(self, parent, title, label)
-            self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGED, self.DisableBackButton)
-        def DisableBackButton(self, evt):
-            """After downloading, the user cannot go back."""
-            wizard.FindWindowById(wx.ID_BACKWARD).Enable(False)            
-                
-    
-    class DownloadPage(TitledPage):
-        """The download page."""
-        def __init__(self, parent, title, label):
-            TitledPage.__init__(self, parent, title, label)
-            self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.Download)            
-        def Download(self, evt):
-            """Clicking next will trigger the dataset download function before proceeding."""
-            if evt.Direction:
-                download_scripts()
+                evt.Veto()                
     
     
     app = wx.PySimpleApp(False)
@@ -192,14 +120,81 @@ Supported database systems currently include:\n\n""" + ", ".join([db.name for db
     if len(dbtk_list) > 1:
         page.append(DatasetPage(wizard, "Select Datasets", "Check each dataset to be downloaded:\n"))
     
-    page.append(DownloadPage(wizard, "Finished", "That's it! Click Next to download and install your data."))
-    
-    page.append(LastPage(wizard, "Finished", "Your downloads are complete. Click Finish to exit."))
+    page.append(TitledPage(wizard, "Finished", "That's it! Click Next to download and install your data."))
+
     
     for i in range(len(page) - 1):
         wx.wizard.WizardPageSimple_Chain(page[i], page[i + 1])
         
     wizard.FitToPage(page[0])    
 
-    wizard.RunWizard(page[0])        
+    if wizard.RunWizard(page[0]):
+        engine = page[2].engine
+        options = page[2].option
+        engine.keep_raw_data = page[1].keepdata.Value
+        engine.use_local = page[1].uselocal
+        opts = dict()
+        for key in options.keys():
+            opts[key] = options[key].GetValue()
+        engine.opts = opts
+        engine.get_cursor()
+        
+        scripts = []
+        for script in dbtk_list:
+            dl = False
+            if len(dbtk_list) > 1:
+                if script.name in page[3].scriptlist.GetCheckedStrings():
+                    dl = True
+            else:
+                dl = True
+            if dl:
+                scripts.append(script)
+        dialog = wx.ProgressDialog('Download Progress', 'Downloading datasets . . . . . . . . . . . . . .\n', 
+                                   maximum = len(scripts), style=wx.PD_CAN_ABORT | wx.PD_CAN_SKIP)
+        dialog.Show()
+        scriptnum = 0
+        
+        class UserSkipped(Exception):
+            pass        
+        class UserAborted(Exception):
+            pass
+        
+        class update_dialog:
+            """This function is called whenever the print statement is used, and redirects the output
+            to the progress dialog."""
+            def write(self, s):                
+                txt = s.strip().translate(None, "\b")
+                if txt:
+                    (keepgoing, skip) = dialog.Update(scriptnum - 1, msg + "\n" + txt)
+                    if not keepgoing:
+                        raise UserAborted
+                    if skip:
+                        raise UserSkipped
+                    
+        sys.stdout = update_dialog()
+        errors = []
+        for script in scripts:
+            scriptnum += 1
+            msg = "Downloading " + script.name
+            if len(scripts) > 0:
+                msg += " (" + str(scriptnum) + " of " + str(len(scripts)) + ")" 
+            msg += " . . ."                               
+            try:
+                script.download(engine)
+            except UserSkipped:
+                errors.append("Skipped " + script.name + ".")
+            except UserAborted:
+                dialog.Destroy()
+                wx.MessageBox("Aborted.")
+            except:
+                errors.append("There was an error downloading " + script.name + ".")
+                
+        print "Finishing . . ."
+        final_cleanup()
+        dialog.Update(len(scripts), "Finished!")
+        if errors:
+            wx.MessageBox("The following errors occurred: \n" + '\n'.join(errors))
+        else:
+            wx.MessageBox("Your downloads were completed successfully.")
+                
     wizard.Destroy()
