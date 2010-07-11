@@ -3,7 +3,7 @@
 
 from dbtk_ui import *
 
-class DbTk_Pantheria(DbTk):
+class Pantheria(DbTk):
     name = "Pantheria"
     shortname = "Pantheria"
     url = ""
@@ -88,7 +88,7 @@ class DbTk_Pantheria(DbTk):
 if __name__ == "__main__":
     me = DbTk_Pantheria()
     if len(sys.argv) == 1:                
-        launch_wizard([me], all_engines)
+        launch_wizard([me], ALL_ENGINES)
     else:
         me.download()
         final_cleanup()

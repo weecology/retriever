@@ -7,7 +7,7 @@ Dataset published by Ernest et al. 2009 in Ecological Archives.
 import datacleanup
 from dbtk_ui import *
 
-class DbTk_Portal_Mammals(DbTk):
+class PortalMammals(DbTk):
     name = "Portal Project Mammals"
     shortname = "PortalMammals"
     required_opts = []
@@ -101,7 +101,7 @@ class DbTk_Portal_Mammals(DbTk):
 if __name__ == "__main__":
     me = DbTk_Portal_Mammals()
     if len(sys.argv) == 1:
-        launch_wizard([me], all_engines)
+        launch_wizard([me], ALL_ENGINES)
     else:
         me.download()
         final_cleanup()

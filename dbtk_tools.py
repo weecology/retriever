@@ -36,6 +36,6 @@ def correct_invalid_value(value, args):
 def final_cleanup():
     """Perform final cleanup operations after all scripts have run."""
     try:
-        os.rmdir(raw_data_location)
+        os.rmdir(RAW_DATA_LOCATION)
     except OSError:
         pass

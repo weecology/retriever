@@ -1,7 +1,7 @@
 """Database Toolkit Engines
 This module contains Engine class implementations for each supported database 
 system.
-Importing all_engines from this module will give a list of each Engine class.
+Importing ALL_ENGINES from this module will give a list of each Engine class.
 """
 
 from dbtk_models import *
@@ -95,8 +95,8 @@ class PostgreSQLEngine(Engine):
         """Use PostgreSQL's "COPY FROM" statement to perform a bulk insert."""
         if ([self.table.cleanup.function, self.table.delimiter, 
              self.table.header_rows] == [no_cleanup, ",", 1]):        
-            print "Inserting data from " + os.path.basename(filename). \
-                    replace(self.script.shortname + " - ", "") + " . . ."
+            print "Inserting data from " + os.path.basename(filename) \
+                    .replace(self.script.shortname + " - ", "") + " . . ."
                 
             columns = self.get_insert_columns()    
             filename = os.path.abspath(filename)
@@ -176,4 +176,4 @@ def choose_engine(opts):
     return engine        
         
 
-all_engines = [MySQLEngine(), PostgreSQLEngine(), SQLiteEngine()]
+ALL_ENGINES = [MySQLEngine(), PostgreSQLEngine(), SQLiteEngine()]

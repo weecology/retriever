@@ -14,7 +14,7 @@ import getopt
 import zipfile
 import urllib
 
-raw_data_location = "raw_data"
+RAW_DATA_LOCATION = "raw_data"
     
 class Cleanup:
     """This class represents a custom cleanup function and a dictionary of 
@@ -147,8 +147,8 @@ class Engine():
     def create_raw_data_dir(self):
         """Checks to see if the archive directory exists and creates it if 
         necessary."""
-        if not os.path.exists(raw_data_location):
-            os.makedirs(raw_data_location)
+        if not os.path.exists(RAW_DATA_LOCATION):
+            os.makedirs(RAW_DATA_LOCATION)
     def create_table(self):
         """Creates a new database table based on settings supplied in Table 
         object engine.table."""
@@ -189,7 +189,7 @@ class Engine():
             return line.split(self.table.delimiter)
     def format_filename(self, filename):
         """Returns the full path of a file in the archive directory."""
-        return os.path.join(raw_data_location, 
+        return os.path.join(RAW_DATA_LOCATION, 
                             self.script.shortname + " - " + filename)
     def format_insert_value(self, value):
         """Formats a value for an insert statement, for example by surrounding
@@ -241,7 +241,7 @@ class Engine():
         else:
             self.create_raw_data_dir()
             
-            archivename = os.path.join(raw_data_location, url.split('/')[-1])
+            archivename = os.path.join(RAW_DATA_LOCATION, url.split('/')[-1])
             web_file = urllib.urlopen(url)    
             local_zip = open(archivename, 'wb')
             local_zip.write(web_file.read())
