@@ -5,7 +5,7 @@ Setup and install the Mammalian Life History Database published by Ernest
 
 from dbtk_ui import *
 
-class DbTk_Ernest(DbTk):
+class MammalLifeHistory(DbTk):
     name = "Mammalian Life History Database"
     shortname = "MammalLH"
     url = ""
@@ -50,7 +50,7 @@ class DbTk_Ernest(DbTk):
 if __name__ == "__main__":
     me = DbTk_Ernest()
     if len(sys.argv) == 1:                
-        launch_wizard([me], all_engines)
+        launch_wizard([me], ALL_ENGINES)
     else:
         me.download()
         final_cleanup()

@@ -8,9 +8,9 @@ from dbtks_bbs import *
 from dbtks_portal_mammals import *
 import dbtk_ui
 
-dbtk_list = [DbTk_Ernest(), 
-             DbTk_Pantheria(), 
-             DbTk_BBS(), 
-             DbTk_Portal_Mammals()]
+DBTK_LIST = [MammalLifeHistory(), 
+             Pantheria(), 
+             BBS(), 
+             PortalMammals()]
 
-dbtk_ui.launch_wizard(dbtk_list, all_engines)
+dbtk_ui.launch_wizard(DBTK_LIST, ALL_ENGINES)
