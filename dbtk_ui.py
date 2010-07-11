@@ -27,17 +27,16 @@ def launch_wizard(dbtk_list, engine_list):
                 self.sizer.Add(wx.StaticText(self, -1, label))
     
     
-    class ConnectionInfoPage(TitledPage):
+    class ConnectPage(TitledPage):
         """The connection info page."""
         def __init__(self, parent, title, label):
-            TitledPage.__init__(self, parent, title, label)
-            #wx.wizard.EVT_WIZARD_PAGE_CHANGING(self, self.GetId(), self.Draw())        
+            TitledPage.__init__(self, parent, title, label)        
             self.option = dict()
             self.sel = ""
             self.fields = wx.BoxSizer(wx.VERTICAL)
         def Draw(self, evt):
-            """When the page is drawn, it may need to update its fields if the selected 
-            database has changed."""
+            """When the page is drawn, it may need to update its fields if 
+            the selected database has changed."""
             if len(page[1].dblist.GetStringSelection()) == 0 and evt.Direction:
                 evt.Veto()                  
             else:
@@ -53,14 +52,19 @@ def launch_wizard(dbtk_list, engine_list):
                     self.option = dict()
                     for opt in self.engine.required_opts:
                         self.fieldset[opt[0]] = wx.BoxSizer(wx.HORIZONTAL)
-                        label = wx.StaticText(self, -1, opt[0] + ": ", size=wx.Size(90,35))
+                        label = wx.StaticText(self, -1, opt[0] + ": ", 
+                                              size=wx.Size(90,35))
                         if opt[0] == "password":
-                            self.option[opt[0]] = wx.TextCtrl(self, -1, str(opt[2]), 
-                                                              size=wx.Size(200,-1), style=wx.TE_PASSWORD)
+                            txt = wx.TextCtrl(self, -1, 
+                                              str(opt[2]), 
+                                              size=wx.Size(200,-1), 
+                                              style=wx.TE_PASSWORD)
                         else:
-                            self.option[opt[0]] = wx.TextCtrl(self, -1, str(opt[2]),
-                                                              size=wx.Size(200,-1))
-                        self.fieldset[opt[0]].AddMany([label, self.option[opt[0]]])
+                            txt = wx.TextCtrl(self, -1, str(opt[2]),
+                                              size=wx.Size(200,-1))
+                        self.option[opt[0]] = txt
+                        self.fieldset[opt[0]].AddMany([label, 
+                                                       self.option[opt[0]]])
                         self.fieldset[opt[0]].Layout()
                         self.fields.Add(self.fieldset[opt[0]])
                     #self.fields = wx.BoxSizer(wx.VERTICAL)
@@ -79,7 +83,8 @@ def launch_wizard(dbtk_list, engine_list):
             self.sizer.Add(self.scriptlist)
             self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CheckValues)
         def CheckValues(self, evt):  
-            """Users can't continue from this page without checking at least one dataset."""
+            """Users can't continue from this page without checking at least
+            one dataset."""
             if len(self.scriptlist.GetCheckedStrings()) == 0 and evt.Direction:
                 evt.Veto()                
     
@@ -93,7 +98,8 @@ def launch_wizard(dbtk_list, engine_list):
     else:
         dataset = "data from " + dbtk_list[0].name 
     
-    page.append(TitledPage(wizard, "Welcome", """Welcome to the Database Toolkit wizard.
+    page.append(TitledPage(wizard, "Welcome", 
+"""Welcome to the Database Toolkit wizard.
      
 This wizard will walk you through the process of downloading
 and installing """ + dataset + """.
@@ -102,10 +108,15 @@ This wizard requires that you have one or more of the supported
 database systems installed on your machine, and an active
 connection to the internet.
     
-Supported database systems currently include:\n\n""" + ", ".join([db.name for db in engine_list])))
+Supported database systems currently include:\n\n""" + 
+", ".join([db.name for db in engine_list])))
     
-    page.append(TitledPage(wizard, "Select Database", "Please select your database platform:\n"))
-    page[1].dblist = wx.ListBox(page[1], -1, choices=[db.name for db in engine_list], style=wx.LB_SINGLE)
+    page.append(TitledPage(wizard, "Select Database", 
+                           "Please select your database platform:\n"))
+    dblist = wx.ListBox(page[1], -1, 
+                        choices=[db.name for db in engine_list], 
+                        style=wx.LB_SINGLE)
+    page[1].dblist = dblist
     page[1].dblist.SetSelection(0)
     page[1].sizer.Add(page[1].dblist,
                       0, wx.EXPAND | wx.ALL, 5)
@@ -113,18 +124,24 @@ Supported database systems currently include:\n\n""" + ", ".join([db.name for db
     page[1].keepdata = wx.CheckBox(page[1], -1, "Keep raw data files")
     page[1].keepdata.SetValue(True)    
     page[1].sizer.Add(page[1].keepdata)
-    page[1].uselocal = wx.CheckBox(page[1], -1, "Use locally archived files, if available")
+    page[1].uselocal = wx.CheckBox(page[1], -1, 
+                                   "Use locally archived files, if available")
     page[1].uselocal.SetValue(True)
     page[1].sizer.Add(page[1].uselocal)
         
     
-    page.append(ConnectionInfoPage(wizard, "Connection Info", "Please enter the following connection information: \n"))
+    page.append(ConnectPage(wizard, 
+                            "Connection Info", 
+                            "Please enter your connection information: \n"))
     page[1].Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, page[2].Draw)
     
     if len(dbtk_list) > 1:
-        page.append(DatasetPage(wizard, "Select Datasets", "Check each dataset to be downloaded:\n"))
+        page.append(DatasetPage(wizard, "Select Datasets", 
+                                "Check each dataset to be downloaded:\n"))
     
-    page.append(TitledPage(wizard, "Finished", "That's it! Click Next to download and install your data."))
+    page.append(TitledPage(wizard, "Finished", 
+                           "That's it! Click Finish to download and install " +
+                           "your data."))
 
     
     for i in range(len(page) - 1):
@@ -152,9 +169,16 @@ Supported database systems currently include:\n\n""" + ", ".join([db.name for db
             else:
                 dl = True
             if dl:
-                scripts.append(script)
-        dialog = wx.ProgressDialog('Download Progress', 'Downloading datasets . . . . . . . . . . . . . .\n', 
-                                   maximum = len(scripts), style=wx.PD_CAN_ABORT | wx.PD_CAN_SKIP)
+                scripts.append(script)        
+        longestname = 0
+        for script in scripts:
+            if len(script.name) > longestname:
+                longestname = len(script.name)
+        dialog = wx.ProgressDialog("Download Progress", 
+                                   "Downloading . . ." + 
+                                   " " * longestname + "\n", 
+                                   maximum = len(scripts), 
+                                   style=wx.PD_CAN_ABORT | wx.PD_CAN_SKIP)
         dialog.Show()
         scriptnum = 0
         
@@ -164,12 +188,13 @@ Supported database systems currently include:\n\n""" + ", ".join([db.name for db
             pass
         
         class update_dialog:
-            """This function is called whenever the print statement is used, and redirects the output
-            to the progress dialog."""
+            """This function is called whenever the print statement is used,
+            and redirects the output to the progress dialog."""
             def write(self, s):                
                 txt = s.strip().translate(None, "\b")
                 if txt:
-                    (keepgoing, skip) = dialog.Update(scriptnum - 1, msg + "\n" + txt)
+                    (keepgoing, skip) = dialog.Update(scriptnum - 1, 
+                                                      msg + "\n" + txt)
                     if not keepgoing:
                         raise UserAborted
                     if skip:
@@ -181,7 +206,7 @@ Supported database systems currently include:\n\n""" + ", ".join([db.name for db
             scriptnum += 1
             msg = "Downloading " + script.name
             if len(scripts) > 0:
-                msg += " (" + str(scriptnum) + " of " + str(len(scripts)) + ")" 
+                msg += " (" + str(scriptnum) + " of " + str(len(scripts)) + ")"
             msg += " . . ."                               
             try:
                 script.download(engine)
@@ -191,13 +216,15 @@ Supported database systems currently include:\n\n""" + ", ".join([db.name for db
                 dialog.Destroy()
                 wx.MessageBox("Aborted.")
             except:
-                errors.append("There was an error downloading " + script.name + ".")
+                errors.append("There was an error downloading " + 
+                              script.name + ".")
                 
         print "Finishing . . ."
         final_cleanup()
         dialog.Update(len(scripts), "Finished!")
         if errors:
-            wx.MessageBox("The following errors occurred: \n" + '\n'.join(errors))
+            wx.MessageBox("The following errors occurred: \n" + 
+                          '\n'.join(errors))
         else:
             wx.MessageBox("Your downloads were completed successfully.")
                 
