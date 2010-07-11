@@ -1,5 +1,6 @@
 """Database Toolkit Engines
-This module contains Engine class implementations for each supported database system.
+This module contains Engine class implementations for each supported database 
+system.
 Importing all_engines from this module will give a list of each Engine class.
 """
 
@@ -13,14 +14,26 @@ class MySQLEngine(Engine):
                  "DOUBLE", 
                  "VARCHAR", 
                  "BIT"]
-    required_opts = [["username", "Enter your MySQL username: ", "root"],
-                     ["password", "Enter your password: ", ""],
-                     ["hostname", "Enter your MySQL host or press Enter for the default (localhost): ", "localhost"],
-                     ["sqlport", "Enter your MySQL port or press Enter for the default (3306): ", 3306]]
+    required_opts = [["username", 
+                      "Enter your MySQL username: ", 
+                      "root"],
+                     ["password", 
+                      "Enter your password: ", 
+                      ""],
+                     ["hostname", 
+                      "Enter your MySQL host or press Enter " +
+                      "for the default (localhost): ", 
+                      "localhost"],                     
+                     ["sqlport", 
+                      "Enter your MySQL port or press Enter " +
+                      "for the default (3306): ", 
+                      3306]]
     def insert_data_from_file(self, filename):
-        """Calls MySQL "LOAD DATA LOCAL INFILE" statement to perform a bulk insert."""
+        """Calls MySQL "LOAD DATA LOCAL INFILE" statement to perform a bulk 
+        insert."""
         if self.table.cleanup.function == no_cleanup:
-            print "Inserting data from " + os.path.basename(filename).replace(self.script.shortname + " - ", "") + " . . ."
+            print "Inserting data from " + os.path.basename(filename) \
+                .replace(self.script.shortname + " - ", "") + " . . ."
                 
             columns = self.get_insert_columns()            
             statement = """        
@@ -53,27 +66,37 @@ class PostgreSQLEngine(Engine):
                  "double precision", 
                  "varchar", 
                  "bit"]    
-    required_opts = [["username", "Enter your PostgreSQL username: ", "postgres"],
-             ["password", "Enter your password: ", ""],
-             ["hostname", "Enter your PostgreSQL host or press Enter for the default (localhost): ", "localhost"],
-             ["sqlport", "Enter your PostgreSQL port or press Enter for the default (5432): ", 5432],
-             ["database", "Enter your PostgreSQL database name or press Enter for the default (postgres): ", "postgres"]]
+    required_opts = [["username", 
+                      "Enter your PostgreSQL username: ", 
+                      "postgres"],
+                     ["password", 
+                      "Enter your password: ", ""],
+                     ["hostname", 
+                      "Enter your PostgreSQL host or press Enter " +
+                      "for the default (localhost): ", "localhost"],
+                     ["sqlport", "Enter your PostgreSQL port or press" + 
+                      "Enter for the default (5432): ", 5432],
+                     ["database", 
+                      "Enter your PostgreSQL database name or press " +
+                      "Enter for the default (postgres): ", "postgres"]]
     def create_db_statement(self):
         """In PostgreSQL, the equivalent of a SQL database is a schema."""
-        return Engine.create_db_statement(self).replace(" DATABASE ", " SCHEMA ")
+        return Engine.create_db_statement(self).replace("DATABASE", "SCHEMA")
     def create_table(self):
         """PostgreSQL needs to commit operations individually."""
         Engine.create_table(self)
         self.connection.commit()
     def drop_statement(self, objecttype, objectname):
         """In PostgreSQL, the equivalent of a SQL database is a schema."""
-        dropstatement = Engine.drop_statement(self, objecttype, objectname) + " CASCADE;"
-        return dropstatement.replace(" DATABASE ", " SCHEMA ")    
+        statement = Engine.drop_statement(self, objecttype, objectname) 
+        statement += " CASCADE;"
+        return statement.replace(" DATABASE ", " SCHEMA ")    
     def insert_data_from_file(self, filename):
         """Use PostgreSQL's "COPY FROM" statement to perform a bulk insert."""
-        if ([self.table.cleanup.function, self.table.delimiter, self.table.header_rows] == 
-                                                        [no_cleanup, ",", 1]):        
-            print "Inserting data from " + os.path.basename(filename).replace(self.script.shortname + " - ", "") + " . . ."
+        if ([self.table.cleanup.function, self.table.delimiter, 
+             self.table.header_rows] == [no_cleanup, ",", 1]):        
+            print "Inserting data from " + os.path.basename(filename). \
+                    replace(self.script.shortname + " - ", "") + " . . ."
                 
             columns = self.get_insert_columns()    
             filename = os.path.abspath(filename)
@@ -110,12 +133,16 @@ class SQLiteEngine(Engine):
                  "REAL",
                  "TEXT",
                  "INTEGER"]
-    required_opts = [["database", "Enter the filename of your SQLite database: ", "sqlite.db"]]
+    required_opts = [["database", 
+                      "Enter the filename of your SQLite database: ",
+                      "sqlite.db"]]
     def create_db(self):
-        """SQLite doesn't create databases; each database is a file and needs a separate connection."""
+        """SQLite doesn't create databases; each database is a file and needs
+        a separate connection."""
         return None
     def tablename(self):
-        """The database file is specifically connected to, so database.table is not necessary."""        
+        """The database file is specifically connected to, so database.table 
+        is not necessary."""        
         return "'" + self.table.tablename + "'"    
     def get_cursor(self):
         """Gets the db connection and cursor."""

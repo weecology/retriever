@@ -8,8 +8,8 @@ from dbtk_engines import *
 warnings.filterwarnings("ignore")
 
 class DbTk:
-    """This class represents a database toolkit script. Scripts should inherit from this class
-    and execute their code in the download method."""
+    """This class represents a database toolkit script. Scripts should inherit
+    from this class and execute their code in the download method."""
     name = ""
     shortname = ""
     url = ""
