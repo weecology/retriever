@@ -31,7 +31,7 @@ class AvianBodyMass(DbTk):
         
         # Database column names and their data types. Use data type "skip" to skip the value, and
         # "combine" to merge a string value into the previous column
-        table.columns=[("species_id"            ,   ("pk-auto",)    ),
+        table.columns=[("record_id"             ,   ("pk-auto",)    ),
                        ("scientific_name"       ,   ("char", 50)    ),
                        ("common_name"           ,   ("char", 50)    ),
                        ("sex"                   ,   ("char", 20)    ),
@@ -73,7 +73,11 @@ class AvianBodyMass(DbTk):
             sh = book.sheet_by_index(0)
             
             def empty(cell):
-                return cell.ctype == 0
+                if cell.ctype == 0:
+                    return True
+                if str(cell.value).strip() == "":
+                    return True
+                return False
             
             def cellvalue(cell):
                 return str(cell.value).strip()
