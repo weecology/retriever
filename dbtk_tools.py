@@ -35,6 +35,17 @@ def correct_invalid_value(value, args):
 
 def final_cleanup():
     """Perform final cleanup operations after all scripts have run."""
+    # Delete empty directories in RAW_DATA_LOCATION, then delete that
+    # directory if empty.
+    try:
+       data_dirs = os.listdir(RAW_DATA_LOCATION)
+       for dir in data_dirs:
+           try:
+               os.rmdir(os.path.join(RAW_DATA_LOCATION, dir))
+           except OSError:
+               pass
+    except OSError:
+        pass
     try:
         os.rmdir(RAW_DATA_LOCATION)
     except OSError:

@@ -149,6 +149,9 @@ class Engine():
         necessary."""
         if not os.path.exists(RAW_DATA_LOCATION):
             os.makedirs(RAW_DATA_LOCATION)
+        path = os.path.join(RAW_DATA_LOCATION, self.script.shortname)
+        if not os.path.exists(path):
+            os.makedirs(path)            
     def create_table(self):
         """Creates a new database table based on settings supplied in Table 
         object engine.table."""
@@ -189,8 +192,8 @@ class Engine():
             return line.split(self.table.delimiter)
     def format_filename(self, filename):
         """Returns the full path of a file in the archive directory."""
-        return os.path.join(RAW_DATA_LOCATION, 
-                            self.script.shortname + " - " + filename)
+        path = os.path.join(RAW_DATA_LOCATION, self.script.shortname)
+        return os.path.join(path, filename)
     def format_insert_value(self, value):
         """Formats a value for an insert statement, for example by surrounding
         it in single quotes."""
@@ -241,7 +244,7 @@ class Engine():
         else:
             self.create_raw_data_dir()
             
-            archivename = os.path.join(RAW_DATA_LOCATION, url.split('/')[-1])
+            archivename = self.format_filename(url.split('/')[-1])
             web_file = urllib.urlopen(url)    
             local_zip = open(archivename, 'wb')
             local_zip.write(web_file.read())
@@ -274,6 +277,7 @@ class Engine():
     def insert_data_from_url(self, url):
         """Insert data from a web resource, such as a text file."""
         filename = url.split('/')[-1]
+        self.create_raw_data_dir()
         if self.use_local and os.path.isfile(self.format_filename(filename)):
             # Use local copy
             print "Using local copy of " + filename

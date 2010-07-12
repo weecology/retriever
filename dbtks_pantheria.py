@@ -86,7 +86,7 @@ class Pantheria(DbTk):
         
         
 if __name__ == "__main__":
-    me = DbTk_Pantheria()
+    me = Pantheria()
     if len(sys.argv) == 1:                
         launch_wizard([me], ALL_ENGINES)
     else:
