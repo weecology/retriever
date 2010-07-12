@@ -99,7 +99,7 @@ class PortalMammals(DbTk):
         
 
 if __name__ == "__main__":
-    me = DbTk_Portal_Mammals()
+    me = PortalMammals()
     if len(sys.argv) == 1:
         launch_wizard([me], ALL_ENGINES)
     else:
