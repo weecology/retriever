@@ -1,5 +1,6 @@
 """Database Toolkit UI
 This module contains the UI elements of the database toolkit platform.
+
 """
 
 import sys
@@ -79,14 +80,31 @@ def launch_wizard(dbtk_list, engine_list):
             TitledPage.__init__(self, parent, title, label)
             scripts = [script.name for script in dbtk_list]
             self.scriptlist = wx.CheckListBox(self, -1, choices=scripts)
-            self.scriptlist.SetCheckedStrings(scripts)
+            public_scripts = []
+            for script in dbtk_list:
+                if script.public:
+                    public_scripts.append(script.name)
+            self.scriptlist.SetCheckedStrings(public_scripts)
             self.sizer.Add(self.scriptlist)
             self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CheckValues)
         def CheckValues(self, evt):  
             """Users can't continue from this page without checking at least
             one dataset."""
             if len(self.scriptlist.GetCheckedStrings()) == 0 and evt.Direction:
-                evt.Veto()                
+                evt.Veto()
+            else:
+                warn = []
+                for script in dbtk_list:
+                    if (not script.public and 
+                        script.name in self.scriptlist.GetCheckedStrings()):
+                        warn.append(script.name)
+                if warn:
+                    warning = "Warning: the following datasets are not "
+                    warning += "publicly available. You must have the raw "
+                    warning += "data files in the correct location first."
+                    warning += "\n\n" + ','.join(warn)
+                    wx.MessageBox(warning)
+                         
     
     
     app = wx.PySimpleApp(False)

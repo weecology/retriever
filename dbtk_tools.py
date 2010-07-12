@@ -13,6 +13,7 @@ class DbTk:
     name = ""
     shortname = ""
     url = ""
+    public = True
     def download(self, engine=None):
         pass
     def checkengine(self, engine=None):
