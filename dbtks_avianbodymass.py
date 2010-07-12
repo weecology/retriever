@@ -74,6 +74,9 @@ class AvianBodyMass(DbTk):
             
             def empty(cell):
                 return cell.ctype == 0
+            
+            def cellvalue(cell):
+                return str(cell.value).strip()
 
             print "Inserting data from " + filename + " . . ."
             rows = sh.nrows
@@ -85,33 +88,39 @@ class AvianBodyMass(DbTk):
                 
                 # Skip this row if all cells or all cells but one are empty
                 # or if it's the legend row
-                if (empty_cols >= cols - 1 or row[0].value.strip() == "Scientific Name"
-                    or row[0].value.strip()[0:7] == "Species"):
+                if (empty_cols >= cols - 1 or cellvalue(row[0]) == "Scientific Name"
+                    or cellvalue(row[0])[0:7] == "Species"):
                     pass
                 else:
                     values = []
                     # If the first two columns are empty, but the third isn't,
                     # use the first two columns from the previous row
                     if empty(row[0]) and empty(row[1]) and not empty(row[2]):
-                        values.append(str(lastrow[0].value.strip()))
-                        values.append(str(lastrow[1].value.strip()))
+                        values.append(cellvalue(lastrow[0]))
+                        values.append(cellvalue(lastrow[1]))
                     else:
-                        values.append(str(row[0].value.strip()))
-                        values.append(str(row[1].value.strip()))
+                        if len(cellvalue(row[0]).split()) == 1:
+                            # If the scientific name is missing genus, fill it
+                            # in from the previous row
+                            values.append(cellvalue(lastrow[0]).split()[0]
+                                          + " " + cellvalue(row[0]))
+                        else:
+                            values.append(cellvalue(row[0]))
+                        values.append(cellvalue(row[1]))
                         
-                    if row[2].value == "M":
+                    if cellvalue(row[2]) == "M":
                         values.append("Male")
-                    elif row[2].value == "F":
+                    elif cellvalue(row[2]) == "F":
                         values.append("Female")
-                    elif row[2].value == "B":
+                    elif cellvalue(row[2]) == "B":
                         values.append("Both")
-                    elif row[2].value == "U":
+                    elif cellvalue(row[2]) == "U":
                         values.append("Unknown")
                     else:
-                        values.append(str(row[2].value).strip())
+                        values.append(cellvalue(row[2]))
                         
                     for i in range(3, cols):
-                        values.append(str(row[i].value).strip())
+                        values.append(cellvalue(row[i]))
                     
                     lines.append(',,'.join(values))
                     lastrow = row
