@@ -21,7 +21,7 @@ class AvianBodyMass(DbTk):
         
         
 if __name__ == "__main__":
-    me = MammalLifeHistory()
+    me = AvianBodyMass()
     if len(sys.argv) == 1:                
         launch_wizard([me], ALL_ENGINES)
     else:

@@ -92,7 +92,7 @@ def launch_wizard(dbtk_list, engine_list):
             one dataset."""
             if len(self.scriptlist.GetCheckedStrings()) == 0 and evt.Direction:
                 evt.Veto()
-            else:
+            elif evt.Direction:
                 warn = []
                 for script in dbtk_list:
                     if (not script.public and 
@@ -123,8 +123,9 @@ This wizard will walk you through the process of downloading
 and installing """ + dataset + """.
    
 This wizard requires that you have one or more of the supported
-database systems installed on your machine, and an active
-connection to the internet.
+database systems installed. You must also have either an active
+connection to the internet, or the raw data files stored locally 
+on your computer.
     
 Supported database systems currently include:\n\n""" + 
 ", ".join([db.name for db in engine_list])))
