@@ -80,10 +80,8 @@ def launch_wizard(dbtk_list, engine_list):
             TitledPage.__init__(self, parent, title, label)
             scripts = [script.name for script in dbtk_list]
             self.scriptlist = wx.CheckListBox(self, -1, choices=scripts)
-            public_scripts = []
-            for script in dbtk_list:
-                if script.public:
-                    public_scripts.append(script.name)
+            
+            public_scripts = [script.name for script in dbtk_list if script.public]
             self.scriptlist.SetCheckedStrings(public_scripts)
             self.sizer.Add(self.scriptlist)
             self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CheckValues)
@@ -93,11 +91,9 @@ def launch_wizard(dbtk_list, engine_list):
             if len(self.scriptlist.GetCheckedStrings()) == 0 and evt.Direction:
                 evt.Veto()
             elif evt.Direction:
-                warn = []
-                for script in dbtk_list:
-                    if (not script.public and 
-                        script.name in self.scriptlist.GetCheckedStrings()):
-                        warn.append(script.name)
+                checked = self.scriptlist.GetCheckedStrings()
+                warn = [script.name for script in dbtk_list 
+                        if not script.public and script.name in checked]
                 if warn:
                     warning = "Warning: the following datasets are not "
                     warning += "publicly available. You must have the raw "
