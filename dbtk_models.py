@@ -103,8 +103,7 @@ class Engine():
                 self.cursor.execute(insertstatement)
                 
         print "\n Done!"
-        self.connection.commit()
-        self.table.source.close()
+        self.connection.commit()        
     def convert_data_type(self, datatype):
         """Converts DBTK generic data types to database platform specific data
         types"""
@@ -203,11 +202,11 @@ class Engine():
         elif value:
             quotes = ["'", '"']            
             if strvalue[0] == strvalue[-1] and strvalue[0] in quotes:
-                return "'" + strvalue.strip(''.join(quotes)) + "'" 
-            else:
-                return "'" + strvalue + "'" 
+                strvalue = strvalue.strip(''.join(quotes)) 
         else:
             return "null"
+        strvalue = strvalue.replace("'", "''")
+        return "'" + strvalue + "'"
     def get_input(self):
         """Manually get user input for connection information when script is 
         run from terminal."""
@@ -274,6 +273,7 @@ class Engine():
         self.table.source = self.skip_rows(self.table.header_rows, 
                                            open(filename, "r"))        
         self.add_to_table()
+        self.table.source.close()
     def insert_data_from_url(self, url):
         """Insert data from a web resource, such as a text file."""
         filename = url.split('/')[-1]
@@ -297,6 +297,7 @@ class Engine():
                 self.table.source = self.skip_rows(self.table.header_rows, 
                                                    urllib.urlopen(url))
                 self.add_to_table()
+                self.table.source.close()
     def insert_statement(self, values):
         """Returns a SQL statement to insert a set of values."""
         columns = self.get_insert_columns()
