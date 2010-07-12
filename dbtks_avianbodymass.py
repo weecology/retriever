@@ -27,12 +27,15 @@ class AvianBodyMass(DbTk):
         
         table = Table()
         table.tablename = "mass"
+        table.delimiter = ",,"
         table.cleanup = Cleanup(no_cleanup, None)
         
         # Database column names and their data types. Use data type "skip" to skip the value, and
         # "combine" to merge a string value into the previous column
         table.columns=[("record_id"             ,   ("pk-auto",)    ),
-                       ("scientific_name"       ,   ("char", 50)    ),
+                       ("genus"                 ,   ("char", 20)    ),
+                       ("species"               ,   ("char", 20)    ),
+                       ("subspecies"            ,   ("char", 20)    ),
                        ("common_name"           ,   ("char", 50)    ),
                        ("sex"                   ,   ("char", 20)    ),
                        ("N"                     ,   ("char", 20)    ),
@@ -73,6 +76,7 @@ class AvianBodyMass(DbTk):
             sh = book.sheet_by_index(0)
             
             def empty(cell):
+                """Tests whether a cell is empty or contains only whitespace"""
                 if cell.ctype == 0:
                     return True
                 if str(cell.value).strip() == "":
@@ -80,12 +84,27 @@ class AvianBodyMass(DbTk):
                 return False
             
             def cellvalue(cell):
+                """Returns the string value of a cell"""
                 return str(cell.value).strip()
+            
+            def sci_name(value):
+                """Returns genus/species/subspecies list from a scientific name"""
+                values = value.split()
+                list = []
+                if len(values) >= 2:
+                    [list.append(value) for value in values[0:2]]                    
+                if len(values) == 3:
+                    list.append(values[2])
+                while len(list) < 3:
+                    list.append('')
+                return list 
 
             print "Inserting data from " + filename + " . . ."
             rows = sh.nrows
             cols = 11
             lines = []
+            lastrow = None
+            lastvalues = None
             for n in range(rows):
                 row = sh.row(n)
                 empty_cols = len([cell for cell in row[0:11] if empty(cell)])
@@ -97,20 +116,34 @@ class AvianBodyMass(DbTk):
                     pass
                 else:
                     values = []
-                    # If the first two columns are empty, but the third isn't,
+                    # If the first two columns are empty, but not all of them are,
                     # use the first two columns from the previous row
-                    if empty(row[0]) and empty(row[1]) and not empty(row[2]):
-                        values.append(cellvalue(lastrow[0]))
+                    if empty(row[0]) and empty(row[1]) and empty_cols < (cols - 1):                        
+                        [values.append(value) for value in sci_name(cellvalue(lastrow[0]))]
                         values.append(cellvalue(lastrow[1]))
                     else:
                         if len(cellvalue(row[0]).split()) == 1:
-                            # If the scientific name is missing genus, fill it
+                            # If the scientific name is missing genus/species, fill it
                             # in from the previous row
-                            values.append(cellvalue(lastrow[0]).split()[0]
-                                          + " " + cellvalue(row[0]))
+                            values.append(lastvalues[0])
+                            values.append(lastvalues[1])
+                            values.append(lastvalues[2])
+                            for i in range(0, 3):
+                                if not values[2-i]:
+                                    values[2-i] = cellvalue(row[0])
+                                    break
+                            # Add new information to the previous scientific name
+                            if lastvalues:
+                                lastvalues[0:3] = values[0:3]
                         else:
-                            values.append(cellvalue(row[0]))
+                            [values.append(value) for value in sci_name(cellvalue(row[0]))]
                         values.append(cellvalue(row[1]))
+                    
+                    # If there isn't a common name or sex, get it from the previous row
+                    if not values[3]:
+                        values[3] = lastvalues[3]
+                    if not values[4]:
+                        values[4] = lastvalues[4]
                         
                     if cellvalue(row[2]) == "M":
                         values.append("Male")
@@ -126,12 +159,16 @@ class AvianBodyMass(DbTk):
                     for i in range(3, cols):
                         values.append(cellvalue(row[i]))
                     
-                    lines.append(',,'.join(values))
+                    # Insert the previous row
+                    if lastvalues:
+                        lines.append(',,'.join(lastvalues))
+                        
                     lastrow = row
+                    lastvalues = values
             
             if lines:
-                table.source = lines
-                table.delimiter = ",,"
+                lines.append(',,'.join(lastvalues))
+                table.source = lines                
                 engine.add_to_table()
                         
                     
