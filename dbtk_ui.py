@@ -230,9 +230,10 @@ Supported database systems currently include:\n\n""" +
             except UserAborted:
                 dialog.Destroy()
                 wx.MessageBox("Aborted.")
-            except:
+            except Exception as e:
                 errors.append("There was an error downloading " + 
                               script.name + ".")
+                wx.MessageBox(e, "Error")
                 
         print "Finishing . . ."
         final_cleanup()
