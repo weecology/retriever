@@ -173,6 +173,12 @@ class Engine():
         createstatement = createstatement.rstrip(', ')    
         createstatement += " );"
         return createstatement
+    def download_file(self, url, filename):
+        file = urllib.urlopen(url) 
+        local_file = open(self.format_filename(filename), 'wb')
+        local_file.write(file.read())
+        local_file.close()
+        file.close()
     def drop_statement(self, objecttype, objectname):
         """Returns a drop table or database SQL statement."""
         dropstatement = "DROP %s IF EXISTS %s" % (objecttype, objectname)
@@ -244,11 +250,7 @@ class Engine():
             self.create_raw_data_dir()
             
             archivename = self.format_filename(url.split('/')[-1])
-            web_file = urllib.urlopen(url)    
-            local_zip = open(archivename, 'wb')
-            local_zip.write(web_file.read())
-            local_zip.close()
-            web_file.close()    
+            self.download_file(url, url.split('/')[-1])                
                     
             local_zip = zipfile.ZipFile(archivename)
             fileloc = self.format_filename(filename)
@@ -287,10 +289,7 @@ class Engine():
                 # Save a copy of the file locally, then load from that file
                 self.create_raw_data_dir()                        
                 print "Saving a copy of " + filename + " . . ."
-                webFile = urllib.urlopen(url)   
-                localFile = open(self.format_filename(filename), 'wb')
-                localFile.write(webFile.read())
-                localFile.close()
+                self.download_file(url, filename)
                 self.insert_data_from_file(self.format_filename(filename))
             else:
                 # Don't save the file, just load it from the web resource
