@@ -220,6 +220,7 @@ Supported database systems currently include:\n\n""" +
                     if skip:
                         raise UserSkipped
                     
+        oldstdout = sys.stdout
         sys.stdout = update_dialog()
         errors = []
         for script in scripts:
@@ -233,8 +234,11 @@ Supported database systems currently include:\n\n""" +
             except UserSkipped:
                 errors.append("Skipped " + script.name + ".")
             except UserAborted:
-                dialog.Destroy()
-                wx.MessageBox("Aborted.")
+                sys.stdout = oldstdout
+                dialog.Destroy()                
+                wx.MessageBox("Cancelled.")
+                final_cleanup()
+                sys.exit()
             except Exception as e:
                 errors.append("There was an error downloading " + 
                               script.name + ".")
