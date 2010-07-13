@@ -3,6 +3,7 @@ This module contains functions used to run database toolkits.
 """
 
 import warnings
+import xlrd
 from dbtk_engines import *
 
 warnings.filterwarnings("ignore")
@@ -51,3 +52,20 @@ def final_cleanup():
         os.rmdir(RAW_DATA_LOCATION)
     except OSError:
         pass
+    
+    
+class DbtkError(Exception):
+    pass            
+
+def emptycell(cell):
+    """Tests whether an excel cell is empty or contains only
+    whitespace"""
+    if cell.ctype == 0:
+        return True
+    if str(cell.value).strip() == "":
+        return True
+    return False
+
+def cellvalue(cell):
+    """Returns the string value of an excel spreadsheet cell"""
+    return str(cell.value).strip()    

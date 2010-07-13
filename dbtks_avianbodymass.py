@@ -8,7 +8,6 @@ this script.
 """
 
 from dbtk_ui import *
-import xlrd
 
 class AvianBodyMass(DbTk):
     name = "CRC Avian Body Masses"
@@ -49,9 +48,6 @@ class AvianBodyMass(DbTk):
         engine.table = table
         engine.create_table()
         
-        class RawDataError(Exception):
-            pass
-        
         file_list = ["broadbills - tapaculos", "cotingas - NZ wrens",
                      "HA honeycreepers - icterids", "honeyeaters - corvids",
                      "jacanas - doves", "larks - accentors",
@@ -68,24 +64,12 @@ class AvianBodyMass(DbTk):
             
             # Make sure file exists
             if not os.path.isfile(full_filename):
-                raise RawDataError("Missing raw data file: " + 
+                raise DbtkError("Missing raw data file: " + 
                                    full_filename)
             
             # Open excel file with xlrd
             book = xlrd.open_workbook(full_filename)
             sh = book.sheet_by_index(0)
-            
-            def empty(cell):
-                """Tests whether a cell is empty or contains only whitespace"""
-                if cell.ctype == 0:
-                    return True
-                if str(cell.value).strip() == "":
-                    return True
-                return False
-            
-            def cellvalue(cell):
-                """Returns the string value of a cell"""
-                return str(cell.value).strip()
             
             def sci_name(value):
                 """Returns genus/species/subspecies list from a scientific name"""
@@ -107,7 +91,7 @@ class AvianBodyMass(DbTk):
             lastvalues = None
             for n in range(rows):
                 row = sh.row(n)
-                empty_cols = len([cell for cell in row[0:11] if empty(cell)])
+                empty_cols = len([cell for cell in row[0:11] if emptycell(cell)])
                 
                 # Skip this row if all cells or all cells but one are empty
                 # or if it's the legend row
@@ -118,7 +102,7 @@ class AvianBodyMass(DbTk):
                     values = []
                     # If the first two columns are empty, but not all of them are,
                     # use the first two columns from the previous row
-                    if empty(row[0]) and empty(row[1]) and empty_cols < (cols - 1):                        
+                    if emptycell(row[0]) and emptycell(row[1]) and empty_cols < (cols - 1):                        
                         [values.append(value) for value in sci_name(cellvalue(lastrow[0]))]
                         values.append(cellvalue(lastrow[1]))
                     else:
@@ -138,12 +122,6 @@ class AvianBodyMass(DbTk):
                         else:
                             [values.append(value) for value in sci_name(cellvalue(row[0]))]
                         values.append(cellvalue(row[1]))
-                    
-                    # If there isn't a common name or sex, get it from the previous row
-                    if not values[3]:
-                        values[3] = lastvalues[3]
-                    if not values[4]:
-                        values[4] = lastvalues[4]
                         
                     if cellvalue(row[2]) == "M":
                         values.append("Male")
@@ -156,8 +134,15 @@ class AvianBodyMass(DbTk):
                     else:
                         values.append(cellvalue(row[2]))
                         
+                    # Enter remaining values from cells 
                     for i in range(3, cols):
                         values.append(cellvalue(row[i]))
+                        
+                    # If there isn't a common name or sex, get it from the previous row
+                    if not values[3]:
+                        values[3] = lastvalues[3]
+                    if not values[4]:
+                        values[4] = lastvalues[4]                    
                     
                     # Insert the previous row
                     if lastvalues:
