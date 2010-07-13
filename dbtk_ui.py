@@ -233,7 +233,7 @@ Supported database systems currently include:\n\n""" +
             except Exception as e:
                 errors.append("There was an error downloading " + 
                               script.name + ".")
-                wx.MessageBox(e, "Error")
+                wx.MessageBox(e.__str__(), "Error")
                 
         print "Finishing . . ."
         final_cleanup()
