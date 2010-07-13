@@ -165,7 +165,12 @@ Supported database systems currently include:\n\n""" +
     wizard.FitToPage(page[0])    
 
     if wizard.RunWizard(page[0]):
-        engine = page[2].engine
+        try:
+            engine = page[2].engine
+        except Exception as e:
+            wx.MessageBox("There was an error with your database connection. \n\n" +
+                          e.__str__())
+            raise
         options = page[2].option
         engine.keep_raw_data = page[1].keepdata.Value
         engine.use_local = page[1].uselocal
