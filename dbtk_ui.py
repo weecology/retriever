@@ -165,21 +165,6 @@ Supported database systems currently include:\n\n""" +
     wizard.FitToPage(page[0])    
 
     if wizard.RunWizard(page[0]):
-        try:
-            engine = page[2].engine
-        except Exception as e:
-            wx.MessageBox("There was an error with your database connection. \n\n" +
-                          e.__str__())
-            raise
-        options = page[2].option
-        engine.keep_raw_data = page[1].keepdata.Value
-        engine.use_local = page[1].uselocal
-        opts = dict()
-        for key in options.keys():
-            opts[key] = options[key].GetValue()
-        engine.opts = opts
-        engine.get_cursor()
-        
         scripts = []
         for script in dbtk_list:
             dl = False
@@ -194,18 +179,15 @@ Supported database systems currently include:\n\n""" +
         for script in scripts:
             if len(script.name) > longestname:
                 longestname = len(script.name)
+                        
         dialog = wx.ProgressDialog("Download Progress", 
-                                   "Downloading . . ." + 
+                                   "Connecting to database . . ." + 
                                    " " * longestname + "\n", 
                                    maximum = len(scripts), 
                                    style=wx.PD_CAN_ABORT | wx.PD_CAN_SKIP)
+        
         dialog.Show()
         scriptnum = 0
-        
-        class UserSkipped(Exception):
-            pass        
-        class UserAborted(Exception):
-            pass
         
         class update_dialog:
             """This function is called whenever the print statement is used,
@@ -222,6 +204,27 @@ Supported database systems currently include:\n\n""" +
                     
         oldstdout = sys.stdout
         sys.stdout = update_dialog()
+                
+        try:
+            engine = page[2].engine
+        except Exception as e:
+            wx.MessageBox("There was an error with your database connection. \n\n" +
+                          e.__str__())
+            raise
+        options = page[2].option
+        engine.keep_raw_data = page[1].keepdata.Value
+        engine.use_local = page[1].uselocal.Value
+        opts = dict()
+        for key in options.keys():
+            opts[key] = options[key].GetValue()
+        engine.opts = opts
+        engine.get_cursor()
+        
+        class UserSkipped(Exception):
+            pass        
+        class UserAborted(Exception):
+            pass
+        
         errors = []
         for script in scripts:
             scriptnum += 1
