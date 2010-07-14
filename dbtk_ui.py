@@ -165,6 +165,7 @@ Supported database systems currently include:\n\n""" +
     wizard.FitToPage(page[0])    
 
     if wizard.RunWizard(page[0]):
+        # Get a list of scripts to be downloaded
         scripts = []
         for script in dbtk_list:
             dl = False
@@ -174,14 +175,17 @@ Supported database systems currently include:\n\n""" +
             else:
                 dl = True
             if dl:
-                scripts.append(script)        
+                scripts.append(script)
+                
+        # Find the script with the longest name to set size of progress dialog        
         longestname = 0
         for script in scripts:
             if len(script.name) > longestname:
                 longestname = len(script.name)
-                        
+                       
+        # Create progress dialog 
         dialog = wx.ProgressDialog("Download Progress", 
-                                   "Connecting to database . . ." + 
+                                   "Downloading datasets . . ." + 
                                    " " * longestname + "\n", 
                                    maximum = len(scripts), 
                                    style=wx.PD_CAN_ABORT | wx.PD_CAN_SKIP)
@@ -189,13 +193,17 @@ Supported database systems currently include:\n\n""" +
         dialog.Show()
         scriptnum = 0
         
+        # On stdout, the progress dialog updates
         class update_dialog:
             """This function is called whenever the print statement is used,
             and redirects the output to the progress dialog."""
             def write(self, s):                
                 txt = s.strip().translate(None, "\b")
                 if txt:
-                    (keepgoing, skip) = dialog.Update(scriptnum - 1, 
+                    prog = scriptnum - 1
+                    if prog < 0:
+                        prog = 0
+                    (keepgoing, skip) = dialog.Update(prog, 
                                                       msg + "\n" + txt)
                     if not keepgoing:
                         raise UserAborted
@@ -204,13 +212,19 @@ Supported database systems currently include:\n\n""" +
                     
         oldstdout = sys.stdout
         sys.stdout = update_dialog()
-                
+        
+        msg = "Connecting to database:"
+        print "Connecting  . . ." 
+        
+        # Connect
         try:
             engine = page[2].engine
         except Exception as e:
             wx.MessageBox("There was an error with your database connection. \n\n" +
                           e.__str__())
             raise
+        
+        # Get options from wizard
         options = page[2].option
         engine.keep_raw_data = page[1].keepdata.Value
         engine.use_local = page[1].uselocal.Value
@@ -225,6 +239,7 @@ Supported database systems currently include:\n\n""" +
         class UserAborted(Exception):
             pass
         
+        # Download scripts
         errors = []
         for script in scripts:
             scriptnum += 1
