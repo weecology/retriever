@@ -39,7 +39,7 @@ class MySQLEngine(Engine):
             statement = """        
 LOAD DATA LOCAL INFILE '""" + filename + """'
 INTO TABLE """ + self.tablename() + """
-FIELDS TERMINATED BY '""" + ";" + """'
+FIELDS TERMINATED BY '""" + self.table.delimiter + """'
 LINES TERMINATED BY '\\n'
 IGNORE """ + str(self.table.header_rows) + """ LINES 
 (""" + columns + ")"
