@@ -19,6 +19,16 @@ try:
 except:
     pass
 
+def getmd5(filename):
+    file = open(filename, "r")
+    sum = hashlib.md5()
+    while True:
+        data = file.read()
+        if not data:
+            break
+        sum.update(data)
+    return sum.hexdigest()
+
 opts = get_opts()
 opts["engine"] = "m"
 
@@ -29,19 +39,13 @@ class Tests(unittest.TestCase):
                 if isinstance(value, str):
                     # Add double quotes to strings
                     return '"' + value + '"'
-                else:
-                    if colnum == 11:
-                        # For column 11, remove trailing zero
-                        return str(int(value))
+                else: 
+                    if len(str(value).split('.')) == 2:
+                        while len(str(value).split('.')[-1]) < 2:
+                            value = str(value) + "0"
+                        return str(value)
                     else:
-                        # Otherwise, if the value is numerical, give it two
-                        # trailing zeroes 
-                        if len(str(value).split('.')) == 2:
-                            while len(str(value).split('.')[-1]) < 2:
-                                value = str(value) + "0"
-                            return str(value)
-                        else:
-                            return str(value)
+                        return str(value)
             else:
                 return ""        
         # Download Mammal Lifehistory database to MySQL
@@ -53,25 +57,20 @@ class Tests(unittest.TestCase):
         
         # Export MySQL data
         cursor = engine.connection.cursor()
-        cursor.execute("SELECT * FROM " + engine.tablename())
+        cursor.execute("SELECT * FROM " + engine.tablename() + " m ORDER BY " +
+                       "m.sporder, m.family, m.genus, m.species")
         
-        filename = os.path.join(TEST_DATA_LOCATION, "mammaltest.csv")
+        filename = os.path.join(TEST_DATA_LOCATION, "mammaltest.txt")
         file = open(filename, 'wb')
         for i in range(cursor.rowcount):
             row = cursor.fetchone()
-            line = ','.join([strvalue(row[i], i) for i in range(len(row))])
+            line = ','.join([strvalue(row[i], i) for i in range(1, len(row))])
             print line
             file.write(line + "\n")            
         file.close
         
-        file = open(filename, 'r')
-        sum = hashlib.md5()
-        while True:
-            data = file.read(128)
-            if not data:
-                break
-            sum.update(data)
-        sum = sum.hexdigest()
-        self.assertEqual(md5, sum)
+        sum = getmd5(filename)
+        #check = getmd5(os.path.join(TEST_DATA_LOCATION, "lifehistories_manual.txt"))
+        self.assertEqual(sum, check)
         
 unittest.main()
