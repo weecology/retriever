@@ -55,7 +55,7 @@ class Engine():
     table = None
     connection = None
     cursor = None
-    keep_raw_data = False
+    keep_raw_data = True
     use_local = True
     datatypes = []
     required_opts = []
@@ -179,6 +179,38 @@ class Engine():
         local_file.write(file.read())
         local_file.close()
         file.close()
+    def download_files_from_archive(self, url, filenames):
+        """Downloads one or more files from an archive into the raw data
+        directory."""
+        downloaded = False
+        archivename = self.format_filename(url.split('/')[-1])
+        
+        for filename in filenames:
+            if self.use_local and os.path.isfile(self.format_filename(filename)):
+                # Use local copy
+                print "Using local copy of " + filename
+                self.insert_data_from_file(self.format_filename(filename))
+            else:
+                self.create_raw_data_dir()
+                
+                if not downloaded:                    
+                    self.download_file(url, url.split('/')[-1])
+                    downloaded = True     
+                        
+                local_zip = zipfile.ZipFile(archivename)
+                fileloc = self.format_filename(filename)
+                        
+                open_zip = local_zip.open(filename)
+                unzipped_file = open(fileloc, 'wb')
+                unzipped_file.write(open_zip.read())
+                unzipped_file.close()
+                open_zip.close()
+                
+                local_zip.close()                                            
+        try:
+            os.remove(archivename)
+        except:
+            pass            
     def drop_statement(self, objecttype, objectname):
         """Returns a drop table or database SQL statement."""
         dropstatement = "DROP %s IF EXISTS %s" % (objecttype, objectname)
@@ -238,36 +270,19 @@ class Engine():
             return columns
         else:
             return columns.lstrip("(").rstrip(")").split(", ")
-    def insert_data_from_archive(self, url, filename):
-        """Insert data from a file located in an online archive. This function
+    def insert_data_from_archive(self, url, filenames):
+        """Insert data from files located in an online archive. This function
         extracts the file, inserts the data, and deletes the file if raw data 
         archiving is not set."""
-        if self.use_local and os.path.isfile(self.format_filename(filename)):
-            # Use local copy
-            print "Using local copy of " + filename
-            self.insert_data_from_file(self.format_filename(filename))            
-        else:
-            self.create_raw_data_dir()
-            
-            archivename = self.format_filename(url.split('/')[-1])
-            self.download_file(url, url.split('/')[-1])                
-                    
-            local_zip = zipfile.ZipFile(archivename)
+        self.download_files_from_archive(url, filenames)
+        for filename in filenames:
             fileloc = self.format_filename(filename)
-                    
-            open_zip = local_zip.open(filename)
-            unzipped_file = open(fileloc, 'wb')
-            unzipped_file.write(open_zip.read())
-            unzipped_file.close()
-            open_zip.close()
-            
-            local_zip.close()                            
             self.insert_data_from_file(fileloc)
-            
-            os.remove(archivename)            
-            
             if not self.keep_raw_data:
-                os.remove(fileloc)            
+                try:
+                    os.remove(fileloc)
+                except:
+                    pass
     def insert_data_from_file(self, filename):
         """The default function to insert data from a file. This function 
         simply inserts the data row by row. Database platforms with support

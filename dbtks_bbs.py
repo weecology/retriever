@@ -43,7 +43,7 @@ class BBS(DbTk):
             engine.create_table()
             
             engine.insert_data_from_archive("ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CRoutes.exe",
-                                            "routes.csv")
+                                            ["routes.csv"])
             
 
             # Weather table
@@ -85,7 +85,7 @@ class BBS(DbTk):
             engine.create_table()
             
             engine.insert_data_from_archive("ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CWeather.exe", 
-                                            "weather.csv")
+                                            ["weather.csv"])
             
             
             # Region_codes table
@@ -165,7 +165,7 @@ class BBS(DbTk):
                         
                     print "Downloading and decompressing data from " + state + " . . ."
                     engine.insert_data_from_archive("ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/C" + shortstate + ".exe", 
-                                                    "C" + shortstate + ".csv")
+                                                    ["C" + shortstate + ".csv"])
                             
                 except:
                     print "There was an error in " + state + "."
