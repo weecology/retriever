@@ -17,25 +17,36 @@ TEST_DATA_LOCATION = "test_data"
 try:
     os.makedirs(TEST_DATA_LOCATION)
 except:
-    pass        
-opts = {"engine":"m"}
+    pass
 
-def strvalue(value):
-    if value:
-        if isinstance(value, str):
-            return '"' + value + '"'
-        else:
-            return str(value)
-    else:
-        return ""
+opts = get_opts()
+opts["engine"] = "m"
 
 class Tests(unittest.TestCase):
     def test_MammalLifeHistory(self):
+        def strvalue(value, colnum):
+            if value:
+                if isinstance(value, str):
+                    # Add double quotes to strings
+                    return '"' + value + '"'
+                else:
+                    if colnum == 11:
+                        # For column 11, remove trailing zero
+                        return str(int(value))
+                    else:
+                        # Otherwise, if the value is numerical, give it two
+                        # trailing zeroes 
+                        if len(str(value).split('.')) == 2:
+                            while len(str(value).split('.')[-1]) < 2:
+                                value = str(value) + "0"
+                            return str(value)
+                        else:
+                            return str(value)
+            else:
+                return ""        
         # Download Mammal Lifehistory database to MySQL
         script = MammalLifeHistory()
-        md5 = "afa09eed4ca4ce5db31d15c4daa49ed3"
-        opts = get_opts()
-        opts["engine"] = "m"        
+        md5 = "afa09eed4ca4ce5db31d15c4daa49ed3"        
         engine = choose_engine(opts)
         engine.script = script
         script.download(engine)
@@ -47,7 +58,8 @@ class Tests(unittest.TestCase):
         filename = os.path.join(TEST_DATA_LOCATION, "mammaltest.csv")
         file = open(filename, 'wb')
         for i in range(cursor.rowcount):
-            line = ','.join([strvalue(value) for value in cursor.fetchone()])
+            row = cursor.fetchone()
+            line = ','.join([strvalue(row[i], i) for i in range(len(row))])
             print line
             file.write(line + "\n")            
         file.close
