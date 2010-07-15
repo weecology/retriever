@@ -50,7 +50,7 @@ class Tests(unittest.TestCase):
                 return ""        
         # Download Mammal Lifehistory database to MySQL
         script = MammalLifeHistory()
-        md5 = "afa09eed4ca4ce5db31d15c4daa49ed3"        
+        check = "afa09eed4ca4ce5db31d15c4daa49ed3"        
         engine = choose_engine(opts)
         engine.script = script
         script.download(engine)
