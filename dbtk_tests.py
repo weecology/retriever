@@ -20,10 +20,18 @@ except:
     pass        
 opts = {"engine":"m"}
 
-# Download Mammal Lifehistory database to MySQL
+def strvalue(value):
+    if value:
+        if isinstance(value, str):
+            return '"' + value + '"'
+        else:
+            return str(value)
+    else:
+        return ""
 
 class Tests(unittest.TestCase):
     def test_MammalLifeHistory(self):
+        # Download Mammal Lifehistory database to MySQL
         script = MammalLifeHistory()
         md5 = "afa09eed4ca4ce5db31d15c4daa49ed3"
         opts = get_opts()
@@ -39,9 +47,9 @@ class Tests(unittest.TestCase):
         filename = os.path.join(TEST_DATA_LOCATION, "mammaltest.csv")
         file = open(filename, 'wb')
         for i in range(cursor.rowcount):
-            line = ','.join([str(value) for value in cursor.fetchone()])
-            line = line.replace("'", '"')
-            file.write(line + "\n")
+            line = ','.join([strvalue(value) for value in cursor.fetchone()])
+            print line
+            file.write(line + "\n")            
         file.close
         
         file = open(filename, 'r')
