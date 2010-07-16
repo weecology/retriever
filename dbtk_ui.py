@@ -26,7 +26,49 @@ def launch_wizard(dbtk_list, engine_list):
             self.label.Wrap(100)
             if label:
                 self.sizer.Add(wx.StaticText(self, -1, label))
-    
+
+
+    class ChooseDbPage(TitledPage):
+        def __init__(self, parent, title, label):
+            TitledPage.__init__(self, parent, title, label)
+            dblist = wx.ListBox(self, -1, 
+                                choices=[db.name for db in engine_list], 
+                                style=wx.LB_SINGLE)
+            self.dblist = dblist
+            self.dblist.SetSelection(0)
+            self.sizer.Add(self.dblist,
+                              0, wx.EXPAND | wx.ALL, 5)
+            self.sizer.Add(wx.StaticText(self, -1, "\n"))
+            self.keepdata = wx.CheckBox(self, -1, "Keep raw data files")
+            self.keepdata.SetValue(True)    
+            self.sizer.Add(self.keepdata)
+            self.uselocal = wx.CheckBox(self, -1, 
+                                        "Use locally archived files, " +
+                                        "if available")
+            self.uselocal.SetValue(True)
+            self.sizer.Add(self.uselocal)
+            self.sizer.Add(wx.StaticText(self, -1, "\n"))
+            self.sizer2 = wx.BoxSizer(wx.HORIZONTAL)    
+            self.sizer2.Add(wx.StaticText(self, -1, "Data file directory:", 
+                                  size=wx.Size(150,35)))
+            self.raw_data_dir = wx.TextCtrl(self, -1, 
+                                            Engine().RAW_DATA_LOCATION,
+                                            size=wx.Size(200,-1))
+            self.sizer2.Add(self.raw_data_dir)
+            self.dirbtn = wx.Button(self, id=-1, label='Change...',
+                                    size=(120, -1))
+            self.sizer2.Add(self.dirbtn)
+            self.sizer.Add(self.sizer2)                    
+            self.dirbtn.Bind(wx.EVT_BUTTON, self.dirbtn_click)
+        def dirbtn_click(self, evt):
+            dialog = wx.DirDialog(None, message="Choose a directory to " +
+                                    "download your data files.")            
+            if dialog.ShowModal() == wx.ID_OK:            
+               self.raw_data_dir.SetValue(dialog.GetPath())            
+            else:
+               pass            
+            dialog.Destroy()
+                        
     
     class ConnectPage(TitledPage):
         """The connection info page."""
@@ -97,7 +139,7 @@ def launch_wizard(dbtk_list, engine_list):
                 if warn:
                     warning = "Warning: the following datasets are not "
                     warning += "publicly available. You must have the raw "
-                    warning += "data files in the correct location first."
+                    warning += "data files in your data file directory first."
                     warning += "\n\n" + ','.join(warn)
                     wx.MessageBox(warning)
                          
@@ -126,24 +168,8 @@ on your computer.
 Supported database systems currently include:\n\n""" + 
 ", ".join([db.name for db in engine_list])))
     
-    page.append(TitledPage(wizard, "Select Database", 
+    page.append(ChooseDbPage(wizard, "Select Database", 
                            "Please select your database platform:\n"))
-    dblist = wx.ListBox(page[1], -1, 
-                        choices=[db.name for db in engine_list], 
-                        style=wx.LB_SINGLE)
-    page[1].dblist = dblist
-    page[1].dblist.SetSelection(0)
-    page[1].sizer.Add(page[1].dblist,
-                      0, wx.EXPAND | wx.ALL, 5)
-    page[1].sizer.Add(wx.StaticText(page[1], -1, "\n"))
-    page[1].keepdata = wx.CheckBox(page[1], -1, "Keep raw data files")
-    page[1].keepdata.SetValue(True)    
-    page[1].sizer.Add(page[1].keepdata)
-    page[1].uselocal = wx.CheckBox(page[1], -1, 
-                                   "Use locally archived files, if available")
-    page[1].uselocal.SetValue(True)
-    page[1].sizer.Add(page[1].uselocal)
-        
     
     page.append(ConnectPage(wizard, 
                             "Connection Info", 
