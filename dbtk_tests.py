@@ -11,7 +11,6 @@ from dbtks_ernest2003 import *
 from dbtks_pantheria import *
 from dbtks_portal_mammals import *
 import dbtk_ui
-import time
 
 TEST_DATA_LOCATION = "test_data"
 
@@ -63,9 +62,7 @@ class Tests(unittest.TestCase):
             lines.append(','.join([strvalue(row[i], i) for i in range(1, len(row))]) + "\n")
         lines = ''.join(lines)
         sum = getmd5(lines)
-        checkfile = open(os.path.join(TEST_DATA_LOCATION, "lifehistories_manual.txt"), 'rb')
-        check = getmd5(checkfile)
-        checkfile.close()
+        check = "bb9e40738db0b24ffc12feaf5e85a60a"
         self.assertEqual(sum, check)
         
 unittest.main()
