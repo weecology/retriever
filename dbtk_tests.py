@@ -46,7 +46,7 @@ class Tests(unittest.TestCase):
                 return ""        
         # Download Mammal Lifehistory database to MySQL
         script = MammalLifeHistory()
-        check = "afa09eed4ca4ce5db31d15c4daa49ed3"        
+        check = "bb9e40738db0b24ffc12feaf5e85a60a"        
         engine = choose_engine(opts)
         engine.script = script
         script.download(engine)
@@ -62,7 +62,6 @@ class Tests(unittest.TestCase):
             lines.append(','.join([strvalue(row[i], i) for i in range(1, len(row))]) + "\n")
         lines = ''.join(lines)
         sum = getmd5(lines)
-        check = "bb9e40738db0b24ffc12feaf5e85a60a"
         self.assertEqual(sum, check)
         
 unittest.main()
