@@ -174,11 +174,14 @@ class Engine():
         createstatement += " );"
         return createstatement
     def download_file(self, url, filename):
-        file = urllib.urlopen(url) 
-        local_file = open(self.format_filename(filename), 'wb')
-        local_file.write(file.read())
-        local_file.close()
-        file.close()
+        self.create_raw_data_dir()
+        if not self.use_local or not os.path.isfile(self.format_filename(filename)):
+            print "Downloading " + filename + " . . ."
+            file = urllib.urlopen(url) 
+            local_file = open(self.format_filename(filename), 'wb')
+            local_file.write(file.read())
+            local_file.close()
+            file.close()
     def download_files_from_archive(self, url, filenames):
         """Downloads one or more files from an archive into the raw data
         directory."""
@@ -193,12 +196,12 @@ class Engine():
             else:
                 self.create_raw_data_dir()
                 
-                if not downloaded:                    
+                if not downloaded:
                     self.download_file(url, url.split('/')[-1])
                     downloaded = True     
                         
                 local_zip = zipfile.ZipFile(archivename)
-                fileloc = self.format_filename(filename)
+                fileloc = self.format_filename(os.path.basename(filename))
                         
                 open_zip = local_zip.open(filename)
                 unzipped_file = open(fileloc, 'wb')
@@ -207,10 +210,11 @@ class Engine():
                 open_zip.close()
                 
                 local_zip.close()                                            
-        try:
-            os.remove(archivename)
-        except:
-            pass            
+        if not self.keep_raw_data:
+            try:
+                os.remove(archivename)
+            except:
+                pass            
     def drop_statement(self, objecttype, objectname):
         """Returns a drop table or database SQL statement."""
         dropstatement = "DROP %s IF EXISTS %s" % (objecttype, objectname)
