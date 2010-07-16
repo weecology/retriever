@@ -5,12 +5,13 @@ imported by DBTK scripts.
 """
 
 import os
-import hashlib
+from hashlib import md5
 import unittest
 from dbtks_ernest2003 import *
 from dbtks_pantheria import *
 from dbtks_portal_mammals import *
 import dbtk_ui
+import time
 
 TEST_DATA_LOCATION = "test_data"
 
@@ -19,14 +20,10 @@ try:
 except:
     pass
 
-def getmd5(filename):
-    file = open(filename, "r")
-    sum = hashlib.md5()
-    while True:
-        data = file.read()
-        if not data:
-            break
-        sum.update(data)
+def getmd5(lines):
+    sum = md5()
+    for line in lines:
+        sum.update(line)
     return sum.hexdigest()
 
 opts = get_opts()
@@ -39,7 +36,7 @@ class Tests(unittest.TestCase):
                 if isinstance(value, str):
                     # Add double quotes to strings
                     return '"' + value + '"'
-                else: 
+                else:
                     if len(str(value).split('.')) == 2:
                         while len(str(value).split('.')[-1]) < 2:
                             value = str(value) + "0"
@@ -60,17 +57,15 @@ class Tests(unittest.TestCase):
         cursor.execute("SELECT * FROM " + engine.tablename() + " m ORDER BY " +
                        "m.sporder, m.family, m.genus, m.species")
         
-        filename = os.path.join(TEST_DATA_LOCATION, "mammaltest.txt")
-        file = open(filename, 'wb')
+        lines = []
         for i in range(cursor.rowcount):
             row = cursor.fetchone()
-            line = ','.join([strvalue(row[i], i) for i in range(1, len(row))])
-            print line
-            file.write(line + "\n")            
-        file.close
-        
-        sum = getmd5(filename)
-        #check = getmd5(os.path.join(TEST_DATA_LOCATION, "lifehistories_manual.txt"))
+            lines.append(','.join([strvalue(row[i], i) for i in range(1, len(row))]) + "\n")
+        lines = ''.join(lines)
+        sum = getmd5(lines)
+        checkfile = open(os.path.join(TEST_DATA_LOCATION, "lifehistories_manual.txt"), 'rb')
+        check = getmd5(checkfile)
+        checkfile.close()
         self.assertEqual(sum, check)
         
 unittest.main()
