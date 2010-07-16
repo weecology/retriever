@@ -91,4 +91,4 @@ if __name__ == "__main__":
         launch_wizard([me], ALL_ENGINES)
     else:
         me.download()
-        final_cleanup()
+        final_cleanup(engine.RAW_DATA_LOCATION)

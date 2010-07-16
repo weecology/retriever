@@ -35,7 +35,7 @@ def correct_invalid_value(value, args):
         return value    
     
 
-def final_cleanup():
+def final_cleanup(RAW_DATA_LOCATION):
     """Perform final cleanup operations after all scripts have run."""
     # Delete empty directories in RAW_DATA_LOCATION, then delete that
     # directory if empty.

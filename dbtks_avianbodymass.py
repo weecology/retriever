@@ -13,10 +13,12 @@ class AvianBodyMass(DbTk):
     name = "CRC Avian Body Masses"
     shortname = "AvianBodyMass"
     public = False
-    required_opts = []
+    required_opts = ["datalocation"]
     def download(self, engine=None):    
         # Variables to get text file/create database
         engine = self.checkengine(engine)
+        
+        RAW_DATA_LOCATION = "raw_data2"
         
         db = Database()
         db.dbname = "AvianBodyMass"
