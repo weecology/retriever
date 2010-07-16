@@ -27,8 +27,9 @@ class Gentry(DbTk):
         filelist = local_zip.namelist()
         local_zip.close()
         engine.download_files_from_archive(url, filelist)
-        print filelist
         
+        filelist = [os.path.basename(filename) for filename in filelist]
+        print filelist
         
         
 if __name__ == "__main__":

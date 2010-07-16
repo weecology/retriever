@@ -13,8 +13,6 @@ import getpass
 import getopt
 import zipfile
 import urllib
-
-RAW_DATA_LOCATION = "raw_data"
     
 class Cleanup:
     """This class represents a custom cleanup function and a dictionary of 
@@ -60,7 +58,8 @@ class Engine():
     datatypes = []
     required_opts = []
     pkformat = "%s PRIMARY KEY"
-    script = None    
+    script = None
+    RAW_DATA_LOCATION = "raw_data"    
     def add_to_table(self):
         """This function adds data to a table from one or more lines specified 
         in engine.table.source."""        
@@ -146,9 +145,9 @@ class Engine():
     def create_raw_data_dir(self):
         """Checks to see if the archive directory exists and creates it if 
         necessary."""
-        if not os.path.exists(RAW_DATA_LOCATION):
-            os.makedirs(RAW_DATA_LOCATION)
-        path = os.path.join(RAW_DATA_LOCATION, self.script.shortname)
+        if not os.path.exists(self.RAW_DATA_LOCATION):
+            os.makedirs(self.RAW_DATA_LOCATION)
+        path = os.path.join(self.RAW_DATA_LOCATION, self.script.shortname)
         if not os.path.exists(path):
             os.makedirs(path)            
     def create_table(self):
@@ -233,7 +232,7 @@ class Engine():
             return line.split(self.table.delimiter)
     def format_filename(self, filename):
         """Returns the full path of a file in the archive directory."""
-        path = os.path.join(RAW_DATA_LOCATION, self.script.shortname)
+        path = os.path.join(self.RAW_DATA_LOCATION, self.script.shortname)
         return os.path.join(path, filename)
     def format_insert_value(self, value):
         """Formats a value for an insert statement, for example by surrounding

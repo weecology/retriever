@@ -263,7 +263,7 @@ Supported database systems currently include:\n\n""" +
                 wx.MessageBox(e.__str__(), "Error")
                 
         print "Finishing . . ."
-        final_cleanup()
+        final_cleanup(engine.RAW_DATA_LOCATION)
         dialog.Update(len(scripts), "Finished!")
         if errors:
             wx.MessageBox("The following errors occurred: \n" + 
