@@ -254,6 +254,7 @@ Supported database systems currently include:\n\n""" +
         options = page[2].option
         engine.keep_raw_data = page[1].keepdata.Value
         engine.use_local = page[1].uselocal.Value
+        engine.RAW_DATA_LOCATION = page[1].raw_data_dir.Value
         opts = dict()
         for key in options.keys():
             opts[key] = options[key].GetValue()
