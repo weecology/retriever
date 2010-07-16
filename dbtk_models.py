@@ -59,7 +59,7 @@ class Engine():
     required_opts = []
     pkformat = "%s PRIMARY KEY"
     script = None
-    RAW_DATA_LOCATION = "raw_data"    
+    RAW_DATA_LOCATION = os.path.join("raw_data", "{dataset}")    
     def add_to_table(self):
         """This function adds data to a table from one or more lines specified 
         in engine.table.source."""        
@@ -145,9 +145,7 @@ class Engine():
     def create_raw_data_dir(self):
         """Checks to see if the archive directory exists and creates it if 
         necessary."""
-        if not os.path.exists(self.RAW_DATA_LOCATION):
-            os.makedirs(self.RAW_DATA_LOCATION)
-        path = os.path.join(self.RAW_DATA_LOCATION, self.script.shortname)
+        path = self.format_data_dir()
         if not os.path.exists(path):
             os.makedirs(path)            
     def create_table(self):
@@ -230,10 +228,11 @@ class Engine():
             return values
         else:
             return line.split(self.table.delimiter)
+    def format_data_dir(self):        
+        return self.RAW_DATA_LOCATION.replace("{dataset}", self.script.shortname)
     def format_filename(self, filename):
         """Returns the full path of a file in the archive directory."""
-        path = os.path.join(self.RAW_DATA_LOCATION, self.script.shortname)
-        return os.path.join(path, filename)
+        return os.path.join(self.format_data_dir(), filename)
     def format_insert_value(self, value):
         """Formats a value for an insert statement, for example by surrounding
         it in single quotes."""
