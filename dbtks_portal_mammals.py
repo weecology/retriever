@@ -98,11 +98,12 @@ class PortalMammals(DbTk):
         
         engine.insert_data_from_url("http://esapubs.org/archive/ecol/E090/118/Portal_rodent_19772002.csv")
         
+        return engine
+        
 
 if __name__ == "__main__":
     me = PortalMammals()
     if len(sys.argv) == 1:
         launch_wizard([me], ALL_ENGINES)
-    else:
-        me.download()
-        final_cleanup(engine)
+    else:        
+        final_cleanup(me.download())

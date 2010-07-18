@@ -157,13 +157,12 @@ class AvianBodyMass(DbTk):
                 table.source = lines                
                 engine.add_to_table()
                         
-                    
+        return engine
 
 
 if __name__ == "__main__":
     me = AvianBodyMass()
     if len(sys.argv) == 1:                
         launch_wizard([me], ALL_ENGINES)
-    else:
-        me.download()
-        final_cleanup(engine)
+    else:        
+        final_cleanup(me.download())

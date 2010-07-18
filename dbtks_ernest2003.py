@@ -47,11 +47,12 @@ class MammalLifeHistory(DbTk):
         
         engine.insert_data_from_url("http://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt")
         
+        return engine
+        
         
 if __name__ == "__main__":
     me = MammalLifeHistory()
     if len(sys.argv) == 1:                
         launch_wizard([me], ALL_ENGINES)
-    else:
-        me.download()
-        final_cleanup(engine)
+    else:        
+        final_cleanup(me.download())

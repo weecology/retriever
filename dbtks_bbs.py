@@ -176,6 +176,8 @@ class BBS(DbTk):
             print "There was an unexpected error in the Breeding Bird Survey archives."
             raise    
         
+        return engine
+        
         
 if __name__ == "__main__":
     me = BBS()
@@ -183,4 +185,4 @@ if __name__ == "__main__":
         launch_wizard([me], ALL_ENGINES)
     else:
         me.download()
-        final_cleanup(engine)
+        final_cleanup(me.download())

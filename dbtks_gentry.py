@@ -43,19 +43,20 @@ class Gentry(DbTk):
                 n = 0
                 for cell in row:
                     n += 1
-                    if n < 5 or n > 8:
-                        if not excel.empty_cell(cell):
+                    if n < 5 or n > 12:
+                        if not excel.empty_cell(cell) or n == 13:
                             thisline.append(excel.cell_value(cell))
                     
                 lines.append(thisline)
         
         print lines
+        
+        return engine
             
             
 if __name__ == "__main__":
     me = Gentry()
     if len(sys.argv) == 1:                
         launch_wizard([me], ALL_ENGINES)
-    else:
-        me.download()
-        final_cleanup(engine)
+    else:        
+        final_cleanup(me.download())
