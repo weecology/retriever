@@ -224,7 +224,7 @@ Supported database systems currently include:\n\n""" +
             """This function is called whenever the print statement is used,
             and redirects the output to the progress dialog."""
             def write(self, s):                
-                txt = s.strip().translate(None, "\b")
+                txt = s.strip().replace("\b", "")
                 if txt:
                     prog = scriptnum - 1
                     if prog < 0:
