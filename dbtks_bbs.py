@@ -56,7 +56,7 @@ class BBS(DbTk):
                 if value == "N":
                     return None
                 elif ":" in value:
-                    return value.translate(None, ":")             
+                    return value.replace(":", "")             
                 return value
             table.cleanup = Cleanup(weather_cleanup, None)
                 
