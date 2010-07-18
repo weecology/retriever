@@ -1,4 +1,5 @@
-"""Database Toolkit for Breeding Bird Survey 
+"""Database Toolkit for Breeding Bird Survey
+ 
 """
 
 import os
@@ -182,4 +183,4 @@ if __name__ == "__main__":
         launch_wizard([me], ALL_ENGINES)
     else:
         me.download()
-        final_cleanup(engine.RAW_DATA_LOCATION)
+        final_cleanup(engine)
