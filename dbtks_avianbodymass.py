@@ -13,9 +13,10 @@ class AvianBodyMass(DbTk):
     name = "CRC Avian Body Masses"
     shortname = "AvianBodyMass"
     public = False
-    required_opts = []
+    required_opts = []    
     def download(self, engine=None):    
         # Variables to get text file/create database
+        excel = Excel()
         engine = self.checkengine(engine)
         
         db = Database()
@@ -91,22 +92,22 @@ class AvianBodyMass(DbTk):
             lastvalues = None
             for n in range(rows):
                 row = sh.row(n)
-                empty_cols = len([cell for cell in row[0:11] if emptycell(cell)])
+                empty_cols = len([cell for cell in row[0:11] if excel.empty_cell(cell)])
                 
                 # Skip this row if all cells or all cells but one are empty
                 # or if it's the legend row
-                if (empty_cols >= cols - 1 or cellvalue(row[0]) == "Scientific Name"
-                    or cellvalue(row[0])[0:7] == "Species"):
+                if (empty_cols >= cols - 1 or excel.cell_value(row[0]) == "Scientific Name"
+                    or excel.cell_value(row[0])[0:7] == "Species"):
                     pass
                 else:
                     values = []
                     # If the first two columns are empty, but not all of them are,
                     # use the first two columns from the previous row
-                    if emptycell(row[0]) and emptycell(row[1]) and empty_cols < (cols - 1):                        
-                        [values.append(value) for value in sci_name(cellvalue(lastrow[0]))]
-                        values.append(cellvalue(lastrow[1]))
+                    if excel.empty_cell(row[0]) and excel.empty_cell(row[1]) and empty_cols < (cols - 1):                        
+                        [values.append(value) for value in sci_name(excel.cell_value(lastrow[0]))]
+                        values.append(excel.cell_value(lastrow[1]))
                     else:
-                        if len(cellvalue(row[0]).split()) == 1:
+                        if len(excel.cell_value(row[0]).split()) == 1:
                             # If the scientific name is missing genus/species, fill it
                             # in from the previous row
                             values.append(lastvalues[0])
@@ -114,29 +115,29 @@ class AvianBodyMass(DbTk):
                             values.append(lastvalues[2])
                             for i in range(0, 3):
                                 if not values[2-i]:
-                                    values[2-i] = cellvalue(row[0])
+                                    values[2-i] = excel.cell_value(row[0])
                                     break
                             # Add new information to the previous scientific name
                             if lastvalues:
                                 lastvalues[0:3] = values[0:3]
                         else:
-                            [values.append(value) for value in sci_name(cellvalue(row[0]))]
-                        values.append(cellvalue(row[1]))
+                            [values.append(value) for value in sci_name(excel.cell_value(row[0]))]
+                        values.append(excel.cell_value(row[1]))
                         
-                    if cellvalue(row[2]) == "M":
+                    if excel.cell_value(row[2]) == "M":
                         values.append("Male")
-                    elif cellvalue(row[2]) == "F":
+                    elif excel.cell_value(row[2]) == "F":
                         values.append("Female")
-                    elif cellvalue(row[2]) == "B":
+                    elif excel.cell_value(row[2]) == "B":
                         values.append("Both")
-                    elif cellvalue(row[2]) == "U":
+                    elif excel.cell_value(row[2]) == "U":
                         values.append("Unknown")
                     else:
-                        values.append(cellvalue(row[2]))
+                        values.append(excel.cell_value(row[2]))
                         
                     # Enter remaining values from cells 
                     for i in range(3, cols):
-                        values.append(cellvalue(row[i]))
+                        values.append(excel.cell_value(row[i]))
                         
                     # If there isn't a common name or sex, get it from the previous row
                     if not values[3]:
@@ -165,4 +166,4 @@ if __name__ == "__main__":
         launch_wizard([me], ALL_ENGINES)
     else:
         me.download()
-        final_cleanup()
+        final_cleanup(engine)

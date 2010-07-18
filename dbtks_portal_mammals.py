@@ -1,5 +1,6 @@
 """Database Toolkit for the Portal Project mammals
 Dataset published by Ernest et al. 2009 in Ecological Archives.
+
 """
 
 #TO DO - confirm column reversal with authors and correct
@@ -104,4 +105,4 @@ if __name__ == "__main__":
         launch_wizard([me], ALL_ENGINES)
     else:
         me.download()
-        final_cleanup(engine.RAW_DATA_LOCATION)
+        final_cleanup(engine)

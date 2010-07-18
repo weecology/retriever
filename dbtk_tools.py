@@ -35,15 +35,15 @@ def correct_invalid_value(value, args):
         return value    
     
 
-def final_cleanup(RAW_DATA_LOCATION):
+def final_cleanup(engine):
     """Perform final cleanup operations after all scripts have run."""
     # Delete empty directories in RAW_DATA_LOCATION, then delete that
     # directory if empty.
     try:
-       data_dirs = os.listdir(RAW_DATA_LOCATION)
+       data_dirs = os.listdir(engine.RAW_DATA_LOCATION)
        for dir in data_dirs:
            try:
-               os.rmdir(os.path.join(RAW_DATA_LOCATION, dir))
+               os.rmdir(os.path.join(engine.RAW_DATA_LOCATION, dir))
            except OSError:
                pass
     except OSError:
@@ -57,15 +57,16 @@ def final_cleanup(RAW_DATA_LOCATION):
 class DbtkError(Exception):
     pass            
 
-def emptycell(cell):
-    """Tests whether an excel cell is empty or contains only
-    whitespace"""
-    if cell.ctype == 0:
-        return True
-    if str(cell.value).strip() == "":
-        return True
-    return False
-
-def cellvalue(cell):
-    """Returns the string value of an excel spreadsheet cell"""
-    return str(cell.value).strip()    
+class Excel():
+    def empty_cell(self, cell):
+        """Tests whether an excel cell is empty or contains only
+        whitespace"""
+        if cell.ctype == 0:
+            return True
+        if str(cell.value).strip() == "":
+            return True
+        return False
+    
+    def cell_value(self, cell):
+        """Returns the string value of an excel spreadsheet cell"""
+        return str(cell.value).strip()    
