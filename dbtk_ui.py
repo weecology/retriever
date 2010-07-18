@@ -282,7 +282,7 @@ Supported database systems currently include:\n\n""" +
                 sys.stdout = oldstdout
                 dialog.Destroy()                
                 wx.MessageBox("Cancelled.")
-                final_cleanup()
+                final_cleanup(engine)
                 sys.exit()
             except Exception as e:
                 errors.append("There was an error downloading " + 
@@ -290,7 +290,7 @@ Supported database systems currently include:\n\n""" +
                 wx.MessageBox(e.__str__(), "Error")
                 
         print "Finishing . . ."
-        final_cleanup(engine.RAW_DATA_LOCATION)
+        final_cleanup(engine)
         dialog.Update(len(scripts), "Finished!")
         if errors:
             wx.MessageBox("The following errors occurred: \n" + 

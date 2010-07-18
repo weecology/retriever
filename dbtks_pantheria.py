@@ -83,13 +83,14 @@ class Pantheria(DbTk):
         engine.table = table
         engine.create_table()
         
-        engine.insert_data_from_url("http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt")        
+        engine.insert_data_from_url("http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt")
+        
+        return engine        
         
         
 if __name__ == "__main__":
     me = Pantheria()
     if len(sys.argv) == 1:                
         launch_wizard([me], ALL_ENGINES)
-    else:
-        me.download()
-        final_cleanup(engine)
+    else:        
+        final_cleanup(me.download())

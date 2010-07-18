@@ -49,7 +49,7 @@ def final_cleanup(engine):
     except OSError:
         pass
     try:
-        os.rmdir(RAW_DATA_LOCATION)
+        os.rmdir(engine.RAW_DATA_LOCATION)
     except OSError:
         pass
     
