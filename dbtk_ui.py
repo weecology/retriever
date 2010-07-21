@@ -140,8 +140,14 @@ def launch_wizard(dbtk_list, engine_list):
                     warning = "Warning: the following datasets are not "
                     warning += "publicly available. You must have the raw "
                     warning += "data files in your data file directory first."
-                    warning += "\n\n" + ','.join(warn)
-                    wx.MessageBox(warning)
+                    warning += "\n\n" + ','.join(warn) + "\n\n"
+                    warning += "Do you want to continue?"
+                    warndialog = wx.MessageDialog(None, 
+                                                  warning, 
+                                                  "Warning", 
+                                                  style = wx.YES_NO)
+                    if warndialog.ShowModal() != wx.ID_YES:
+                        evt.Veto()
                          
     
     
