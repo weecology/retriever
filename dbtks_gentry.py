@@ -50,18 +50,23 @@ class Gentry(DbTk):
                     
                     lines.append([str(value).title().replace("\\", "/") for value in thisline])
         
-        # Get family/genus/species lists
+        # Create list of family/genus/species combinations
         print "Generating species list . . ."
         tax = []
         for line in lines:
             tax.append([line[1], line[2], line[3]])
         
+        # Family, genus and species dictionaries: the key a tuple consisting of 
+        # the name of the family/genus species and all taxonomic groups above 
+        # it; the value is the ID number referring to that group.
         families = dict()
         genera = dict()
         species = dict()
         familycount = 0
         genuscount = 0
         speciescount = 0
+        
+        # Get all unique families/genera/species
         for group in tax:
             family = group[0]
             if not (family in families.keys()):
@@ -75,6 +80,12 @@ class Gentry(DbTk):
             if not (thisspecies in species.keys()):
                 speciescount += 1
                 species[thisspecies] = speciescount
+                
+        # Sort dictionaries by values
+        print "Sorting taxonomic groups . . ."
+        sortedfamilies = sorted(families.keys(), key=lambda key: families[key])
+        sortedgenera = sorted(genera.keys(), key=lambda key: genera[key])
+        sortedspecies = sorted(species.keys(), key=lambda key: species[key])
         
         # Create family table
         table = Table()
@@ -85,7 +96,7 @@ class Gentry(DbTk):
         table.source = [',,'.join([
                                    str(families[family]),
                                    family
-                                   ]) for family in families.keys()]
+                                   ]) for family in sortedfamilies]
         table.delimiter = ',,'
         engine.table = table
         engine.create_table()        
@@ -103,7 +114,7 @@ class Gentry(DbTk):
                                    str(genera[genus]),
                                    genus[0], 
                                    str(families[genus[1]])
-                                   ]) for genus in genera.keys()]
+                                   ]) for genus in sortedgenera]
         table.delimiter = ',,'
         engine.table = table
         engine.create_table()        
@@ -121,7 +132,7 @@ class Gentry(DbTk):
                                    str(species[thisspecies]),
                                    thisspecies[0], 
                                    str(genera[(thisspecies[1], thisspecies[2])])
-                                   ]) for thisspecies in species.keys()]
+                                   ]) for thisspecies in sortedspecies]
         table.delimiter = ',,'
         engine.table = table
         engine.create_table()        
