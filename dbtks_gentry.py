@@ -41,17 +41,28 @@ class Gentry(DbTk):
                 thisline = []
                 row = sh.row(i)
                 n = 0
-                if not excel.empty_cell(row[0]):
-                    for cell in row:
-                        n += 1
-                        if n < 5 or n > 12:
-                            if not excel.empty_cell(cell) or n == 13:
-                                thisline.append(excel.cell_value(cell))
+                cellcount = 0
+                for cell in row:
+                    if not excel.empty_cell(cell):
+                        cellcount += 1 
+                if cellcount > 4 and not excel.empty_cell(row[0]):
+                    try:
+                        a = int(excel.cell_value(row[0]).split('.')[0])
+                        for cell in row:
+                            n += 1
+                            if n < 5 or n > 12:
+                                if not excel.empty_cell(cell) or n == 13:
+                                    thisline.append(excel.cell_value(cell))
+                        
+                        lines.append([str(value).title().replace("\\", "/") for value in thisline])
+                    except:
+                        pass                    
                     
-                    lines.append([str(value).title().replace("\\", "/") for value in thisline])
+        
+        print "Lines: " + str(len(lines))
         
         # Create list of family/genus/species combinations
-        print "Generating species list . . ."
+        print "Generating taxonomic groups . . ."
         tax = []
         for line in lines:
             tax.append([line[1], line[2], line[3]])
@@ -83,23 +94,24 @@ class Gentry(DbTk):
                 
         # Sort dictionaries by values
         print "Sorting taxonomic groups . . ."
-        sortedfamilies = sorted(families.keys(), key=lambda key: families[key])
-        sortedgenera = sorted(genera.keys(), key=lambda key: genera[key])
-        sortedspecies = sorted(species.keys(), key=lambda key: species[key])
+        sortedfamilies = sorted(families.keys(), key=lambda k: families[k])
+        sortedgenera = sorted(genera.keys(), key=lambda k: genera[k])
+        sortedspecies = sorted(species.keys(), key=lambda k: species[k])
+                
         
-        # Create family table
+        # Create family table        
         table = Table()
         table.tablename = "family"
         table.columns=[("family_id"             ,   ("pk-int",)     ),
-                       ("family"                ,   ("char", 20)    )]
+                       ("family"                ,   ("char", 30)    )]
         table.hasindex = True
-        table.source = [',,'.join([
+        table.source = ['::'.join([
                                    str(families[family]),
                                    family
                                    ]) for family in sortedfamilies]
-        table.delimiter = ',,'
+        table.delimiter = '::'
         engine.table = table
-        engine.create_table()        
+        engine.create_table()
         engine.add_to_table()
         
         
@@ -107,17 +119,17 @@ class Gentry(DbTk):
         table = Table()
         table.tablename = "genus"
         table.columns=[("genus_id"              ,   ("pk-int",)     ),
-                       ("genus"                 ,   ("char", 20)    ),
-                       ("family_id"             ,   ("int", )       )]
+                       ("genus"                 ,   ("char", 30)    ),
+                       ("family_id"             ,   ("int",)        )]
         table.hasindex = True
-        table.source = [',,'.join([
+        table.source = ['::'.join([
                                    str(genera[genus]),
                                    genus[0], 
                                    str(families[genus[1]])
                                    ]) for genus in sortedgenera]
-        table.delimiter = ',,'
+        table.delimiter = '::'
         engine.table = table
-        engine.create_table()        
+        engine.create_table()
         engine.add_to_table()
         
         
@@ -125,19 +137,45 @@ class Gentry(DbTk):
         table = Table()
         table.tablename = "species"
         table.columns=[("species_id"            ,   ("pk-int",)     ),
-                       ("species"               ,   ("char", 20)    ),
+                       ("species"               ,   ("char", 50)    ),
                        ("genus_id"              ,   ("int", )       )]
         table.hasindex = True
-        table.source = [',,'.join([
+        table.source = ['::'.join([
                                    str(species[thisspecies]),
                                    thisspecies[0], 
                                    str(genera[(thisspecies[1], thisspecies[2])])
                                    ]) for thisspecies in sortedspecies]
-        table.delimiter = ',,'
+        table.delimiter = '::'
         engine.table = table
-        engine.create_table()        
-        engine.add_to_table()        
+        engine.create_table()
+        engine.add_to_table()
         
+        
+        # Create stems table
+        table = Table()
+        table.tablename = "stems"
+        table.columns=[("stem_id"               ,   ("pk-auto",)    ),
+                       ("line"                  ,   ("int",)        ),
+                       ("species_id"            ,   ("int",)        ),
+                       ("liana"                 ,   ("char", 10)    ),
+                       ("stem"                  ,   ("double",)     )]
+        table.hasindex = False
+        stems = []
+        for line in lines:
+            species_info = [str(line[0]).split('.')[0], 
+                            species[(line[3], line[2], line[1])],
+                            line[4]
+                            ]
+            stem_count = len(line) - 5
+            for i in range(stem_count):
+                stem = species_info + [line[(i + 1) * -1]]
+                stems.append([str(value) for value in stem])
+            
+        table.source = ['::'.join(stem) for stem in stems]
+        table.delimiter = '::'
+        engine.table = table
+        engine.create_table()
+        engine.add_to_table()
             
         
         return engine
