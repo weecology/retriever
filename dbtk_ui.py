@@ -241,16 +241,9 @@ Supported database systems currently include:\n\n""" +
         
         msg = "Connecting to database:"
         print "Connecting  . . ." 
-        
-        # Connect
-        try:
-            engine = page[2].engine
-        except Exception as e:
-            wx.MessageBox("There was an error with your database connection. \n\n" +
-                          e.__str__())
-            raise
-        
+                
         # Get options from wizard
+        engine = page[2].engine
         options = page[2].option
         engine.keep_raw_data = page[1].keepdata.Value
         engine.use_local = page[1].uselocal.Value
@@ -259,7 +252,14 @@ Supported database systems currently include:\n\n""" +
         for key in options.keys():
             opts[key] = options[key].GetValue()
         engine.opts = opts
-        engine.get_cursor()
+        
+        # Connect
+        try:
+            engine.get_cursor()
+        except Exception as e:
+            wx.MessageBox("There was an error with your database connection. \n\n" +
+                          e.__str__())
+            raise
         
         class UserSkipped(Exception):
             pass        
