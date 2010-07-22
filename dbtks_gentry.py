@@ -89,8 +89,12 @@ class Gentry(DbTk):
                 genera[genus] = genuscount
             thisspecies = (group[2], group[1], group[0])
             if not (thisspecies in species.keys()):
-                speciescount += 1
+                speciescount += 1                
                 species[thisspecies] = speciescount
+            msg = ("Generating taxonomic groups: Family: " + str(familycount) +
+                   ", Genus: " + str(genuscount) +
+                   ", Species: " + str(speciescount))
+            sys.stdout.write(msg + "\b" * len(msg)) 
                 
         # Sort dictionaries by values
         print "Sorting taxonomic groups . . ."
@@ -183,7 +187,7 @@ class Gentry(DbTk):
             
 if __name__ == "__main__":
     me = Gentry()
-    if len(sys.argv) == 1:                
+    if len(sys.argv) == 1:
         launch_wizard([me], ALL_ENGINES)
-    else:        
+    else:
         final_cleanup(me.download())
