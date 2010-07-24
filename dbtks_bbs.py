@@ -184,5 +184,4 @@ if __name__ == "__main__":
     if len(sys.argv) == 1:                
         launch_wizard([me], ALL_ENGINES)
     else:
-        me.download()
         final_cleanup(me.download())

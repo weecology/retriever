@@ -62,7 +62,7 @@ class Engine():
     RAW_DATA_LOCATION = os.path.join("raw_data", "{dataset}")    
     def add_to_table(self):
         """This function adds data to a table from one or more lines specified 
-        in engine.table.source."""        
+        in engine.table.source."""       
         for line in self.table.source:
             
             line = line.strip()
@@ -95,14 +95,14 @@ class Engine():
                                                          cleanup.args)) 
                                for value in linevalues]
                 insertstatement = self.insert_statement(cleanvalues)
-                prompt = "Inserting rows: "
+                prompt = "Inserting rows to " + self.tablename() + ": "
                 sys.stdout.write(prompt + str(self.table.record_id) + "\b" *
                                  (len(str(self.table.record_id)) + 
                                   len(prompt)))
                 self.cursor.execute(insertstatement)
                 
         print "\n Done!"
-        self.connection.commit()        
+        self.connection.commit()
     def convert_data_type(self, datatype):
         """Converts DBTK generic data types to database platform specific data
         types"""
@@ -189,7 +189,6 @@ class Engine():
             if self.use_local and os.path.isfile(self.format_filename(filename)):
                 # Use local copy
                 print "Using local copy of " + filename
-                self.insert_data_from_file(self.format_filename(filename))
             else:
                 self.create_raw_data_dir()
                 
