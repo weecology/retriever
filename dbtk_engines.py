@@ -46,7 +46,7 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
             
             self.cursor.execute(statement)
         else:
-            return Engine.insert_data_from_file(self, filename)            
+            return Engine.insert_data_from_file(self, filename)
     def get_cursor(self):
         """Gets the db connection and cursor."""
         import MySQLdb as dbapi
