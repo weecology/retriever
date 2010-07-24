@@ -162,15 +162,15 @@ def launch_wizard(dbtk_list, engine_list):
     
     page.append(TitledPage(wizard, "Welcome", 
 """Welcome to the Database Toolkit wizard.
-     
+
 This wizard will walk you through the process of downloading
 and installing """ + dataset + """.
-   
+
 This wizard requires that you have one or more of the supported
 database systems installed. You must also have either an active
 connection to the internet, or the raw data files stored locally 
 on your computer.
-    
+
 Supported database systems currently include:\n\n""" + 
 ", ".join([db.name for db in engine_list])))
     
@@ -214,7 +214,7 @@ Supported database systems currently include:\n\n""" +
         for script in scripts:
             if len(script.name) > longestname:
                 longestname = len(script.name)
-                       
+                
         # Create progress dialog 
         dialog = wx.ProgressDialog("Download Progress", 
                                    "Downloading datasets . . ." + 
@@ -246,7 +246,7 @@ Supported database systems currently include:\n\n""" +
         sys.stdout = update_dialog()
         
         msg = "Connecting to database:"
-        print "Connecting  . . ." 
+        print "Connecting  . . ."     
                 
         # Get options from wizard
         engine = page[2].engine
@@ -263,7 +263,8 @@ Supported database systems currently include:\n\n""" +
         try:
             engine.get_cursor()
         except Exception as e:
-            wx.MessageBox("There was an error with your database connection. \n\n" +
+            wx.MessageBox("There was an error with your database" 
+                          + " connection. \n\n" +
                           e.__str__())
             raise
         
