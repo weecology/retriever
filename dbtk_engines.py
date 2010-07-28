@@ -11,7 +11,8 @@ class MySQLEngine(Engine):
     name = "MySQL"
     datatypes = ["INT(5) NOT NULL AUTO_INCREMENT", 
                  "INT", 
-                 "DOUBLE", 
+                 "DOUBLE",
+                 "DECIMAL", 
                  "VARCHAR", 
                  "BIT"]
     required_opts = [["username", 
@@ -63,6 +64,7 @@ class PostgreSQLEngine(Engine):
     name = "PostgreSQL"
     datatypes = ["serial", 
                  "integer", 
+                 "double precision",
                  "double precision", 
                  "varchar", 
                  "bit"]    
@@ -130,6 +132,7 @@ class SQLiteEngine(Engine):
     name = "SQLite"
     datatypes = ["INTEGER",
                  "INTEGER",
+                 "REAL",
                  "REAL",
                  "TEXT",
                  "INTEGER"]
