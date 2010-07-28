@@ -3,20 +3,22 @@ This module runs a wizard to download from multiple DBTK datasets.
 
 """
 
-from dbtks_ernest2003 import *
-from dbtks_pantheria import *
+from dbtks_EA_ernest2003 import *
+from dbtks_EA_pantheria import *
 from dbtks_bbs import *
-from dbtks_portal_mammals import *
+from dbtks_EA_portal_mammals import *
 from dbtks_gentry import *
-from dbtks_avianbodymass import *
+from dbtks_CRC_avianbodymass import *
+from dbtks_EA_avianbodysize2007 import *
 import dbtk_ui
 
-DBTK_LIST = [MammalLifeHistory(), 
-             Pantheria(), 
+DBTK_LIST = [EAMammalLifeHistory2003(), 
+             EAPantheria(), 
              BBS(), 
-             PortalMammals(),
+             EAPortalMammals(),
              Gentry(),
-             AvianBodyMass()
+             CRCAvianBodyMass(),
+             EAAvianBodySize2007()
              ]
 
 dbtk_ui.launch_wizard(DBTK_LIST, ALL_ENGINES)
