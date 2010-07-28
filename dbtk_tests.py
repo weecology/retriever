@@ -7,10 +7,15 @@ imported by DBTK scripts.
 import os
 from hashlib import md5
 import unittest
-from dbtks_ernest2003 import *
-from dbtks_pantheria import *
-from dbtks_portal_mammals import *
 import dbtk_ui
+
+from dbtks_EA_ernest2003 import *
+from dbtks_EA_pantheria import *
+from dbtks_bbs import *
+from dbtks_portal_mammals import *
+from dbtks_gentry import *
+from dbtks_CRC_avianbodymass import *
+from dbtks_EA_avianbodysize2007 import *
 
 TEST_DATA_LOCATION = "test_data"
 
@@ -45,7 +50,7 @@ class Tests(unittest.TestCase):
             else:
                 return ""        
         # Download Mammal Lifehistory database to MySQL
-        script = MammalLifeHistory()
+        script = EAMammalLifeHistory2003()
         check = "bb9e40738db0b24ffc12feaf5e85a60a"        
         engine = choose_engine(opts)
         engine.script = script
@@ -63,5 +68,42 @@ class Tests(unittest.TestCase):
         lines = ''.join(lines)
         sum = getmd5(lines)
         self.assertEqual(sum, check)
+        
+        
+    def test_Pantheria(self):
+        def strvalue(value, colnum):
+            if value:
+                if isinstance(value, str):
+                    # Add double quotes to strings
+                    return '"' + value + '"'
+                else:
+                    if len(str(value).split('.')) == 2:
+                        while len(str(value).split('.')[-1]) < 2:
+                            value = str(value) + "0"
+                        return str(value)
+                    else:
+                        return str(value)
+            else:
+                return ""        
+        # Download database to MySQL
+        script = EAPantheria()
+        check = "4d2d9c2f57f6ae0987aafd140aace1e3"        
+        engine = choose_engine(opts)
+        engine.script = script
+        script.download(engine)
+        
+        # Export MySQL data
+        cursor = engine.connection.cursor()
+        cursor.execute("SELECT * FROM " + engine.tablename() + " m ORDER BY " +
+                       "m.sporder, m.family, m.genus, m.species")
+        
+        lines = []
+        for i in range(cursor.rowcount):
+            row = cursor.fetchone()
+            lines.append(','.join([strvalue(row[i], i) for i in range(1, len(row))]) + "\n")
+        lines = ''.join(lines)
+        print lines
+        sum = getmd5(lines)
+        self.assertEqual(sum, check)        
         
 unittest.main()
