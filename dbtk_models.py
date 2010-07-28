@@ -112,7 +112,7 @@ class Engine():
         if thistype[0:3] == "pk-":
             thistype = thistype.lstrip("pk-")
             thispk = True
-        customtypes = ("auto", "int", "double", "char", "bit")
+        customtypes = ("auto", "int", "double", "decimal", "char", "bit")
         for i in range(0, len(customtypes)):
             datatypes[customtypes[i]] = i
         datatypes["combine"], datatypes["skip"] = [-1, -1]        

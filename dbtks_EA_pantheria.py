@@ -23,6 +23,7 @@ class EAPantheria(DbTk):
         table.tablename = "pantheria"        
         table.cleanup = Cleanup(correct_invalid_value, {"nulls":("-999", "-999.00", -999)} )
         
+        decimalformat = ("decimal","30,20")
         table.columns=[("species_id"            ,   ("pk-auto",)    ),
                        ("sporder"               ,   ("char", 20)    ),
                        ("family"                ,   ("char", 20)    ),
@@ -42,15 +43,15 @@ class EAPantheria(DbTk):
                        ("dispersal_age"         ,   ("double",)     ),
                        ("gestation_len"         ,   ("double",)     ),
                        ("habitat_breadth"       ,   ("double",)     ),
-                       ("home_range"            ,   ("double",)     ),
-                       ("home_range_indiv"      ,   ("double",)     ),
+                       ("home_range"            ,   decimalformat   ),
+                       ("home_range_indiv"      ,   decimalformat   ),
                        ("interbirth_interval"   ,   ("double",)     ),
                        ("litter_size"           ,   ("double",)     ),
                        ("litters_per_year"      ,   ("double",)     ),
                        ("max_longevity"         ,   ("double",)     ),
-                       ("neonate_body_mass"     ,   ("double",)     ),
-                       ("neonate_head_body_len" ,   ("double",)     ),
-                       ("pop_density"           ,   ("double",)     ),
+                       ("neonate_body_mass"     ,   decimalformat   ),
+                       ("neonate_head_body_len" ,   decimalformat   ),
+                       ("pop_density"           ,   decimalformat   ),
                        ("pop_grp_size"          ,   ("double",)     ),
                        ("sexual_maturity_age"   ,   ("double",)     ),
                        ("social_group_size"     ,   ("double",)     ),
@@ -65,17 +66,17 @@ class EAPantheria(DbTk):
                        ("litters_per_year_ext"  ,   ("double",)     ),
                        ("neonate_body_mass_ext" ,   ("double",)     ),
                        ("weaning_body_mass_ext" ,   ("double",)     ),
-                       ("GR_area"               ,   ("double",)     ),
-                       ("GR_max_lat"            ,   ("double",)     ),
-                       ("GR_min_lat"            ,   ("double",)     ),
-                       ("GR_mid_range_lat"      ,   ("double",)     ),
-                       ("GR_max_long"           ,   ("double",)     ),
-                       ("GR_min_long"           ,   ("double",)     ),
-                       ("GR_mid_range_long"     ,   ("double",)     ),
-                       ("hu_pop_den_min"        ,   ("double",)     ),
-                       ("hu_pop_den_mean"       ,   ("double",)     ),
-                       ("hu_pop_den_5p"         ,   ("double",)     ),
-                       ("hu_pop_den_change"     ,   ("double",)     ),
+                       ("GR_area"               ,   decimalformat   ),
+                       ("GR_max_lat"            ,   decimalformat   ),
+                       ("GR_min_lat"            ,   decimalformat   ),
+                       ("GR_mid_range_lat"      ,   decimalformat   ),
+                       ("GR_max_long"           ,   decimalformat   ),
+                       ("GR_min_long"           ,   decimalformat   ),
+                       ("GR_mid_range_long"     ,   decimalformat   ),
+                       ("hu_pop_den_min"        ,   decimalformat   ),
+                       ("hu_pop_den_mean"       ,   decimalformat   ),
+                       ("hu_pop_den_5p"         ,   decimalformat   ),
+                       ("hu_pop_den_change"     ,   decimalformat   ),
                        ("precip_mean"           ,   ("double",)     ),
                        ("temp_mean"             ,   ("double",)     ),
                        ("AET_mean"              ,   ("double",)     ),
@@ -89,7 +90,7 @@ class EAPantheria(DbTk):
         
         
 if __name__ == "__main__":
-    me = Pantheria()
+    me = EAPantheria()
     if len(sys.argv) == 1:                
         launch_wizard([me], ALL_ENGINES)
     else:        
