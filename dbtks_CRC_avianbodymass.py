@@ -33,6 +33,7 @@ class CRCAvianBodyMass(DbTk):
         # Database column names and their data types. Use data type "skip" to skip the value, and
         # "combine" to merge a string value into the previous column
         table.columns=[("record_id"             ,   ("pk-auto",)    ),
+                       ("family"                ,   ("char", 20)    ),
                        ("genus"                 ,   ("char", 20)    ),
                        ("species"               ,   ("char", 20)    ),
                        ("subspecies"            ,   ("char", 20)    ),
@@ -90,36 +91,43 @@ class CRCAvianBodyMass(DbTk):
             lines = []
             lastrow = None
             lastvalues = None
+            family = ""
             for n in range(rows):
                 row = sh.row(n)
+                if len(row) == 0:
+                    continue
+                
                 empty_cols = len([cell for cell in row[0:11] if excel.empty_cell(cell)])
                 
                 # Skip this row if all cells or all cells but one are empty
                 # or if it's the legend row
                 if (empty_cols >= cols - 1 or excel.cell_value(row[0]) == "Scientific Name"
                     or excel.cell_value(row[0])[0:7] == "Species"):
-                    pass
+                    if "Family" in excel.cell_value(row[0]):
+                        family = excel.cell_value(row[0]).lstrip("Family ").title()
+                        continue
                 else:
                     values = []
+                    values.append(family)
                     # If the first two columns are empty, but not all of them are,
                     # use the first two columns from the previous row
                     if excel.empty_cell(row[0]) and excel.empty_cell(row[1]) and empty_cols < (cols - 1):                        
-                        [values.append(value) for value in sci_name(excel.cell_value(lastrow[0]))]
-                        values.append(excel.cell_value(lastrow[1]))
+                        [values.append(value) for value in sci_name(excel.cell_value(lastrow[1]))]
+                        values.append(excel.cell_value(lastrow[2]))
                     else:
                         if len(excel.cell_value(row[0]).split()) == 1:
                             # If the scientific name is missing genus/species, fill it
                             # in from the previous row
-                            values.append(lastvalues[0])
                             values.append(lastvalues[1])
                             values.append(lastvalues[2])
+                            values.append(lastvalues[3])
                             for i in range(0, 3):
-                                if not values[2-i]:
-                                    values[2-i] = excel.cell_value(row[0])
+                                if not values[3-i]:
+                                    values[3-i] = excel.cell_value(row[0])
                                     break
                             # Add new information to the previous scientific name
                             if lastvalues:
-                                lastvalues[0:3] = values[0:3]
+                                lastvalues[1:4] = values[1:4]
                         else:
                             [values.append(value) for value in sci_name(excel.cell_value(row[0]))]
                         values.append(excel.cell_value(row[1]))
@@ -140,10 +148,10 @@ class CRCAvianBodyMass(DbTk):
                         values.append(excel.cell_value(row[i]))
                         
                     # If there isn't a common name or sex, get it from the previous row
-                    if not values[3]:
-                        values[3] = lastvalues[3]
                     if not values[4]:
-                        values[4] = lastvalues[4]                    
+                        values[4] = lastvalues[4]
+                    if not values[5]:
+                        values[5] = lastvalues[5]                    
                     
                     # Insert the previous row
                     if lastvalues:
