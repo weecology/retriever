@@ -101,12 +101,20 @@ class CRCAvianBodyMass(DbTk):
                 
                 # Skip this row if all cells or all cells but one are empty
                 # or if it's the legend row
-                if (empty_cols >= cols - 1 or excel.cell_value(row[0]) == "Scientific Name"
-                    or excel.cell_value(row[0])[0:7] == "Species"):
+                if ((empty_cols == cols)                             
+                            or excel.cell_value(row[0]) == "Scientific Name"
+                            or excel.cell_value(row[0])[0:7] == "Species"):
+                    pass
+                elif empty_cols == cols - 1:
                     if "Family" in excel.cell_value(row[0]):
                         family = excel.cell_value(row[0]).lstrip("Family ").title()
                         continue
+                    else:
+                        if not excel.empty_cell(row[0]):
+                            lastvalues[3] = excel.cell_value(row[0])
                 else:
+                    # Values: 0=Family 1=Genus 2=Species 3=Subspecies 4=common name 5=sex
+                    # 6=N 7=Mean 8=std_dev 9=min 10=max 11=season 12=location 13=source_num
                     values = []
                     values.append(family)
                     # If the first two columns are empty, but not all of them are,
@@ -122,12 +130,12 @@ class CRCAvianBodyMass(DbTk):
                             values.append(lastvalues[2])
                             values.append(lastvalues[3])
                             for i in range(0, 3):
-                                if not values[3-i]:
+                                if not values[3-i]:                                    
                                     values[3-i] = excel.cell_value(row[0])
                                     break
                             # Add new information to the previous scientific name
                             if lastvalues:
-                                lastvalues[1:4] = values[1:4]
+                                lastvalues[1:4] = values[1:4]                                
                         else:
                             [values.append(value) for value in sci_name(excel.cell_value(row[0]))]
                         values.append(excel.cell_value(row[1]))
@@ -147,13 +155,17 @@ class CRCAvianBodyMass(DbTk):
                     for i in range(3, cols):
                         values.append(excel.cell_value(row[i]))
                         
-                    # If there isn't a common name or sex, get it from the previous row
+                    # If there isn't a common name or location, get it from 
+                    # the previous row
                     if not values[4]:
                         values[4] = lastvalues[4]
-                    if not values[5]:
-                        values[5] = lastvalues[5]                    
+                    if not values[12]:
+                        if lastvalues:
+                            if lastvalues[5]:
+                                if lastvalues[5] == "Male" and values[5] == "Female":
+                                    values[12] = lastvalues[12]
                     
-                    # Insert the previous row
+                    # Insert the previous row into the database
                     if lastvalues:
                         lines.append(',,'.join(lastvalues))
                         
