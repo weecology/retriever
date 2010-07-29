@@ -5,7 +5,6 @@ Dataset published by Ernest et al. 2009 in Ecological Archives.
 
 #TO DO - confirm column reversal with authors and correct
 
-import datacleanup
 from dbtk_ui import *
 
 class EAPortalMammals(DbTk):
