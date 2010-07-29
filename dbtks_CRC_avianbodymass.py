@@ -111,9 +111,9 @@ class CRCAvianBodyMass(DbTk):
                     values.append(family)
                     # If the first two columns are empty, but not all of them are,
                     # use the first two columns from the previous row
-                    if excel.empty_cell(row[0]) and excel.empty_cell(row[1]) and empty_cols < (cols - 1):                        
-                        [values.append(value) for value in sci_name(excel.cell_value(lastrow[1]))]
-                        values.append(excel.cell_value(lastrow[2]))
+                    if excel.empty_cell(row[0]) and excel.empty_cell(row[1]):                        
+                        [values.append(value) for value in sci_name(excel.cell_value(lastrow[0]))]
+                        values.append(excel.cell_value(lastrow[1]))
                     else:
                         if len(excel.cell_value(row[0]).split()) == 1:
                             # If the scientific name is missing genus/species, fill it
