@@ -39,7 +39,7 @@ class CRCAvianBodyMass(DbTk):
                        ("subspecies"            ,   ("char", 20)    ),
                        ("common_name"           ,   ("char", 50)    ),
                        ("sex"                   ,   ("char", 20)    ),
-                       ("N"                     ,   ("char", 20)    ),
+                       ("N"                     ,   ("double",)     ),
                        ("mean"                  ,   ("double",)     ),
                        ("std_dev"               ,   ("double",)     ),
                        ("min"                   ,   ("double",)     ),
