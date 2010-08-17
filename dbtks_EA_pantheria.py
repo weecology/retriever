@@ -86,7 +86,17 @@ class EAPantheria(DbTk):
         
         engine.insert_data_from_url("http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt")
         
-        return engine        
+        return engine
+    
+    
+class EAPantheriaTest(DbTkTest):
+    def test_EAPantheria(self):        
+        DbTkTest.default_test(self,
+                              EAPantheria(),
+                              [("pantheria",
+                                "4d2d9c2f57f6ae0987aafd140aace1e3",
+                                "sporder, family, genus, species")
+                              ])
         
         
 if __name__ == "__main__":

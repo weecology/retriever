@@ -31,8 +31,8 @@ class EAAvianBodySize2007(DbTk):
         table.columns=[("record_id"             ,   ("pk-auto",)    ),
                        ("family_id"             ,   ("int",)        ),
                        ("species_id"            ,   ("int",)        ),
-                       ("species_name"          ,   ("char", 50)    ),
-                       ("common_name"           ,   ("char", 50)    ),
+                       ("species_name"          ,   ("char",50)     ),
+                       ("common_name"           ,   ("char",50)     ),
                        ("subspecies"            ,   ("char",50)     ),
                        ("M_mass"                ,   ("double",)     ),
                        ("M_mass_N"              ,   ("double",)     ),
@@ -67,9 +67,9 @@ class EAAvianBodySize2007(DbTk):
                        ("clutch_size"           ,   ("double",)     ),
                        ("egg_mass"              ,   ("double",)     ),
                        ("mating_system"         ,   ("double",)     ),
-                       ("display"              ,   ("double",)     ),                       
+                       ("display"               ,   ("double",)     ),                       
                        ("resource"              ,   ("double",)     ),                       
-                       ("refs"                  ,   ("char",30) )]
+                       ("refs"                  ,   ("char",30)     )]
         engine.table = table
         engine.create_table()
         

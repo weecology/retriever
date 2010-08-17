@@ -13,6 +13,9 @@ import getpass
 import getopt
 import zipfile
 import urllib
+from decimal import Decimal
+from hashlib import md5
+
     
 class Cleanup:
     """This class represents a custom cleanup function and a dictionary of 
@@ -126,7 +129,7 @@ class Engine():
             type = ""
         if thispk:
             type = self.pkformat % type
-        return type    
+        return type
     def create_db(self):
         """Creates a new database based on settings supplied in Database object
         engine.db"""
@@ -335,38 +338,3 @@ class Engine():
     def tablename(self):
         """Returns the full tablename in the format db.table."""        
         return self.db.dbname + "." + self.table.tablename
-    
-def get_opts():
-    """Checks for command line arguments"""
-    optsdict = dict()
-    for i in ["engine", "username", "password", "hostname", "sqlport", "database"]:
-        optsdict[i] = ""
-    try:
-        opts, args = getopt.getopt(sys.argv[1:], "e:u:p:hod", ["engine=", "user=", "password=", "host=", "port=", "database="])        
-        for opt, arg in opts:            
-            if opt in ("-e", "--engine"):      
-                optsdict["engine"] = arg                            
-            if opt in ("-u", "--user"):      
-                optsdict["username"] = arg                            
-            elif opt in ("-p", "--password"):     
-                optsdict["password"] = arg
-            elif opt in ("-h", "--host"):                 
-                if arg == "":
-                    optsdict["hostname"] = "default"
-                else:
-                    optsdict["hostname"] = arg
-            elif opt in ("-o", "--port"): 
-                try:
-                    optsdict["sqlport"] = int(arg)
-                except ValueError:
-                    optsdict["sqlport"] = "default"                 
-            elif opt in ("-d", "--database"): 
-                if arg == "":
-                    optsdict["database"] = "default"
-                else:
-                    optsdict["database"] = arg                                 
-                 
-    except getopt.GetoptError:
-        pass
-    
-    return optsdict
