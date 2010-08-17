@@ -21,4 +21,5 @@ DBTK_LIST = [EAMammalLifeHistory2003(),
              EAAvianBodySize2007()
              ]
 
-dbtk_ui.launch_wizard(DBTK_LIST, ALL_ENGINES)
+if __name__ == "__main__":
+    dbtk_ui.launch_wizard(DBTK_LIST, ALL_ENGINES)

@@ -9,6 +9,7 @@ from dbtk_models import *
 class MySQLEngine(Engine):
     """Engine instance for MySQL."""
     name = "MySQL"
+    abbreviation = "m"
     datatypes = ["INT(5) NOT NULL AUTO_INCREMENT", 
                  "INT", 
                  "DOUBLE",
@@ -62,10 +63,11 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
 class PostgreSQLEngine(Engine):
     """Engine instance for PostgreSQL."""
     name = "PostgreSQL"
+    abbreviation = "p"
     datatypes = ["serial", 
                  "integer", 
                  "double precision",
-                 "double precision", 
+                 "decimal", 
                  "varchar", 
                  "bit"]    
     required_opts = [["username", 
@@ -80,7 +82,7 @@ class PostgreSQLEngine(Engine):
                       "Enter for the default (5432): ", 5432],
                      ["database", 
                       "Enter your PostgreSQL database name or press " +
-                      "Enter for the default (postgres): ", "postgres"]]
+                      "Enter for the default (postgres): ", "postgres"]]            
     def create_db_statement(self):
         """In PostgreSQL, the equivalent of a SQL database is a schema."""
         return Engine.create_db_statement(self).replace("DATABASE", "SCHEMA")
@@ -130,10 +132,11 @@ CSV HEADER"""
 class SQLiteEngine(Engine):
     """Engine instance for SQLite."""
     name = "SQLite"
+    abbreviation = "s"
     datatypes = ["INTEGER",
                  "INTEGER",
-                 "REAL",
-                 "REAL",
+                 "DOUBLE",
+                 "DECIMAL",
                  "TEXT",
                  "INTEGER"]
     required_opts = [["database", 
@@ -145,38 +148,43 @@ class SQLiteEngine(Engine):
         return None
     def tablename(self):
         """The database file is specifically connected to, so database.table 
-        is not necessary."""        
-        return "'" + self.table.tablename + "'"    
+        is not necessary."""
+        return self.table.tablename
     def get_cursor(self):
         """Gets the db connection and cursor."""
-        import sqlite3 as dbapi    
+        import sqlite3 as dbapi
         self.get_input()
         self.connection = dbapi.connect(self.opts["database"])
         self.cursor = self.connection.cursor()
-        
-        
+                
+
+ALL_ENGINES = [MySQLEngine(), PostgreSQLEngine(), SQLiteEngine()]
+
+
 def choose_engine(opts):
     """Prompts the user to select a database engine"""    
     enginename = opts["engine"]
     
-    if enginename == "":
+    if not enginename:
         print "Choose a database engine:"
-        print "    (m) MySQL"
-        print "    (p) PostgreSQL"
-        print "    (s) SQLite"
+        for engine in ALL_ENGINES:
+            if engine.abbreviation:
+                abbreviation = "(" + engine.abbreviation + ") "
+            else:
+                abbreviation = ""
+            print "    " + abbreviation + engine.name
         enginename = raw_input(": ")
         enginename = enginename.lower()
     
     engine = Engine()
-    if enginename == "mysql" or enginename == "m" or enginename == "":
+    if not enginename:
         engine = MySQLEngine()
-    elif enginename == "postgresql" or enginename == "p":
-        engine = PostgreSQLEngine()
-    elif enginename == "sqlite" or enginename == "s":
-        engine = SQLiteEngine()
+    else:
+        for thisengine in ALL_ENGINES:
+            if (enginename == thisengine.name.lower() 
+                              or thisengine.abbreviation
+                              and enginename == thisengine.abbreviation):
+                engine = thisengine
         
     engine.opts = opts
-    return engine        
-        
-
-ALL_ENGINES = [MySQLEngine(), PostgreSQLEngine(), SQLiteEngine()]
+    return engine
