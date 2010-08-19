@@ -35,13 +35,16 @@ class DbTkTest(unittest.TestCase):
         statement, for use in tests."""
         if value != None:
             if isinstance(value, str) or isinstance(value, unicode):
-                # Add double quotes to strings
+                # If the value is a string or unicode, it's not a number and
+                # should be surrounded by quotes.
                 return '"' + str(value) + '"'
             elif value == 0:
                 return "0.00"
-            elif isinstance(value, Decimal):
+            elif isinstance(value, Decimal) or (Decimal("-0.01") < 
+                                                Decimal(str(value)) < 
+                                                Decimal("0.01")):
                 try:
-                    if Decimal("-0.01") < value < Decimal("0.01"):                            
+                    if Decimal("-0.01") < Decimal(str(value)) < Decimal("0.01"):                            
                         dec = len(str(value).split('.')[-1].strip('0')) - 1
                         value = ("%." + str(dec) + "e") % value
                         value = str(value)
@@ -59,8 +62,10 @@ class DbTkTest(unittest.TestCase):
                         value = value + "0"                        
                 return value
             else:
-                value = str(value).rstrip('0')
-                if not '.' in value:
+                value = str(value)
+                if '.' in value:
+                    value = value.rstrip('0')
+                else:
                     value += ".0"
                 if len(str(value).split('.')) == 2:
                     while len(str(value).split('.')[-1]) < 2:
@@ -88,6 +93,8 @@ class DbTkTest(unittest.TestCase):
             engine.script = script
             script.download(engine)
             
+            print "Testing data . . ."
+            
             for table in tables:
                 tablename = table[0]
                 checksum = table[1]
@@ -113,10 +120,8 @@ class DbTkTest(unittest.TestCase):
                 lines = ''.join(lines)
                 
                 sum = getmd5(lines)
-                if engine_letter == "s" and script.name == "Pantheria":
-                    checkagainstfile([line for line in lines.split("\r\n")], "PanTHERIA_manual.txt")
-                else:
-                    self.assertEqual(sum, checksum)
+                
+                self.assertEqual(sum, checksum)
                 
 def get_opts():
     """Checks for command line arguments"""
