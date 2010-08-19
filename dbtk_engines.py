@@ -135,8 +135,8 @@ class SQLiteEngine(Engine):
     abbreviation = "s"
     datatypes = ["INTEGER",
                  "INTEGER",
-                 "DOUBLE",
-                 "DECIMAL",
+                 "REAL",
+                 "TEXT",
                  "TEXT",
                  "INTEGER"]
     required_opts = [["database", 
