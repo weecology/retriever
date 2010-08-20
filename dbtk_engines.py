@@ -136,7 +136,7 @@ class SQLiteEngine(Engine):
     datatypes = ["INTEGER",
                  "INTEGER",
                  "REAL",
-                 "TEXT",
+                 "REAL",
                  "TEXT",
                  "INTEGER"]
     required_opts = [["database", 
