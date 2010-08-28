@@ -24,7 +24,8 @@ class EAAvianBodySize2007(DbTk):
         table = Table()
         table.tablename = "species"
         table.delimiter = "\t"
-        table.cleanup = Cleanup(correct_invalid_value, {"nulls":("-999", "-999.00", -999)} )
+        table.cleanup = Cleanup(correct_invalid_value, {"nulls":("-999", "-999.00", -999,
+                                                                 Decimal("-999.0"))} )
         
         # Database column names and their data types. Use data type "skip" to skip the value, and
         # "combine" to merge a string value into the previous column
@@ -76,6 +77,26 @@ class EAAvianBodySize2007(DbTk):
         engine.insert_data_from_url("http://esapubs.org/archive/ecol/E088/096/avian_ssd_jan07.txt")
         
         return engine
+    
+    
+class EAAvianBodySize2007Test(DbTkTest):
+    def strvalue(self, value, col_num):
+        a = DbTkTest.strvalue(self, value, col_num)
+        # Some integer columns end in .00, but the following do not,
+        # so the trailing zeroes need to be removed
+        if col_num in (0,1,6,8,10,12,14,16,18,20,22,
+                       24,26,27,28,30,32,37,38,39):
+            if a[-3:] == ".00":
+                a = a[0:-3]
+        return a
+    
+    def test_EAAvianBodySize2007(self):        
+        DbTkTest.default_test(self,
+                              EAAvianBodySize2007(),
+                              [("species",
+                                "94220c1db99252ecf58ca2d9654d192a",
+                                "species_id")
+                              ])
         
         
 if __name__ == "__main__":

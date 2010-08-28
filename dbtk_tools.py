@@ -30,9 +30,17 @@ class DbTk:
     
             
 class DbTkTest(unittest.TestCase):    
-    def strvalue(self, value):
+    def strvalue(self, value, col_num):
         """Returns a string representing the cleaned value from a SELECT 
-        statement, for use in tests."""
+        statement, for use in tests.
+        
+        Arguments: value - the value to be converted,
+                   col_num - the column number of the value (starting from 0)
+                   
+                   col_num is not used in this function, but may be
+                   useful when overriding this function
+                       
+        """
         if value != None:
             if isinstance(value, str) or isinstance(value, unicode):
                 # If the value is a string or unicode, it's not a number and
@@ -115,11 +123,17 @@ class DbTkTest(unittest.TestCase):
                 
                 lines = []
                 for row in cursor.fetchall():
-                    #if engine_letter == "s":
-                    #    print [(row[i], self.strvalue(row[i])) for i in range(1, len(row))]                    
-                    lines.append(','.join([self.strvalue(row[i]) 
-                                           for i 
-                                           in range(1, len(row))]) + "\r\n")
+                    newline = ','.join([self.strvalue(row[i], i - 1)
+                                        for i 
+                                        in range(1, len(row))])
+                    lines.append(newline + "\r\n")
+                    
+                # If a test fails, you can temporarily  uncomment this line
+                # to print each line that doesn't match up together with the
+                # line from the test file; this can be useful to find the
+                # discrepancies
+                checkagainstfile(lines, "AvianBodySize_manual.txt")
+                
                 lines = ''.join(lines)
                 
                 sum = getmd5(lines)
@@ -173,7 +187,6 @@ def checkagainstfile(lines, filename):
     match."""
     TEST_DATA_LOCATION = "test_data"
     
-    print lines, filename
     testfile = open(os.path.join(TEST_DATA_LOCATION, filename), 'rb')
     i = 0        
     for line in lines:
@@ -181,17 +194,20 @@ def checkagainstfile(lines, filename):
         print i
         line2 = testfile.readline()
         if line != line2:
-            print i 
-            print "LINE1:" + str(line)
-            print "LINE2:" + str(line2)
-            print len(line), len(line2)
-            print "\n" in line, "\n" in line2
+            print i
+            print "LINE1: " + line
+            print "LINE2: " + line2
+            values1 = line.split(',')
+            values2 = line2.split(',')
+            for i in range(0, len(values1)):
+                if values1[i] != values2[i]:
+                    print str(i) + ": " + values1[i] + ", " + values2[i]
     testfile.close()
                             
     
 def correct_invalid_value(value, args):
     try:
-        if value in args["nulls"]:            
+        if float(value) in [float(item) for item in args["nulls"]]:            
             return None
         else:
             return value
