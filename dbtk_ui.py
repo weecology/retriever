@@ -224,14 +224,18 @@ Supported database systems currently include:\n\n""" +
                 wx.Frame.__init__(self, None, title="")
                 self.progressMax = 100
                 self.count = 0
-
+                self.timer = wx.Timer(self)
+                self.Bind(wx.EVT_TIMER, self.OnTimer, self.timer)
+                self.timer.Start(1)
+                
+            def OnTimer(self, evt):
                 # Create progress dialog 
                 self.dialog = wx.ProgressDialog("Download Progress", 
                                            "Downloading datasets . . ." + 
                                            " " * longestname + "\n", 
                                            maximum = len(scripts) + 1, 
                                            style=wx.PD_CAN_ABORT | 
-                                                 #wx.PD_CAN_SKIP |
+                                                 wx.PD_CAN_SKIP |
                                                  wx.PD_ELAPSED_TIME |
                                                  wx.PD_APP_MODAL
                                             )
@@ -258,14 +262,13 @@ Supported database systems currently include:\n\n""" +
                             prog = scriptnum
                             if prog < 1:
                                 prog = 1
-                            btn_skip = False
                             (keepgoing, skip) = self.frame.dialog.Update(prog,
                                                               msg + "\n" + txt)
                             if not keepgoing:
                                 raise UserAborted
-                            #if skip:
-                            #    wx.MessageBox("SKIP")
-                            #    raise UserSkipped
+                            if skip:
+                                wx.MessageBox("SKIP")
+                                raise UserSkipped
                 
                 oldstdout = sys.stdout
                 sys.stdout = update_dialog(self)
@@ -323,10 +326,11 @@ Supported database systems currently include:\n\n""" +
                                   '\n'.join(errors))
                 else:
                     wx.MessageBox("Your downloads were completed successfully.")
+                    
+                                    
+                app.Exit()
+                
                 
     frame = Frame()
-    frame.Show()
+    frame.Show(False)
     app.MainLoop()
-
-    frame.Destroy()
-    wizard.Destroy()
