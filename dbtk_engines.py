@@ -1,7 +1,26 @@
 """Database Toolkit Engines
+
 This module contains Engine class implementations for each supported database 
-system.
-Importing ALL_ENGINES from this module will give a list of each Engine class.
+system. These classes inherit from the dbtk_models.py Engine class and must
+also implement the following:
+
+  name -- the name of the database platform
+  abbreviation -- an abbreviation used to select the database platform from 
+                  the command line
+  datatypes -- a list of data types from the database system that correspond to
+               generic data types used in the DBTK script, in the following
+               order:
+               primary key, integer, float, decimal, text, boolean
+  required_opts -- a list of sets of required information to establish a 
+                   connection, in the following format: 
+                   [argument name, prompt, default]
+  
+In addition, the Engine class implementations may override any method of the
+default Engine class.
+
+Importing ALL_ENGINES from this module will give a list of each Engine class
+that has been implemented.
+
 """
 
 from dbtk_models import *

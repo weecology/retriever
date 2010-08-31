@@ -1,5 +1,14 @@
 """Database Toolkit UI
-This module contains the UI elements of the database toolkit platform.
+This module contains the UI elements of the database toolkit platform. 
+
+This module should not be run directly; instead, individual scripts, when run,
+should run the launch_wizard function.
+
+launch_wizard:
+Launches the download wizard with the following parameters:
+  dbtk_list -- a list of scripts that may be selected. If the list contains
+               only one item, the selection page is skipped
+  engine_list -- a list of engines that may be selected to download with
 
 """
 
@@ -229,13 +238,14 @@ Supported database systems currently include:\n\n""" +
                 self.timer.Start(1)
                 
             def OnTimer(self, evt):
+                self.timer.Stop()
                 # Create progress dialog 
                 self.dialog = wx.ProgressDialog("Download Progress", 
                                            "Downloading datasets . . ." + 
                                            " " * longestname + "\n", 
                                            maximum = len(scripts) + 1, 
                                            style=wx.PD_CAN_ABORT | 
-                                                 wx.PD_CAN_SKIP |
+                                                 #wx.PD_CAN_SKIP |
                                                  wx.PD_ELAPSED_TIME |
                                                  wx.PD_APP_MODAL
                                             )
@@ -266,9 +276,9 @@ Supported database systems currently include:\n\n""" +
                                                               msg + "\n" + txt)
                             if not keepgoing:
                                 raise UserAborted
-                            if skip:
-                                wx.MessageBox("SKIP")
-                                raise UserSkipped
+                            #if skip:
+                            #    wx.MessageBox("SKIP")
+                            #    raise UserSkipped
                 
                 oldstdout = sys.stdout
                 sys.stdout = update_dialog(self)

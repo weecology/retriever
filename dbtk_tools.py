@@ -1,9 +1,42 @@
 """Database Toolkit Tools
-This module contains functions used to run database toolkits.
+
+This module contains miscellaneous classes and functions used in DBTK scripts.
+
+DbTk:
+Represents the actual script; all scripts will inherit from this class.
+
+DbTkTest:
+Represents a default unit test, which runs the script, imports the data, and
+checks it against a known MD5 checksum value.
+
+get_opts:
+Running this function will check if the script was run with any relevant
+command line arguments, returning them in a dictionary.
+
+get_MD5:
+Given a list of strings, returns the combined MD5 checksum.
+
+checkagainstfile:
+A function useful in debugging test scripts. When a test does not pass, running
+the resulting set of lines against a test file will output all of the 
+differences.
+
+correct_invalid_value:
+A cleanup function that, when passed a set of values indicating nulls, converts
+those values to null.
+
+final_cleanup:
+This function performs all necessary cleanup after all scripts have been run.
+
+DbTkError:
+A generic exception class.
+
+Excel:
+A set of methods for dealing with Microsoft Excel data.
+
 """
 
 import warnings
-import xlrd
 import unittest
 from dbtk_engines import *
 
@@ -34,8 +67,8 @@ class DbTkTest(unittest.TestCase):
         """Returns a string representing the cleaned value from a SELECT 
         statement, for use in tests.
         
-        Arguments: value - the value to be converted,
-                   col_num - the column number of the value (starting from 0)
+        Arguments: value -- the value to be converted,
+                   col_num -- the column number of the value (starting from 0)
                    
                    col_num is not used in this function, but may be
                    useful when overriding this function
@@ -235,19 +268,4 @@ def final_cleanup(engine):
     
     
 class DbtkError(Exception):
-    pass            
-
-
-class Excel():
-    def empty_cell(self, cell):
-        """Tests whether an excel cell is empty or contains only
-        whitespace"""
-        if cell.ctype == 0:
-            return True
-        if str(cell.value).strip() == "":
-            return True
-        return False
-    
-    def cell_value(self, cell):
-        """Returns the string value of an excel spreadsheet cell"""
-        return str(cell.value).strip()
+    pass
