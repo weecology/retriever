@@ -151,6 +151,7 @@ def launch_wizard(dbtk_list, engine_list):
                          
     
     
+    # Create the wxPython app and wizard 
     app = wx.PySimpleApp(False)
     
     wizard = wx.wizard.Wizard(None, -1, "Database Toolkit Wizard")
@@ -160,6 +161,7 @@ def launch_wizard(dbtk_list, engine_list):
     else:
         dataset = "data from " + dbtk_list[0].name 
     
+    # Create the wizard pages
     page.append(TitledPage(wizard, "Welcome", 
 """Welcome to the Database Toolkit wizard.
 
@@ -196,6 +198,7 @@ Supported database systems currently include:\n\n""" +
         
     wizard.FitToPage(page[0])    
 
+    # Run the wizard and, if successful, download datasets
     if wizard.RunWizard(page[0]):
         # Get a list of scripts to be downloaded
         scripts = []
@@ -214,95 +217,116 @@ Supported database systems currently include:\n\n""" +
         for script in scripts:
             if len(script.name) > longestname:
                 longestname = len(script.name)
+        
+        # Create a frame to contain the progress dialog
+        class Frame(wx.Frame):
+            def __init__(self):
+                wx.Frame.__init__(self, None, title="")
+                self.progressMax = 100
+                self.count = 0
+
+                # Create progress dialog 
+                self.dialog = wx.ProgressDialog("Download Progress", 
+                                           "Downloading datasets . . ." + 
+                                           " " * longestname + "\n", 
+                                           maximum = len(scripts) + 1, 
+                                           style=wx.PD_CAN_ABORT | 
+                                                 #wx.PD_CAN_SKIP |
+                                                 wx.PD_ELAPSED_TIME |
+                                                 wx.PD_APP_MODAL
+                                            )
                 
-        # Create progress dialog 
-        dialog = wx.ProgressDialog("Download Progress", 
-                                   "Downloading datasets . . ." + 
-                                   " " * longestname + "\n", 
-                                   maximum = len(scripts), 
-                                   style=wx.PD_CAN_ABORT | wx.PD_CAN_SKIP)
-        
-        dialog.Show()
-        scriptnum = 0
-        
-        # On stdout, the progress dialog updates
-        class update_dialog:
-            """This function is called whenever the print statement is used,
-            and redirects the output to the progress dialog."""
-            def write(self, s):                
-                txt = s.strip().replace("\b", "")
-                if txt:
-                    prog = scriptnum - 1
-                    if prog < 0:
-                        prog = 0
-                    (keepgoing, skip) = dialog.Update(prog, 
-                                                      msg + "\n" + txt)
-                    if not keepgoing:
-                        raise UserAborted
-                    if skip:
-                        raise UserSkipped
-                    
-        oldstdout = sys.stdout
-        sys.stdout = update_dialog()
-        
-        msg = "Connecting to database:"
-        print "Connecting  . . ."     
+                self.dialog.Show()
                 
-        # Get options from wizard
-        engine = page[2].engine
-        options = page[2].option
-        engine.keep_raw_data = page[1].keepdata.Value
-        engine.use_local = page[1].uselocal.Value
-        engine.RAW_DATA_LOCATION = page[1].raw_data_dir.Value
-        opts = dict()
-        for key in options.keys():
-            opts[key] = options[key].GetValue()
-        engine.opts = opts
+                scriptnum = 0
         
-        # Connect
-        try:
-            engine.get_cursor()
-        except Exception as e:
-            wx.MessageBox("There was an error with your database" 
-                          + " connection. \n\n" +
-                          e.__str__())
-            raise
-        
-        class UserSkipped(Exception):
-            pass        
-        class UserAborted(Exception):
-            pass
-        
-        # Download scripts
-        errors = []
-        for script in scripts:
-            scriptnum += 1
-            msg = "Downloading " + script.name
-            if len(scripts) > 0:
-                msg += " (" + str(scriptnum) + " of " + str(len(scripts)) + ")"
-            msg += " . . ."                               
-            try:
-                script.download(engine)
-            except UserSkipped:
-                errors.append("Skipped " + script.name + ".")
-            except UserAborted:
-                sys.stdout = oldstdout
-                dialog.Destroy()                
-                wx.MessageBox("Cancelled.")
+                # Allow exception handling for "skip" and "cancel" buttons
+                class UserSkipped(Exception):
+                    pass
+                class UserAborted(Exception):
+                    pass
+                
+                # On stdout, the progress dialog updates
+                class update_dialog:
+                    """This function is called whenever the print statement is used,
+                    and redirects the output to the progress dialog."""
+                    def __init__(self, frame):
+                        self.frame = frame
+                    def write(self, s):                
+                        txt = s.strip().replace("\b", "")
+                        if txt:
+                            prog = scriptnum
+                            if prog < 1:
+                                prog = 1
+                            btn_skip = False
+                            (keepgoing, skip) = self.frame.dialog.Update(prog,
+                                                              msg + "\n" + txt)
+                            if not keepgoing:
+                                raise UserAborted
+                            #if skip:
+                            #    wx.MessageBox("SKIP")
+                            #    raise UserSkipped
+                
+                oldstdout = sys.stdout
+                sys.stdout = update_dialog(self)
+                
+                self.dialog.Pulse("Connecting to database:")
+                        
+                # Get options from wizard
+                engine = page[2].engine
+                options = page[2].option
+                engine.keep_raw_data = page[1].keepdata.Value
+                engine.use_local = page[1].uselocal.Value
+                engine.RAW_DATA_LOCATION = page[1].raw_data_dir.Value
+                opts = dict()
+                for key in options.keys():
+                    opts[key] = options[key].GetValue()
+                engine.opts = opts
+                
+                # Connect
+                try:
+                    engine.get_cursor()
+                except Exception as e:
+                    wx.MessageBox("There was an error with your database" 
+                                  + " connection. \n\n" +
+                                  e.__str__())
+                    raise
+                
+                # Download scripts
+                errors = []
+                for script in scripts:
+                    scriptnum += 1
+                    msg = "Downloading " + script.name
+                    if len(scripts) > 0:
+                        msg += " (" + str(scriptnum) + " of " + str(len(scripts)) + ")"
+                    msg += " . . ."                               
+                    try:
+                        script.download(engine)
+                    except UserSkipped:
+                        errors.append("Skipped " + script.name + ".")
+                    except UserAborted:
+                        sys.stdout = oldstdout
+                        self.dialog.Destroy()                
+                        wx.MessageBox("Cancelled.")
+                        final_cleanup(engine)
+                        sys.exit()
+                    except Exception as e:
+                        errors.append("There was an error downloading " + 
+                                      script.name + ".")
+                        wx.MessageBox(e.__str__(), "Error")
+                        
+                print "Finishing . . ."
                 final_cleanup(engine)
-                sys.exit()
-            except Exception as e:
-                errors.append("There was an error downloading " + 
-                              script.name + ".")
-                wx.MessageBox(e.__str__(), "Error")
+                self.dialog.Update(len(scripts) + 1, "Finished!")
+                if errors:
+                    wx.MessageBox("The following errors occurred: \n" + 
+                                  '\n'.join(errors))
+                else:
+                    wx.MessageBox("Your downloads were completed successfully.")
                 
-        print "Finishing . . ."
-        final_cleanup(engine)
-        dialog.Update(len(scripts), "Finished!")
-        if errors:
-            wx.MessageBox("The following errors occurred: \n" + 
-                          '\n'.join(errors))
-        else:
-            wx.MessageBox("Your downloads were completed successfully.")
-                
+    frame = Frame()
+    frame.Show()
+    app.MainLoop()
+
+    frame.Destroy()
     wizard.Destroy()
