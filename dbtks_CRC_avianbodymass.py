@@ -8,6 +8,7 @@ this script.
 """
 
 from dbtk_ui import *
+from dbtk_excel import *
 
 class CRCAvianBodyMass(DbTk):
     name = "CRC Avian Body Masses"

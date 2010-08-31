@@ -62,7 +62,7 @@ class EAMammalLifeHistory2003Test(DbTkTest):
         
 if __name__ == "__main__":
     me = EAMammalLifeHistory2003()
-    if len(sys.argv) == 1:                
+    if len(sys.argv) == 1:
         launch_wizard([me], ALL_ENGINES)
-    else:        
+    else:
         final_cleanup(me.download())

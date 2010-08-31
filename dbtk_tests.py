@@ -1,6 +1,12 @@
 """Database Toolkit Tests
-Automated tests to check the known MD5 checksums of imported data against data
-imported by DBTK scripts.
+
+This module, when run, runs all unit tests from all DBTK scripts referenced in
+dbtk_wizard.py, for each engine in ALL_ENGINES from dbtk_engines.py. In other
+words, it runs tests for each possible combination of database platform and
+script.
+
+The tests generally run the script, import the resulting data, and check the
+MD5 checksum against a known static value.
 
 """
 

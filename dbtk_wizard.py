@@ -1,5 +1,7 @@
 """Database Toolkit Wizard
-This module runs a wizard to download from multiple DBTK datasets.
+This module contains a list of all current DBTK scripts.
+
+Running this module directly will launch the wizard to download them all.
 
 """
 
@@ -8,7 +10,7 @@ from dbtks_EA_pantheria import *
 from dbtks_bbs import *
 from dbtks_EA_portal_mammals import *
 from dbtks_gentry import *
-from dbtks_CRC_avianbodymass import *
+#from dbtks_CRC_avianbodymass import *
 from dbtks_EA_avianbodysize2007 import *
 import dbtk_ui
 
@@ -17,7 +19,7 @@ DBTK_LIST = [EAMammalLifeHistory2003(),
              BBS(), 
              EAPortalMammals(),
              Gentry(),
-             CRCAvianBodyMass(),
+             #CRCAvianBodyMass(),
              EAAvianBodySize2007()
              ]
 
