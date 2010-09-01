@@ -1,7 +1,8 @@
 """Database Toolkit Wizard
 This module contains a list of all current DBTK scripts.
 
-Running this module directly will launch the wizard to download them all.
+Running this module directly will launch the download wizard, allowing the user
+to choose from all scripts.
 
 """
 

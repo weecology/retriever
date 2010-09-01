@@ -4,12 +4,6 @@ This module contains the UI elements of the database toolkit platform.
 This module should not be run directly; instead, individual scripts, when run,
 should run the launch_wizard function.
 
-launch_wizard:
-Launches the download wizard with the following parameters:
-  dbtk_list -- a list of scripts that may be selected. If the list contains
-               only one item, the selection page is skipped
-  engine_list -- a list of engines that may be selected to download with
-
 """
 
 import sys
