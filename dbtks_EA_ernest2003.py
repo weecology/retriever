@@ -1,4 +1,5 @@
 """Database Toolkit for Mammalian Life History Database
+
 Setup and install the Mammalian Life History Database published by Ernest
 (2003) in Ecological Archives.
  

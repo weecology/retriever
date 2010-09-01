@@ -1,4 +1,4 @@
-"""DBTK Excel Functions
+"""Database Toolkit Excel Functions
 
 This module contains optional functions for importing data from Excel.
 
