@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+        <html><head>
+        <link rel="stylesheet" type="text/css" href="apidocs.css"/>
+        <title>API docs for &ldquo;dbtk.dbtk_tools&rdquo;</title>
+        </head>
+        <body><h1 class="module">Module d.dbtk_tools</h1><span id="part">Part of <a href="dbtk.html">dbtk</a></span><div class="toplevel"><div><p>Database Toolkit Tools</p>
+<p>This module contains miscellaneous classes and functions used in DBTK 
+scripts.</p>
+<p>DbTk: Represents the actual script; all scripts will inherit from this 
+class.</p>
+<p>DbTkTest: Represents a default unit test, which runs the script, imports
+the data, and checks it against a known MD5 checksum value.</p>
+<p>get_opts: Running this function will check if the script was run with 
+any relevant command line arguments, returning them in a dictionary.</p>
+<p>get_MD5: Given a list of strings, returns the combined MD5 checksum.</p>
+<p>checkagainstfile: A function useful in debugging test scripts. When a 
+test does not pass, running the resulting set of lines against a test file 
+will output all of the differences.</p>
+<p>correct_invalid_value: A cleanup function that, when passed a set of 
+values indicating nulls, converts those values to null.</p>
+<p>final_cleanup: This function performs all necessary cleanup after all 
+scripts have been run.</p>
+<p>DbTkError: A generic exception class.</p>
+<p>Excel: A set of methods for dealing with Microsoft Excel data.</p>
+</div></div><table class="children"><tr class="class"><td>Class</td><td><a href="dbtk.dbtk_tools.DbTk.html">DbTk</a></td><td><div><p>This class represents a database toolkit script. Scripts should 
+inherit</p>
+</div></td></tr><tr class="class"><td>Class</td><td><a href="dbtk.dbtk_tools.DbTkTest.html">DbTkTest</a></td><td><span class="undocumented">Undocumented</span></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.dbtk_tools.get_opts">get_opts</a></td><td><div><p>Checks for command line arguments</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.dbtk_tools.getmd5">getmd5</a></td><td><div><p>Get MD5 value of a set of lines.</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.dbtk_tools.checkagainstfile">checkagainstfile</a></td><td><div><p>Checks a set of lines against a file, and prints all lines that 
+don't</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.dbtk_tools.correct_invalid_value">correct_invalid_value</a></td><td><span class="undocumented">Undocumented</span></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.dbtk_tools.final_cleanup">final_cleanup</a></td><td><div><p>Perform final cleanup operations after all scripts have run.</p>
+</div></td></tr><tr class="class"><td>Class</td><td><a href="dbtk.dbtk_tools.DbtkError.html">DbtkError</a></td><td><span class="undocumented">Undocumented</span></td></tr></table>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.dbtk_tools.get_opts">get_opts():</a></div>
+            <div class="functionBody"><div><p>Checks for command line arguments</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.dbtk_tools.getmd5">getmd5(lines):</a></div>
+            <div class="functionBody"><div><p>Get MD5 value of a set of lines.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.dbtk_tools.checkagainstfile">checkagainstfile(lines, filename):</a></div>
+            <div class="functionBody"><div><p>Checks a set of lines against a file, and prints all lines that don't 
+match.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.dbtk_tools.correct_invalid_value">correct_invalid_value(value, args):</a></div>
+            <div class="functionBody"><div class="undocumented">Undocumented</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.dbtk_tools.final_cleanup">final_cleanup(engine):</a></div>
+            <div class="functionBody"><div><p>Perform final cleanup operations after all scripts have run.</p>
+</div></div>
+            </div></body>
+        
