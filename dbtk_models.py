@@ -1,20 +1,6 @@
 """Database Toolkit Data Model
 This module contains basic class definitions for the Database Toolkit platform.
 
-Database: 
-Represents a database to be created.
-
-Table:
-Represents a new table to be created in the database.
-
-Engine: 
-Contains the Database and Table objects and database platform-specific methods
-to manipulate databases.
-        
-Cleanup: 
-Used to define a custom data cleanup function to be run on all individual data
-values.     
-           
 """
 
 import sys
