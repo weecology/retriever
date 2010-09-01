@@ -1,4 +1,5 @@
 """Database Toolkit Data Model
+
 This module contains basic class definitions for the Database Toolkit platform.
 
 """
@@ -170,6 +171,7 @@ class Engine():
         createstatement += " );"
         return createstatement
     def download_file(self, url, filename):
+        """Downloads a file to the raw data directory."""
         self.create_raw_data_dir()
         if not self.use_local or not os.path.isfile(self.format_filename(filename)):
             print "Downloading " + filename + " . . ."
@@ -226,7 +228,8 @@ class Engine():
             return values
         else:
             return line.split(self.table.delimiter)
-    def format_data_dir(self):        
+    def format_data_dir(self):
+        """Returns the correctly formatted raw data directory location."""
         return self.RAW_DATA_LOCATION.replace("{dataset}", self.script.shortname)
     def format_filename(self, filename):
         """Returns the full path of a file in the archive directory."""

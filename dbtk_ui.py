@@ -1,4 +1,5 @@
 """Database Toolkit UI
+
 This module contains the UI elements of the database toolkit platform. 
 
 This module should not be run directly; instead, individual scripts, when run,
@@ -12,6 +13,14 @@ import wx.wizard
 from dbtk_tools import *
 
 def launch_wizard(dbtk_list, engine_list):
+    """Launches the download wizard.
+    
+    dbtk_list: a list of scripts that may be selected. If only one, it will
+    be selected by default.
+    
+    engine_list: a list of engines that may be selected. 
+    
+    """
     print "Launching Database Toolkit wizard . . ."        
     
     
