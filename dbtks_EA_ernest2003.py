@@ -23,30 +23,12 @@ class EAMammalLifeHistory2003(DbTk):
         engine.create_db()
         
         table = Table()
-        table.tablename = "species"        
+        table.tablename = "species"
+        table.delimiter = "\t"
         table.cleanup = Cleanup(correct_invalid_value, {"nulls":("-999", "-999.00", -999)} )
         
-        # Database column names and their data types. Use data type "skip" to skip the value, and
-        # "combine" to merge a string value into the previous column
-        table.columns=[("species_id"            ,   ("pk-auto",)    ),
-                       ("sporder"               ,   ("char", 20)    ),
-                       ("family"                ,   ("char", 20)    ),
-                       ("genus"                 ,   ("char", 20)    ),
-                       ("species"               ,   ("char", 20)    ),
-                       ("mass"                  ,   ("double",)     ),
-                       ("gestation_period"      ,   ("double",)     ),
-                       ("newborn_mass"          ,   ("double",)     ),
-                       ("wean_age"              ,   ("double",)     ),
-                       ("wean_mass"             ,   ("double",)     ),
-                       ("afr"                   ,   ("double",)     ),
-                       ("max_lifespan"          ,   ("double",)     ),
-                       ("litter_size"           ,   ("double",)     ),
-                       ("litters_peryear"       ,   ("double",)     ),
-                       ("refs"                  ,   ("char", 30)    )]
-        engine.table = table
-        engine.create_table()
-        
-        engine.insert_data_from_url("http://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt")
+        engine.table = table               
+        engine.auto_insert_from_url("http://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt")
         
         return engine
     
