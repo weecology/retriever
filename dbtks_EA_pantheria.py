@@ -8,7 +8,6 @@ class EAPantheria(DbTk):
     name = "Pantheria"
     shortname = "Pantheria"
     url = "http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt"
-    required_opts = []
     def download(self, engine=None):            
         DbTk.download(self, engine)
         self.engine.auto_create_table(self.url, "species")

@@ -6,8 +6,9 @@ This module contains optional functions for importing data from Excel.
 
 import xlrd
 
-class Excel():
-    def empty_cell(self, cell):
+class Excel:
+    @staticmethod
+    def empty_cell(cell):
         """Tests whether an excel cell is empty or contains only
         whitespace"""
         if cell.ctype == 0:
@@ -15,7 +16,7 @@ class Excel():
         if str(cell.value).strip() == "":
             return True
         return False
-    
-    def cell_value(self, cell):
+    @staticmethod
+    def cell_value(cell):
         """Returns the string value of an excel spreadsheet cell"""
         return str(cell.value).strip()

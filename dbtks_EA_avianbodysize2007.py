@@ -11,7 +11,6 @@ class EAAvianBodySize2007(DbTk):
     name = "Avian Body Size - Ecological Archives 2007"
     shortname = "AvianBodySize"
     url = "http://esapubs.org/archive/ecol/E088/096/avian_ssd_jan07.txt"
-    required_opts = []
     def download(self, engine=None):    
         DbTk.download(self, engine)
         self.engine.auto_create_table(self.url, "species")
