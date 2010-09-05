@@ -2,39 +2,30 @@
 
 """
 
-from dbtk_ui import *
 import os
 import zipfile
+from dbtk_ui import *
+from dbtk_excel import *
 
 class Gentry(DbTk):
     name = "Alwyn H. Gentry Forest Transact Dataset"
     shortname = "Gentry"
-    url = ""
-    required_opts = []    
-    def download(self, engine=None):    
-        # Variables to get text file/create database
-        excel = Excel()
-        engine = self.checkengine(engine)
-        
-        db = Database()
-        db.dbname = "Gentry"
-        engine.db = db
-        engine.get_cursor()
-        engine.create_db()
-        
-        url = "http://www.mobot.org/mobot/gentry/123/all_excel.zip"        
-        engine.download_file(url, "all_excel.zip")
-        local_zip = zipfile.ZipFile(engine.format_filename("all_excel.zip"))        
+    url = "http://www.mobot.org/mobot/gentry/123/all_Excel.zip"
+    def download(self, engine=None):
+        DbTk.download(self, engine)
+                
+        self.engine.download_file(self.url, "all_Excel.zip")
+        local_zip = zipfile.ZipFile(self.engine.format_filename("all_Excel.zip"))        
         filelist = local_zip.namelist()
         local_zip.close()
-        engine.download_files_from_archive(url, filelist)
+        self.engine.download_files_from_archive(url, filelist)
         
         filelist = [os.path.basename(filename) for filename in filelist]
         
         lines = []
         for filename in filelist:
             print "Extracting data from " + filename + " . . ."
-            book = xlrd.open_workbook(engine.format_filename(filename))
+            book = xlrd.open_workbook(self.engine.format_filename(filename))
             sh = book.sheet_by_index(0)
             rows = sh.nrows
             for i in range(1, rows):
@@ -43,16 +34,16 @@ class Gentry(DbTk):
                 n = 0
                 cellcount = 0
                 for cell in row:
-                    if not excel.empty_cell(cell):
+                    if not Excel.empty_cell(cell):
                         cellcount += 1 
-                if cellcount > 4 and not excel.empty_cell(row[0]):
+                if cellcount > 4 and not Excel.empty_cell(row[0]):
                     try:
-                        a = int(excel.cell_value(row[0]).split('.')[0])
+                        a = int(Excel.cell_value(row[0]).split('.')[0])
                         for cell in row:
                             n += 1
                             if n < 5 or n > 12:
-                                if not excel.empty_cell(cell) or n == 13:
-                                    thisline.append(excel.cell_value(cell))
+                                if not Excel.empty_cell(cell) or n == 13:
+                                    thisline.append(Excel.cell_value(cell))
                         
                         lines.append([str(value).title().replace("\\", "/") for value in thisline])
                     except:
@@ -114,9 +105,9 @@ class Gentry(DbTk):
                                    family
                                    ]) for family in sortedfamilies]
         table.delimiter = '::'
-        engine.table = table
-        engine.create_table()
-        engine.add_to_table()
+        self.engine.table = table
+        self.engine.create_table()
+        self.engine.add_to_table()
         
         
         # Create genus table
@@ -132,9 +123,9 @@ class Gentry(DbTk):
                                    str(families[genus[1]])
                                    ]) for genus in sortedgenera]
         table.delimiter = '::'
-        engine.table = table
-        engine.create_table()
-        engine.add_to_table()
+        self.engine.table = table
+        self.engine.create_table()
+        self.engine.add_to_table()
         
         
         # Create species table
@@ -143,6 +134,7 @@ class Gentry(DbTk):
         table.columns=[("species_id"            ,   ("pk-int",)     ),
                        ("species"               ,   ("char", 50)    ),
                        ("genus_id"              ,   ("int", )       )]
+
         table.hasindex = True
         table.source = ['::'.join([
                                    str(species[thisspecies]),
@@ -150,9 +142,9 @@ class Gentry(DbTk):
                                    str(genera[(thisspecies[1], thisspecies[2])])
                                    ]) for thisspecies in sortedspecies]
         table.delimiter = '::'
-        engine.table = table
-        engine.create_table()
-        engine.add_to_table()
+        self.engine.table = table
+        self.engine.create_table()
+        self.engine.add_to_table()
         
         
         # Create stems table
@@ -177,12 +169,12 @@ class Gentry(DbTk):
             
         table.source = ['::'.join(stem) for stem in stems]
         table.delimiter = '::'
-        engine.table = table
-        engine.create_table()
-        engine.add_to_table()
+        self.engine.table = table
+        self.engine.create_table()
+        self.engine.add_to_table()
             
         
-        return engine
+        return self.engine
             
             
 if __name__ == "__main__":

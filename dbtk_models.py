@@ -14,13 +14,6 @@ from decimal import Decimal
 from hashlib import md5
 
     
-class Cleanup:
-    """This class represents a custom cleanup function and a dictionary of 
-    arguments to be passed to that function."""
-    def __init__(self, function, args):
-        self.function = function
-        self.args = args
-        
 def no_cleanup(value, args):
     """Default cleanup function, returns the unchanged value."""
     return value
@@ -33,7 +26,15 @@ def correct_invalid_value(value, args):
         else:
             return value
     except ValueError:
-        return value        
+        return value
+    
+class Cleanup:
+    """This class represents a custom cleanup function and a dictionary of 
+    arguments to be passed to that function."""
+    def __init__(self, function=no_cleanup, args=None):
+        self.function = function
+        self.args = args    
+
 
 class Database:
     """Information about a database."""
@@ -140,7 +141,7 @@ class Engine():
         # Determine the delimiter by finding out which of a set of common
         # delimiters occurs most in the header line
         self.table.delimiter = "\t"
-        for other_delimiter in [","]:
+        for other_delimiter in [",", ";"]:
             if header.count(other_delimiter) > header.count(self.table.delimiter):
                 self.table.delimiter = other_delimiter
         
