@@ -2,39 +2,6 @@
 
 This module contains miscellaneous classes and functions used in DBTK scripts.
 
-DbTk:
-Represents the actual script; all scripts will inherit from this class.
-
-DbTkTest:
-Represents a default unit test, which runs the script, imports the data, and
-checks it against a known MD5 checksum value.
-
-get_opts:
-Running this function will check if the script was run with any relevant
-command line arguments, returning them in a dictionary.
-
-get_MD5:
-Given a list of strings, returns the combined MD5 checksum.
-
-checkagainstfile:
-A function useful in debugging test scripts. When a test does not pass, running
-the resulting set of lines against a test file will output all of the 
-differences.
-
-correct_invalid_value:
-A cleanup function that, when passed a set of values indicating nulls, converts
-those values to null.
-
-final_cleanup:
-This function performs all necessary cleanup after all scripts have been run.
-
-DbTkError:
-A generic exception class.
-
-Excel:
-A set of methods for dealing with Microsoft Excel data.
-
-
 """
 
 import warnings
@@ -54,7 +21,12 @@ class DbTk:
     url = ""
     public = True
     def download(self, engine=None):
-        pass
+        self.engine = self.checkengine(engine)
+        db = Database()
+        db.dbname = self.shortname
+        self.engine.db = db
+        self.engine.get_cursor()
+        self.engine.create_db()
     def checkengine(self, engine=None):
         if not engine:
             opts = get_opts()        
@@ -236,17 +208,7 @@ def checkagainstfile(lines, filename):
             for i in range(0, len(values1)):
                 if values1[i] != values2[i]:
                     print str(i) + ": " + values1[i] + ", " + values2[i]
-    testfile.close()
-                            
-    
-def correct_invalid_value(value, args):
-    try:
-        if float(value) in [float(item) for item in args["nulls"]]:            
-            return None
-        else:
-            return value
-    except ValueError:
-        return value    
+    testfile.close()    
     
 
 def final_cleanup(engine):
