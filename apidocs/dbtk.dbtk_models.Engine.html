@@ -6,6 +6,7 @@
         <body><h1 class="class">Class d.d.Engine:</h1><span id="part">Part of <a href="dbtk.dbtk_models.html">dbtk.dbtk_models</a></span><p>known subclasses: <a href="dbtk.dbtk_engines.MySQLEngine.html">dbtk.dbtk_engines.MySQLEngine</a>, <a href="dbtk.dbtk_engines.PostgreSQLEngine.html">dbtk.dbtk_engines.PostgreSQLEngine</a>, <a href="dbtk.dbtk_engines.SQLiteEngine.html">dbtk.dbtk_engines.SQLiteEngine</a></p><div class="toplevel"><div><p>A generic database system. Specific database platforms will inherit from
 this class.</p>
 </div></div><table class="children"><tr class="function"><td>Function</td><td><a href="#dbtk.dbtk_models.Engine.add_to_table">add_to_table</a></td><td><div><p>This function adds data to a table from one or more lines specified</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.dbtk_models.Engine.auto_create_table">auto_create_table</a></td><td><div><p>Creates a table automatically by analyzing a data source and</p>
 </div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.dbtk_models.Engine.convert_data_type">convert_data_type</a></td><td><div><p>Converts DBTK generic data types to database platform specific data</p>
 </div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.dbtk_models.Engine.create_db">create_db</a></td><td><div><p>Creates a new database based on settings supplied in Database object</p>
 </div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.dbtk_models.Engine.create_db_statement">create_db_statement</a></td><td><div><p>Returns a SQL statement to create a database.</p>
@@ -32,6 +33,12 @@ this class.</p>
             <div class="functionHeader">def <a name="dbtk.dbtk_models.Engine.add_to_table">add_to_table(self):</a></div>
             <div class="functionBody"><div><p>This function adds data to a table from one or more lines specified in 
 engine.table.source.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.dbtk_models.Engine.auto_create_table">auto_create_table(self, url, tablename, cleanup=Cleanup(correct_invalid_value, {'nulls':(-999,),})):</a></div>
+            <div class="functionBody"><div><p>Creates a table automatically by analyzing a data source and predicting 
+column names, data types, delimiter, etc.</p>
 </div></div>
             </div>
             <div class="function">

@@ -8,6 +8,7 @@
 platform.</p>
 </div></div><table class="children"><tr class="class"><td>Class</td><td><a href="dbtk.dbtk_models.Cleanup.html">Cleanup</a></td><td><div><p>This class represents a custom cleanup function and a dictionary of</p>
 </div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.dbtk_models.no_cleanup">no_cleanup</a></td><td><div><p>Default cleanup function, returns the unchanged value.</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.dbtk_models.correct_invalid_value">correct_invalid_value</a></td><td><div><p>This cleanup function replaces null indicators with None.</p>
 </div></td></tr><tr class="class"><td>Class</td><td><a href="dbtk.dbtk_models.Database.html">Database</a></td><td><div><p>Information about a database.</p>
 </div></td></tr><tr class="class"><td>Class</td><td><a href="dbtk.dbtk_models.Table.html">Table</a></td><td><div><p>Information about a database table.</p>
 </div></td></tr><tr class="class"><td>Class</td><td><a href="dbtk.dbtk_models.Engine.html">Engine</a></td><td><div><p>A generic database system. Specific database platforms will inherit</p>
@@ -15,6 +16,11 @@ platform.</p>
             <div class="function">
             <div class="functionHeader">def <a name="dbtk.dbtk_models.no_cleanup">no_cleanup(value, args):</a></div>
             <div class="functionBody"><div><p>Default cleanup function, returns the unchanged value.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.dbtk_models.correct_invalid_value">correct_invalid_value(value, args):</a></div>
+            <div class="functionBody"><div><p>This cleanup function replaces null indicators with None.</p>
 </div></div>
             </div></body>
         
