@@ -20,10 +20,20 @@ class Cleanup:
     def __init__(self, function, args):
         self.function = function
         self.args = args
-
+        
 def no_cleanup(value, args):
     """Default cleanup function, returns the unchanged value."""
-    return value        
+    return value
+
+def correct_invalid_value(value, args):
+    """This cleanup function replaces null indicators with None."""
+    try:
+        if float(value) in [float(item) for item in args["nulls"]]:            
+            return None
+        else:
+            return value
+    except ValueError:
+        return value        
 
 class Database:
     """Information about a database."""
@@ -37,7 +47,7 @@ class Table:
     pk = True
     hasindex = False
     record_id = 0
-    delimiter = None
+    delimiter = "\t"
     columns = []
     drop = True
     header_rows = 1
@@ -62,7 +72,7 @@ class Engine():
     RAW_DATA_LOCATION = os.path.join("raw_data", "{dataset}")    
     def add_to_table(self):
         """This function adds data to a table from one or more lines specified 
-        in engine.table.source."""       
+        in engine.table.source."""   
         for line in self.table.source:
             line = line.strip()
             if line:
@@ -102,12 +112,18 @@ class Engine():
                 
         print "\n Done!"
         self.connection.commit()
-    def auto_insert_from_url(self, url):
-        """Predict column names and data types by analyzing a data source, then
-        insert the data."""
+    def auto_create_table(self, url, tablename,
+                          cleanup=Cleanup(correct_invalid_value, 
+                                          {"nulls":(-999,)} 
+                                          )):
+        """Creates a table automatically by analyzing a data source and 
+        predicting column names, data types, delimiter, etc."""
         filename = url.split('/')[-1]
         self.create_raw_data_dir()
         need_to_delete = False
+        self.table = Table()
+        self.table.tablename = tablename
+        self.table.cleanup = cleanup
         
         if not (self.use_local and 
                 os.path.isfile(self.format_filename(filename))):
@@ -120,20 +136,27 @@ class Engine():
                 
         source = open(self.format_filename(filename), "rb")
         header = source.readline()
+        
+        # Determine the delimiter by finding out which of a set of common
+        # delimiters occurs most in the header line
+        self.table.delimiter = "\t"
+        for other_delimiter in [","]:
+            if header.count(other_delimiter) > header.count(self.table.delimiter):
+                self.table.delimiter = other_delimiter
+        
+        # Get column names from header row
         column_names = header.split(self.table.delimiter)
         self.table.columns = [("record_id", ("pk-auto",))]
         columns = []
         column_values = dict()
         
-        # Get column names from header row
         for column_name in column_names:
             this_column = column_name
             for c in [")", "\n", "\r"]:
                 this_column = this_column.strip(c)
             for c in ["."]:
                 this_column = this_column.replace(c, "")
-            for c in [" ", "(", "/", ".", "-",
-                      "0","1","2","3","4","5","6","7","8","9"]:
+            for c in [" ", "(", "/", ".", "-"]:
                 this_column = this_column.replace(c, "_")
             while "__" in this_column:
                 this_column = this_column.replace("__", "_")
@@ -144,16 +167,20 @@ class Engine():
                 this_column = "sporder"
             if this_column.lower() == "references":
                 this_column = "refs"
-                
-            columns.append([this_column, None])
-            column_values[this_column] = []
+            
+            if this_column:
+                columns.append([this_column, None])
+                column_values[this_column] = []
         
         # Get all values for each column
         for line in source:
             if line.strip():
                 values = line.strip("\n").strip("\r").split(self.table.delimiter)
                 for i in range(len(columns)):
-                    column_values[columns[i][0]].append(values[i])
+                    try:
+                        column_values[columns[i][0]].append(values[i])
+                    except IndexError:
+                        column_values[columns[i][0]].append(None)
         
         # Check the values for each column to determine data type
         # Priority: decimal - float - integer - string
@@ -188,11 +215,6 @@ class Engine():
         
         print self.table.columns
         self.create_table()
-        self.insert_data_from_file(self.format_filename(filename))
-        
-        if need_to_delete:
-            pass
-        
     def convert_data_type(self, datatype):
         """Converts DBTK generic data types to database platform specific data
         types"""

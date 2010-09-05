@@ -10,28 +10,12 @@ from dbtk_ui import *
 class EAMammalLifeHistory2003(DbTk):
     name = "Mammalian Life History Database"
     shortname = "MammalLH"
-    url = ""
-    required_opts = []
-    def download(self, engine=None):    
-        # Variables to get text file/create database
-        engine = self.checkengine(engine)
-        
-        db = Database()
-        db.dbname = "MammalLifeHistory"
-        engine.db = db
-        engine.get_cursor()
-        engine.create_db()
-        
-        table = Table()
-        table.tablename = "species"
-        table.delimiter = "\t"
-        table.cleanup = Cleanup(correct_invalid_value, {"nulls":("-999", "-999.00", -999)} )
-        
-        engine.table = table               
-        engine.auto_insert_from_url("http://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt")
-        
-        return engine
-    
+    url = "http://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"
+    def download(self, engine=None):
+        DbTk.download(self, engine)
+        self.engine.auto_create_table(self.url, "species")
+        self.engine.insert_data_from_url(self.url)
+        return self.engine
     
 class EAMammalLifeHistory2003Test(DbTkTest):
     def test_EAMammalLifeHistory2003(self):        
@@ -42,7 +26,6 @@ class EAMammalLifeHistory2003Test(DbTkTest):
                                 "sporder, family, genus, species")
                               ])
     
-        
 if __name__ == "__main__":
     me = EAMammalLifeHistory2003()
     if len(sys.argv) == 1:
