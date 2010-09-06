@@ -18,11 +18,11 @@ import dbtk_ui
 
 DBTK_LIST = [EAMammalLifeHistory2003(), 
              EAPantheria(), 
-             BBS(), 
              EAPortalMammals(),
+             EAAvianBodySize2007(),
+             BBS(),
              Gentry(),
-             #CRCAvianBodyMass(),
-             EAAvianBodySize2007()
+             #CRCAvianBodyMass()
              ]
 
 if __name__ == "__main__":

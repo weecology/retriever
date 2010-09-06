@@ -116,7 +116,8 @@ class Engine():
     def auto_create_table(self, url, tablename,
                           cleanup=Cleanup(correct_invalid_value, 
                                           {"nulls":(-999,)} 
-                                          )):
+                                          ),
+                          pk=None):
         """Creates a table automatically by analyzing a data source and 
         predicting column names, data types, delimiter, etc."""
         filename = url.split('/')[-1]
@@ -147,7 +148,11 @@ class Engine():
         
         # Get column names from header row
         column_names = header.split(self.table.delimiter)
-        self.table.columns = [("record_id", ("pk-auto",))]
+        if pk is None:
+            self.table.columns = [("record_id", ("pk-auto",))]
+        else:
+            self.table.columns = []
+            self.table.hasindex = True
         columns = []
         column_values = dict()
         
@@ -205,14 +210,17 @@ class Engine():
         
             if datatype is "char":
                 max_length = max([len(s) for s in values])
-                column[1] = ("char", max_length)
+                column[1] = ["char", max_length]
             elif datatype is "int":
-                column[1] = ("int",)
+                column[1] = ["int",]
             elif datatype is "float":
-                column[1] = ("double",)
+                column[1] = ["double",]
+                
+            if pk == column[0]:
+                column[1][0] = "pk-" + column[1][0]
             
         for column in columns:
-            self.table.columns.append(tuple(column))
+            self.table.columns.append((column[0], tuple(column[1])))
         
         print self.table.columns
         self.create_table()
