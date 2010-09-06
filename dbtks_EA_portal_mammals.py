@@ -32,12 +32,15 @@ class EAPortalMammals(DbTk):
         self.engine.insert_data_from_url("http://wiki.ecologicaldata.org/sites/default/files/portal_plots.txt")        
         
         # Species table        
-        self.engine.auto_create_table(self.url_species, "species", cleanup=Cleanup())
+        self.engine.auto_create_table(self.url_species, "species", 
+                                      cleanup=Cleanup())
         self.engine.insert_data_from_url(self.url_species)
         
         # Main table
         self.engine.auto_create_table(self.url, "main", 
-                                 cleanup=Cleanup(correct_invalid_value, {"nulls":('', 0, '0')} ))
+                                 cleanup=Cleanup(correct_invalid_value, 
+                                                 {"nulls":('', 0, '0')} ),
+                                 pk="ID")
         self.engine.insert_data_from_url(self.url)
         
         return self.engine

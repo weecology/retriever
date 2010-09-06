@@ -18,7 +18,7 @@ class Gentry(DbTk):
         local_zip = zipfile.ZipFile(self.engine.format_filename("all_Excel.zip"))        
         filelist = local_zip.namelist()
         local_zip.close()
-        self.engine.download_files_from_archive(url, filelist)
+        self.engine.download_files_from_archive(self.url, filelist)
         
         filelist = [os.path.basename(filename) for filename in filelist]
         
