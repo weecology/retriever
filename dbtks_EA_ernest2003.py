@@ -8,7 +8,7 @@ Setup and install the Mammalian Life History Database published by Ernest
 from dbtk_ui import *
 
 class EAMammalLifeHistory2003(DbTk):
-    name = "Mammalian Life History Database"
+    name = "Mammal Life History Database (Ecological Archives 2003)"
     shortname = "MammalLH"
     url = "http://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"
     def download(self, engine=None):
