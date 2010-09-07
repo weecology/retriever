@@ -8,7 +8,7 @@ Published: Ecological Archives, 2007
 from dbtk_ui import *
 
 class EAAvianBodySize2007(DbTk):
-    name = "Avian Body Size - Ecological Archives 2007"
+    name = "Avian Body Size (Ecological Archives 2007)"
     shortname = "AvianBodySize"
     url = "http://esapubs.org/archive/ecol/E088/096/avian_ssd_jan07.txt"
     def download(self, engine=None):    

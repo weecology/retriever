@@ -9,7 +9,7 @@ Dataset published by Ernest et al. 2009 in Ecological Archives.
 from dbtk_ui import *
 
 class EAPortalMammals(DbTk):
-    name = "Portal Project Mammals"
+    name = "Portal Project Mammals (Ecological Archives 2002)"
     shortname = "PortalMammals"
     url = "http://esapubs.org/archive/ecol/E090/118/Portal_rodent_19772002.csv"
     url_species = "http://wiki.ecologicaldata.org/sites/default/files/portal_species.txt"

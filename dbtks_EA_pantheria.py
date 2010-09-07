@@ -5,7 +5,7 @@
 from dbtk_ui import *
 
 class EAPantheria(DbTk):
-    name = "Pantheria"
+    name = "Pantheria (Ecological Archives 2008)"
     shortname = "Pantheria"
     url = "http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt"
     def download(self, engine=None):            
