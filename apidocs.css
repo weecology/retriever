@@ -1,0 +1,196 @@
+/* body { */
+/*     background: white url("http://twistedmatrix.com/images/TwistedMatrixLabs.png"); */
+/*     background-repeat: no-repeat; */
+/*     background-position: 100% 10%; */
+/* } */
+
+table.children
+{
+  border-top: thin black solid;
+  border-bottom: thin black solid;
+}
+
+.undocumented
+{
+  color: grey;
+}
+
+h1
+{
+  background: rgb(112, 176, 240);
+  border: thin black solid;
+  padding-left: 1ex;
+}
+
+h2
+{
+  background: rgb(200, 230, 255);
+  border: thin black solid;
+  padding-left: 1ex;
+}
+
+#part
+{
+  font-style: italic;
+}
+
+.toplevel
+{
+  margin-top: 2em;
+}
+
+div.toplevel p
+{
+  margin-top: 0em;
+}
+
+.function
+{
+  background: lightgreen;
+}
+
+.attribute
+{
+  background: #ddbbff;
+}
+
+.basefunction
+{
+  background: #cceecc;
+}
+
+.class
+{
+  background: lightblue;
+}
+
+.interface
+{
+  background: #ffddff;
+}
+
+.module
+{
+  background: lightyellow;
+}
+
+.package
+{
+  background: #ffeeaa;
+}
+
+div.function
+{
+  margin: 1em;
+  font-family: monospace;
+  background: rgb(232, 240, 248);
+}
+
+div.functionHeader
+{
+  font-weight: bold;
+  color: #000080;
+}
+
+a.functionSourceLink
+{
+  text-decoration: none;
+  font-style: italic;
+  font-weight: normal;
+}
+
+a:hover.functionSourceLink
+{
+  text-decoration: underline;
+}
+
+div.functionHeader a
+{
+  color: black;
+}
+
+span.tag
+{
+  font-weight: bold;
+  font-family: monospace;
+}
+
+span.arg
+{
+  padding-right: 4ex;
+  font-family: monospace;
+}
+
+.children
+{
+  margin: 1em;
+}
+
+th a
+{
+  text-decoration: none;
+}
+
+.lineno
+{
+  text-align: center;
+}
+
+.functionBody
+{
+  margin-left: 2em;
+  padding-top: 0.25em;
+  padding-bottom: 1em;
+  font-family: sans-serif;
+}
+
+.interfaceinfo
+{
+  padding-left: 2em;
+  color: blue;
+  font-size: 75%;
+}
+
+.fieldName
+{
+  font-weight: bold;
+}
+
+td p
+{
+  margin-top: 0.0em;
+}
+
+td.fieldName
+{
+  vertical-align: baseline;
+}
+
+tr.fieldStart td
+{
+  padding-top: 0.5em;
+}
+
+table.fieldTable td
+{
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+.fieldArg
+{
+  font-weight: bold;
+  color: #000080;
+  font-family: monospace;
+}
+
+td.fieldArg
+{
+  vertical-align: baseline;
+}
+
+.letterlinks
+{
+  font-size: 75%;
+  padding-left: 8ex;
+}
