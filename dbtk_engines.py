@@ -176,9 +176,32 @@ class SQLiteEngine(Engine):
         self.get_input()
         self.connection = dbapi.connect(self.opts["database"])
         self.cursor = self.connection.cursor()
-                
+        
+class MSAccessEngine(Engine):
+    """Engine instance for Microsoft Access."""
+    name = "Microsoft Access"
+    abbreviation = "a"
+    datatypes = ["INTEGER",
+                 "INTEGER",
+                 "REAL",
+                 "REAL",
+                 "TEXT",
+                 "INTEGER"]
+    required_opts = [["database", 
+                      "Enter the filename of your Access database: ",
+                      "access.mdb"]]
+    def tablename(self):
+        return "[" + self.table.tablename + "]"
+    def get_cursor(self):
+        """Gets the db connection and cursor."""
+        import pyodbc as dbapi
+        self.get_input()
+        self.connection = dbapi.connect("DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ='"
+                                        + self.opts["database"] + "'",
+                                        autocommit = True)
+        self.cursor = self.connection.cursor()
 
-ALL_ENGINES = [MySQLEngine(), PostgreSQLEngine(), SQLiteEngine()]
+ALL_ENGINES = [MySQLEngine(), PostgreSQLEngine(), SQLiteEngine(), MSAccessEngine()]
 
 
 def choose_engine(opts):
