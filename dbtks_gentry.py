@@ -23,6 +23,7 @@ class Gentry(DbTk):
         filelist = [os.path.basename(filename) for filename in filelist]
         
         lines = []
+        tax = []
         for filename in filelist:
             print "Extracting data from " + filename + " . . ."
             book = xlrd.open_workbook(self.engine.format_filename(filename))
@@ -45,107 +46,39 @@ class Gentry(DbTk):
                                 if not Excel.empty_cell(cell) or n == 13:
                                     thisline.append(Excel.cell_value(cell))
                         
-                        lines.append([str(value).title().replace("\\", "/") for value in thisline])
+                        newline = [str(value).title().replace("\\", "/") for value in thisline] 
+                        lines.append(newline)
+                        tax.append((newline[1], newline[2], newline[3]))
                     except:
                         pass                    
-                    
         
-        print "Lines: " + str(len(lines))
+        unique_tax = []
+        tax_dict = dict()
+        tax_count = 0
         
-        # Create list of family/genus/species combinations
-        print "Generating taxonomic groups . . ."
-        tax = []
-        for line in lines:
-            tax.append([line[1], line[2], line[3]])
-        
-        # Family, genus and species dictionaries: the key a tuple consisting of 
-        # the name of the family/genus species and all taxonomic groups above 
-        # it; the value is the ID number referring to that group.
-        families = dict()
-        genera = dict()
-        species = dict()
-        familycount = 0
-        genuscount = 0
-        speciescount = 0
-        
-        # Get all unique families/genera/species
+        # Get all unique families/genera/species        
         for group in tax:
-            family = group[0]
-            if not (family in families.keys()):
-                familycount += 1
-                families[family] = familycount
-            genus = (group[1], group[0])
-            if not (genus in genera.keys()):
-                genuscount += 1
-                genera[genus] = genuscount
-            thisspecies = (group[2], group[1], group[0])
-            if not (thisspecies in species.keys()):
-                speciescount += 1                
-                species[thisspecies] = speciescount
-            msg = ("Generating taxonomic groups: Family: " + str(familycount) +
-                   ", Genus: " + str(genuscount) +
-                   ", Species: " + str(speciescount))
-            sys.stdout.write(msg + "\b" * len(msg)) 
-                
-        # Sort dictionaries by values
-        print "Sorting taxonomic groups . . ."
-        sortedfamilies = sorted(families.keys(), key=lambda k: families[k])
-        sortedgenera = sorted(genera.keys(), key=lambda k: genera[k])
-        sortedspecies = sorted(species.keys(), key=lambda k: species[k])
-                
-        
-        # Create family table        
-        table = Table()
-        table.tablename = "family"
-        table.columns=[("family_id"             ,   ("pk-int",)     ),
-                       ("family"                ,   ("char", 30)    )]
-        table.hasindex = True
-        table.source = ['::'.join([
-                                   str(families[family]),
-                                   family
-                                   ]) for family in sortedfamilies]
-        table.delimiter = '::'
-        self.engine.table = table
-        self.engine.create_table()
-        self.engine.add_to_table()
-        
-        
-        # Create genus table
-        table = Table()
-        table.tablename = "genus"
-        table.columns=[("genus_id"              ,   ("pk-int",)     ),
-                       ("genus"                 ,   ("char", 30)    ),
-                       ("family_id"             ,   ("int",)        )]
-        table.hasindex = True
-        table.source = ['::'.join([
-                                   str(genera[genus]),
-                                   genus[0], 
-                                   str(families[genus[1]])
-                                   ]) for genus in sortedgenera]
-        table.delimiter = '::'
-        self.engine.table = table
-        self.engine.create_table()
-        self.engine.add_to_table()
-        
+            if not (group in unique_tax):
+                unique_tax.append(group)
+                tax_count += 1
+                tax_dict[group] = tax_count
+                msg = "Generating taxonomic groups: " + str(tax_count)
+                print msg + "\b" * len(msg)
         
         # Create species table
         table = Table()
         table.tablename = "species"
-        table.columns=[("species_id"            ,   ("pk-int",)     ),
-                       ("species"               ,   ("char", 50)    ),
-                       ("genus_id"              ,   ("int", )       )]
+        table.columns=[("species_id"            ,   ("pk-auto",)    ),
+                       ("family"                ,   ("char", 50)    ),
+                       ("genus"                 ,   ("char", 50)    ),
+                       ("species"               ,   ("char", 50)    )]
 
-        table.hasindex = True
-        table.source = ['::'.join([
-                                   str(species[thisspecies]),
-                                   thisspecies[0], 
-                                   str(genera[(thisspecies[1], thisspecies[2])])
-                                   ]) for thisspecies in sortedspecies]
+        table.source = ['::'.join([group[i] for i in range(3)]) 
+                        for group in unique_tax]
         table.delimiter = '::'
         self.engine.table = table
         self.engine.create_table()
-        self.engine.add_to_table()
-        
+        self.engine.add_to_table()        
         
         # Create stems table
         table = Table()
@@ -159,7 +92,7 @@ class Gentry(DbTk):
         stems = []
         for line in lines:
             species_info = [str(line[0]).split('.')[0], 
-                            species[(line[3], line[2], line[1])],
+                            tax_dict[(line[1], line[2], line[3])],
                             line[4]
                             ]
             stem_count = len(line) - 5
@@ -173,7 +106,6 @@ class Gentry(DbTk):
         self.engine.create_table()
         self.engine.add_to_table()
             
-        
         return self.engine
             
             
