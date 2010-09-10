@@ -48,20 +48,32 @@ class Gentry(DbTk):
                         
                         newline = [str(value).title().replace("\\", "/") for value in thisline] 
                         lines.append(newline)
-                        tax.append((newline[1], newline[2], newline[3]))
+                        
+                        # Check how far the species is identified
+                        full_id = 0
+                        if len(newline[3]) < 3:
+                            if len(newline[2]) < 3:
+                                id_level = "family"
+                            else:
+                                id_level = "genus"
+                        else:
+                            id_level = "species"
+                            full_id = 1
+                        tax.append((newline[1], newline[2], newline[3], id_level, str(full_id)))
                     except:
                         pass                    
         
+        tax = sorted(tax, key=lambda group: group[0] + " " + group[1] + " " + group[2])
         unique_tax = []
         tax_dict = dict()
         tax_count = 0
         
-        # Get all unique families/genera/species        
+        # Get all unique families/genera/species
         for group in tax:
             if not (group in unique_tax):
                 unique_tax.append(group)
                 tax_count += 1
-                tax_dict[group] = tax_count
+                tax_dict[group[0:3]] = tax_count
                 msg = "Generating taxonomic groups: " + str(tax_count)
                 print msg + "\b" * len(msg)
         
@@ -71,9 +83,11 @@ class Gentry(DbTk):
         table.columns=[("species_id"            ,   ("pk-auto",)    ),
                        ("family"                ,   ("char", 50)    ),
                        ("genus"                 ,   ("char", 50)    ),
-                       ("species"               ,   ("char", 50)    )]
+                       ("species"               ,   ("char", 50)    ),
+                       ("id_level"              ,   ("char", 10)    ),
+                       ("full_id"               ,   ("bool",)       )]
 
-        table.source = ['::'.join([group[i] for i in range(3)]) 
+        table.source = ['::'.join([group[i] for i in range(5)]) 
                         for group in unique_tax]
         table.delimiter = '::'
         self.engine.table = table
@@ -107,6 +121,22 @@ class Gentry(DbTk):
         self.engine.add_to_table()
             
         return self.engine
+    
+    
+class GentryTest(DbTkTest):
+    def strvalue(self, value, col_num):
+        value = DbTkTest.strvalue(self, value, col_num)
+        if value[-3:] == ".00":
+            value = value[0:len(value) - 3]
+        return value
+    def test_Gentry(self):
+        DbTkTest.default_test(self,
+                              Gentry(),
+                              [("species",
+                                "8673559a7e35f1d2925d4add6d7347f7",
+                                "species_id")
+                              ],
+                              include_pk = True)
             
             
 if __name__ == "__main__":
