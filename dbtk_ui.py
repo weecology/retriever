@@ -163,7 +163,14 @@ def launch_wizard(dbtk_list, engine_list):
             # Check that at least one dataset is selected before proceeding
             self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CheckValues)
         def AddDataset(self, evt):
-            wx.MessageBox("Hey!")
+            if not ("MammalLH" in self.scriptlist.GetItems()):
+                dbtk_list.append(AutoDbTk("MammalLH", 
+                                          "http://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"))
+                self.scriptlist.Append("MammalLH")
+                
+            else:
+                wx.MessageBox("You already have a dataset named " + "MammalLH" + ".")
+            self.scriptlist.SetCheckedStrings(self.scriptlist.GetCheckedStrings() + ("MammalLH",))
         def CheckAll(self, evt):
             if self.checkallbox.GetValue():
                 self.scriptlist.SetCheckedStrings([script.name for script in dbtk_list])
@@ -255,7 +262,7 @@ Supported database systems currently include:\n\n""" +
                 scripts.append(script)
                 
         # Find the script with the longest name to set size of progress dialog        
-        longestname = 0
+        longestname = 20
         for script in scripts:
             if len(script.name) > longestname:
                 longestname = len(script.name)
@@ -313,9 +320,6 @@ Supported database systems currently include:\n\n""" +
                             #    wx.MessageBox("SKIP")
                             #    raise UserSkipped
                 
-                oldstdout = sys.stdout
-                sys.stdout = update_dialog(self)
-                
                 self.dialog.Pulse("Connecting to database:")
                         
                 # Get options from wizard
@@ -337,6 +341,10 @@ Supported database systems currently include:\n\n""" +
                                   + " connection. \n\n" +
                                   e.__str__())
                     app.Exit()
+                    return
+                
+                oldstdout = sys.stdout
+                sys.stdout = update_dialog(self)
                 
                 # Download scripts
                 errors = []

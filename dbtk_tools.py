@@ -34,6 +34,22 @@ class DbTk:
         engine.script = self            
         return engine
     
+    
+class AutoDbTk(DbTk):
+    def __init__(self, name, url, nulls=[-999]):
+        self.name = name
+        self.shortname = name
+        self.url = url
+        self.nulls = nulls
+    def download(self, engine=None):
+        DbTk.download(self, engine)
+        self.engine.auto_create_table(self.url, self.shortname,
+                                      cleanup=Cleanup(correct_invalid_value, 
+                                          {"nulls":self.nulls})
+                                      )
+        self.engine.insert_data_from_url(self.url)
+        return self.engine    
+    
             
 class DbTkTest(unittest.TestCase):    
     def strvalue(self, value, col_num):

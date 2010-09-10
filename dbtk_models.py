@@ -374,7 +374,7 @@ class Engine():
         """Manually get user input for connection information when script is 
         run from terminal."""
         for opt in self.required_opts:
-            if self.opts[opt[0]] == "":
+            if not (opt[0] in self.opts.keys()):
                 if opt[0] == "password":
                     print opt[1]
                     self.opts[opt[0]] = getpass.getpass(" ")                
