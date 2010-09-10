@@ -120,6 +120,19 @@ def launch_wizard(dbtk_list, engine_list):
                         self.option[opt[0]] = txt
                         self.fieldset[opt[0]].AddMany([label, 
                                                        self.option[opt[0]]])
+                        if opt[0] == "file":
+                            def open_file_dialog(evt):
+                                filter = ""
+                                if opt[3]:
+                                    filter = opt[3] + "|"
+                                filter += "All files (*.*)|*.*"                                    
+                                dialog = wx.FileDialog(None, style = wx.OPEN,
+                                                       wildcard = filter)
+                                if dialog.ShowModal() == wx.ID_OK:
+                                    self.option[opt[0]].SetValue(dialog.GetPath())
+                            self.browse = wx.Button(self, -1, "Choose...")
+                            self.fieldset[opt[0]].Add(self.browse)
+                            self.browse.Bind(wx.EVT_BUTTON, open_file_dialog)                        
                         self.fieldset[opt[0]].Layout()
                         self.fields.Add(self.fieldset[opt[0]])
                     #self.fields = wx.BoxSizer(wx.VERTICAL)
@@ -132,13 +145,30 @@ def launch_wizard(dbtk_list, engine_list):
         """The dataset selection page."""
         def __init__(self, parent, title, label):        
             TitledPage.__init__(self, parent, title, label)
+            # All checkbox
+            self.checkallbox = wx.CheckBox(self, -1, "All")
+            self.checkallbox.SetValue(True)
+            self.sizer.Add(self.checkallbox)            
+            self.checkallbox.Bind(wx.EVT_CHECKBOX, self.CheckAll)            
+            # CheckListBox of scripts
             scripts = [script.name for script in dbtk_list]
             self.scriptlist = wx.CheckListBox(self, -1, choices=scripts)
-            
             public_scripts = [script.name for script in dbtk_list if script.public]
             self.scriptlist.SetCheckedStrings(public_scripts)
             self.sizer.Add(self.scriptlist)
+            # Add dataset button
+            self.addbtn = wx.Button(self, -1, "Add...")
+            self.sizer.Add(self.addbtn)
+            self.addbtn.Bind(wx.EVT_BUTTON, self.AddDataset)
+            # Check that at least one dataset is selected before proceeding
             self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CheckValues)
+        def AddDataset(self, evt):
+            wx.MessageBox("Hey!")
+        def CheckAll(self, evt):
+            if self.checkallbox.GetValue():
+                self.scriptlist.SetCheckedStrings([script.name for script in dbtk_list])
+            else:
+                self.scriptlist.SetCheckedStrings([])
         def CheckValues(self, evt):  
             """Users can't continue from this page without checking at least
             one dataset."""
@@ -306,7 +336,7 @@ Supported database systems currently include:\n\n""" +
                     wx.MessageBox("There was an error with your database" 
                                   + " connection. \n\n" +
                                   e.__str__())
-                    raise
+                    app.Exit()
                 
                 # Download scripts
                 errors = []
@@ -342,8 +372,9 @@ Supported database systems currently include:\n\n""" +
                     
                                     
                 app.Exit()
-                
-                
+    else:
+        return
+        
     frame = Frame()
     frame.Show(False)
     app.MainLoop()

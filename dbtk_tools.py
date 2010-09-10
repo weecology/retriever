@@ -142,7 +142,7 @@ class DbTkTest(unittest.TestCase):
                 # to print each line that doesn't match up together with the
                 # line from the test file; this can be useful to find the
                 # discrepancies
-                checkagainstfile(lines, "PanTHERIA_manual.txt")
+                # checkagainstfile(lines, "PanTHERIA_manual.txt")
                 
                 lines = ''.join(lines)                
                 sum = getmd5(lines)
