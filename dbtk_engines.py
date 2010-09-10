@@ -35,7 +35,7 @@ class MySQLEngine(Engine):
                  "DOUBLE",
                  "DECIMAL", 
                  "VARCHAR", 
-                 "BIT"]
+                 "BOOL"]
     required_opts = [["username", 
                       "Enter your MySQL username: ", 
                       "root"],
@@ -201,7 +201,7 @@ class MSAccessEngine(Engine):
                                         autocommit = True)
         self.cursor = self.connection.cursor()
 
-ALL_ENGINES = [MySQLEngine(), PostgreSQLEngine(), SQLiteEngine(), MSAccessEngine()]
+ALL_ENGINES = [MySQLEngine(), PostgreSQLEngine(), SQLiteEngine()]
 
 
 def choose_engine(opts):

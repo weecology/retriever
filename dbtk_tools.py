@@ -90,7 +90,7 @@ class DbTkTest(unittest.TestCase):
         else:
             return ""                
     
-    def default_test(self, script, tables):
+    def default_test(self, script, tables, include_pk = False):
         """The default unit test. Tests in DbTkTest classes can simply call 
         this function with the appropriate paramaters. The "script" property 
         should be an instance of DbTk, and tables is a list consisting of 
@@ -129,19 +129,22 @@ class DbTkTest(unittest.TestCase):
                 
                 lines = []
                 for row in cursor.fetchall():
+                    if include_pk:
+                        start = 0
+                    else:
+                        start = 1
                     newline = ','.join([self.strvalue(row[i], i - 1)
                                         for i 
-                                        in range(1, len(row))])
+                                        in range(start, len(row))])
                     lines.append(newline + "\r\n")
                     
                 # If a test fails, you can temporarily  uncomment this line
                 # to print each line that doesn't match up together with the
                 # line from the test file; this can be useful to find the
                 # discrepancies
-                checkagainstfile(lines, "AvianBodySize_manual.txt")
+                # checkagainstfile(lines, "Species_manual.txt")
                 
-                lines = ''.join(lines)
-                
+                lines = ''.join(lines)                
                 sum = getmd5(lines)
                 
                 self.assertEqual(sum, checksum)
