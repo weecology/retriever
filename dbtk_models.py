@@ -178,7 +178,7 @@ class Engine():
         
         # Get all values for each column
         for line in source:
-            if line.strip():
+            if line.replace("\t", "").strip():
                 values = line.strip("\n").strip("\r").split(self.table.delimiter)
                 for i in range(len(columns)):
                     try:
@@ -207,7 +207,7 @@ class Engine():
                 datatype = "char"
         
             if datatype is "char":
-                max_length = max([len(s) for s in values])
+                max_length = max([len(s) for s in values if s])
                 column[1] = ["char", max_length]
             elif datatype is "int":
                 column[1] = ["int",]
@@ -447,6 +447,8 @@ class Engine():
         for i in range(0, columncount):
             insertstatement += "%s, "
         insertstatement = insertstatement.rstrip(", ") + ");"
+        while len(values) < insertstatement.count("%s"):
+            values.append(self.format_insert_value(None))
         insertstatement %= tuple(values)
         return insertstatement        
     def skip_rows(self, rows, source):
