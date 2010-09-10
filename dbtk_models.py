@@ -98,11 +98,9 @@ class Engine():
                         linevalues.append(value) 
                             
                 # Build insert statement with the correct # of values                
-                cleanvalues = [self.format_insert_value(self.table. \
-                                                        cleanup.function
+                cleanvalues = [self.format_insert_value(self.table.cleanup.function
                                                         (value, 
-                                                         self.table. \
-                                                         cleanup.args)) 
+                                                         self.table.cleanup.args)) 
                                for value in linevalues]
                 insertstatement = self.insert_statement(cleanvalues)
                 prompt = "Inserting rows to " + self.tablename() + ": "
@@ -215,7 +213,10 @@ class Engine():
                 column[1] = ["int",]
             elif datatype is "float":
                 column[1] = ["double",]
-                
+                for value in values:
+                    if "e" in str(value) or len(str(value).split(".")[1]) > 10:
+                        column[1] = ["decimal","30,20"]
+                                
             if pk == column[0]:
                 column[1][0] = "pk-" + column[1][0]
             
@@ -233,7 +234,7 @@ class Engine():
         if thistype[0:3] == "pk-":
             thistype = thistype.lstrip("pk-")
             thispk = True
-        customtypes = ("auto", "int", "double", "decimal", "char", "bit")
+        customtypes = ("auto", "int", "double", "decimal", "char", "bool")
         for i in range(0, len(customtypes)):
             datatypes[customtypes[i]] = i
         datatypes["combine"], datatypes["skip"] = [-1, -1]        
@@ -358,7 +359,7 @@ class Engine():
     def format_insert_value(self, value):
         """Formats a value for an insert statement, for example by surrounding
         it in single quotes."""
-        strvalue = str(value)
+        strvalue = str(value).strip()
         if strvalue.lower() == "null":
             return "null"
         elif value:
@@ -445,8 +446,7 @@ class Engine():
         insertstatement += " VALUES ("
         for i in range(0, columncount):
             insertstatement += "%s, "
-        insertstatement = insertstatement.rstrip(", ") + ");"        
-        # Run correct_invalid_value on each value before insertion
+        insertstatement = insertstatement.rstrip(", ") + ");"
         insertstatement %= tuple(values)
         return insertstatement        
     def skip_rows(self, rows, source):
