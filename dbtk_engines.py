@@ -159,9 +159,10 @@ class SQLiteEngine(Engine):
                  "REAL",
                  "TEXT",
                  "INTEGER"]
-    required_opts = [["database", 
+    required_opts = [["file", 
                       "Enter the filename of your SQLite database: ",
-                      "sqlite.db"]]
+                      "sqlite.db",
+                      ""]]
     def create_db(self):
         """SQLite doesn't create databases; each database is a file and needs
         a separate connection."""
@@ -174,7 +175,7 @@ class SQLiteEngine(Engine):
         """Gets the db connection and cursor."""
         import sqlite3 as dbapi
         self.get_input()
-        self.connection = dbapi.connect(self.opts["database"])
+        self.connection = dbapi.connect(self.opts["file"])
         self.cursor = self.connection.cursor()
         
 class MSAccessEngine(Engine):
@@ -187,9 +188,10 @@ class MSAccessEngine(Engine):
                  "REAL",
                  "TEXT",
                  "INTEGER"]
-    required_opts = [["database", 
+    required_opts = [["file", 
                       "Enter the filename of your Access database: ",
-                      "access.mdb"]]
+                      "access.mdb",
+                      "Access databases (*.mdb, *.accdb)|*.mdb,*.accdb"]]
     def tablename(self):
         return "[" + self.table.tablename + "]"
     def get_cursor(self):
@@ -197,11 +199,12 @@ class MSAccessEngine(Engine):
         import pyodbc as dbapi
         self.get_input()
         self.connection = dbapi.connect("DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ='"
-                                        + self.opts["database"] + "'",
+                                        + self.opts["file"].replace("/", "//") + "'",
                                         autocommit = True)
         self.cursor = self.connection.cursor()
 
-ALL_ENGINES = [MySQLEngine(), PostgreSQLEngine(), SQLiteEngine()]
+
+ALL_ENGINES = [MySQLEngine(), PostgreSQLEngine(), SQLiteEngine(), MSAccessEngine()]
 
 
 def choose_engine(opts):
