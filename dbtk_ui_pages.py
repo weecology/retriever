@@ -196,7 +196,7 @@ Supported database systems currently include:\n\n""" +
             # Check that at least one dataset is selected before proceeding
             self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CheckValues)            
         def AddDataset(self, evt):
-            add_dataset = AddDatasetWizard(None, -1, 'Add Dataset')            
+            add_dataset = self.Parent.AddDatasetWizard(self.Parent, -1, 'Add Dataset')            
             if add_dataset.RunWizard(add_dataset.page[0]):
                 dataset_name = add_dataset.name.GetValue()
                 dataset_url = add_dataset.url.GetValue()                
@@ -243,22 +243,19 @@ Supported database systems currently include:\n\n""" +
             wx.wizard.Wizard.__init__(self, parent, id, title)            
             
             self.page = []
-            self.page.append(TitledPage(self, "Add Dataset", ""))
+            self.page.append(parent.TitledPage(self, "Add Dataset", "abcdefg"))
             
-            hbox = wx.BoxSizer(wx.HORIZONTAL)                        
-            label = wx.StaticText(self, -1, "Name: ", 
-                                  size=wx.Size(60,35))
+            hbox = wx.FlexGridSizer(rows=2, cols=2)                        
             self.name = wx.TextCtrl(self, -1, "",
                                     size=wx.Size(150,-1))
-            hbox.AddMany([label, self.name])
-            self.page[0].sizer.Add(hbox)
-            
-            hbox = wx.BoxSizer(wx.HORIZONTAL)                        
-            label = wx.StaticText(self, -1, "URL: ", 
-                                  size=wx.Size(60,35))
             self.url = wx.TextCtrl(self, -1, "http://",
                                     size=wx.Size(150,-1))
-            hbox.AddMany([label, self.url])
+            hbox.AddMany([(wx.StaticText(self, -1, "Name: "),),
+                          (self.name,),
+                          (wx.StaticText(self, -1, "URL: "),),
+                          (self.url,)
+                          ])
+            hbox.Layout()         
+               
             self.page[0].sizer.Add(hbox)
-            
             self.page[0].sizer.Layout()
