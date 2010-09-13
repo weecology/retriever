@@ -12,7 +12,7 @@ from dbtks_EA_pantheria import *
 from dbtks_bbs import *
 from dbtks_EA_portal_mammals import *
 from dbtks_gentry import *
-#from dbtks_CRC_avianbodymass import *
+from dbtks_CRC_avianbodymass import *
 from dbtks_EA_avianbodysize2007 import *
 import dbtk_ui
 
@@ -22,7 +22,7 @@ DBTK_LIST = [EAMammalLifeHistory2003(),
              EAAvianBodySize2007(),
              BBS(),
              Gentry(),
-             #CRCAvianBodyMass()
+             CRCAvianBodyMass()
              ]
 
 if __name__ == "__main__":

@@ -359,6 +359,8 @@ class Engine():
     def format_insert_value(self, value):
         """Formats a value for an insert statement, for example by surrounding
         it in single quotes."""
+        if isinstance(value, basestring):
+            value = value.decode("utf-8", "ignore")
         strvalue = str(value).strip()
         if strvalue.lower() == "null":
             return "null"
