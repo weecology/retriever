@@ -162,7 +162,7 @@ class Engine():
                 this_column = this_column.replace(c, "_")
             while "__" in this_column:
                 this_column = this_column.replace("__", "_")
-            this_column = this_column.strip("0123456789_")
+            this_column = this_column.lstrip("0123456789_").rstrip("_")
                 
             if this_column.lower() == "order":
                 this_column = "sporder"
@@ -211,7 +211,8 @@ class Engine():
             elif datatype is "float":
                 column[1] = ["double",]
                 for value in values:
-                    if "e" in str(value) or len(str(value).split(".")[1]) > 10:
+                    if "e" in str(value) or ("." in str(value) and
+                                             len(str(value).split(".")[1]) > 10):
                         column[1] = ["decimal","30,20"]
                                 
             if pk == column[0]:
