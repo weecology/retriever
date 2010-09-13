@@ -218,11 +218,11 @@ Supported database systems currently include:\n\n""" +
                         
                         # Append dataset to dbtk.config file
                         if os.path.isfile("dbtk.config"):
+                            mode = 'ab'
+                            initial = "\n"                            
+                        else:
                             mode = 'wb'
                             initial = ""
-                        else:
-                            mode = 'ab'
-                            initial = "\n"
                         config = open("dbtk.config", mode)                        
                         config.write(initial + dbname + ", " + tablename + ", " + dataset_url)
                     else:
