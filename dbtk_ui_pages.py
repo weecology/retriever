@@ -196,24 +196,38 @@ Supported database systems currently include:\n\n""" +
             # Check that at least one dataset is selected before proceeding
             self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CheckValues)            
         def AddDataset(self, evt):
+            # Run Add Dataset wizard
             add_dataset = AddDatasetWizard(self.Parent, -1, 'Add Dataset')            
             if add_dataset.RunWizard(add_dataset.page[0]):                
                 dataset_url = add_dataset.url.GetValue()
                 dbname = add_dataset.dbname.GetValue()
                 tablename = add_dataset.tablename.GetValue()
+                if not tablename:
+                    tablename = dbname
                 fullname = dbname
                 if tablename:
                     fullname += "." + tablename              
                 if dbname and dataset_url:
                     if not (fullname in self.scriptlist.GetItems()):
+                        # Add dataset to list
                         self.Parent.dbtk_list.append(AutoDbTk(fullname,
                                                               dbname,
                                                               tablename, 
                                                               dataset_url))
                         self.scriptlist.Append(fullname)
                         
+                        # Append dataset to dbtk.config file
+                        if os.path.isfile("dbtk.config"):
+                            mode = 'wb'
+                            initial = ""
+                        else:
+                            mode = 'ab'
+                            initial = "\n"
+                        config = open("dbtk.config", mode)                        
+                        config.write(initial + dbname + ", " + tablename + ", " + dataset_url)
                     else:
                         wx.MessageBox("You already have a dataset named " + dataset_name + ".")
+                    # Automatically check the new dataset
                     self.scriptlist.SetCheckedStrings(self.scriptlist.GetCheckedStrings() + (fullname,))
             add_dataset.Destroy()
         def CheckAll(self, evt):
