@@ -36,14 +36,15 @@ class DbTk:
     
     
 class AutoDbTk(DbTk):
-    def __init__(self, name, url, nulls=[-999]):
+    def __init__(self, name, dbname, tablename, url, nulls=[-999]):
         self.name = name
-        self.shortname = name
+        self.shortname = dbname
+        self.tablename = tablename
         self.url = url
         self.nulls = nulls
     def download(self, engine=None):
         DbTk.download(self, engine)
-        self.engine.auto_create_table(self.url, self.shortname,
+        self.engine.auto_create_table(self.url, self.tablename,
                                       cleanup=Cleanup(correct_invalid_value, 
                                           {"nulls":self.nulls})
                                       )

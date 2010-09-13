@@ -197,22 +197,28 @@ Supported database systems currently include:\n\n""" +
             self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CheckValues)            
         def AddDataset(self, evt):
             add_dataset = self.Parent.AddDatasetWizard(self.Parent, -1, 'Add Dataset')            
-            if add_dataset.RunWizard(add_dataset.page[0]):
-                dataset_name = add_dataset.name.GetValue()
-                dataset_url = add_dataset.url.GetValue()                
-                if dataset_name and dataset_url:
-                    if not (dataset_name in self.scriptlist.GetItems()):
-                        parent.dbtk_list.append(AutoDbTk(dataset_name, 
-                                                            dataset_url))
-                        self.scriptlist.Append(dataset_name)
+            if add_dataset.RunWizard(add_dataset.page[0]):                
+                dataset_url = add_dataset.url.GetValue()
+                dbname = add_dataset.dbname.GetValue()
+                tablename = add_dataset.tablename.GetValue()
+                fullname = dbname
+                if tablename:
+                    fullname += "." + tablename              
+                if dbname and dataset_url:
+                    if not (fullname in self.scriptlist.GetItems()):
+                        self.Parent.dbtk_list.append(AutoDbTk(fullname,
+                                                              dbname,
+                                                              tablename, 
+                                                              dataset_url))
+                        self.scriptlist.Append(fullname)
                         
                     else:
                         wx.MessageBox("You already have a dataset named " + dataset_name + ".")
-                    self.scriptlist.SetCheckedStrings(self.scriptlist.GetCheckedStrings() + (dataset_name,))
+                    self.scriptlist.SetCheckedStrings(self.scriptlist.GetCheckedStrings() + (fullname,))
             add_dataset.Destroy()
         def CheckAll(self, evt):
             if self.checkallbox.GetValue():
-                self.scriptlist.SetCheckedStrings([script.name for script in dbtk_list])
+                self.scriptlist.SetCheckedStrings([script.name for script in self.Parent.dbtk_list])
             else:
                 self.scriptlist.SetCheckedStrings([])
         def CheckValues(self, evt):  
@@ -243,19 +249,24 @@ Supported database systems currently include:\n\n""" +
             wx.wizard.Wizard.__init__(self, parent, id, title)            
             
             self.page = []
-            self.page.append(parent.TitledPage(self, "Add Dataset", "abcdefg"))
+            self.page.append(parent.TitledPage(self, "Add Dataset", ""))
             
-            hbox = wx.FlexGridSizer(rows=2, cols=2)                        
-            self.name = wx.TextCtrl(self, -1, "",
-                                    size=wx.Size(150,-1))
+            hbox = wx.FlexGridSizer(rows=3, cols=2)                        
             self.url = wx.TextCtrl(self, -1, "http://",
                                     size=wx.Size(150,-1))
-            hbox.AddMany([(wx.StaticText(self, -1, "Name: "),),
-                          (self.name,),
+            self.dbname = wx.TextCtrl(self, -1, "",
+                                      size=wx.Size(150,-1))
+            self.tablename = wx.TextCtrl(self, -1, "",
+                                         size=wx.Size(150,-1))
+            hbox.AddMany([
                           (wx.StaticText(self, -1, "URL: "),),
-                          (self.url,)
+                          (self.url,),
+                          (wx.StaticText(self, -1, "Database Name: "),),
+                          (self.dbname,),
+                          (wx.StaticText(self, -1, "Table Name: "),),
+                          (self.tablename,)
                           ])
-            hbox.Layout()         
+            hbox.Layout()
                
             self.page[0].sizer.Add(hbox)
             self.page[0].sizer.Layout()
