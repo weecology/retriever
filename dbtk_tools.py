@@ -168,8 +168,7 @@ class DbTkTest(unittest.TestCase):
 def get_opts():
     """Checks for command line arguments"""
     optsdict = dict()
-    for i in ["engine", "username", "password", "hostname", "sqlport", "database"]:
-        optsdict[i] = ""
+    #
     try:
         opts, args = getopt.getopt(sys.argv[1:], "e:u:p:hod", ["engine=", "user=", "password=", "host=", "port=", "database="])        
         for opt, arg in opts:            
