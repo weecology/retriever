@@ -209,9 +209,9 @@ ALL_ENGINES = [MySQLEngine(), PostgreSQLEngine(), SQLiteEngine(), MSAccessEngine
 
 def choose_engine(opts):
     """Prompts the user to select a database engine"""    
-    enginename = opts["engine"]
-    
-    if not enginename:
+    if "engine" in opts.keys():
+        enginename = opts["engine"]    
+    else:
         print "Choose a database engine:"
         for engine in ALL_ENGINES:
             if engine.abbreviation:
