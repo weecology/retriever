@@ -26,6 +26,7 @@ that has been implemented.
 
 from dbtk_models import *
 
+
 class MySQLEngine(Engine):
     """Engine instance for MySQL."""
     name = "MySQL"
@@ -50,6 +51,9 @@ class MySQLEngine(Engine):
                       "Enter your MySQL port or press Enter " +
                       "for the default (3306): ", 
                       3306]]
+    def create_db_statement(self):
+        createstatement = "CREATE DATABASE IF NOT EXISTS " + self.db.dbname
+        return createstatement
     def insert_data_from_file(self, filename):
         """Calls MySQL "LOAD DATA LOCAL INFILE" statement to perform a bulk 
         insert."""
@@ -106,6 +110,12 @@ class PostgreSQLEngine(Engine):
     def create_db_statement(self):
         """In PostgreSQL, the equivalent of a SQL database is a schema."""
         return Engine.create_db_statement(self).replace("DATABASE", "SCHEMA")
+    def create_db(self):
+        try:
+            Engine.create_db(self)
+        except:
+            self.connection.rollback()
+            pass
     def create_table(self):
         """PostgreSQL needs to commit operations individually."""
         Engine.create_table(self)
@@ -204,9 +214,6 @@ class MSAccessEngine(Engine):
         self.cursor = self.connection.cursor()
 
 
-ALL_ENGINES = [MySQLEngine(), PostgreSQLEngine(), SQLiteEngine(), MSAccessEngine()]
-
-
 def choose_engine(opts):
     """Prompts the user to select a database engine"""    
     if "engine" in opts.keys():
@@ -234,3 +241,6 @@ def choose_engine(opts):
         
     engine.opts = opts
     return engine
+
+
+ALL_ENGINES = [MySQLEngine(), PostgreSQLEngine(), SQLiteEngine(), MSAccessEngine()]

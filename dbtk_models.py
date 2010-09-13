@@ -39,7 +39,6 @@ class Cleanup:
 class Database:
     """Information about a database."""
     dbname = ""
-    drop = False
     opts = dict()
     
 class Table:
@@ -50,7 +49,6 @@ class Table:
     record_id = 0
     delimiter = "\t"
     columns = []
-    drop = True
     header_rows = 1
     fixedwidth = False
     def __init__(self):        
@@ -164,8 +162,7 @@ class Engine():
                 this_column = this_column.replace(c, "_")
             while "__" in this_column:
                 this_column = this_column.replace("__", "_")
-            
-            this_column = this_column.strip("_")
+            this_column = this_column.strip("0123456789_")
                 
             if this_column.lower() == "order":
                 this_column = "sporder"
@@ -257,12 +254,7 @@ class Engine():
         self.cursor.execute(self.create_db_statement())
     def create_db_statement(self):
         """Returns a SQL statement to create a database."""
-        if self.db.drop:
-            self.cursor.execute(self.drop_statement("DATABASE", 
-                                                    self.db.dbname))
-            createstatement = "CREATE DATABASE " + self.db.dbname
-        else:
-            createstatement = "CREATE DATABASE IF NOT EXISTS " + self.db.dbname
+        createstatement = "CREATE DATABASE " + self.db.dbname
         return createstatement
     def create_raw_data_dir(self):
         """Checks to see if the archive directory exists and creates it if 
@@ -278,12 +270,9 @@ class Engine():
         self.cursor.execute(createstatement)
     def create_table_statement(self):
         """Returns a SQL statement to create a table."""
-        if self.table.drop:
-            self.cursor.execute(self.drop_statement("TABLE", self.tablename()))
-            createstatement = "CREATE TABLE " + self.tablename() + " ("
-        else:
-            createstatement = ("CREATE TABLE IF NOT EXISTS " + 
-                               self.tablename() + " (")    
+        self.cursor.execute(self.drop_statement("TABLE", self.tablename()))
+        createstatement = "CREATE TABLE " + self.tablename() + " ("
+        
         for item in self.table.columns:
             if (item[1][0] != "skip") and (item[1][0] != "combine"):
                 createstatement += (item[0] + " "
