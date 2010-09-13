@@ -196,7 +196,7 @@ Supported database systems currently include:\n\n""" +
             # Check that at least one dataset is selected before proceeding
             self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CheckValues)            
         def AddDataset(self, evt):
-            add_dataset = self.Parent.AddDatasetWizard(self.Parent, -1, 'Add Dataset')            
+            add_dataset = AddDatasetWizard(self.Parent, -1, 'Add Dataset')            
             if add_dataset.RunWizard(add_dataset.page[0]):                
                 dataset_url = add_dataset.url.GetValue()
                 dbname = add_dataset.dbname.GetValue()
@@ -244,29 +244,36 @@ Supported database systems currently include:\n\n""" +
                         evt.Veto()
                         
                          
-    class AddDatasetWizard(wx.wizard.Wizard):
-        def __init__(self, parent, id, title):
-            wx.wizard.Wizard.__init__(self, parent, id, title)            
-            
-            self.page = []
-            self.page.append(parent.TitledPage(self, "Add Dataset", ""))
-            
-            hbox = wx.FlexGridSizer(rows=3, cols=2)                        
+class AddDatasetWizard(wx.wizard.Wizard):
+    def __init__(self, parent, id, title):
+        wx.wizard.Wizard.__init__(self, parent, id, title)            
+        
+        self.page = []
+        self.page.append(self.AddDatasetPage(self, "Add Dataset", ""))
+        
+        self.FitToPage(self.page[0])
+    class AddDatasetPage(DbTkWizard.TitledPage):
+        def __init__(self, parent, title, label):
+            DbTkWizard.TitledPage.__init__(self, parent, title, label)
             self.url = wx.TextCtrl(self, -1, "http://",
-                                    size=wx.Size(150,-1))
+                                    size=wx.Size(250,-1))
             self.dbname = wx.TextCtrl(self, -1, "",
-                                      size=wx.Size(150,-1))
+                                      size=wx.Size(250,-1))
             self.tablename = wx.TextCtrl(self, -1, "",
-                                         size=wx.Size(150,-1))
-            hbox.AddMany([
-                          (wx.StaticText(self, -1, "URL: "),),
-                          (self.url,),
-                          (wx.StaticText(self, -1, "Database Name: "),),
-                          (self.dbname,),
-                          (wx.StaticText(self, -1, "Table Name: "),),
-                          (self.tablename,)
-                          ])
-            hbox.Layout()
-               
-            self.page[0].sizer.Add(hbox)
-            self.page[0].sizer.Layout()
+                                         size=wx.Size(250,-1))
+            
+            self.vbox = wx.BoxSizer(wx.VERTICAL)
+            self.hbox = dict()            
+            for item in [(self.url, "URL:"),
+                         (self.dbname, "Database Name:"),
+                         (self.tablename, "Table Name:")]:
+                self.hbox[item[1]] = wx.BoxSizer(wx.HORIZONTAL)
+                label = wx.StaticText(self, -1, item[1], size=wx.Size(120,35))                        
+                self.hbox[item[1]].AddMany([label,
+                                            item[0]])
+                self.hbox[item[1]].Layout()
+                self.vbox.Add(self.hbox[item[1]])
+            
+            self.vbox.Layout()
+            self.sizer.Add(self.vbox)
+            self.sizer.Layout()
