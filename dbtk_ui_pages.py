@@ -255,18 +255,18 @@ class AddDatasetWizard(wx.wizard.Wizard):
     class AddDatasetPage(DbTkWizard.TitledPage):
         def __init__(self, parent, title, label):
             DbTkWizard.TitledPage.__init__(self, parent, title, label)
-            self.url = wx.TextCtrl(self, -1, "http://",
-                                    size=wx.Size(250,-1))
-            self.dbname = wx.TextCtrl(self, -1, "",
-                                      size=wx.Size(250,-1))
-            self.tablename = wx.TextCtrl(self, -1, "",
-                                         size=wx.Size(250,-1))
+            parent.url = wx.TextCtrl(self, -1, "http://",
+                                     size=wx.Size(250,-1))
+            parent.dbname = wx.TextCtrl(self, -1, "",
+                                        size=wx.Size(250,-1))
+            parent.tablename = wx.TextCtrl(self, -1, "",
+                                           size=wx.Size(250,-1))
             
             self.vbox = wx.BoxSizer(wx.VERTICAL)
             self.hbox = dict()            
-            for item in [(self.url, "URL:"),
-                         (self.dbname, "Database Name:"),
-                         (self.tablename, "Table Name:")]:
+            for item in [(parent.url, "URL:"),
+                         (parent.dbname, "Database Name:"),
+                         (parent.tablename, "Table Name:")]:
                 self.hbox[item[1]] = wx.BoxSizer(wx.HORIZONTAL)
                 label = wx.StaticText(self, -1, item[1], size=wx.Size(120,35))                        
                 self.hbox[item[1]].AddMany([label,

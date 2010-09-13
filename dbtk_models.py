@@ -39,7 +39,7 @@ class Cleanup:
 class Database:
     """Information about a database."""
     dbname = ""
-    drop = True
+    drop = False
     opts = dict()
     
 class Table:
@@ -262,7 +262,7 @@ class Engine():
                                                     self.db.dbname))
             createstatement = "CREATE DATABASE " + self.db.dbname
         else:
-            createstatement = "CREATE DATABASE IF NOT EXISTS " + db.dbname
+            createstatement = "CREATE DATABASE IF NOT EXISTS " + self.db.dbname
         return createstatement
     def create_raw_data_dir(self):
         """Checks to see if the archive directory exists and creates it if 
