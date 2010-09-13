@@ -26,15 +26,9 @@ def launch_wizard(dbtk_list, engine_list):
     print "Launching Database Toolkit wizard . . ."                    
     
     # Create the wxPython app and wizard 
-    app = wx.PySimpleApp(False)
-    
+    app = wx.PySimpleApp(False)    
     wizard = DbTkWizard(None, -1, "Database Toolkit Wizard", 
                         dbtk_list, engine_list)
-    
-    if len(dbtk_list) > 1:
-        dataset = "common ecological datasets"
-    else:
-        dataset = "data from " + dbtk_list[0].name 
 
     # Run the wizard and, if successful, download datasets
     if wizard.RunWizard(wizard.page[0]):
