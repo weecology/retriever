@@ -201,7 +201,7 @@ class MSAccessEngine(Engine):
     required_opts = [["file", 
                       "Enter the filename of your Access database: ",
                       "access.mdb",
-                      "Access databases (*.mdb, *.accdb)|*.mdb,*.accdb"]]
+                      "Access databases (*.mdb, *.accdb)|*.mdb;*.accdb"]]
     def tablename(self):
         return "[" + self.table.tablename + "]"
     def get_cursor(self):
