@@ -208,8 +208,9 @@ class MSAccessEngine(Engine):
         """Gets the db connection and cursor."""
         import pyodbc as dbapi
         self.get_input()
-        self.connection = dbapi.connect("DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ='"
-                                        + self.opts["file"].replace("/", "//") + "'",
+        connection_string = ("DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ="
+                             + self.opts["file"].replace("/", "//") + ";")
+        self.connection = dbapi.connect(connection_string,
                                         autocommit = True)
         self.cursor = self.connection.cursor()
 
