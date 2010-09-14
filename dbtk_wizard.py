@@ -32,8 +32,7 @@ if os.path.isfile("dbtk.config"):
     config = open("dbtk.config", 'rb')
     for line in config:
         if line:
-            if line[-1] == "\n":
-                line == line[0:-1]
+            line = line.rstrip("\n")
             values = line.split(', ')
             try:
                 dbname, tablename, url = (values[0], values[1], values[2])
