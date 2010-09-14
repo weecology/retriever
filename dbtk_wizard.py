@@ -32,7 +32,9 @@ if os.path.isfile("dbtk.config"):
     config = open("dbtk.config", 'rb')
     for line in config:
         if line:
-            values = line[0:-1].split(', ')
+            if line[-1] == "\n":
+                line == line[0:-1]
+            values = line.split(', ')
             try:
                 dbname, tablename, url = (values[0], values[1], values[2])
                 other_dbtks.append(AutoDbTk(
