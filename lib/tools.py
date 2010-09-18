@@ -122,7 +122,7 @@ class DbTkTest(unittest.TestCase):
         (table name, MD5 sum, [order by statement])
         
         """
-        for engine_letter in [engine.abbreviation for engine in ALL_ENGINES]:
+        for engine_letter in [engine.abbreviation for engine in ENGINES_TO_TEST]:
             engine = TEST_ENGINES[engine_letter]
             engine.script = script
             

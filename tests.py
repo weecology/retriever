@@ -22,9 +22,7 @@ try:
 except:
     pass
 
-for engine in [MySQLEngine(), 
-               #PostgreSQLEngine(),
-               ]:
+for engine in ENGINES_TO_TEST:
     opts = get_opts()
     opts["engine"] = engine.abbreviation
     
