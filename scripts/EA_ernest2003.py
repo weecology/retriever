@@ -17,10 +17,10 @@ class main(DbTk):
         self.engine.insert_data_from_url(self.url)
         return self.engine
     
-class EAMammalLifeHistory2003Test(DbTkTest):
-    def test_EAMammalLifeHistory2003(self):        
+class EAErnest2003Test(DbTkTest):
+    def test_EAErnest2003(self):        
         DbTkTest.default_test(self,
-                              EAMammalLifeHistory2003(),
+                              main(),
                               [("species",
                                 "afa09eed4ca4ce5db31d15c4daa49ed3",
                                 "sporder, family, genus, species")

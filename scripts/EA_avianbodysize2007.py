@@ -29,7 +29,7 @@ class EAAvianBodySize2007Test(DbTkTest):
         return a
     def test_EAAvianBodySize2007(self):        
         DbTkTest.default_test(self,
-                              EAAvianBodySize2007(),
+                              main(),
                               [("species",
                                 "94220c1db99252ecf58ca2d9654d192a",
                                 "record_id")

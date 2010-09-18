@@ -11,14 +11,15 @@ import os
 from scripts import *
 from lib.ui import *
 
-DBTK_LIST = [EA_ernest2003.main(), 
-             EA_pantheria.main(), 
-             EA_portal_mammals.main(),
-             EA_avianbodysize2007.main(),
-             bbs.main(),
-             gentry.main(),
-             CRC_avianbodymass.main()
-             ]
+MODULE_LIST = [EA_ernest2003,
+               EA_pantheria,
+               EA_portal_mammals,
+               EA_avianbodysize2007,
+               bbs,
+               gentry,
+               CRC_avianbodymass]
+
+DBTK_LIST = [module.main() for module in MODULE_LIST]
 
 # Get list of additional datasets from dbtk.config file
 other_dbtks = []
