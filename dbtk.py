@@ -10,7 +10,6 @@ to choose from all scripts.
 import os
 from scripts import *
 from lib.ui import *
-from lib.engines import ALL_ENGINES
 
 DBTK_LIST = [EA_ernest2003.main(), 
              EA_pantheria.main(), 

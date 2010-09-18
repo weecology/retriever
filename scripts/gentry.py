@@ -11,6 +11,7 @@ class main(DbTk):
     name = "Alwyn H. Gentry Forest Transact Dataset"
     shortname = "Gentry"
     url = "http://www.mobot.org/mobot/gentry/123/all_Excel.zip"
+    ref = "http://www.wlbcenter.org/gentry_data.htm"
     def download(self, engine=None):
         DbTk.download(self, engine)
                 

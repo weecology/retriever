@@ -19,6 +19,7 @@ class DbTk:
     name = ""
     shortname = ""
     url = ""
+    ref = ""
     public = True
     def download(self, engine=None):
         self.engine = self.checkengine(engine)
@@ -27,6 +28,11 @@ class DbTk:
         self.engine.db = db
         self.engine.get_cursor()
         self.engine.create_db()
+    def reference_url(self):
+        if self.ref:
+            return self.ref
+        else:
+            return '/'.join(self.url.split('/')[0:-1]) + '/'
     def checkengine(self, engine=None):
         if not engine:
             opts = get_opts()        

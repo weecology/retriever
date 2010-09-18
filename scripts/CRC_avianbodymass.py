@@ -13,7 +13,8 @@ from .lib.excel import *
 class main(DbTk):
     name = "CRC Avian Body Masses"
     shortname = "AvianBodyMass"
-    public = False 
+    public = False
+    ref = "http://www.crcpress.com/ecommerce_product/product_detail.jsf?isbn=1420064444"
     def download(self, engine=None):    
         DbTk.download(self, engine)
         
