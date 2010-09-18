@@ -10,7 +10,7 @@ from .lib.ui import *
 class main(DbTk):
     name = "USGS North American Breeding Bird Survey"
     shortname = "BBS"
-    url = "http://www.pwrc.usgs.gov/BBS/"
+    ref = "http://www.pwrc.usgs.gov/BBS/"
     required_opts = []
     def download(self, engine=None):    
         try:
