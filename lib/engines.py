@@ -24,7 +24,7 @@ that has been implemented.
 
 """
 
-from dbtk_models import *
+from models import *
 
 
 class MySQLEngine(Engine):

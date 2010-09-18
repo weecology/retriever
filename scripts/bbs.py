@@ -5,9 +5,9 @@
 import os
 import urllib
 import zipfile
-from dbtk_ui import *
+from .lib.ui import *
 
-class BBS(DbTk):
+class main(DbTk):
     name = "USGS North American Breeding Bird Survey"
     shortname = "BBS"
     url = "http://www.pwrc.usgs.gov/BBS/"
@@ -177,11 +177,3 @@ class BBS(DbTk):
             raise    
         
         return engine
-        
-        
-if __name__ == "__main__":
-    me = BBS()
-    if len(sys.argv) == 1:                
-        launch_wizard([me], ALL_ENGINES)
-    else:
-        final_cleanup(me.download())

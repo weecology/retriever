@@ -5,9 +5,9 @@ Setup and install the Mammalian Life History Database published by Ernest
  
 """
 
-from dbtk_ui import *
+from .lib.ui import *
 
-class EAMammalLifeHistory2003(DbTk):
+class main(DbTk):
     name = "Mammal Life History Database (Ecological Archives 2003)"
     shortname = "MammalLH"
     url = "http://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"
@@ -25,10 +25,3 @@ class EAMammalLifeHistory2003Test(DbTkTest):
                                 "afa09eed4ca4ce5db31d15c4daa49ed3",
                                 "sporder, family, genus, species")
                               ])
-    
-if __name__ == "__main__":
-    me = EAMammalLifeHistory2003()
-    if len(sys.argv) == 1:
-        launch_wizard([me], ALL_ENGINES)
-    else:
-        final_cleanup(me.download())

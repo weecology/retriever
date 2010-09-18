@@ -5,9 +5,9 @@ Published: Ecological Archives, 2007
  
 """
 
-from dbtk_ui import *
+from .lib.ui import *
 
-class EAAvianBodySize2007(DbTk):
+class main(DbTk):
     name = "Avian Body Size (Ecological Archives 2007)"
     shortname = "AvianBodySize"
     url = "http://esapubs.org/archive/ecol/E088/096/avian_ssd_jan07.txt"
@@ -34,10 +34,3 @@ class EAAvianBodySize2007Test(DbTkTest):
                                 "94220c1db99252ecf58ca2d9654d192a",
                                 "record_id")
                               ])
-        
-if __name__ == "__main__":
-    me = EAAvianBodySize2007()
-    if len(sys.argv) == 1:                
-        launch_wizard([me], ALL_ENGINES)
-    else:        
-        final_cleanup(me.download())

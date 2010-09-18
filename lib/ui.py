@@ -10,8 +10,8 @@ should run the launch_wizard function.
 import sys
 import wx
 import wx.wizard
-from dbtk_tools import *
-from dbtk_ui_pages import *
+from tools import *
+from ui_pages import *
 
 
 def launch_wizard(dbtk_list, engine_list):    

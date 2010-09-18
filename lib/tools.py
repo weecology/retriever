@@ -6,7 +6,7 @@ This module contains miscellaneous classes and functions used in DBTK scripts.
 
 import warnings
 import unittest
-from dbtk_engines import *
+from engines import *
 
 warnings.filterwarnings("ignore")
 

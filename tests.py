@@ -12,7 +12,7 @@ MD5 checksum against a known static value.
 
 import os
 import unittest
-from dbtk_wizard import *
+from dbtk import *
 
 TEST_DATA_LOCATION = "test_data"
 
