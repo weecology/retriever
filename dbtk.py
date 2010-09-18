@@ -11,16 +11,18 @@ import os
 from scripts import *
 from lib.ui import *
 
+    
 MODULE_LIST = [EA_ernest2003,
                EA_pantheria,
                EA_portal_mammals,
                EA_avianbodysize2007,
                bbs,
                gentry,
-               CRC_avianbodymass]
+               CRC_avianbodymass,
+               ]
 
 DBTK_LIST = [module.main() for module in MODULE_LIST]
-
+    
 # Get list of additional datasets from dbtk.config file
 other_dbtks = []
 if os.path.isfile("dbtk.config"):
@@ -38,7 +40,9 @@ if os.path.isfile("dbtk.config"):
                                             url))
             except:
                 pass
-
+                
+def main():
+    launch_wizard(DBTK_LIST + other_dbtks, ALL_ENGINES)
 
 if __name__ == "__main__":
-    launch_wizard(DBTK_LIST + other_dbtks, ALL_ENGINES)
+    main()
