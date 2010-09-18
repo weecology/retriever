@@ -17,7 +17,7 @@ class main(DbTk):
 class EAPantheriaTest(DbTkTest):
     def test_EAPantheria(self):        
         DbTkTest.default_test(self,
-                              EAPantheria(),
+                              main(),
                               [("species",
                                 "4d2d9c2f57f6ae0987aafd140aace1e3",
                                 "MSW05_Order, MSW05_Family, MSW05_Genus, MSW05_Species")

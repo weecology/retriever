@@ -13,6 +13,7 @@ MD5 checksum against a known static value.
 import os
 import unittest
 from dbtk import *
+from scripts import *
 
 TEST_DATA_LOCATION = "test_data"
 
@@ -21,11 +22,19 @@ try:
 except:
     pass
 
-for engine in ALL_ENGINES:
+for engine in [MySQLEngine(), 
+               #PostgreSQLEngine(),
+               ]:
     opts = get_opts()
     opts["engine"] = engine.abbreviation
     
     TEST_ENGINES[engine.abbreviation] = choose_engine(opts)
     TEST_ENGINES[engine.abbreviation].get_cursor()
-                
-unittest.main()
+    
+def get_tests():
+    suite = unittest.TestSuite()
+    for module in MODULE_LIST:
+        suite.addTest(unittest.defaultTestLoader.loadTestsFromModule(module))
+    return suite
+
+unittest.main(defaultTest="get_tests")
