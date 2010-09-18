@@ -2,9 +2,9 @@
 
 """
 
-from dbtk_ui import *
+from .lib.ui import *
 
-class EAPantheria(DbTk):
+class main(DbTk):
     name = "Pantheria (Ecological Archives 2008)"
     shortname = "Pantheria"
     url = "http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt"
@@ -22,10 +22,3 @@ class EAPantheriaTest(DbTkTest):
                                 "4d2d9c2f57f6ae0987aafd140aace1e3",
                                 "MSW05_Order, MSW05_Family, MSW05_Genus, MSW05_Species")
                               ])
-        
-if __name__ == "__main__":
-    me = EAPantheria()
-    if len(sys.argv) == 1:                
-        launch_wizard([me], ALL_ENGINES)
-    else:        
-        final_cleanup(me.download())

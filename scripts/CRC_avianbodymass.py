@@ -7,10 +7,10 @@ this script.
 
 """
 
-from dbtk_ui import *
-from dbtk_excel import *
+from .lib.ui import *
+from .lib.excel import *
 
-class CRCAvianBodyMass(DbTk):
+class main(DbTk):
     name = "CRC Avian Body Masses"
     shortname = "AvianBodyMass"
     public = False 
@@ -170,11 +170,3 @@ class CRCAvianBodyMass(DbTk):
                 engine.add_to_table()
                         
         return engine
-
-
-if __name__ == "__main__":
-    me = CRCAvianBodyMass()
-    if len(sys.argv) == 1:                
-        launch_wizard([me], ALL_ENGINES)
-    else:        
-        final_cleanup(me.download())

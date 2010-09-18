@@ -8,22 +8,17 @@ to choose from all scripts.
 """
 
 import os
-from dbtks_EA_ernest2003 import *
-from dbtks_EA_pantheria import *
-from dbtks_bbs import *
-from dbtks_EA_portal_mammals import *
-from dbtks_gentry import *
-from dbtks_CRC_avianbodymass import *
-from dbtks_EA_avianbodysize2007 import *
-import dbtk_ui
+from scripts import *
+from lib.ui import *
+from lib.engines import ALL_ENGINES
 
-DBTK_LIST = [EAMammalLifeHistory2003(), 
-             EAPantheria(), 
-             EAPortalMammals(),
-             EAAvianBodySize2007(),
-             BBS(),
-             Gentry(),
-             CRCAvianBodyMass()
+DBTK_LIST = [EA_ernest2003.main(), 
+             EA_pantheria.main(), 
+             EA_portal_mammals.main(),
+             EA_avianbodysize2007.main(),
+             bbs.main(),
+             gentry.main(),
+             CRC_avianbodymass.main()
              ]
 
 # Get list of additional datasets from dbtk.config file
@@ -46,4 +41,4 @@ if os.path.isfile("dbtk.config"):
 
 
 if __name__ == "__main__":
-    dbtk_ui.launch_wizard(DBTK_LIST + other_dbtks, ALL_ENGINES)
+    launch_wizard(DBTK_LIST + other_dbtks, ALL_ENGINES)

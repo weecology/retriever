@@ -6,9 +6,9 @@ Dataset published by Ernest et al. 2009 in Ecological Archives.
 
 #TO DO - confirm column reversal with authors and correct
 
-from dbtk_ui import *
+from .lib.ui import *
 
-class EAPortalMammals(DbTk):
+class main(DbTk):
     name = "Portal Project Mammals (Ecological Archives 2002)"
     shortname = "PortalMammals"
     url = "http://esapubs.org/archive/ecol/E090/118/Portal_rodent_19772002.csv"
@@ -44,11 +44,3 @@ class EAPortalMammals(DbTk):
         self.engine.insert_data_from_url(self.url)
         
         return self.engine
-        
-
-if __name__ == "__main__":
-    me = EAPortalMammals()
-    if len(sys.argv) == 1:
-        launch_wizard([me], ALL_ENGINES)
-    else:        
-        final_cleanup(me.download())

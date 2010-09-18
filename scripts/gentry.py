@@ -4,10 +4,10 @@
 
 import os
 import zipfile
-from dbtk_ui import *
-from dbtk_excel import *
+from .lib.ui import *
+from .lib.excel import *
 
-class Gentry(DbTk):
+class main(DbTk):
     name = "Alwyn H. Gentry Forest Transact Dataset"
     shortname = "Gentry"
     url = "http://www.mobot.org/mobot/gentry/123/all_Excel.zip"
@@ -137,11 +137,3 @@ class GentryTest(DbTkTest):
                                 "species_id")
                               ],
                               include_pk = True)
-            
-            
-if __name__ == "__main__":
-    me = Gentry()
-    if len(sys.argv) == 1:
-        launch_wizard([me], ALL_ENGINES)
-    else:
-        final_cleanup(me.download())
