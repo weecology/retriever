@@ -8,18 +8,9 @@ to choose from all scripts.
 """
 
 import os
-from scripts import *
+from scripts.all import MODULE_LIST
 from lib.ui import *
 
-    
-MODULE_LIST = [EA_ernest2003,
-               EA_pantheria,
-               EA_portal_mammals,
-               EA_avianbodysize2007,
-               bbs,
-               gentry,
-               CRC_avianbodymass,
-               ]
 
 DBTK_LIST = [module.main() for module in MODULE_LIST]
     
