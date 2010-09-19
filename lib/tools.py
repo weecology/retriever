@@ -7,8 +7,7 @@ This module contains miscellaneous classes and functions used in DBTK scripts.
 import os
 import warnings
 import unittest
-import models
-import engines
+from models import Database
 
 warnings.filterwarnings("ignore")
 
@@ -25,7 +24,7 @@ class DbTk:
     public = True
     def download(self, engine=None):
         self.engine = self.checkengine(engine)
-        db = models.Database()
+        db = Database()
         db.dbname = self.shortname
         self.engine.db = db
         self.engine.get_cursor()
