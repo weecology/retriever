@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup
 
 setup(name='dbtk',
       version='1.0',
@@ -9,7 +9,7 @@ setup(name='dbtk',
       packages={'':'', 'lib':'', 'scripts':''},
       entry_points = {
         'console_scripts': [
-            'dbtk = dbtk.dbtk:main',
+            'dbtk = dbtk:main',
         ],
       }
      )
