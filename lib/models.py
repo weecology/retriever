@@ -7,7 +7,6 @@ This module contains basic class definitions for the Database Toolkit platform.
 import sys
 import os
 import getpass
-import getopt
 import zipfile
 import urllib
 from decimal import Decimal
