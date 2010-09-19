@@ -3,7 +3,7 @@
 """
 import wx
 import wx.wizard
-from tools import *
+from .lib.models import Engine
 
 class DbTkWizard(wx.wizard.Wizard):
     def __init__(self, parent, id, title, dbtk_list, engine_list):

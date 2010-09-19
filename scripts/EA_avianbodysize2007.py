@@ -5,7 +5,7 @@ Published: Ecological Archives, 2007
  
 """
 
-from .lib.ui import *
+from .lib.tools import DbTk, DbTkTest
 
 class main(DbTk):
     name = "Avian Body Size (Ecological Archives 2007)"
@@ -16,7 +16,8 @@ class main(DbTk):
         self.engine.auto_create_table(self.url, "species")
         self.engine.insert_data_from_url(self.url)
         return self.engine
-    
+
+
 class EAAvianBodySize2007Test(DbTkTest):
     def strvalue(self, value, col_num):
         a = DbTkTest.strvalue(self, value, col_num)

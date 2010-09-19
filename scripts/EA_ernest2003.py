@@ -5,7 +5,7 @@ Setup and install the Mammalian Life History Database published by Ernest
  
 """
 
-from .lib.ui import *
+from .lib.tools import DbTk, DbTkTest
 
 class main(DbTk):
     name = "Mammal Life History Database (Ecological Archives 2003)"

@@ -7,8 +7,10 @@ this script.
 
 """
 
-from .lib.ui import *
+from .lib.tools import DbTk
+from .lib.models import Table
 from .lib.excel import *
+
 
 class main(DbTk):
     name = "CRC Avian Body Masses"

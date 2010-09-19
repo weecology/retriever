@@ -5,7 +5,8 @@
 import os
 import urllib
 import zipfile
-from .lib.ui import *
+from .lib.tools import DbTk
+from .lib.models import Table, Cleanup
 
 class main(DbTk):
     name = "USGS North American Breeding Bird Survey"
@@ -14,14 +15,7 @@ class main(DbTk):
     required_opts = []
     def download(self, engine=None):    
         try:
-            # Variables to get text file/create database
-            engine = self.checkengine(engine)            
-            
-            db = Database()
-            db.dbname = "BBS"
-            engine.db = db
-            engine.get_cursor()
-            engine.create_db()
+            DbTk.download(self, engine)
             
             # Routes table
             table = Table()

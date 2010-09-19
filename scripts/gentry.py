@@ -4,7 +4,8 @@
 
 import os
 import zipfile
-from .lib.ui import *
+from .lib.tools import DbTk, DbTkTest
+from .lib.models import Table
 from .lib.excel import *
 
 class main(DbTk):
