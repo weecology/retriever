@@ -10,7 +10,6 @@ import getpass
 import zipfile
 import urllib
 from decimal import Decimal
-from hashlib import md5
 
     
 def no_cleanup(value, args):

@@ -9,6 +9,8 @@ import sys
 import warnings
 import unittest
 import getopt
+from decimal import Decimal
+from hashlib import md5
 from models import Database
 from engines import ENGINES_TO_TEST
 

@@ -8,6 +8,7 @@ from .lib.tools import DbTk, DbTkTest
 from .lib.models import Table
 from .lib.excel import *
 
+
 class main(DbTk):
     name = "Alwyn H. Gentry Forest Transact Dataset"
     shortname = "Gentry"
@@ -133,6 +134,7 @@ class GentryTest(DbTkTest):
         return value
     def test_Gentry(self):
         DbTkTest.default_test(self,
+                              main(),
                               [("species",
                                 "8673559a7e35f1d2925d4add6d7347f7",
                                 "species_id")
