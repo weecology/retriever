@@ -12,7 +12,8 @@ MD5 checksum against a known static value.
 
 import os
 import unittest
-from dbtk import *
+from lib.engines import ENGINES_TO_TEST, choose_engine
+from lib.tools import TEST_ENGINES, get_opts
 from scripts.all import MODULE_LIST
 
 
