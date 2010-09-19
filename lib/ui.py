@@ -10,8 +10,8 @@ should run the launch_wizard function.
 import sys
 import wx
 import wx.wizard
-from tools import *
-from ui_pages import *
+import tools
+import ui_pages
 
 
 def launch_wizard(dbtk_list, engine_list):    
@@ -27,8 +27,8 @@ def launch_wizard(dbtk_list, engine_list):
     
     # Create the wxPython app and wizard 
     app = wx.PySimpleApp(False)    
-    wizard = DbTkWizard(None, -1, "Database Toolkit Wizard", 
-                        dbtk_list, engine_list)
+    wizard = ui_pages.DbTkWizard(None, -1, "Database Toolkit Wizard", 
+                                 dbtk_list, engine_list)
 
     # Run the wizard and, if successful, download datasets
     if wizard.RunWizard(wizard.page[0]):
@@ -151,10 +151,10 @@ def launch_wizard(dbtk_list, engine_list):
                         errors.append("There was an error downloading " + 
                                       script.name + ".")
                         wx.MessageBox(e.__str__(), "Error")
-                        #raise
+                        raise
                         
                 print "Finishing . . ."
-                final_cleanup(engine)
+                tools.final_cleanup(engine)
                 self.dialog.Update(len(scripts) + 1, "Finished!")
                 if errors:
                     wx.MessageBox("The following errors occurred: \n" + 

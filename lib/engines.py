@@ -24,7 +24,8 @@ that has been implemented.
 
 """
 
-from models import *
+import os
+from models import Engine, no_cleanup
 
 
 class MySQLEngine(Engine):

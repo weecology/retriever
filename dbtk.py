@@ -9,7 +9,9 @@ to choose from all scripts.
 
 import os
 from scripts.all import MODULE_LIST
-from lib.ui import *
+from lib.tools import AutoDbTk
+from lib.engines import ALL_ENGINES
+from lib.ui import launch_wizard
 
 
 DBTK_LIST = [module.main() for module in MODULE_LIST]
