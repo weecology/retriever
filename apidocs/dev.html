@@ -1,0 +1,74 @@
+<html><head>
+<link rel="stylesheet" type="text/css" href="apidocs.css"/>
+<title>DBTK developer documentation</title>
+</head>
+<body><h1 class="package">Database Toolkit Developer Documentation</h1>
+<div class="toplevel"><div>
+<p>The Database Toolkit system is a Python library created to simplify downloading and importing ecological 
+data. There's a lot of publically available data out there, so we're limited by the number of datasets 
+we've implemented. We've designed the system to be easily extensible, allowing developers to add their own 
+custom dataset scripts.</p>
+<p>This document is a resource for Python developers interested in developing scripts for use with
+the Database Toolkit.</p>
+<p><i>We encourage users who develop their own scripts to submit them to the Database
+Toolkit team, so that they can be used by other researchers in future distributions.</i></p>
+<h2>Understanding the API</h2> 
+<p>Read the <a href="dbtk.html">API documentation</a> for help with the Database Toolkit API.</p>
+<h2>DBTK Scripts</h2>
+<p>The Database Toolkit platform is divided into two pieces: the core modules, located in 
+<a href="dbtk.lib.html">dbtk.lib</a>, and individual dataset scripts, found in 
+<a href="dbtk.scripts.html">dbtk.scripts</a>. Developers can use the dbtk.lib functionality to
+create their own individual scripts representing datasets not yet implemented in the DBTK
+platform.</p>
+<h3>A simple example</h3>
+<p>The Database Toolkit platform was developed to take the most effort out of the most common
+tasks in importing data. A simple, automated Database Toolkit script can be implemented using just
+<b>12 lines of code</b>:</p>
+<pre>
+from dbtk.lib import tools, engines, ui
+
+
+class main(tools.DbTk):
+    name = "Mammal Life History Database (Ecological Archives 2003)"
+    shortname = "MammalLH"
+    url = "http://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"
+    def download(self, engine=None):
+        DbTk.download(self, engine)
+        self.engine.auto_create_table(self.url, "species")
+        self.engine.insert_data_from_url(self.url)
+        return self.engine
+
+if __name__ == "__main__":
+    ui.launch_wizard([main()], engines.ALL_ENGINES)
+</pre>
+<p>This simple script will launch the dataset download wizard, allowing the user to choose
+a DBMS and enter connection information, then downloads and imports the Mammal Life History
+Database dataset.</p>
+<p>Note that this example uses the <i>auto_create_table</i> function. This function
+simplifies imports of text files by automatically determining column names and data types,
+and will only work on files that have the following properties:</p>
+<ol>
+<li>The file uses a common delimiter: tabs, commas, and whitespace are all acceptable.</li>
+<li>The first row contains a delimited list of column names.</li>
+</ol>
+<p>The last two lines are used when running the script directly. The launch_wizard function
+will bring up the dataset download wizard, and takes two arguments: the first is a list of
+datasets the user can choose from (if only one, no choice will be offered), and the second is
+a list of approved DBMS (or ALL_ENGINES from dbtk.lib.engines, which is a list of all implemented 
+DBMS).</p>
+<h2>Adding scripts to the main wizard</h2>
+<p>If you've developed a script and you'd like it to be accessible from the default dbtk
+wizard on your system, you'll need to edit dbtk/scripts.all.py on your machine. all.py has
+a list called "scripts" that contains the names of all available scripts; simply add your
+script to the list. Note that your script must contain a class called main that inherits from
+dbtk.lib.tools.</p>
+<h2>Testing</h2>
+<p>The Database Toolkit system also contains a helper class, DbTkTest, for use in unit testing.</p>
+<p>As with the development of the scripts themselves, the development of unit tests has also
+been streamlined. The class is meant to run a script, import the data from the newly created
+database, and test it against a text file containing manually imported data.</p>
+<p>See the scripts included in the Database Toolkit distribution for examples of test classes.</p>
+<p>To run all tests, you'll first need to add your script to all.py, as explained in the section
+<b>Adding scripts to the main wizard</b>. Running tests.py will run all unit tests found in these
+scripts.</p>
+</div></div>
