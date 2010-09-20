@@ -17,7 +17,6 @@ cd ..
 sudo pydoctor --add-package=src/dbtk --make-html
 cd src/dbtk
 sudo cp apidocs/*.* ../../apidocs/
-sleep 10
 sudo rm apidocs -rf
 
 # build deb package
