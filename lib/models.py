@@ -266,15 +266,20 @@ class Engine():
         object engine.table."""
         print "Creating table " + self.table.tablename + ". . ."
         createstatement = self.create_table_statement()
+        print createstatement
         self.cursor.execute(createstatement)
     def create_table_statement(self):
         """Returns a SQL statement to create a table."""
-        self.cursor.execute(self.drop_statement("TABLE", self.tablename()))
+        try:
+            self.cursor.execute(self.drop_statement("TABLE", self.tablename()))
+        except:
+            pass
+        
         createstatement = "CREATE TABLE " + self.tablename() + " ("
         
         for item in self.table.columns:
             if (item[1][0] != "skip") and (item[1][0] != "combine"):
-                createstatement += (item[0] + " "
+                createstatement += (self.format_column_name(item[0]) + " "
                                     + self.convert_data_type(item[1]) + ", ")    
 
         createstatement = createstatement.rstrip(', ')    
@@ -338,6 +343,8 @@ class Engine():
             return values
         else:
             return line.split(self.table.delimiter)
+    def format_column_name(self, column):
+        return column
     def format_data_dir(self):
         """Returns the correctly formatted raw data directory location."""
         return self.RAW_DATA_LOCATION.replace("{dataset}", self.script.shortname)

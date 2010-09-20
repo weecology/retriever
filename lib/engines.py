@@ -193,18 +193,38 @@ class MSAccessEngine(Engine):
     """Engine instance for Microsoft Access."""
     name = "Microsoft Access"
     abbreviation = "a"
-    datatypes = ["INTEGER",
+    datatypes = ["AUTOINCREMENT",
                  "INTEGER",
-                 "REAL",
-                 "REAL",
-                 "TEXT",
-                 "INTEGER"]
+                 "NUMERIC",
+                 "NUMERIC",
+                 "VARCHAR",
+                 "BIT"]    
+    pkformat = "%s PRIMARY KEY"
     required_opts = [["file", 
                       "Enter the filename of your Access database: ",
                       "access.mdb",
                       "Access databases (*.mdb, *.accdb)|*.mdb;*.accdb"]]
+    def convert_data_type(self, datatype):
+        """MS Access can't handle complex Decimal types"""
+        converted = Engine.convert_data_type(self, datatype)
+        if "NUMERIC" in converted:
+            converted = "NUMERIC"
+        elif "VARCHAR" in converted:
+            length = int(converted.split('(')[1].split(')')[0].split(',')[0])
+            if length > 255:
+                converted = "TEXT"
+        return converted
+    def create_db(self):
+        """MS Access doesn't create databases."""
+        return None
+    def drop_statement(self, objecttype, objectname):
+        """Returns a drop table or database SQL statement."""
+        dropstatement = "DROP %s %s" % (objecttype, objectname)
+        return dropstatement
+    def format_column_name(self, column):
+        return "[" + str(column) + "]"
     def tablename(self):
-        return "[" + self.table.tablename + "]"
+        return "[" + self.db.dbname + " " + self.table.tablename + "]"
     def get_cursor(self):
         """Gets the db connection and cursor."""
         import pyodbc as dbapi
