@@ -16,7 +16,7 @@ setup(name='dbtk',
       package_dir={
                 'dbtk':''
                 },
-      entry_points = {
+      entry_points={
         'console_scripts': [
             'dbtk = dbtk.main:main',
         ],
