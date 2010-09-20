@@ -1,6 +1,6 @@
 """Importing MODULE_LIST from this module gives a list of all dataset scripts."""
 
-__all__ = [
+scripts = [
            "bbs",
            "CRC_avianbodymass",
            "EA_avianbodysize2007",
@@ -12,5 +12,5 @@ __all__ = [
 
 MODULE_LIST = [
                __import__("scripts." + module, fromlist="scripts")
-               for module in __all__
+               for module in scripts
                ]

@@ -11,8 +11,8 @@ import unittest
 import getopt
 from decimal import Decimal
 from hashlib import md5
-from models import Database
-from engines import ENGINES_TO_TEST
+from dbtk.lib.models import Database
+from dbtk.lib.engines import ENGINES_TO_TEST
 
 warnings.filterwarnings("ignore")
 

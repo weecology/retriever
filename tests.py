@@ -12,9 +12,9 @@ MD5 checksum against a known static value.
 
 import os
 import unittest
-from lib.engines import ENGINES_TO_TEST, choose_engine
-from lib.tools import TEST_ENGINES, get_opts
-from scripts.all import MODULE_LIST
+from dbtk.lib.engines import ENGINES_TO_TEST, choose_engine
+from dbtk.lib.tools import TEST_ENGINES, get_opts
+from dbtk.scripts.all import MODULE_LIST
 
 
 TEST_DATA_LOCATION = "test_data"

@@ -11,7 +11,7 @@ import sys
 import wx
 import wx.wizard
 from tools import final_cleanup
-from ui_pages import DbTkWizard
+from dbtk.lib.ui_pages import DbTkWizard
 
 
 def launch_wizard(dbtk_list, engine_list):    

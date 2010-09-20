@@ -5,8 +5,8 @@
 import os
 import urllib
 import zipfile
-from .lib.tools import DbTk
-from .lib.models import Table, Cleanup
+from dbtk.lib.tools import DbTk
+from dbtk.lib.models import Table, Cleanup
 
 class main(DbTk):
     name = "USGS North American Breeding Bird Survey"

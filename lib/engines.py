@@ -25,7 +25,7 @@ that has been implemented.
 """
 
 import os
-from models import Engine, no_cleanup
+from dbtk.lib.models import Engine, no_cleanup
 
 
 class MySQLEngine(Engine):
