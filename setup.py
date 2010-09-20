@@ -1,3 +1,5 @@
+"""Use the following command to install dbtk: python setup.py install"""
+
 from setuptools import setup
 
 setup(name='dbtk',
