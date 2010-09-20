@@ -7,6 +7,7 @@ Setup and install the Mammalian Life History Database published by Ernest
 
 from dbtk.lib.tools import DbTk, DbTkTest
 
+
 class main(DbTk):
     name = "Mammal Life History Database (Ecological Archives 2003)"
     shortname = "MammalLH"
@@ -16,7 +17,8 @@ class main(DbTk):
         self.engine.auto_create_table(self.url, "species")
         self.engine.insert_data_from_url(self.url)
         return self.engine
-    
+
+
 class EAErnest2003Test(DbTkTest):
     def test_EAErnest2003(self):        
         DbTkTest.default_test(self,

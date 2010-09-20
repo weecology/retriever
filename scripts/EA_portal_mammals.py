@@ -9,6 +9,7 @@ Dataset published by Ernest et al. 2009 in Ecological Archives.
 from dbtk.lib.tools import DbTk
 from dbtk.lib.models import Table, Cleanup, correct_invalid_value
 
+
 class main(DbTk):
     name = "Portal Project Mammals (Ecological Archives 2002)"
     shortname = "PortalMammals"

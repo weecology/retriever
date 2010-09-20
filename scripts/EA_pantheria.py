@@ -4,6 +4,7 @@
 
 from dbtk.lib.tools import DbTk, DbTkTest
 
+
 class main(DbTk):
     name = "Pantheria (Ecological Archives 2008)"
     shortname = "Pantheria"
@@ -13,7 +14,8 @@ class main(DbTk):
         self.engine.auto_create_table(self.url, "species")
         self.engine.insert_data_from_url(self.url)
         return self.engine
-    
+
+
 class EAPantheriaTest(DbTkTest):
     def test_EAPantheria(self):        
         DbTkTest.default_test(self,
