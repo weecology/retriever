@@ -8,6 +8,7 @@ import zipfile
 from dbtk.lib.tools import DbTk
 from dbtk.lib.models import Table, Cleanup
 
+
 class main(DbTk):
     name = "USGS North American Breeding Bird Survey"
     shortname = "BBS"
