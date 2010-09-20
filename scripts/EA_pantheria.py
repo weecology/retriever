@@ -2,7 +2,7 @@
 
 """
 
-from .lib.tools import DbTk, DbTkTest
+from dbtk.lib.tools import DbTk, DbTkTest
 
 class main(DbTk):
     name = "Pantheria (Ecological Archives 2008)"

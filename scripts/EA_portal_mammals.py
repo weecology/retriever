@@ -6,8 +6,8 @@ Dataset published by Ernest et al. 2009 in Ecological Archives.
 
 #TO DO - confirm column reversal with authors and correct
 
-from .lib.tools import DbTk
-from .lib.models import Table, Cleanup, correct_invalid_value
+from dbtk.lib.tools import DbTk
+from dbtk.lib.models import Table, Cleanup, correct_invalid_value
 
 class main(DbTk):
     name = "Portal Project Mammals (Ecological Archives 2002)"

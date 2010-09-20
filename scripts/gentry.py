@@ -4,9 +4,9 @@
 
 import os
 import zipfile
-from .lib.tools import DbTk, DbTkTest
-from .lib.models import Table
-from .lib.excel import *
+from dbtk.lib.tools import DbTk, DbTkTest
+from dbtk.lib.models import Table
+from dbtk.lib.excel import *
 
 
 class main(DbTk):

@@ -5,7 +5,7 @@ Published: Ecological Archives, 2007
  
 """
 
-from .lib.tools import DbTk, DbTkTest
+from dbtk.lib.tools import DbTk, DbTkTest
 
 class main(DbTk):
     name = "Avian Body Size (Ecological Archives 2007)"

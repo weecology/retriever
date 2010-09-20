@@ -7,9 +7,9 @@ this script.
 
 """
 
-from .lib.tools import DbTk
-from .lib.models import Table
-from .lib.excel import *
+from dbtk.lib.tools import DbTk
+from dbtk.lib.models import Table
+from dbtk.lib.excel import *
 
 
 class main(DbTk):
