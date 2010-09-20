@@ -6,7 +6,14 @@ setup(name='dbtk',
       author='Ben Morris',
       author_email='ben.morris@weecology.org',
       url='http://www.ecologicaldata.org/database-toolkits',
-      packages={'':'', 'lib':'', 'scripts':''},
+      packages=[
+                'dbtk',
+                'dbtk.lib',
+                'dbtk.scripts',
+                ],
+      package_dir={
+                'dbtk':''
+                },
       entry_points = {
         'console_scripts': [
             'dbtk = dbtk:main',
