@@ -11,6 +11,6 @@ scripts = [
            ]
 
 MODULE_LIST = [
-               __import__("scripts." + module, fromlist="scripts")
+               __import__("dbtk.scripts." + module, fromlist="scripts")
                for module in scripts
                ]
