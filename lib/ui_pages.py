@@ -178,23 +178,13 @@ Supported database systems currently include:\n\n""" +
     class CategoriesPage(TitledPage):
         """The dataset selection page."""
         def __init__(self, parent, title, label):
-            parent.TitledPage.__init__(self, parent, title, label)
-            # All checkbox
-            self.checkallbox = wx.CheckBox(self, -1, "All")
-            self.sizer.Add(self.checkallbox)            
-            self.checkallbox.Bind(wx.EVT_CHECKBOX, self.CheckAll)            
+            parent.TitledPage.__init__(self, parent, title, label)           
             # CheckListBox of scripts
             lists = [list.name for list in parent.lists]
             self.catlist = wx.CheckListBox(self, -1, choices=lists)
             self.catlist.SetCheckedStrings([lists[0]])
-            self.sizer.Add(self.catlist)
+            self.sizer.Add(self.catlist, 0, wx.EXPAND)
             self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.GetScripts)
-        def CheckAll(self, evt):
-            if self.checkallbox.GetValue():
-                self.catlist.SetCheckedStrings([list.name 
-                                                for list in self.Parent.lists])
-            else:
-                self.catlist.SetCheckedStrings([])
         def GetScripts(self, evt):
             self.Parent.dbtk_list = []
             for checked_list in self.catlist.GetCheckedStrings():
@@ -219,7 +209,7 @@ Supported database systems currently include:\n\n""" +
             self.checkallbox.Bind(wx.EVT_CHECKBOX, self.CheckAll)            
             # CheckListBox of scripts
             self.scriptlist = wx.CheckListBox(self, -1)
-            self.sizer.Add(self.scriptlist)
+            self.sizer.Add(self.scriptlist, 0, wx.EXPAND)
             # Add dataset button
             self.addbtn = wx.Button(self, -1, "Add...")
             self.sizer.Add(self.addbtn)
