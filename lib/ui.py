@@ -12,15 +12,16 @@ import wx
 import wx.wizard
 from tools import final_cleanup
 from dbtk.lib.ui_pages import DbTkWizard
+from dbtk.lib.engines import ALL_ENGINES
 
 
-def launch_wizard(dbtk_list, engine_list):    
+def launch_wizard(lists):    
     """Launches the download wizard.
     
     dbtk_list: a list of scripts that may be selected. If only one, it will
     be selected by default.
     
-    engine_list: a list of engines that may be selected. 
+    ALL_ENGINES: a list of engines that may be selected. 
     
     """
     print "Launching Database Toolkit wizard . . ."                    
@@ -28,7 +29,7 @@ def launch_wizard(dbtk_list, engine_list):
     # Create the wxPython app and wizard 
     app = wx.PySimpleApp(False)    
     wizard = DbTkWizard(None, -1, "Database Toolkit Wizard", 
-                        dbtk_list, engine_list)
+                        lists, ALL_ENGINES)
 
     # Run the wizard and, if successful, download datasets
     if wizard.RunWizard(wizard.page[0]):
@@ -37,7 +38,7 @@ def launch_wizard(dbtk_list, engine_list):
         for script in wizard.dbtk_list:
             dl = False
             if len(wizard.dbtk_list) > 1:
-                if script.name in wizard.page[3].scriptlist.GetCheckedStrings():
+                if script.name in wizard.page[4].scriptlist.GetCheckedStrings():
                     dl = True
             else:
                 dl = True

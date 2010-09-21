@@ -266,7 +266,6 @@ class Engine():
         object engine.table."""
         print "Creating table " + self.table.tablename + ". . ."
         createstatement = self.create_table_statement()
-        print createstatement
         self.cursor.execute(createstatement)
     def create_table_statement(self):
         """Returns a SQL statement to create a table."""

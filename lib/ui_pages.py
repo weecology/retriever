@@ -6,10 +6,10 @@ import wx.wizard
 from dbtk.lib.models import Engine
 
 class DbTkWizard(wx.wizard.Wizard):
-    def __init__(self, parent, id, title, dbtk_list, engine_list):
+    def __init__(self, parent, id, title, lists, engine_list):
         wx.wizard.Wizard.__init__(self, parent, id, title)
         self.page = []
-        self.dbtk_list = dbtk_list
+        self.lists = lists
         self.engine_list = engine_list
         # Create the wizard pages
         # 0: Title page
@@ -39,9 +39,11 @@ Supported database systems currently include:\n\n""" +
                                      "Please enter your connection information: \n"))
         self.page[1].Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.page[2].Draw)
         
-        if len(self.dbtk_list) > 1:
-            self.page.append(self.DatasetPage(self, "Select Datasets", 
-                                    "Check each dataset to be downloaded:\n"))
+        self.page.append(self.CategoriesPage(self, "Categories",
+                               "Choose the dataset categories to be shown."))
+        
+        self.page.append(self.DatasetPage(self, "Select Datasets", 
+                               "Check each dataset to be downloaded:\n"))
         
         self.page.append(self.TitledPage(self, "Finished", 
                                "That's it! Click Finish to download and install " +
@@ -171,30 +173,64 @@ Supported database systems currently include:\n\n""" +
                     self.fields.Layout()
                     self.sizer.Add(self.fields)
                     self.sizer.Layout()
-    
-    
-    class DatasetPage(TitledPage):
+
+
+    class CategoriesPage(TitledPage):
         """The dataset selection page."""
         def __init__(self, parent, title, label):
             parent.TitledPage.__init__(self, parent, title, label)
-            dbtk_list = parent.dbtk_list
+            # All checkbox
+            self.checkallbox = wx.CheckBox(self, -1, "All")
+            self.sizer.Add(self.checkallbox)            
+            self.checkallbox.Bind(wx.EVT_CHECKBOX, self.CheckAll)            
+            # CheckListBox of scripts
+            lists = [list.name for list in parent.lists]
+            self.catlist = wx.CheckListBox(self, -1, choices=lists)
+            self.catlist.SetCheckedStrings([lists[0]])
+            self.sizer.Add(self.catlist)
+            self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.GetScripts)
+        def CheckAll(self, evt):
+            if self.checkallbox.GetValue():
+                self.catlist.SetCheckedStrings([list.name 
+                                                for list in self.Parent.lists])
+            else:
+                self.catlist.SetCheckedStrings([])
+        def GetScripts(self, evt):
+            self.Parent.dbtk_list = []
+            for checked_list in self.catlist.GetCheckedStrings():
+                this_list = [list for list in self.Parent.lists
+                             if list.name == checked_list][0]
+                for script in this_list.scripts:
+                    if not script in self.Parent.dbtk_list:
+                        self.Parent.dbtk_list.append(script)
+            self.Parent.page[4].Draw(None)
+            
+                
+    class DatasetPage(TitledPage):
+        """The dataset selection page."""
+        def __init__(self, parent, title, label):
+            parent.TitledPage.__init__(self, parent, title, label)            
+            # Check that at least one dataset is selected before proceeding
+            self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CheckValues) 
             # All checkbox
             self.checkallbox = wx.CheckBox(self, -1, "All")
             self.checkallbox.SetValue(True)
             self.sizer.Add(self.checkallbox)            
             self.checkallbox.Bind(wx.EVT_CHECKBOX, self.CheckAll)            
             # CheckListBox of scripts
-            scripts = [script.name for script in dbtk_list]
-            self.scriptlist = wx.CheckListBox(self, -1, choices=scripts)
-            public_scripts = [script.name for script in dbtk_list if script.public]
-            self.scriptlist.SetCheckedStrings(public_scripts)
+            self.scriptlist = wx.CheckListBox(self, -1)
             self.sizer.Add(self.scriptlist)
             # Add dataset button
             self.addbtn = wx.Button(self, -1, "Add...")
             self.sizer.Add(self.addbtn)
             self.addbtn.Bind(wx.EVT_BUTTON, self.AddDataset)            
-            # Check that at least one dataset is selected before proceeding
-            self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CheckValues)            
+        def Draw(self, evt):
+            dbtk_list = self.Parent.dbtk_list
+            self.scriptlist.Clear()
+            for script in [script.name for script in dbtk_list]:
+                self.scriptlist.Append(script)
+            public_scripts = [script.name for script in dbtk_list if script.public]
+            self.scriptlist.SetCheckedStrings(public_scripts)                       
         def AddDataset(self, evt):
             # Run Add Dataset wizard
             add_dataset = AddDatasetWizard(self.Parent, -1, 'Add Dataset')            
