@@ -198,8 +198,7 @@ class MSAccessEngine(Engine):
                  "NUMERIC",
                  "NUMERIC",
                  "VARCHAR",
-                 "BIT"]    
-    pkformat = "%s PRIMARY KEY"
+                 "BIT"]
     required_opts = [["file", 
                       "Enter the filename of your Access database: ",
                       "access.mdb",
