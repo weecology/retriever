@@ -9,16 +9,33 @@ to choose from all scripts.
 
 import os
 from dbtk.scripts.all import MODULE_LIST
-from dbtk.lib.tools import AutoDbTk
+from dbtk.lib.tools import AutoDbTk, DbTkList
 from dbtk.lib.engines import ALL_ENGINES
 from dbtk.lib.ui import launch_wizard
 
 
 DBTK_LIST = [module.main() for module in MODULE_LIST]
-    
+lists = []
+lists.append(DbTkList("All Datasets", DBTK_LIST))
+
+# Check for .cat files
+files = os.listdir(os.getcwd())
+cat_files = [file for file in files if file[-4:] == ".cat"]
+for file in cat_files:
+    cat = open(file, 'rb')
+    scriptname = cat.readline().replace("\n", "")
+    scripts = []
+    for line in [line.replace("\n", "") for line in cat]:
+        new_scripts = [script for script in DBTK_LIST
+                       if script.shortname == line]
+        for script in new_scripts:
+            scripts.append(script)
+    lists.append(DbTkList(scriptname, scripts))
+
+
 # Get list of additional datasets from dbtk.config file
-other_dbtks = []
 if os.path.isfile("dbtk.config"):
+    other_dbtks = []
     config = open("dbtk.config", 'rb')
     for line in config:
         if line:
@@ -33,9 +50,14 @@ if os.path.isfile("dbtk.config"):
                                             url))
             except:
                 pass
+
+    if len(other_dbtks) > 0:
+        lists.append(DbTkList("Custom", other_dbtks))
+        for script in other_dbtks:
+            lists[0].append(script)
                 
 def main():
-    launch_wizard(DBTK_LIST + other_dbtks, ALL_ENGINES)
+    launch_wizard(lists)
 
 if __name__ == "__main__":
     main()

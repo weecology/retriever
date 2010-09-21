@@ -48,6 +48,8 @@ class DbTk:
     
     
 class AutoDbTk(DbTk):
+    """A DbTk not requiring a script; it gets column names and data types
+    by scanning the data file."""
     def __init__(self, name, dbname, tablename, url, nulls=[-999]):
         self.name = name
         self.shortname = dbname
@@ -173,6 +175,13 @@ class DbTkTest(unittest.TestCase):
                 sum = getmd5(lines)
                 
                 self.assertEqual(sum, checksum)
+                
+                
+class DbTkList:
+    """A categorical list of scripts."""
+    def __init__(self, name, scripts):
+        self.name = name
+        self.scripts = scripts
                 
 def get_opts():
     """Checks for command line arguments"""
