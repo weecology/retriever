@@ -25,6 +25,7 @@ that has been implemented.
 """
 
 import os
+import platform
 from dbtk.lib.models import Engine, no_cleanup
 
 
@@ -226,6 +227,8 @@ class MSAccessEngine(Engine):
         return "[" + self.db.dbname + " " + self.table.tablename + "]"
     def get_cursor(self):
         """Gets the db connection and cursor."""
+        if not "win" in platform.platform().lower():
+            raise Exception("MS Access can only be used in Windows.")
         import pyodbc as dbapi
         self.get_input()
         connection_string = ("DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ="
