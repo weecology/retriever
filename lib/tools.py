@@ -11,7 +11,7 @@ import unittest
 import getopt
 from decimal import Decimal
 from hashlib import md5
-from dbtk.lib.models import Database
+from dbtk.lib.models import Database, Cleanup, correct_invalid_value
 from dbtk.lib.engines import ENGINES_TO_TEST
 
 warnings.filterwarnings("ignore")
@@ -50,7 +50,7 @@ class DbTk:
 class AutoDbTk(DbTk):
     """A DbTk not requiring a script; it gets column names and data types
     by scanning the data file."""
-    def __init__(self, name, dbname, tablename, url, nulls=[-999]):
+    def __init__(self, name, dbname, tablename, url, nulls=['-999', '-999.9']):
         self.name = name
         self.shortname = dbname
         self.tablename = tablename

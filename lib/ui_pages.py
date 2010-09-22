@@ -1,9 +1,13 @@
 """Classes representing pages for the DBTK wizard.
 
 """
+
+import os
 import wx
 import wx.wizard
 from dbtk.lib.models import Engine
+from dbtk.lib.tools import AutoDbTk
+
 
 class DbTkWizard(wx.wizard.Wizard):
     def __init__(self, parent, id, title, lists, engine_list):
@@ -182,18 +186,20 @@ Supported database systems currently include:\n\n""" +
             # CheckListBox of scripts
             lists = [list.name for list in parent.lists]
             self.catlist = wx.CheckListBox(self, -1, choices=lists)
-            self.catlist.SetCheckedStrings([lists[0]])
             self.sizer.Add(self.catlist, 0, wx.EXPAND)
             self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.GetScripts)
         def GetScripts(self, evt):
-            self.Parent.dbtk_list = []
-            for checked_list in self.catlist.GetCheckedStrings():
-                this_list = [list for list in self.Parent.lists
-                             if list.name == checked_list][0]
-                for script in this_list.scripts:
-                    if not script in self.Parent.dbtk_list:
-                        self.Parent.dbtk_list.append(script)
-            self.Parent.page[4].Draw(None)
+            if evt.Direction:
+                self.Parent.dbtk_list = []
+                for checked_list in self.catlist.GetCheckedStrings():
+                    this_list = [list for list in self.Parent.lists
+                                 if list.name == checked_list][0]
+                    for script in this_list.scripts:
+                        if not script in self.Parent.dbtk_list:
+                            self.Parent.dbtk_list.append(script)
+                if len(self.Parent.dbtk_list) == 0:
+                    evt.Veto()
+                self.Parent.page[4].Draw(None)
             
                 
     class DatasetPage(TitledPage):

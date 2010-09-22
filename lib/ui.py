@@ -152,7 +152,7 @@ def launch_wizard(lists):
                         errors.append("There was an error downloading " + 
                                       script.name + ".")
                         wx.MessageBox(e.__str__(), "Error")
-                        #raise
+                        raise
                         
                 print "Finishing . . ."
                 final_cleanup(engine)

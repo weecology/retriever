@@ -267,5 +267,5 @@ def choose_engine(opts):
     return engine
 
 
-ALL_ENGINES = [MySQLEngine(), PostgreSQLEngine(), SQLiteEngine(), MSAccessEngine()]
+ALL_ENGINES = [MySQLEngine(), MSAccessEngine(), PostgreSQLEngine(), SQLiteEngine()]
 ENGINES_TO_TEST = [MySQLEngine(), PostgreSQLEngine()]

@@ -54,7 +54,7 @@ if os.path.isfile("dbtk.config"):
     if len(other_dbtks) > 0:
         lists.append(DbTkList("Custom", other_dbtks))
         for script in other_dbtks:
-            lists[0].append(script)
+            lists[0].scripts.append(script)
                 
 def main():
     launch_wizard(lists)
