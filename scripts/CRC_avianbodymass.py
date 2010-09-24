@@ -7,9 +7,10 @@ this script.
 
 """
 
+import xlrd
 from dbtk.lib.tools import DbTk
 from dbtk.lib.models import Table
-from dbtk.lib.excel import *
+from dbtk.lib.excel import Excel
 
 
 class main(DbTk):
