@@ -10,7 +10,7 @@ mkdir src
 cd src
 svn checkout https://weecology.svn.beanstalkapp.com/dbtk/trunk/
 mv trunk dbtk
-sudo rm dbtk/dbtk.build
+sudo rm dbtk/dbtk-build.sh
 
 # make apidocs
 cd ..
