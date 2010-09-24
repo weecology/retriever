@@ -24,16 +24,17 @@ class DbTkWizard(wx.wizard.Wizard):
         self.page.append(self.TitledPage(self, "Welcome", 
 """Welcome to the Database Toolkit wizard.
 
-This wizard will walk you through the process of downloading
-and installing ecological datasets.
+This wizard will walk you through the process of downloading and 
+installing ecological datasets.
 
-This wizard requires that you have one or more of the supported
-database systems installed. You must also have either an active
-connection to the internet, or the raw data files stored locally 
-on your computer.
+This wizard requires that you have one or more of the supported database 
+systems installed. You must also have either an active connection to the 
+internet, or the raw data files stored locally on your computer.
 
 Supported database systems currently include:\n\n""" + 
-", ".join([db.name for db in engine_list])))
+", ".join([db.name for db in engine_list]) + "\n\n" +
+        "Version 1.0"
+        ))
         
         self.page.append(self.ChooseDbPage(self, "Select Database", 
                                       "Please select your database platform:\n"))
