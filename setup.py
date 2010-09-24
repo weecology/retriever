@@ -1,6 +1,7 @@
 """Use the following command to install dbtk: python setup.py install"""
 
 from setuptools import setup
+import py2exe
 
 setup(name='dbtk',
       version='1.0',
@@ -21,4 +22,14 @@ setup(name='dbtk',
             'dbtk = dbtk.main:main',
         ],
       },
+      # py2exe options
+      options = {'py2exe': {'bundle_files': 1,
+                            'packages': ['dbtk',
+                                         'dbtk.lib',
+                                         'dbtk.scripts',
+                                         ],
+                            }
+                 },
+      windows = [{'script': "main.py"}],
+      zipfile = None,
      )

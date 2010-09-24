@@ -4,8 +4,6 @@ This module contains optional functions for importing data from Excel.
 
 """
 
-import xlrd
-
 class Excel:
     @staticmethod
     def empty_cell(cell):
