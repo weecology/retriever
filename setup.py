@@ -28,6 +28,9 @@ setup(name='dbtk',
                                          'dbtk.lib',
                                          'dbtk.scripts',
                                          ],
+                            'includes': ['xlrd',
+                                         'pyodbc'
+                                         ],
                             }
                  },
       windows = [{'script': "main.py"}],
