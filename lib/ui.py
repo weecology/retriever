@@ -32,13 +32,14 @@ def launch_wizard(lists):
                         lists, ALL_ENGINES)
 
     # Run the wizard and, if successful, download datasets
-    if wizard.RunWizard(wizard.page[0]):
+    if wizard.RunWizard(wizard.TITLE):
         # Get a list of scripts to be downloaded
         scripts = []
+        checked_scripts = wizard.DATASET.scriptlist.GetCheckedStrings()
         for script in wizard.dbtk_list:
             dl = False
             if len(wizard.dbtk_list) > 1:
-                if script.name in wizard.page[4].scriptlist.GetCheckedStrings():
+                if script.name in checked_scripts:
                     dl = True
             else:
                 dl = True
@@ -107,11 +108,11 @@ def launch_wizard(lists):
                 self.dialog.Pulse("Connecting to database:")
                         
                 # Get options from wizard
-                engine = wizard.page[2].engine
-                options = wizard.page[2].option
-                engine.keep_raw_data = wizard.page[1].keepdata.Value
-                engine.use_local = wizard.page[1].uselocal.Value
-                engine.RAW_DATA_LOCATION = wizard.page[1].raw_data_dir.Value
+                engine = wizard.CONNECTION.engine
+                options = wizard.CONNECTION.option
+                engine.keep_raw_data = wizard.CHOOSEDB.keepdata.Value
+                engine.use_local = wizard.CHOOSEDB.uselocal.Value
+                engine.RAW_DATA_LOCATION = wizard.CHOOSEDB.raw_data_dir.Value
                 opts = dict()
                 for key in options.keys():
                     opts[key] = options[key].GetValue()

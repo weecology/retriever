@@ -20,5 +20,5 @@ setup(name='dbtk',
         'console_scripts': [
             'dbtk = dbtk.main:main',
         ],
-      }
+      },
      )

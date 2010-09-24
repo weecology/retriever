@@ -4,6 +4,7 @@
 
 import os
 import wx
+import wx.html
 import wx.wizard
 from dbtk.lib.models import Engine
 from dbtk.lib.tools import AutoDbTk
@@ -15,14 +16,8 @@ class DbTkWizard(wx.wizard.Wizard):
         self.page = []
         self.lists = lists
         self.engine_list = engine_list
-        # Create the wizard pages
-        # 0: Title page
-        # 1: Choose db
-        # 2: Connection info
-        # 3: Dataset selection
-        # 4: End
-        self.page.append(self.TitledPage(self, "Welcome", 
-"""Welcome to the Database Toolkit wizard.
+        
+        welcome = ("""Welcome to the Database Toolkit wizard.
 
 This wizard will walk you through the process of downloading and 
 installing ecological datasets.
@@ -32,9 +27,9 @@ systems installed. You must also have either an active connection to the
 internet, or the raw data files stored locally on your computer.
 
 Supported database systems currently include:\n\n""" + 
-", ".join([db.name for db in engine_list]) + "\n\n" +
-        "Version 1.0"
-        ))
+        ", ".join([db.name for db in engine_list]) + "\n\n" + "Version 1.0")
+
+        self.page.append(self.TitledPage(self, "Welcome", welcome))
         
         self.page.append(self.ChooseDbPage(self, "Select Database", 
                                       "Please select your database platform:\n"))
@@ -42,7 +37,6 @@ Supported database systems currently include:\n\n""" +
         self.page.append(self.ConnectPage(self, 
                                      "Connection Info", 
                                      "Please enter your connection information: \n"))
-        self.page[1].Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.page[2].Draw)
         
         self.page.append(self.CategoriesPage(self, "Categories",
                                "Choose the dataset categories to be shown."))
@@ -50,9 +44,12 @@ Supported database systems currently include:\n\n""" +
         self.page.append(self.DatasetPage(self, "Select Datasets", 
                                "Check each dataset to be downloaded:\n"))
         
-        self.page.append(self.TitledPage(self, "Finished", 
-                               "That's it! Click Finish to download and install " +
-                               "your data."))
+        self.page.append(self.FinishPage(self, "Finished", ""))
+
+
+        (self.TITLE, self.CHOOSEDB, self.CONNECTION, self.CAT, 
+         self.DATASET, self.FINISH) = [self.page[i] for i in range(6)]
+        self.CHOOSEDB.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.page[2].Draw)
     
         
         for i in range(len(self.page) - 1):
@@ -132,11 +129,11 @@ Supported database systems currently include:\n\n""" +
         def Draw(self, evt):
             """When the page is drawn, it may need to update its fields if 
             the selected database has changed."""
-            if len(self.Parent.page[1].dblist.GetStringSelection()) == 0 and evt.Direction:
+            if len(self.Parent.CHOOSEDB.dblist.GetStringSelection()) == 0 and evt.Direction:
                 evt.Veto()                  
             else:
-                if self.sel != self.Parent.page[1].dblist.GetStringSelection():
-                    self.sel = self.Parent.page[1].dblist.GetStringSelection()
+                if self.sel != self.Parent.CHOOSEDB.dblist.GetStringSelection():
+                    self.sel = self.Parent.CHOOSEDB.dblist.GetStringSelection()
                     self.engine = Engine()
                     for db in self.Parent.engine_list:
                         if db.name == self.sel:
@@ -201,7 +198,7 @@ Supported database systems currently include:\n\n""" +
                             self.Parent.dbtk_list.append(script)
                 if len(self.Parent.dbtk_list) == 0:
                     evt.Veto()
-                self.Parent.page[4].Draw(None)
+                self.Parent.DATASET.Draw(None)
             
                 
     class DatasetPage(TitledPage):
@@ -229,7 +226,6 @@ Supported database systems currently include:\n\n""" +
                 self.scriptlist.Append(script)
             public_scripts = [script.name for script in dbtk_list if script.public]
             self.scriptlist.SetCheckedStrings(public_scripts)   
-            self.Parent.FitToPage(self)
         def AddDataset(self, evt):
             # Run Add Dataset wizard
             add_dataset = AddDatasetWizard(self.Parent, -1, 'Add Dataset')            
@@ -291,9 +287,40 @@ Supported database systems currently include:\n\n""" +
                                                   style = wx.YES_NO)
                     if warndialog.ShowModal() != wx.ID_YES:
                         evt.Veto()
+                self.Parent.FINISH.Draw(None)
+                        
+    
+    class HtmlWindow(wx.html.HtmlWindow):
+        def __init__(self, parent):
+            wx.html.HtmlWindow.__init__(self, parent, size=(-1,250))
+            if "gtk2" in wx.PlatformInfo:
+                self.SetStandardFonts()
+        def OnLinkClicked(self, link):
+            wx.LaunchDefaultBrowser(link.GetHref())
+
+    
+    class FinishPage(TitledPage):
+        """The dataset selection page."""
+        def __init__(self, parent, title, label):
+            parent.TitledPage.__init__(self, parent, title, label)
+            self.summary = parent.HtmlWindow(self)
+            self.sizer.Add(self.summary, 0, wx.EXPAND)
+        def Draw(self, evt):
+            checked_scripts = self.Parent.DATASET.scriptlist.GetCheckedStrings()
+            html = "<p>That's it! Click Finish to download your data.</p>"
+            html += "<p>Download summary:</p><ul>"
+            for script in self.Parent.dbtk_list:
+                if script.name in checked_scripts:
+                    html += "<li>" + script.name
+                    if script.reference_url():
+                        html += ' (<a href="' + script.reference_url() + '">About</a>)'
+                    html += "</li>"
+            html += "</ul>"
+            self.summary.SetPage(html)
                         
                          
 class AddDatasetWizard(wx.wizard.Wizard):
+    """Wizard for adding custuom datasets"""
     def __init__(self, parent, id, title):
         wx.wizard.Wizard.__init__(self, parent, id, title)            
         
