@@ -37,19 +37,27 @@ Supported database systems currently include:\n\n""" +
         self.page.append(self.ConnectPage(self, 
                                      "Connection Info", 
                                      "Please enter your connection information: \n"))
-        
-        self.page.append(self.CategoriesPage(self, "Categories",
-                               "Choose the dataset categories to be shown."))
+
+        if len(self.lists) > 1:        
+            self.page.append(self.CategoriesPage(self, "Categories",
+                                                 "Choose the dataset categories to be shown."))
         
         self.page.append(self.DatasetPage(self, "Select Datasets", 
                                "Check each dataset to be downloaded:\n"))
         
         self.page.append(self.FinishPage(self, "Finished", ""))
 
-
-        (self.TITLE, self.CHOOSEDB, self.CONNECTION, self.CAT, 
-         self.DATASET, self.FINISH) = [self.page[i] for i in range(6)]
-        self.CHOOSEDB.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.page[2].Draw)
+        
+        if len(self.lists) > 1:
+            (self.TITLE, self.CHOOSEDB, self.CONNECTION, self.CAT, 
+             self.DATASET, self.FINISH) = [self.page[i] for i in range(6)]
+        else:
+            (self.TITLE, self.CHOOSEDB, self.CONNECTION, 
+             self.DATASET, self.FINISH) = [self.page[i] for i in range(5)]
+            self.dbtk_list = self.lists[0].scripts
+            self.DATASET.Draw(None) 
+             
+        self.CHOOSEDB.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CONNECTION.Draw)
     
         
         for i in range(len(self.page) - 1):
@@ -225,7 +233,7 @@ Supported database systems currently include:\n\n""" +
             for script in [script.name for script in dbtk_list]:
                 self.scriptlist.Append(script)
             public_scripts = [script.name for script in dbtk_list if script.public]
-            self.scriptlist.SetCheckedStrings(public_scripts)   
+            self.scriptlist.SetCheckedStrings(public_scripts)
         def AddDataset(self, evt):
             # Run Add Dataset wizard
             add_dataset = AddDatasetWizard(self.Parent, -1, 'Add Dataset')            
