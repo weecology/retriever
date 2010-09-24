@@ -13,23 +13,29 @@ from dbtk.lib.tools import AutoDbTk
 class DbTkWizard(wx.wizard.Wizard):
     def __init__(self, parent, id, title, lists, engine_list):
         wx.wizard.Wizard.__init__(self, parent, id, title)
+        
+        welcome = """<h2>Welcome to the Database Toolkit wizard.</h2>
+        
+        <p>This wizard will walk you through the process of downloading and 
+        installing ecological datasets.</p>
+        <p>This wizard requires that you have one or more of the supported database 
+        systems installed. You must also have either an active connection to the 
+        internet, or the raw data files stored locally on your computer.<p>
+        <p>Supported database systems currently include:</p>
+        <ul>"""
+        
+        for db in engine_list:
+            welcome += "<li>" + db.name + "</li>" 
+        
+        welcome += """</ul>
+        <p><i>Version 1.0</i></p>
+        <p><a href="http://www.ecologicaldata.org">http://www.ecologicaldata.org</a></p>"""        
+        
         self.page = []
         self.lists = lists
         self.engine_list = engine_list
         
-        welcome = ("""Welcome to the Database Toolkit wizard.
-
-This wizard will walk you through the process of downloading and 
-installing ecological datasets.
-
-This wizard requires that you have one or more of the supported database 
-systems installed. You must also have either an active connection to the 
-internet, or the raw data files stored locally on your computer.
-
-Supported database systems currently include:\n\n""" + 
-        ", ".join([db.name for db in engine_list]) + "\n\n" + "Version 1.0")
-
-        self.page.append(self.TitledPage(self, "Welcome", welcome))
+        self.page.append(self.TitledPage(self, "", ""))
         
         self.page.append(self.ChooseDbPage(self, "Select Database", 
                                       "Please select your database platform:\n"))
@@ -45,7 +51,7 @@ Supported database systems currently include:\n\n""" +
         self.page.append(self.DatasetPage(self, "Select Datasets", 
                                "Check each dataset to be downloaded:\n"))
         
-        self.page.append(self.FinishPage(self, "Finished", ""))
+        self.page.append(self.FinishPage(self, "", ""))
 
         
         if len(self.lists) > 1:
@@ -56,6 +62,10 @@ Supported database systems currently include:\n\n""" +
              self.DATASET, self.FINISH) = [self.page[i] for i in range(5)]
             self.dbtk_list = self.lists[0].scripts
             self.DATASET.Draw(None) 
+            
+        self.TITLE.welcome = self.HtmlWindow(self.TITLE)
+        self.TITLE.welcome.SetPage(welcome)
+        self.TITLE.sizer.Add(self.TITLE.welcome, 1, wx.EXPAND)
              
         self.CHOOSEDB.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CONNECTION.Draw)
     
@@ -64,7 +74,15 @@ Supported database systems currently include:\n\n""" +
             wx.wizard.WizardPageSimple_Chain(self.page[i], self.page[i + 1])
         
         for page in self.page:
-            self.FitToPage(page)    
+            self.FitToPage(page)
+            
+    class HtmlWindow(wx.html.HtmlWindow):
+        def __init__(self, parent):
+            wx.html.HtmlWindow.__init__(self, parent, size=(-1,300))
+            if "gtk2" in wx.PlatformInfo:
+                self.SetStandardFonts()
+        def OnLinkClicked(self, link):
+            wx.LaunchDefaultBrowser(link.GetHref())
     
     
     class TitledPage(wx.wizard.WizardPageSimple):
@@ -73,13 +91,14 @@ Supported database systems currently include:\n\n""" +
             wx.wizard.WizardPageSimple.__init__(self, parent)
             self.sizer = wx.BoxSizer(wx.VERTICAL)
             self.SetSizer(self.sizer)
-            titleText = wx.StaticText(self, -1, title)
-            titleText.SetFont(wx.Font(18, wx.SWISS, wx.NORMAL, wx.BOLD))
-            self.sizer.Add(titleText, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
-            self.label = wx.StaticText(self, -1)
-            self.sizer.Add(self.label, 0, wx.EXPAND | wx.ALL, 5)
-            self.label.Wrap(100)
+            if title:
+                titleText = wx.StaticText(self, -1, title)
+                titleText.SetFont(wx.Font(18, wx.SWISS, wx.NORMAL, wx.BOLD))
+                self.sizer.Add(titleText, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
             if label:
+                self.label = wx.StaticText(self, -1)
+                self.sizer.Add(self.label, 0, wx.EXPAND | wx.ALL, 5)
+                self.label.Wrap(100)                
                 self.sizer.Add(wx.StaticText(self, -1, label))
                     
     
@@ -296,15 +315,6 @@ Supported database systems currently include:\n\n""" +
                     if warndialog.ShowModal() != wx.ID_YES:
                         evt.Veto()
                 self.Parent.FINISH.Draw(None)
-                        
-    
-    class HtmlWindow(wx.html.HtmlWindow):
-        def __init__(self, parent):
-            wx.html.HtmlWindow.__init__(self, parent, size=(-1,250))
-            if "gtk2" in wx.PlatformInfo:
-                self.SetStandardFonts()
-        def OnLinkClicked(self, link):
-            wx.LaunchDefaultBrowser(link.GetHref())
 
     
     class FinishPage(TitledPage):
@@ -312,10 +322,10 @@ Supported database systems currently include:\n\n""" +
         def __init__(self, parent, title, label):
             parent.TitledPage.__init__(self, parent, title, label)
             self.summary = parent.HtmlWindow(self)
-            self.sizer.Add(self.summary, 0, wx.EXPAND)
+            self.sizer.Add(self.summary, 1, wx.EXPAND)
         def Draw(self, evt):
             checked_scripts = self.Parent.DATASET.scriptlist.GetCheckedStrings()
-            html = "<p>That's it! Click Finish to download your data.</p>"
+            html = "<h2>Finished</h2><p>That's it! Click Finish to download your data.</p>"
             html += "<p>Download summary:</p><ul>"
             for script in self.Parent.dbtk_list:
                 if script.name in checked_scripts:
