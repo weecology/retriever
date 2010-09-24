@@ -1,0 +1,57 @@
+<html><head>
+<link rel="stylesheet" type="text/css" href="apidocs.css"/>
+<title>Getting Started - Database Toolkit</title>
+</head>
+<body><h1 class="package">Database Toolkit - Getting Started</h1>
+<div class="toplevel"><div>
+<h2>Windows</h2>
+<p>A windows executable is provided. Simply download and run dbtk.exe.</p>
+<h2>Linux</h2>
+<p>For Debian-based Linux distributions (including Ubuntu), a Debian package, python-dbtk_1.0-1_all.deb,
+is provided.</p>
+<ol>
+	<li>
+		Open the package with Synaptic Package Manager or another Debian package management application
+		and install it.
+	</li>
+	<li>
+		From the terminal, type dbtk to launch the Database Toolkit. You should run this command from the
+		directory you want to store configuration files and raw data files in, so you may want to create
+		a new directory.
+	</li>
+</ol>
+<h2>Source</h2>
+<p>To install the Database Toolkit from source, you'll need Python 2.6 with the following packages 
+installed:</p>
+<ul>
+	<li>
+		wxPython
+	</li>
+	<li>
+		xlrd
+	</li>
+	<li>
+		MySQLdb (for MySQL)
+	</li>
+	<li>
+		sqlite3 (for SQLite)
+	</li>
+	<li>
+		psycopg2 (for PostgreSQL)
+	</li>
+	<li>
+		pyodbc (for MS Access - this option is only available on Windows)
+	</li>
+</ul>
+<p>To install from source:</p>
+<ol>
+	<li>
+		Download the dbtk source bundle and extract it onto your machine.
+	</li>
+	<li>
+		From the directory containing setup.py, run the following command: <i>python setup.py install</i>
+	</li>
+	<li>
+		After installing, type dbtk from a command prompt to launch the Database Toolkit.
+	</li>
+</ol>
