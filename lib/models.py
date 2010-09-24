@@ -74,24 +74,7 @@ class Engine():
             line = line.strip()
             if line:
                 self.table.record_id += 1            
-                linevalues = []
-                if (self.table.pk and self.table.hasindex == False):
-                    column = 0
-                else:
-                    column = -1
-                 
-                for value in self.extract_values(line):
-                    column += 1
-                    thiscolumn = self.table.columns[column][1][0]
-                    # If data type is "skip" ignore the value
-                    if thiscolumn == "skip":
-                        pass
-                    elif thiscolumn == "combine":
-                        # If "combine" append value to end of previous column
-                        linevalues[len(linevalues) - 1] += " " + value 
-                    else:
-                        # Otherwise, add new value
-                        linevalues.append(value) 
+                linevalues = self.values_from_line(line)
                             
                 # Build insert statement with the correct # of values                
                 cleanvalues = [self.format_insert_value(self.table.cleanup.function
@@ -133,6 +116,20 @@ class Engine():
         source = open(self.format_filename(filename), "rb")
         header = source.readline()
         
+        if pk is None:
+            self.table.columns = [("record_id", ("pk-auto",))]
+        else:
+            self.table.columns = []
+            self.table.hasindex = True
+        
+        columns, column_values = self.auto_get_columns(header)
+        
+        self.auto_get_datatypes(pk, source, columns, column_values)
+        
+        print self.table.columns
+        self.create_table()
+    def auto_get_columns(self, header):
+        """Finds the delimiter and column names from the header row."""
         # Determine the delimiter by finding out which of a set of common
         # delimiters occurs most in the header line
         self.table.delimiter = "\t"
@@ -142,11 +139,6 @@ class Engine():
         
         # Get column names from header row
         column_names = header.split(self.table.delimiter)
-        if pk is None:
-            self.table.columns = [("record_id", ("pk-auto",))]
-        else:
-            self.table.columns = []
-            self.table.hasindex = True
         columns = []
         column_values = dict()
         
@@ -170,7 +162,9 @@ class Engine():
             if this_column:
                 columns.append([this_column, None])
                 column_values[this_column] = []
-        
+        return columns, column_values
+    def auto_get_datatypes(self, pk, source, columns, column_values):
+        """Determines data types for each column."""
         # Get all values for each column
         for line in source:
             if line.replace("\t", "").strip():
@@ -218,9 +212,6 @@ class Engine():
             
         for column in columns:
             self.table.columns.append((column[0], tuple(column[1])))
-        
-        print self.table.columns
-        self.create_table()
     def convert_data_type(self, datatype):
         """Converts DBTK generic data types to database platform specific data
         types"""
@@ -456,3 +447,23 @@ class Engine():
     def tablename(self):
         """Returns the full tablename in the format db.table."""        
         return self.db.dbname + "." + self.table.tablename
+    def values_from_line(self, line):
+        linevalues = []
+        if (self.table.pk and self.table.hasindex == False):
+            column = 0
+        else:
+            column = -1
+         
+        for value in self.extract_values(line):
+            column += 1
+            thiscolumn = self.table.columns[column][1][0]
+            # If data type is "skip" ignore the value
+            if thiscolumn == "skip":
+                pass
+            elif thiscolumn == "combine":
+                # If "combine" append value to end of previous column
+                linevalues[len(linevalues) - 1] += " " + value 
+            else:
+                # Otherwise, add new value
+                linevalues.append(value) 
+        return linevalues

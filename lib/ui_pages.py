@@ -56,8 +56,9 @@ Supported database systems currently include:\n\n""" +
         
         for i in range(len(self.page) - 1):
             wx.wizard.WizardPageSimple_Chain(self.page[i], self.page[i + 1])
-            
-        self.FitToPage(self.page[0])    
+        
+        for page in self.page:
+            self.FitToPage(page)    
     
     
     class TitledPage(wx.wizard.WizardPageSimple):
@@ -214,7 +215,7 @@ Supported database systems currently include:\n\n""" +
             self.sizer.Add(self.checkallbox)            
             self.checkallbox.Bind(wx.EVT_CHECKBOX, self.CheckAll)            
             # CheckListBox of scripts
-            self.scriptlist = wx.CheckListBox(self, -1)
+            self.scriptlist = wx.CheckListBox(self, -1, size=(-1,200))
             self.sizer.Add(self.scriptlist, 0, wx.EXPAND)
             # Add dataset button
             self.addbtn = wx.Button(self, -1, "Add...")
@@ -226,7 +227,8 @@ Supported database systems currently include:\n\n""" +
             for script in [script.name for script in dbtk_list]:
                 self.scriptlist.Append(script)
             public_scripts = [script.name for script in dbtk_list if script.public]
-            self.scriptlist.SetCheckedStrings(public_scripts)                       
+            self.scriptlist.SetCheckedStrings(public_scripts)   
+            self.Parent.FitToPage(self)
         def AddDataset(self, evt):
             # Run Add Dataset wizard
             add_dataset = AddDatasetWizard(self.Parent, -1, 'Add Dataset')            
