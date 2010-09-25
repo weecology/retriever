@@ -29,3 +29,13 @@ sudo rm deb_dist -rf
 mkdir linux
 mv *.deb linux/
 mv linux ../../
+sudo rm .svn -rf
+cd lib
+sudo rm .svn -rf
+cd ../scripts
+sudo rm .svn -rf
+cd ..
+
+# build src package
+cd ..
+tar czvf dbtk-1.0.tar.gz dbtk
