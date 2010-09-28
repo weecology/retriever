@@ -263,7 +263,7 @@ class MSAccessEngine(Engine):
 INSERT INTO """ + self.tablename() + " (" + columns + """)
 SELECT * FROM [""" + os.path.basename(filename) + ''']
 IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
-            print statement
+            
             try:
                 self.cursor.execute(statement)
                 self.connection.commit()
