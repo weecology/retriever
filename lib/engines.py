@@ -182,13 +182,14 @@ class SQLiteEngine(Engine):
     def tablename(self):
         """The database file is specifically connected to, so database.table 
         is not necessary."""
-        return self.table.tablename
+        return self.db.dbname + "_" + self.table.tablename
     def get_cursor(self):
         """Gets the db connection and cursor."""
         import sqlite3 as dbapi
         self.get_input()
         self.connection = dbapi.connect(self.opts["file"])
         self.cursor = self.connection.cursor()
+        
         
 class MSAccessEngine(Engine):
     """Engine instance for Microsoft Access."""
@@ -202,7 +203,7 @@ class MSAccessEngine(Engine):
                  "BIT"]
     required_opts = [["file", 
                       "Enter the filename of your Access database: ",
-                      "access.mdb",
+                      "access.accdb",
                       "Access databases (*.mdb, *.accdb)|*.mdb;*.accdb"]]
     def convert_data_type(self, datatype):
         """MS Access can't handle complex Decimal types"""
@@ -223,6 +224,54 @@ class MSAccessEngine(Engine):
         return dropstatement
     def format_column_name(self, column):
         return "[" + str(column) + "]"
+    def insert_data_from_file(self, filename):
+        """Perform a bulk insert."""
+        if (self.table.cleanup.function == no_cleanup and 
+            self.table.header_rows < 2) and (self.table.delimiter in ["\t", ","]):        
+            print ("Inserting data from " + os.path.basename(filename) 
+                   + " . . .")
+            
+            if self.table.delimiter == "\t":
+                fmt = "TabDelimited"
+            elif self.table.delimiter == ",":
+                fmt = "CSVDelimited"
+                
+            if self.table.header_rows == 1:
+                hdr = "Yes"
+            else:
+                hdr = "No"
+                
+            if self.table.pk and not self.table.hasindex:
+                newfilename = '.'.join(filename.split(".")[0:-1]) + "_new." + filename.split(".")[-1]
+                if not os.path.isfile(self.format_filename(newfilename)):
+                    read = open(filename, "rb")
+                    write = open(newfilename, "wb")            
+                    id = 1
+                    for line in read:
+                        write.write(str(id) + self.table.delimiter + line)
+                        id += 1
+                    write.close()
+                    read.close()
+            else:
+                newfilename = filename
+            
+            columns = self.get_insert_columns()
+            filename = os.path.abspath(newfilename)
+            filename_length = (len(os.path.basename(filename)) * -1) - 1
+            filepath = filename[0:filename_length]
+            statement = """
+INSERT INTO """ + self.tablename() + " (" + columns + """)
+SELECT * FROM [""" + os.path.basename(filename) + ''']
+IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
+            print statement
+            try:
+                self.cursor.execute(statement)
+                self.connection.commit()
+            except:
+                self.connection.rollback()
+                return Engine.insert_data_from_file(self, filename)
+        else:
+            return Engine.insert_data_from_file(self, filename)    
     def tablename(self):
         return "[" + self.db.dbname + " " + self.table.tablename + "]"
     def get_cursor(self):
@@ -234,7 +283,7 @@ class MSAccessEngine(Engine):
         connection_string = ("DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ="
                              + self.opts["file"].replace("/", "//") + ";")
         self.connection = dbapi.connect(connection_string,
-                                        autocommit = True)
+                                        autocommit = False)
         self.cursor = self.connection.cursor()
 
 
