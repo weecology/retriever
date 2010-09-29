@@ -32,7 +32,8 @@ class main(DbTk):
                 engine.download_files_from_archive("ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CWeather.exe", 
                                                    ["weather.csv"])            
                 read = open(engine.format_filename("weather.csv"), "rb")
-                write = open(engine.format_filename("weather_new.csv"), "wb")            
+                write = open(engine.format_filename("weather_new.csv"), "wb")
+                print "Cleaning weather data . . ."            
                 for line in read:
                     values = line.split(',')
                     newvalues = []
