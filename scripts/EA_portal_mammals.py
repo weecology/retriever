@@ -34,12 +34,12 @@ class main(DbTk):
         self.engine.insert_data_from_url("http://wiki.ecologicaldata.org/sites/default/files/portal_plots.txt")        
         
         # Species table        
-        self.engine.auto_create_table(self.url_species, "species", 
+        self.engine.auto_create_table("species", self.url_species, 
                                       cleanup=Cleanup())
         self.engine.insert_data_from_url(self.url_species)
         
         # Main table
-        self.engine.auto_create_table(self.url, "main", 
+        self.engine.auto_create_table("main", url=self.url, 
                                  cleanup=Cleanup(correct_invalid_value, 
                                                  {"nulls":('', 0, '0')} ),
                                  pk="ID")
