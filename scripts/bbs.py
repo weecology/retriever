@@ -6,7 +6,7 @@ import os
 import urllib
 import zipfile
 from dbtk.lib.tools import DbTk
-from dbtk.lib.models import Table, Cleanup
+from dbtk.lib.models import Table, Cleanup, no_cleanup
 
 
 class main(DbTk):
@@ -19,27 +19,12 @@ class main(DbTk):
             DbTk.download(self, engine)
             
             # Routes table
-            table = Table()
-            table.tablename = "routes"
-            table.delimiter = ","
-            
-            table.columns=[("route_id"              ,   ("pk-auto",)    ),
-                           ("countrynum"            ,   ("int",)        ),
-                           ("statenum"              ,   ("int",)        ),
-                           ("Route"                 ,   ("int",)        ),
-                           ("Active"                ,   ("int",)        ),
-                           ("Latitude"              ,   ("double",)     ),
-                           ("Longitude"             ,   ("double",)     ),
-                           ("Stratum"               ,   ("int",)        ),
-                           ("BCR"                   ,   ("int",)        ),
-                           ("LandTypeId"            ,   ("int",)        ),
-                           ("RouteTypeId"           ,   ("int",)        ),
-                           ("RouteTypeDetailId"     ,   ("int",)        )]
-            engine.table = table
-            engine.create_table()
-            
-            engine.insert_data_from_archive("ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CRoutes.exe",
-                                            ["routes.csv"])
+            engine.download_files_from_archive("ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CRoutes.exe",
+                                               ["routes.csv"])
+            engine.auto_create_table("routes", filename="routes.csv",
+                                     cleanup=Cleanup())
+            engine.insert_data_from_file(engine.format_filename("routes.csv"))
+
             
 
             # Weather table                
@@ -64,7 +49,7 @@ class main(DbTk):
                 read.close()
             
             engine.auto_create_table("weather", filename="weather_new.csv",
-                                     pk="RouteDataId")            
+                                     pk="RouteDataId", cleanup=Cleanup())            
             engine.insert_data_from_file(engine.format_filename("weather_new.csv"))
             
             
