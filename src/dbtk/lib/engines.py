@@ -243,13 +243,15 @@ class MSAccessEngine(Engine):
                 
             if self.table.pk and not self.table.hasindex:
                 newfilename = '.'.join(filename.split(".")[0:-1]) + "_new." + filename.split(".")[-1]
-                if not os.path.isfile(self.format_filename(newfilename)):
+                if not os.path.isfile(newfilename):
+                    print "Adding index to " + os.path.abspath(newfilename) + " . . ."
                     read = open(filename, "rb")
                     write = open(newfilename, "wb")            
-                    id = 1
+                    id = self.table.record_id
                     for line in read:
                         write.write(str(id) + self.table.delimiter + line)
                         id += 1
+                    self.table.record_id = id
                     write.close()
                     read.close()
             else:
@@ -268,7 +270,9 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
                 self.cursor.execute(statement)
                 self.connection.commit()
             except:
-                self.connection.rollback()
+                raise
+                exit()
+                self.connection.rollback()                
                 return Engine.insert_data_from_file(self, filename)
         else:
             return Engine.insert_data_from_file(self, filename)    

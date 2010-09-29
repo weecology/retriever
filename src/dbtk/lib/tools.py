@@ -58,7 +58,7 @@ class AutoDbTk(DbTk):
         self.nulls = nulls
     def download(self, engine=None):
         DbTk.download(self, engine)
-        self.engine.auto_create_table(self.url, self.tablename,
+        self.engine.auto_create_table(self.tablename, url=self.url,
                                       cleanup=Cleanup(correct_invalid_value, 
                                           {"nulls":self.nulls})
                                       )

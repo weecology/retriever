@@ -14,7 +14,7 @@ class main(DbTk):
     url = "http://esapubs.org/archive/ecol/E088/096/avian_ssd_jan07.txt"
     def download(self, engine=None):    
         DbTk.download(self, engine)
-        self.engine.auto_create_table(self.url, "species")
+        self.engine.auto_create_table("species", url=self.url)
         self.engine.insert_data_from_url(self.url)
         return self.engine
 
