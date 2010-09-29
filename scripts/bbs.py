@@ -42,46 +42,30 @@ class main(DbTk):
                                             ["routes.csv"])
             
 
-            # Weather table
-            table = Table()
-            table.tablename = "weather"
-            table.delimiter = ","
-            table.hasindex = True
-            def weather_cleanup(value, engine):
-                if value == "N":
-                    return None
-                elif ":" in value:
-                    return value.replace(":", "")             
-                return value
-            table.cleanup = Cleanup(weather_cleanup, None)
-                
+            # Weather table                
+            if not os.path.isfile(engine.format_filename("weather_new.csv")):
+                engine.download_files_from_archive("ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CWeather.exe", 
+                                                   ["weather.csv"])            
+                read = open(engine.format_filename("weather.csv"), "rb")
+                write = open(engine.format_filename("weather_new.csv"), "wb")            
+                for line in read:
+                    values = line.split(',')
+                    newvalues = []
+                    for value in values:
+                        
+                        if ':' in value:
+                            newvalues.append(value.replace(':', ''))
+                        elif value == "N":
+                            newvalues.append(None)
+                        else:
+                            newvalues.append(value)
+                    write.write(','.join(str(value) for value in newvalues))
+                write.close()
+                read.close()
             
-            table.columns=[("routedataid"           ,   ("pk-auto",)    ),
-                           ("countrynum"            ,   ("int",)        ),
-                           ("statenum"              ,   ("int",)        ),
-                           ("Route"                 ,   ("int",)        ),
-                           ("RPID"                  ,   ("int",)        ),
-                           ("Year"                  ,   ("int",)        ),
-                           ("Month"                 ,   ("int",)        ),
-                           ("Day"                   ,   ("int",)        ),
-                           ("ObsN"                  ,   ("int",)        ),
-                           ("TotalSpp"              ,   ("int",)        ),
-                           ("StartTemp"             ,   ("int",)        ),
-                           ("EndTemp"               ,   ("int",)        ),                           
-                           ("TempScale"             ,   ("char",1)      ),
-                           ("StartWind"             ,   ("int",)        ),
-                           ("EndWind"               ,   ("int",)        ),
-                           ("StartSky"              ,   ("int",)        ),
-                           ("EndSky"                ,   ("int",)        ),
-                           ("StartTime"             ,   ("int",)        ),
-                           ("EndTime"               ,   ("int",)        ),
-                           ("Assistant"             ,   ("int",)        ),
-                           ("RunType"               ,   ("int",)        )]
-            engine.table = table
-            engine.create_table()
-            
-            engine.insert_data_from_archive("ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CWeather.exe", 
-                                            ["weather.csv"])
+            engine.auto_create_table("weather", filename="weather_new.csv",
+                                     pk="RouteDataId")            
+            engine.insert_data_from_file(engine.format_filename("weather_new.csv"))
             
             
             # Region_codes table
