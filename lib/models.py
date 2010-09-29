@@ -90,21 +90,22 @@ class Engine():
                 
         print "\n Done!"
         self.connection.commit()
-    def auto_create_table(self, url, tablename,
+    def auto_create_table(self, tablename, url=None, filename=None,
                           cleanup=Cleanup(correct_invalid_value, 
                                           {"nulls":(-999,)} 
                                           ),
                           pk=None):
         """Creates a table automatically by analyzing a data source and 
         predicting column names, data types, delimiter, etc."""
-        filename = url.split('/')[-1]
+        if url and not filename:
+            filename = url.split('/')[-1]
         self.create_raw_data_dir()
         need_to_delete = False
         self.table = Table()
         self.table.tablename = tablename
         self.table.cleanup = cleanup
         
-        if not (self.use_local and 
+        if url and not (self.use_local and 
                 os.path.isfile(self.format_filename(filename))):
             # If the file doesn't exist, download it
             self.create_raw_data_dir()                        
@@ -128,6 +129,12 @@ class Engine():
         
         print self.table.columns
         self.create_table()
+        
+        if need_to_delete:
+            try:
+                os.remove(self.format_filename(filename))
+            except:
+                pass
     def auto_get_columns(self, header):
         """Finds the delimiter and column names from the header row."""
         # Determine the delimiter by finding out which of a set of common
