@@ -319,7 +319,8 @@ class Engine():
                 open_zip.close()
                 
                 local_zip.close()                                            
-        if not self.keep_raw_data:
+        
+        if not self.keep_raw_data or len(filenames) == 1:
             try:
                 os.remove(archivename)
             except:
