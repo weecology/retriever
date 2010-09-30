@@ -240,7 +240,8 @@ class MSAccessEngine(Engine):
                 hdr = "Yes"
             else:
                 hdr = "No"
-                
+            
+            need_to_delete = False    
             if self.table.pk and not self.table.hasindex:
                 newfilename = '.'.join(filename.split(".")[0:-1]) + "_new." + filename.split(".")[-1]
                 if not os.path.isfile(newfilename):
@@ -254,6 +255,7 @@ class MSAccessEngine(Engine):
                     self.table.record_id = id
                     write.close()
                     read.close()
+                    need_to_delete = True
             else:
                 newfilename = filename
             
@@ -274,6 +276,9 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
                 exit()
                 self.connection.rollback()                
                 return Engine.insert_data_from_file(self, filename)
+            
+            if need_to_delete:
+                os.remove(newfilename)
         else:
             return Engine.insert_data_from_file(self, filename)    
     def tablename(self):

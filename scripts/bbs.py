@@ -26,7 +26,6 @@ class main(DbTk):
             engine.insert_data_from_file(engine.format_filename("routes.csv"))
 
             
-
             # Weather table                
             if not os.path.isfile(engine.format_filename("weather_new.csv")):
                 engine.download_files_from_archive("ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CWeather.exe", 
