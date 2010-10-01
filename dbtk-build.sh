@@ -38,4 +38,4 @@ cd .. # current-release/src/dbtk
 
 # build src package
 cd .. # current-release/src
-tar czvf dbtk-1.0.tar.gz dbtk
+tar czvf dbtk-src.tar.gz dbtk
