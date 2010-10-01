@@ -34,9 +34,9 @@ for file in cat_files:
 
 
 # Get list of additional datasets from dbtk.config file
-if os.path.isfile("dbtk.config"):
+if os.path.isfile("scripts.config"):
     other_dbtks = []
-    config = open("dbtk.config", 'rb')
+    config = open("scripts.config", 'rb')
     for line in config:
         if line:
             line = line.rstrip("\n")

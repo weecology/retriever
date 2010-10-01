@@ -8,6 +8,7 @@ import wx.html
 import wx.wizard
 from dbtk.lib.models import Engine
 from dbtk.lib.tools import AutoDbTk
+from dbtk import VERSION
 
 
 class DbTkWizard(wx.wizard.Wizard):
@@ -28,7 +29,7 @@ class DbTkWizard(wx.wizard.Wizard):
             welcome += "<li>" + db.name + "</li>" 
         
         welcome += """</ul>
-        <p><i>Version 1.0</i></p>
+        <p><i>Version """ + VERSION + """</i></p>
         <p><a href="http://www.ecologicaldata.org">http://www.ecologicaldata.org</a></p>"""        
         
         self.page = []
@@ -274,14 +275,14 @@ class DbTkWizard(wx.wizard.Wizard):
                                                               dataset_url))
                         self.scriptlist.Append(fullname)
                         
-                        # Append dataset to dbtk.config file
-                        if os.path.isfile("dbtk.config"):
+                        # Append dataset to scripts.config file
+                        if os.path.isfile("scripts.config"):
                             mode = 'ab'
                             initial = "\n"                            
                         else:
                             mode = 'wb'
                             initial = ""
-                        config = open("dbtk.config", mode)                        
+                        config = open("scripts.config", mode)                        
                         config.write(initial + dbname + ", " + tablename + ", " + dataset_url)
                     else:
                         wx.MessageBox("You already have a dataset named " + dataset_name + ".")
