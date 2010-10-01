@@ -62,14 +62,14 @@ class MySQLEngine(Engine):
         if self.table.cleanup.function == no_cleanup:
             print ("Inserting data from " + os.path.basename(filename) 
                    + " . . .")
-                
+            
             columns = self.get_insert_columns()            
             statement = """        
-LOAD DATA LOCAL INFILE '""" + filename + """'
+LOAD DATA LOCAL INFILE '""" + filename.replace("\\", "\\\\") + """'
 INTO TABLE """ + self.tablename() + """
 FIELDS TERMINATED BY '""" + self.table.delimiter + """'
 LINES TERMINATED BY '\\n'
-IGNORE """ + str(self.table.header_rows) + """ LINES 
+IGNORE """ + str(self.table.header_rows) + """ LINES
 (""" + columns + ")"
             
             self.cursor.execute(statement)
@@ -138,7 +138,7 @@ class PostgreSQLEngine(Engine):
             filename = os.path.abspath(filename)
             statement = """
 COPY """ + self.tablename() + " (" + columns + """)
-FROM '""" + filename + """'
+FROM '""" + filename.replace("\\", "\\\\") + """'
 WITH DELIMITER ','
 CSV HEADER"""
             try:
