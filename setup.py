@@ -4,7 +4,7 @@ from setuptools import setup
 import platform
 if "win" in platform.platform().lower():
     import py2exe
-from dbtk import VERSION
+from __init__ import VERSION
 
 setup(name='dbtk',
       version=VERSION,
