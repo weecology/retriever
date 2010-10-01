@@ -4,9 +4,10 @@ from setuptools import setup
 import platform
 if "win" in platform.platform().lower():
     import py2exe
+from __init__ import VERSION
 
 setup(name='dbtk',
-      version='1.0',
+      version=VERSION,
       description='Database Toolkit',
       author='Ben Morris',
       author_email='ben.morris@weecology.org',

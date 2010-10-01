@@ -62,14 +62,14 @@ class MySQLEngine(Engine):
         if self.table.cleanup.function == no_cleanup:
             print ("Inserting data from " + os.path.basename(filename) 
                    + " . . .")
-                
+            
             columns = self.get_insert_columns()            
             statement = """        
-LOAD DATA LOCAL INFILE '""" + filename + """'
+LOAD DATA LOCAL INFILE '""" + filename.replace("\\", "\\\\") + """'
 INTO TABLE """ + self.tablename() + """
 FIELDS TERMINATED BY '""" + self.table.delimiter + """'
 LINES TERMINATED BY '\\n'
-IGNORE """ + str(self.table.header_rows) + """ LINES 
+IGNORE """ + str(self.table.header_rows) + """ LINES
 (""" + columns + ")"
             
             self.cursor.execute(statement)
@@ -138,7 +138,7 @@ class PostgreSQLEngine(Engine):
             filename = os.path.abspath(filename)
             statement = """
 COPY """ + self.tablename() + " (" + columns + """)
-FROM '""" + filename + """'
+FROM '""" + filename.replace("\\", "\\\\") + """'
 WITH DELIMITER ','
 CSV HEADER"""
             try:
@@ -240,7 +240,8 @@ class MSAccessEngine(Engine):
                 hdr = "Yes"
             else:
                 hdr = "No"
-                
+            
+            need_to_delete = False    
             if self.table.pk and not self.table.hasindex:
                 newfilename = '.'.join(filename.split(".")[0:-1]) + "_new." + filename.split(".")[-1]
                 if not os.path.isfile(newfilename):
@@ -254,6 +255,7 @@ class MSAccessEngine(Engine):
                     self.table.record_id = id
                     write.close()
                     read.close()
+                    need_to_delete = True
             else:
                 newfilename = filename
             
@@ -274,6 +276,9 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
                 exit()
                 self.connection.rollback()                
                 return Engine.insert_data_from_file(self, filename)
+            
+            if need_to_delete:
+                os.remove(newfilename)
         else:
             return Engine.insert_data_from_file(self, filename)    
     def tablename(self):
