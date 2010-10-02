@@ -27,6 +27,8 @@ setup(name='dbtk',
       },
       # py2exe options
       options = {'py2exe': {'bundle_files': 1,
+                            'compressed': 2,
+                            'optimize': 2,
                             'packages': ['dbtk',
                                          'dbtk.lib',
                                          'dbtk.scripts',
