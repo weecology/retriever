@@ -16,14 +16,7 @@ from dbtk.lib.engines import ALL_ENGINES
 
 
 def launch_wizard(lists):    
-    """Launches the download wizard.
-    
-    dbtk_list: a list of scripts that may be selected. If only one, it will
-    be selected by default.
-    
-    ALL_ENGINES: a list of engines that may be selected. 
-    
-    """
+    """Launches the download wizard."""
     print "Launching Database Toolkit wizard . . ."                    
     
     # Create the wxPython app and wizard 
