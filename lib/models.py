@@ -341,6 +341,9 @@ class Engine():
             return values
         else:
             return line.split(self.table.delimiter)
+    def final_cleanup(self):
+        """Close the database connection."""
+        self.connection.close()
     def format_column_name(self, column):
         return column
     def format_data_dir(self):

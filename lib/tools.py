@@ -251,6 +251,7 @@ def final_cleanup(engine):
     """Perform final cleanup operations after all scripts have run."""
     # Delete empty directories in RAW_DATA_LOCATION, then delete that
     # directory if empty.
+    engine.final_cleanup()
     try:
        data_dirs = os.listdir(engine.RAW_DATA_LOCATION)
        for dir in data_dirs:
