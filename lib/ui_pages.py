@@ -3,11 +3,14 @@
 """
 
 import os
+import sys
+import threading
 import wx
 import wx.html
 import wx.wizard
 from dbtk.lib.models import Engine
 from dbtk.lib.tools import AutoDbTk
+from dbtk.lib.ui_download import download_scripts
 from dbtk import VERSION
 
 
@@ -53,14 +56,16 @@ class DbTkWizard(wx.wizard.Wizard):
                                "Check each dataset to be downloaded:\n"))
         
         self.page.append(self.FinishPage(self, "", ""))
+        
+        self.page.append(self.DownloadPage(self, "", ""))
 
         
         if len(self.lists) > 1:
-            (self.TITLE, self.CHOOSEDB, self.CONNECTION, self.CAT, 
-             self.DATASET, self.FINISH) = [self.page[i] for i in range(6)]
+            (self.TITLE, self.CHOOSEDB, self.CONNECTION, self.CAT, self.DATASET, 
+             self.FINISH, self.DOWNLOAD) = [self.page[i] for i in range(7)]
         else:
-            (self.TITLE, self.CHOOSEDB, self.CONNECTION, 
-             self.DATASET, self.FINISH) = [self.page[i] for i in range(5)]
+            (self.TITLE, self.CHOOSEDB, self.CONNECTION, self.DATASET, 
+             self.FINISH, self.DOWNLOAD) = [self.page[i] for i in range(6)]
             self.dbtk_list = self.lists[0].scripts
             self.DATASET.Draw(None) 
             
@@ -324,9 +329,13 @@ class DbTkWizard(wx.wizard.Wizard):
             parent.TitledPage.__init__(self, parent, title, label)
             self.summary = parent.HtmlWindow(self)
             self.sizer.Add(self.summary, 1, wx.EXPAND)
+            self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.StartDownloads)
+        def StartDownloads(self, evt):
+            if evt.Direction:
+                self.Parent.DOWNLOAD.Draw(None) 
         def Draw(self, evt):
             checked_scripts = self.Parent.DATASET.scriptlist.GetCheckedStrings()
-            html = "<h2>Finished</h2><p>That's it! Click Finish to download your data.</p>"
+            html = "<h2>Finished</h2><p>That's it! Click Next to download your data.</p>"
             html += "<p>Download summary:</p><ul>"
             for script in self.Parent.dbtk_list:
                 if script.name in checked_scripts:
@@ -336,6 +345,43 @@ class DbTkWizard(wx.wizard.Wizard):
                     html += "</li>"
             html += "</ul>"
             self.summary.SetPage(html)
+            
+            
+    class DownloadPage(TitledPage):
+        def __init__(self, parent, title, label):
+            parent.TitledPage.__init__(self, parent, title, label)
+            self.summary = parent.HtmlWindow(self)
+            self.sizer.Add(self.summary, 1, wx.EXPAND)
+            self.dialog = None
+        def Draw(self, evt):
+            self.html = "<h2>Download Progress</h2>\n"
+            self.html += "<p>Beginning downloads . . .</p>"
+            self.summary.SetPage(self.html)
+            sys.stdout = self
+            self.worker = threading.Thread(target=download_scripts, 
+                                           args=(self.Parent,))
+            self.worker.daemon = True
+            self.worker.start()
+        def write(self, s):
+            if '\b' in s:
+                s = s.replace('\b', '')
+                if not self.dialog:
+                    print s.split(':')[0]
+                    self.dialog = wx.ProgressDialog("Download Progress", 
+                                                    "Downloading datasets . . .\n"
+                                                    + "  " * len(s), 
+                                                    maximum=2,
+                                                    parent=self.Parent
+                                                    )
+                self.dialog.Pulse(s)
+            else:
+                if self.dialog:
+                    self.dialog.Update(2, "")
+                    self.dialog = None
+                self.html += "\n<p>" + s + "</p>"
+                self.summary.SetPage(self.html)
+                self.summary.Scroll(-1, self.GetClientSize()[0])
+                wx.GetApp().Yield()
                         
                          
 class AddDatasetWizard(wx.wizard.Wizard):
