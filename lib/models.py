@@ -286,10 +286,11 @@ class Engine():
     def download_file(self, url, filename):
         """Downloads a file to the raw data directory."""
         self.create_raw_data_dir()
-        if not self.use_local or not os.path.isfile(self.format_filename(filename)):
+        path = self.format_filename(filename)
+        if not self.use_local or not (os.path.isfile(path) and os.path.getsize(path) > 0):
             print "Downloading " + filename + "..."
             file = urllib.urlopen(url) 
-            local_file = open(self.format_filename(filename), 'wb')
+            local_file = open(path, 'wb')
             local_file.write(file.read())
             local_file.close()
             file.close()
