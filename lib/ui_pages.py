@@ -9,7 +9,7 @@ import wx
 import wx.html
 import wx.wizard
 from dbtk.lib.models import Engine
-from dbtk.lib.tools import AutoDbTk
+from dbtk.lib.tools import AutoDbTk, get_saved_connection
 from dbtk.lib.ui_download import download_scripts
 from dbtk import VERSION
 
@@ -161,6 +161,28 @@ class DbTkWizard(wx.wizard.Wizard):
             self.option = dict()
             self.sel = ""
             self.fields = wx.BoxSizer(wx.VERTICAL)
+            self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.SaveConnection)            
+        def SaveConnection(self, evt):
+            if self.save_connection.Value:
+                if os.path.isfile("connections.config"):
+                    config = open("connections.config", "rb")
+                    lines = []
+                    for line in config:
+                        if line.split(',')[0] != self.engine.name:
+                            lines.append(line.rstrip('\n') + '\n')
+                    config.close()
+                    os.remove("connections.config")
+                    config = open("connections.config", "wb")
+                    for line in lines:
+                        config.write(line)
+                else:
+                    config = open("connections.config", "wb")                    
+                connection = self.engine.name
+                for key in self.option.keys():
+                    connection += ','
+                    connection += key + ':' + self.option[key].Value
+                config.write(connection)
+                config.close()
         def Draw(self, evt):
             """When the page is drawn, it may need to update its fields if 
             the selected database has changed."""
@@ -177,17 +199,22 @@ class DbTkWizard(wx.wizard.Wizard):
                     self.fields = wx.BoxSizer(wx.VERTICAL)                
                     self.fieldset = dict()
                     self.option = dict()
+                    saved_opts = get_saved_connection(self.engine.name)
                     for opt in self.engine.required_opts:
+                        if opt[0] in saved_opts.keys():
+                            default = saved_opts[opt[0]]
+                        else:
+                            default = opt[2]
                         self.fieldset[opt[0]] = wx.BoxSizer(wx.HORIZONTAL)
                         label = wx.StaticText(self, -1, opt[0] + ": ", 
                                               size=wx.Size(90,35))
                         if opt[0] == "password":
                             txt = wx.TextCtrl(self, -1, 
-                                              str(opt[2]), 
+                                              str(default), 
                                               size=wx.Size(200,-1), 
                                               style=wx.TE_PASSWORD)
                         else:
-                            txt = wx.TextCtrl(self, -1, str(opt[2]),
+                            txt = wx.TextCtrl(self, -1, str(default),
                                               size=wx.Size(200,-1))
                         self.option[opt[0]] = txt
                         self.fieldset[opt[0]].AddMany([label, 
@@ -210,6 +237,9 @@ class DbTkWizard(wx.wizard.Wizard):
                     #self.fields = wx.BoxSizer(wx.VERTICAL)
                     self.fields.Layout()
                     self.sizer.Add(self.fields)
+                    self.save_connection = wx.CheckBox(self, -1, "Save connection")                    
+                    self.save_connection.SetValue(True)
+                    self.sizer.Add(self.save_connection)
                     self.sizer.Layout()
 
 
