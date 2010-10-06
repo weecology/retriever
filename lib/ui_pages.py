@@ -4,7 +4,7 @@
 
 import os
 import sys
-import threading
+from threading import Thread
 import wx
 import wx.html
 import wx.wizard
@@ -74,7 +74,9 @@ class DbTkWizard(wx.wizard.Wizard):
         self.TITLE.sizer.Add(self.TITLE.welcome, 1, wx.EXPAND)
              
         self.CHOOSEDB.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CONNECTION.Draw)
-    
+        
+        self.Bind(wx.wizard.EVT_WIZARD_CANCEL, self.Abort)
+
         
         for i in range(len(self.page) - 1):
             wx.wizard.WizardPageSimple_Chain(self.page[i], self.page[i + 1])
@@ -353,14 +355,22 @@ class DbTkWizard(wx.wizard.Wizard):
             self.summary = parent.HtmlWindow(self)
             self.sizer.Add(self.summary, 1, wx.EXPAND)
             self.dialog = None
+            self.worker = None
         def Draw(self, evt):
             self.html = "<h2>Download Progress</h2>\n"
             self.html += "<p>Beginning downloads . . .</p>"
             self.summary.SetPage(self.html)
             sys.stdout = self
-            self.worker = threading.Thread(target=download_scripts, 
-                                           args=(self.Parent,))
-            self.worker.daemon = True
+            
+            class DownloadThread(Thread):
+                def __init__(self, parent):
+                    Thread.__init__(self)
+                    self.parent = parent
+                    self.daemon = True
+                def run(self):
+                    download_scripts(self.parent)
+                    
+            self.worker = DownloadThread(self.Parent)
             self.worker.start()
         def write(self, s):
             if '\b' in s:
@@ -371,9 +381,16 @@ class DbTkWizard(wx.wizard.Wizard):
                                                     "Downloading datasets . . .\n"
                                                     + "  " * len(s), 
                                                     maximum=2,
-                                                    parent=self.Parent
+                                                    parent=self.Parent,
+                                                    style=wx.PD_CAN_ABORT |
+                                                          wx.PD_SMOOTH |
+                                                          wx.PD_AUTO_HIDE
                                                     )
-                self.dialog.Pulse(s)
+                (keepgoing, skip) = self.dialog.Pulse(s)
+                if not keepgoing:
+                    self.dialog.Update(2, "")
+                    self.dialog = None
+                    self.Parent.Abort(None)
             else:
                 if self.dialog:
                     self.dialog.Update(2, "")
@@ -382,7 +399,11 @@ class DbTkWizard(wx.wizard.Wizard):
                 self.summary.SetPage(self.html)
                 self.summary.Scroll(-1, self.GetClientSize()[0])
                 wx.GetApp().Yield()
-                        
+    
+    def Abort(self, evt):
+        quit()
+        wx.GetApp().Exit()
+                         
                          
 class AddDatasetWizard(wx.wizard.Wizard):
     """Wizard for adding custuom datasets"""

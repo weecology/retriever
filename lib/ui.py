@@ -27,5 +27,3 @@ def launch_wizard(lists):
 
     # Run the wizard
     wizard.RunWizard(wizard.TITLE)
-        
-    #app.MainLoop()
