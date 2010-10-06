@@ -57,7 +57,7 @@ def download_scripts(wizard):
         errors = []
         for script in scripts:
             scriptnum += 1
-            msg = "Downloading " + script.name
+            msg = "<b><font color='blue'>Downloading " + script.name + "</font></b>"
             if len(scripts) > 0:
                 msg += " (" + str(scriptnum) + " of " + str(len(scripts)) + ")"
             msg += " . . ."
@@ -67,20 +67,19 @@ def download_scripts(wizard):
             except Exception as e:
                 errors.append("There was an error downloading " + 
                               script.name + ".")
-                wx.MessageBox(e.__str__(), "Error")
-                app.Exit()
-                raise
+                print "<font color='red'>Error: " + e.__str__() + "</font>"
                 
         final_cleanup(engine)
         
         if errors:
-            errors = "The following errors occurred:<ul>"
+            error_txt = "<b><font color='red'>The following errors occurred:</font></b>"
+            error_txt += "<ul>"
             for error in errors:
-                errors += "<li>" + error + "</li>"
-            errors += "</ul>"
-            print errors
+                error_txt += "<li><font color='red'>" + error + "</font></li>"
+            error_txt += "</ul>"
+            print error_txt
         else:
-            print "Your downloads were completed successfully."
+            print "<b>Your downloads were completed successfully.</b>"
         
         wizard.FindWindowById(wx.ID_CANCEL).Disable()
         wizard.FindWindowById(wx.ID_FORWARD).Enable()

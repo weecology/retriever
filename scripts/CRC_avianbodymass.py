@@ -7,9 +7,10 @@ this script.
 
 """
 
+import os
 import xlrd
-from dbtk.lib.tools import DbTk
-from dbtk.lib.models import Table
+from dbtk.lib.tools import DbTk, DbtkError
+from dbtk.lib.models import Table, Cleanup, no_cleanup
 from dbtk.lib.excel import Excel
 
 
