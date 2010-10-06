@@ -265,7 +265,22 @@ def final_cleanup(engine):
         os.rmdir(engine.RAW_DATA_LOCATION)
     except OSError:
         pass
+        
+
+def get_saved_connection(engine_name):
+    parameters = dict()
+    if os.path.isfile("connections.config"):
+        config = open("connections.config", "rb")
+        for line in config:
+            values = line.rstrip('\n').split(',')
+            if values[0] == engine_name:
+                values = values[1:]
+                for value in values:
+                    parameter = value.split(':')[0]
+                    saved_value = value.split(':')[1]
+                    parameters[parameter] = saved_value
+    return parameters
     
-    
+
 class DbtkError(Exception):
     pass
