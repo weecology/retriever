@@ -82,10 +82,11 @@ class Engine():
                                                          self.table.cleanup.args)) 
                                for value in linevalues]
                 insertstatement = self.insert_statement(cleanvalues)
-                prompt = "Inserting rows to " + self.tablename() + ": "
-                sys.stdout.write(prompt + str(self.table.record_id) + "\b" *
-                                 (len(str(self.table.record_id)) + 
-                                  len(prompt)))
+                if self.table.record_id % 10 == 0:
+                    prompt = "Inserting rows to " + self.tablename() + ": "                
+                    sys.stdout.write(prompt + str(self.table.record_id) + "\b" *
+                                     (len(str(self.table.record_id)) + 
+                                      len(prompt)))
                 self.cursor.execute(insertstatement)
                 
         print "\n Done!"

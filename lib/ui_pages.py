@@ -360,7 +360,6 @@ class DbTkWizard(wx.wizard.Wizard):
             self.html = "<h2>Download Progress</h2>\n"
             self.html += "<p>Beginning downloads . . .</p>"
             self.summary.SetPage(self.html)
-            sys.stdout = self
             
             class DownloadThread(Thread):
                 def __init__(self, parent):
@@ -368,23 +367,38 @@ class DbTkWizard(wx.wizard.Wizard):
                     self.parent = parent
                     self.daemon = True
                 def run(self):
-                    download_scripts(self.parent)
+                    download_scripts(self, self.parent)
                     
             self.worker = DownloadThread(self.Parent)
             self.worker.start()
+
+            self.timer = wx.Timer(self, -1)
+            self.timer.Start(1)
+            self.Bind(wx.EVT_TIMER, self.update, self.timer)
+
+        def update(self, evt):
+            self.timer.Stop()
+            if self.worker:
+                if len(self.worker.output) > 0:
+                    self.write(self.worker.output[0])
+                    self.worker.output = self.worker.output[1:]
+            self.timer.Start(1)
+        
         def write(self, s):
             if '\b' in s:
                 s = s.replace('\b', '')
                 if not self.dialog:
-                    print "<font color='green'>" + s.split(':')[0] + "</font>"
+                    self.html += "<font color='green'>" + s.split(':')[0] + "</font>"
+                    self.summary.SetPage(self.html)
+                    self.summary.Scroll(-1, self.GetClientSize()[0])
                     self.dialog = wx.ProgressDialog("Download Progress", 
                                                     "Downloading datasets . . .\n"
                                                     + "  " * len(s), 
                                                     maximum=2,
                                                     parent=self.Parent,
-                                                    style=wx.PD_CAN_ABORT |
-                                                          wx.PD_SMOOTH |
-                                                          wx.PD_AUTO_HIDE
+                                                    style=wx.PD_CAN_ABORT 
+                                                          | wx.PD_SMOOTH
+                                                          | wx.PD_AUTO_HIDE
                                                     )
                 (keepgoing, skip) = self.dialog.Pulse(s)
                 if not keepgoing:
@@ -398,7 +412,9 @@ class DbTkWizard(wx.wizard.Wizard):
                 self.html += "\n<p>" + s + "</p>"
                 self.summary.SetPage(self.html)
                 self.summary.Scroll(-1, self.GetClientSize()[0])
-                wx.GetApp().Yield()
+
+            self.Parent.Refresh()
+            
     
     def Abort(self, evt):
         quit()

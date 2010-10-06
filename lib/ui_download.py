@@ -4,9 +4,18 @@ import sys
 import wx
 from dbtk.lib.tools import final_cleanup
 
-def download_scripts(wizard):
+def download_scripts(worker, wizard):
+    worker.output = []
     wizard.FindWindowById(wx.ID_FORWARD).Disable()
     wizard.FindWindowById(wx.ID_BACKWARD).Disable()
+
+    class download_stdout:
+        def __init__(self, parent):
+            self.parent = parent
+        def write(self, s):
+            worker.output.append(s)
+            
+    sys.stdout = download_stdout(wizard.DOWNLOAD)
 
     # Get a list of scripts to be downloaded
     scripts = []
@@ -23,8 +32,6 @@ def download_scripts(wizard):
         
             
     def OnTimer(evt):
-        timer.Stop()
-        
         scriptnum = 0
         
         print "Connecting to database . . ."
@@ -44,14 +51,9 @@ def download_scripts(wizard):
         try:
             engine.get_cursor()
         except Exception as e:
-            wx.MessageBox("There was an error with your database" 
-                          + " connection. \n\n" +
-                          e.__str__())
-            app.Exit()
+            print "<font color='red'>There was an error with your database connection.</font>" 
             return
         
-        oldstdout = sys.stdout
-        #sys.stdout = update_dialog(self)
         
         # Download scripts
         errors = []
@@ -84,6 +86,4 @@ def download_scripts(wizard):
         wizard.FindWindowById(wx.ID_CANCEL).Disable()
         wizard.FindWindowById(wx.ID_FORWARD).Enable()
     
-    timer = wx.Timer(wizard, -1)
-    wizard.Bind(wx.EVT_TIMER, OnTimer, timer)
-    timer.Start(1)
+    OnTimer(None)
