@@ -5,10 +5,6 @@ import wx
 from dbtk.lib.tools import final_cleanup
 
 def download_scripts(worker, wizard):
-    worker.output = []
-    wizard.FindWindowById(wx.ID_FORWARD).Disable()
-    wizard.FindWindowById(wx.ID_BACKWARD).Disable()
-
     class download_stdout:
         def __init__(self, parent):
             self.parent = parent
@@ -82,8 +78,5 @@ def download_scripts(worker, wizard):
             print error_txt
         else:
             print "<b>Your downloads were completed successfully.</b>"
-        
-        wizard.FindWindowById(wx.ID_CANCEL).Disable()
-        wizard.FindWindowById(wx.ID_FORWARD).Enable()
     
     OnTimer(None)

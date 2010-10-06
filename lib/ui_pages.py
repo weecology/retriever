@@ -366,10 +366,15 @@ class DbTkWizard(wx.wizard.Wizard):
                     Thread.__init__(self)
                     self.parent = parent
                     self.daemon = True
-                def run(self):
+                    self.output = []
+                def run(self):                
+                    self.parent.FindWindowById(wx.ID_FORWARD).Disable()
+                    self.parent.FindWindowById(wx.ID_BACKWARD).Disable()                
                     download_scripts(self, self.parent)
+                    self.parent.FindWindowById(wx.ID_CANCEL).Disable()
+                    self.parent.FindWindowById(wx.ID_FORWARD).Enable()                    
                     
-            self.worker = DownloadThread(self.Parent)
+            self.worker = DownloadThread(self.Parent)        
             self.worker.start()
 
             self.timer = wx.Timer(self, -1)
@@ -379,7 +384,7 @@ class DbTkWizard(wx.wizard.Wizard):
         def update(self, evt):
             self.timer.Stop()
             if self.worker:
-                if len(self.worker.output) > 0:
+                while len(self.worker.output) > 0:                    
                     self.write(self.worker.output[0])
                     self.worker.output = self.worker.output[1:]
             self.timer.Start(1)
@@ -391,6 +396,7 @@ class DbTkWizard(wx.wizard.Wizard):
                     self.html += "<font color='green'>" + s.split(':')[0] + "</font>"
                     self.summary.SetPage(self.html)
                     self.summary.Scroll(-1, self.GetClientSize()[0])
+                    wx.GetApp().Yield()
                     self.dialog = wx.ProgressDialog("Download Progress", 
                                                     "Downloading datasets . . .\n"
                                                     + "  " * len(s), 
@@ -409,11 +415,13 @@ class DbTkWizard(wx.wizard.Wizard):
                 if self.dialog:
                     self.dialog.Update(2, "")
                     self.dialog = None
+                if "inserting" in s.lower() and not "<font" in s.lower():
+                    s = "<font color='green'>" + s + "</font>"
                 self.html += "\n<p>" + s + "</p>"
                 self.summary.SetPage(self.html)
                 self.summary.Scroll(-1, self.GetClientSize()[0])
 
-            self.Parent.Refresh()
+            wx.GetApp().Yield()
             
     
     def Abort(self, evt):
