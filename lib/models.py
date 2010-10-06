@@ -110,7 +110,7 @@ class Engine():
                 os.path.isfile(self.format_filename(filename))):
             # If the file doesn't exist, download it
             self.create_raw_data_dir()                        
-            print "Saving a copy of " + filename + " . . ."
+            print "Saving a copy of " + filename + "..."
             self.download_file(url, filename)
             if not self.keep_raw_data:
                 need_to_delete = True
@@ -247,7 +247,7 @@ class Engine():
     def create_db(self):
         """Creates a new database based on settings supplied in Database object
         engine.db"""
-        print "Creating database " + self.db.dbname + " . . ."
+        print "Creating database " + self.db.dbname + "..."
         # Create the database    
         self.cursor.execute(self.create_db_statement())
     def create_db_statement(self):
@@ -263,7 +263,7 @@ class Engine():
     def create_table(self):
         """Creates a new database table based on settings supplied in Table 
         object engine.table."""
-        print "Creating table " + self.table.tablename + ". . ."
+        print "Creating table " + self.table.tablename + "..."
         createstatement = self.create_table_statement()
         self.cursor.execute(createstatement)
     def create_table_statement(self):
@@ -287,7 +287,7 @@ class Engine():
         """Downloads a file to the raw data directory."""
         self.create_raw_data_dir()
         if not self.use_local or not os.path.isfile(self.format_filename(filename)):
-            print "Downloading " + filename + " . . ."
+            print "Downloading " + filename + "..."
             file = urllib.urlopen(url) 
             local_file = open(self.format_filename(filename), 'wb')
             local_file.write(file.read())
@@ -427,7 +427,7 @@ class Engine():
             if self.keep_raw_data:
                 # Save a copy of the file locally, then load from that file
                 self.create_raw_data_dir()                        
-                print "Saving a copy of " + filename + " . . ."
+                print "Saving a copy of " + filename + "..."
                 self.download_file(url, filename)
                 self.insert_data_from_file(self.format_filename(filename))
             else:

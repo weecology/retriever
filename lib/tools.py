@@ -12,7 +12,7 @@ import getopt
 from decimal import Decimal
 from hashlib import md5
 from dbtk.lib.models import Database, Cleanup, correct_invalid_value
-from dbtk.lib.engines import ENGINES_TO_TEST
+from dbtk.lib.engines import ENGINES_TO_TEST, choose_engine
 
 warnings.filterwarnings("ignore")
 
@@ -41,7 +41,7 @@ class DbTk:
             return '/'.join(self.url.split('/')[0:-1]) + '/'
     def checkengine(self, engine=None):
         if not engine:
-            opts = get_opts()        
+            opts = get_opts()
             engine = choose_engine(opts)
         engine.script = self            
         return engine
