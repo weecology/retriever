@@ -376,7 +376,7 @@ class DbTkWizard(wx.wizard.Wizard):
             if '\b' in s:
                 s = s.replace('\b', '')
                 if not self.dialog:
-                    print s.split(':')[0]
+                    print "<font color='green'>" + s.split(':')[0] + "</font>"
                     self.dialog = wx.ProgressDialog("Download Progress", 
                                                     "Downloading datasets . . .\n"
                                                     + "  " * len(s), 
