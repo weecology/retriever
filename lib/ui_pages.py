@@ -390,6 +390,8 @@ class DbTkWizard(wx.wizard.Wizard):
             self.dialog = None
             self.worker = None
         def Draw(self, evt):
+            self.Parent.FindWindowById(wx.ID_FORWARD).Disable()
+            self.SetPrev(None)
             self.html = "<h2>Download Progress</h2>\n"
             self.html += "<p>Beginning downloads . . .</p>"
             self.summary.SetPage(self.html)
@@ -399,18 +401,16 @@ class DbTkWizard(wx.wizard.Wizard):
                     Thread.__init__(self)
                     self.parent = parent
                     self.scriptnum = 0
-                    self.progress_max = 1                    
+                    self.progress_max = 1
                     self.daemon = True
                     self.output = []
-                def run(self):                
-                    self.parent.FindWindowById(wx.ID_FORWARD).Disable()
-                    self.parent.FindWindowById(wx.ID_BACKWARD).Disable()                
+                def run(self):
                     download_scripts(self, self.parent)
                     self.scriptnum = self.progress_max + 1
                     self.parent.FindWindowById(wx.ID_CANCEL).Disable()
-                    self.parent.FindWindowById(wx.ID_FORWARD).Enable()                    
+                    self.parent.FindWindowById(wx.ID_FORWARD).Enable()
                     
-            self.worker = DownloadThread(self.Parent)        
+            self.worker = DownloadThread(self.Parent)
             self.worker.start()
 
             self.timer = wx.Timer(self, -1)
