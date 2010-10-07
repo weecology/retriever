@@ -5,4 +5,4 @@ download published ecological data, and store the data in a database.
 
 """
 
-VERSION = '0.1'
+VERSION = '0.2'
