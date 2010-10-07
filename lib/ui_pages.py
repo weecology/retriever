@@ -425,7 +425,8 @@ class DbTkWizard(wx.wizard.Wizard):
                     self.worker.output = self.worker.output[1:]
             self.gauge.SetValue(100 * ((self.worker.scriptnum) /
                                        (self.worker.progress_max + 1.0)))
-            self.timer.Start(1)
+            if self.worker.scriptnum < self.worker.progress_max + 1:
+                self.timer.Start(1)
         
         def write(self, s):
             if '\b' in s:
