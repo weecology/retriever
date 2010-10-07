@@ -15,7 +15,8 @@ setup(name='dbtk',
       packages=[
                 'dbtk',
                 'dbtk.lib',
-                'dbtk.scripts'
+                'dbtk.scripts',
+                'dbtk.ui'
                 ],
       package_dir={
                 'dbtk':''
@@ -32,6 +33,7 @@ setup(name='dbtk',
                             'packages': ['dbtk',
                                          'dbtk.lib',
                                          'dbtk.scripts',
+                                         'dbtk.ui'
                                          ],
                             'includes': ['xlrd',
                                          'pyodbc'
