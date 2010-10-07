@@ -5,6 +5,7 @@
 import os
 import urllib
 import zipfile
+from decimal import Decimal
 from dbtk.lib.tools import DbTk
 from dbtk.lib.models import Table, Cleanup, no_cleanup
 
@@ -19,11 +20,26 @@ class main(DbTk):
             DbTk.download(self, engine)
             
             # Routes table
-            engine.download_files_from_archive("ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CRoutes.exe",
-                                               ["routes.csv"])
-            engine.auto_create_table("routes", filename="routes.csv",
+            if not os.path.isfile(engine.format_filename("routes_new.csv")):
+                engine.download_files_from_archive("ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CRoutes.exe",
+                                                   ["routes.csv"])
+                read = open(engine.format_filename("routes.csv"), "rb")
+                write = open(engine.format_filename("routes_new.csv"), "wb")
+                print "Cleaning routes data..."
+                write.write(read.readline())
+                for line in read:
+                    values = line.split(',')
+                    v = Decimal(values[5])
+                    if  v > 0:
+                        values[5] = str(v * Decimal("-1"))
+                    write.write(','.join(str(value) for value in values))
+                write.close()
+                read.close()
+                
+            engine.auto_create_table("routes", filename="routes_new.csv",
                                      cleanup=Cleanup())
-            engine.insert_data_from_file(engine.format_filename("routes.csv"))
+                
+            engine.insert_data_from_file(engine.format_filename("routes_new.csv"))
 
             
             # Weather table                
@@ -32,7 +48,7 @@ class main(DbTk):
                                                    ["weather.csv"])            
                 read = open(engine.format_filename("weather.csv"), "rb")
                 write = open(engine.format_filename("weather_new.csv"), "wb")
-                print "Cleaning weather data . . ."            
+                print "Cleaning weather data..."            
                 for line in read:
                     values = line.split(',')
                     newvalues = []
@@ -128,7 +144,7 @@ class main(DbTk):
                     else:        
                         state, shortstate = state[0], state[1]
                         
-                    print "Downloading and decompressing data from " + state + " . . ."
+                    print "Downloading and decompressing data from " + state + "..."
                     engine.insert_data_from_archive("ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/C" + shortstate + ".exe", 
                                                     ["C" + shortstate + ".csv"])
                             

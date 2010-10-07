@@ -19,6 +19,7 @@ this class.</p>
 </div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.download_files_from_archive">download_files_from_archive</a></td><td><div><p>Downloads one or more files from an archive into the raw data</p>
 </div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.drop_statement">drop_statement</a></td><td><div><p>Returns a drop table or database SQL statement.</p>
 </div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.extract_values">extract_values</a></td><td><div><p>Given a line of data, this function returns a list of the individual</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.final_cleanup">final_cleanup</a></td><td><div><p>Close the database connection.</p>
 </div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.format_column_name">format_column_name</a></td><td><span class="undocumented">Undocumented</span></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.format_data_dir">format_data_dir</a></td><td><div><p>Returns the correctly formatted raw data directory location.</p>
 </div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.format_filename">format_filename</a></td><td><div><p>Returns the full path of a file in the archive directory.</p>
 </div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.format_insert_value">format_insert_value</a></td><td><div><p>Formats a value for an insert statement, for example by surrounding</p>
@@ -107,6 +108,11 @@ directory.</p>
             <div class="functionHeader">def <a name="dbtk.lib.models.Engine.extract_values">extract_values(self, line):</a></div>
             <div class="functionBody"><div><p>Given a line of data, this function returns a list of the individual 
 data values.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.final_cleanup">final_cleanup(self):</a></div>
+            <div class="functionBody"><div><p>Close the database connection.</p>
 </div></div>
             </div>
             <div class="function">

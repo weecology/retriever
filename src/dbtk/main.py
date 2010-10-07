@@ -5,13 +5,15 @@ This module contains a list of all current DBTK scripts.
 Running this module directly will launch the download wizard, allowing the user
 to choose from all scripts.
 
+The main() function can be used for bootstrapping.
+
 """
 
 import os
 from dbtk.scripts.all import MODULE_LIST
 from dbtk.lib.tools import AutoDbTk, DbTkList
 from dbtk.lib.engines import ALL_ENGINES
-from dbtk.lib.ui import launch_wizard
+from dbtk.ui.wizard import launch_wizard
 
 
 DBTK_LIST = [module.main() for module in MODULE_LIST]

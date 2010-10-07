@@ -12,7 +12,7 @@ import getopt
 from decimal import Decimal
 from hashlib import md5
 from dbtk.lib.models import Database, Cleanup, correct_invalid_value
-from dbtk.lib.engines import ENGINES_TO_TEST
+from dbtk.lib.engines import ENGINES_TO_TEST, choose_engine
 
 warnings.filterwarnings("ignore")
 
@@ -41,7 +41,7 @@ class DbTk:
             return '/'.join(self.url.split('/')[0:-1]) + '/'
     def checkengine(self, engine=None):
         if not engine:
-            opts = get_opts()        
+            opts = get_opts()
             engine = choose_engine(opts)
         engine.script = self            
         return engine
@@ -251,6 +251,7 @@ def final_cleanup(engine):
     """Perform final cleanup operations after all scripts have run."""
     # Delete empty directories in RAW_DATA_LOCATION, then delete that
     # directory if empty.
+    engine.final_cleanup()
     try:
        data_dirs = os.listdir(engine.RAW_DATA_LOCATION)
        for dir in data_dirs:
@@ -264,7 +265,22 @@ def final_cleanup(engine):
         os.rmdir(engine.RAW_DATA_LOCATION)
     except OSError:
         pass
+        
+
+def get_saved_connection(engine_name):
+    parameters = dict()
+    if os.path.isfile("connections.config"):
+        config = open("connections.config", "rb")
+        for line in config:
+            values = line.rstrip('\n').split(',')
+            if values[0] == engine_name:
+                values = values[1:]
+                for value in values:
+                    parameter = value.split('::')[0]
+                    saved_value = value.split('::')[1]
+                    parameters[parameter] = saved_value
+    return parameters
     
-    
+
 class DbtkError(Exception):
     pass

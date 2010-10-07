@@ -3,6 +3,7 @@
 """
 
 import os
+import sys
 import zipfile
 import xlrd
 from dbtk.lib.tools import DbTk, DbTkTest
@@ -17,11 +18,11 @@ class main(DbTk):
     ref = "http://www.wlbcenter.org/gentry_data.htm"
     def download(self, engine=None):
         DbTk.download(self, engine)
-                
+              
         self.engine.download_file(self.url, "all_Excel.zip")
         local_zip = zipfile.ZipFile(self.engine.format_filename("all_Excel.zip"))        
         filelist = local_zip.namelist()
-        local_zip.close()
+        local_zip.close()        
         self.engine.download_files_from_archive(self.url, filelist)
         
         filelist = [os.path.basename(filename) for filename in filelist]
@@ -29,7 +30,7 @@ class main(DbTk):
         lines = []
         tax = []
         for filename in filelist:
-            print "Extracting data from " + filename + " . . ."
+            print "Extracting data from " + filename + "..."
             book = xlrd.open_workbook(self.engine.format_filename(filename))
             sh = book.sheet_by_index(0)
             rows = sh.nrows
@@ -78,8 +79,9 @@ class main(DbTk):
                 unique_tax.append(group)
                 tax_count += 1
                 tax_dict[group[0:3]] = tax_count
-                msg = "Generating taxonomic groups: " + str(tax_count)
-                print msg + "\b" * len(msg)
+                if tax_count % 10 == 0:
+                    msg = "Generating taxonomic groups: " + str(tax_count)
+                    sys.stdout.write(msg + "\b" * len(msg))
         
         # Create species table
         table = Table()

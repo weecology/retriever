@@ -15,7 +15,8 @@ setup(name='dbtk',
       packages=[
                 'dbtk',
                 'dbtk.lib',
-                'dbtk.scripts'
+                'dbtk.scripts',
+                'dbtk.ui'
                 ],
       package_dir={
                 'dbtk':''
@@ -27,9 +28,12 @@ setup(name='dbtk',
       },
       # py2exe options
       options = {'py2exe': {'bundle_files': 1,
+                            'compressed': 2,
+                            'optimize': 2,
                             'packages': ['dbtk',
                                          'dbtk.lib',
                                          'dbtk.scripts',
+                                         'dbtk.ui'
                                          ],
                             'includes': ['xlrd',
                                          'pyodbc'
