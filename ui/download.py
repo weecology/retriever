@@ -87,9 +87,9 @@ def download_scripts(worker, wizard):
         
         time_diff = finish - start
         
-        if time_diff > 360:
-            h = time_diff // 360
-            time_diff %= 360
+        if time_diff > 3600:
+            h = time_diff // 3600
+            time_diff %= 3600
         else:
             h = 0
         if time_diff > 60:
