@@ -88,8 +88,7 @@ class DbTkWizard(wx.wizard.Wizard):
             
                 
     def Abort(self, evt):
-        quit()
-        wx.GetApp().Exit()
+        sys.exit()
 
 
 
