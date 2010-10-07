@@ -276,8 +276,8 @@ def get_saved_connection(engine_name):
             if values[0] == engine_name:
                 values = values[1:]
                 for value in values:
-                    parameter = value.split(':')[0]
-                    saved_value = value.split(':')[1]
+                    parameter = value.split('::')[0]
+                    saved_value = value.split('::')[1]
                     parameters[parameter] = saved_value
     return parameters
     

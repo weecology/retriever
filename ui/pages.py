@@ -112,7 +112,7 @@ class ConnectPage(TitledPage):
             connection = self.engine.name
             for key in self.option.keys():
                 connection += ','
-                connection += key + ':' + self.option[key].Value
+                connection += key + '::' + self.option[key].Value
             config.write(connection)
             config.close()
     def Draw(self, evt):
