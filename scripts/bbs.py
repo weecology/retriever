@@ -25,7 +25,7 @@ class main(DbTk):
                                                    ["routes.csv"])
                 read = open(engine.format_filename("routes.csv"), "rb")
                 write = open(engine.format_filename("routes_new.csv"), "wb")
-                print "Cleaning routes data . . ."
+                print "Cleaning routes data..."
                 write.write(read.readline())
                 for line in read:
                     values = line.split(',')
@@ -48,7 +48,7 @@ class main(DbTk):
                                                    ["weather.csv"])            
                 read = open(engine.format_filename("weather.csv"), "rb")
                 write = open(engine.format_filename("weather_new.csv"), "wb")
-                print "Cleaning weather data . . ."            
+                print "Cleaning weather data..."            
                 for line in read:
                     values = line.split(',')
                     newvalues = []
@@ -144,7 +144,7 @@ class main(DbTk):
                     else:        
                         state, shortstate = state[0], state[1]
                         
-                    print "Downloading and decompressing data from " + state + " . . ."
+                    print "Downloading and decompressing data from " + state + "..."
                     engine.insert_data_from_archive("ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/C" + shortstate + ".exe", 
                                                     ["C" + shortstate + ".csv"])
                             

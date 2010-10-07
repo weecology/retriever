@@ -383,7 +383,10 @@ class DbTkWizard(wx.wizard.Wizard):
         def __init__(self, parent, title, label):
             parent.TitledPage.__init__(self, parent, title, label)
             self.summary = parent.HtmlWindow(self)
+            self.gauge = wx.Gauge(self, -1, 100, size=(-1,20), style=wx.GA_SMOOTH)
             self.sizer.Add(self.summary, 1, wx.EXPAND)
+            self.sizer.Add(self.gauge, 0, wx.EXPAND)
+            self.sizer.Layout()
             self.dialog = None
             self.worker = None
         def Draw(self, evt):
@@ -395,12 +398,15 @@ class DbTkWizard(wx.wizard.Wizard):
                 def __init__(self, parent):
                     Thread.__init__(self)
                     self.parent = parent
+                    self.scriptnum = 0
+                    self.progress_max = 1                    
                     self.daemon = True
                     self.output = []
                 def run(self):                
                     self.parent.FindWindowById(wx.ID_FORWARD).Disable()
                     self.parent.FindWindowById(wx.ID_BACKWARD).Disable()                
                     download_scripts(self, self.parent)
+                    self.scriptnum = self.progress_max + 1
                     self.parent.FindWindowById(wx.ID_CANCEL).Disable()
                     self.parent.FindWindowById(wx.ID_FORWARD).Enable()                    
                     
@@ -417,6 +423,8 @@ class DbTkWizard(wx.wizard.Wizard):
                 while len(self.worker.output) > 0:                    
                     self.write(self.worker.output[0])
                     self.worker.output = self.worker.output[1:]
+            self.gauge.SetValue(100 * ((self.worker.scriptnum) /
+                                       (self.worker.progress_max + 1.0)))
             self.timer.Start(1)
         
         def write(self, s):
@@ -424,8 +432,7 @@ class DbTkWizard(wx.wizard.Wizard):
                 s = s.replace('\b', '')
                 if not self.dialog:
                     self.html += "<font color='green'>" + s.split(':')[0] + "</font>"
-                    self.summary.SetPage(self.html)
-                    self.summary.Scroll(-1, self.GetClientSize()[0])
+                    self.refresh_html()
                     wx.GetApp().Yield()
                     self.dialog = wx.ProgressDialog("Download Progress", 
                                                     "Downloading datasets . . .\n"
@@ -448,10 +455,13 @@ class DbTkWizard(wx.wizard.Wizard):
                 if "inserting" in s.lower() and not "<font" in s.lower():
                     s = "<font color='green'>" + s + "</font>"
                 self.html += "\n<p>" + s + "</p>"
-                self.summary.SetPage(self.html)
-                self.summary.Scroll(-1, self.GetClientSize()[0])
+                self.refresh_html()
 
             wx.GetApp().Yield()
+        
+        def refresh_html(self):
+            self.summary.SetPage(self.html)
+            self.summary.Scroll(-1, self.summary.GetScrollRange(wx.VERTICAL))
             
     
     def Abort(self, evt):

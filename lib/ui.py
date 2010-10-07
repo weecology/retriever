@@ -18,7 +18,7 @@ from dbtk.lib.engines import ALL_ENGINES
 
 def launch_wizard(lists):    
     """Launches the download wizard."""
-    print "Launching Database Toolkit wizard . . ."                    
+    print "Launching Database Toolkit wizard..."                    
     
     # Create the wxPython app and wizard 
     app = wx.PySimpleApp(False)

@@ -1,10 +1,13 @@
 """A function to begin dataset downloads in a separate thread."""
 
 import sys
+from time import time
 import wx
 from dbtk.lib.tools import final_cleanup
 
 def download_scripts(worker, wizard):
+    start = time()
+    
     class download_stdout:
         def __init__(self, parent):
             self.parent = parent
@@ -26,9 +29,10 @@ def download_scripts(worker, wizard):
         if dl:
             scripts.append(script)
         
+    worker.progress_max = len(scripts)            
             
     def OnTimer(evt):
-        scriptnum = 0
+        worker.scriptnum = 0
         
         print "Connecting to database . . ."
                 
@@ -54,10 +58,10 @@ def download_scripts(worker, wizard):
         # Download scripts
         errors = []
         for script in scripts:
-            scriptnum += 1
+            worker.scriptnum += 1
             msg = "<b><font color='blue'>Downloading " + script.name + "</font></b>"
             if len(scripts) > 0:
-                msg += " (" + str(scriptnum) + " of " + str(len(scripts)) + ")"
+                msg += " (" + str(worker.scriptnum) + " of " + str(worker.progress_max) + ")"
             msg += " . . ."
             print msg
             try:
@@ -78,5 +82,25 @@ def download_scripts(worker, wizard):
             print error_txt
         else:
             print "<b>Your downloads were completed successfully.</b>"
+            
+        finish = time()
+        
+        time_diff = finish - start
+        
+        if time_diff > 360:
+            h = time_diff // 360
+            time_diff %= 360
+        else:
+            h = 0
+        if time_diff > 60:
+            m = time_diff // 60
+            time_diff %= 60
+        else:
+            m = 0
+        s = "%.2f" % (time_diff)
+        if len(s.split('.')[0]) < 2:
+            s = "0" + s
+        
+        print "<i>Elapsed time: %02d:%02d:%s</i>" % (h, m, s)
     
     OnTimer(None)
