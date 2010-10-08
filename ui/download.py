@@ -12,7 +12,9 @@ def download_scripts(worker, wizard):
         def __init__(self, parent):
             self.parent = parent
         def write(self, s):
+            worker.output_lock.acquire()
             worker.output.append(s)
+            worker.output_lock.release()
             
     sys.stdout = download_stdout(wizard.DOWNLOAD)
 
