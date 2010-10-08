@@ -1,9 +1,8 @@
 """Wizard page that starts download thread and updates on download progress."""
 
 import wx
-from threading import Thread, Lock
 from dbtk.ui.pages import TitledPage, HtmlWindow
-from dbtk.ui.download import download_scripts
+from dbtk.lib.download import DownloadThread
 
 
 class DownloadPage(TitledPage):
@@ -23,22 +22,37 @@ class DownloadPage(TitledPage):
         self.html += "<p>Beginning downloads . . .</p>"
         self.summary.SetPage(self.html)
         
-        class DownloadThread(Thread):
-            def __init__(self, parent):
-                Thread.__init__(self)
-                self.parent = parent
-                self.scriptnum = 0
-                self.progress_max = 1
-                self.daemon = True
-                self.output_lock = Lock()
-                self.output = []
+        # Get options from wizard
+        engine = self.Parent.CONNECTION.engine
+        options = self.Parent.CONNECTION.option
+        engine.keep_raw_data = self.Parent.CHOOSEDB.keepdata.Value
+        engine.use_local = self.Parent.CHOOSEDB.uselocal.Value
+        engine.RAW_DATA_LOCATION = self.Parent.CHOOSEDB.raw_data_dir.Value
+        opts = dict()
+        for key in options.keys():
+            opts[key] = options[key].GetValue()
+        engine.opts = opts
+        
+        # Get a list of scripts to be downloaded
+        scripts = []
+        checked_scripts = self.Parent.DATASET.scriptlist.GetCheckedStrings()
+        for script in self.Parent.dbtk_list:
+            dl = False
+            if len(self.Parent.dbtk_list) > 1:
+                if script.name in checked_scripts:
+                    dl = True
+            else:
+                dl = True
+            if dl:
+                scripts.append(script)        
+        
+        class wxDownloadThread(DownloadThread):
             def run(self):
-                download_scripts(self, self.parent)
-                self.scriptnum = self.progress_max + 1
+                DownloadThread.run(self)
                 self.parent.FindWindowById(wx.ID_CANCEL).Disable()
-                self.parent.FindWindowById(wx.ID_FORWARD).Enable()
+                self.parent.FindWindowById(wx.ID_FORWARD).Enable()                
                 
-        self.worker = DownloadThread(self.Parent)
+        self.worker = wxDownloadThread(self.Parent, engine, scripts)
         self.worker.start()
 
         self.timer = wx.Timer(self, -1)
