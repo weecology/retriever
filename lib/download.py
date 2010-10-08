@@ -6,10 +6,10 @@ from threading import Thread, Lock
 import wx
 from dbtk.lib.tools import final_cleanup
 
+
 class DownloadThread(Thread):
-    def __init__(self, parent, engine, scripts):
+    def __init__(self, engine, scripts):
         Thread.__init__(self)
-        self.parent = parent
         self.engine = engine
         self.scripts = scripts
         self.scriptnum = 0
@@ -21,6 +21,9 @@ class DownloadThread(Thread):
     def run(self):
         self.download_scripts()
         self.scriptnum = self.progress_max + 1
+        
+    def finished(self):
+        return (self.scriptnum > self.progress_max)
 
     def download_scripts(self):
         engine = self.engine
@@ -39,7 +42,7 @@ class DownloadThread(Thread):
             
         worker.progress_max = len(scripts)            
                 
-        def OnTimer(evt):
+        def start_download():
             worker.scriptnum = 0
             
             print "Connecting to database . . ."
@@ -100,4 +103,4 @@ class DownloadThread(Thread):
             
             print "<i>Elapsed time: %02d:%02d:%s</i>" % (h, m, s)
         
-        OnTimer(None)
+        start_download()

@@ -44,15 +44,16 @@ class DownloadPage(TitledPage):
             else:
                 dl = True
             if dl:
-                scripts.append(script)        
+                scripts.append(script)
         
-        class wxDownloadThread(DownloadThread):
+        class wxDownloadThread(DownloadThread):        
             def run(self):
                 DownloadThread.run(self)
                 self.parent.FindWindowById(wx.ID_CANCEL).Disable()
                 self.parent.FindWindowById(wx.ID_FORWARD).Enable()                
                 
-        self.worker = wxDownloadThread(self.Parent, engine, scripts)
+        self.worker = wxDownloadThread(engine, scripts)        
+        self.worker.parent = self.Parent
         self.worker.start()
 
         self.timer = wx.Timer(self, -1)
