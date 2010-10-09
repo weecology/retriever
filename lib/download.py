@@ -34,9 +34,10 @@ class DownloadThread(Thread):
         
         class download_stdout:
             def write(self, s):
-                worker.output_lock.acquire()
-                worker.output.append(s)
-                worker.output_lock.release()
+                if s != '\n':
+                    worker.output_lock.acquire()
+                    worker.output.append(s)
+                    worker.output_lock.release()
                 
         sys.stdout = download_stdout()
             

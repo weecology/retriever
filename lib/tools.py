@@ -11,8 +11,7 @@ import unittest
 import getopt
 from decimal import Decimal
 from hashlib import md5
-from dbtk.lib.models import Database, Cleanup, correct_invalid_value
-from dbtk.lib.engines import ENGINES_TO_TEST, choose_engine
+from dbtk.lib.models import Database, Engine, Cleanup, correct_invalid_value
 
 warnings.filterwarnings("ignore")
 
@@ -279,8 +278,35 @@ def get_saved_connection(engine_name):
                     parameter = value.split('::')[0]
                     saved_value = value.split('::')[1]
                     parameters[parameter] = saved_value
-    return parameters
-    
+    return parameters    
 
-class DbtkError(Exception):
-    pass
+
+def choose_engine(opts):
+    """Prompts the user to select a database engine"""    
+    from dbtk import ENGINE_LIST
+    ENGINE_LIST = ENGINE_LIST()
+    if "engine" in opts.keys():
+        enginename = opts["engine"]    
+    else:
+        print "Choose a database engine:"
+        for engine in ENGINE_LIST:
+            if engine.abbreviation:
+                abbreviation = "(" + engine.abbreviation + ") "
+            else:
+                abbreviation = ""
+            print "    " + abbreviation + engine.name
+        enginename = raw_input(": ")
+        enginename = enginename.lower()
+    
+    engine = Engine()
+    if not enginename:
+        engine = ENGINE_LIST[0]
+    else:
+        for thisengine in ENGINE_LIST:
+            if (enginename == thisengine.name.lower() 
+                              or thisengine.abbreviation
+                              and enginename == thisengine.abbreviation):
+                engine = thisengine
+        
+    engine.opts = opts
+    return engine    

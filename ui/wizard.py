@@ -14,7 +14,9 @@ from threading import Thread
 from dbtk.lib.tools import final_cleanup
 from dbtk.ui.pages import *
 from dbtk.ui.download_page import DownloadPage
-from dbtk.lib.engines import ALL_ENGINES
+from dbtk import ENGINE_LIST
+
+ENGINE_LIST = ENGINE_LIST()
 
 
 class DbTkWizard(wx.wizard.Wizard):
@@ -102,7 +104,7 @@ def launch_wizard(lists):
     # Create the wxPython app and wizard 
     app = wx.PySimpleApp(False)
     wizard = DbTkWizard(None, -1, "Database Toolkit Wizard", 
-                        lists, ALL_ENGINES)
+                        lists, ENGINE_LIST)
 
     # Run the wizard
     wizard.RunWizard(wizard.TITLE)

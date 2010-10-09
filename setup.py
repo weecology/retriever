@@ -13,10 +13,11 @@ setup(name='dbtk',
       author_email='ben.morris@weecology.org',
       url='http://www.ecologicaldata.org/database-toolkits',
       packages=[
-                'dbtk',
                 'dbtk.lib',
                 'dbtk.scripts',
-                'dbtk.ui'
+                'dbtk.engines',
+                'dbtk.ui',
+                'dbtk',
                 ],
       package_dir={
                 'dbtk':''
@@ -30,10 +31,12 @@ setup(name='dbtk',
       options = {'py2exe': {'bundle_files': 1,
                             'compressed': 2,
                             'optimize': 2,
-                            'packages': ['dbtk',
+                            'packages': [
                                          'dbtk.lib',
                                          'dbtk.scripts',
-                                         'dbtk.ui'
+                                         'dbtk.engines',
+                                         'dbtk.ui',
+                                         'dbtk',
                                          ],
                             'includes': ['xlrd',
                                          'pyodbc'

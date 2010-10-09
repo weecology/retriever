@@ -15,9 +15,11 @@ class main(DbTk):
     shortname = "BBS"
     ref = "http://www.pwrc.usgs.gov/BBS/"
     required_opts = []
-    def download(self, engine=None):    
+    def download(self, engine=None):
         try:
             DbTk.download(self, engine)
+            
+            engine = self.engine
             
             # Routes table
             if not os.path.isfile(engine.format_filename("routes_new.csv")):

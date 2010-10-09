@@ -9,7 +9,7 @@ this script.
 
 import os
 import xlrd
-from dbtk.lib.tools import DbTk, DbtkError
+from dbtk.lib.tools import DbTk
 from dbtk.lib.models import Table, Cleanup, no_cleanup
 from dbtk.lib.excel import Excel
 
@@ -63,7 +63,7 @@ class main(DbTk):
             
             # Make sure file exists
             if not os.path.isfile(full_filename):
-                raise DbtkError("Missing raw data file: " + 
+                raise Exception("DbtkError", "Missing raw data file: " + 
                                    full_filename)
             
             # Open excel file with xlrd

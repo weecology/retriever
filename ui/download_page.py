@@ -15,6 +15,7 @@ class DownloadPage(TitledPage):
         self.sizer.Layout()
         self.dialog = None
         self.worker = None
+        
     def Draw(self, evt):
         self.Parent.FindWindowById(wx.ID_FORWARD).Disable()
         self.SetPrev(None)
@@ -69,7 +70,7 @@ class DownloadPage(TitledPage):
                 self.worker.output = self.worker.output[1:]
             self.gauge.SetValue(100 * ((self.worker.scriptnum) /
                                        (self.worker.progress_max + 1.0)))
-            if self.worker.scriptnum < self.worker.progress_max + 1:
+            if not self.worker.finished():
                 self.timer.Start(1)
             self.worker.output_lock.release()                
     
