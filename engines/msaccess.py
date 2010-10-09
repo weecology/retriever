@@ -105,33 +105,3 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
         self.connection = dbapi.connect(connection_string,
                                         autocommit = False)
         self.cursor = self.connection.cursor()
-
-
-def choose_engine(opts):
-    """Prompts the user to select a database engine"""    
-    if "engine" in opts.keys():
-        enginename = opts["engine"]    
-    else:
-        print "Choose a database engine:"
-        for engine in ALL_ENGINES:
-            if engine.abbreviation:
-                abbreviation = "(" + engine.abbreviation + ") "
-            else:
-                abbreviation = ""
-            print "    " + abbreviation + engine.name
-        enginename = raw_input(": ")
-        enginename = enginename.lower()
-    
-    engine = Engine()
-    if not enginename:
-        engine = MySQLEngine()
-    else:
-        for thisengine in ALL_ENGINES:
-            if (enginename == thisengine.name.lower() 
-                              or thisengine.abbreviation
-                              and enginename == thisengine.abbreviation):
-                engine = thisengine
-        
-    engine.opts = opts
-    return engine
-
