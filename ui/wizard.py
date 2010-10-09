@@ -103,7 +103,7 @@ def launch_wizard(lists):
     
     # Create the wxPython app and wizard 
     app = wx.PySimpleApp(False)
-    wizard = DbTkWizard(None, -1, "Database Toolkit Wizard", 
+    wizard = DbTkWizard(None, -1, "Database Toolkit", 
                         lists, ENGINE_LIST)
 
     # Run the wizard
