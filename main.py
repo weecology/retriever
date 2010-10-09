@@ -10,13 +10,12 @@ The main() function can be used for bootstrapping.
 """
 
 import os
-from dbtk.scripts.all import MODULE_LIST
+from dbtk import DBTK_LIST
 from dbtk.lib.tools import AutoDbTk, DbTkList
-from dbtk.lib.engines import ALL_ENGINES
 from dbtk.ui.wizard import launch_wizard
 
+DBTK_LIST = DBTK_LIST()
 
-DBTK_LIST = [module.main() for module in MODULE_LIST]
 lists = []
 lists.append(DbTkList("All Datasets", DBTK_LIST))
 
