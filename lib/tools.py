@@ -176,12 +176,6 @@ class DbTkTest(unittest.TestCase):
                 self.assertEqual(sum, checksum)
                 
                 
-class DbTkList:
-    """A categorical list of scripts."""
-    def __init__(self, name, scripts):
-        self.name = name
-        self.scripts = scripts
-                
 def get_opts():
     """Checks for command line arguments"""
     optsdict = dict()
