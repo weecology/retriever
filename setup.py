@@ -1,6 +1,6 @@
 """Use the following command to install dbtk: python setup.py install"""
 
-from setuptools import setup
+from cx_Freeze import setup
 import platform
 if "win" in platform.platform().lower():
     import py2exe
