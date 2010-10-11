@@ -10,7 +10,15 @@ mkdir src
 cd src # current-release/src
 svn checkout https://weecology.svn.beanstalkapp.com/dbtk/trunk/
 mv trunk dbtk
-sudo rm dbtk/dbtk-build.sh dbtk/make-windows-executables.bat
+cd dbtk # current-release/src/dbtk
+
+# generate version.txt and put it in current-release root folder
+python version.py
+mv version.txt ../../
+
+# delete non-source files from source directory
+sudo rm dbtk-build.sh make-windows-executables.bat version.py
+cd .. # current-release/src
 
 # make apidocs
 cd .. # current-release
@@ -21,7 +29,7 @@ sudo rm apidocs -rf
 
 # build deb package
 sudo python setup.py --command-packages=stdeb.command bdist_deb
-sudo rm dbtk.egg-info build dist -rf
+sudo rm dbtk.egg-info build dist __init__.pyc -rf
 cd deb_dist # current-release/src/dbtk/deb_dist
 cp *.deb ../
 cd .. # current-release/src/dbtk
