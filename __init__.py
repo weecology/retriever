@@ -5,7 +5,9 @@ download published ecological data, and store the data in a database.
 
 """
 
-VERSION = '0.2'
+VERSION = '0.3'
+
+REPOSITORY = 'http://www.ecologicaldata.org/dbtk/'
 
 CATEGORIES = [
               "birds",
