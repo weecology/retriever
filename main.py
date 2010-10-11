@@ -103,8 +103,10 @@ def check_for_updates():
     if latest != VERSION:
         if running_from in ['dbtk.exe']:
             app = wx.PySimpleApp()
-            choice = wx.MessageDialog(None, "There is a new version available. Do you want to upgrade?",
-                                      "Update", wx.YES_NO)
+            msg = "You're running version " + VERSION + "."
+            msg += '\n\n'
+            msg += "Version " + latest + " is available. Do you want to upgrade?"
+            choice = wx.MessageDialog(None, msg, "Update", wx.YES_NO)
             if choice.ShowModal() == wx.ID_YES:
                 print "Updating to latest version. Please wait..."
                 if running_from == 'dbtk.exe':
