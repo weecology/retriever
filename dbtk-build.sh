@@ -10,7 +10,7 @@ mkdir src
 cd src # current-release/src
 svn checkout https://weecology.svn.beanstalkapp.com/dbtk/trunk/
 mv trunk dbtk
-sudo rm dbtk/dbtk-build.sh
+sudo rm dbtk/dbtk-build.sh dbtk/make-windows-executables.bat
 
 # make apidocs
 cd .. # current-release
