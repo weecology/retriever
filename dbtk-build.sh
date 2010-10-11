@@ -16,12 +16,15 @@ cd dbtk # current-release/src/dbtk
 python version.py
 mv version.txt ../../
 
-# delete non-source files from source directory
+# remove non-source files from source directory
 sudo rm dbtk-build.sh make-windows-executables.bat version.py
+mv *.cat ../../
 cd .. # current-release/src
+cd .. # current-release
+mkdir cats
+mv *.cat cats/
 
 # make apidocs
-cd .. # current-release
 sudo pydoctor --add-package=src/dbtk --make-html
 cd src/dbtk # current-release/src/dbtk
 sudo cp apidocs/*.* ../../apidocs/

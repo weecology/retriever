@@ -7,6 +7,11 @@ download published ecological data, and store the data in a database.
 
 VERSION = '0.2'
 
+CATEGORIES = [
+              "birds",
+              "mammals",
+              ]
+
 scripts = [
            "bbs",
            "CRC_avianbodymass",
