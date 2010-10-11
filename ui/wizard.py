@@ -88,7 +88,11 @@ class DbTkWizard(wx.wizard.Wizard):
         
         for page in self.page:
             self.FitToPage(page)
-            
+        
+    
+    def check_for_updates(self):
+        reload(dbtk)
+        
                 
     def Abort(self, evt):
         if self.DOWNLOAD.worker:
