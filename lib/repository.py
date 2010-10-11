@@ -4,6 +4,9 @@ import urllib
 import wx
 from dbtk import REPOSITORY, VERSION
 
+global abort
+abort = False
+
 
 def download_from_repository(filepath):
     filename = filepath.split('/')[-1]
@@ -24,6 +27,19 @@ def download_from_repository(filepath):
     latest.close()
 
 
+def more_recent(latest, current):
+    latest_parts = latest.split('.')
+    current_parts = current.split('.')
+    for n in range(len(latest_parts)):
+        l = int(latest_parts[n])
+        c = int(current_parts[n])
+        if l > c:
+            return True
+        elif c > l:
+            return False
+    return False
+
+
 def check_for_updates():
     running_from = os.path.basename(sys.argv[0])
     if os.path.isfile('dbtk_old.exe'):
@@ -37,7 +53,7 @@ def check_for_updates():
     for cat in cats:
         if not os.path.isfile(cat + ".cat"):
             download_from_repository("cats/" + cat + ".cat")
-    if latest != VERSION:
+    if more_recent(latest, VERSION):
         if running_from in ['dbtk.exe']:
             app = wx.PySimpleApp()
             msg = "You're running version " + VERSION + "."
