@@ -22,6 +22,8 @@ mv categories ../../
 mv scripts ../../
 cd .. # current-release/src
 cd .. # current-release
+sudo rm categories/.svn -rf
+sudo rm scripts/.svn -rf
 
 # make apidocs
 sudo pydoctor --add-package=src/dbtk --make-html
