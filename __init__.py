@@ -7,7 +7,6 @@ download published ecological data, and store the data in a database.
 
 import os
 import imp
-import re
 
 
 VERSION = '0.3'
@@ -29,14 +28,13 @@ engines = [
 
 def MODULE_LIST():
     """Load scripts from scripts directory and return list of modules."""
-    path = os.path.join(os.getcwd(), "scripts")
-    files = [file for file in os.listdir(path)
+    files = [file for file in os.listdir("scripts")
              if file[-3:] == ".py" and file[0] != "_"]
-             
+    
     modules = []
     for script in files:
         scriptname = '.'.join(script.split('.')[:-1])
-        file, pathname, desc = imp.find_module(scriptname, [path])
+        file, pathname, desc = imp.find_module(scriptname, ["scripts"])
         modules.append(imp.load_module(scriptname, file, pathname, desc))
     
     return modules

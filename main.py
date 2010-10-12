@@ -13,9 +13,9 @@ import os
 import sys
 from dbtk.lib.tools import AutoDbTk
 from dbtk.lib.repository import check_for_updates
-from dbtk.lib.list import DbTkList, get_lists
+from dbtk.lib.lists import DbTkList, get_lists
 from dbtk.ui.wizard import launch_wizard
-            
+
 
 def main():    
     check_for_updates()
