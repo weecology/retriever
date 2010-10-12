@@ -6,12 +6,35 @@ if "win" in platform.platform().lower():
     import py2exe
 from __init__ import VERSION
 
-package_list = [
-                'dbtk.lib',
-                'dbtk.engines',
-                'dbtk.ui',
-                'dbtk',
-                ]
+
+packages = [
+            'dbtk.lib',
+            'dbtk.engines',
+            'dbtk.ui',
+            'dbtk',
+            ]
+            
+includes = [
+            'xlrd',
+            'pyodbc'
+            ]
+            
+excludes = [
+            '_ssl',
+            'pyreadline',
+            'difflib',
+            'doctest',
+            'optparse',
+            'pickle',
+            'calendar',
+            'pdb',
+            'inspect',
+            'email',
+            'pywin', 'pywin.debugger',
+            'pywin.debugger.dbgcon',
+            'pywin.dialogs', 'pywin.dialogs.list',
+            'Tkconstants', 'Tkinter', 'tcl',
+            ]
 
 setup(name='dbtk',
       version=VERSION,
@@ -19,7 +42,7 @@ setup(name='dbtk',
       author='Ben Morris',
       author_email='ben.morris@weecology.org',
       url='http://www.ecologicaldata.org/database-toolkits',
-      packages=package_list,
+      packages=packages,
       package_dir={
                 'dbtk':''
                 },
@@ -32,25 +55,9 @@ setup(name='dbtk',
       options = {'py2exe': {'bundle_files': 1,
                             'compressed': 2,
                             'optimize': 2,
-                            'packages': package_list,
-                            'includes': ['xlrd',
-                                         'pyodbc'
-                                         ],
-                            'excludes': ['_ssl',
-                                         'pyreadline',
-                                         'difflib',
-                                         'doctest',
-                                         'optparse',
-                                         'pickle',
-                                         'calendar',
-                                         'pdb',
-                                         'inspect',
-                                         'email',
-                                         'pywin', 'pywin.debugger',
-                                         'pywin.debugger.dbgcon',
-                                         'pywin.dialogs', 'pywin.dialogs.list',
-                                         'Tkconstants', 'Tkinter', 'tcl',
-                                         ],
+                            'packages': packages,
+                            'includes': includes,
+                            'excludes': excludes,
                             }
                  },
       windows = [{'script': "main.py"}],

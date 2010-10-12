@@ -14,7 +14,9 @@ import os
 import unittest
 from dbtk.lib.engines import ENGINES_TO_TEST, choose_engine
 from dbtk.lib.tools import TEST_ENGINES, get_opts
-from dbtk.scripts.all import MODULE_LIST
+from dbtk import MODLE_LIST
+
+MODULE_LIST = MODULE_LIST()
 
 
 TEST_DATA_LOCATION = "test_data"

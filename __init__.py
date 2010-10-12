@@ -18,16 +18,6 @@ CATEGORIES = [
               "birds",
               "mammals",
               ]
-
-scripts = [
-           "bbs",
-           "CRC_avianbodymass",
-           "EA_avianbodysize2007",
-           "EA_ernest2003",
-           "EA_pantheria",
-           "EA_portal_mammals",
-           "gentry",
-           ]
            
 engines = [
            "mysql",
@@ -37,18 +27,23 @@ engines = [
            ]
 
 
-def DBTK_LIST():    
-    """Load scripts from scripts directory and return list of DbTk classes."""
+def MODULE_LIST():
+    """Load scripts from scripts directory and return list of modules."""
     path = os.path.join(os.getcwd(), "scripts")
     files = [file for file in os.listdir(path)
              if file[-3:] == ".py" and file[0] != "_"]
              
     modules = []
-    for script in scripts:
-        file, pathname, description = imp.find_module(script, [path])
-        modules.append(imp.load_module(script, file, pathname, description))
+    for script in files:
+        scriptname = '.'.join(script.split('.')[:-1])
+        file, pathname, desc = imp.find_module(scriptname, [path])
+        modules.append(imp.load_module(scriptname, file, pathname, desc))
     
-    return [module.main() for module in modules]
+    return modules
+
+
+def DBTK_LIST():    
+    return [module.main() for module in MODULE_LIST()]
 
 
 def ENGINE_LIST():
