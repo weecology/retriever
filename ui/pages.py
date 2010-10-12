@@ -12,8 +12,6 @@ from dbtk.lib.tools import AutoDbTk, get_saved_connection
 from dbtk import VERSION
 
 
-
-        
 class HtmlWindow(wx.html.HtmlWindow):
     def __init__(self, parent):
         wx.html.HtmlWindow.__init__(self, parent, size=(-1,300))
