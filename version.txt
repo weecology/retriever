@@ -1,2 +1,9 @@
 0.2
 birds,mammals
+bbs
+CRC_avianbodymass
+EA_avianbodysize2007
+EA_ernest2003
+EA_pantheria
+EA_portal_mammals
+gentry
