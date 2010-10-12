@@ -8,7 +8,6 @@ from __init__ import VERSION
 
 package_list = [
                 'dbtk.lib',
-                'dbtk.scripts',
                 'dbtk.engines',
                 'dbtk.ui',
                 'dbtk',
