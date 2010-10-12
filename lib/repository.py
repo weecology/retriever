@@ -54,7 +54,7 @@ def check_for_updates():
         if not os.path.isfile(cat + ".cat"):
             download_from_repository("cats/" + cat + ".cat")
     if more_recent(latest, VERSION):
-        if running_from in ['dbtk.exe']:
+        if running_from == "dbtk" or running_from[-4:] == '.exe':
             app = wx.PySimpleApp()
             msg = "You're running version " + VERSION + "."
             msg += '\n\n'
@@ -62,12 +62,19 @@ def check_for_updates():
             choice = wx.MessageDialog(None, msg, "Update", wx.YES_NO)
             if choice.ShowModal() == wx.ID_YES:
                 print "Updating to latest version. Please wait..."
-                if running_from == 'dbtk.exe':
+                if running_from[-4:] == '.exe':
                     try:
-                        os.rename('dbtk.exe', 'dbtk_old.exe')
+                        if not "_old" in running_from:
+                            os.rename(running_from,
+                                      '.'.join(running_from.split('.')[:-1])
+                                      + "_old." + running_from.split('.')[-1])
                     except:
                         pass
                     new_file = "windows/dbtk.exe"
+                elif running_from == 'dbtk':
+                    new_file = "linux/dbtk"
+                else:
+                    sys.quit()
                 progress = wx.ProgressDialog("Update",
                                              "Updating to latest version. Please wait...",
                                              101,
