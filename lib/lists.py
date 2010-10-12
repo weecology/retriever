@@ -1,8 +1,4 @@
 import os
-from dbtk import DBTK_LIST
-
-DBTK_LIST = DBTK_LIST()
-
 
 class DbTkList:
     """A categorical list of scripts."""
@@ -12,15 +8,17 @@ class DbTkList:
 
 
 def get_lists():
-    
+    from dbtk import DBTK_LIST
+    DBTK_LIST = DBTK_LIST()
+
     lists = []
     lists.append(DbTkList("All Datasets", DBTK_LIST))
     
     # Check for .cat files
-    files = os.listdir(os.getcwd())
+    files = os.listdir('categories')
     cat_files = [file for file in files if file[-4:] == ".cat"]
     for file in cat_files:
-        cat = open(file, 'rb')
+        cat = open(os.path.join('categories', file), 'rb')
         scriptname = cat.readline().replace("\n", "")
         scripts = []
         for line in [line.replace("\n", "") for line in cat]:
@@ -53,5 +51,5 @@ def get_lists():
             lists.append(DbTkList("Custom", other_dbtks))
             for script in other_dbtks:
                 lists[0].scripts.append(script)
-                
+    
     return lists

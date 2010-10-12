@@ -97,7 +97,7 @@ class DownloadPage(TitledPage):
                 self.Parent.Abort(None)
         else:
             if self.dialog:
-                self.dialog.Update(1000, "")
+                self.dialog.Update(100, "")
                 self.dialog = None
             if "inserting" in s.lower() and not "<font" in s.lower():
                 s = "<font color='green'>" + s + "</font>"

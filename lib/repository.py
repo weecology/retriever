@@ -8,18 +8,18 @@ global abort
 abort = False
 
 
-def download_from_repository(filepath):
+def download_from_repository(filepath, newpath):
     filename = filepath.split('/')[-1]
     if os.path.isfile(filename):
         os.remove(filename)
     latest = urllib.urlopen(REPOSITORY + filepath, 'rb')
     file_size = latest.info()['Content-Length']
-    new_file = open(filename, 'wb')
+    new_file = open(os.path.join(os.getcwd(), newpath), 'wb')
     total_dl = 0
     while not abort:
         data = latest.read(1024)
         total_dl += len(data)
-        if file_size > 1024:
+        if file_size > 102400:
             print str(int(total_dl / float(file_size) * 100))
         if len(data) == 0:
             break
@@ -51,11 +51,28 @@ def check_for_updates():
     version_file = urllib.urlopen(REPOSITORY + "version.txt")
     latest = version_file.readline().strip('\n').strip('\r')
     cats = version_file.readline().strip('\n').strip('\r').split(',')
+    scripts = []
+    for line in version_file:
+        scripts.append(line.strip('\n').strip('\r'))
+    
+    # get category files
+    if not os.path.isdir("categories"):
+        os.mkdir("categories")    
     for cat in cats:
-        if not os.path.isfile(cat + ".cat"):
-            download_from_repository("cats/" + cat + ".cat")
+        if not os.path.isfile(os.path.join("categories", cat + ".cat")):
+            download_from_repository("categories/" + cat + ".cat", 
+                                     "categories/" + cat + ".cat")
+    
+    # get script files
+    if not os.path.isdir("scripts"):
+        os.mkdir("scripts")
+    for script in scripts:
+        if not os.path.isfile(os.path.join("scripts", script + ".py")):
+            download_from_repository("scripts/" + script + ".py", 
+                                     "scripts/" + script + ".py")
+    
     if more_recent(latest, VERSION):
-        if running_from == "dbtk" or running_from[-4:] == '.exe':
+        if running_from == "dbtk.exe":
             app = wx.PySimpleApp()
             msg = "You're running version " + VERSION + "."
             msg += '\n\n'
@@ -63,19 +80,14 @@ def check_for_updates():
             choice = wx.MessageDialog(None, msg, "Update", wx.YES_NO)
             if choice.ShowModal() == wx.ID_YES:
                 print "Updating to latest version. Please wait..."
-                if running_from[-4:] == '.exe':
-                    try:
-                        if not "_old" in running_from:
-                            os.rename(running_from,
-                                      '.'.join(running_from.split('.')[:-1])
-                                      + "_old." + running_from.split('.')[-1])
-                    except:
-                        pass
-                    new_file = "windows/dbtk.exe"
-                elif running_from == 'dbtk':
-                    new_file = "linux/dbtk"
-                else:
-                    sys.quit()
+                try:
+                    if not "_old" in running_from:
+                        os.rename(running_from,
+                                  '.'.join(running_from.split('.')[:-1])
+                                  + "_old." + running_from.split('.')[-1])
+                except:
+                    pass
+                new_file = "windows/dbtk.exe"
                 progress = wx.ProgressDialog("Update",
                                              "Updating to latest version. Please wait...",
                                              101,

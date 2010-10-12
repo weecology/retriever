@@ -18,7 +18,8 @@ mv version.txt ../../
 
 # remove non-source files from source directory
 sudo rm dbtk-build.sh make-windows-executables.bat version.py
-mv *.cat ../../
+mv categories ../../
+mv scripts ../../
 cd .. # current-release/src
 cd .. # current-release
 mkdir cats
