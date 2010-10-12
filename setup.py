@@ -6,19 +6,21 @@ if "win" in platform.platform().lower():
     import py2exe
 from __init__ import VERSION
 
+package_list = [
+                'dbtk.lib',
+                'dbtk.scripts',
+                'dbtk.engines',
+                'dbtk.ui',
+                'dbtk',
+                ]
+
 setup(name='dbtk',
       version=VERSION,
       description='Database Toolkit',
       author='Ben Morris',
       author_email='ben.morris@weecology.org',
       url='http://www.ecologicaldata.org/database-toolkits',
-      packages=[
-                'dbtk.lib',
-                'dbtk.scripts',
-                'dbtk.engines',
-                'dbtk.ui',
-                'dbtk',
-                ],
+      packages=package_list,
       package_dir={
                 'dbtk':''
                 },
@@ -31,13 +33,7 @@ setup(name='dbtk',
       options = {'py2exe': {'bundle_files': 1,
                             'compressed': 2,
                             'optimize': 2,
-                            'packages': [
-                                         'dbtk.lib',
-                                         'dbtk.scripts',
-                                         'dbtk.engines',
-                                         'dbtk.ui',
-                                         'dbtk',
-                                         ],
+                            'packages': package_list,
                             'includes': ['xlrd',
                                          'pyodbc'
                                          ],
