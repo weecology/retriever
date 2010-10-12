@@ -34,7 +34,7 @@ class DownloadThread(Thread):
         
         class download_stdout:
             def write(self, s):
-                if s != '\n':
+                if s and s != '\n':
                     worker.output_lock.acquire()
                     worker.output.append(s)
                     worker.output_lock.release()
