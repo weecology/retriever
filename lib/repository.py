@@ -19,7 +19,8 @@ def download_from_repository(filepath):
     while not abort:
         data = latest.read(1024)
         total_dl += len(data)
-        print str(int(total_dl / float(file_size) * 100))
+        if file_size > 1024:
+            print str(int(total_dl / float(file_size) * 100))
         if len(data) == 0:
             break
         new_file.write(data)
