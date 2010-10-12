@@ -10,8 +10,6 @@ abort = False
 
 def download_from_repository(filepath, newpath):
     filename = filepath.split('/')[-1]
-    if os.path.isfile(filename):
-        os.remove(filename)
     latest = urllib.urlopen(REPOSITORY + filepath, 'rb')
     file_size = latest.info()['Content-Length']
     new_file = open(os.path.join(os.getcwd(), newpath), 'wb')
@@ -20,7 +18,7 @@ def download_from_repository(filepath, newpath):
         data = latest.read(1024)
         total_dl += len(data)
         if file_size > 102400:
-            print str(int(total_dl / float(file_size) * 100))
+            print str(int(total_dl / float(file_size) * 100)) + "-" + filename
         if len(data) == 0:
             break
         new_file.write(data)
@@ -42,6 +40,32 @@ def more_recent(latest, current):
 
 
 def check_for_updates():
+    app = wx.PySimpleApp()
+    progress = wx.ProgressDialog("Update",
+                                 "Checking for updates. Please wait...",
+                                 101,
+                                 style=
+                                 wx.PD_REMAINING_TIME |
+                                 wx.PD_CAN_ABORT |
+                                 wx.PD_SMOOTH |
+                                 wx.PD_AUTO_HIDE
+                                 )
+    class update_progress:
+        def __init__(self, parent):
+            self.parent = parent
+        def write(self, s):
+            try:
+                filename = s.split('-')[1]
+                msg = "Downloading " + filename + "..."
+                s = int(s.split('-')[0])
+                if s < 1:
+                    s = 1
+                (keepgoing, skip) = self.parent.Update(s, msg)
+                if not keepgoing:
+                    abort = True
+            except:
+                pass
+    sys.stdout = update_progress(progress)    
     running_from = os.path.basename(sys.argv[0])
     if os.path.isfile('dbtk_old.exe'):
         try:
@@ -69,11 +93,10 @@ def check_for_updates():
     for script in scripts:
         if not os.path.isfile(os.path.join("scripts", script + ".py")):
             download_from_repository("scripts/" + script + ".py", 
-                                     "scripts/" + script + ".py")
+                                     "scripts/" + script + ".py")                                     
     
     if more_recent(latest, VERSION):
         if running_from == "dbtk.exe":
-            app = wx.PySimpleApp()
             msg = "You're running version " + VERSION + "."
             msg += '\n\n'
             msg += "Version " + latest + " is available. Do you want to upgrade?"
@@ -87,30 +110,13 @@ def check_for_updates():
                                   + "_old." + running_from.split('.')[-1])
                 except:
                     pass
-                new_file = "windows/dbtk.exe"
-                progress = wx.ProgressDialog("Update",
-                                             "Updating to latest version. Please wait...",
-                                             101,
-                                             style=
-                                             wx.PD_REMAINING_TIME |
-                                             wx.PD_CAN_ABORT
-                                             )
-                class update_progress:
-                    def __init__(self, parent):
-                        self.parent = parent
-                    def write(self, s):
-                        try:
-                            s = int(s)
-                            if s < 1:
-                                s = 1
-                            (keepgoing, skip) = self.parent.Update(s)
-                            if not keepgoing:
-                                abort = True
-                        except:
-                            pass
-                sys.stdout = update_progress(progress)
-                download_from_repository(new_file)
-                progress.Update(101, "Done!")
+                download_from_repository("windows/dbtk.exe")
+
+                progress.Update(101)
                 sys.stdout = sys.__stdout__
+
                 wx.MessageBox("Update complete. Please restart the program.")
                 sys.exit()
+                
+    progress.Update(101)
+    sys.stdout = sys.__stdout__
