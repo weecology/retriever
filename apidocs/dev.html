@@ -18,10 +18,10 @@ Toolkit team, so that they can be used by other researchers in future distributi
 <p>The Database Toolkit platform is divided into four packages:
 <ul>
 <li>The core modules, located in <a href="dbtk.lib.html">dbtk.lib</a></li>
-<li>Individual dataset scripts, found in <a href="dbtk.scripts.html">dbtk.scripts</a></li>
 <li>"Engines" to customize actions for a particular DBMS in <a href="dbtk.engines.html">dbtk.engines</a></li>
 <li>A wxPython-based GUI in <a href="dbtk.ui.html">dbtk.ui</a></li>
 </ul>
+<p>The platform dynamically loads dataset scripts from Python (.py) files found in the scripts directory.</p>
 Developers can use the dbtk.lib functionality to
 create their own individual scripts representing datasets not yet implemented in the DBTK
 platform.</p>
@@ -65,9 +65,8 @@ a list of approved DBMS (or ENGINE_LIST from the dbtk package, which is a list o
 DBMS).</p>
 <h2>Adding scripts to the main wizard</h2>
 <p>If you've developed a script and you'd like it to be accessible from the default dbtk
-wizard on your system, you'll need to edit dbtk/__init__.py on your machine. This file has
-a list called "scripts" that contains the names of all available scripts; simply add your
-script to the list. Note that your script must contain a class called main that inherits from
+wizard on your system, just place it in the scripts directory and it will be loaded automatically.
+Note that your script must contain a class called main that inherits from
 the DbTk class found in dbtk.lib.tools.</p>
 <h2>Testing</h2>
 <p>The Database Toolkit system also contains a helper class, DbTkTest, for use in unit testing.</p>
@@ -75,7 +74,7 @@ the DbTk class found in dbtk.lib.tools.</p>
 been streamlined. The class is meant to run a script, import the data from the newly created
 database, and test it against a text file containing manually imported data.</p>
 <p>See the scripts included in the Database Toolkit distribution for examples of test classes.</p>
-<p>To run all tests, you'll first need to add your script to __init__.py, as explained in the section
+<p>To run all tests, you'll first need to add your script, as explained in the section
 <b>Adding scripts to the main wizard</b>. Running tests.py will run all unit tests found in these
 scripts.</p>
 </div></div>

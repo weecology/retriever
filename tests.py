@@ -12,11 +12,11 @@ MD5 checksum against a known static value.
 
 import os
 import unittest
-from dbtk.lib.engines import ENGINES_TO_TEST, choose_engine
-from dbtk.lib.tools import TEST_ENGINES, get_opts
-from dbtk import MODLE_LIST
+from dbtk.lib.tools import TEST_ENGINES, get_opts, choose_engine
+from dbtk import MODULE_LIST, ENGINE_LIST
 
 MODULE_LIST = MODULE_LIST()
+ENGINE_LIST = ENGINE_LIST()
 
 
 TEST_DATA_LOCATION = "test_data"
@@ -25,13 +25,15 @@ try:
     os.makedirs(TEST_DATA_LOCATION)
 except:
     pass
-
-for engine in ENGINES_TO_TEST:
+    
+    
+for engine in ENGINE_LIST:
     opts = get_opts()
     opts["engine"] = engine.abbreviation
     
     TEST_ENGINES[engine.abbreviation] = choose_engine(opts)
     TEST_ENGINES[engine.abbreviation].get_cursor()
+    
     
 def get_tests():
     suite = unittest.TestSuite()

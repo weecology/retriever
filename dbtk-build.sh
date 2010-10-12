@@ -22,8 +22,6 @@ mv categories ../../
 mv scripts ../../
 cd .. # current-release/src
 cd .. # current-release
-mkdir cats
-mv *.cat cats/
 
 # make apidocs
 sudo pydoctor --add-package=src/dbtk --make-html

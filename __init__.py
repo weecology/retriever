@@ -13,18 +13,6 @@ VERSION = '0.3'
 
 REPOSITORY = 'http://www.ecologicaldata.org/dbtk/'
 
-CATEGORIES = [
-              "birds",
-              "mammals",
-              ]
-           
-engines = [
-           "mysql",
-           "postgres",
-           "sqlite",
-           "msaccess",
-           ]
-
 
 def MODULE_LIST():
     """Load scripts from scripts directory and return list of modules."""
@@ -45,6 +33,13 @@ def DBTK_LIST():
 
 
 def ENGINE_LIST():
+    engines = [
+               "mysql",
+               "postgres",
+               "sqlite",
+               "msaccess",
+               ]
+
     ENGINE_MODULE_LIST = [
                           __import__("dbtk.engines." + module, fromlist="engines")
                           for module in engines
