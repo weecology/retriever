@@ -36,7 +36,7 @@ sudo rm dbtk.egg-info build dist __init__.pyc -rf
 cd deb_dist # current-release/src/dbtk/deb_dist
 cp *.deb ../
 cd .. # current-release/src/dbtk
-sudo rm deb_dist -rf
+sudo rm deb_dist stdeb.cfg -rf
 mkdir linux
 mv *.deb linux/
 mv linux ../../
