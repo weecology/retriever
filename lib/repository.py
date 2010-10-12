@@ -1,3 +1,5 @@
+"""Checks the repository for updates."""
+
 import os
 import sys
 import urllib

@@ -279,6 +279,7 @@ def choose_engine(opts):
     """Prompts the user to select a database engine"""    
     from dbtk import ENGINE_LIST
     ENGINE_LIST = ENGINE_LIST()
+    
     if "engine" in opts.keys():
         enginename = opts["engine"]    
     else:
