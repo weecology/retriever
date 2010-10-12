@@ -78,13 +78,13 @@ class DownloadPage(TitledPage):
         if '\b' in s:
             s = s.replace('\b', '')
             if not self.dialog:
-                self.html += "<font color='green'>" + s.split(':')[0] + "</font>"
+                self.html += "\n<p><font color='green'>" + s.split(':')[0] + "</font></p>"
                 self.refresh_html()
                 wx.GetApp().Yield()
                 self.dialog = wx.ProgressDialog("Download Progress", 
                                                 "Downloading datasets . . .\n"
                                                 + "  " * len(s), 
-                                                maximum=2,
+                                                maximum=100,
                                                 parent=self.Parent,
                                                 style=wx.PD_CAN_ABORT 
                                                       | wx.PD_SMOOTH
@@ -92,12 +92,12 @@ class DownloadPage(TitledPage):
                                                 )
             (keepgoing, skip) = self.dialog.Pulse(s)
             if not keepgoing:
-                self.dialog.Update(2, "")
+                self.dialog.Update(100, "")
                 self.dialog = None
                 self.Parent.Abort(None)
         else:
             if self.dialog:
-                self.dialog.Update(2, "")
+                self.dialog.Update(1000, "")
                 self.dialog = None
             if "inserting" in s.lower() and not "<font" in s.lower():
                 s = "<font color='green'>" + s + "</font>"
