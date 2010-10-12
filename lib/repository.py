@@ -3,6 +3,7 @@ import sys
 import urllib
 import wx
 from dbtk import REPOSITORY, VERSION
+from dbtk.lib.models import file_exists
 
 global abort
 abort = False
@@ -83,7 +84,7 @@ def check_for_updates():
     if not os.path.isdir("categories"):
         os.mkdir("categories")    
     for cat in cats:
-        if not os.path.isfile(os.path.join("categories", cat + ".cat")):
+        if not file_exists(os.path.join("categories", cat + ".cat")):
             download_from_repository("categories/" + cat + ".cat", 
                                      "categories/" + cat + ".cat")
     
@@ -91,7 +92,7 @@ def check_for_updates():
     if not os.path.isdir("scripts"):
         os.mkdir("scripts")
     for script in scripts:
-        if not os.path.isfile(os.path.join("scripts", script + ".py")):
+        if not file_exists(os.path.join("scripts", script + ".py")):
             download_from_repository("scripts/" + script + ".py", 
                                      "scripts/" + script + ".py")                                     
     
