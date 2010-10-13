@@ -70,11 +70,13 @@ def check_for_updates():
                 pass
     sys.stdout = update_progress(progress)    
     running_from = os.path.basename(sys.argv[0])
-    if os.path.isfile('dbtk_old.exe'):
+    
+    if os.path.isfile('dbtk_old.exe') and running_from != 'dbtk_old.exe':
         try:
             os.remove('dbtk_old.exe')
         except:
             pass
+            
     version_file = urllib.urlopen(REPOSITORY + "version.txt")
     latest = version_file.readline().strip('\n').strip('\r')
     cats = version_file.readline().strip('\n').strip('\r').split(',')
@@ -99,7 +101,7 @@ def check_for_updates():
                                      "scripts/" + script + ".py")                                     
     
     if more_recent(latest, VERSION):
-        if running_from == "dbtk.exe":
+        if running_from[-4:] == ".exe":
             msg = "You're running version " + VERSION + "."
             msg += '\n\n'
             msg += "Version " + latest + " is available. Do you want to upgrade?"
@@ -113,12 +115,16 @@ def check_for_updates():
                                   + "_old." + running_from.split('.')[-1])
                 except:
                     pass
-                download_from_repository("windows/dbtk.exe")
+                    
+                download_from_repository("windows/dbtk.exe", "dbtk.exe")
 
                 progress.Update(101)
                 sys.stdout = sys.__stdout__
 
-                wx.MessageBox("Update complete. Please restart the program.")
+                wx.MessageBox("Update complete. The program will now restart.")
+
+                os.execv('dbtk.exe', sys.argv)
+                
                 sys.exit()
                 
     progress.Update(101)
