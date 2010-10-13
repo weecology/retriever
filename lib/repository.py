@@ -76,8 +76,12 @@ def check_for_updates():
             os.remove('dbtk_old.exe')
         except:
             pass
-            
-    version_file = urllib.urlopen(REPOSITORY + "version.txt")
+    
+    try:
+        version_file = urllib.urlopen(REPOSITORY + "version.txt")
+    except IOError:
+        return
+        
     latest = version_file.readline().strip('\n').strip('\r')
     cats = version_file.readline().strip('\n').strip('\r').split(',')
     scripts = []
