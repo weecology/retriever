@@ -60,6 +60,8 @@ setup(name='dbtk',
                             'excludes': excludes,
                             }
                  },
-      windows = [{'script': "main.py"}],
+      windows = [{'script': "main.py",
+                  'dest_base': "dbtk",
+                  }],
       zipfile = None,
      )
