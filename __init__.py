@@ -23,7 +23,11 @@ def MODULE_LIST():
     for script in files:
         scriptname = '.'.join(script.split('.')[:-1])
         file, pathname, desc = imp.find_module(scriptname, ["scripts"])
-        modules.append(imp.load_module(scriptname, file, pathname, desc))
+        try:
+            new_module = imp.load_module(scriptname, file, pathname, desc)
+            modules.append(new_module)
+        except:
+            pass
     
     return modules
 
