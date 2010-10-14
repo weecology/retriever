@@ -165,7 +165,19 @@ class CategoriesPage(TitledPage):
         self.catlist = wx.CheckListBox(self, -1, choices=lists)
         self.catlist.SetCheckedStrings(["All Datasets"])
         self.sizer.Add(self.catlist, 0, wx.EXPAND)
+        self.catlist.Bind(wx.EVT_CHECKLISTBOX, self.CheckCategory)
         self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.GetScripts)
+    def CheckCategory(self, evt):
+        index = evt.GetSelection()
+        clicked = self.catlist.GetString(index)
+        status = self.catlist.IsChecked(index)
+        if clicked == "All Datasets":
+            if status:
+                self.catlist.SetCheckedStrings(["All Datasets"])
+        else:
+            checked = self.catlist.GetCheckedStrings()
+            if len(checked) > 1 and "All Datasets" in checked:
+                self.catlist.Check(0, False)
     def GetScripts(self, evt):
         if evt.Direction:
             self.Parent.dbtk_list = []
