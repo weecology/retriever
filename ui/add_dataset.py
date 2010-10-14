@@ -1,6 +1,6 @@
 import wx
 from dbtk.lib.templates import TEMPLATES
-from dbtk.ui.page import TitledPage
+from dbtk.ui.titled_page import TitledPage
 
 
 class AddDatasetWizard(wx.wizard.Wizard):
