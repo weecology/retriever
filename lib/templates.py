@@ -34,8 +34,7 @@ class DbTk:
     
 class EcologicalArchives(DbTk):
     """DbTk script template based on data files from Ecological Archives."""
-    def __init__(self, nulls=['-999', '-999.9']):
-        self.nulls = nulls
+    nulls = ['-999', '-999.9']
     def download(self, engine=None):
         DbTk.download(self, engine)
         self.engine.auto_create_table(self.tablename, url=self.url,

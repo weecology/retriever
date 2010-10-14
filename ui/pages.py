@@ -259,7 +259,7 @@ class DatasetPage(TitledPage):
                     wx.MessageBox("You already have a dataset named " + dataset_name + ".")
                 # Automatically check the new dataset
                 self.scriptlist.SetCheckedStrings(self.scriptlist.GetCheckedStrings() + (fullname,))
-        add_dataset.Destroy()
+        #add_dataset.Destroy()
     def CheckAll(self, evt):
         if self.checkallbox.GetValue():
             self.scriptlist.SetCheckedStrings([script.name for script in self.Parent.dbtk_list])

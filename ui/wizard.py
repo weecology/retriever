@@ -97,7 +97,8 @@ class DbTkWizard(wx.wizard.Wizard):
     def Abort(self, evt):
         if self.DOWNLOAD.worker:
             self.DOWNLOAD.worker.output_lock.acquire()
-        sys.exit()
+        if self.GetCurrentPage() == self.DOWNLOAD:
+            sys.exit()
 
 
 
