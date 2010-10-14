@@ -1,4 +1,5 @@
 import os
+from dbtk.lib.templates import TEMPLATES
 
 class DbTkList:
     """A categorical list of scripts."""
@@ -36,14 +37,20 @@ def get_lists():
         for line in config:
             if line:
                 line = line.strip('\n').strip('\r')
-                values = line.split(', ')
+                values = line.split(',')
                 try:
-                    dbname, tablename, url = (values[0], values[1], values[2])
-                    other_dbtks.append(AutoDbTk(
-                                                dbname + "." + tablename, 
-                                                dbname, 
-                                                tablename, 
-                                                url))
+                    temp, dbname, tablename, url = (values[0], values[1], 
+                                                    values[2], values[3])
+                    for template in TEMPLATES:
+                        if template[0] == temp:
+                            new_dataset = template[1]
+                            
+                    new_dataset.name = dbname + '.' + tablename
+                    new_dataset.shortname = dbname
+                    new_dataset.tablename = tablename
+                    new_dataset.url = url                    
+                    
+                    other_dbtks.append(new_dataset)
                 except:
                     pass
 
