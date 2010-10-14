@@ -11,7 +11,7 @@ from dbtk.lib.models import Engine
 from dbtk.lib.templates import TEMPLATES
 from dbtk.lib.tools import get_saved_connection
 from dbtk.ui.add_dataset import AddDatasetWizard
-from dbtk.ui.page import TitledPage
+from dbtk.ui.titled_page import TitledPage
 from dbtk import VERSION
 
 
