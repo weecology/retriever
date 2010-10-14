@@ -40,37 +40,37 @@ class DbTkWizard(wx.wizard.Wizard):
         <p><i>Version """ + VERSION + """</i></p>
         <p><a href="http://www.ecologicaldata.org">http://www.ecologicaldata.org</a></p>"""        
         
-        self.page = []
+        self.pages = []
         self.lists = lists
         self.engine_list = engine_list
         
-        self.page.append(TitledPage(self, "", ""))
+        self.pages.append(TitledPage(self, "", ""))
         
-        self.page.append(ChooseDbPage(self, "Select Database", 
+        self.pages.append(ChooseDbPage(self, "Select Database", 
                                       "Please select your database platform:\n"))
         
-        self.page.append(ConnectPage(self, 
+        self.pages.append(ConnectPage(self, 
                                      "Connection Info", 
                                      "Please enter your connection information: \n"))
 
         if len(self.lists) > 1:        
-            self.page.append(CategoriesPage(self, "Categories",
+            self.pages.append(CategoriesPage(self, "Categories",
                                                  "Choose the dataset categories to be shown."))
         
-        self.page.append(DatasetPage(self, "Select Datasets", 
+        self.pages.append(DatasetPage(self, "Select Datasets", 
                                "Check each dataset to be downloaded:\n"))
         
-        self.page.append(FinishPage(self, "", ""))
+        self.pages.append(FinishPage(self, "", ""))
         
-        self.page.append(DownloadPage(self, "", ""))
+        self.pages.append(DownloadPage(self, "", ""))
 
         
         if len(self.lists) > 1:
             (self.TITLE, self.CHOOSEDB, self.CONNECTION, self.CAT, self.DATASET, 
-             self.FINISH, self.DOWNLOAD) = [self.page[i] for i in range(7)]
+             self.FINISH, self.DOWNLOAD) = [self.pages[i] for i in range(7)]
         else:
             (self.TITLE, self.CHOOSEDB, self.CONNECTION, self.DATASET, 
-             self.FINISH, self.DOWNLOAD) = [self.page[i] for i in range(6)]
+             self.FINISH, self.DOWNLOAD) = [self.pages[i] for i in range(6)]
             self.dbtk_list = self.lists[0].scripts
             self.DATASET.Draw(None) 
             
@@ -83,10 +83,10 @@ class DbTkWizard(wx.wizard.Wizard):
         self.Bind(wx.wizard.EVT_WIZARD_CANCEL, self.Abort)
 
         
-        for i in range(len(self.page) - 1):
-            wx.wizard.WizardPageSimple_Chain(self.page[i], self.page[i + 1])
+        for i in range(len(self.pages) - 1):
+            wx.wizard.WizardPageSimple_Chain(self.pages[i], self.pages[i + 1])
         
-        for page in self.page:
+        for page in self.pages:
             self.FitToPage(page)
         
     

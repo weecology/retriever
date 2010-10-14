@@ -6,7 +6,7 @@ import os
 import urllib
 import zipfile
 from decimal import Decimal
-from dbtk.lib.tools import DbTk
+from dbtk.lib.templates import DbTk
 from dbtk.lib.models import Table, Cleanup, no_cleanup
 
 

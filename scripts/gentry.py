@@ -6,7 +6,8 @@ import os
 import sys
 import zipfile
 import xlrd
-from dbtk.lib.tools import DbTk, DbTkTest
+from dbtk.lib.templates import DbTk
+from dbtk.lib.tools import DbTkTest
 from dbtk.lib.models import Table
 from dbtk.lib.excel import Excel
 

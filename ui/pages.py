@@ -8,7 +8,10 @@ import wx
 import wx.html
 import wx.wizard
 from dbtk.lib.models import Engine
-from dbtk.lib.tools import AutoDbTk, get_saved_connection
+from dbtk.lib.templates import TEMPLATES
+from dbtk.lib.tools import get_saved_connection
+from dbtk.ui.add_dataset import AddDatasetWizard
+from dbtk.ui.page import TitledPage
 from dbtk import VERSION
 
 
@@ -19,23 +22,6 @@ class HtmlWindow(wx.html.HtmlWindow):
             self.SetStandardFonts()
     def OnLinkClicked(self, link):
         wx.LaunchDefaultBrowser(link.GetHref())
-
-
-class TitledPage(wx.wizard.WizardPageSimple):
-    """A standard wizard page with a title and label."""
-    def __init__(self, parent, title, label):
-        wx.wizard.WizardPageSimple.__init__(self, parent)
-        self.sizer = wx.BoxSizer(wx.VERTICAL)
-        self.SetSizer(self.sizer)
-        if title:
-            titleText = wx.StaticText(self, -1, title)
-            titleText.SetFont(wx.Font(18, wx.SWISS, wx.NORMAL, wx.BOLD))
-            self.sizer.Add(titleText, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
-        if label:
-            self.label = wx.StaticText(self, -1)
-            self.sizer.Add(self.label, 0, wx.EXPAND | wx.ALL, 5)
-            self.label.Wrap(100)                
-            self.sizer.Add(wx.StaticText(self, -1, label))
                 
 
 class ChooseDbPage(TitledPage):
@@ -89,7 +75,7 @@ class ConnectPage(TitledPage):
         self.option = dict()
         self.sel = ""
         self.fields = wx.BoxSizer(wx.VERTICAL)
-        self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.SaveConnection)            
+        self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.SaveConnection)
     def SaveConnection(self, evt):
         if self.save_connection.Value:
             if os.path.isfile("connections.config"):
@@ -177,6 +163,7 @@ class CategoriesPage(TitledPage):
         # CheckListBox of scripts
         lists = [list.name for list in parent.lists]
         self.catlist = wx.CheckListBox(self, -1, choices=lists)
+        self.catlist.SetCheckedStrings(["All Datasets"])
         self.sizer.Add(self.catlist, 0, wx.EXPAND)
         self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.GetScripts)
     def GetScripts(self, evt):
@@ -202,8 +189,8 @@ class DatasetPage(TitledPage):
         # All checkbox
         self.checkallbox = wx.CheckBox(self, -1, "All")
         self.checkallbox.SetValue(True)
-        self.sizer.Add(self.checkallbox)            
-        self.checkallbox.Bind(wx.EVT_CHECKBOX, self.CheckAll)            
+        self.sizer.Add(self.checkallbox)
+        self.checkallbox.Bind(wx.EVT_CHECKBOX, self.CheckAll)
         # CheckListBox of scripts
         self.scriptlist = wx.CheckListBox(self, -1, size=(-1,200))
         self.sizer.Add(self.scriptlist, 0, wx.EXPAND)
@@ -221,7 +208,7 @@ class DatasetPage(TitledPage):
     def AddDataset(self, evt):
         # Run Add Dataset wizard
         add_dataset = AddDatasetWizard(self.Parent, -1, 'Add Dataset')            
-        if add_dataset.RunWizard(add_dataset.page[0]):                
+        if add_dataset.RunWizard(add_dataset.pages[0]):                
             dataset_url = add_dataset.url.GetValue()
             dbname = add_dataset.dbname.GetValue()
             tablename = add_dataset.tablename.GetValue()
@@ -233,10 +220,18 @@ class DatasetPage(TitledPage):
             if dbname and dataset_url:
                 if not (fullname in self.scriptlist.GetItems()):
                     # Add dataset to list
-                    self.Parent.dbtk_list.append(AutoDbTk(fullname,
-                                                          dbname,
-                                                          tablename, 
-                                                          dataset_url))
+                    temp = add_dataset.templates.GetStringSelection()
+                    for template in TEMPLATES:
+                        if template[0] == temp:
+                            new_dataset = template[1]
+                    
+                    new_dataset.name = fullname
+                    new_dataset.shortname = dbname
+                    new_dataset.tablename = tablename
+                    new_dataset.url = dataset_url
+                    
+                    
+                    self.Parent.dbtk_list.append(new_dataset)
                     self.scriptlist.Append(fullname)
                     
                     # Append dataset to scripts.config file
@@ -247,7 +242,7 @@ class DatasetPage(TitledPage):
                         mode = 'wb'
                         initial = ""
                     config = open("scripts.config", mode)                        
-                    config.write(initial + dbname + ", " + tablename + ", " + dataset_url)
+                    config.write(initial + temp + "," + dbname + "," + tablename + "," + dataset_url)
                 else:
                     wx.MessageBox("You already have a dataset named " + dataset_name + ".")
                 # Automatically check the new dataset
@@ -304,40 +299,3 @@ class FinishPage(TitledPage):
                 html += "</li>"
         html += "</ul>"
         self.summary.SetPage(html)
-        
-                     
-                         
-class AddDatasetWizard(wx.wizard.Wizard):
-    """Wizard for adding custuom datasets"""
-    def __init__(self, parent, id, title):
-        wx.wizard.Wizard.__init__(self, parent, id, title)            
-        
-        self.page = []
-        self.page.append(self.AddDatasetPage(self, "Add Dataset", ""))
-        
-        self.FitToPage(self.page[0])
-    class AddDatasetPage(TitledPage):
-        def __init__(self, parent, title, label):
-            TitledPage.__init__(self, parent, title, label)
-            parent.url = wx.TextCtrl(self, -1, "http://",
-                                     size=wx.Size(250,-1))
-            parent.dbname = wx.TextCtrl(self, -1, "",
-                                        size=wx.Size(250,-1))
-            parent.tablename = wx.TextCtrl(self, -1, "",
-                                           size=wx.Size(250,-1))
-            
-            self.vbox = wx.BoxSizer(wx.VERTICAL)
-            self.hbox = dict()            
-            for item in [(parent.url, "URL:"),
-                         (parent.dbname, "Database Name:"),
-                         (parent.tablename, "Table Name:")]:
-                self.hbox[item[1]] = wx.BoxSizer(wx.HORIZONTAL)
-                label = wx.StaticText(self, -1, item[1], size=wx.Size(120,35))                        
-                self.hbox[item[1]].AddMany([label,
-                                            item[0]])
-                self.hbox[item[1]].Layout()
-                self.vbox.Add(self.hbox[item[1]])
-            
-            self.vbox.Layout()
-            self.sizer.Add(self.vbox)
-            self.sizer.Layout()
