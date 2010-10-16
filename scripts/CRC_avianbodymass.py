@@ -13,6 +13,8 @@ from dbtk.lib.templates import DbTk
 from dbtk.lib.models import Table, Cleanup, no_cleanup
 from dbtk.lib.excel import Excel
 
+VERSION = '0.3'
+
 
 class main(DbTk):
     name = "CRC Avian Body Masses"

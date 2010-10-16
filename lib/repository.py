@@ -82,11 +82,11 @@ def check_for_updates():
     except IOError:
         return
         
-    latest = version_file.readline().strip('\n').strip('\r')
-    cats = version_file.readline().strip('\n').strip('\r').split(',')
+    latest = version_file.readline().strip('\n')
+    cats = version_file.readline().strip('\n').split(',')
     scripts = []
     for line in version_file:
-        scripts.append(line.strip('\n').strip('\r'))
+        scripts.append(line.strip('\n').split(','))
     
     # get category files
     if not os.path.isdir("categories"):
@@ -100,9 +100,29 @@ def check_for_updates():
     if not os.path.isdir("scripts"):
         os.mkdir("scripts")
     for script in scripts:
-        if not file_exists(os.path.join("scripts", script + ".py")):
-            download_from_repository("scripts/" + script + ".py", 
-                                     "scripts/" + script + ".py")                                     
+        script_name = script[0]
+        if len(script) > 1:
+            script_version = script[1]
+        else:
+            script_version = None
+            
+        if not file_exists(os.path.join("scripts", script_name + ".py")):
+            # File doesn't exist: download it
+            download_from_repository("scripts/" + script_name + ".py",
+                                     "scripts/" + script_name + ".py")
+        elif script_version:
+            # File exists: import and check version
+            file, pathname, desc = imp.find_module(script_name, ["scripts"])
+            need_to_download = True
+            try:
+                new_module = imp.load_module(script, file, pathname, desc)
+                need_to_download = more_recent(new_module.VERSION, script_version)
+            except:
+                pass
+            if need_to_download:
+                os.remove(os.path.join("scripts", script_name + ".py"))
+                download_from_repository("scripts/" + script_name + ".py",
+                                         "scripts/" + script_name + ".py")
     
     if more_recent(latest, VERSION):
         if running_from[-4:] == ".exe":

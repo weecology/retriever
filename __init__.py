@@ -21,10 +21,10 @@ def MODULE_LIST():
     
     modules = []
     for script in files:
-        scriptname = '.'.join(script.split('.')[:-1])
-        file, pathname, desc = imp.find_module(scriptname, ["scripts"])
+        script_name = '.'.join(script.split('.')[:-1])
+        file, pathname, desc = imp.find_module(script_name, ["scripts"])
         try:
-            new_module = imp.load_module(scriptname, file, pathname, desc)
+            new_module = imp.load_module(script_name, file, pathname, desc)
             modules.append(new_module)
         except:
             pass

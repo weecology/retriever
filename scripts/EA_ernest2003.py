@@ -8,6 +8,8 @@ Setup and install the Mammalian Life History Database published by Ernest
 from dbtk.lib.templates import EcologicalArchives
 from dbtk.lib.tools import DbTkTest
 
+VERSION = '0.3'
+
 
 class main(EcologicalArchives):
     name = "Mammal Life History Database (Ecological Archives 2003)"
