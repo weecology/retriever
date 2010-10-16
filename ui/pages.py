@@ -36,16 +36,7 @@ class ChooseDbPage(TitledPage):
         self.dblist.SetSelection(0)
         self.sizer.Add(self.dblist,
                           0, wx.EXPAND | wx.ALL, 5)
-        self.sizer.Add(wx.StaticText(self, -1, "\n"))
-        self.keepdata = wx.CheckBox(self, -1, "Keep raw data files")
-        self.keepdata.SetValue(True)    
-        self.sizer.Add(self.keepdata)
-        self.uselocal = wx.CheckBox(self, -1, 
-                                    "Use locally archived files, " +
-                                    "if available")
-        self.uselocal.SetValue(True)
-        self.sizer.Add(self.uselocal)
-        self.sizer.Add(wx.StaticText(self, -1, "\n"))
+        self.AddSpace()
         self.sizer2 = wx.BoxSizer(wx.HORIZONTAL)    
         self.sizer2.Add(wx.StaticText(self, -1, "Data file directory:", 
                               size=wx.Size(150,35)))
@@ -164,6 +155,7 @@ class CategoriesPage(TitledPage):
         lists = [list.name for list in parent.lists]
         self.catlist = wx.CheckListBox(self, -1, choices=lists)
         self.catlist.SetCheckedStrings(["All Datasets"])
+        self.AddSpace()
         self.sizer.Add(self.catlist, 0, wx.EXPAND)
         self.catlist.Bind(wx.EVT_CHECKLISTBOX, self.OnCheck)
         self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.GetScripts)

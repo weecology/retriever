@@ -43,14 +43,14 @@ def get_lists():
                                                     values[2], values[3])
                     for template in TEMPLATES:
                         if template[0] == temp:
-                            new_dataset = template[1]
-                            
-                    new_dataset.name = dbname + '.' + tablename
-                    new_dataset.shortname = dbname
-                    new_dataset.tablename = tablename
-                    new_dataset.url = url                    
+                            new_dataset = template[1]()
                     
-                    other_dbtks.append(new_dataset)
+                            new_dataset.name = dbname + '.' + tablename
+                            new_dataset.shortname = dbname
+                            new_dataset.tablename = tablename
+                            new_dataset.url = url
+                            
+                            other_dbtks.append(new_dataset)
                 except:
                     pass
 
