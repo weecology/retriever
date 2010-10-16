@@ -12,6 +12,7 @@ class DbTk:
     url = ""
     ref = ""
     public = True
+    addendum = None
     def download(self, engine=None):
         self.engine = self.checkengine(engine)
         db = Database()
@@ -23,7 +24,7 @@ class DbTk:
         if self.ref:
             return self.ref
         else:
-            return '/'.join(self.url.split('/')[0:-1]) + '/'
+            return None
     def checkengine(self, engine=None):
         if not engine:
             opts = get_opts()
@@ -43,6 +44,11 @@ class EcologicalArchives(DbTk):
                                       )
         self.engine.insert_data_from_url(self.url)
         return self.engine
+    def reference_url(self):
+        if self.ref:
+            return self.ref
+        else:
+            return '/'.join(self.url.split('/')[0:-1]) + '/'
         
         
 TEMPLATES = [
