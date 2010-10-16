@@ -12,6 +12,7 @@ abort = False
 
 
 def download_from_repository(filepath, newpath):
+    """Downloads the latest version of a file from the repository."""
     filename = filepath.split('/')[-1]
     latest = urllib.urlopen(REPOSITORY + filepath, 'rb')
     file_size = latest.info()['Content-Length']
@@ -30,6 +31,7 @@ def download_from_repository(filepath, newpath):
 
 
 def more_recent(latest, current):
+    """Given two version number strings, returns True if the first is more recent."""
     latest_parts = latest.split('.')
     current_parts = current.split('.')
     for n in range(len(latest_parts)):
@@ -43,6 +45,7 @@ def more_recent(latest, current):
 
 
 def check_for_updates():
+    """Check for updates to categories, scripts, and executable."""
     app = wx.PySimpleApp()
     progress = wx.ProgressDialog("Update",
                                  "Checking for updates. Please wait...",

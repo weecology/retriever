@@ -17,13 +17,13 @@ python version.py
 mv version.txt ../../
 
 # remove non-source files from source directory
-sudo rm dbtk-build.sh make-windows-executables.bat version.py stdeb.cfg
+sudo rm dbtk-build.sh make-windows-executables.bat version.py
 mv categories ../../
 mv scripts ../../
 cd .. # current-release/src
 cd .. # current-release
 sudo rm categories/.svn -rf
-sudo rm scripts/.svn -rf
+sudo rm scripts/.svn scripts/*.pyc -rf
 
 # make apidocs
 sudo pydoctor --add-package=src/dbtk --make-html

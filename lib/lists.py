@@ -1,5 +1,8 @@
+"""Contains code for getting dataset lists from available datasets/categories."""
+
 import os
 from dbtk.lib.templates import TEMPLATES
+
 
 class DbTkList:
     """A categorical list of scripts."""
