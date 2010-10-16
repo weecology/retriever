@@ -47,18 +47,18 @@ class DbTkWizard(wx.wizard.Wizard):
         self.pages.append(TitledPage(self, "", ""))
         
         self.pages.append(ChooseDbPage(self, "Select Database", 
-                                      "Please select your database platform:\n"))
+                                      "Please select your database platform:"))
         
         self.pages.append(ConnectPage(self, 
                                      "Connection Info", 
-                                     "Please enter your connection information: \n"))
+                                     "Please enter your connection information:"))
 
         if len(self.lists) > 1:        
             self.pages.append(CategoriesPage(self, "Categories",
                                                  "Choose the dataset categories to be shown."))
         
         self.pages.append(DatasetPage(self, "Select Datasets", 
-                               "Check each dataset to be downloaded:\n"))
+                               "Check each dataset to be downloaded:"))
         
         self.pages.append(FinishPage(self, "", ""))
         

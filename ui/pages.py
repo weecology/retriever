@@ -155,7 +155,6 @@ class CategoriesPage(TitledPage):
         lists = [list.name for list in parent.lists]
         self.catlist = wx.CheckListBox(self, -1, choices=lists)
         self.catlist.SetCheckedStrings(["All Datasets"])
-        self.AddSpace()
         self.sizer.Add(self.catlist, 0, wx.EXPAND)
         self.catlist.Bind(wx.EVT_CHECKLISTBOX, self.OnCheck)
         self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.GetScripts)
