@@ -165,9 +165,9 @@ class CategoriesPage(TitledPage):
         self.catlist = wx.CheckListBox(self, -1, choices=lists)
         self.catlist.SetCheckedStrings(["All Datasets"])
         self.sizer.Add(self.catlist, 0, wx.EXPAND)
-        self.catlist.Bind(wx.EVT_CHECKLISTBOX, self.CheckCategory)
+        self.catlist.Bind(wx.EVT_CHECKLISTBOX, self.OnCheck)
         self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.GetScripts)
-    def CheckCategory(self, evt):
+    def OnCheck(self, evt):
         index = evt.GetSelection()
         clicked = self.catlist.GetString(index)
         status = self.catlist.IsChecked(index)
@@ -206,10 +206,11 @@ class DatasetPage(TitledPage):
         # CheckListBox of scripts
         self.scriptlist = wx.CheckListBox(self, -1, size=(-1,200))
         self.sizer.Add(self.scriptlist, 0, wx.EXPAND)
+        self.scriptlist.Bind(wx.EVT_CHECKLISTBOX, self.OnCheck)
         # Add dataset button
         self.addbtn = wx.Button(self, -1, "Add...")
         self.sizer.Add(self.addbtn)
-        self.addbtn.Bind(wx.EVT_BUTTON, self.AddDataset)            
+        self.addbtn.Bind(wx.EVT_BUTTON, self.AddDataset)
     def Draw(self, evt):
         dbtk_list = self.Parent.dbtk_list
         self.scriptlist.Clear()
@@ -217,6 +218,9 @@ class DatasetPage(TitledPage):
             self.scriptlist.Append(script)
         public_scripts = [script.name for script in dbtk_list if script.public]
         self.scriptlist.SetCheckedStrings(public_scripts)
+    def OnCheck(self, evt):
+        checked = self.scriptlist.GetCheckedStrings()
+        self.checkallbox.SetValue(len(checked) == len(self.Parent.dbtk_list))
     def AddDataset(self, evt):
         # Run Add Dataset wizard
         add_dataset = AddDatasetWizard(self.Parent, -1, 'Add Dataset')            
@@ -259,7 +263,7 @@ class DatasetPage(TitledPage):
                     wx.MessageBox("You already have a dataset named " + dataset_name + ".")
                 # Automatically check the new dataset
                 self.scriptlist.SetCheckedStrings(self.scriptlist.GetCheckedStrings() + (fullname,))
-        #add_dataset.Destroy()
+        add_dataset.Destroy()
     def CheckAll(self, evt):
         if self.checkallbox.GetValue():
             self.scriptlist.SetCheckedStrings([script.name for script in self.Parent.dbtk_list])
