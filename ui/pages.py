@@ -200,7 +200,6 @@ class DatasetPage(TitledPage):
         self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CheckValues) 
         # All checkbox
         self.checkallbox = wx.CheckBox(self, -1, "All")
-        self.checkallbox.SetValue(True)
         self.sizer.Add(self.checkallbox)
         self.checkallbox.Bind(wx.EVT_CHECKBOX, self.CheckAll)
         # CheckListBox of scripts
@@ -218,6 +217,7 @@ class DatasetPage(TitledPage):
             self.scriptlist.Append(script)
         public_scripts = [script.name for script in dbtk_list if script.public]
         self.scriptlist.SetCheckedStrings(public_scripts)
+        self.OnCheck(None)
     def OnCheck(self, evt):
         checked = self.scriptlist.GetCheckedStrings()
         self.checkallbox.SetValue(len(checked) == len(self.Parent.dbtk_list))
