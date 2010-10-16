@@ -302,6 +302,10 @@ class FinishPage(TitledPage):
                 html += "<li>" + script.name
                 if script.reference_url():
                     html += ' (<a href="' + script.reference_url() + '">About</a>)'
+                if script.addendum:
+                    html += "<p><i>"
+                    html += script.addendum.replace("\n", "<br />")
+                    html += "</i></p>"
                 html += "</li>"
         html += "</ul>"
         self.summary.SetPage(html)
