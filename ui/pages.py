@@ -34,8 +34,7 @@ class ChooseDbPage(TitledPage):
                             style=wx.LB_SINGLE)
         self.dblist = dblist
         self.dblist.SetSelection(0)
-        self.sizer.Add(self.dblist,
-                          0, wx.EXPAND | wx.ALL, 5)
+        self.sizer.Add(self.dblist, 0, wx.EXPAND)
         self.AddSpace()
         self.sizer2 = wx.BoxSizer(wx.HORIZONTAL)    
         self.sizer2.Add(wx.StaticText(self, -1, "Data file directory:", 
@@ -186,7 +185,7 @@ class CategoriesPage(TitledPage):
 class DatasetPage(TitledPage):
     """The dataset selection page."""
     def __init__(self, parent, title, label):
-        TitledPage.__init__(self, parent, title, label)            
+        TitledPage.__init__(self, parent, title, label)
         # Check that at least one dataset is selected before proceeding
         self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CheckValues) 
         # All checkbox
