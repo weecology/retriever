@@ -46,5 +46,5 @@ class EcologicalArchives(DbTk):
         
         
 TEMPLATES = [
-             ("Ecological Archives", EcologicalArchives())
+             ("Ecological Archives", EcologicalArchives)
              ]

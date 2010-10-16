@@ -15,3 +15,6 @@ class TitledPage(wx.wizard.WizardPageSimple):
             self.sizer.Add(self.label, 0, wx.EXPAND | wx.ALL, 5)
             self.label.Wrap(100)
             self.sizer.Add(wx.StaticText(self, -1, label))
+    def AddSpace(self, n=1):
+        for i in range(n):
+            self.sizer.Add(wx.StaticText(self, -1, "\n"))

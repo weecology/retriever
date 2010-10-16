@@ -26,8 +26,6 @@ class DownloadPage(TitledPage):
         # Get options from wizard
         engine = self.Parent.CONNECTION.engine
         options = self.Parent.CONNECTION.option
-        engine.keep_raw_data = self.Parent.CHOOSEDB.keepdata.Value
-        engine.use_local = self.Parent.CHOOSEDB.uselocal.Value
         engine.RAW_DATA_LOCATION = self.Parent.CHOOSEDB.raw_data_dir.Value
         opts = dict()
         for key in options.keys():
