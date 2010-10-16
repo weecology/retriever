@@ -8,6 +8,8 @@ Published: Ecological Archives, 2007
 from dbtk.lib.templates import EcologicalArchives
 from dbtk.lib.tools import DbTkTest
 
+VERSION = '0.3'
+
 
 class main(EcologicalArchives):
     name = "Avian Body Size (Ecological Archives 2007)"

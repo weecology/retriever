@@ -1,6 +1,6 @@
 """Generates a configuration file containing the version number."""
 import os
-from dbtk import VERSION
+from dbtk import VERSION, MODULE_LIST
 
 if os.path.isfile("version.txt"):
     os.remove("version.txt")
@@ -8,8 +8,8 @@ version_file = open("version.txt", "wb")
 version_file.write(VERSION + '\n')
 categories = ['.'.join(cat.split('.')[:-1]) for cat in os.listdir("categories")
               if cat[-4:] == ".cat"]
-scripts = ['.'.join(script.split('.')[:-1]) for script in os.listdir("scripts")
-           if script[-3:] == ".py"]
+modules = MODULE_LIST()
+scripts = [module.__name__ + "," + module.VERSION for module in modules]
 version_file.write(','.join(categories))
 for script in scripts:
     version_file.write('\n' + script)
