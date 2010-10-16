@@ -131,12 +131,17 @@ class Engine():
         else:
             self.table.columns = []
             self.table.hasindex = True
+            
+        print "Getting columns..."
         
         columns, column_values = self.auto_get_columns(header)
         
         self.auto_get_datatypes(pk, source, columns, column_values)
         
-        print self.table.columns
+        print '[' + ', '.join([self.convert_data_type(column[1]) + " " + 
+                               column[0] for column in columns]
+                              ) + ']'
+        
         self.create_table()
         
         if need_to_delete:

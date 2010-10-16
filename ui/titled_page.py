@@ -11,9 +11,7 @@ class TitledPage(wx.wizard.WizardPageSimple):
             titleText.SetFont(wx.Font(18, wx.SWISS, wx.NORMAL, wx.BOLD))
             self.sizer.Add(titleText, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
         if label:
-            self.label = wx.StaticText(self, -1)
-            self.sizer.Add(self.label, 0, wx.EXPAND | wx.ALL, 5)
-            self.label.Wrap(100)
+            self.AddSpace()
             self.sizer.Add(wx.StaticText(self, -1, label))
             self.AddSpace()
     def AddSpace(self, n=1):

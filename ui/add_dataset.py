@@ -33,6 +33,7 @@ class AddDatasetWizard(wx.wizard.Wizard):
     class AddDatasetPage(TitledPage):
         def __init__(self, parent, title, label):
             TitledPage.__init__(self, parent, title, label)
+            self.AddSpace()
             parent.url = wx.TextCtrl(self, -1, "http://",
                                      size=wx.Size(250,-1))
             parent.dbname = wx.TextCtrl(self, -1, "",
