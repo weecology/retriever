@@ -30,9 +30,9 @@ class DbTkWizard(wx.wizard.Wizard):
         
         <p>This wizard will walk you through the process of downloading and 
         installing ecological datasets.</p>
-        <p>This wizard requires that you have one or more of the supported database 
-        systems installed. You must also have either an active connection to the 
-        internet, or the raw data files stored locally on your computer.</p>
+        <p>You'll need one or more of the supported database systems installed.
+        You must also have either an active connection to the internet, or the
+        raw data files stored locally on your computer.</p>
         <p>Supported database systems currently include:</p>
         <ul>"""
         

@@ -20,7 +20,7 @@ class engine(Engine):
                      ["hostname", 
                       "Enter your PostgreSQL host or press Enter " +
                       "for the default (localhost): ", "localhost"],
-                     ["sqlport", "Enter your PostgreSQL port or press" + 
+                     ["port", "Enter your PostgreSQL port or press" + 
                       "Enter for the default (5432): ", 5432],
                      ["database", 
                       "Enter your PostgreSQL database name or press " +
@@ -70,7 +70,7 @@ CSV HEADER"""
         import psycopg2 as dbapi    
         self.get_input()            
         self.connection = dbapi.connect(host = self.opts["hostname"],
-                                        port = int(self.opts["sqlport"]),
+                                        port = int(self.opts["port"]),
                                         user = self.opts["username"],
                                         password = self.opts["password"],
                                         database = self.opts["database"])        

@@ -23,7 +23,7 @@ class engine(Engine):
                       "Enter your MySQL host or press Enter " +
                       "for the default (localhost): ", 
                       "localhost"],                     
-                     ["sqlport", 
+                     ["port", 
                       "Enter your MySQL port or press Enter " +
                       "for the default (3306): ", 
                       3306]]
@@ -54,7 +54,7 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
         import MySQLdb as dbapi
         self.get_input()                
         self.connection = dbapi.connect(host = self.opts["hostname"],
-                                        port = int(self.opts["sqlport"]),
+                                        port = int(self.opts["port"]),
                                         user = self.opts["username"],
                                         passwd = self.opts["password"])     
         self.cursor = self.connection.cursor()    
