@@ -150,9 +150,9 @@ def get_opts():
                     optsdict["hostname"] = arg
             elif opt in ("-o", "--port"): 
                 try:
-                    optsdict["sqlport"] = int(arg)
+                    optsdict["port"] = int(arg)
                 except ValueError:
-                    optsdict["sqlport"] = "default"                 
+                    optsdict["port"] = "default"                 
             elif opt in ("-d", "--database"): 
                 if arg == "":
                     optsdict["database"] = "default"
