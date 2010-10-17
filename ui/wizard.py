@@ -14,6 +14,7 @@ from threading import Thread
 from dbtk.lib.tools import final_cleanup
 from dbtk.ui.pages import *
 from dbtk.ui.download_page import DownloadPage
+from dbtk.ui.icon import globe_icon
 from dbtk import ENGINE_LIST
 
 ENGINE_LIST = ENGINE_LIST()
@@ -22,6 +23,8 @@ ENGINE_LIST = ENGINE_LIST()
 class DbTkWizard(wx.wizard.Wizard):
     def __init__(self, parent, id, title, lists, engine_list):
         wx.wizard.Wizard.__init__(self, parent, id, title)
+        
+        self.SetIcon(globe_icon.GetIcon())
         
         welcome = """<h2>Welcome to the Database Toolkit wizard.</h2>
         
