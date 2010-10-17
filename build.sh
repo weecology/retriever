@@ -17,7 +17,7 @@ python version.py
 mv version.txt ../../
 
 # remove non-source files from source directory
-sudo rm dbtk-build.sh make-windows-executables.bat version.py
+sudo rm build.sh make-windows-executables.bat version.py
 mv categories ../../
 mv scripts ../../
 cd .. # current-release/src
