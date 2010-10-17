@@ -62,6 +62,7 @@ setup(name='dbtk',
                  },
       windows = [{'script': "main.py",
                   'dest_base': "dbtk",
+                  'icon_resources':[(1,'globe.ico')]
                   }],
       zipfile = None,
      )
