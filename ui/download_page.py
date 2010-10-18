@@ -21,7 +21,7 @@ class DownloadPage(TitledPage):
         self.SetPrev(None)
         self.html = "<h2>Download Progress</h2>\n"
         self.html += "<p>Beginning downloads . . .</p>"
-        self.summary.SetPage(self.html)
+        self.summary.SetHtml(self.html)
         
         # Get options from wizard
         engine = self.Parent.CONNECTION.engine
@@ -105,5 +105,5 @@ class DownloadPage(TitledPage):
         wx.GetApp().Yield()
     
     def refresh_html(self):
-        self.summary.SetPage(self.html)
+        self.summary.SetHtml(self.html)
         self.summary.Scroll(-1, self.summary.GetScrollRange(wx.VERTICAL))

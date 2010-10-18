@@ -24,9 +24,18 @@ class DbTkWizard(wx.wizard.Wizard):
     def __init__(self, parent, id, title, lists, engine_list):
         wx.wizard.Wizard.__init__(self, parent, id, title)
         
+        self.bgcolor = wx.Color(217,212,204)
+        
+        self.SetBackgroundColour(self.bgcolor)
         self.SetIcon(globe_icon.GetIcon())
         
-        welcome = """<h2>Welcome to the Database Toolkit wizard.</h2>
+        mfs = wx.MemoryFSHandler()
+        wx.FileSystem_AddHandler(mfs)
+        mfs.AddFile("globe.png", globe_icon.GetImage(), wx.BITMAP_TYPE_PNG)
+
+        
+        welcome = """<table><tr><td><img src="memory:globe.png"></td><td>
+        <h2>Welcome to the Database Toolkit wizard.</h2></td></tr></table>
         
         <p>This wizard will walk you through the process of downloading and 
         installing ecological datasets.</p>
@@ -78,7 +87,7 @@ class DbTkWizard(wx.wizard.Wizard):
             self.DATASET.Draw(None) 
             
         self.TITLE.welcome = HtmlWindow(self.TITLE)
-        self.TITLE.welcome.SetPage(welcome)
+        self.TITLE.welcome.SetHtml(welcome)
         self.TITLE.sizer.Add(self.TITLE.welcome, 1, wx.EXPAND)
              
         self.CHOOSEDB.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CONNECTION.Draw)

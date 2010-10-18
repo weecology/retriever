@@ -22,6 +22,21 @@ class HtmlWindow(wx.html.HtmlWindow):
             self.SetStandardFonts()
     def OnLinkClicked(self, link):
         wx.LaunchDefaultBrowser(link.GetHref())
+    def SetHtml(self, html):
+        self.SetPage(html)
+        self.SetBackgroundColour(self.Parent.Parent.bgcolor)
+        
+
+class StaticText(wx.StaticText):
+    def __init__(self, parent, id, label, size=wx.Size(-1,-1)):
+        wx.StaticText.__init__(self, parent, id, label, size=size)
+        self.SetForegroundColour(wx.BLACK)
+        
+ 
+class CheckBox(wx.CheckBox):
+    def __init__(self, parent, id, label):
+        wx.CheckBox.__init__(self, parent, id, label)
+        self.SetForegroundColour(wx.BLACK)
                 
 
 class ChooseDbPage(TitledPage):
@@ -37,8 +52,8 @@ class ChooseDbPage(TitledPage):
         self.sizer.Add(self.dblist, 0, wx.EXPAND)
         self.AddSpace()
         self.sizer2 = wx.BoxSizer(wx.HORIZONTAL)    
-        self.sizer2.Add(wx.StaticText(self, -1, "Data file directory:", 
-                              size=wx.Size(150,35)))
+        self.sizer2.Add(StaticText(self, -1, "Data file directory:", 
+                                   size=wx.Size(150,35)))
         self.raw_data_dir = wx.TextCtrl(self, -1, 
                                         Engine().RAW_DATA_LOCATION,
                                         size=wx.Size(200,-1))
@@ -110,7 +125,7 @@ class ConnectPage(TitledPage):
                     else:
                         default = opt[2]
                     self.fieldset[opt[0]] = wx.BoxSizer(wx.HORIZONTAL)
-                    label = wx.StaticText(self, -1, opt[0] + ": ", 
+                    label = StaticText(self, -1, opt[0] + ": ", 
                                           size=wx.Size(90,35))
                     if opt[0] == "password":
                         txt = wx.TextCtrl(self, -1, 
@@ -138,7 +153,7 @@ class ConnectPage(TitledPage):
                         self.browse.Bind(wx.EVT_BUTTON, open_file_dialog)                        
                     self.fieldset[opt[0]].Layout()
                     self.fields.Add(self.fieldset[opt[0]])
-                self.save_connection = wx.CheckBox(self, -1, "Save connection")
+                self.save_connection = CheckBox(self, -1, "Save connection")
                 self.save_connection.SetValue(True)
                 self.fields.Add(self.save_connection)
                 self.fields.Layout()
@@ -189,7 +204,7 @@ class DatasetPage(TitledPage):
         # Check that at least one dataset is selected before proceeding
         self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CheckValues) 
         # All checkbox
-        self.checkallbox = wx.CheckBox(self, -1, "All")
+        self.checkallbox = CheckBox(self, -1, "All")
         self.sizer.Add(self.checkallbox)
         self.checkallbox.Bind(wx.EVT_CHECKBOX, self.CheckAll)
         # CheckListBox of scripts
@@ -308,4 +323,4 @@ class FinishPage(TitledPage):
                     html += "</i></p>"
                 html += "</li>"
         html += "</ul>"
-        self.summary.SetPage(html)
+        self.summary.SetHtml(html)
