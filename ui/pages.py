@@ -11,50 +11,18 @@ from dbtk.lib.models import Engine
 from dbtk.lib.templates import TEMPLATES
 from dbtk.lib.tools import get_saved_connection
 from dbtk.ui.add_dataset import AddDatasetWizard
-from dbtk.ui.titled_page import TitledPage
+from dbtk.ui.controls import *
 from dbtk import VERSION
 
-
-class HtmlWindow(wx.html.HtmlWindow):
-    def __init__(self, parent):
-        wx.html.HtmlWindow.__init__(self, parent, size=(-1,300))
-        if "gtk2" in wx.PlatformInfo:
-            self.SetStandardFonts()
-    def OnLinkClicked(self, link):
-        wx.LaunchDefaultBrowser(link.GetHref())
-    def SetHtml(self, html):
-        self.SetPage(html)
-        self.SetBackgroundColour(self.Parent.Parent.bgcolor)
-        
-
-class StaticText(wx.StaticText):
-    def __init__(self, parent, id, label, size=wx.Size(-1,-1)):
-        wx.StaticText.__init__(self, parent, id, label, size=size)
-        self.SetForegroundColour(wx.BLACK)
-        
- 
-class CheckBox(wx.CheckBox):
-    def __init__(self, parent, id, label):
-        wx.CheckBox.__init__(self, parent, id, label)
-        self.SetForegroundColour(wx.BLACK)
-        self.SetBackgroundColour(parent.Parent.bgcolor)
-        
-        
-class CheckListBox(wx.CheckListBox):
-    def __init__(self, parent, id, size=(-1,-1), choices=[]):
-        wx.CheckListBox.__init__(self, parent, id, size=size, choices=choices)
-        self.SetForegroundColour(wx.BLACK)
-        self.SetBackgroundColour(wx.WHITE)
-                
 
 class ChooseDbPage(TitledPage):
     def __init__(self, parent, title, label):
         TitledPage.__init__(self, parent, title, label)
         engine_list = parent.engine_list
         
-        dblist = wx.ListBox(self, -1, 
-                            choices=[db.name for db in engine_list], 
-                            style=wx.LB_SINGLE)
+        dblist = ListBox(self, -1, 
+                         choices=[db.name for db in engine_list], 
+                         style=wx.LB_SINGLE)
         self.dblist = dblist
         self.dblist.SetSelection(0)
         self.sizer.Add(self.dblist, 0, wx.EXPAND)
@@ -62,7 +30,7 @@ class ChooseDbPage(TitledPage):
         self.sizer2 = wx.BoxSizer(wx.HORIZONTAL)    
         self.sizer2.Add(StaticText(self, -1, "Data file directory:", 
                                    size=wx.Size(150,35)))
-        self.raw_data_dir = wx.TextCtrl(self, -1, 
+        self.raw_data_dir = TextCtrl(self, -1, 
                                         Engine().RAW_DATA_LOCATION,
                                         size=wx.Size(200,-1))
         self.sizer2.Add(self.raw_data_dir)
@@ -136,12 +104,12 @@ class ConnectPage(TitledPage):
                     label = StaticText(self, -1, opt[0] + ": ", 
                                           size=wx.Size(90,35))
                     if opt[0] == "password":
-                        txt = wx.TextCtrl(self, -1, 
+                        txt = TextCtrl(self, -1, 
                                           str(default), 
                                           size=wx.Size(200,-1), 
                                           style=wx.TE_PASSWORD)
                     else:
-                        txt = wx.TextCtrl(self, -1, str(default),
+                        txt = TextCtrl(self, -1, str(default),
                                           size=wx.Size(200,-1))
                     self.option[opt[0]] = txt
                     self.fieldset[opt[0]].AddMany([label, 

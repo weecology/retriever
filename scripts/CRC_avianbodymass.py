@@ -65,8 +65,7 @@ class main(DbTk):
             
             # Make sure file exists
             if not os.path.isfile(full_filename):
-                raise Exception("DbtkError", "Missing raw data file: " + 
-                                   full_filename)
+                raise Exception("Missing raw data file: " + full_filename)
             
             # Open excel file with xlrd
             book = xlrd.open_workbook(full_filename)

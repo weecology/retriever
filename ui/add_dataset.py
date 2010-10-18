@@ -1,12 +1,16 @@
 import wx
 from dbtk.lib.templates import TEMPLATES
-from dbtk.ui.titled_page import TitledPage
+from dbtk.ui.controls import *
 
 
 class AddDatasetWizard(wx.wizard.Wizard):
     """Wizard for adding custom datasets"""
     def __init__(self, parent, id, title):
-        wx.wizard.Wizard.__init__(self, parent, id, title)            
+        wx.wizard.Wizard.__init__(self, parent, id, title)
+        
+        self.bgcolor = parent.bgcolor
+        
+        self.SetBackgroundColour(self.bgcolor)
         
         self.pages = []
         self.pages.append(self.ChooseTemplatePage(self, "Choose a Template", 
@@ -23,7 +27,7 @@ class AddDatasetWizard(wx.wizard.Wizard):
     class ChooseTemplatePage(TitledPage):
         def __init__(self, parent, title, label):
             TitledPage.__init__(self, parent, title, label)
-            parent.templates = wx.ListBox(self, -1, 
+            parent.templates = ListBox(self, -1, 
                             choices=[template[0] for template in TEMPLATES], 
                             style=wx.LB_SINGLE)
             parent.templates.SetSelection(0)
@@ -34,11 +38,11 @@ class AddDatasetWizard(wx.wizard.Wizard):
         def __init__(self, parent, title, label):
             TitledPage.__init__(self, parent, title, label)
             self.AddSpace()
-            parent.url = wx.TextCtrl(self, -1, "http://",
+            parent.url = TextCtrl(self, -1, "http://",
                                      size=wx.Size(250,-1))
-            parent.dbname = wx.TextCtrl(self, -1, "",
+            parent.dbname = TextCtrl(self, -1, "",
                                         size=wx.Size(250,-1))
-            parent.tablename = wx.TextCtrl(self, -1, "",
+            parent.tablename = TextCtrl(self, -1, "",
                                            size=wx.Size(250,-1))
             
             self.vbox = wx.BoxSizer(wx.VERTICAL)
@@ -47,7 +51,7 @@ class AddDatasetWizard(wx.wizard.Wizard):
                          (parent.dbname, "Database Name:"),
                          (parent.tablename, "Table Name:")]:
                 self.hbox[item[1]] = wx.BoxSizer(wx.HORIZONTAL)
-                label = wx.StaticText(self, -1, item[1], size=wx.Size(120,35))                        
+                label = StaticText(self, -1, item[1], size=wx.Size(120,35))                        
                 self.hbox[item[1]].AddMany([label,
                                             item[0]])
                 self.hbox[item[1]].Layout()
