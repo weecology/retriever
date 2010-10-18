@@ -37,6 +37,14 @@ class CheckBox(wx.CheckBox):
     def __init__(self, parent, id, label):
         wx.CheckBox.__init__(self, parent, id, label)
         self.SetForegroundColour(wx.BLACK)
+        self.SetBackgroundColour(wx.WHITE)
+        
+        
+class CheckListBox(wx.CheckListBox):
+    def __init__(self, parent, id, size=(-1,-1), choices=[]):
+        wx.CheckListBox.__init__(self, parent, id, size=size, choices=choices)
+        self.SetForegroundColour(wx.BLACK)
+        self.SetBackgroundColour(wx.WHITE)
                 
 
 class ChooseDbPage(TitledPage):
@@ -167,7 +175,7 @@ class CategoriesPage(TitledPage):
         TitledPage.__init__(self, parent, title, label)           
         # CheckListBox of scripts
         lists = [list.name for list in parent.lists]
-        self.catlist = wx.CheckListBox(self, -1, choices=lists)
+        self.catlist = CheckListBox(self, -1, choices=lists)
         self.catlist.SetCheckedStrings(["All Datasets"])
         self.sizer.Add(self.catlist, 0, wx.EXPAND)
         self.catlist.Bind(wx.EVT_CHECKLISTBOX, self.OnCheck)
@@ -208,7 +216,7 @@ class DatasetPage(TitledPage):
         self.sizer.Add(self.checkallbox)
         self.checkallbox.Bind(wx.EVT_CHECKBOX, self.CheckAll)
         # CheckListBox of scripts
-        self.scriptlist = wx.CheckListBox(self, -1, size=(-1,200))
+        self.scriptlist = CheckListBox(self, -1, size=(-1,200))
         self.sizer.Add(self.scriptlist, 0, wx.EXPAND)
         self.scriptlist.Bind(wx.EVT_CHECKLISTBOX, self.OnCheck)
         # Add dataset button
