@@ -37,7 +37,7 @@ class CheckBox(wx.CheckBox):
     def __init__(self, parent, id, label):
         wx.CheckBox.__init__(self, parent, id, label)
         self.SetForegroundColour(wx.BLACK)
-        self.SetBackgroundColour(wx.WHITE)
+        self.SetBackgroundColour(parent.Parent.bgcolor)
         
         
 class CheckListBox(wx.CheckListBox):

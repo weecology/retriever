@@ -41,13 +41,10 @@ sudo rm deb_dist stdeb.cfg -rf
 mkdir linux
 mv *.deb linux/
 mv linux ../../
-sudo rm .svn -rf
-cd lib # current-release/src/dbtk/lib
-sudo rm .svn -rf
-cd ../scripts # current-release/src/dbtk/scripts
-sudo rm .svn -rf
-cd .. # current-release/src/dbtk
+mv globe.ico ../
+sudo rm .svn lib/.svn engines/.svn ui/.svn -rf
 
 # build src package
 cd .. # current-release/src
 tar czvf dbtk-src.tar.gz dbtk
+mv globe.ico dbtk/
