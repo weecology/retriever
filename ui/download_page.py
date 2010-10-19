@@ -88,7 +88,21 @@ class DownloadPage(TitledPage):
                                                       | wx.PD_SMOOTH
                                                       | wx.PD_AUTO_HIDE
                                                 )
-            (keepgoing, skip) = self.dialog.Pulse(s)
+            def progress(s):
+                if ' / ' in s:
+                    s = s.split(' / ')
+                    total = float(s[1])
+                    current = float(s[0].split(': ')[1])
+                    return int((current / total) * 100)
+                else:
+                    return None
+                    
+            current_progress = progress(s)
+            if current_progress:
+                (keepgoing, skip) = self.dialog.Update(current_progress, s)
+            else:
+                (keepgoing, skip) = self.dialog.Pulse(s)
+                
             if not keepgoing:
                 self.dialog.Update(100, "")
                 self.dialog = None
