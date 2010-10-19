@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# install latest version
+sudo python setup.py install
+
 # cleanup, then create current-release folder
 sudo rm current-release -rf
 mkdir current-release
