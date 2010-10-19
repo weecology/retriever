@@ -9,7 +9,8 @@ version_file.write(VERSION + '\n')
 categories = ['.'.join(cat.split('.')[:-1]) for cat in os.listdir("categories")
               if cat[-4:] == ".cat"]
 modules = MODULE_LIST()
-scripts = [module.__name__ + "," + module.VERSION for module in modules]
+scripts = [module.__name__ + "," + module.VERSION for module in modules
+                                                  if module.main().public]
 version_file.write(','.join(categories))
 for script in scripts:
     version_file.write('\n' + script)
