@@ -1,9 +1,8 @@
-0.2
+0.3
 birds,mammals
-bbs
-CRC_avianbodymass
-EA_avianbodysize2007
-EA_ernest2003
-EA_pantheria
-EA_portal_mammals
-gentry
+EA_ernest2003,0.3
+EA_pantheria,0.3
+EA_avianbodysize2007,0.3
+bbs,0.3
+EA_portal_mammals,0.3
+gentry,0.3

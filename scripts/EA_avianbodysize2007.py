@@ -5,18 +5,17 @@ Published: Ecological Archives, 2007
  
 """
 
-from dbtk.lib.tools import DbTk, DbTkTest
+from dbtk.lib.templates import EcologicalArchives
+from dbtk.lib.tools import DbTkTest
+
+VERSION = '0.3'
 
 
-class main(DbTk):
+class main(EcologicalArchives):
     name = "Avian Body Size (Ecological Archives 2007)"
     shortname = "AvianBodySize"
+    tablename = "species"
     url = "http://esapubs.org/archive/ecol/E088/096/avian_ssd_jan07.txt"
-    def download(self, engine=None):    
-        DbTk.download(self, engine)
-        self.engine.auto_create_table("species", url=self.url)
-        self.engine.insert_data_from_url(self.url)
-        return self.engine
 
 
 class EAAvianBodySize2007Test(DbTkTest):

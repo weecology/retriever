@@ -5,18 +5,17 @@ Setup and install the Mammalian Life History Database published by Ernest
  
 """
 
-from dbtk.lib.tools import DbTk, DbTkTest
+from dbtk.lib.templates import EcologicalArchives
+from dbtk.lib.tools import DbTkTest
+
+VERSION = '0.3'
 
 
-class main(DbTk):
+class main(EcologicalArchives):
     name = "Mammal Life History Database (Ecological Archives 2003)"
     shortname = "MammalLH"
+    tablename = "species"
     url = "http://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"
-    def download(self, engine=None):
-        DbTk.download(self, engine)
-        self.engine.auto_create_table("species", url=self.url)
-        self.engine.insert_data_from_url(self.url)
-        return self.engine
 
 
 class EAErnest2003Test(DbTkTest):

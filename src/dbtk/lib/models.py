@@ -15,6 +15,11 @@ from decimal import Decimal
 def no_cleanup(value, args):
     """Default cleanup function, returns the unchanged value."""
     return value
+    
+    
+def file_exists(path):
+    return (os.path.isfile(path) and os.path.getsize(path) > 0)    
+    
 
 def correct_invalid_value(value, args):
     """This cleanup function replaces null indicators with None."""
@@ -25,6 +30,7 @@ def correct_invalid_value(value, args):
             return value
     except ValueError:
         return value
+
     
 class Cleanup:
     """This class represents a custom cleanup function and a dictionary of 
@@ -38,6 +44,7 @@ class Database:
     """Information about a database."""
     dbname = ""
     opts = dict()
+
     
 class Table:
     """Information about a database table."""
@@ -51,6 +58,7 @@ class Table:
     fixedwidth = False
     def __init__(self):        
         self.cleanup = Cleanup(no_cleanup, None)        
+
     
 class Engine():
     """A generic database system. Specific database platforms will inherit 
@@ -107,7 +115,7 @@ class Engine():
         self.table.cleanup = cleanup
         
         if url and not (self.use_local and 
-                os.path.isfile(self.format_filename(filename))):
+                file_exists(self.format_filename(filename))):
             # If the file doesn't exist, download it
             self.create_raw_data_dir()                        
             print "Saving a copy of " + filename + "..."
@@ -123,12 +131,17 @@ class Engine():
         else:
             self.table.columns = []
             self.table.hasindex = True
+            
+        print "Getting columns..."
         
         columns, column_values = self.auto_get_columns(header)
         
         self.auto_get_datatypes(pk, source, columns, column_values)
         
-        print self.table.columns
+        print '[' + ', '.join([self.convert_data_type(column[1]) + " " + 
+                               column[0] for column in columns]
+                              ) + ']'
+        
         self.create_table()
         
         if need_to_delete:
@@ -287,7 +300,7 @@ class Engine():
         """Downloads a file to the raw data directory."""
         self.create_raw_data_dir()
         path = self.format_filename(filename)
-        if not self.use_local or not (os.path.isfile(path) and os.path.getsize(path) > 0):
+        if (not self.use_local) or (not file_exists(path)):
             print "Downloading " + filename + "..."
             file = urllib.urlopen(url) 
             local_file = open(path, 'wb')
@@ -301,7 +314,7 @@ class Engine():
         archivename = self.format_filename(url.split('/')[-1])
         
         for filename in filenames:
-            if self.use_local and os.path.isfile(self.format_filename(filename)):
+            if self.use_local and file_exists(self.format_filename(filename)):
                 # Use local copy
                 print "Using local copy of " + filename
             else:
@@ -420,7 +433,7 @@ class Engine():
         """Insert data from a web resource, such as a text file."""
         filename = url.split('/')[-1]
         self.create_raw_data_dir()
-        if self.use_local and os.path.isfile(self.format_filename(filename)):
+        if self.use_local and file_exists(self.format_filename(filename)):
             # Use local copy
             print "Using local copy of " + filename
             self.insert_data_from_file(self.format_filename(filename))            

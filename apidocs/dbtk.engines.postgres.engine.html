@@ -1,0 +1,334 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <title>dbtk.engines.postgres.engine : API documentation</title>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+    <link href="apidocs.css" type="text/css" rel="stylesheet" />
+    
+    
+  </head>
+  <body>
+    <h1 class="class">d.e.p.engine(<a href="dbtk.lib.models.Engine.html">Engine</a>) : class documentation</h1>
+    <p>
+      <span id="part">Part of <a href="dbtk.html">dbtk</a>.<a href="dbtk.engines.html">engines</a>.<a href="dbtk.engines.postgres.html">postgres</a></span>
+      
+      <a href="classIndex.html#dbtk.engines.postgres.engine">View In Hierarchy</a>
+    </p>
+    <div>
+      
+    </div>
+    <div>Engine instance for PostgreSQL.<table class="fieldTable"></table></div>
+
+    
+    
+    <div id="splitTables">
+      <table class="children sortable" id="id60">
+  
+  
+<tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.engines.postgres.engine.html#create_db_statement">create_db_statement</a></td>
+    <td><span>In PostgreSQL, the equivalent of a SQL database is a schema.</span></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.engines.postgres.engine.html#create_db">create_db</a></td>
+    <td><span>Creates a new database based on settings supplied in Database object</span></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.engines.postgres.engine.html#create_table">create_table</a></td>
+    <td><span>PostgreSQL needs to commit operations individually.</span></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.engines.postgres.engine.html#drop_statement">drop_statement</a></td>
+    <td><span>In PostgreSQL, the equivalent of a SQL database is a schema.</span></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.engines.postgres.engine.html#insert_data_from_file">insert_data_from_file</a></td>
+    <td><span>Use PostgreSQL's &quot;COPY FROM&quot; statement to perform a bulk 
+insert.</span></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.engines.postgres.engine.html#get_cursor">get_cursor</a></td>
+    <td><span>Gets the db connection and cursor.</span></td>
+  </tr>
+  
+</table>
+      
+        <p>
+          Inherited from <a href="dbtk.lib.models.Engine.html">Engine</a>:
+        </p>
+        <table class="children sortable" id="id61">
+  
+  
+<tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.lib.models.Engine.html#add_to_table">add_to_table</a></td>
+    <td><span>This function adds data to a table from one or more lines specified</span></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.lib.models.Engine.html#auto_create_table">auto_create_table</a></td>
+    <td><span>Creates a table automatically by analyzing a data source and</span></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.lib.models.Engine.html#auto_get_columns">auto_get_columns</a></td>
+    <td><span>Finds the delimiter and column names from the header row.</span></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.lib.models.Engine.html#auto_get_datatypes">auto_get_datatypes</a></td>
+    <td><span>Determines data types for each column.</span></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.lib.models.Engine.html#convert_data_type">convert_data_type</a></td>
+    <td><span>Converts DBTK generic data types to database platform specific data</span></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.lib.models.Engine.html#create_raw_data_dir">create_raw_data_dir</a></td>
+    <td><span>Checks to see if the archive directory exists and creates it if</span></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.lib.models.Engine.html#create_table_statement">create_table_statement</a></td>
+    <td><span>Returns a SQL statement to create a table.</span></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.lib.models.Engine.html#download_file">download_file</a></td>
+    <td><span>Downloads a file to the raw data directory.</span></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.lib.models.Engine.html#download_files_from_archive">download_files_from_archive</a></td>
+    <td><span>Downloads one or more files from an archive into the raw data</span></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.lib.models.Engine.html#extract_values">extract_values</a></td>
+    <td><span>Given a line of data, this function returns a list of the individual</span></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.lib.models.Engine.html#final_cleanup">final_cleanup</a></td>
+    <td><span>Close the database connection.</span></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.lib.models.Engine.html#format_column_name">format_column_name</a></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.lib.models.Engine.html#format_data_dir">format_data_dir</a></td>
+    <td><span>Returns the correctly formatted raw data directory location.</span></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.lib.models.Engine.html#format_filename">format_filename</a></td>
+    <td><span>Returns the full path of a file in the archive directory.</span></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.lib.models.Engine.html#format_insert_value">format_insert_value</a></td>
+    <td><span>Formats a value for an insert statement, for example by surrounding</span></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.lib.models.Engine.html#get_input">get_input</a></td>
+    <td><span>Manually get user input for connection information when script is</span></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.lib.models.Engine.html#get_insert_columns">get_insert_columns</a></td>
+    <td><span>Gets a set of column names for insert statements.</span></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.lib.models.Engine.html#insert_data_from_archive">insert_data_from_archive</a></td>
+    <td><span>Insert data from files located in an online archive. This function</span></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.lib.models.Engine.html#insert_data_from_url">insert_data_from_url</a></td>
+    <td><span>Insert data from a web resource, such as a text file.</span></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.lib.models.Engine.html#insert_statement">insert_statement</a></td>
+    <td><span>Returns a SQL statement to insert a set of values.</span></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.lib.models.Engine.html#skip_rows">skip_rows</a></td>
+    <td><span>Skip over the header lines by reading them before processing.</span></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.lib.models.Engine.html#tablename">tablename</a></td>
+    <td><span>Returns the full tablename in the format db.table.</span></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="dbtk.lib.models.Engine.html#values_from_line">values_from_line</a></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr>
+  
+</table>
+      
+      
+    </div>
+    
+    
+    
+
+    <div class="function">
+  <a name="dbtk.engines.postgres.engine.create_db_statement">
+    
+  </a>
+  <a name="create_db_statement">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    create_db_statement(self):
+    
+  </div>
+  <div class="functionBody">
+    <div class="interfaceinfo">overrides <a href="dbtk.lib.models.Engine.html#create_db_statement">dbtk.lib.models.Engine.create_db_statement</a></div>
+    <div>In PostgreSQL, the equivalent of a SQL database is a schema.<table class="fieldTable"></table></div>
+  </div>
+</div><div class="function">
+  <a name="dbtk.engines.postgres.engine.create_db">
+    
+  </a>
+  <a name="create_db">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    create_db(self):
+    
+  </div>
+  <div class="functionBody">
+    <div class="interfaceinfo">overrides <a href="dbtk.lib.models.Engine.html#create_db">dbtk.lib.models.Engine.create_db</a></div>
+    <div>Creates a new database based on settings supplied in Database object 
+engine.db<table class="fieldTable"></table></div>
+  </div>
+</div><div class="function">
+  <a name="dbtk.engines.postgres.engine.create_table">
+    
+  </a>
+  <a name="create_table">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    create_table(self):
+    
+  </div>
+  <div class="functionBody">
+    <div class="interfaceinfo">overrides <a href="dbtk.lib.models.Engine.html#create_table">dbtk.lib.models.Engine.create_table</a></div>
+    <div>PostgreSQL needs to commit operations individually.<table class="fieldTable"></table></div>
+  </div>
+</div><div class="function">
+  <a name="dbtk.engines.postgres.engine.drop_statement">
+    
+  </a>
+  <a name="drop_statement">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    drop_statement(self, objecttype, objectname):
+    
+  </div>
+  <div class="functionBody">
+    <div class="interfaceinfo">overrides <a href="dbtk.lib.models.Engine.html#drop_statement">dbtk.lib.models.Engine.drop_statement</a></div>
+    <div>In PostgreSQL, the equivalent of a SQL database is a schema.<table class="fieldTable"></table></div>
+  </div>
+</div><div class="function">
+  <a name="dbtk.engines.postgres.engine.insert_data_from_file">
+    
+  </a>
+  <a name="insert_data_from_file">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    insert_data_from_file(self, filename):
+    
+  </div>
+  <div class="functionBody">
+    <div class="interfaceinfo">overrides <a href="dbtk.lib.models.Engine.html#insert_data_from_file">dbtk.lib.models.Engine.insert_data_from_file</a></div>
+    <div>Use PostgreSQL's &quot;COPY FROM&quot; statement to perform a bulk 
+insert.<table class="fieldTable"></table></div>
+  </div>
+</div><div class="function">
+  <a name="dbtk.engines.postgres.engine.get_cursor">
+    
+  </a>
+  <a name="get_cursor">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    get_cursor(self):
+    
+  </div>
+  <div class="functionBody">
+    
+    <div>Gets the db connection and cursor.<table class="fieldTable"></table></div>
+  </div>
+</div>
+    <address>
+      <a href="index.html">API Documentation</a> for dbtk, generated by <a href="http://codespeak.net/~mwh/pydoctor/">pydoctor</a> at 2010-10-19 17:02:06.
+    </address>
+  </body>
+</html>

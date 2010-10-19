@@ -6,9 +6,12 @@ import os
 import sys
 import zipfile
 import xlrd
-from dbtk.lib.tools import DbTk, DbTkTest
+from dbtk.lib.templates import DbTk
+from dbtk.lib.tools import DbTkTest
 from dbtk.lib.models import Table
 from dbtk.lib.excel import Excel
+
+VERSION = '0.3'
 
 
 class main(DbTk):
@@ -16,6 +19,13 @@ class main(DbTk):
     shortname = "Gentry"
     url = "http://www.mobot.org/mobot/gentry/123/all_Excel.zip"
     ref = "http://www.wlbcenter.org/gentry_data.htm"
+    addendum = """Researchers who make use of the data in publications are requested to acknowledge Alwyn H. Gentry, the Missouri Botanical Garden, and collectors who assisted Gentry or contributed data for specific sites. It is also requested that a reprint of any publication making use of the Gentry Forest Transect Data be sent to:
+
+Bruce E. Ponman
+Missouri Botanical Garden
+P.O. Box 299
+St. Louis, MO 63166-0299
+U.S.A. """
     def download(self, engine=None):
         DbTk.download(self, engine)
               

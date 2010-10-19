@@ -11,59 +11,12 @@ import unittest
 import getopt
 from decimal import Decimal
 from hashlib import md5
-from dbtk.lib.models import Database, Cleanup, correct_invalid_value
-from dbtk.lib.engines import ENGINES_TO_TEST, choose_engine
+from dbtk.lib.models import Database, Engine, Cleanup, correct_invalid_value
 
 warnings.filterwarnings("ignore")
 
 TEST_ENGINES = dict()
 
-
-class DbTk:
-    """This class represents a database toolkit script. Scripts should inherit
-    from this class and execute their code in the download method."""
-    name = ""
-    shortname = ""
-    url = ""
-    ref = ""
-    public = True
-    def download(self, engine=None):
-        self.engine = self.checkengine(engine)
-        db = Database()
-        db.dbname = self.shortname
-        self.engine.db = db
-        self.engine.get_cursor()
-        self.engine.create_db()
-    def reference_url(self):
-        if self.ref:
-            return self.ref
-        else:
-            return '/'.join(self.url.split('/')[0:-1]) + '/'
-    def checkengine(self, engine=None):
-        if not engine:
-            opts = get_opts()
-            engine = choose_engine(opts)
-        engine.script = self            
-        return engine
-    
-    
-class AutoDbTk(DbTk):
-    """A DbTk not requiring a script; it gets column names and data types
-    by scanning the data file."""
-    def __init__(self, name, dbname, tablename, url, nulls=['-999', '-999.9']):
-        self.name = name
-        self.shortname = dbname
-        self.tablename = tablename
-        self.url = url
-        self.nulls = nulls
-    def download(self, engine=None):
-        DbTk.download(self, engine)
-        self.engine.auto_create_table(self.tablename, url=self.url,
-                                      cleanup=Cleanup(correct_invalid_value, 
-                                          {"nulls":self.nulls})
-                                      )
-        self.engine.insert_data_from_url(self.url)
-        return self.engine    
     
             
 class DbTkTest(unittest.TestCase):    
@@ -177,12 +130,6 @@ class DbTkTest(unittest.TestCase):
                 self.assertEqual(sum, checksum)
                 
                 
-class DbTkList:
-    """A categorical list of scripts."""
-    def __init__(self, name, scripts):
-        self.name = name
-        self.scripts = scripts
-                
 def get_opts():
     """Checks for command line arguments"""
     optsdict = dict()
@@ -203,9 +150,9 @@ def get_opts():
                     optsdict["hostname"] = arg
             elif opt in ("-o", "--port"): 
                 try:
-                    optsdict["sqlport"] = int(arg)
+                    optsdict["port"] = int(arg)
                 except ValueError:
-                    optsdict["sqlport"] = "default"                 
+                    optsdict["port"] = "default"                 
             elif opt in ("-d", "--database"): 
                 if arg == "":
                     optsdict["database"] = "default"
@@ -279,8 +226,36 @@ def get_saved_connection(engine_name):
                     parameter = value.split('::')[0]
                     saved_value = value.split('::')[1]
                     parameters[parameter] = saved_value
-    return parameters
-    
+    return parameters    
 
-class DbtkError(Exception):
-    pass
+
+def choose_engine(opts):
+    """Prompts the user to select a database engine"""    
+    from dbtk import ENGINE_LIST
+    ENGINE_LIST = ENGINE_LIST()
+    
+    if "engine" in opts.keys():
+        enginename = opts["engine"]    
+    else:
+        print "Choose a database engine:"
+        for engine in ENGINE_LIST:
+            if engine.abbreviation:
+                abbreviation = "(" + engine.abbreviation + ") "
+            else:
+                abbreviation = ""
+            print "    " + abbreviation + engine.name
+        enginename = raw_input(": ")
+        enginename = enginename.lower()
+    
+    engine = Engine()
+    if not enginename:
+        engine = ENGINE_LIST[0]
+    else:
+        for thisengine in ENGINE_LIST:
+            if (enginename == thisengine.name.lower() 
+                              or thisengine.abbreviation
+                              and enginename == thisengine.abbreviation):
+                engine = thisengine
+        
+    engine.opts = opts
+    return engine    

@@ -4,70 +4,33 @@
 
 import os
 import sys
-from threading import Thread
 import wx
 import wx.html
 import wx.wizard
 from dbtk.lib.models import Engine
-from dbtk.lib.tools import AutoDbTk, get_saved_connection
-from dbtk.ui.download import download_scripts
+from dbtk.lib.templates import TEMPLATES
+from dbtk.lib.tools import get_saved_connection
+from dbtk.ui.add_dataset import AddDatasetWizard
+from dbtk.ui.controls import *
 from dbtk import VERSION
 
-
-
-        
-class HtmlWindow(wx.html.HtmlWindow):
-    def __init__(self, parent):
-        wx.html.HtmlWindow.__init__(self, parent, size=(-1,300))
-        if "gtk2" in wx.PlatformInfo:
-            self.SetStandardFonts()
-    def OnLinkClicked(self, link):
-        wx.LaunchDefaultBrowser(link.GetHref())
-
-
-class TitledPage(wx.wizard.WizardPageSimple):
-    """A standard wizard page with a title and label."""
-    def __init__(self, parent, title, label):
-        wx.wizard.WizardPageSimple.__init__(self, parent)
-        self.sizer = wx.BoxSizer(wx.VERTICAL)
-        self.SetSizer(self.sizer)
-        if title:
-            titleText = wx.StaticText(self, -1, title)
-            titleText.SetFont(wx.Font(18, wx.SWISS, wx.NORMAL, wx.BOLD))
-            self.sizer.Add(titleText, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
-        if label:
-            self.label = wx.StaticText(self, -1)
-            self.sizer.Add(self.label, 0, wx.EXPAND | wx.ALL, 5)
-            self.label.Wrap(100)                
-            self.sizer.Add(wx.StaticText(self, -1, label))
-                
 
 class ChooseDbPage(TitledPage):
     def __init__(self, parent, title, label):
         TitledPage.__init__(self, parent, title, label)
         engine_list = parent.engine_list
         
-        dblist = wx.ListBox(self, -1, 
-                            choices=[db.name for db in engine_list], 
-                            style=wx.LB_SINGLE)
+        dblist = ListBox(self, -1, 
+                         choices=[db.name for db in engine_list], 
+                         style=wx.LB_SINGLE)
         self.dblist = dblist
         self.dblist.SetSelection(0)
-        self.sizer.Add(self.dblist,
-                          0, wx.EXPAND | wx.ALL, 5)
-        self.sizer.Add(wx.StaticText(self, -1, "\n"))
-        self.keepdata = wx.CheckBox(self, -1, "Keep raw data files")
-        self.keepdata.SetValue(True)    
-        self.sizer.Add(self.keepdata)
-        self.uselocal = wx.CheckBox(self, -1, 
-                                    "Use locally archived files, " +
-                                    "if available")
-        self.uselocal.SetValue(True)
-        self.sizer.Add(self.uselocal)
-        self.sizer.Add(wx.StaticText(self, -1, "\n"))
+        self.sizer.Add(self.dblist, 0, wx.EXPAND)
+        self.AddSpace()
         self.sizer2 = wx.BoxSizer(wx.HORIZONTAL)    
-        self.sizer2.Add(wx.StaticText(self, -1, "Data file directory:", 
-                              size=wx.Size(150,35)))
-        self.raw_data_dir = wx.TextCtrl(self, -1, 
+        self.sizer2.Add(StaticText(self, -1, "Data file directory:", 
+                                   size=wx.Size(150,35)))
+        self.raw_data_dir = TextCtrl(self, -1, 
                                         Engine().RAW_DATA_LOCATION,
                                         size=wx.Size(200,-1))
         self.sizer2.Add(self.raw_data_dir)
@@ -93,7 +56,7 @@ class ConnectPage(TitledPage):
         self.option = dict()
         self.sel = ""
         self.fields = wx.BoxSizer(wx.VERTICAL)
-        self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.SaveConnection)            
+        self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.SaveConnection)
     def SaveConnection(self, evt):
         if self.save_connection.Value:
             if os.path.isfile("connections.config"):
@@ -138,15 +101,15 @@ class ConnectPage(TitledPage):
                     else:
                         default = opt[2]
                     self.fieldset[opt[0]] = wx.BoxSizer(wx.HORIZONTAL)
-                    label = wx.StaticText(self, -1, opt[0] + ": ", 
+                    label = StaticText(self, -1, opt[0] + ": ", 
                                           size=wx.Size(90,35))
                     if opt[0] == "password":
-                        txt = wx.TextCtrl(self, -1, 
+                        txt = TextCtrl(self, -1, 
                                           str(default), 
                                           size=wx.Size(200,-1), 
                                           style=wx.TE_PASSWORD)
                     else:
-                        txt = wx.TextCtrl(self, -1, str(default),
+                        txt = TextCtrl(self, -1, str(default),
                                           size=wx.Size(200,-1))
                     self.option[opt[0]] = txt
                     self.fieldset[opt[0]].AddMany([label, 
@@ -166,7 +129,7 @@ class ConnectPage(TitledPage):
                         self.browse.Bind(wx.EVT_BUTTON, open_file_dialog)                        
                     self.fieldset[opt[0]].Layout()
                     self.fields.Add(self.fieldset[opt[0]])
-                self.save_connection = wx.CheckBox(self, -1, "Save connection")
+                self.save_connection = CheckBox(self, -1, "Save connection")
                 self.save_connection.SetValue(True)
                 self.fields.Add(self.save_connection)
                 self.fields.Layout()
@@ -180,9 +143,22 @@ class CategoriesPage(TitledPage):
         TitledPage.__init__(self, parent, title, label)           
         # CheckListBox of scripts
         lists = [list.name for list in parent.lists]
-        self.catlist = wx.CheckListBox(self, -1, choices=lists)
+        self.catlist = CheckListBox(self, -1, choices=lists)
+        self.catlist.SetCheckedStrings(["All Datasets"])
         self.sizer.Add(self.catlist, 0, wx.EXPAND)
+        self.catlist.Bind(wx.EVT_CHECKLISTBOX, self.OnCheck)
         self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.GetScripts)
+    def OnCheck(self, evt):
+        index = evt.GetSelection()
+        clicked = self.catlist.GetString(index)
+        status = self.catlist.IsChecked(index)
+        if clicked == "All Datasets":
+            if status:
+                self.catlist.SetCheckedStrings(["All Datasets"])
+        else:
+            checked = self.catlist.GetCheckedStrings()
+            if len(checked) > 1 and "All Datasets" in checked:
+                self.catlist.Check(0, False)
     def GetScripts(self, evt):
         if evt.Direction:
             self.Parent.dbtk_list = []
@@ -200,21 +176,21 @@ class CategoriesPage(TitledPage):
 class DatasetPage(TitledPage):
     """The dataset selection page."""
     def __init__(self, parent, title, label):
-        TitledPage.__init__(self, parent, title, label)            
+        TitledPage.__init__(self, parent, title, label)
         # Check that at least one dataset is selected before proceeding
         self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CheckValues) 
         # All checkbox
-        self.checkallbox = wx.CheckBox(self, -1, "All")
-        self.checkallbox.SetValue(True)
-        self.sizer.Add(self.checkallbox)            
-        self.checkallbox.Bind(wx.EVT_CHECKBOX, self.CheckAll)            
+        self.checkallbox = CheckBox(self, -1, "All")
+        self.sizer.Add(self.checkallbox)
+        self.checkallbox.Bind(wx.EVT_CHECKBOX, self.CheckAll)
         # CheckListBox of scripts
-        self.scriptlist = wx.CheckListBox(self, -1, size=(-1,200))
+        self.scriptlist = CheckListBox(self, -1, size=(-1,200))
         self.sizer.Add(self.scriptlist, 0, wx.EXPAND)
+        self.scriptlist.Bind(wx.EVT_CHECKLISTBOX, self.OnCheck)
         # Add dataset button
         self.addbtn = wx.Button(self, -1, "Add...")
         self.sizer.Add(self.addbtn)
-        self.addbtn.Bind(wx.EVT_BUTTON, self.AddDataset)            
+        self.addbtn.Bind(wx.EVT_BUTTON, self.AddDataset)
     def Draw(self, evt):
         dbtk_list = self.Parent.dbtk_list
         self.scriptlist.Clear()
@@ -222,10 +198,14 @@ class DatasetPage(TitledPage):
             self.scriptlist.Append(script)
         public_scripts = [script.name for script in dbtk_list if script.public]
         self.scriptlist.SetCheckedStrings(public_scripts)
+        self.OnCheck(None)
+    def OnCheck(self, evt):
+        checked = self.scriptlist.GetCheckedStrings()
+        self.checkallbox.SetValue(len(checked) == len(self.Parent.dbtk_list))
     def AddDataset(self, evt):
         # Run Add Dataset wizard
         add_dataset = AddDatasetWizard(self.Parent, -1, 'Add Dataset')            
-        if add_dataset.RunWizard(add_dataset.page[0]):                
+        if add_dataset.RunWizard(add_dataset.pages[0]):                
             dataset_url = add_dataset.url.GetValue()
             dbname = add_dataset.dbname.GetValue()
             tablename = add_dataset.tablename.GetValue()
@@ -237,10 +217,18 @@ class DatasetPage(TitledPage):
             if dbname and dataset_url:
                 if not (fullname in self.scriptlist.GetItems()):
                     # Add dataset to list
-                    self.Parent.dbtk_list.append(AutoDbTk(fullname,
-                                                          dbname,
-                                                          tablename, 
-                                                          dataset_url))
+                    temp = add_dataset.templates.GetStringSelection()
+                    for template in TEMPLATES:
+                        if template[0] == temp:
+                            new_dataset = template[1]
+                    
+                    new_dataset.name = fullname
+                    new_dataset.shortname = dbname
+                    new_dataset.tablename = tablename
+                    new_dataset.url = dataset_url
+                    
+                    
+                    self.Parent.dbtk_list.append(new_dataset)
                     self.scriptlist.Append(fullname)
                     
                     # Append dataset to scripts.config file
@@ -251,7 +239,7 @@ class DatasetPage(TitledPage):
                         mode = 'wb'
                         initial = ""
                     config = open("scripts.config", mode)                        
-                    config.write(initial + dbname + ", " + tablename + ", " + dataset_url)
+                    config.write(initial + temp + "," + dbname + "," + tablename + "," + dataset_url)
                 else:
                     wx.MessageBox("You already have a dataset named " + dataset_name + ".")
                 # Automatically check the new dataset
@@ -305,129 +293,10 @@ class FinishPage(TitledPage):
                 html += "<li>" + script.name
                 if script.reference_url():
                     html += ' (<a href="' + script.reference_url() + '">About</a>)'
+                if script.addendum:
+                    html += "<p><i>"
+                    html += script.addendum.replace("\n", "<br />")
+                    html += "</i></p>"
                 html += "</li>"
         html += "</ul>"
-        self.summary.SetPage(html)
-        
-        
-class DownloadPage(TitledPage):
-    def __init__(self, parent, title, label):
-        TitledPage.__init__(self, parent, title, label)
-        self.summary = HtmlWindow(self)
-        self.gauge = wx.Gauge(self, -1, 100, size=(-1,20), style=wx.GA_SMOOTH)
-        self.sizer.Add(self.summary, 1, wx.EXPAND)
-        self.sizer.Add(self.gauge, 0, wx.EXPAND)
-        self.sizer.Layout()
-        self.dialog = None
-        self.worker = None
-    def Draw(self, evt):
-        self.Parent.FindWindowById(wx.ID_FORWARD).Disable()
-        self.SetPrev(None)
-        self.html = "<h2>Download Progress</h2>\n"
-        self.html += "<p>Beginning downloads . . .</p>"
-        self.summary.SetPage(self.html)
-        
-        class DownloadThread(Thread):
-            def __init__(self, parent):
-                Thread.__init__(self)
-                self.parent = parent
-                self.scriptnum = 0
-                self.progress_max = 1
-                self.daemon = True
-                self.output = []
-            def run(self):
-                download_scripts(self, self.parent)
-                self.scriptnum = self.progress_max + 1
-                self.parent.FindWindowById(wx.ID_CANCEL).Disable()
-                self.parent.FindWindowById(wx.ID_FORWARD).Enable()
-                
-        self.worker = DownloadThread(self.Parent)
-        self.worker.start()
-
-        self.timer = wx.Timer(self, -1)
-        self.timer.Start(1)
-        self.Bind(wx.EVT_TIMER, self.update, self.timer)
-
-    def update(self, evt):
-        self.timer.Stop()
-        if self.worker:
-            while len(self.worker.output) > 0:                    
-                self.write(self.worker.output[0])
-                self.worker.output = self.worker.output[1:]
-        self.gauge.SetValue(100 * ((self.worker.scriptnum) /
-                                   (self.worker.progress_max + 1.0)))
-        if self.worker.scriptnum < self.worker.progress_max + 1:
-            self.timer.Start(1)
-    
-    def write(self, s):
-        if '\b' in s:
-            s = s.replace('\b', '')
-            if not self.dialog:
-                self.html += "<font color='green'>" + s.split(':')[0] + "</font>"
-                self.refresh_html()
-                wx.GetApp().Yield()
-                self.dialog = wx.ProgressDialog("Download Progress", 
-                                                "Downloading datasets . . .\n"
-                                                + "  " * len(s), 
-                                                maximum=2,
-                                                parent=self.Parent,
-                                                style=wx.PD_CAN_ABORT 
-                                                      | wx.PD_SMOOTH
-                                                      | wx.PD_AUTO_HIDE
-                                                )
-            (keepgoing, skip) = self.dialog.Pulse(s)
-            if not keepgoing:
-                self.dialog.Update(2, "")
-                self.dialog = None
-                self.Parent.Abort(None)
-        else:
-            if self.dialog:
-                self.dialog.Update(2, "")
-                self.dialog = None
-            if "inserting" in s.lower() and not "<font" in s.lower():
-                s = "<font color='green'>" + s + "</font>"
-            self.html += "\n<p>" + s + "</p>"
-            self.refresh_html()
-
-        wx.GetApp().Yield()
-    
-    def refresh_html(self):
-        self.summary.SetPage(self.html)
-        self.summary.Scroll(-1, self.summary.GetScrollRange(wx.VERTICAL))
-        
-                     
-                         
-class AddDatasetWizard(wx.wizard.Wizard):
-    """Wizard for adding custuom datasets"""
-    def __init__(self, parent, id, title):
-        wx.wizard.Wizard.__init__(self, parent, id, title)            
-        
-        self.page = []
-        self.page.append(self.AddDatasetPage(self, "Add Dataset", ""))
-        
-        self.FitToPage(self.page[0])
-    class AddDatasetPage(TitledPage):
-        def __init__(self, parent, title, label):
-            TitledPage.__init__(self, parent, title, label)
-            parent.url = wx.TextCtrl(self, -1, "http://",
-                                     size=wx.Size(250,-1))
-            parent.dbname = wx.TextCtrl(self, -1, "",
-                                        size=wx.Size(250,-1))
-            parent.tablename = wx.TextCtrl(self, -1, "",
-                                           size=wx.Size(250,-1))
-            
-            self.vbox = wx.BoxSizer(wx.VERTICAL)
-            self.hbox = dict()            
-            for item in [(parent.url, "URL:"),
-                         (parent.dbname, "Database Name:"),
-                         (parent.tablename, "Table Name:")]:
-                self.hbox[item[1]] = wx.BoxSizer(wx.HORIZONTAL)
-                label = wx.StaticText(self, -1, item[1], size=wx.Size(120,35))                        
-                self.hbox[item[1]].AddMany([label,
-                                            item[0]])
-                self.hbox[item[1]].Layout()
-                self.vbox.Add(self.hbox[item[1]])
-            
-            self.vbox.Layout()
-            self.sizer.Add(self.vbox)
-            self.sizer.Layout()
+        self.summary.SetHtml(html)
