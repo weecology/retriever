@@ -20,8 +20,8 @@ class StaticText(wx.StaticText):
         
         
 class TextCtrl(wx.TextCtrl):
-    def __init__(self, parent, id, txt="", size=(-1,-1), style=None):
-        wx.TextCtrl.__init__(self, parent, id, txt, size=size, style=0)
+    def __init__(self, parent, id, txt="", size=(-1,-1), style=0):
+        wx.TextCtrl.__init__(self, parent, id, txt, size=size, style=style)
         self.SetForegroundColour(wx.BLACK)
         self.SetBackgroundColour(wx.WHITE)
         
