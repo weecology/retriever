@@ -3,6 +3,7 @@
 import os
 import sys
 import urllib
+import imp
 import wx
 from dbtk import REPOSITORY, VERSION
 from dbtk.lib.models import file_exists

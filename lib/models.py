@@ -77,8 +77,12 @@ class Engine():
     RAW_DATA_LOCATION = os.path.join("raw_data", "{dataset}")    
     def add_to_table(self):
         """This function adds data to a table from one or more lines specified 
-        in engine.table.source."""   
-        for line in self.table.source:
+        in engine.table.source."""
+        lines = self.table.source.readlines()
+        real_lines = [line for line in lines 
+                      if line.replace('\n', '').replace('\r', '').replace(' ', '').replace('\t', '')]
+        total = self.table.record_id + len(real_lines)
+        for line in real_lines:
             line = line.strip()
             if line:
                 self.table.record_id += 1            
@@ -91,10 +95,9 @@ class Engine():
                                for value in linevalues]
                 insertstatement = self.insert_statement(cleanvalues)
                 if self.table.record_id % 10 == 0:
-                    prompt = "Inserting rows to " + self.tablename() + ": "                
-                    sys.stdout.write(prompt + str(self.table.record_id) + "\b" *
-                                     (len(str(self.table.record_id)) + 
-                                      len(prompt)))
+                    prompt = "Inserting rows to " + self.tablename() + ": "
+                    prompt += str(self.table.record_id) + " / " + str(total)
+                    sys.stdout.write(prompt + "\b" * len(prompt))
                 self.cursor.execute(insertstatement)
                 
         print "\n Done!"

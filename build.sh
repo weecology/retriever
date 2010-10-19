@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# install latest version
-sudo python setup.py install
-
 # cleanup, then create current-release folder
 sudo rm current-release -rf
 mkdir current-release
@@ -23,10 +20,14 @@ mv version.txt ../../
 sudo rm build.sh make-windows-executables.bat version.py
 mv categories ../../
 mv scripts ../../
-cd .. # current-release/src
-cd .. # current-release
+cd ../.. # current-release
 sudo rm categories/.svn -rf
 sudo rm scripts/.svn scripts/*.pyc -rf
+
+# install latest version
+cd src/dbtk # current-release/src/dbtk
+sudo python setup.py install
+cd ../.. # current-release
 
 # make apidocs
 sudo pydoctor --add-package=src/dbtk --make-html
