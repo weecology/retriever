@@ -12,12 +12,8 @@ svn checkout https://weecology.svn.beanstalkapp.com/dbtk/trunk/
 mv trunk dbtk
 cd dbtk # current-release/src/dbtk
 
-# generate version.txt and put it in current-release root folder
-python version.py
-mv version.txt ../../
-
 # remove non-source files from source directory
-sudo rm build.sh make-windows-executables.bat version.py
+sudo rm build.sh make-windows-executables.bat
 mv categories ../../
 mv scripts ../../
 cd ../.. # current-release
@@ -27,7 +23,12 @@ sudo rm scripts/.svn scripts/*.pyc -rf
 # install latest version
 cd src/dbtk # current-release/src/dbtk
 sudo python setup.py install
+
+# generate version.txt and put it in current-release root folder
+mv version.py ../../
 cd ../.. # current-release
+python version.py
+sudo rm version.py
 
 # make apidocs
 sudo pydoctor --add-package=src/dbtk --make-html
