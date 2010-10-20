@@ -61,16 +61,20 @@ class DownloadPage(TitledPage):
 
     def update(self, evt):
         self.timer.Stop()
+        terminate = False
         if self.worker:
             self.worker.output_lock.acquire()
             while len(self.worker.output) > 0:                    
-                self.write(self.worker.output[0])
+                if self.write(self.worker.output[0]) == False:
+                    terminate = True
                 self.worker.output = self.worker.output[1:]
             self.gauge.SetValue(100 * ((self.worker.scriptnum) /
                                        (self.worker.progress_max + 1.0)))
             if not self.worker.finished():
                 self.timer.Start(1)
             self.worker.output_lock.release()                
+            if terminate:
+                self.Parent.Abort(None)
     
     def write(self, s):
         if '\b' in s:
@@ -88,11 +92,29 @@ class DownloadPage(TitledPage):
                                                       | wx.PD_SMOOTH
                                                       | wx.PD_AUTO_HIDE
                                                 )
-            (keepgoing, skip) = self.dialog.Pulse(s)
+            def progress(s):
+                if ' / ' in s:
+                    s = s.split(' / ')
+                    total = float(s[1])
+                    current = float(s[0].split(': ')[1])
+                    progress = int((current / total) * 100)
+                    if progress < 1:
+                        return 1
+                    else:
+                        return progress
+                else:
+                    return None
+                    
+            current_progress = progress(s)
+            if current_progress:
+                (keepgoing, skip) = self.dialog.Update(current_progress, s)
+            else:
+                (keepgoing, skip) = self.dialog.Pulse(s)
+                
             if not keepgoing:
                 self.dialog.Update(100, "")
                 self.dialog = None
-                self.Parent.Abort(None)
+                return False
         else:
             if self.dialog:
                 self.dialog.Update(100, "")
@@ -103,6 +125,7 @@ class DownloadPage(TitledPage):
             self.refresh_html()
 
         wx.GetApp().Yield()
+        return True
     
     def refresh_html(self):
         self.summary.SetHtml(self.html)

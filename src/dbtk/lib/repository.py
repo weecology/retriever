@@ -3,6 +3,7 @@
 import os
 import sys
 import urllib
+import imp
 import wx
 from dbtk import REPOSITORY, VERSION
 from dbtk.lib.models import file_exists
@@ -108,20 +109,22 @@ def check_for_updates():
             script_version = script[1]
         else:
             script_version = None
-            
+
         if not file_exists(os.path.join("scripts", script_name + ".py")):
             # File doesn't exist: download it
+            print "DOESNT EXIST" + script_name
             download_from_repository("scripts/" + script_name + ".py",
                                      "scripts/" + script_name + ".py")
         elif script_version:
             # File exists: import and check version
             file, pathname, desc = imp.find_module(script_name, ["scripts"])
-            need_to_download = True
+            need_to_download = False
             try:
-                new_module = imp.load_module(script, file, pathname, desc)
-                need_to_download = more_recent(new_module.VERSION, script_version)
-            except:
+                new_module = imp.load_module(script_name, file, pathname, desc)
+                need_to_download = more_recent(script_version, new_module.VERSION)
+            except:            
                 pass
+                
             if need_to_download:
                 os.remove(os.path.join("scripts", script_name + ".py"))
                 download_from_repository("scripts/" + script_name + ".py",

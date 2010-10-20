@@ -1,4 +1,4 @@
-0.3
+0.3.1
 birds,mammals
 EA_ernest2003,0.3
 EA_pantheria,0.3
