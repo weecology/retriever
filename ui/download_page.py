@@ -93,7 +93,11 @@ class DownloadPage(TitledPage):
                     s = s.split(' / ')
                     total = float(s[1])
                     current = float(s[0].split(': ')[1])
-                    return int((current / total) * 100)
+                    progress = int((current / total) * 100)
+                    if progress < 1:
+                        return 1
+                    else:
+                        return progress
                 else:
                     return None
                     
