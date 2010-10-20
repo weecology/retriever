@@ -36,8 +36,10 @@ def more_recent(latest, current):
     latest_parts = latest.split('.')
     current_parts = current.split('.')
     for n in range(len(latest_parts)):
+        if len(current_parts) < (n + 1):
+            return True
         l = int(latest_parts[n])
-        c = int(current_parts[n])
+        c = int(current_parts[n])        
         if l > c:
             return True
         elif c > l:
