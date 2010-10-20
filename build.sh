@@ -18,7 +18,7 @@ mv categories ../../
 mv scripts ../../
 cd ../.. # current-release
 sudo rm categories/.svn -rf
-sudo rm scripts/.svn scripts/*.pyc -rf
+sudo rm scripts/.svn -rf
 
 # install latest version
 cd src/dbtk # current-release/src/dbtk
@@ -28,7 +28,7 @@ sudo python setup.py install
 mv version.py ../../
 cd ../.. # current-release
 python version.py
-sudo rm version.py
+sudo rm version.py scripts/*.pyc
 
 # make apidocs
 sudo pydoctor --add-package=src/dbtk --make-html
