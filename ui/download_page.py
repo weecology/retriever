@@ -86,7 +86,7 @@ class DownloadPage(TitledPage):
                 self.dialog = wx.ProgressDialog("Download Progress", 
                                                 "Downloading datasets . . .\n"
                                                 + "  " * len(s), 
-                                                maximum=100,
+                                                maximum=1000,
                                                 parent=self.Parent,
                                                 style=wx.PD_CAN_ABORT 
                                                       | wx.PD_SMOOTH
@@ -97,7 +97,7 @@ class DownloadPage(TitledPage):
                     s = s.split(' / ')
                     total = float(s[1])
                     current = float(s[0].split(': ')[1])
-                    progress = int((current / total) * 100)
+                    progress = int((current / total) * 1000)
                     if progress < 1:
                         return 1
                     else:
@@ -112,12 +112,12 @@ class DownloadPage(TitledPage):
                 (keepgoing, skip) = self.dialog.Pulse(s)
                 
             if not keepgoing:
-                self.dialog.Update(100, "")
+                self.dialog.Update(1000, "")
                 self.dialog = None
                 return False
         else:
             if self.dialog:
-                self.dialog.Update(100, "")
+                self.dialog.Update(1000, "")
                 self.dialog = None
             if "inserting" in s.lower() and not "<font" in s.lower():
                 s = "<font color='green'>" + s + "</font>"
