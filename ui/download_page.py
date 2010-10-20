@@ -1,6 +1,5 @@
 """Wizard page that starts download thread and updates on download progress."""
 
-import sys
 import wx
 from dbtk.ui.controls import *
 from dbtk.lib.download import DownloadThread
@@ -113,7 +112,6 @@ class DownloadPage(TitledPage):
                 (keepgoing, skip) = self.dialog.Pulse(s)
                 
             if not keepgoing:
-                sys.stdout = sys.__stdout__
                 self.dialog.Update(100, "")
                 self.dialog = None
                 return False
