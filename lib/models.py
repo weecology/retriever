@@ -78,7 +78,7 @@ class Engine():
     def add_to_table(self):
         """This function adds data to a table from one or more lines specified 
         in engine.table.source."""
-        lines = self.table.source.readlines()
+        lines = self.table.source
         real_lines = [line for line in lines 
                       if line.replace('\n', '').replace('\r', '').replace(' ', '').replace('\t', '')]
         total = self.table.record_id + len(real_lines)
@@ -428,10 +428,11 @@ class Engine():
         """The default function to insert data from a file. This function 
         simply inserts the data row by row. Database platforms with support
         for inserting bulk data from files can override this function."""
-        self.table.source = self.skip_rows(self.table.header_rows, 
-                                           open(filename, "r"))        
+        source = self.skip_rows(self.table.header_rows, 
+                                open(filename, "r"))
+        self.table.source = source.readlines()
         self.add_to_table()
-        self.table.source.close()
+        source.close()
     def insert_data_from_url(self, url):
         """Insert data from a web resource, such as a text file."""
         filename = url.split('/')[-1]
@@ -449,10 +450,11 @@ class Engine():
                 self.insert_data_from_file(self.format_filename(filename))
             else:
                 # Don't save the file, just load it from the web resource
-                self.table.source = self.skip_rows(self.table.header_rows, 
+                source = self.skip_rows(self.table.header_rows, 
                                                    urllib.urlopen(url))
+                self.table.source = source.readlines()
                 self.add_to_table()
-                self.table.source.close()
+                source.close()
     def insert_statement(self, values):
         """Returns a SQL statement to insert a set of values."""
         columns = self.get_insert_columns()

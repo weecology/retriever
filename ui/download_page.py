@@ -91,6 +91,7 @@ class DownloadPage(TitledPage):
                                                 style=wx.PD_CAN_ABORT 
                                                       | wx.PD_SMOOTH
                                                       | wx.PD_AUTO_HIDE
+                                                      | wx.PD_REMAINING_TIME
                                                 )
             def progress(s):
                 if ' / ' in s:
