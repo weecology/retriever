@@ -9,6 +9,7 @@ import os
 import getpass
 import zipfile
 import urllib
+import shlex
 from decimal import Decimal
 
     
@@ -170,7 +171,7 @@ class Engine():
             this_column = column_name
             for c in [")", "\n", "\r"]:
                 this_column = this_column.strip(c)
-            for c in ["."]:
+            for c in [".", '"', "'"]:
                 this_column = this_column.replace(c, "")
             for c in [" ", "(", "/", ".", "-"]:
                 this_column = this_column.replace(c, "_")
@@ -192,7 +193,7 @@ class Engine():
         # Get all values for each column
         for line in source:
             if line.replace("\t", "").strip():
-                values = line.strip("\n").strip("\r").split(self.table.delimiter)
+                values = self.extract_values(line.strip("\n").strip("\r"))
                 for i in range(len(columns)):
                     try:
                         column_values[columns[i][0]].append(values[i])
@@ -358,7 +359,12 @@ class Engine():
                 pos += width
             return values
         else:
-            return line.split(self.table.delimiter)
+            values = shlex.shlex(line.replace(self.table.delimiter * 2, 
+                                              self.table.delimiter + "None" + 
+                                              self.table.delimiter))
+            values.whitespace = self.table.delimiter
+            values.whitespace_split = True
+            return list(values)
     def final_cleanup(self):
         """Close the database connection."""
         self.connection.close()
