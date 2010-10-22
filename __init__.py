@@ -9,7 +9,7 @@ import os
 import imp
 
 
-VERSION = '0.3.1'
+VERSION = '0.3.2'
 
 REPOSITORY = 'http://www.ecologicaldata.org/dbtk/'
 
