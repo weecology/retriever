@@ -75,7 +75,8 @@ class Engine():
     required_opts = []
     pkformat = "%s PRIMARY KEY"
     script = None
-    RAW_DATA_LOCATION = os.path.join("raw_data", "{dataset}")    
+    RAW_DATA_LOCATION = os.path.join("raw_data", "{dataset}")
+    
     def add_to_table(self):
         """This function adds data to a table from one or more lines specified 
         in engine.table.source."""
@@ -103,6 +104,7 @@ class Engine():
                 
         print "\n Done!"
         self.connection.commit()
+        
     def auto_create_table(self, tablename, url=None, filename=None,
                           cleanup=Cleanup(correct_invalid_value, 
                                           {"nulls":(-999,)} 
@@ -121,8 +123,7 @@ class Engine():
         if url and not (self.use_local and 
                 file_exists(self.format_filename(filename))):
             # If the file doesn't exist, download it
-            self.create_raw_data_dir()                        
-            print "Saving a copy of " + filename + "..."
+            self.create_raw_data_dir()
             self.download_file(url, filename)
             if not self.keep_raw_data:
                 need_to_delete = True
@@ -153,6 +154,7 @@ class Engine():
                 os.remove(self.format_filename(filename))
             except:
                 pass
+                
     def auto_get_columns(self, header):
         """Finds the delimiter and column names from the header row."""
         # Determine the delimiter by finding out which of a set of common
@@ -188,6 +190,7 @@ class Engine():
                 columns.append([this_column, None])
                 column_values[this_column] = []
         return columns, column_values
+        
     def auto_get_datatypes(self, pk, source, columns, column_values):
         """Determines data types for each column."""
         # Get all values for each column
@@ -230,13 +233,25 @@ class Engine():
                 for value in values:
                     if "e" in str(value) or ("." in str(value) and
                                              len(str(value).split(".")[1]) > 10):
-                        column[1] = ["decimal","30,20"]
+                        # Column is a decimal; need to find number of figures
+                        left_figures = 1
+                        right_figures = 10
+                        for value in [value for value in values if '.' in value]:
+                            value_parts = value.split('.')
+                            if len(value_parts[0]) > left_figures:
+                                left_figures = len(value_parts[0])
+                            if len(value_parts[1]) > right_figures:
+                                right_figures = len(value_parts[1])
+                        length = str(left_figures + right_figures) + ',' + str(right_figures)
+                        column[1] = ["decimal",length]
+                        break
                                 
             if pk == column[0]:
                 column[1][0] = "pk-" + column[1][0]
             
         for column in columns:
             self.table.columns.append((column[0], tuple(column[1])))
+            
     def convert_data_type(self, datatype):
         """Converts DBTK generic data types to database platform specific data
         types"""
@@ -261,28 +276,33 @@ class Engine():
         if thispk:
             type = self.pkformat % type
         return type
+        
     def create_db(self):
         """Creates a new database based on settings supplied in Database object
         engine.db"""
         print "Creating database " + self.db.dbname + "..."
         # Create the database    
         self.cursor.execute(self.create_db_statement())
+        
     def create_db_statement(self):
         """Returns a SQL statement to create a database."""
         createstatement = "CREATE DATABASE " + self.db.dbname
         return createstatement
+        
     def create_raw_data_dir(self):
         """Checks to see if the archive directory exists and creates it if 
         necessary."""
         path = self.format_data_dir()
         if not os.path.exists(path):
-            os.makedirs(path)            
+            os.makedirs(path)
+            
     def create_table(self):
         """Creates a new database table based on settings supplied in Table 
         object engine.table."""
         print "Creating table " + self.table.tablename + "..."
         createstatement = self.create_table_statement()
         self.cursor.execute(createstatement)
+        
     def create_table_statement(self):
         """Returns a SQL statement to create a table."""
         try:
@@ -300,6 +320,7 @@ class Engine():
         createstatement = createstatement.rstrip(', ')    
         createstatement += " );"
         return createstatement
+        
     def download_file(self, url, filename):
         """Downloads a file to the raw data directory."""
         self.create_raw_data_dir()
@@ -311,6 +332,7 @@ class Engine():
             local_file.write(file.read())
             local_file.close()
             file.close()
+            
     def download_files_from_archive(self, url, filenames):
         """Downloads one or more files from an archive into the raw data
         directory."""
@@ -343,11 +365,13 @@ class Engine():
             try:
                 os.remove(archivename)
             except:
-                pass            
+                pass
+                
     def drop_statement(self, objecttype, objectname):
         """Returns a drop table or database SQL statement."""
         dropstatement = "DROP %s IF EXISTS %s" % (objecttype, objectname)
         return dropstatement
+        
     def extract_values(self, line):
         """Given a line of data, this function returns a list of the individual
         data values."""
@@ -365,17 +389,22 @@ class Engine():
             values.whitespace = self.table.delimiter
             values.whitespace_split = True
             return list(values)
+            
     def final_cleanup(self):
         """Close the database connection."""
         self.connection.close()
+        
     def format_column_name(self, column):
         return column
+        
     def format_data_dir(self):
         """Returns the correctly formatted raw data directory location."""
         return self.RAW_DATA_LOCATION.replace("{dataset}", self.script.shortname)
+        
     def format_filename(self, filename):
         """Returns the full path of a file in the archive directory."""
         return os.path.join(self.format_data_dir(), filename)
+        
     def format_insert_value(self, value):
         """Formats a value for an insert statement, for example by surrounding
         it in single quotes."""
@@ -392,6 +421,7 @@ class Engine():
             return "null"
         strvalue = strvalue.replace("'", "''")
         return "'" + strvalue + "'"
+        
     def get_input(self):
         """Manually get user input for connection information when script is 
         run from terminal."""
@@ -403,7 +433,8 @@ class Engine():
                 else:
                     self.opts[opt[0]] = raw_input(opt[1])
             if self.opts[opt[0]] in ["", "default"]:
-                self.opts[opt[0]] = opt[2]    
+                self.opts[opt[0]] = opt[2]
+                
     def get_insert_columns(self, join=True):
         """Gets a set of column names for insert statements."""
         columns = ""
@@ -417,6 +448,7 @@ class Engine():
             return columns
         else:
             return columns.lstrip("(").rstrip(")").split(", ")
+            
     def insert_data_from_archive(self, url, filenames):
         """Insert data from files located in an online archive. This function
         extracts the file, inserts the data, and deletes the file if raw data 
@@ -430,6 +462,7 @@ class Engine():
                     os.remove(fileloc)
                 except:
                     pass
+                    
     def insert_data_from_file(self, filename):
         """The default function to insert data from a file. This function 
         simply inserts the data row by row. Database platforms with support
@@ -439,6 +472,7 @@ class Engine():
         self.table.source = source.readlines()
         self.add_to_table()
         source.close()
+        
     def insert_data_from_url(self, url):
         """Insert data from a web resource, such as a text file."""
         filename = url.split('/')[-1]
@@ -461,6 +495,7 @@ class Engine():
                 self.table.source = source.readlines()
                 self.add_to_table()
                 source.close()
+                
     def insert_statement(self, values):
         """Returns a SQL statement to insert a set of values."""
         columns = self.get_insert_columns()
@@ -474,16 +509,19 @@ class Engine():
         while len(values) < insertstatement.count("%s"):
             values.append(self.format_insert_value(None))
         insertstatement %= tuple(values)
-        return insertstatement        
+        return insertstatement
+        
     def skip_rows(self, rows, source):
         """Skip over the header lines by reading them before processing."""
         if rows > 0:
             for i in range(rows):
                 line = source.readline()
         return source
+        
     def tablename(self):
         """Returns the full tablename in the format db.table."""        
         return self.db.dbname + "." + self.table.tablename
+        
     def values_from_line(self, line):
         linevalues = []
         if (self.table.pk and self.table.hasindex == False):
