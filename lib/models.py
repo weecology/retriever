@@ -329,7 +329,7 @@ class Engine():
             print "Downloading " + filename + "..."
             file = urllib.urlopen(url) 
             local_file = open(path, 'wb')
-            local_file.write(file.read())
+            local_file.write(file.read().replace("\r\n", "\n").replace("\r", "\n"))
             local_file.close()
             file.close()
             
