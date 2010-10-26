@@ -9,7 +9,7 @@ prairie. Ecology 91:1872.
 from dbtk.lib.templates import EcologicalArchives
 from dbtk.lib.models import Table, Cleanup, correct_invalid_value
 
-VERSION = '0.3.1'
+VERSION = '0.3.2'
 
 
 class main(EcologicalArchives):
