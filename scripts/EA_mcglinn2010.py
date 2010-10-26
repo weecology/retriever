@@ -4,8 +4,6 @@ prairie. Ecology 91:1872.
 
 """
 
-#TO DO - confirm column reversal with authors and correct
-
 from dbtk.lib.templates import EcologicalArchives
 from dbtk.lib.models import Table, Cleanup, correct_invalid_value
 
