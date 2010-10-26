@@ -15,21 +15,8 @@ class main(EcologicalArchives):
     shortname = "McGlinn2010"
     url = "http://esapubs.org/archive/ecol/E091/124/TGPP_pres.csv"
     tablename = "pres"
-    
-    def download(self, engine=None):
-        EcologicalArchives.download(self, engine)
-        
-        other_urls = [("cover", "http://esapubs.org/archive/ecol/E091/124/TGPP_cover.csv"),
-                      ("richness", "http://esapubs.org/archive/ecol/E091/124/TGPP_rich.csv"),
-                      ("species", "http://esapubs.org/archive/ecol/E091/124/TGPP_specodes.csv"),
-                      ("environment", "http://esapubs.org/archive/ecol/E091/124/TGPP_env.csv"),
-                      ("climate", "http://esapubs.org/archive/ecol/E091/124/TGPP_clim.csv")]
-        
-        for url in other_urls:
-            self.engine.auto_create_table(url[0], url=url[1],
-                                          cleanup=Cleanup(correct_invalid_value, 
-                                              {"nulls":self.nulls})
-                                          )
-            self.engine.insert_data_from_url(url[1])
-            
-        return self.engine
+    other_urls = [("cover", "http://esapubs.org/archive/ecol/E091/124/TGPP_cover.csv"),
+                  ("richness", "http://esapubs.org/archive/ecol/E091/124/TGPP_rich.csv"),
+                  ("species", "http://esapubs.org/archive/ecol/E091/124/TGPP_specodes.csv"),
+                  ("environment", "http://esapubs.org/archive/ecol/E091/124/TGPP_env.csv"),
+                  ("climate", "http://esapubs.org/archive/ecol/E091/124/TGPP_clim.csv")]
