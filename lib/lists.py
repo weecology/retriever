@@ -54,7 +54,7 @@ def get_lists():
                             new_dataset.name = dbname + '.' + tablename
                             new_dataset.shortname = dbname
                             new_dataset.tablename = tablename
-                            new_dataset.url = url
+                            new_dataset.urls = [(tablename, url)]
                             
                             other_dbtks.append(new_dataset)
                 except:
