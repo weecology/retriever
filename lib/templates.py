@@ -13,6 +13,11 @@ class DbTk:
     ref = ""
     public = True
     addendum = None
+    def __str__(self):
+        desc = self.name
+        if self.reference_url():
+            desc += "\n" + self.reference_url()
+        return desc
     def download(self, engine=None):
         self.engine = self.checkengine(engine)
         db = Database()

@@ -194,9 +194,9 @@ class DatasetPage(TitledPage):
     def Draw(self, evt):
         dbtk_list = self.Parent.dbtk_list
         self.scriptlist.Clear()
-        for script in [script.name for script in dbtk_list]:
+        for script in [str(script) for script in dbtk_list]:
             self.scriptlist.Append(script)
-        public_scripts = [script.name for script in dbtk_list if script.public]
+        public_scripts = [str(script) for script in dbtk_list if script.public]
         self.scriptlist.SetCheckedStrings(public_scripts)
         self.OnCheck(None)
     def OnCheck(self, evt):
@@ -247,7 +247,7 @@ class DatasetPage(TitledPage):
         add_dataset.Destroy()
     def CheckAll(self, evt):
         if self.checkallbox.GetValue():
-            self.scriptlist.SetCheckedStrings([script.name for script in self.Parent.dbtk_list])
+            self.scriptlist.SetCheckedStrings([str(script) for script in self.Parent.dbtk_list])
         else:
             self.scriptlist.SetCheckedStrings([])
     def CheckValues(self, evt):  
@@ -258,7 +258,7 @@ class DatasetPage(TitledPage):
         elif evt.Direction:
             checked = self.scriptlist.GetCheckedStrings()
             warn = [script.name for script in self.Parent.dbtk_list 
-                    if not script.public and script.name in checked]
+                    if not script.public and str(script) in checked]
             if warn:
                 warning = "Warning: the following datasets are not "
                 warning += "publicly available. You must have the raw "
@@ -289,7 +289,7 @@ class FinishPage(TitledPage):
         html = "<h2>Finished</h2><p>That's it! Click Next to download your data.</p>"
         html += "<p>Download summary:</p><ul>"
         for script in self.Parent.dbtk_list:
-            if script.name in checked_scripts:
+            if str(script) in checked_scripts:
                 html += "<li>" + script.name
                 if script.reference_url():
                     html += ' (<a href="' + script.reference_url() + '">About</a>)'

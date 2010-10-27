@@ -38,7 +38,7 @@ class DownloadPage(TitledPage):
         for script in self.Parent.dbtk_list:
             dl = False
             if len(self.Parent.dbtk_list) > 1:
-                if script.name in checked_scripts:
+                if str(script) in checked_scripts:
                     dl = True
             else:
                 dl = True
