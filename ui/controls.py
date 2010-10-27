@@ -41,10 +41,10 @@ class ListBox(wx.ListBox):
         
         
 class CheckListBox(wx.CheckListBox):
-    def __init__(self, parent, id, size=(-1,-1), choices=[]):
-        wx.CheckListBox.__init__(self, parent, id, size=size, choices=choices)
+    def __init__(self, parent, id, size=(-1,-1), choices=[], style=0):
+        wx.CheckListBox.__init__(self, parent, id, size=size, choices=choices, style=style)
         self.SetForegroundColour(wx.BLACK)
-        self.SetBackgroundColour(wx.WHITE)
+        self.SetBackgroundColour(wx.WHITE)       
         
 
 class TitledPage(wx.wizard.WizardPageSimple):
