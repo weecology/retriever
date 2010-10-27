@@ -36,28 +36,23 @@ class DbTk:
 class EcologicalArchives(DbTk):
     """DbTk script template based on data files from Ecological Archives."""
     nulls = ['-999', '-999.9']
-    other_urls = None
+    
     def download(self, engine=None):
         DbTk.download(self, engine)
-        self.engine.auto_create_table(self.tablename, url=self.url,
-                                      cleanup=Cleanup(correct_invalid_value, 
-                                          {"nulls":self.nulls})
-                                      )
-        self.engine.insert_data_from_url(self.url)
         
-        if self.other_urls:
-            for url in self.other_urls:
+        for url in self.urls:
                 self.engine.auto_create_table(url[0], url=url[1],
                                               cleanup=Cleanup(correct_invalid_value, 
                                                   {"nulls":self.nulls})
                                               )
                 self.engine.insert_data_from_url(url[1])        
         return self.engine
+        
     def reference_url(self):
         if self.ref:
             return self.ref
         else:
-            return '/'.join(self.url.split('/')[0:-1]) + '/'
+            return '/'.join(self.urls[0][1].split('/')[0:-1]) + '/'
         
         
 TEMPLATES = [

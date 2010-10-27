@@ -13,10 +13,9 @@ VERSION = '0.3.2'
 class main(EcologicalArchives):
     name = "Vascular plant composition - McGlinn, et al., 2010."
     shortname = "McGlinn2010"
-    url = "http://esapubs.org/archive/ecol/E091/124/TGPP_pres.csv"
-    tablename = "pres"
-    other_urls = [("cover", "http://esapubs.org/archive/ecol/E091/124/TGPP_cover.csv"),
-                  ("richness", "http://esapubs.org/archive/ecol/E091/124/TGPP_rich.csv"),
-                  ("species", "http://esapubs.org/archive/ecol/E091/124/TGPP_specodes.csv"),
-                  ("environment", "http://esapubs.org/archive/ecol/E091/124/TGPP_env.csv"),
-                  ("climate", "http://esapubs.org/archive/ecol/E091/124/TGPP_clim.csv")]
+    urls = [("pres", "http://esapubs.org/archive/ecol/E091/124/TGPP_pres.csv"),
+            ("cover", "http://esapubs.org/archive/ecol/E091/124/TGPP_cover.csv"),
+            ("richness", "http://esapubs.org/archive/ecol/E091/124/TGPP_rich.csv"),
+            ("species", "http://esapubs.org/archive/ecol/E091/124/TGPP_specodes.csv"),
+            ("environment", "http://esapubs.org/archive/ecol/E091/124/TGPP_env.csv"),
+            ("climate", "http://esapubs.org/archive/ecol/E091/124/TGPP_clim.csv")]

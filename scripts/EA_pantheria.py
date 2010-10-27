@@ -5,14 +5,13 @@
 from dbtk.lib.templates import EcologicalArchives
 from dbtk.lib.tools import DbTkTest
 
-VERSION = '0.3'
+VERSION = '0.3.2'
 
 
 class main(EcologicalArchives):
     name = "Pantheria (Ecological Archives 2008)"
     shortname = "Pantheria"
-    tablename = "species"
-    url = "http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt"
+    urls = [("species", "http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt")]
 
 
 class EAPantheriaTest(DbTkTest):
