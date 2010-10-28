@@ -162,4 +162,5 @@ def check_for_updates():
                 sys.exit()
                 
     progress.Update(101)
+    progress.Destroy()
     sys.stdout = sys.__stdout__
