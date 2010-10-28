@@ -59,25 +59,10 @@ class ConnectPage(TitledPage):
         self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.SaveConnection)
     def SaveConnection(self, evt):
         if self.save_connection.Value:
-            if os.path.isfile("connections.config"):
-                config = open("connections.config", "rb")
-                lines = []
-                for line in config:
-                    if line.split(',')[0] != self.engine.name:
-                        lines.append(line.rstrip('\n') + '\n')
-                config.close()
-                os.remove("connections.config")
-                config = open("connections.config", "wb")
-                for line in lines:
-                    config.write(line)
-            else:
-                config = open("connections.config", "wb")                    
-            connection = self.engine.name
+            values_dict = dict()
             for key in self.option.keys():
-                connection += ','
-                connection += key + '::' + self.option[key].Value
-            config.write(connection)
-            config.close()
+                values_dict[key] = self.option[key].Value
+            save_connection(self.engine.name, values_dict)
     def Draw(self, evt):
         """When the page is drawn, it may need to update its fields if 
         the selected database has changed."""
