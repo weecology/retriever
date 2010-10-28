@@ -9,7 +9,7 @@ import wx.html
 import wx.wizard
 from dbtk.lib.models import Engine
 from dbtk.lib.templates import TEMPLATES
-from dbtk.lib.tools import get_saved_connection
+from dbtk.lib.tools import get_saved_connection, save_connection
 from dbtk.ui.add_dataset import AddDatasetWizard
 from dbtk.ui.controls import *
 from dbtk import VERSION
