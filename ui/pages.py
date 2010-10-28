@@ -61,7 +61,7 @@ class ConnectPage(TitledPage):
         if self.save_connection.Value:
             values_dict = dict()
             for key in self.option.keys():
-                values_dict[key] = self.option[key].Value
+                values_dict[key] = str(self.option[key].Value)
             save_connection(self.engine.name, values_dict)
     def Draw(self, evt):
         """When the page is drawn, it may need to update its fields if 

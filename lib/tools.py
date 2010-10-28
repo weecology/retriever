@@ -230,7 +230,7 @@ def save_connection(engine_name, values_dict):
         config = open("connections.config", "rb")
         lines = []
         for line in config:
-            if line.split(',')[0] != self.engine.name:
+            if line.split(',')[0] != engine_name:
                 lines.append(line.rstrip('\n') + '\n')
         config.close()
         os.remove("connections.config")
@@ -239,7 +239,7 @@ def save_connection(engine_name, values_dict):
             config.write(line)
     else:
         config = open("connections.config", "wb")
-    config.write(self.engine.name + "," + str(values_dict))
+    config.write(engine_name + "," + str(values_dict))
     config.close()
 
 
