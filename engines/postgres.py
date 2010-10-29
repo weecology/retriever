@@ -65,14 +65,16 @@ CSV HEADER"""
                 return Engine.insert_data_from_file(self, filename)
         else:
             return Engine.insert_data_from_file(self, filename)                
-    def get_cursor(self):
-        """Gets the db connection and cursor."""
+    def get_connection(self):
+        """Gets the db connection."""
         import psycopg2 as dbapi    
         self.get_input()            
         self.connection = dbapi.connect(host = self.opts["hostname"],
                                         port = int(self.opts["port"]),
                                         user = self.opts["username"],
                                         password = self.opts["password"],
-                                        database = self.opts["database"])        
-        self.cursor = self.connection.cursor()    
-
+                                        database = self.opts["database"])
+    def get_cursor(self):
+        """Gets the db cursor."""
+        self.get_connection()
+        self.cursor = self.connection.cursor()

@@ -24,10 +24,12 @@ class engine(Engine):
         """The database file is specifically connected to, so database.table 
         is not necessary."""
         return self.db.dbname + "_" + self.table.tablename
-    def get_cursor(self):
-        """Gets the db connection and cursor."""
+    def get_connection(self):
+        """Gets the db connection."""
         import sqlite3 as dbapi
         self.get_input()
         self.connection = dbapi.connect(self.opts["file"])
+    def get_cursor(self):
+        """Gets the db cursor."""
+        self.get_connection()
         self.cursor = self.connection.cursor()
-
