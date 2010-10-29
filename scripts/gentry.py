@@ -35,7 +35,7 @@ U.S.A. """
         local_zip = zipfile.ZipFile(self.engine.format_filename("all_Excel.zip"))        
         filelist = local_zip.namelist()
         local_zip.close()        
-        self.engine.download_files_from_archive(self.urls[0][0], filelist)
+        self.engine.download_files_from_archive(self.urls[0][1], filelist)
         
         filelist = [os.path.basename(filename) for filename in filelist]
         
