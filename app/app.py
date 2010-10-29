@@ -23,7 +23,7 @@ class App(wx.App):
             parameters["engine"] = default_connection
             engine = choose_engine(parameters)
         else:
-            wizard = ConnectWizard(self.lists, ENGINE_LIST)
+            wizard = ConnectWizard(lists, ENGINE_LIST)
 
             success = wizard.RunWizard(wizard.TITLE)
         
@@ -139,4 +139,7 @@ to begin your download. Download progress will be shown here.</p>""")
                 self.progress_window.worker = None
             else:
                 return
+                
+        if self.progress_window.dialog:
+            self.progress_window.dialog.Destroy()
         self.Destroy()
