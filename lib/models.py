@@ -195,7 +195,7 @@ class Engine():
         # Get all values for each column
         for line in source:
             if line.replace("\t", "").strip():
-                values = self.extract_values(line.strip("\n").strip("\r"))
+                values = self.extract_values(line.strip("\n"))
                 for i in range(len(columns)):
                     try:
                         column_values[columns[i][0]].append(values[i])
@@ -210,8 +210,7 @@ class Engine():
                 float_values = [float(value) for value in values
                                 if value]
                 try:
-                    int_values = [int(value) == float(value) for value in values
-                                  if value]
+                    int_values = [int(value) == value for value in float_values]
                     if all(int_values):
                         datatype = "int"
                     else:
