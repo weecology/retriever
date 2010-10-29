@@ -1,6 +1,6 @@
 import wx
 from dbtk.lib.templates import TEMPLATES
-from dbtk.ui.controls import *
+from dbtk.wizard.controls import *
 
 
 class AddDatasetWizard(wx.wizard.Wizard):
