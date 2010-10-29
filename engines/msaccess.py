@@ -94,8 +94,8 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
             return Engine.insert_data_from_file(self, filename)    
     def tablename(self):
         return "[" + self.db.dbname + " " + self.table.tablename + "]"
-    def get_cursor(self):
-        """Gets the db connection and cursor."""
+    def get_connection(self):
+        """Gets the db connection."""
         if not "win" in platform.platform().lower():
             raise Exception("MS Access can only be used in Windows.")
         import pyodbc as dbapi
@@ -104,4 +104,7 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
                              + self.opts["file"].replace("/", "//") + ";")
         self.connection = dbapi.connect(connection_string,
                                         autocommit = False)
+    def get_cursor(self):
+        """Gets the db cursor."""
+        self.get_connection()
         self.cursor = self.connection.cursor()

@@ -50,18 +50,22 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
         else:
             return Engine.insert_data_from_file(self, filename)
     def table_exists(self, dbname, tablename):
-        import MySQLdb as dbapi
+        self.get_connection()
+        cursor = self.connection.cursor()
         try:
-            self.cursor.execute("SELECT * FROM " + dbname + "." + tablename + " LIMIT 1")
-            return len(self.cursor.fetchall()) > 0
-        except dbapi.ProgrammingError:
+            cursor.execute("SELECT * FROM " + dbname + "." + tablename + " LIMIT 1")
+            return len(cursor.fetchall()) > 0
+        except:
             return False
-    def get_cursor(self):
-        """Gets the db connection and cursor."""
+    def get_connection(self):
+        """Gets the db connection."""
         import MySQLdb as dbapi
-        self.get_input()                
+        self.get_input()
         self.connection = dbapi.connect(host = self.opts["hostname"],
                                         port = int(self.opts["port"]),
                                         user = self.opts["username"],
-                                        passwd = self.opts["password"])     
+                                        passwd = self.opts["password"])
+    def get_cursor(self):
+        """Gets the db cursor."""
+        self.get_connection()
         self.cursor = self.connection.cursor()

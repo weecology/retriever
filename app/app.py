@@ -42,7 +42,7 @@ class App(wx.App):
             wizard.Destroy()
         
         try:
-            engine.get_cursor()
+            engine.get_connection()
         except:
             pass
         
@@ -133,7 +133,7 @@ to begin your download. Download progress will be shown here.</p>""")
         wizard.Destroy()
         self.engine = engine
         try:
-            self.engine.get_cursor()
+            self.engine.get_connection()
         except:
             pass
         
