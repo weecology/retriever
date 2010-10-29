@@ -47,7 +47,8 @@ class ScriptList(wx.HtmlListBox):
     def OnGetItem(self, index):
         return HtmlScriptSummary(self.scripts[index], 
                                  self.GetSelection()==index,
-                                 self.Parent.Parent.progress_window)
+                                 self.Parent.Parent.progress_window,
+                                 self.Parent.Parent.engine)
 
     def OnLinkClicked(self, n, link):
         wx.LaunchDefaultBrowser(link.GetHref())
@@ -66,13 +67,13 @@ class ScriptList(wx.HtmlListBox):
         self.Parent.Parent.progress_window.Download(script)
         
         
-def HtmlScriptSummary(script, selected, progress_window):
+def HtmlScriptSummary(script, selected, progress_window, engine):
     desc = "<table><tr><td>"
     if script in progress_window.queue or (progress_window.worker and
                                            script in progress_window.worker.scripts):
         img = "cycle"
     else:
-        if script in progress_window.downloaded:
+        if script in progress_window.downloaded or script.exists(engine):
             img = "downloaded"
         else:
             img = "download"

@@ -49,6 +49,13 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
             self.cursor.execute(statement)
         else:
             return Engine.insert_data_from_file(self, filename)
+    def table_exists(self, dbname, tablename):
+        import MySQLdb as dbapi
+        try:
+            self.cursor.execute("SELECT * FROM " + dbname + "." + tablename + " LIMIT 1")
+            return len(self.cursor.fetchall()) > 0
+        except dbapi.ProgrammingError:
+            return False
     def get_cursor(self):
         """Gets the db connection and cursor."""
         import MySQLdb as dbapi
@@ -57,5 +64,4 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
                                         port = int(self.opts["port"]),
                                         user = self.opts["username"],
                                         passwd = self.opts["password"])     
-        self.cursor = self.connection.cursor()    
-
+        self.cursor = self.connection.cursor()
