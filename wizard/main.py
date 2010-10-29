@@ -12,9 +12,9 @@ import wx
 import wx.wizard
 from threading import Thread
 from dbtk.lib.tools import final_cleanup
-from dbtk.ui.pages import *
-from dbtk.ui.download_page import DownloadPage
-from dbtk.ui.icon import globe_icon
+from dbtk.wizard.pages import *
+from dbtk.wizard.download_page import DownloadPage
+from dbtk.wizard.icon import globe_icon
 from dbtk import ENGINE_LIST
 
 ENGINE_LIST = ENGINE_LIST()
