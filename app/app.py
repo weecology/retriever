@@ -9,7 +9,7 @@ ENGINE_LIST = ENGINE_LIST()
 
 class App(wx.App):
     def __init__(self, lists):
-        wx.App.__init__(self)
+        wx.App.__init__(self, redirect=False)
         
         mfs = wx.MemoryFSHandler()
         wx.FileSystem_AddHandler(mfs)
