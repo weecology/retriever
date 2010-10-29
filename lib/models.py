@@ -507,6 +507,11 @@ class Engine():
                 line = source.readline()
         return source
         
+    def table_exists(self, dbname, tablename):
+        """This can be overridden to return True if a table exists. It
+        returns False by default."""
+        return False
+        
     def tablename(self):
         """Returns the full tablename in the format db.table."""        
         return self.db.dbname + "." + self.table.tablename

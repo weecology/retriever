@@ -41,6 +41,7 @@ class App(wx.App):
             engine.opts = opts
             wizard.Destroy()
             
+        engine.get_cursor()
         
         self.frame = Frame(None, -1, "Database Toolkit", lists, engine)
         self.frame.Show()
@@ -128,7 +129,8 @@ to begin your download. Download progress will be shown here.</p>""")
         engine.opts = opts
         wizard.Destroy()
         self.engine = engine
-    
+        self.engine.get_cursor()
+        
     def Quit(self, evt):
         if self.progress_window.worker:
             dlg = wx.MessageDialog(self, 
