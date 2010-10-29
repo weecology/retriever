@@ -1,7 +1,7 @@
 """Wizard page that starts download thread and updates on download progress."""
 
 import wx
-from dbtk.ui.controls import *
+from dbtk.wizard.controls import *
 from dbtk.lib.download import DownloadThread
 
 
