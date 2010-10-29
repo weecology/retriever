@@ -30,7 +30,7 @@ class main(DbTk):
             
             # Routes table
             if not os.path.isfile(engine.format_filename("routes_new.csv")):
-                engine.download_files_from_archive(urls[1][1],
+                engine.download_files_from_archive(self.urls[1][1],
                                                    ["routes.csv"])
                 read = open(engine.format_filename("routes.csv"), "rb")
                 write = open(engine.format_filename("routes_new.csv"), "wb")
@@ -53,7 +53,7 @@ class main(DbTk):
             
             # Weather table                
             if not os.path.isfile(engine.format_filename("weather_new.csv")):
-                engine.download_files_from_archive(urls[2][1], 
+                engine.download_files_from_archive(self.urls[2][1], 
                                                    ["weather.csv"])            
                 read = open(engine.format_filename("weather.csv"), "rb")
                 write = open(engine.format_filename("weather_new.csv"), "wb")
@@ -100,7 +100,7 @@ class main(DbTk):
             engine.table = table
             engine.create_table()
                                     
-            engine.insert_data_from_url(urls[3][1])
+            engine.insert_data_from_url(self.urls[3][1])
                         
             
             # Counts table
@@ -154,7 +154,7 @@ class main(DbTk):
                         state, shortstate = state[0], state[1]
                         
                     print "Downloading and decompressing data from " + state + "..."
-                    engine.insert_data_from_archive(urls[0][1] + "C" + shortstate + ".exe", 
+                    engine.insert_data_from_archive(self.urls[0][1] + "C" + shortstate + ".exe", 
                                                     ["C" + shortstate + ".csv"])
                             
                 except:
