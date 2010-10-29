@@ -115,28 +115,36 @@ to begin your download. Download progress will be shown here.</p>""")
         dlg.Destroy()
     
     def Connection(self, evt):
-        wizard = ConnectWizard(self.lists, ENGINE_LIST)
+        if self.progress_window.worker or self.progress_window.queue:
+            dlg = wx.MessageDialog(self, 
+                                   "You can't change the connection while datasets are downloading.",
+                                   style=wx.OK)
+            dlg.ShowModal()
+        else:
+            wizard = ConnectWizard(self.lists, ENGINE_LIST)
 
-        success = wizard.RunWizard(wizard.TITLE)
-    
-        if not success:
-            wizard.Destroy()
-            return
-    
-        engine = wizard.CONNECTION.engine
-        options = wizard.CONNECTION.option
-        engine.RAW_DATA_LOCATION = wizard.CHOOSEDB.raw_data_dir.Value
-        opts = dict()
-        for key in options.keys():
-            opts[key] = options[key].GetValue()
-        engine.opts = opts
-        wizard.Destroy()
-        self.engine = engine
-        try:
-            self.engine.get_connection()
-        except:
-            pass
+            success = wizard.RunWizard(wizard.TITLE)
         
+            if not success:
+                wizard.Destroy()
+                return
+        
+            engine = wizard.CONNECTION.engine
+            options = wizard.CONNECTION.option
+            engine.RAW_DATA_LOCATION = wizard.CHOOSEDB.raw_data_dir.Value
+            opts = dict()
+            for key in options.keys():
+                opts[key] = options[key].GetValue()
+            engine.opts = opts
+            wizard.Destroy()
+            self.engine = engine
+            try:
+                self.engine.get_connection()
+            except:
+                pass
+                
+            self.script_list.RefreshMe(None)
+            
     def Quit(self, evt):
         if self.progress_window.worker:
             dlg = wx.MessageDialog(self, 
