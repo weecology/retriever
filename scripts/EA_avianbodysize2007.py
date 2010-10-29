@@ -12,9 +12,11 @@ VERSION = '0.3.2'
 
 
 class main(EcologicalArchives):
-    name = "Avian Body Size (Ecological Archives 2007)"
-    shortname = "AvianBodySize"
-    urls = [("species", "http://esapubs.org/archive/ecol/E088/096/avian_ssd_jan07.txt")]
+    def __init__(self, **kwargs):
+        EcologicalArchives.__init__(self, kwargs)
+        self.name = "Avian Body Size (Ecological Archives 2007)"
+        self.shortname = "AvianBodySize"
+        self.urls = [("species", "http://esapubs.org/archive/ecol/E088/096/avian_ssd_jan07.txt")]
 
 
 class EAAvianBodySize2007Test(DbTkTest):

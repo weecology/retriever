@@ -101,8 +101,7 @@ class Engine():
                     prompt += str(self.table.record_id) + " / " + str(total)
                     sys.stdout.write(prompt + "\b" * len(prompt))
                 self.cursor.execute(insertstatement)
-                
-        print "\n Done!"
+        
         self.connection.commit()
         
     def auto_create_table(self, tablename, url=None, filename=None,
@@ -233,19 +232,9 @@ class Engine():
                 for value in values:
                     if "e" in str(value) or ("." in str(value) and
                                              len(str(value).split(".")[1]) > 10):
-                        # Column is a decimal; need to find number of figures
-                        left_figures = 1
-                        right_figures = 10
-                        for value in [value for value in values if '.' in value]:
-                            value_parts = value.split('.')
-                            if len(value_parts[0]) > left_figures:
-                                left_figures = len(value_parts[0])
-                            if len(value_parts[1]) > right_figures:
-                                right_figures = len(value_parts[1])
-                        length = str(left_figures + right_figures) + ',' + str(right_figures)
-                        column[1] = ["decimal",length]
+                        column[1] = ["decimal","30,20"]
                         break
-                                
+                        
             if pk == column[0]:
                 column[1][0] = "pk-" + column[1][0]
             

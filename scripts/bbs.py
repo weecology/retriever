@@ -9,14 +9,15 @@ from decimal import Decimal
 from dbtk.lib.templates import DbTk
 from dbtk.lib.models import Table, Cleanup, no_cleanup
 
-VERSION = '0.3'
+VERSION = '0.3.2'
 
 
 class main(DbTk):
-    name = "USGS North American Breeding Bird Survey"
-    shortname = "BBS"
-    ref = "http://www.pwrc.usgs.gov/BBS/"
-    required_opts = []
+    def __init__(self, **kwargs):
+        DbTk.__init__(self, kwargs)
+        self.name = "USGS North American Breeding Bird Survey"
+        self.shortname = "BBS"
+        self.ref = "http://www.pwrc.usgs.gov/BBS/"
     def download(self, engine=None):
         try:
             DbTk.download(self, engine)
