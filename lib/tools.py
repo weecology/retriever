@@ -226,20 +226,20 @@ def get_saved_connection(engine_name):
 
 
 def save_connection(engine_name, values_dict):
+    lines = []
     if os.path.isfile("connections.config"):
         config = open("connections.config", "rb")
-        lines = []
         for line in config:
             if line.split(',')[0] != engine_name:
-                lines.append(line.rstrip('\n') + '\n')
+                lines.append('\n' + line.rstrip('\n'))
         config.close()
         os.remove("connections.config")
         config = open("connections.config", "wb")
-        for line in lines:
-            config.write(line)
     else:
         config = open("connections.config", "wb")
     config.write(engine_name + "," + str(values_dict))
+    for line in lines:
+        config.write(line)
     config.close()
     
     
