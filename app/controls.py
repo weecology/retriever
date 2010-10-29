@@ -63,8 +63,7 @@ class ScriptList(wx.HtmlListBox):
         
     def Download(self, evt):
         script = self.scripts[self.GetSelection()] 
-        parent = self.Parent.Parent.progress_window
-        parent.Download(script)
+        self.Parent.Parent.progress_window.Download(script)
         
         
 def HtmlScriptSummary(script, selected, progress_window):
@@ -132,12 +131,14 @@ class ProgressWindow(HtmlWindow):
     def __init__(self, parent, style=0):
         HtmlWindow.__init__(self, parent, style=style)
         self.timer = wx.Timer(self, -1)
+        self.timer.interval = 10
         self.Bind(wx.EVT_TIMER, self.update, self.timer)
         
     def Download(self, script):
         self.queue.append(script)
         self.Parent.script_list.RefreshMe(None)
-        self.timer.Start(10)
+        if not self.timer.IsRunning() and not self.worker and len(self.queue) < 2:
+            self.timer.Start(self.timer.interval)
     
     def update(self, evt):
         self.timer.Stop()
@@ -146,7 +147,7 @@ class ProgressWindow(HtmlWindow):
             if self.worker.finished() and len(self.worker.output) == 0:
                 self.worker = None
                 self.Parent.script_list.RefreshMe(None)
-                self.timer.Start(10)
+                self.timer.Start(self.timer.interval)
             else:
                 self.worker.output_lock.acquire()
                 while len(self.worker.output) > 0 and not terminate:
@@ -159,11 +160,10 @@ class ProgressWindow(HtmlWindow):
                 if terminate:
                     self.Parent.Quit(None)
                 else:
-                    self.timer.Start(10)
+                    self.timer.Start(self.timer.interval)
         elif self.queue:
             script = self.queue[0]
             self.queue = self.queue[1:]
-            self.html = ""
             self.worker = DownloadThread(self.Parent.engine, [script])
             self.worker.parent = self
             self.worker.start()
