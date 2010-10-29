@@ -40,8 +40,11 @@ class App(wx.App):
                 opts[key] = options[key].GetValue()
             engine.opts = opts
             wizard.Destroy()
-            
-        engine.get_cursor()
+        
+        try:
+            engine.get_cursor()
+        except:
+            pass
         
         self.frame = Frame(None, -1, "Database Toolkit", lists, engine)
         self.frame.Show()
@@ -129,7 +132,10 @@ to begin your download. Download progress will be shown here.</p>""")
         engine.opts = opts
         wizard.Destroy()
         self.engine = engine
-        self.engine.get_cursor()
+        try:
+            self.engine.get_cursor()
+        except:
+            pass
         
     def Quit(self, evt):
         if self.progress_window.worker:
