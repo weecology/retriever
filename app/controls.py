@@ -72,7 +72,10 @@ def HtmlScriptSummary(script, selected, progress_window):
                                            script in progress_window.worker.scripts):
         img = "cycle"
     else:
-        img = "download"
+        if script in progress_window.downloaded:
+            img = "downloaded"
+        else:
+            img = "download"
     desc += "<img src='memory:" + img + ".png' />"
     desc += "</td><td>"
     if selected:
@@ -128,6 +131,7 @@ class ProgressWindow(HtmlWindow):
     html = ""
     worker = None
     queue = []
+    downloaded = set()
     def __init__(self, parent, style=0):
         HtmlWindow.__init__(self, parent, style=style)
         self.timer = wx.Timer(self, -1)
@@ -136,6 +140,7 @@ class ProgressWindow(HtmlWindow):
         
     def Download(self, script):
         self.queue.append(script)
+        self.downloaded.add(script)
         self.Parent.script_list.RefreshMe(None)
         if not self.timer.IsRunning() and not self.worker and len(self.queue) < 2:
             self.timer.Start(self.timer.interval)
@@ -182,6 +187,7 @@ class ProgressWindow(HtmlWindow):
                                                 maximum=1000,
                                                 parent=None,
                                                 style=wx.PD_SMOOTH
+                                                      | wx.DIALOG_NO_PARENT
                                                       | wx.PD_CAN_ABORT
                                                       | wx.PD_AUTO_HIDE
                                                       | wx.PD_REMAINING_TIME
