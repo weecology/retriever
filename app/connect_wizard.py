@@ -23,9 +23,8 @@ class ConnectWizard(wx.wizard.Wizard):
         
         welcome = """<h2>Connection Wizard</h2>
         
-        <p>Since this is your first time using this program, this wizard will
-        walk you through the process of setting up your database connection.
-        </p>
+        <p>This wizard will walk you through the process of setting up your 
+        database connection.</p>
         <p>Supported database systems currently include:</p>
         <ul>"""
         
