@@ -221,7 +221,10 @@ def get_saved_connection(engine_name):
         for line in config:
             values = line.rstrip('\n').split(',')
             if values[0] == engine_name:
-                parameters = eval(','.join(values[1:]))
+                try:
+                    parameters = eval(','.join(values[1:]))
+                except:
+                    pass
     return parameters    
 
 
