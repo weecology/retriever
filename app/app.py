@@ -138,6 +138,9 @@ to begin your download. Download progress will be shown here.</p>""")
             if result == wx.ID_YES:
                 self.progress_window.worker = None
             else:
+                if self.progress_window.dialog:
+                    self.progress_window.dialog.Resume()
+                self.progress_window.timer.Start(self.progress_window.timer.interval)
                 return
                 
         if self.progress_window.dialog:
