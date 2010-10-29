@@ -1,7 +1,7 @@
 import wx
 from dbtk.app.connect_wizard import ConnectWizard
 from dbtk.app.controls import *
-from dbtk.app.icon import globe_icon, cycle, download, downloaded
+from dbtk.app.icon import globe_icon, cycle, download, downloaded, error
 from dbtk.lib.tools import get_default_connection, get_saved_connection, choose_engine
 from dbtk import ENGINE_LIST
 
@@ -17,6 +17,7 @@ class App(wx.App):
         mfs.AddFile("cycle.png", cycle.GetImage(), wx.BITMAP_TYPE_PNG)
         mfs.AddFile("download.png", download.GetImage(), wx.BITMAP_TYPE_PNG)
         mfs.AddFile("downloaded.png", downloaded.GetImage(), wx.BITMAP_TYPE_PNG)
+        mfs.AddFile("error.png", error.GetImage(), wx.BITMAP_TYPE_PNG)
         
         default_connection = get_default_connection()
         if default_connection:

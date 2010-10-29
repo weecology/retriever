@@ -258,3 +258,60 @@ downloaded = PyEmbeddedImage(
 getdownloadedData = downloaded.GetData
 getdownloadedImage = downloaded.GetImage
 getdownloadedBitmap = downloaded.GetBitmap
+
+
+error = PyEmbeddedImage(
+    "iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAAZiS0dE"
+    "AP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9oKHREnGTT40egAAAoH"
+    "SURBVFjDpZhbbBzXecd/58xlZy/cJbm8rmjKiqxb3AixCyeK6+bFNtBARuqmaYD4kosh1HAS"
+    "oA8F+pY+BH1oDPehcGI3taP6UjWJBdRCgqQwZMc1mti1VANWZevCOJYsU5S45C7JvXB2Z+ac"
+    "rw+7Sy0pynaaA3yYmZ2z3/md//ed28CHFAsI8I/8fuVZ4JmPUM/9sArqGr8/Addr2OfAlIKS"
+    "goJA1cIlC+cFjh2A2V59+QBfHxno2Q1ODsI2DfdouG1gcnJ0eHQ0n0mlBlzPCxzHcZMoiuN2"
+    "u90Mw+XK4mL9XyqVeQ2vRPDsV2C+5+ffgHt+RwH4V+C+7v0PoajhQCadvnVyx45b8oXCZGAM"
+    "QRjiRhE6SdDWIkphlCL2PELfJwRqy8sX3z937r8R+ZWGf7oPWgCHgHs/KlB/D56CmxU8UCqV"
+    "7hmamhoaTqXINZu41SpSrUKjgbJWADSA1opsFgoFkkKBmu9TDkOWL1+eKy8vP5fA9x6A314L"
+    "Sm0Wpvs7OeKm4TY/l/tGcXz8L6ZLJQpKITMz2MuXRfu+ciYn0cUiqlhEDQzAygpUq0ilgr10"
+    "CYlj0ePjSqamKLdavF8uU1lZ+WEURd/34cSXwT4NfPVaQD2Y7v2+VCbzD+Pbt996w9atqNlZ"
+    "zIkToj1PuXv34t5yC/rGG9E7d6J270ZPTcGFC8iZM9iZGeTkSezx45hTp8TGsdK7dhFms5y9"
+    "dIlqpXJ4td3+u6/D/wI8CRz4oGQ+CHt+HATPvLhrl8x94QtyfmREzoOdzeXk8v33S+XYMVkW"
+    "kVoUST0MZWlhQSoXLsjS/LzUw1AaxkjNWll+7TWpfPGLMp/NyhzYi8PD9uJnPiMvjI3JIa0f"
+    "fRK2bGzb6d0cAv69A5N34MDgyMhf7bn5ZuLXXhNbLuN+7GPKf/hhvIcewtmyBd1uowFTrzPz"
+    "9NOcfPRRlk+fZnj3boJ8HlotmJxE3X47ats27PHjyi4sKKyVgZERFbbbn2q1WvUj8J9056jn"
+    "e3nYXzR8fnhk5C+v274dmZvDXL6MGhwk9eSTuPv3o4MAbS1KKRzHIV5Z4beHD9NaWGD2xRdZ"
+    "OXsWiWO046CMQWUy6LvvxnvqKSQIMHNzZJKE4tAQhXT6jqdgf3/urAHd2xneY34Q3DpQKpUG"
+    "83nCN95AQPnf/rbSO3agXHftj0oplNZoz8PEMSKCJMmVdz0DVBCg9u7FfeghJAhU9O67FIOA"
+    "gWLxjwT+lL7c1T8Hfn4lw28vTk9/dmhwkOj0acRace68E/euu1CZDFh7Vb45nkdmZASlFGhN"
+    "engYN50GkSuVRFDpNM6DD6L27sXEsehqlQHXZXBoaM8TsG8tQvvpatYB+pSfy92Ydl1a58+L"
+    "KhRU6lvfQg0Pb579IijHIT0+DkBqeBgvl0MBsgEIEXSphHfffaiJCZUsLJAWIZ/P7/TgcwDP"
+    "9Yfse5BO5/NTnuNArYYBRbGIs28fiCDWrm+k16jWZCYmAMiVSmjfRzbW6V4linDuuAOKRYy1"
+    "4icJKccZ0/CHAF/qB/Jhe3Z0dMADkkqlo9j0NLjumvwicpWhNZmuQpnJSZTnYY258r5fLRGY"
+    "mIBCAQtKRRGOteggGPpn8NYltYIRPwhyWgSzugq5HHrPHtjEec+staAUwegoKNUB8n2MMVhr"
+    "sV1V13XA9+G66xDHwbTbKGPwPc+6MMGGYT/seF5eAabVQjIZ9LZta6HaCGKt7SihFMHYGADp"
+    "8XF0n0KbqpokqOuvRwYHMXEM1uJ5nuvA8Lrth4KU0tpFBGMMqrc56ybkul7CmjpoTboLFIyP"
+    "r4Wsp84afHeE2p6fPlitlLaQWqeQwGISxzWjFCqdxjSbxGfOdBx0ATaGoadQamQEESE9Noby"
+    "vHUhW1e/24n4nXcwS0vgeViliOI4VlBZB6ShaqKobkQglcI0myQzM4hS68LW31CvMZVKkSmV"
+    "cHI5LGCSZA3qqnC32yTvv4+xFnFdTAdI2rCwUaFzjUqlEQF6aAgDJBcuIElyleN+IJMk4Djs"
+    "+eY3cQcGMHG8abistVgR4vfew9TrGBDj+xitMa1W/CDU1gEdgGq4uFg2xsDAABYkWVoiPHq0"
+    "E7JNGuipgOtS/PSncbLZq8K1Lmy+T/sXvyBZWAAg0prYmDoiJwH+GtCHuit994TxVtxqzUZa"
+    "4xaLKl5Zof6DH5CUy5s3AiRRRPXkSX5z8CDzr75K3GxelXO9RI7PnCF8/nnixUV0oaDaStFc"
+    "XX1H4CWARwB97/pt5IuNcvn1eq1G6oYbsCCt11+n+ZOfYFstxHHWKSVAEobMvfQSM48/zoUj"
+    "R2gtLSFar1dGKUwY0njiCdpvvYWAyMAALWNo1mpnBF7prfjrth9fh9P1avWVerkcxqkU/tat"
+    "SkDqjz8u7VdfxTQanSTvKWAMxlq05zGwYwduLrc2+nrAFkiWl1l9+WWaP/oRxhjR4+OqCTSb"
+    "zdnEmP/6Gqw8s3GD9hxwGPgzqEmrVbDW3lTYsYP23Jwyq6sqfvNN0cWi0iMjqFQKHAexFuV5"
+    "5HfvJpicZOLOO/EGB69MFUlCMj9PePQote98R0yjgUqnlSoWWVxZkaVa7WAdHvsPaD2/Eehw"
+    "93oEFvdbG5o4/qwTBPnsxISKymXM0pIKX3hBpFpV7tat6GIRSZLOsHdd0lu2dBZWaxFjAIhP"
+    "naL2yCPUHntMbBgq0Vp509Ms1mqyVKv9etbaQ3/jeScy1qr4Q85l2e/C3Vuz2WembroJP0n0"
+    "6ttvY+t1UaC86WmCfftIffKTuDt34u/a1ZkqFhaIZ2ZIzp6l/cYbtI8dI7l0CQHR2azySiVW"
+    "Wi27OD+/+FYU/e3fwxEgBsKubQrkAcEfwOifw127guC7Q1u2+MVSSUcXL9J+7z3BGKVTKXQq"
+    "hfK8juVySLOJtNsQx9h2GxtFguMof2IClcuxuLBglmu1yv8kycMH4ZdNWKZzcGx0TZxNTo4O"
+    "kCoD52A+mySn883mjVGzORQUi6TGxpRyXUyjQRyGYsJQJY0GplrFNBokYdgBUUp5o6PKGx8n"
+    "tJbF+Xnmms0TLxvz/R/D8SasAqarUAS0r6WQVpARyAABkH0A/ngr7Ns5NHRXPp8f9YMAX2sc"
+    "QKIIoqizijsOOA64Lom1RElCq91muV6/fCoMj56CYz+DN4FmF2C1q0z9g4B6u4AMkAXSAHtg"
+    "2x1w25Tvf3ykUNg+mE7fkHGcgupuvHq7AkQwIjTjeGkxDN8tN5vnLhpz9qfwehnKQNIN00YY"
+    "4UO+kLhdhdJd8wA1CJN/Ah/fDp8YhGnX8wLtuo52HC9JksTEcRIb06rA7Cl4+5cw04LF7pwX"
+    "9cGsdpWKPtLXj41JDvgKAuk8676JNRXA0HWQfQca0ulx0ufbdp/bfUBhvyq/K9BG1VJd64Hp"
+    "vhlf932fsn1J2+6CJJtB/D5A1yo9xaTP/l/l/wB3gA7/SnE2MAAAAABJRU5ErkJggg==")
+geterrorData = error.GetData
+geterrorImage = error.GetImage
+geterrorBitmap = error.GetBitmap
+
