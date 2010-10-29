@@ -19,8 +19,11 @@ class DownloadThread(Thread):
         self.output = []
 
     def run(self):
-        self.download_scripts()
-        self.scriptnum = self.progress_max + 1
+        try:
+            self.download_scripts()
+            self.scriptnum = self.progress_max + 1
+        except:
+            return
         
     def finished(self):
         return (self.scriptnum > self.progress_max)
@@ -46,7 +49,7 @@ class DownloadThread(Thread):
         def start_download():
             worker.scriptnum = 0
             
-            print "Connecting to database . . ."
+            print "Connecting to database..."
             
             # Connect
             try:
@@ -60,10 +63,7 @@ class DownloadThread(Thread):
             errors = []
             for script in scripts:
                 worker.scriptnum += 1
-                msg = "<b><font color='blue'>Downloading " + script.name + "</font></b>"
-                if len(scripts) > 0:
-                    msg += " (" + str(worker.scriptnum) + " of " + str(worker.progress_max) + ")"
-                msg += " . . ."
+                msg = "<b><font color='blue'>Downloading " + script.name + "...</font></b>"
                 print msg
                 try:
                     script.download(engine)

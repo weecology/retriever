@@ -11,15 +11,17 @@ from dbtk.lib.tools import DbTkTest
 from dbtk.lib.models import Table
 from dbtk.lib.excel import Excel
 
-VERSION = '0.3'
+VERSION = '0.3.2'
 
 
 class main(DbTk):
-    name = "Alwyn H. Gentry Forest Transact Dataset"
-    shortname = "Gentry"
-    url = "http://www.mobot.org/mobot/gentry/123/all_Excel.zip"
-    ref = "http://www.wlbcenter.org/gentry_data.htm"
-    addendum = """Researchers who make use of the data in publications are requested to acknowledge Alwyn H. Gentry, the Missouri Botanical Garden, and collectors who assisted Gentry or contributed data for specific sites. It is also requested that a reprint of any publication making use of the Gentry Forest Transect Data be sent to:
+    def __init__(self, **kwargs):
+        DbTk.__init__(self, kwargs)
+        self.name = "Alwyn H. Gentry Forest Transact Dataset"
+        self.shortname = "Gentry"
+        self.urls = [("stems", "http://www.mobot.org/mobot/gentry/123/all_Excel.zip")]
+        self.ref = "http://www.wlbcenter.org/gentry_data.htm"
+        self.addendum = """Researchers who make use of the data in publications are requested to acknowledge Alwyn H. Gentry, the Missouri Botanical Garden, and collectors who assisted Gentry or contributed data for specific sites. It is also requested that a reprint of any publication making use of the Gentry Forest Transect Data be sent to:
 
 Bruce E. Ponman
 Missouri Botanical Garden
@@ -29,11 +31,11 @@ U.S.A. """
     def download(self, engine=None):
         DbTk.download(self, engine)
               
-        self.engine.download_file(self.url, "all_Excel.zip")
+        self.engine.download_file(self.urls[0][1], "all_Excel.zip")
         local_zip = zipfile.ZipFile(self.engine.format_filename("all_Excel.zip"))        
         filelist = local_zip.namelist()
         local_zip.close()        
-        self.engine.download_files_from_archive(self.url, filelist)
+        self.engine.download_files_from_archive(self.urls[0][0], filelist)
         
         filelist = [os.path.basename(filename) for filename in filelist]
         
@@ -90,7 +92,7 @@ U.S.A. """
                 tax_count += 1
                 tax_dict[group[0:3]] = tax_count
                 if tax_count % 10 == 0:
-                    msg = "Generating taxonomic groups: " + str(tax_count)
+                    msg = "Generating taxonomic groups: " + str(tax_count) + " / 9819"
                     sys.stdout.write(msg + "\b" * len(msg))
         
         # Create species table

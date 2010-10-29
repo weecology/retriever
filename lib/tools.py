@@ -241,7 +241,16 @@ def save_connection(engine_name, values_dict):
         config = open("connections.config", "wb")
     config.write(engine_name + "," + str(values_dict))
     config.close()
-
+    
+    
+def get_default_connection():
+    if os.path.isfile("connections.config"):
+        config = open("connections.config", "rb")
+        default_connection = config.readline().split(",")[0]
+        config.close()
+        return default_connection
+    else:
+        return None
 
 
 def choose_engine(opts):
@@ -260,7 +269,7 @@ def choose_engine(opts):
                 abbreviation = ""
             print "    " + abbreviation + engine.name
         enginename = raw_input(": ")
-        enginename = enginename.lower()
+    enginename = enginename.lower()
     
     engine = Engine()
     if not enginename:
@@ -273,4 +282,4 @@ def choose_engine(opts):
                 engine = thisengine
         
     engine.opts = opts
-    return engine    
+    return engine

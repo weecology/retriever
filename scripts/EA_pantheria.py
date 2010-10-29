@@ -9,9 +9,11 @@ VERSION = '0.3.2'
 
 
 class main(EcologicalArchives):
-    name = "Pantheria (Ecological Archives 2008)"
-    shortname = "Pantheria"
-    urls = [("species", "http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt")]
+    def __init__(self, **kwargs):
+        EcologicalArchives.__init__(self, kwargs)
+        self.name = "Pantheria (Ecological Archives 2008)"
+        self.shortname = "Pantheria"
+        self.urls = [("species", "http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt")]
 
 
 class EAPantheriaTest(DbTkTest):
