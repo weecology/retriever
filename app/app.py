@@ -1,7 +1,7 @@
 import wx
 from dbtk.app.connect_wizard import ConnectWizard
 from dbtk.app.controls import *
-from dbtk.app.icon import globe_icon, cycle, download, downloaded, error
+from dbtk.app.images import globe_icon, cycle, download, downloaded, error
 from dbtk.lib.tools import get_default_connection, get_saved_connection, choose_engine
 from dbtk import ENGINE_LIST
 
