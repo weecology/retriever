@@ -1,7 +1,6 @@
 import wx
 import wx.lib.wxpTag
 from dbtk import VERSION
-from dbtk.app.icon import globe_icon
 from dbtk.lib.download import DownloadThread
         
         
@@ -45,13 +44,18 @@ class ScriptList(wx.HtmlListBox):
         self.Bind(wx.EVT_LISTBOX_DCLICK, self.Download)
     
     def OnGetItem(self, index):
-        return HtmlScriptSummary(self.scripts[index], 
+        return HtmlScriptSummary(self.scripts[index],
                                  self.GetSelection()==index,
+                                 index,
                                  self.Parent.Parent.progress_window,
                                  self.Parent.Parent.engine)
 
     def OnLinkClicked(self, n, link):
-        wx.LaunchDefaultBrowser(link.GetHref())
+        if link.GetHref()[:10] == "download:/":
+            self.SetSelection(int(link.GetHref().lstrip("download:/")))
+            self.Download(None)
+        else:
+            wx.LaunchDefaultBrowser(link.GetHref())
         
     def Redraw(self, scripts):
         self.SetSelection(-1)
@@ -67,7 +71,7 @@ class ScriptList(wx.HtmlListBox):
         self.Parent.Parent.progress_window.Download(script)
         
         
-def HtmlScriptSummary(script, selected, progress_window, engine):
+def HtmlScriptSummary(script, selected, index, progress_window, engine):
     desc = "<table><tr><td>"
     if script in progress_window.queue or (progress_window.worker and
                                            script in progress_window.worker.scripts):
@@ -76,8 +80,11 @@ def HtmlScriptSummary(script, selected, progress_window, engine):
         if script in progress_window.downloaded or script.exists(engine):
             img = "downloaded"
         else:
-            img = "download"
-    desc += "<img src='memory:" + img + ".png' />"
+            img = ""
+            desc += "<a href='download:/" + str(index) + "'>"
+            desc += "<img src='memory:download.png' /></a>"
+    if img:
+        desc += "<img src='memory:" + img + ".png' />"
     desc += "</td><td>"
     if selected:
         desc += "<b>" + script.name + "</b>" 
