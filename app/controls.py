@@ -77,7 +77,9 @@ def HtmlScriptSummary(script, selected, index, progress_window, engine):
                                            script in progress_window.worker.scripts):
         img = "cycle"
     else:
-        if script in progress_window.downloaded or script.exists(engine):
+        if script in progress_window.errors:
+            img = "error"
+        elif script in progress_window.downloaded or script.exists(engine):
             img = "downloaded"
         else:
             img = ""
@@ -140,6 +142,7 @@ class ProgressWindow(HtmlWindow):
     worker = None
     queue = []
     downloaded = set()
+    errors = set()
     def __init__(self, parent, style=0):
         HtmlWindow.__init__(self, parent, style=style)
         self.timer = wx.Timer(self, -1)
@@ -157,6 +160,7 @@ class ProgressWindow(HtmlWindow):
         self.timer.Stop()
         terminate = False
         if self.worker:
+            script = self.worker.scripts[0]
             if self.worker.finished() and len(self.worker.output) == 0:
                 self.worker = None
                 self.Parent.script_list.RefreshMe(None)
@@ -164,6 +168,9 @@ class ProgressWindow(HtmlWindow):
             else:
                 self.worker.output_lock.acquire()
                 while len(self.worker.output) > 0 and not terminate:
+                    if "Error:" in self.worker.output[0] and script in self.downloaded:
+                        self.downloaded.remove(script)
+                        self.errors.add(script)
                     if self.write(self.worker.output[0]) == False:
                         terminate = True
                     self.worker.output = self.worker.output[1:]
