@@ -73,20 +73,25 @@ class ScriptList(wx.HtmlListBox):
         
 def HtmlScriptSummary(script, selected, index, progress_window, engine):
     desc = "<table><tr><td>"
+    link = None
     if script in progress_window.queue or (progress_window.worker and
                                            script in progress_window.worker.scripts):
         img = "cycle"
     else:
         if script in progress_window.errors:
+            link = True
             img = "error"
         elif script in progress_window.downloaded or script.exists(engine):
             img = "downloaded"
         else:
-            img = ""
-            desc += "<a href='download:/" + str(index) + "'>"
-            desc += "<img src='memory:download.png' /></a>"
+            link = True
+            img = "download"
     if img:
-        desc += "<img src='memory:" + img + ".png' />"
+        img_tag = "<img src='memory:" + img + ".png' />"
+        if link:
+            desc += "<a href='download:/" + str(index) + "'>%s</a>" % img_tag
+        else:
+            desc += img_tag
     desc += "</td><td>"
     if selected:
         desc += "<b>" + script.name + "</b>" 
