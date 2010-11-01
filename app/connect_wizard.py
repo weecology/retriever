@@ -21,37 +21,19 @@ class ConnectWizard(wx.wizard.Wizard):
         
         self.SetIcon(globe_icon.GetIcon())
         
-        welcome = """<h2>Connection Wizard</h2>
-        
-        <p>This wizard will walk you through the process of setting up your 
-        database connection.</p>
-        <p>Supported database systems currently include:</p>
-        <ul>"""
-        
-        for db in engine_list:
-            welcome += "<li>" + db.name + "</li>" 
-        
-        welcome += "</ul>"        
-        
         self.pages = []
         self.lists = lists
         self.engine_list = engine_list
         
-        self.pages.append(TitledPage(self, "", ""))
-        
-        self.pages.append(ChooseDbPage(self, "Select Database", 
-                                       "Please select your database platform:"))
+        self.pages.append(ChooseDbPage(self, "Database", 
+                                       "What kind of database are you using?"))
         
         self.pages.append(ConnectPage(self, 
                                       "Connection Info", 
                                       "Please enter your connection information:"))
 
-        self.TITLE, self.CHOOSEDB, self.CONNECTION = [self.pages[i] for i in range(3)]
+        self.CHOOSEDB, self.CONNECTION = [self.pages[i] for i in range(len(self.pages))]
         
-        self.TITLE.welcome = HtmlWindow(self.TITLE)
-        self.TITLE.welcome.SetHtml(welcome)
-        self.TITLE.sizer.Add(self.TITLE.welcome, 1, wx.EXPAND)
-             
         self.CHOOSEDB.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CONNECTION.Draw)
         
         for i in range(len(self.pages) - 1):
