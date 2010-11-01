@@ -164,5 +164,4 @@ to begin your download. Download progress will be shown here.</p>""")
         if self.progress_window.dialog:
             self.progress_window.dialog.Destroy()
         
-        self.engine.connection.close()
         self.Destroy()
