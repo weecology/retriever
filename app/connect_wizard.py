@@ -16,7 +16,7 @@ from dbtk import VERSION
 
 
 class ConnectWizard(wx.wizard.Wizard):
-    def __init__(self, lists, engine_list):
+    def __init__(self, lists, engine_list, selected=None):
         wx.wizard.Wizard.__init__(self, None, -1, "Database Toolkit")
         
         self.SetIcon(globe_icon.GetIcon())
@@ -36,6 +36,7 @@ class ConnectWizard(wx.wizard.Wizard):
         self.pages = []
         self.lists = lists
         self.engine_list = engine_list
+        self.selected = selected
         
         self.pages.append(TitledPage(self, "", ""))
         
@@ -76,7 +77,14 @@ class ChooseDbPage(TitledPage):
                          style=wx.LB_SINGLE,
                          size=(-1,150))
         self.dblist = dblist
-        self.dblist.SetSelection(0)
+        if parent.selected:
+            index = 0
+            for i in range(len(engine_list)):
+                if engine_list[i].name == parent.selected:
+                    index = i                                    
+            self.dblist.SetSelection(index)
+        else:
+            self.dblist.SetSelection(0)
         self.sizer.Add(self.dblist, -1, wx.EXPAND)
         self.AddSpace()
         self.sizer2 = wx.BoxSizer(wx.HORIZONTAL)    
@@ -97,7 +105,7 @@ class ChooseDbPage(TitledPage):
         if dialog.ShowModal() == wx.ID_OK:            
            self.raw_data_dir.SetValue(dialog.GetPath())            
         else:
-           pass            
+           pass
         dialog.Destroy()
                     
 

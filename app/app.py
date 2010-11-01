@@ -122,7 +122,7 @@ to begin your download. Download progress will be shown here.</p>""")
                                    style=wx.OK)
             dlg.ShowModal()
         else:
-            wizard = ConnectWizard(self.lists, ENGINE_LIST)
+            wizard = ConnectWizard(self.lists, ENGINE_LIST, self.engine.name)
 
             success = wizard.RunWizard(wizard.pages[1])
         
