@@ -27,7 +27,7 @@ class App(wx.App):
         else:
             wizard = ConnectWizard(lists, ENGINE_LIST)
 
-            success = wizard.RunWizard(wizard.TITLE)
+            success = wizard.RunWizard(wizard.pages[0])
         
             if not success:
                 wizard.Destroy()
@@ -124,7 +124,7 @@ to begin your download. Download progress will be shown here.</p>""")
         else:
             wizard = ConnectWizard(self.lists, ENGINE_LIST)
 
-            success = wizard.RunWizard(wizard.TITLE)
+            success = wizard.RunWizard(wizard.pages[0])
         
             if not success:
                 wizard.Destroy()
