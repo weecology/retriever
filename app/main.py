@@ -2,8 +2,8 @@
 
 This module contains the UI elements of the database toolkit platform. 
 
-This module should not be run directly; instead, individual scripts, when run,
-should run the launch_wizard function.
+The application can be started by running the launch_app function with a list
+of DbTkList objects.
 
 """
 
