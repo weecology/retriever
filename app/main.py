@@ -11,8 +11,8 @@ from dbtk.app.app import App
 
 
 def launch_app(lists):
-    """Launches the download wizard."""
-    print "Launching Database Toolkit wizard..."                    
+    """Launches the application GUI."""
+    print "Launching Database Toolkit..."                    
     
     app = App(lists)
     app.MainLoop()
