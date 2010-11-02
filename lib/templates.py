@@ -43,7 +43,8 @@ class DbTk:
         engine.script = self            
         return engine
     def exists(self, engine=None):
-        return all([engine.table_exists(self.shortname, url[0]) for url in self.urls])
+        return all([engine.table_exists(self.shortname, url[0]) 
+                    for url in self.urls if url[0]])
     
     
 class EcologicalArchives(DbTk):
