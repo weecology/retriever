@@ -88,15 +88,11 @@ def HtmlScriptSummary(script, selected, index, progress_window, engine):
             img = "download"
     if img:
         img_tag = "<img src='memory:" + img + ".png' />"
-        if link:
-            desc += "<a href='download:/" + str(index) + "'>%s</a>" % img_tag
-        else:
-            desc += img_tag
+        desc += ("<a href='download:/" + str(index) + "'>%s</a>" % img_tag
+                 if link else img_tag)
     desc += "</td><td>"
-    if selected:
-        desc += "<b>" + script.name + "</b>" 
-    else:
-        desc += script.name
+    desc += ("<b>" + script.name + "</b>"
+             if selected else script.name)
     if script.reference_url():
         desc += "<br /><a href='" + script.reference_url() + "'>" 
         desc += script.reference_url() + "</a><br />"
@@ -105,12 +101,6 @@ def HtmlScriptSummary(script, selected, index, progress_window, engine):
             desc += "<p><i>"
             desc += script.addendum.replace('\n', "<br />")
             desc += "</i></p>"
-    '''if selected:
-        desc += "</td></tr>"
-        desc += """<tr><td><wxp module="wx" class="Button">
-    <param name="id" value='""" + str(wx.ID_OK) + """' />
-    <param name="label" value="Download" />
-</wxp>"""        '''
     desc += "</td></tr></table>"
     return desc
         
