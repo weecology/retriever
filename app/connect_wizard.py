@@ -10,7 +10,7 @@ import wx.wizard
 from dbtk.lib.models import Engine
 from dbtk.lib.tools import get_saved_connection, save_connection
 from dbtk.app.controls import *
-from dbtk.app.icon import globe_icon
+from dbtk.app.images import globe_icon
 
 from dbtk import VERSION
 
