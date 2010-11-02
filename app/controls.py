@@ -147,6 +147,8 @@ class ProgressWindow(HtmlWindow):
     def Download(self, script):
         self.queue.append(script)
         self.downloaded.add(script)
+        if script in self.errors:
+            self.errors.remove(script)
         self.Parent.script_list.RefreshMe(None)
         if not self.timer.IsRunning() and not self.worker and len(self.queue) < 2:
             self.timer.Start(self.timer.interval)
