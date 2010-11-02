@@ -208,18 +208,13 @@ class ProgressWindow(HtmlWindow):
                     total = float(s[1])
                     current = float(s[0].split(': ')[1])
                     progress = int((current / total) * 1000)
-                    if progress < 1:
-                        return 1
-                    else:
-                        return progress
+                    return (progress if progress > 1 else 1)
                 else:
                     return None
                     
             current_progress = progress(s)
-            if current_progress:
-                (keepgoing, skip) = self.dialog.Update(current_progress, s)
-            else:
-                (keepgoing, skip) = self.dialog.Pulse(s)
+            (keepgoing, skip) = (self.dialog.Update(current_progress, s)
+                                 if current_progress else self.dialog.Pulse(s))
                 
             if not keepgoing:
                 return False
