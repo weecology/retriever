@@ -23,6 +23,7 @@ class main(DbTk):
                      "weather": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CWeather.exe",
                      "region_codes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/RegionCodes.txt",
                      "species": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/SpeciesList.txt"}
+                     
     def download(self, engine=None):
         try:
             DbTk.download(self, engine)
@@ -58,7 +59,7 @@ class main(DbTk):
                                                    ["weather.csv"])            
                 read = open(engine.format_filename("weather.csv"), "rb")
                 write = open(engine.format_filename("weather_new.csv"), "wb")
-                print "Cleaning weather data..."            
+                print "Cleaning weather data..."
                 for line in read:
                     values = line.split(',')
                     newvalues = []
@@ -79,21 +80,42 @@ class main(DbTk):
             engine.insert_data_from_file(engine.format_filename("weather_new.csv"))
             
             
+            
             # Species table
             table = Table()
             table.tablename = "species"
             table.pk = False
-            table.header_rows = 11
+            table.delimiter = ','
             
-            table.columns=[("countrynum"            ,   ("int",)        ),
-                           ("regioncode"            ,   ("int",)        ),
-                           ("regionname"            ,   ("char",30)     )]
-            table.fixedwidth = [11, 11, 30]
+            table.columns=[("species_id"            ,   ("pk-auto",)        ),
+                           ("AOU"                   ,   ("int",)            ),
+                           ("genus"                 ,   ("char",30)         ),
+                           ("species"               ,   ("char",30)         )]
             
             engine.table = table
             engine.create_table()
-                                    
-            engine.insert_data_from_url(self.urls["species"])
+            
+            engine.download_file(self.urls["species"], "SpeciesList.txt")
+            species_list = open(engine.format_filename("SpeciesList.txt"), "rb")
+            for n in range(7):
+                species_list.readline()
+            
+            rows = []
+            for line in species_list:
+                if line and len(line) > 115:
+                    latin_name = line[115:].split()
+                    if len(latin_name) < 2:
+                        latin_name.append("")
+                    rows.append(','.join([
+                                          line.split()[1], 
+                                          latin_name[0],
+                                          latin_name[1]
+                                          ]))
+                    
+            engine.table.source = rows
+            engine.add_to_table()
+            
+            species_list.close()
             
             
             # Region_codes table
@@ -171,14 +193,12 @@ class main(DbTk):
                     else:        
                         state, shortstate = state[0], state[1]
                         
-                    print "Downloading and decompressing data from " + state + "..."
                     engine.insert_data_from_archive(self.urls["counts"] + "C" + shortstate + ".exe", 
                                                     ["C" + shortstate + ".csv"])
                             
                 except:
                     print "There was an error in " + state + "."
             
-            print 'Done!'
         except zipfile.BadZipfile:            
             print "There was an unexpected error in the Breeding Bird Survey archives."
             raise    
