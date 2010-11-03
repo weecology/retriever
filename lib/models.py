@@ -135,16 +135,10 @@ class Engine():
         else:
             self.table.columns = []
             self.table.hasindex = True
-            
-        print "Getting columns..."
         
         columns, column_values = self.auto_get_columns(header)
         
         self.auto_get_datatypes(pk, source, columns, column_values)
-        
-        print '[' + ', '.join([self.convert_data_type(column[1]) + " " + 
-                               column[0] for column in columns]
-                              ) + ']'
         
         self.create_table()
         
@@ -333,7 +327,7 @@ class Engine():
         for filename in filenames:
             if self.use_local and file_exists(self.format_filename(filename)):
                 # Use local copy
-                print "Using local copy of " + filename
+                pass
             else:
                 self.create_raw_data_dir()
                 
@@ -469,8 +463,7 @@ class Engine():
         filename = url.split('/')[-1]
         self.create_raw_data_dir()
         if self.use_local and file_exists(self.format_filename(filename)):
-            # Use local copy
-            print "Using local copy of " + filename
+            # Use local copy            
             self.insert_data_from_file(self.format_filename(filename))            
         else:
             if self.keep_raw_data:
