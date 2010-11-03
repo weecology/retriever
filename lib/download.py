@@ -63,7 +63,7 @@ class DownloadThread(Thread):
             errors = []
             for script in scripts:
                 worker.scriptnum += 1
-                msg = "<b><font color='blue'>Downloading " + script.name + "...</font></b>"
+                msg = "<b><font color='blue'>Downloading: " + script.name + "</font></b>"
                 print msg
                 try:
                     script.download(engine)
@@ -82,7 +82,7 @@ class DownloadThread(Thread):
                 error_txt += "</ul>"
                 print error_txt
             else:
-                print "<b>Your downloads were completed successfully.</b>"
+                print "<b>Done!</b>"
                 
             finish = time()
             
