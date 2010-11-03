@@ -215,8 +215,10 @@ class ProgressWindow(HtmlWindow):
                     return None
                     
             current_progress = progress(s)
-            (keepgoing, skip) = (self.dialog.Update(current_progress, s)
-                                 if current_progress else self.dialog.Pulse(s))
+            if current_progress:
+                (keepgoing, skip) = self.dialog.Update(current_progress, s)
+            else:
+                (keepgoing, skip) = self.dialog.Pulse(s)
                 
             if not keepgoing:
                 return False
