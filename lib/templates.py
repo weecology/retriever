@@ -8,7 +8,7 @@ from dbtk.lib.tools import get_opts, choose_engine
 class DbTk:
     """This class represents a database toolkit script. Scripts should inherit
     from this class and execute their code in the download method."""
-    def __init__(self, name="", shortname="", urls=[], ref="", public=True, 
+    def __init__(self, name="", shortname="", urls=dict(), ref="", public=True, 
                  addendum=None):
         self.name = name
         self.shortname = shortname
@@ -32,8 +32,8 @@ class DbTk:
         if self.ref:
             return self.ref
         else:
-            if self.urls:
-                return self.urls[0][1]
+            if len(self.urls) == 1:
+                return self.urls[self.urls.keys()[0]]
             else:
                 return None
     def checkengine(self, engine=None):
@@ -43,33 +43,33 @@ class DbTk:
         engine.script = self            
         return engine
     def exists(self, engine=None):
-        return all([engine.table_exists(self.shortname, url[0]) 
-                    for url in self.urls if url[0]])
+        return all([engine.table_exists(self.shortname, key) 
+                    for key in self.urls.keys() if key])
     
     
 class EcologicalArchives(DbTk):
     """DbTk script template based on data files from Ecological Archives."""
-    def __init__(self, name="", shortname="", urls=[], ref="", public=True, 
+    def __init__(self, name="", shortname="", urls=dict(), ref="", public=True, 
                  addendum=None, nulls=['-999', '-999.9']):
         DbTk.__init__(self, name, shortname, urls, ref, public, addendum)
         self.nulls = nulls
     def download(self, engine=None):
         DbTk.download(self, engine)
         
-        for url in self.urls:
-                self.engine.auto_create_table(url[0], url=url[1],
+        for key, value in self.urls.items():
+                self.engine.auto_create_table(key, url=value,
                                               cleanup=Cleanup(correct_invalid_value, 
                                                   {"nulls":self.nulls})
                                               )
-                self.engine.insert_data_from_url(url[1])        
+                self.engine.insert_data_from_url(value)
         return self.engine
         
     def reference_url(self):
         if self.ref:
             return self.ref
         else:
-            if self.urls:
-                return '/'.join(self.urls[0][1].split('/')[0:-1]) + '/'
+            if len(self.urls) == 1:
+                return '/'.join(self.urls[self.urls.keys()[0]].split('/')[0:-1]) + '/'
         
         
 TEMPLATES = [

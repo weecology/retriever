@@ -18,15 +18,15 @@ class main(DbTk):
         self.name = "Portal Project Mammals (Ecological Archives 2002)"
         self.shortname = "PortalMammals"
         self.ref = "http://esapubs.org/archive/ecol/E090/118/"
-        self.urls = [("main", "http://esapubs.org/archive/ecol/E090/118/Portal_rodent_19772002.csv"),
-                     ("species", "http://wiki.ecologicaldata.org/sites/default/files/portal_species.txt"),
-                     ("plots", "http://wiki.ecologicaldata.org/sites/default/files/portal_plots.txt")]
+        self.urls = {"main": "http://esapubs.org/archive/ecol/E090/118/Portal_rodent_19772002.csv",
+                     "species": "http://wiki.ecologicaldata.org/sites/default/files/portal_species.txt",
+                     "plots": "http://wiki.ecologicaldata.org/sites/default/files/portal_plots.txt"}
     def download(self, engine=None):
         DbTk.download(self, engine)
         
         # Plots table
         table = Table()
-        table.tablename = self.urls[2][0]
+        table.tablename = self.urls["plots"]
         table.hasindex = True
         table.delimiter = ","
         table.header_rows = 0
@@ -37,18 +37,18 @@ class main(DbTk):
         self.engine.table = table
         self.engine.create_table()
         
-        self.engine.insert_data_from_url(self.urls[2][1])
+        self.engine.insert_data_from_url(self.urls["plots"])
         
         # Species table        
-        self.engine.auto_create_table(self.urls[1][0], self.urls[1][1], 
+        self.engine.auto_create_table("species", self.urls["species"], 
                                       cleanup=Cleanup())
-        self.engine.insert_data_from_url(self.urls[1][1])
+        self.engine.insert_data_from_url(self.urls["species"])
         
         # Main table
-        self.engine.auto_create_table(self.urls[0][0], url=self.urls[0][1], 
+        self.engine.auto_create_table(main, url=self.urls["main"], 
                                  cleanup=Cleanup(correct_invalid_value, 
                                                  {"nulls":('', 0, '0')} ),
                                  pk="ID")
-        self.engine.insert_data_from_url(self.urls[0][1])
+        self.engine.insert_data_from_url(self.urls["main"])
         
         return self.engine

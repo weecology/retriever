@@ -16,7 +16,7 @@ class main(EcologicalArchives):
         EcologicalArchives.__init__(self, kwargs)
         self.name = "Mammal Life History Database (Ecological Archives 2003)"
         self.shortname = "MammalLH"
-        self.urls = [("species", "http://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt")]
+        self.urls = {"species": "http://www.esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"}
 
 
 class EAErnest2003Test(DbTkTest):

@@ -18,10 +18,11 @@ class main(DbTk):
         self.name = "USGS North American Breeding Bird Survey"
         self.shortname = "BBS"
         self.ref = "http://www.pwrc.usgs.gov/BBS/"
-        self.urls = [("counts", "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/"),
-                     ("routes", "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CRoutes.exe"),
-                     ("weather", "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CWeather.exe"),
-                     ("region_codes", "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/RegionCodes.txt")]
+        self.urls = {"counts": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/",
+                     "routes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CRoutes.exe",
+                     "weather": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CWeather.exe",
+                     "region_codes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/RegionCodes.txt",
+                     "species": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/SpeciesList.txt"}
     def download(self, engine=None):
         try:
             DbTk.download(self, engine)
@@ -30,7 +31,7 @@ class main(DbTk):
             
             # Routes table
             if not os.path.isfile(engine.format_filename("routes_new.csv")):
-                engine.download_files_from_archive(self.urls[1][1],
+                engine.download_files_from_archive(self.urls["routes"],
                                                    ["routes.csv"])
                 read = open(engine.format_filename("routes.csv"), "rb")
                 write = open(engine.format_filename("routes_new.csv"), "wb")
@@ -53,7 +54,7 @@ class main(DbTk):
             
             # Weather table                
             if not os.path.isfile(engine.format_filename("weather_new.csv")):
-                engine.download_files_from_archive(self.urls[2][1], 
+                engine.download_files_from_archive(self.urls["weather"], 
                                                    ["weather.csv"])            
                 read = open(engine.format_filename("weather.csv"), "rb")
                 write = open(engine.format_filename("weather_new.csv"), "wb")
@@ -78,6 +79,23 @@ class main(DbTk):
             engine.insert_data_from_file(engine.format_filename("weather_new.csv"))
             
             
+            # Species table
+            table = Table()
+            table.tablename = "species"
+            table.pk = False
+            table.header_rows = 11
+            
+            table.columns=[("countrynum"            ,   ("int",)        ),
+                           ("regioncode"            ,   ("int",)        ),
+                           ("regionname"            ,   ("char",30)     )]
+            table.fixedwidth = [11, 11, 30]
+            
+            engine.table = table
+            engine.create_table()
+                                    
+            engine.insert_data_from_url(self.urls["species"])
+            
+            
             # Region_codes table
             table = Table()
             table.tablename = "region_codes"
@@ -100,7 +118,7 @@ class main(DbTk):
             engine.table = table
             engine.create_table()
                                     
-            engine.insert_data_from_url(self.urls[3][1])
+            engine.insert_data_from_url(self.urls["region_codes"])
                         
             
             # Counts table
@@ -154,7 +172,7 @@ class main(DbTk):
                         state, shortstate = state[0], state[1]
                         
                     print "Downloading and decompressing data from " + state + "..."
-                    engine.insert_data_from_archive(self.urls[0][1] + "C" + shortstate + ".exe", 
+                    engine.insert_data_from_archive(self.urls["counts"] + "C" + shortstate + ".exe", 
                                                     ["C" + shortstate + ".csv"])
                             
                 except:
