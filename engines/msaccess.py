@@ -39,8 +39,7 @@ class engine(Engine):
         """Perform a bulk insert."""
         if (self.table.cleanup.function == no_cleanup and 
             self.table.header_rows < 2) and (self.table.delimiter in ["\t", ","]):        
-            print ("Inserting data from " + os.path.basename(filename) 
-                   + " . . .")
+            print ("Inserting data from " + os.path.basename(filename) + "...")
             
             if self.table.delimiter == "\t":
                 fmt = "TabDelimited"
@@ -56,7 +55,7 @@ class engine(Engine):
             if self.table.pk and not self.table.hasindex:
                 newfilename = '.'.join(filename.split(".")[0:-1]) + "_new." + filename.split(".")[-1]
                 if not os.path.isfile(newfilename):
-                    print "Adding index to " + os.path.abspath(newfilename) + " . . ."
+                    print "Adding index to " + os.path.abspath(newfilename) + "..."
                     read = open(filename, "rb")
                     write = open(newfilename, "wb")            
                     id = self.table.record_id
