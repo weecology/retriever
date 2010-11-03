@@ -26,7 +26,7 @@ class main(DbTk):
         
         # Plots table
         table = Table()
-        table.tablename = self.urls["plots"]
+        table.tablename = "plots"
         table.hasindex = True
         table.delimiter = ","
         table.header_rows = 0
@@ -45,7 +45,7 @@ class main(DbTk):
         self.engine.insert_data_from_url(self.urls["species"])
         
         # Main table
-        self.engine.auto_create_table(main, url=self.urls["main"], 
+        self.engine.auto_create_table("main", url=self.urls["main"], 
                                  cleanup=Cleanup(correct_invalid_value, 
                                                  {"nulls":('', 0, '0')} ),
                                  pk="ID")
