@@ -18,7 +18,7 @@ class main(DbTk):
         self.name = "Forest Inventory and Analysis"
         self.shortname = "FIA"
         self.ref = "http://fia.fs.fed.us/"
-        self.urls = [("", "http://199.128.173.17/fiadb4-downloads/")]
+        self.urls = {"main": "http://199.128.173.17/fiadb4-downloads/"}
         self.addendum = """This dataset requires downloading many large files - please be patient."""
     def download(self, engine=None):
         DbTk.download(self, engine)
@@ -41,7 +41,7 @@ class main(DbTk):
         
         for state in stateslist:
             for table in ["SURVEY", "PLOT", "COND", "SUBPLOT", "SUBP_COND", "TREE", "SEEDLING"]:
-                engine.download_files_from_archive(self.urls[0][1] + state[0] + "_" + table + ".ZIP", 
+                engine.download_files_from_archive(self.urls["main"] + state[0] + "_" + table + ".ZIP", 
                                                    [state[0] + "_" + table + ".CSV"])
         
         return engine

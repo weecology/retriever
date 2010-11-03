@@ -15,9 +15,10 @@ class main(EcologicalArchives):
         EcologicalArchives.__init__(self, kwargs)
         self.name = "Vascular plant composition - McGlinn, et al., 2010."
         self.shortname = "McGlinn2010"
-        self.urls = [("pres", "http://esapubs.org/archive/ecol/E091/124/TGPP_pres.csv"),
-                     ("cover", "http://esapubs.org/archive/ecol/E091/124/TGPP_cover.csv"),
-                     ("richness", "http://esapubs.org/archive/ecol/E091/124/TGPP_rich.csv"),
-                     ("species", "http://esapubs.org/archive/ecol/E091/124/TGPP_specodes.csv"),
-                     ("environment", "http://esapubs.org/archive/ecol/E091/124/TGPP_env.csv"),
-                     ("climate", "http://esapubs.org/archive/ecol/E091/124/TGPP_clim.csv")]
+        self.ref = "http://esapubs.org/archive/ecol/E091/124/"
+        self.urls = {"pres": "http://esapubs.org/archive/ecol/E091/124/TGPP_pres.csv",
+                     "cover": "http://esapubs.org/archive/ecol/E091/124/TGPP_cover.csv",
+                     "richness": "http://esapubs.org/archive/ecol/E091/124/TGPP_rich.csv",
+                     "species": "http://esapubs.org/archive/ecol/E091/124/TGPP_specodes.csv",
+                     "environment": "http://esapubs.org/archive/ecol/E091/124/TGPP_env.csv",
+                     "climate": "http://esapubs.org/archive/ecol/E091/124/TGPP_clim.csv"}

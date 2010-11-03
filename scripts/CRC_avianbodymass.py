@@ -23,7 +23,7 @@ class main(DbTk):
         self.shortname = "AvianBodyMass"
         self.public = False
         self.ref = "http://www.crcpress.com/ecommerce_product/product_detail.jsf?isbn=1420064444"
-        self.urls = [("mass", "")]
+        self.urls = {"mass": ""}
     def download(self, engine=None):    
         DbTk.download(self, engine)
         

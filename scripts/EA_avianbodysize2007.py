@@ -16,7 +16,7 @@ class main(EcologicalArchives):
         EcologicalArchives.__init__(self, kwargs)
         self.name = "Avian Body Size (Ecological Archives 2007)"
         self.shortname = "AvianBodySize"
-        self.urls = [("species", "http://esapubs.org/archive/ecol/E088/096/avian_ssd_jan07.txt")]
+        self.urls = {"species": "http://esapubs.org/archive/ecol/E088/096/avian_ssd_jan07.txt"}
 
 
 class EAAvianBodySize2007Test(DbTkTest):
