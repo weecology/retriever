@@ -59,7 +59,9 @@ class Frame(wx.Frame):
         self.dialog = None
         self.lists = lists
         self.engine = engine
-        self.SetIcon(globe_icon.GetIcon())      
+        self.SetIcon(globe_icon.GetIcon())
+        
+        self.CreateStatusBar()        
         
         big_font = self.GetFont()
         big_font.SetPointSize(int(big_font.GetPointSize() * 1.2))
@@ -103,7 +105,7 @@ to begin your download. Download progress will be shown here.</p>""")
         self.splitter.SetMinimumPaneSize(200)
         self.splitter.SplitVertically(self.cat_list, self.script_list, 200)
         
-        self.vsizer.Add(self.splitter, 2, wx.EXPAND | wx.ALL, 2)
+        self.vsizer.Add(self.splitter, 3, wx.EXPAND | wx.ALL, 2)
         self.vsizer.Add(self.progress_window, 1, 
                         wx.EXPAND | wx. RIGHT | wx.BOTTOM | wx.LEFT, 2)
         

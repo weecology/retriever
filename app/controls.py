@@ -159,6 +159,7 @@ class ProgressWindow(HtmlWindow):
         if self.worker:
             script = self.worker.scripts[0]
             if self.worker.finished() and len(self.worker.output) == 0:
+                self.Parent.SetStatusText("")
                 self.worker = None
                 self.Parent.script_list.RefreshMe(None)
                 self.timer.Start(self.timer.interval)
@@ -190,8 +191,7 @@ class ProgressWindow(HtmlWindow):
         if '\b' in s:
             s = s.replace('\b', '')
             if not self.dialog:
-                self.html += "\n<p><font color='green'>" + s.split(':')[0] + "</font></p>"
-                self.refresh_html()
+                self.Parent.SetStatusText(s.split(':')[0] + "...")
                 wx.GetApp().Yield()
                 self.dialog = wx.ProgressDialog("Download Progress", 
                                                 "Downloading datasets . . .\n"
@@ -227,10 +227,12 @@ class ProgressWindow(HtmlWindow):
                 self.dialog.Update(1000, "")
                 self.dialog.Destroy()
                 self.dialog = None
-            if "inserting" in s.lower() and not "<font" in s.lower():
-                s = "<font color='green'>" + s + "</font>"
-            self.html += "\n<p>" + s + "</p>"
-            self.refresh_html()
+                
+            if "..." in s:
+                self.Parent.SetStatusText(s)
+            else:
+                self.html += "\n<p>" + s + "</p>"
+                self.refresh_html()
 
         wx.GetApp().Yield()
         return True
