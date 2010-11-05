@@ -17,8 +17,7 @@ warnings.filterwarnings("ignore")
 
 TEST_ENGINES = dict()
 
-    
-            
+
 class DbTkTest(unittest.TestCase):    
     def strvalue(self, value, col_num):
         """Returns a string representing the cleaned value from a SELECT 
