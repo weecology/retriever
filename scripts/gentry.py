@@ -19,7 +19,8 @@ class main(DbTk):
         DbTk.__init__(self, kwargs)
         self.name = "Alwyn H. Gentry Forest Transact Dataset"
         self.shortname = "Gentry"
-        self.urls = {"stems": "http://www.mobot.org/mobot/gentry/123/all_Excel.zip"}
+        self.urls = {"stems": "http://www.mobot.org/mobot/gentry/123/all_Excel.zip",
+                     "sites": "http://www.ecologicaldata.org/sites/default/files/gentry_sites_data.txt"}
         self.ref = "http://www.wlbcenter.org/gentry_data.htm"
         self.addendum = """Researchers who make use of the data in publications are requested to acknowledge Alwyn H. Gentry, the Missouri Botanical Garden, and collectors who assisted Gentry or contributed data for specific sites. It is also requested that a reprint of any publication making use of the Gentry Forest Transect Data be sent to:
 
@@ -30,6 +31,9 @@ St. Louis, MO 63166-0299
 U.S.A. """
     def download(self, engine=None):
         DbTk.download(self, engine)
+        
+        self.engine.auto_create_table("sites", url=self.urls["sites"])
+        self.engine.insert_data_from_url(self.urls["sites"])
               
         self.engine.download_file(self.urls["stems"], "all_Excel.zip")
         local_zip = zipfile.ZipFile(self.engine.format_filename("all_Excel.zip"))        
