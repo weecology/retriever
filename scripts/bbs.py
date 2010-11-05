@@ -213,7 +213,8 @@ class main(DbTk):
                         shortstate = state[0:7]
                     else:        
                         state, shortstate = state[0], state[1]
-                        
+                    
+                    print "Inserting data from " + state + "..."
                     engine.insert_data_from_archive(self.urls["counts"] + "C" + shortstate + ".exe", 
                                                     ["C" + shortstate + ".csv"])
                             
