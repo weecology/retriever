@@ -80,7 +80,6 @@ class main(DbTk):
             engine.insert_data_from_file(engine.format_filename("weather_new.csv"))
             
             
-            
             # Species table
             table = Table()
             table.tablename = "species"
@@ -90,7 +89,9 @@ class main(DbTk):
             table.columns=[("species_id"            ,   ("pk-auto",)        ),
                            ("AOU"                   ,   ("int",)            ),
                            ("genus"                 ,   ("char",30)         ),
-                           ("species"               ,   ("char",30)         )]
+                           ("species"               ,   ("char",30)         ),
+                           ("subspecies"            ,   ("char",30)         ),
+                           ("id_to_species"         ,   ("bool",)           )]
             
             engine.table = table
             engine.create_table()
@@ -105,11 +106,31 @@ class main(DbTk):
                 if line and len(line) > 115:
                     latin_name = line[115:].split()
                     if len(latin_name) < 2:
-                        latin_name.append("")
+                        # If there's no species given, add "None" value
+                        latin_name.append("None")
+                    if '.' in latin_name[1]:
+                        # If species is abbreviated, get it from previous row
+                        latin_name[1] = rows[-1].split(',')[2]
+                    subspecies = ' '.join(latin_name[2:]) if len(latin_name) > 2 else "None"                    
+                    id_to_species = "1" if latin_name[1] != "None" else "0"
+                    if latin_name[1] == "sp" or subspecies == "sp":
+                        subspecies = ""
+                        latin_name[1] = "None"
+                        id_to_species = "0"
+                    if ("X" in latin_name[1] or subspecies.lower() == "X" 
+                        or "/" in subspecies or "or" in subspecies.lower() 
+                        or "x" in subspecies.lower()):
+                        # Hybrid species
+                        latin_name[1] = "None"
+                        subspecies = "None"
+                        id_to_species = "0"
+                    
                     rows.append(','.join([
                                           line.split()[1], 
                                           latin_name[0],
-                                          latin_name[1]
+                                          latin_name[1],
+                                          subspecies,
+                                          id_to_species
                                           ]))
                     
             engine.table.source = rows

@@ -518,7 +518,8 @@ class Engine():
         else:
             column = -1
          
-        for value in self.extract_values(line):
+        for value in [(value if value != "None" else "")
+                      for value in self.extract_values(line)]:
             column += 1
             thiscolumn = self.table.columns[column][1][0]
             # If data type is "skip" ignore the value
