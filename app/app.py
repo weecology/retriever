@@ -146,6 +146,8 @@ to begin your download. Download progress will be shown here.</p>""")
             except:
                 pass
                 
+            self.progress_window.downloaded = set()
+            self.progress_window.errors = set()
             self.script_list.RefreshMe(None)
             
     def Quit(self, evt):
