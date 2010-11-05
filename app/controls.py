@@ -191,7 +191,6 @@ class ProgressWindow(HtmlWindow):
         if '\b' in s:
             s = s.replace('\b', '')
             if not self.dialog:
-                self.Parent.SetStatusText(s.split(':')[0] + "...")
                 wx.GetApp().Yield()
                 self.dialog = wx.ProgressDialog("Download Progress", 
                                                 "Downloading datasets . . .\n"
