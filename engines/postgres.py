@@ -50,9 +50,7 @@ class engine(Engine):
     def insert_data_from_file(self, filename):
         """Use PostgreSQL's "COPY FROM" statement to perform a bulk insert."""
         if ([self.table.cleanup.function, self.table.delimiter, 
-             self.table.header_rows] == [no_cleanup, ",", 1]):        
-            print ("Inserting data from " + os.path.basename(filename) + "...")
-                
+             self.table.header_rows] == [no_cleanup, ",", 1]):
             columns = self.get_insert_columns()    
             filename = os.path.abspath(filename)
             statement = """
