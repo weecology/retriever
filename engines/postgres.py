@@ -11,7 +11,7 @@ class engine(Engine):
                  "double precision",
                  "decimal", 
                  "varchar", 
-                 "bit"]    
+                 "bit"]
     required_opts = [["username", 
                       "Enter your PostgreSQL username: ", 
                       "postgres"],
@@ -76,19 +76,20 @@ CSV HEADER"""
         return statement
             
     def table_exists(self, dbname, tablename):
-        self.get_connection()
-        cursor = self.connection.cursor()
+        connection = self.get_connection()
+        cursor = connection.cursor()
         try:
             cursor.execute("SELECT * FROM " + dbname + "." + tablename + " LIMIT 1")
             return len(cursor.fetchall()) > 0
         except:
             return False
+        connection.close()
             
     def get_connection(self):
         """Gets the db connection."""
         import psycopg2 as dbapi    
         self.get_input()            
-        self.connection = dbapi.connect(host = self.opts["hostname"],
+        return dbapi.connect(host = self.opts["hostname"],
                                         port = int(self.opts["port"]),
                                         user = self.opts["username"],
                                         password = self.opts["password"],
@@ -96,5 +97,5 @@ CSV HEADER"""
                                         
     def get_cursor(self):
         """Gets the db cursor."""
-        self.get_connection()
+        self.connection = self.get_connection()
         self.cursor = self.connection.cursor()
