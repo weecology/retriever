@@ -28,21 +28,22 @@ class engine(Engine):
         return self.db.dbname + "_" + self.table.tablename
         
     def table_exists(self, dbname, tablename):
-        self.get_connection()
-        cursor = self.connection.cursor()
+        connection = self.get_connection()
+        cursor = connection.cursor()
         try:
             cursor.execute("SELECT * FROM " + dbname + "_" + tablename + " LIMIT 1")
             return len(cursor.fetchall()) > 0
         except:
             return False
+        connection.close()
         
     def get_connection(self):
         """Gets the db connection."""
         import sqlite3 as dbapi
         self.get_input()
-        self.connection = dbapi.connect(self.opts["file"])
+        return dbapi.connect(self.opts["file"])
         
     def get_cursor(self):
         """Gets the db cursor."""
-        self.get_connection()
+        self.connection = self.get_connection()
         self.cursor = self.connection.cursor()

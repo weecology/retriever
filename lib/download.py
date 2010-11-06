@@ -103,5 +103,7 @@ class DownloadThread(Thread):
                 s = "0" + s
             
             print "<i>Elapsed time: %02d:%02d:%s</i>" % (h, m, s)
+            
+            engine.connection.close()
         
         start_download()
