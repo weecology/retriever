@@ -28,21 +28,25 @@ class engine(Engine):
     def create_db_statement(self):
         """In PostgreSQL, the equivalent of a SQL database is a schema."""
         return Engine.create_db_statement(self).replace("DATABASE", "SCHEMA")
+        
     def create_db(self):
         try:
             Engine.create_db(self)
         except:
             self.connection.rollback()
             pass
+            
     def create_table(self):
         """PostgreSQL needs to commit operations individually."""
         Engine.create_table(self)
         self.connection.commit()
+        
     def drop_statement(self, objecttype, objectname):
         """In PostgreSQL, the equivalent of a SQL database is a schema."""
         statement = Engine.drop_statement(self, objecttype, objectname) 
         statement += " CASCADE;"
         return statement.replace(" DATABASE ", " SCHEMA ")    
+        
     def insert_data_from_file(self, filename):
         """Use PostgreSQL's "COPY FROM" statement to perform a bulk insert."""
         if ([self.table.cleanup.function, self.table.delimiter, 
@@ -63,7 +67,23 @@ CSV HEADER"""
                 self.connection.rollback()
                 return Engine.insert_data_from_file(self, filename)
         else:
-            return Engine.insert_data_from_file(self, filename)                
+            return Engine.insert_data_from_file(self, filename)
+            
+    def insert_statement(self, values):
+        statement = Engine.insert_statement(self, values)
+        if isinstance(statement, basestring):
+            statement = statement.decode("utf-8", "ignore")
+        return statement
+            
+    def table_exists(self, dbname, tablename):
+        self.get_connection()
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute("SELECT * FROM " + dbname + "." + tablename + " LIMIT 1")
+            return len(cursor.fetchall()) > 0
+        except:
+            return False
+            
     def get_connection(self):
         """Gets the db connection."""
         import psycopg2 as dbapi    
@@ -73,6 +93,7 @@ CSV HEADER"""
                                         user = self.opts["username"],
                                         password = self.opts["password"],
                                         database = self.opts["database"])
+                                        
     def get_cursor(self):
         """Gets the db cursor."""
         self.get_connection()

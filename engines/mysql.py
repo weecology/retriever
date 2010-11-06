@@ -27,9 +27,11 @@ class engine(Engine):
                       "Enter your MySQL port or press Enter " +
                       "for the default (3306): ", 
                       3306]]
+                      
     def create_db_statement(self):
         createstatement = "CREATE DATABASE IF NOT EXISTS " + self.db.dbname
         return createstatement
+        
     def insert_data_from_file(self, filename):
         """Calls MySQL "LOAD DATA LOCAL INFILE" statement to perform a bulk 
         insert."""
@@ -48,6 +50,7 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
             self.cursor.execute(statement)
         else:
             return Engine.insert_data_from_file(self, filename)
+        
     def table_exists(self, dbname, tablename):
         self.get_connection()
         cursor = self.connection.cursor()
@@ -56,6 +59,7 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
             return len(cursor.fetchall()) > 0
         except:
             return False
+        
     def get_connection(self):
         """Gets the db connection."""
         import MySQLdb as dbapi
@@ -64,6 +68,7 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
                                         port = int(self.opts["port"]),
                                         user = self.opts["username"],
                                         passwd = self.opts["password"])
+        
     def get_cursor(self):
         """Gets the db cursor."""
         self.get_connection()
