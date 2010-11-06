@@ -82,7 +82,7 @@ class Engine():
         in engine.table.source."""
         lines = self.table.source
         real_lines = [line for line in lines 
-                      if line.replace('\n', '').replace('\r', '').replace(' ', '').replace('\t', '')]
+                      if line.strip('\n\r\t ')]
         total = self.table.record_id + len(real_lines)
         for line in real_lines:
             line = line.strip()
@@ -96,7 +96,7 @@ class Engine():
                                                          self.table.cleanup.args)) 
                                for value in linevalues]
                 insertstatement = self.insert_statement(cleanvalues)
-                if self.table.record_id % 10 == 0:
+                if self.table.record_id % 10 == 0 or self.table.record_id == total:
                     prompt = "Inserting rows to " + self.tablename() + ": "
                     prompt += str(self.table.record_id) + " / " + str(total)
                     sys.stdout.write(prompt + "\b" * len(prompt))
@@ -173,11 +173,15 @@ class Engine():
             while "__" in this_column:
                 this_column = this_column.replace("__", "_")
             this_column = this_column.lstrip("0123456789_").rstrip("_")
-                
-            if this_column.lower() == "order":
-                this_column = "sporder"
-            if this_column.lower() == "references":
-                this_column = "refs"
+            
+            not_allowed = [
+                           ("order","sporder"),
+                           ("references", "refs"),
+                           ("long", "lon"),
+                           ]
+            for combo in not_allowed:
+                if this_column.lower() == combo[0]:
+                    this_column = combo[1]
             
             if this_column:
                 columns.append([this_column, None])
@@ -393,17 +397,24 @@ class Engine():
     def format_insert_value(self, value):
         """Formats a value for an insert statement, for example by surrounding
         it in single quotes."""
-        if isinstance(value, basestring):
-            value = value.decode("utf-8", "ignore")
         strvalue = str(value).strip()
+        # Remove any quotes already surrounding the string
         if strvalue.lower() == "null":
             return "null"
         elif value:
-            quotes = ["'", '"']            
+            quotes = ["'", '"']
             if strvalue[0] == strvalue[-1] and strvalue[0] in quotes:
                 strvalue = strvalue.strip(''.join(quotes)) 
         else:
             return "null"
+        # If a value converts to an integer, return it in integer form
+        try:
+            strvalue = str(float(strvalue))
+            decimal = strvalue.split('.')[1]
+            if all([char == '0' for char in decimal]):
+                strvalue = strvalue.split('.')[0]
+        except ValueError:
+            pass
         strvalue = strvalue.replace("'", "''")
         return "'" + strvalue + "'"
         
