@@ -9,20 +9,22 @@ from decimal import Decimal
 from dbtk.lib.templates import DbTk
 from dbtk.lib.models import Table, Cleanup, no_cleanup
 
-VERSION = '0.3.2'
+VERSION = '0.4'
 
 
 class main(DbTk):
     def __init__(self, **kwargs):
-        DbTk.__init__(self, kwargs)
+        DbTk.__init__(self, **kwargs)
         self.name = "USGS North American Breeding Bird Survey"
         self.shortname = "BBS"
         self.ref = "http://www.pwrc.usgs.gov/BBS/"
-        self.urls = {"counts": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/",
+        self.urls = {
+                     "counts": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/",
                      "routes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CRoutes.exe",
                      "weather": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CWeather.exe",
                      "region_codes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/RegionCodes.txt",
-                     "species": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/SpeciesList.txt"}
+                     "species": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/SpeciesList.txt"
+                     }
                      
     def download(self, engine=None):
         try:
@@ -47,7 +49,7 @@ class main(DbTk):
                 write.close()
                 read.close()
                 
-            engine.auto_create_table("routes", filename="routes_new.csv",
+            engine.auto_create_table(Table("routes"), filename="routes_new.csv",
                                      cleanup=Cleanup())
                 
             engine.insert_data_from_file(engine.format_filename("routes_new.csv"))
@@ -75,16 +77,13 @@ class main(DbTk):
                 write.close()
                 read.close()
             
-            engine.auto_create_table("weather", filename="weather_new.csv",
+            engine.auto_create_table(Table("weather"), filename="weather_new.csv",
                                      pk="RouteDataId", cleanup=Cleanup())            
             engine.insert_data_from_file(engine.format_filename("weather_new.csv"))
             
             
             # Species table
-            table = Table()
-            table.tablename = "species"
-            table.pk = False
-            table.delimiter = ','
+            table = Table("species", pk=False, delimiter=',')
             
             table.columns=[("species_id"            ,   ("pk-auto",)        ),
                            ("AOU"                   ,   ("int",)            ),
@@ -140,10 +139,8 @@ class main(DbTk):
             
             
             # Region_codes table
-            table = Table()
-            table.tablename = "region_codes"
-            table.pk = False
-            table.header_rows = 11
+            table = Table("region_codes", pk=False, header_rows=11,
+                          fixed_width=[11, 11, 30])
             def regioncodes_cleanup(value, engine):
                 replace = {chr(225):"a", chr(233):"e", chr(237):"i", chr(243):"o"}
                 newvalue = str(value)
@@ -156,7 +153,6 @@ class main(DbTk):
             table.columns=[("countrynum"            ,   ("int",)        ),
                            ("regioncode"            ,   ("int",)        ),
                            ("regionname"            ,   ("char",30)     )]
-            table.fixedwidth = [11, 11, 30]
             
             engine.table = table
             engine.create_table()
@@ -165,9 +161,7 @@ class main(DbTk):
                         
             
             # Counts table
-            table = Table()
-            table.tablename = "counts"
-            table.delimiter = ","
+            table = Table("counts", delimiter=',')
             
             table.columns=[("record_id"             ,   ("pk-auto",)    ),
                            ("countrynum"            ,   ("int",)        ),

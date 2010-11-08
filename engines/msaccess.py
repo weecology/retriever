@@ -42,7 +42,7 @@ class engine(Engine):
         
     def insert_data_from_file(self, filename):
         """Perform a bulk insert."""
-        if (self.table.cleanup.function == no_cleanup and 
+        if (self.table.cleanup.function == no_cleanup and not self.table.fixed_width and
             self.table.header_rows < 2) and (self.table.delimiter in ["\t", ","]):        
             print ("Inserting data from " + os.path.basename(filename) + "...")
             
