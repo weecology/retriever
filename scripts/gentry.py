@@ -16,7 +16,7 @@ VERSION = '0.3.2'
 
 class main(DbTk):
     def __init__(self, **kwargs):
-        DbTk.__init__(self, kwargs)
+        DbTk.__init__(self, **kwargs)
         self.name = "Alwyn H. Gentry Forest Transact Dataset"
         self.shortname = "Gentry"
         self.urls = {"stems": "http://www.mobot.org/mobot/gentry/123/all_Excel.zip",
@@ -32,7 +32,7 @@ U.S.A. """
     def download(self, engine=None):
         DbTk.download(self, engine)
         
-        self.engine.auto_create_table("sites", url=self.urls["sites"])
+        self.engine.auto_create_table(Table("sites"), url=self.urls["sites"])
         self.engine.insert_data_from_url(self.urls["sites"])
               
         self.engine.download_file(self.urls["stems"], "all_Excel.zip")
@@ -100,8 +100,7 @@ U.S.A. """
                     sys.stdout.write(msg + "\b" * len(msg))
         
         # Create species table
-        table = Table()
-        table.tablename = "species"
+        table = Table("species", delimiter="::")
         table.columns=[("species_id"            ,   ("pk-auto",)    ),
                        ("family"                ,   ("char", 50)    ),
                        ("genus"                 ,   ("char", 50)    ),
@@ -111,20 +110,17 @@ U.S.A. """
 
         table.source = ['::'.join([group[i] for i in range(5)]) 
                         for group in unique_tax]
-        table.delimiter = '::'
         self.engine.table = table
         self.engine.create_table()
         self.engine.add_to_table()        
         
         # Create stems table
-        table = Table()
-        table.tablename = "stems"
+        table = Table("stems", delimiter="::", contains_pk=False)
         table.columns=[("stem_id"               ,   ("pk-auto",)    ),
                        ("line"                  ,   ("int",)        ),
                        ("species_id"            ,   ("int",)        ),
                        ("liana"                 ,   ("char", 10)    ),
                        ("stem"                  ,   ("double",)     )]
-        table.hasindex = False
         stems = []
         for line in lines:
             species_info = [str(line[0]).split('.')[0], 
@@ -137,7 +133,6 @@ U.S.A. """
                 stems.append([str(value) for value in stem])
             
         table.source = ['::'.join(stem) for stem in stems]
-        table.delimiter = '::'
         self.engine.table = table
         self.engine.create_table()
         self.engine.add_to_table()

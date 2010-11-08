@@ -35,7 +35,7 @@ class engine(Engine):
     def insert_data_from_file(self, filename):
         """Calls MySQL "LOAD DATA LOCAL INFILE" statement to perform a bulk 
         insert."""
-        if self.table.cleanup.function == no_cleanup:
+        if self.table.cleanup.function == no_cleanup and not self.table.fixed_width:
             print ("Inserting data from " + os.path.basename(filename) + "...")
             
             columns = self.get_insert_columns()            

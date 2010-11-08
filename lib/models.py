@@ -25,10 +25,11 @@ def file_exists(path):
 def correct_invalid_value(value, args):
     """This cleanup function replaces null indicators with None."""
     try:
+        if value in [item for item in args["nulls"]]:
+            return None
         if float(value) in [float(item) for item in args["nulls"]]:            
             return None
-        else:
-            return value
+        return value
     except ValueError:
         return value
 
@@ -36,9 +37,9 @@ def correct_invalid_value(value, args):
 class Cleanup:
     """This class represents a custom cleanup function and a dictionary of 
     arguments to be passed to that function."""
-    def __init__(self, function=no_cleanup, args=None):
+    def __init__(self, function=no_cleanup, **kwargs):
         self.function = function
-        self.args = args    
+        self.args = kwargs
 
 
 class Database:
@@ -49,16 +50,19 @@ class Database:
     
 class Table:
     """Information about a database table."""
-    tablename = ""
-    pk = True
-    hasindex = False
-    record_id = 0
-    delimiter = "\t"
-    columns = []
-    header_rows = 1
-    fixedwidth = False
-    def __init__(self):        
-        self.cleanup = Cleanup(no_cleanup, None)        
+    def __init__(self, name, **kwargs):
+        self.name = name
+        self.pk = True
+        self.contains_pk = False
+        self.delimiter = '\t'
+        self.header_rows = 1
+        self.column_names_row = 1
+        self.fixed_width = False
+        self.cleanup = Cleanup()
+        self.record_id = 0
+        self.columns = []
+        for key, item in kwargs.items():
+            setattr(self, key, item[0] if isinstance(item, tuple) else item)
 
     
 class Engine():
@@ -104,20 +108,14 @@ class Engine():
         
         self.connection.commit()
         
-    def auto_create_table(self, tablename, url=None, filename=None,
-                          cleanup=Cleanup(correct_invalid_value, 
-                                          {"nulls":(-999,)} 
-                                          ),
-                          pk=None):
+    def auto_create_table(self, table, url=None, filename=None, pk=None):
         """Creates a table automatically by analyzing a data source and 
         predicting column names, data types, delimiter, etc."""
         if url and not filename:
             filename = url.split('/')[-1]
         self.create_raw_data_dir()
         need_to_delete = False
-        self.table = Table()
-        self.table.tablename = tablename
-        self.table.cleanup = cleanup
+        self.table = table
         
         if url and not (self.use_local and 
                 file_exists(self.format_filename(filename))):
@@ -127,14 +125,19 @@ class Engine():
             if not self.keep_raw_data:
                 need_to_delete = True
                 
-        source = open(self.format_filename(filename), "rb")
+        source = self.skip_rows(self.table.column_names_row - 1, 
+                                open(self.format_filename(filename), "rb"))
         header = source.readline()
+        source.close()
+        
+        source = self.skip_rows(self.table.header_rows, 
+                                open(self.format_filename(filename), "rb"))
         
         if pk is None:
             self.table.columns = [("record_id", ("pk-auto",))]
         else:
             self.table.columns = []
-            self.table.hasindex = True
+            self.table.contains_pk = True
         
         columns, column_values = self.auto_get_columns(header)
         
@@ -149,16 +152,20 @@ class Engine():
                 pass
                 
     def auto_get_columns(self, header):
-        """Finds the delimiter and column names from the header row."""
-        # Determine the delimiter by finding out which of a set of common
-        # delimiters occurs most in the header line
-        self.table.delimiter = "\t"
-        for other_delimiter in [",", ";"]:
-            if header.count(other_delimiter) > header.count(self.table.delimiter):
-                self.table.delimiter = other_delimiter
+        """Finds the delimiter and column names from the header row."""        
+        if self.table.fixed_width:
+            column_names = self.extract_values(header)
+        else:
+            # Determine the delimiter by finding out which of a set of common
+            # delimiters occurs most in the header line
+            self.table.delimiter = "\t"
+            for other_delimiter in [",", ";"]:
+                if header.count(other_delimiter) > header.count(self.table.delimiter):
+                    self.table.delimiter = other_delimiter
+            
+            # Get column names from header row
+            column_names = header.split(self.table.delimiter)
         
-        # Get column names from header row
-        column_names = header.split(self.table.delimiter)
         columns = []
         column_values = dict()
         
@@ -186,6 +193,7 @@ class Engine():
             if this_column:
                 columns.append([this_column, None])
                 column_values[this_column] = []
+
         return columns, column_values
         
     def auto_get_datatypes(self, pk, source, columns, column_values):
@@ -285,7 +293,7 @@ class Engine():
     def create_table(self):
         """Creates a new database table based on settings supplied in Table 
         object engine.table."""
-        print "Creating table " + self.table.tablename + "..."
+        print "Creating table " + self.table.name + "..."
         createstatement = self.create_table_statement()
         self.cursor.execute(createstatement)
         
@@ -364,10 +372,10 @@ class Engine():
     def extract_values(self, line):
         """Given a line of data, this function returns a list of the individual
         data values."""
-        if self.table.fixedwidth:
+        if self.table.fixed_width:
             pos = 0
             values = []
-            for width in self.table.fixedwidth:
+            for width in self.table.fixed_width:
                 values.append(line[pos:pos+width].strip())
                 pos += width
             return values
@@ -410,11 +418,13 @@ class Engine():
         # If a value converts to an integer, return it in integer form
         try:
             strvalue = str(float(strvalue))
-            decimal = strvalue.split('.')[1]
-            if all([char == '0' for char in decimal]):
-                strvalue = strvalue.split('.')[0]
+            if '.' in strvalue:
+                decimal = strvalue.split('.')[1]
+                if all([char == '0' for char in decimal]):
+                    strvalue = strvalue.split('.')[0]
         except ValueError:
             pass
+            
         strvalue = strvalue.replace("'", "''")
         return "'" + strvalue + "'"
         
@@ -437,7 +447,7 @@ class Engine():
         for item in self.table.columns:
             thistype = item[1][0]
             if ((thistype != "skip") and (thistype !="combine") and 
-                (self.table.hasindex == True or thistype[0:3] != "pk-")):
+                (self.table.contains_pk == True or thistype[0:3] != "pk-")):
                 columns += item[0] + ", "
         columns = columns.rstrip(', ')
         if join:
@@ -520,11 +530,11 @@ class Engine():
         
     def tablename(self):
         """Returns the full tablename in the format db.table."""        
-        return self.db.dbname + "." + self.table.tablename
+        return self.db.dbname + "." + self.table.name
         
     def values_from_line(self, line):
         linevalues = []
-        if (self.table.pk and self.table.hasindex == False):
+        if (self.table.pk and self.table.contains_pk == False):
             column = 0
         else:
             column = -1

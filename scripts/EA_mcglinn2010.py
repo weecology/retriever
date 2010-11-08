@@ -4,15 +4,15 @@ prairie. Ecology 91:1872.
 
 """
 
-from dbtk.lib.templates import EcologicalArchives
+from dbtk.lib.templates import BasicTextTemplate
 from dbtk.lib.models import Table, Cleanup, correct_invalid_value
 
-VERSION = '0.3.2'
+VERSION = '0.4'
 
 
-class main(EcologicalArchives):
+class main(BasicTextTemplate):
     def __init__(self, **kwargs):
-        EcologicalArchives.__init__(self, kwargs)
+        BasicTextTemplate.__init__(self, **kwargs)
         self.name = "Vascular plant composition - McGlinn, et al., 2010."
         self.shortname = "McGlinn2010"
         self.ref = "http://esapubs.org/archive/ecol/E091/124/"

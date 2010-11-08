@@ -14,7 +14,7 @@ VERSION = '0.3.2'
 
 class main(DbTk):
     def __init__(self, **kwargs):
-        DbTk.__init__(self, kwargs)
+        DbTk.__init__(self, **kwargs)
         self.name = "Forest Inventory and Analysis"
         self.shortname = "FIA"
         self.ref = "http://fia.fs.fed.us/"
