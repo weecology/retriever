@@ -69,8 +69,9 @@ class BasicTextTemplate(DbTk):
                                                               nulls=[-999]))
         
         for key, value in self.urls.items():
-                self.engine.auto_create_table(self.tables[key], url=value)
-                self.engine.insert_data_from_url(value)
+            self.engine.auto_create_table(self.tables[key], url=value)
+            self.engine.insert_data_from_url(value)
+            self.tables[key].record_id = 0
         return self.engine
         
     def reference_url(self):
