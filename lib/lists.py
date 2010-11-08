@@ -2,6 +2,7 @@
 
 import os
 from operator import attrgetter
+from dbtk.lib.models import *
 from dbtk.lib.templates import *
 
 
