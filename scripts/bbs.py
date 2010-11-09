@@ -49,8 +49,8 @@ class main(DbTk):
                 write.close()
                 read.close()
                 
-            engine.auto_create_table(Table("routes"), filename="routes_new.csv",
-                                     cleanup=Cleanup())
+            engine.auto_create_table(Table("routes", cleanup=Cleanup()), 
+                                     filename="routes_new.csv")
                 
             engine.insert_data_from_file(engine.format_filename("routes_new.csv"))
 
@@ -77,8 +77,8 @@ class main(DbTk):
                 write.close()
                 read.close()
             
-            engine.auto_create_table(Table("weather"), filename="weather_new.csv",
-                                     pk="RouteDataId", cleanup=Cleanup())            
+            engine.auto_create_table(Table("weather", pk="RouteDataId", cleanup=Cleanup()), 
+                                     filename="weather_new.csv")
             engine.insert_data_from_file(engine.format_filename("weather_new.csv"))
             
             
@@ -148,7 +148,7 @@ class main(DbTk):
                     if key in newvalue:
                         newvalue = newvalue.replace(key, replace[key])
                 return newvalue
-            table.cleanup = Cleanup(regioncodes_cleanup, None)
+            table.cleanup = Cleanup(regioncodes_cleanup)
             
             table.columns=[("countrynum"            ,   ("int",)        ),
                            ("regioncode"            ,   ("int",)        ),
