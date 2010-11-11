@@ -11,15 +11,18 @@ from dbtk.lib.tools import DbTkTest
 from dbtk.lib.models import Table
 from dbtk.lib.excel import Excel
 
-VERSION = '0.3'
+VERSION = '0.4'
 
 
 class main(DbTk):
-    name = "Alwyn H. Gentry Forest Transact Dataset"
-    shortname = "Gentry"
-    url = "http://www.mobot.org/mobot/gentry/123/all_Excel.zip"
-    ref = "http://www.wlbcenter.org/gentry_data.htm"
-    addendum = """Researchers who make use of the data in publications are requested to acknowledge Alwyn H. Gentry, the Missouri Botanical Garden, and collectors who assisted Gentry or contributed data for specific sites. It is also requested that a reprint of any publication making use of the Gentry Forest Transect Data be sent to:
+    def __init__(self, **kwargs):
+        DbTk.__init__(self, **kwargs)
+        self.name = "Alwyn H. Gentry Forest Transact Dataset"
+        self.shortname = "Gentry"
+        self.urls = {"stems": "http://www.mobot.org/mobot/gentry/123/all_Excel.zip",
+                     "sites": "http://www.ecologicaldata.org/sites/default/files/gentry_sites_data.txt"}
+        self.ref = "http://www.wlbcenter.org/gentry_data.htm"
+        self.addendum = """Researchers who make use of the data in publications are requested to acknowledge Alwyn H. Gentry, the Missouri Botanical Garden, and collectors who assisted Gentry or contributed data for specific sites. It is also requested that a reprint of any publication making use of the Gentry Forest Transect Data be sent to:
 
 Bruce E. Ponman
 Missouri Botanical Garden
@@ -28,12 +31,15 @@ St. Louis, MO 63166-0299
 U.S.A. """
     def download(self, engine=None):
         DbTk.download(self, engine)
+        
+        self.engine.auto_create_table(Table("sites"), url=self.urls["sites"])
+        self.engine.insert_data_from_url(self.urls["sites"])
               
-        self.engine.download_file(self.url, "all_Excel.zip")
+        self.engine.download_file(self.urls["stems"], "all_Excel.zip")
         local_zip = zipfile.ZipFile(self.engine.format_filename("all_Excel.zip"))        
         filelist = local_zip.namelist()
         local_zip.close()        
-        self.engine.download_files_from_archive(self.url, filelist)
+        self.engine.download_files_from_archive(self.urls["stems"], filelist)
         
         filelist = [os.path.basename(filename) for filename in filelist]
         
@@ -90,12 +96,11 @@ U.S.A. """
                 tax_count += 1
                 tax_dict[group[0:3]] = tax_count
                 if tax_count % 10 == 0:
-                    msg = "Generating taxonomic groups: " + str(tax_count)
+                    msg = "Generating taxonomic groups: " + str(tax_count) + " / 9819"
                     sys.stdout.write(msg + "\b" * len(msg))
         
         # Create species table
-        table = Table()
-        table.tablename = "species"
+        table = Table("species", delimiter="::")
         table.columns=[("species_id"            ,   ("pk-auto",)    ),
                        ("family"                ,   ("char", 50)    ),
                        ("genus"                 ,   ("char", 50)    ),
@@ -105,20 +110,17 @@ U.S.A. """
 
         table.source = ['::'.join([group[i] for i in range(5)]) 
                         for group in unique_tax]
-        table.delimiter = '::'
         self.engine.table = table
         self.engine.create_table()
         self.engine.add_to_table()        
         
         # Create stems table
-        table = Table()
-        table.tablename = "stems"
+        table = Table("stems", delimiter="::", contains_pk=False)
         table.columns=[("stem_id"               ,   ("pk-auto",)    ),
                        ("line"                  ,   ("int",)        ),
                        ("species_id"            ,   ("int",)        ),
                        ("liana"                 ,   ("char", 10)    ),
                        ("stem"                  ,   ("double",)     )]
-        table.hasindex = False
         stems = []
         for line in lines:
             species_info = [str(line[0]).split('.')[0], 
@@ -131,7 +133,6 @@ U.S.A. """
                 stems.append([str(value) for value in stem])
             
         table.source = ['::'.join(stem) for stem in stems]
-        table.delimiter = '::'
         self.engine.table = table
         self.engine.create_table()
         self.engine.add_to_table()

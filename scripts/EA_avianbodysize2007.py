@@ -5,17 +5,18 @@ Published: Ecological Archives, 2007
  
 """
 
-from dbtk.lib.templates import EcologicalArchives
+from dbtk.lib.templates import BasicTextTemplate
 from dbtk.lib.tools import DbTkTest
 
-VERSION = '0.3'
+VERSION = '0.4'
 
 
-class main(EcologicalArchives):
-    name = "Avian Body Size (Ecological Archives 2007)"
-    shortname = "AvianBodySize"
-    tablename = "species"
-    url = "http://esapubs.org/archive/ecol/E088/096/avian_ssd_jan07.txt"
+class main(BasicTextTemplate):
+    def __init__(self, **kwargs):
+        BasicTextTemplate.__init__(self, **kwargs)
+        self.name = "Avian Body Size (Ecological Archives 2007)"
+        self.shortname = "AvianBodySize"
+        self.urls = {"species": "http://esapubs.org/archive/ecol/E088/096/avian_ssd_jan07.txt"}
 
 
 class EAAvianBodySize2007Test(DbTkTest):

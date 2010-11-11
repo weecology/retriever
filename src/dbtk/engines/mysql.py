@@ -27,15 +27,16 @@ class engine(Engine):
                       "Enter your MySQL port or press Enter " +
                       "for the default (3306): ", 
                       3306]]
+                      
     def create_db_statement(self):
         createstatement = "CREATE DATABASE IF NOT EXISTS " + self.db.dbname
         return createstatement
+        
     def insert_data_from_file(self, filename):
         """Calls MySQL "LOAD DATA LOCAL INFILE" statement to perform a bulk 
         insert."""
-        if self.table.cleanup.function == no_cleanup:
-            print ("Inserting data from " + os.path.basename(filename) 
-                   + " . . .")
+        if self.table.cleanup.function == no_cleanup and not self.table.fixed_width:
+            print ("Inserting data from " + os.path.basename(filename) + "...")
             
             columns = self.get_insert_columns()            
             statement = """        
@@ -49,13 +50,27 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
             self.cursor.execute(statement)
         else:
             return Engine.insert_data_from_file(self, filename)
-    def get_cursor(self):
-        """Gets the db connection and cursor."""
+        
+    def table_exists(self, dbname, tablename):
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        try:
+            cursor.execute("SELECT * FROM " + dbname + "." + tablename + " LIMIT 1")
+            return len(cursor.fetchall()) > 0
+        except:
+            return False
+        connection.close()
+        
+    def get_connection(self):
+        """Gets the db connection."""
         import MySQLdb as dbapi
-        self.get_input()                
-        self.connection = dbapi.connect(host = self.opts["hostname"],
-                                        port = int(self.opts["port"]),
-                                        user = self.opts["username"],
-                                        passwd = self.opts["password"])     
-        self.cursor = self.connection.cursor()    
-
+        self.get_input()
+        return dbapi.connect(host = self.opts["hostname"],
+                             port = int(self.opts["port"]),
+                             user = self.opts["username"],
+                             passwd = self.opts["password"])
+        
+    def get_cursor(self):
+        """Gets the db cursor."""
+        self.connection = self.get_connection()
+        self.cursor = self.connection.cursor()

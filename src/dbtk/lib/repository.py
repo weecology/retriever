@@ -112,26 +112,28 @@ def check_for_updates():
         else:
             script_version = None
 
-        if not file_exists(os.path.join("scripts", script_name + ".py")):
-            # File doesn't exist: download it
-            print "DOESNT EXIST" + script_name
-            download_from_repository("scripts/" + script_name + ".py",
-                                     "scripts/" + script_name + ".py")
-        elif script_version:
-            # File exists: import and check version
-            file, pathname, desc = imp.find_module(script_name, ["scripts"])
-            need_to_download = False
-            try:
-                new_module = imp.load_module(script_name, file, pathname, desc)
-                need_to_download = more_recent(script_version, new_module.VERSION)
-            except:            
-                pass
-                
-            if need_to_download:
-                os.remove(os.path.join("scripts", script_name + ".py"))
+        # Only download if software version is at least script version
+        if not more_recent(script[1], VERSION):
+            if not file_exists(os.path.join("scripts", script_name + ".py")):
+                # File doesn't exist: download it
+                print "DOESNT EXIST" + script_name
                 download_from_repository("scripts/" + script_name + ".py",
                                          "scripts/" + script_name + ".py")
-    
+            elif script_version:
+                # File exists: import and check version
+                file, pathname, desc = imp.find_module(script_name, ["scripts"])
+                need_to_download = False
+                try:
+                    new_module = imp.load_module(script_name, file, pathname, desc)
+                    need_to_download = more_recent(script_version, new_module.VERSION)
+                except:            
+                    pass
+                    
+                if need_to_download:
+                    os.remove(os.path.join("scripts", script_name + ".py"))
+                    download_from_repository("scripts/" + script_name + ".py",
+                                             "scripts/" + script_name + ".py")
+        
     if more_recent(latest, VERSION):
         if running_from[-4:] == ".exe":
             msg = "You're running version " + VERSION + "."
@@ -160,4 +162,5 @@ def check_for_updates():
                 sys.exit()
                 
     progress.Update(101)
+    progress.Destroy()
     sys.stdout = sys.__stdout__

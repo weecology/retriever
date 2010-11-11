@@ -17,8 +17,7 @@ warnings.filterwarnings("ignore")
 
 TEST_ENGINES = dict()
 
-    
-            
+
 class DbTkTest(unittest.TestCase):    
     def strvalue(self, value, col_num):
         """Returns a string representing the cleaned value from a SELECT 
@@ -221,12 +220,39 @@ def get_saved_connection(engine_name):
         for line in config:
             values = line.rstrip('\n').split(',')
             if values[0] == engine_name:
-                values = values[1:]
-                for value in values:
-                    parameter = value.split('::')[0]
-                    saved_value = value.split('::')[1]
-                    parameters[parameter] = saved_value
+                try:
+                    parameters = eval(','.join(values[1:]))
+                except:
+                    pass
     return parameters    
+
+
+def save_connection(engine_name, values_dict):
+    lines = []
+    if os.path.isfile("connections.config"):
+        config = open("connections.config", "rb")
+        for line in config:
+            if line.split(',')[0] != engine_name:
+                lines.append('\n' + line.rstrip('\n'))
+        config.close()
+        os.remove("connections.config")
+        config = open("connections.config", "wb")
+    else:
+        config = open("connections.config", "wb")
+    config.write(engine_name + "," + str(values_dict))
+    for line in lines:
+        config.write(line)
+    config.close()
+    
+    
+def get_default_connection():
+    if os.path.isfile("connections.config"):
+        config = open("connections.config", "rb")
+        default_connection = config.readline().split(",")[0]
+        config.close()
+        return default_connection
+    else:
+        return None
 
 
 def choose_engine(opts):
@@ -245,7 +271,7 @@ def choose_engine(opts):
                 abbreviation = ""
             print "    " + abbreviation + engine.name
         enginename = raw_input(": ")
-        enginename = enginename.lower()
+    enginename = enginename.lower()
     
     engine = Engine()
     if not enginename:
@@ -258,4 +284,4 @@ def choose_engine(opts):
                 engine = thisengine
         
     engine.opts = opts
-    return engine    
+    return engine

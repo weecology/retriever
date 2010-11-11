@@ -13,12 +13,12 @@ import os
 import sys
 from dbtk.lib.repository import check_for_updates
 from dbtk.lib.lists import DbTkList, get_lists
-from dbtk.ui.wizard import launch_wizard
+from dbtk.app.main import launch_app
 
 
 def main():    
     check_for_updates()
-    launch_wizard(get_lists())
+    launch_app(get_lists())
 
 if __name__ == "__main__":
     main()

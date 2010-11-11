@@ -9,14 +9,23 @@ from decimal import Decimal
 from dbtk.lib.templates import DbTk
 from dbtk.lib.models import Table, Cleanup, no_cleanup
 
-VERSION = '0.3'
+VERSION = '0.4'
 
 
 class main(DbTk):
-    name = "USGS North American Breeding Bird Survey"
-    shortname = "BBS"
-    ref = "http://www.pwrc.usgs.gov/BBS/"
-    required_opts = []
+    def __init__(self, **kwargs):
+        DbTk.__init__(self, **kwargs)
+        self.name = "USGS North American Breeding Bird Survey"
+        self.shortname = "BBS"
+        self.ref = "http://www.pwrc.usgs.gov/BBS/"
+        self.urls = {
+                     "counts": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/",
+                     "routes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CRoutes.exe",
+                     "weather": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CWeather.exe",
+                     "region_codes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/RegionCodes.txt",
+                     "species": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/SpeciesList.txt"
+                     }
+                     
     def download(self, engine=None):
         try:
             DbTk.download(self, engine)
@@ -25,7 +34,7 @@ class main(DbTk):
             
             # Routes table
             if not os.path.isfile(engine.format_filename("routes_new.csv")):
-                engine.download_files_from_archive("ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CRoutes.exe",
+                engine.download_files_from_archive(self.urls["routes"],
                                                    ["routes.csv"])
                 read = open(engine.format_filename("routes.csv"), "rb")
                 write = open(engine.format_filename("routes_new.csv"), "wb")
@@ -40,19 +49,19 @@ class main(DbTk):
                 write.close()
                 read.close()
                 
-            engine.auto_create_table("routes", filename="routes_new.csv",
-                                     cleanup=Cleanup())
+            engine.auto_create_table(Table("routes", cleanup=Cleanup()), 
+                                     filename="routes_new.csv")
                 
             engine.insert_data_from_file(engine.format_filename("routes_new.csv"))
 
             
             # Weather table                
             if not os.path.isfile(engine.format_filename("weather_new.csv")):
-                engine.download_files_from_archive("ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CWeather.exe", 
+                engine.download_files_from_archive(self.urls["weather"], 
                                                    ["weather.csv"])            
                 read = open(engine.format_filename("weather.csv"), "rb")
                 write = open(engine.format_filename("weather_new.csv"), "wb")
-                print "Cleaning weather data..."            
+                print "Cleaning weather data..."
                 for line in read:
                     values = line.split(',')
                     newvalues = []
@@ -68,16 +77,70 @@ class main(DbTk):
                 write.close()
                 read.close()
             
-            engine.auto_create_table("weather", filename="weather_new.csv",
-                                     pk="RouteDataId", cleanup=Cleanup())            
+            engine.auto_create_table(Table("weather", pk="RouteDataId", cleanup=Cleanup()), 
+                                     filename="weather_new.csv")
             engine.insert_data_from_file(engine.format_filename("weather_new.csv"))
             
             
+            # Species table
+            table = Table("species", pk=False, delimiter=',')
+            
+            table.columns=[("species_id"            ,   ("pk-auto",)        ),
+                           ("AOU"                   ,   ("int",)            ),
+                           ("genus"                 ,   ("char",30)         ),
+                           ("species"               ,   ("char",30)         ),
+                           ("subspecies"            ,   ("char",30)         ),
+                           ("id_to_species"         ,   ("bool",)           )]
+            
+            engine.table = table
+            engine.create_table()
+            
+            engine.download_file(self.urls["species"], "SpeciesList.txt")
+            species_list = open(engine.format_filename("SpeciesList.txt"), "rb")
+            for n in range(7):
+                species_list.readline()
+            
+            rows = []
+            for line in species_list:
+                if line and len(line) > 115:
+                    latin_name = line[115:].split()
+                    if len(latin_name) < 2:
+                        # If there's no species given, add "None" value
+                        latin_name.append("None")
+                    if '.' in latin_name[1]:
+                        # If species is abbreviated, get it from previous row
+                        latin_name[1] = rows[-1].split(',')[2]
+                    subspecies = ' '.join(latin_name[2:]) if len(latin_name) > 2 else "None"                    
+                    id_to_species = "1" if latin_name[1] != "None" else "0"
+                    if latin_name[1] == "sp" or subspecies == "sp":
+                        subspecies = ""
+                        latin_name[1] = "None"
+                        id_to_species = "0"
+                    if ("X" in latin_name[1] or subspecies.lower() == "X" 
+                        or "/" in subspecies or "or" in subspecies.lower() 
+                        or "x" in subspecies.lower()):
+                        # Hybrid species
+                        latin_name[1] = "None"
+                        subspecies = "None"
+                        id_to_species = "0"
+                    
+                    rows.append(','.join([
+                                          line.split()[1], 
+                                          latin_name[0],
+                                          latin_name[1],
+                                          subspecies,
+                                          id_to_species
+                                          ]))
+                    
+            engine.table.source = rows
+            engine.add_to_table()
+            
+            species_list.close()
+            
+            
             # Region_codes table
-            table = Table()
-            table.tablename = "region_codes"
-            table.pk = False
-            table.header_rows = 11
+            table = Table("region_codes", pk=False, header_rows=11,
+                          fixed_width=[11, 11, 30])
             def regioncodes_cleanup(value, engine):
                 replace = {chr(225):"a", chr(233):"e", chr(237):"i", chr(243):"o"}
                 newvalue = str(value)
@@ -85,23 +148,20 @@ class main(DbTk):
                     if key in newvalue:
                         newvalue = newvalue.replace(key, replace[key])
                 return newvalue
-            table.cleanup = Cleanup(regioncodes_cleanup, None)
+            table.cleanup = Cleanup(regioncodes_cleanup)
             
             table.columns=[("countrynum"            ,   ("int",)        ),
                            ("regioncode"            ,   ("int",)        ),
                            ("regionname"            ,   ("char",30)     )]
-            table.fixedwidth = [11, 11, 30]
             
             engine.table = table
             engine.create_table()
                                     
-            engine.insert_data_from_url("ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/RegionCodes.txt")            
+            engine.insert_data_from_url(self.urls["region_codes"])
                         
             
             # Counts table
-            table = Table()
-            table.tablename = "counts"
-            table.delimiter = ","
+            table = Table("counts", delimiter=',')
             
             table.columns=[("record_id"             ,   ("pk-auto",)    ),
                            ("countrynum"            ,   ("int",)        ),
@@ -147,15 +207,14 @@ class main(DbTk):
                         shortstate = state[0:7]
                     else:        
                         state, shortstate = state[0], state[1]
-                        
-                    print "Downloading and decompressing data from " + state + "..."
-                    engine.insert_data_from_archive("ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/C" + shortstate + ".exe", 
+                    
+                    print "Inserting data from " + state + "..."
+                    engine.insert_data_from_archive(self.urls["counts"] + "C" + shortstate + ".exe", 
                                                     ["C" + shortstate + ".csv"])
                             
                 except:
                     print "There was an error in " + state + "."
             
-            print 'Done!'
         except zipfile.BadZipfile:            
             print "There was an unexpected error in the Breeding Bird Survey archives."
             raise    

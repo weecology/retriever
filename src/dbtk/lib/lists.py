@@ -2,7 +2,8 @@
 
 import os
 from operator import attrgetter
-from dbtk.lib.templates import TEMPLATES
+from dbtk.lib.models import *
+from dbtk.lib.templates import *
 
 
 class DbTkList:
@@ -42,21 +43,9 @@ def get_lists():
         config = open("scripts.config", 'rb')
         for line in config:
             if line:
-                line = line.strip('\n').strip('\r')
-                values = line.split(',')
                 try:
-                    temp, dbname, tablename, url = (values[0], values[1], 
-                                                    values[2], values[3])
-                    for template in TEMPLATES:
-                        if template[0] == temp:
-                            new_dataset = template[1]()
-                    
-                            new_dataset.name = dbname + '.' + tablename
-                            new_dataset.shortname = dbname
-                            new_dataset.tablename = tablename
-                            new_dataset.url = url
-                            
-                            other_dbtks.append(new_dataset)
+                    new_dataset = eval(line)
+                    other_dbtks.append(new_dataset)
                 except:
                     pass
         

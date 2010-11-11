@@ -10,7 +10,7 @@ from __init__ import VERSION
 packages = [
             'dbtk.lib',
             'dbtk.engines',
-            'dbtk.ui',
+            'dbtk.app',
             'dbtk',
             ]
             
@@ -49,6 +49,7 @@ setup(name='dbtk',
       entry_points={
         'console_scripts': [
             'dbtk = dbtk.main:main',
+            'dbtkwizard = dbtk.main:wizard'
         ],
       },
       # py2exe options

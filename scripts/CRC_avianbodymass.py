@@ -13,21 +13,22 @@ from dbtk.lib.templates import DbTk
 from dbtk.lib.models import Table, Cleanup, no_cleanup
 from dbtk.lib.excel import Excel
 
-VERSION = '0.3'
+VERSION = '0.4'
 
 
 class main(DbTk):
-    name = "CRC Avian Body Masses"
-    shortname = "AvianBodyMass"
-    public = False
-    ref = "http://www.crcpress.com/ecommerce_product/product_detail.jsf?isbn=1420064444"
-    def download(self, engine=None):    
+    def __init__(self, **kwargs):
+        DbTk.__init__(self, **kwargs)
+        self.name = "CRC Avian Body Masses"
+        self.shortname = "AvianBodyMass"
+        self.public = False
+        self.ref = "http://www.crcpress.com/ecommerce_product/product_detail.jsf?isbn=1420064444"
+        self.tables = {"mass": Table("mass", delimiter=",,")}
+        self.urls = {"mass": ""}
+    def download(self, engine=None):
         DbTk.download(self, engine)
         
-        table = Table()
-        table.tablename = "mass"
-        table.delimiter = ",,"
-        table.cleanup = Cleanup(no_cleanup, None)
+        table = self.tables["mass"]
         
         # Database column names and their data types. Use data type "skip" to skip the value, and
         # "combine" to merge a string value into the previous column

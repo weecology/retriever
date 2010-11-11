@@ -9,6 +9,7 @@ import os
 import getpass
 import zipfile
 import urllib
+import shlex
 from decimal import Decimal
 
     
@@ -24,10 +25,11 @@ def file_exists(path):
 def correct_invalid_value(value, args):
     """This cleanup function replaces null indicators with None."""
     try:
+        if value in [item for item in args["nulls"]]:
+            return None
         if float(value) in [float(item) for item in args["nulls"]]:            
             return None
-        else:
-            return value
+        return value
     except ValueError:
         return value
 
@@ -35,9 +37,9 @@ def correct_invalid_value(value, args):
 class Cleanup:
     """This class represents a custom cleanup function and a dictionary of 
     arguments to be passed to that function."""
-    def __init__(self, function=no_cleanup, args=None):
+    def __init__(self, function=no_cleanup, **kwargs):
         self.function = function
-        self.args = args    
+        self.args = kwargs
 
 
 class Database:
@@ -48,16 +50,19 @@ class Database:
     
 class Table:
     """Information about a database table."""
-    tablename = ""
-    pk = True
-    hasindex = False
-    record_id = 0
-    delimiter = "\t"
-    columns = []
-    header_rows = 1
-    fixedwidth = False
-    def __init__(self):        
-        self.cleanup = Cleanup(no_cleanup, None)        
+    def __init__(self, name, **kwargs):
+        self.name = name
+        self.pk = True
+        self.contains_pk = False
+        self.delimiter = '\t'
+        self.header_rows = 1
+        self.column_names_row = 1
+        self.fixed_width = False
+        self.cleanup = Cleanup()
+        self.record_id = 0
+        self.columns = []
+        for key, item in kwargs.items():
+            setattr(self, key, item[0] if isinstance(item, tuple) else item)
 
     
 class Engine():
@@ -74,13 +79,14 @@ class Engine():
     required_opts = []
     pkformat = "%s PRIMARY KEY"
     script = None
-    RAW_DATA_LOCATION = os.path.join("raw_data", "{dataset}")    
+    RAW_DATA_LOCATION = os.path.join("raw_data", "{dataset}")
+    
     def add_to_table(self):
         """This function adds data to a table from one or more lines specified 
         in engine.table.source."""
-        lines = self.table.source.readlines()
+        lines = self.table.source
         real_lines = [line for line in lines 
-                      if line.replace('\n', '').replace('\r', '').replace(' ', '').replace('\t', '')]
+                      if line.strip('\n\r\t ')]
         total = self.table.record_id + len(real_lines)
         for line in real_lines:
             line = line.strip()
@@ -94,56 +100,48 @@ class Engine():
                                                          self.table.cleanup.args)) 
                                for value in linevalues]
                 insertstatement = self.insert_statement(cleanvalues)
-                if self.table.record_id % 10 == 0:
+                if self.table.record_id % 10 == 0 or self.table.record_id == total:
                     prompt = "Inserting rows to " + self.tablename() + ": "
                     prompt += str(self.table.record_id) + " / " + str(total)
                     sys.stdout.write(prompt + "\b" * len(prompt))
                 self.cursor.execute(insertstatement)
-                
-        print "\n Done!"
+        
         self.connection.commit()
-    def auto_create_table(self, tablename, url=None, filename=None,
-                          cleanup=Cleanup(correct_invalid_value, 
-                                          {"nulls":(-999,)} 
-                                          ),
-                          pk=None):
+        
+    def auto_create_table(self, table, url=None, filename=None, pk=None):
         """Creates a table automatically by analyzing a data source and 
         predicting column names, data types, delimiter, etc."""
         if url and not filename:
             filename = url.split('/')[-1]
         self.create_raw_data_dir()
         need_to_delete = False
-        self.table = Table()
-        self.table.tablename = tablename
-        self.table.cleanup = cleanup
+        self.table = table
         
         if url and not (self.use_local and 
                 file_exists(self.format_filename(filename))):
             # If the file doesn't exist, download it
-            self.create_raw_data_dir()                        
-            print "Saving a copy of " + filename + "..."
+            self.create_raw_data_dir()
             self.download_file(url, filename)
             if not self.keep_raw_data:
                 need_to_delete = True
                 
-        source = open(self.format_filename(filename), "rb")
+        source = self.skip_rows(self.table.column_names_row - 1, 
+                                open(self.format_filename(filename), "rb"))
         header = source.readline()
+        source.close()
+        
+        source = self.skip_rows(self.table.header_rows, 
+                                open(self.format_filename(filename), "rb"))
         
         if pk is None:
             self.table.columns = [("record_id", ("pk-auto",))]
         else:
             self.table.columns = []
-            self.table.hasindex = True
-            
-        print "Getting columns..."
+            self.table.contains_pk = True
         
         columns, column_values = self.auto_get_columns(header)
         
         self.auto_get_datatypes(pk, source, columns, column_values)
-        
-        print '[' + ', '.join([self.convert_data_type(column[1]) + " " + 
-                               column[0] for column in columns]
-                              ) + ']'
         
         self.create_table()
         
@@ -152,17 +150,22 @@ class Engine():
                 os.remove(self.format_filename(filename))
             except:
                 pass
+                
     def auto_get_columns(self, header):
-        """Finds the delimiter and column names from the header row."""
-        # Determine the delimiter by finding out which of a set of common
-        # delimiters occurs most in the header line
-        self.table.delimiter = "\t"
-        for other_delimiter in [",", ";"]:
-            if header.count(other_delimiter) > header.count(self.table.delimiter):
-                self.table.delimiter = other_delimiter
+        """Finds the delimiter and column names from the header row."""        
+        if self.table.fixed_width:
+            column_names = self.extract_values(header)
+        else:
+            # Determine the delimiter by finding out which of a set of common
+            # delimiters occurs most in the header line
+            self.table.delimiter = "\t"
+            for other_delimiter in [",", ";"]:
+                if header.count(other_delimiter) > header.count(self.table.delimiter):
+                    self.table.delimiter = other_delimiter
+            
+            # Get column names from header row
+            column_names = header.split(self.table.delimiter)
         
-        # Get column names from header row
-        column_names = header.split(self.table.delimiter)
         columns = []
         column_values = dict()
         
@@ -170,29 +173,35 @@ class Engine():
             this_column = column_name
             for c in [")", "\n", "\r"]:
                 this_column = this_column.strip(c)
-            for c in ["."]:
+            for c in [".", '"', "'"]:
                 this_column = this_column.replace(c, "")
             for c in [" ", "(", "/", ".", "-"]:
                 this_column = this_column.replace(c, "_")
             while "__" in this_column:
                 this_column = this_column.replace("__", "_")
             this_column = this_column.lstrip("0123456789_").rstrip("_")
-                
-            if this_column.lower() == "order":
-                this_column = "sporder"
-            if this_column.lower() == "references":
-                this_column = "refs"
+            
+            not_allowed = [
+                           ("order","sporder"),
+                           ("references", "refs"),
+                           ("long", "lon"),
+                           ]
+            for combo in not_allowed:
+                if this_column.lower() == combo[0]:
+                    this_column = combo[1]
             
             if this_column:
                 columns.append([this_column, None])
                 column_values[this_column] = []
+
         return columns, column_values
+        
     def auto_get_datatypes(self, pk, source, columns, column_values):
         """Determines data types for each column."""
         # Get all values for each column
         for line in source:
             if line.replace("\t", "").strip():
-                values = line.strip("\n").strip("\r").split(self.table.delimiter)
+                values = self.extract_values(line.strip("\n"))
                 for i in range(len(columns)):
                     try:
                         column_values[columns[i][0]].append(values[i])
@@ -207,8 +216,7 @@ class Engine():
                 float_values = [float(value) for value in values
                                 if value]
                 try:
-                    int_values = [int(value) == float(value) for value in values
-                                  if value]
+                    int_values = [int(value) == value for value in float_values]
                     if all(int_values):
                         datatype = "int"
                     else:
@@ -230,12 +238,14 @@ class Engine():
                     if "e" in str(value) or ("." in str(value) and
                                              len(str(value).split(".")[1]) > 10):
                         column[1] = ["decimal","30,20"]
-                                
+                        break
+                        
             if pk == column[0]:
                 column[1][0] = "pk-" + column[1][0]
             
         for column in columns:
             self.table.columns.append((column[0], tuple(column[1])))
+            
     def convert_data_type(self, datatype):
         """Converts DBTK generic data types to database platform specific data
         types"""
@@ -260,28 +270,33 @@ class Engine():
         if thispk:
             type = self.pkformat % type
         return type
+        
     def create_db(self):
         """Creates a new database based on settings supplied in Database object
         engine.db"""
         print "Creating database " + self.db.dbname + "..."
         # Create the database    
         self.cursor.execute(self.create_db_statement())
+        
     def create_db_statement(self):
         """Returns a SQL statement to create a database."""
         createstatement = "CREATE DATABASE " + self.db.dbname
         return createstatement
+        
     def create_raw_data_dir(self):
         """Checks to see if the archive directory exists and creates it if 
         necessary."""
         path = self.format_data_dir()
         if not os.path.exists(path):
-            os.makedirs(path)            
+            os.makedirs(path)
+            
     def create_table(self):
         """Creates a new database table based on settings supplied in Table 
         object engine.table."""
-        print "Creating table " + self.table.tablename + "..."
+        print "Creating table " + self.table.name + "..."
         createstatement = self.create_table_statement()
         self.cursor.execute(createstatement)
+        
     def create_table_statement(self):
         """Returns a SQL statement to create a table."""
         try:
@@ -299,6 +314,7 @@ class Engine():
         createstatement = createstatement.rstrip(', ')    
         createstatement += " );"
         return createstatement
+        
     def download_file(self, url, filename):
         """Downloads a file to the raw data directory."""
         self.create_raw_data_dir()
@@ -307,9 +323,13 @@ class Engine():
             print "Downloading " + filename + "..."
             file = urllib.urlopen(url) 
             local_file = open(path, 'wb')
-            local_file.write(file.read())
+            if not filename.split('.')[-1].lower() in ["exe", "zip"]:
+                local_file.write(file.read().replace("\r\n", "\n").replace("\r", "\n"))
+            else:
+                local_file.write(file.read())
             local_file.close()
             file.close()
+            
     def download_files_from_archive(self, url, filenames):
         """Downloads one or more files from an archive into the raw data
         directory."""
@@ -319,7 +339,7 @@ class Engine():
         for filename in filenames:
             if self.use_local and file_exists(self.format_filename(filename)):
                 # Use local copy
-                print "Using local copy of " + filename
+                pass
             else:
                 self.create_raw_data_dir()
                 
@@ -342,50 +362,72 @@ class Engine():
             try:
                 os.remove(archivename)
             except:
-                pass            
+                pass
+                
     def drop_statement(self, objecttype, objectname):
         """Returns a drop table or database SQL statement."""
         dropstatement = "DROP %s IF EXISTS %s" % (objecttype, objectname)
         return dropstatement
+        
     def extract_values(self, line):
         """Given a line of data, this function returns a list of the individual
         data values."""
-        if self.table.fixedwidth:
+        if self.table.fixed_width:
             pos = 0
             values = []
-            for width in self.table.fixedwidth:
+            for width in self.table.fixed_width:
                 values.append(line[pos:pos+width].strip())
                 pos += width
             return values
         else:
-            return line.split(self.table.delimiter)
+            values = shlex.shlex(line.replace(self.table.delimiter * 2, 
+                                              self.table.delimiter + "None" + 
+                                              self.table.delimiter))
+            values.whitespace = self.table.delimiter
+            values.whitespace_split = True
+            return list(values)
+            
     def final_cleanup(self):
         """Close the database connection."""
         self.connection.close()
+        
     def format_column_name(self, column):
         return column
+        
     def format_data_dir(self):
         """Returns the correctly formatted raw data directory location."""
         return self.RAW_DATA_LOCATION.replace("{dataset}", self.script.shortname)
+        
     def format_filename(self, filename):
         """Returns the full path of a file in the archive directory."""
         return os.path.join(self.format_data_dir(), filename)
+        
     def format_insert_value(self, value):
         """Formats a value for an insert statement, for example by surrounding
         it in single quotes."""
-        if isinstance(value, basestring):
-            value = value.decode("utf-8", "ignore")
         strvalue = str(value).strip()
+        # Remove any quotes already surrounding the string
         if strvalue.lower() == "null":
             return "null"
         elif value:
-            quotes = ["'", '"']            
+            quotes = ["'", '"']
             if strvalue[0] == strvalue[-1] and strvalue[0] in quotes:
                 strvalue = strvalue.strip(''.join(quotes)) 
         else:
             return "null"
+        # If a value converts to an integer, return it in integer form
+        try:
+            strvalue = str(float(strvalue))
+            if '.' in strvalue:
+                decimal = strvalue.split('.')[1]
+                if all([char == '0' for char in decimal]):
+                    strvalue = strvalue.split('.')[0]
+        except ValueError:
+            pass
+            
         strvalue = strvalue.replace("'", "''")
         return "'" + strvalue + "'"
+        
     def get_input(self):
         """Manually get user input for connection information when script is 
         run from terminal."""
@@ -397,20 +439,22 @@ class Engine():
                 else:
                     self.opts[opt[0]] = raw_input(opt[1])
             if self.opts[opt[0]] in ["", "default"]:
-                self.opts[opt[0]] = opt[2]    
+                self.opts[opt[0]] = opt[2]
+                
     def get_insert_columns(self, join=True):
         """Gets a set of column names for insert statements."""
         columns = ""
         for item in self.table.columns:
             thistype = item[1][0]
             if ((thistype != "skip") and (thistype !="combine") and 
-                (self.table.hasindex == True or thistype[0:3] != "pk-")):
+                (self.table.contains_pk == True or thistype[0:3] != "pk-")):
                 columns += item[0] + ", "
         columns = columns.rstrip(', ')
         if join:
             return columns
         else:
             return columns.lstrip("(").rstrip(")").split(", ")
+            
     def insert_data_from_archive(self, url, filenames):
         """Insert data from files located in an online archive. This function
         extracts the file, inserts the data, and deletes the file if raw data 
@@ -424,21 +468,23 @@ class Engine():
                     os.remove(fileloc)
                 except:
                     pass
+                    
     def insert_data_from_file(self, filename):
         """The default function to insert data from a file. This function 
         simply inserts the data row by row. Database platforms with support
         for inserting bulk data from files can override this function."""
-        self.table.source = self.skip_rows(self.table.header_rows, 
-                                           open(filename, "r"))        
+        source = self.skip_rows(self.table.header_rows, 
+                                open(filename, "r"))
+        self.table.source = source.readlines()
         self.add_to_table()
-        self.table.source.close()
+        source.close()
+        
     def insert_data_from_url(self, url):
         """Insert data from a web resource, such as a text file."""
         filename = url.split('/')[-1]
         self.create_raw_data_dir()
         if self.use_local and file_exists(self.format_filename(filename)):
-            # Use local copy
-            print "Using local copy of " + filename
+            # Use local copy            
             self.insert_data_from_file(self.format_filename(filename))            
         else:
             if self.keep_raw_data:
@@ -449,10 +495,12 @@ class Engine():
                 self.insert_data_from_file(self.format_filename(filename))
             else:
                 # Don't save the file, just load it from the web resource
-                self.table.source = self.skip_rows(self.table.header_rows, 
+                source = self.skip_rows(self.table.header_rows, 
                                                    urllib.urlopen(url))
+                self.table.source = source.readlines()
                 self.add_to_table()
-                self.table.source.close()
+                source.close()
+                
     def insert_statement(self, values):
         """Returns a SQL statement to insert a set of values."""
         columns = self.get_insert_columns()
@@ -466,24 +514,33 @@ class Engine():
         while len(values) < insertstatement.count("%s"):
             values.append(self.format_insert_value(None))
         insertstatement %= tuple(values)
-        return insertstatement        
+        return insertstatement
+        
     def skip_rows(self, rows, source):
         """Skip over the header lines by reading them before processing."""
         if rows > 0:
             for i in range(rows):
                 line = source.readline()
         return source
+        
+    def table_exists(self, dbname, tablename):
+        """This can be overridden to return True if a table exists. It
+        returns False by default."""
+        return False
+        
     def tablename(self):
         """Returns the full tablename in the format db.table."""        
-        return self.db.dbname + "." + self.table.tablename
+        return self.db.dbname + "." + self.table.name
+        
     def values_from_line(self, line):
         linevalues = []
-        if (self.table.pk and self.table.hasindex == False):
+        if (self.table.pk and self.table.contains_pk == False):
             column = 0
         else:
             column = -1
          
-        for value in self.extract_values(line):
+        for value in [(value if value != "None" else "")
+                      for value in self.extract_values(line)]:
             column += 1
             thiscolumn = self.table.columns[column][1][0]
             # If data type is "skip" ignore the value
