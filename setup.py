@@ -10,7 +10,6 @@ from __init__ import VERSION
 packages = [
             'dbtk.lib',
             'dbtk.engines',
-            'dbtk.wizard',
             'dbtk.app',
             'dbtk',
             ]
