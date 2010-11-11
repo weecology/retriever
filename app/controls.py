@@ -1,8 +1,7 @@
 import wx
 import wx.lib.wxpTag
 from dbtk import VERSION
-from dbtk.lib.download import DownloadThread
-        
+
         
 class AboutDialog(wx.Dialog):
     text = """
@@ -15,6 +14,9 @@ version """ + VERSION + """
 </h2></td></tr></table>
 <p>The Database Toolkit is designed to make it easy to download ecological data and set it
 up on your own local database system.
+</p><p>
+To get started, double click on a dataset to download the data files and import the data into
+your database.
 </p><p>
 For more information, visit <a href="http://www.ecologicaldata.org">http://www.ecologicaldata.org</a>.
 </p>
@@ -65,24 +67,24 @@ class ScriptList(wx.HtmlListBox):
         
     def Download(self, evt):
         script = self.scripts[self.GetSelection()]
-        if self.Parent.Parent.progress_window.Download(script):
+        if self.Parent.Parent.download_manager.Download(script):
             self.SetStatus(script.name, "Waiting...")        
             
     def HtmlScriptSummary(self, index):
         script = self.scripts[index]
         selected = self.GetSelection() == index
-        progress_window = self.Parent.Parent.progress_window
+        download_manager = self.Parent.Parent.download_manager
         engine = self.Parent.Parent.engine
         desc = "<table><tr><td>"
         link = None
-        if script in progress_window.queue or (progress_window.worker and
-                                               script == progress_window.worker.script):
+        if script in download_manager.queue or (download_manager.worker and
+                                               script == download_manager.worker.script):
             img = "cycle"
         else:
-            if script in progress_window.errors:
+            if script in download_manager.errors:
                 link = True
                 img = "error"
-            elif script in progress_window.downloaded or script.exists(engine):
+            elif script in download_manager.downloaded or script.exists(engine):
                 img = "downloaded"
             else:
                 link = True
@@ -110,7 +112,7 @@ class ScriptList(wx.HtmlListBox):
         
     def SetStatus(self, script, txt):
         self.script_status[script] = "<p>" + txt + "</p>"
-        self.RefreshAll()
+        self.RefreshMe(None)
         
         
 class CategoryList(wx.ListBox):
@@ -125,133 +127,22 @@ class CategoryList(wx.ListBox):
         if self.GetSelections():
             selected = self.lists[self.GetSelections()[0]]
             self.Parent.Parent.script_list.Redraw(selected.scripts)
-            
 
-class ProgressWindow(wx.html.HtmlWindow):
+
+class HtmlWindow(wx.html.HtmlWindow):
     def __init__(self, parent, style=0):
         wx.html.HtmlWindow.__init__(self, parent, style=style)
         if "gtk2" in wx.PlatformInfo:
             self.SetStandardFonts()
-        self.dialog = None
-        self.html = ""
-        self.worker = None
-        self.queue = []
-        self.downloaded = set()
-        self.errors = set()
-        self.help_text = """<h2>Welcome to the Database Toolkit!</h2>
-<p>Choose from data categories on the left, and double click a dataset on the right
-to begin your download.</p>"""
-        self.timer = wx.Timer(self, -1)
-        self.timer.interval = 10
-        self.Bind(wx.EVT_TIMER, self.update, self.timer)
-        
+            
     def OnLinkClicked(self, link):
         wx.LaunchDefaultBrowser(link.GetHref())
         
     def SetHtml(self, html):
-        self.html = html
-        self.SetPage(self.help_text + self.html)
-        
-    def Download(self, script):
-        if not script in self.queue and not (self.worker and self.worker.script == script):
-            self.queue.append(script)
-            self.downloaded.add(script)
-            if script in self.errors:
-                self.errors.remove(script)
-            self.Parent.script_list.RefreshMe(None)
-            if not self.timer.IsRunning() and not self.worker and len(self.queue) < 2:
-                self.timer.Start(self.timer.interval)
-            return True
-        return False
-    
-    def update(self, evt):
-        self.timer.Stop()
-        terminate = False
-        if self.worker:
-            script = self.worker.script
-            if self.worker.finished() and len(self.worker.output) == 0:
-                self.Parent.SetStatusText("")
-                self.worker = None
-                self.Parent.script_list.RefreshMe(None)
-                self.timer.Start(self.timer.interval)
-            else:
-                self.worker.output_lock.acquire()
-                while len(self.worker.output) > 0 and not terminate:
-                    if "Error:" in self.worker.output[0] and script in self.downloaded:
-                        self.downloaded.remove(script)
-                        self.errors.add(script)
-                    if self.write(self.worker) == False:
-                        terminate = True
-                    self.worker.output = self.worker.output[1:]
-                #self.gauge.SetValue(100 * ((self.worker.scriptnum) /
-                #                           (self.worker.progress_max + 1.0)))
-                self.worker.output_lock.release()
-                if terminate:
-                    self.Parent.Quit(None)
-                else:
-                    self.timer.Start(self.timer.interval)
-        elif self.queue:
-            script = self.queue[0]
-            self.queue = self.queue[1:]
-            self.worker = DownloadThread(self.Parent.engine, script)
-            self.worker.parent = self
-            self.worker.start()
-            self.timer.Start(10)
-    
-    def write(self, worker):
-        s = worker.output[0]
-        
-        if '\b' in s:
-            s = s.replace('\b', '')
-            if not self.dialog:
-                wx.GetApp().Yield()
-                self.dialog = wx.ProgressDialog("Download Progress", 
-                                                "Downloading datasets . . .\n"
-                                                + "  " * len(s), 
-                                                maximum=1000,
-                                                parent=None,
-                                                style=wx.PD_SMOOTH
-                                                      | wx.DIALOG_NO_PARENT
-                                                      | wx.PD_CAN_ABORT
-                                                      | wx.PD_AUTO_HIDE
-                                                      | wx.PD_REMAINING_TIME
-                                                )
-            def progress(s):
-                if ' / ' in s:
-                    s = s.split(' / ')
-                    total = float(s[1])
-                    current = float(s[0].split(': ')[1])
-                    progress = int((current / total) * 1000)
-                    return (progress if progress > 1 else 1)
-                else:
-                    return None
-                    
-            current_progress = progress(s)
-            if current_progress:
-                (keepgoing, skip) = self.dialog.Update(current_progress, s)
-            else:
-                (keepgoing, skip) = self.dialog.Pulse(s)
-                
-            if not keepgoing:
-                return False
-        else:
-            if self.dialog:
-                self.dialog.Update(1000, "")
-                self.dialog.Destroy()
-                self.dialog = None
-            
-            if '...' in s:
-                self.Parent.SetStatusText(s)
-            else:
-                self.Parent.script_list.SetStatus(worker.script.name, s)
-                self.refresh_html()
+        self.SetPage(html)
 
-        wx.GetApp().Yield()
-        return True
-    
-    def refresh_html(self):
-        self.SetHtml(self.html)
-        self.Scroll(-1, self.GetScrollRange(wx.VERTICAL))
+
+
 
 
 class StaticText(wx.StaticText):
