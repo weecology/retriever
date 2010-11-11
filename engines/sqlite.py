@@ -25,7 +25,7 @@ class engine(Engine):
     def tablename(self):
         """The database file is specifically connected to, so database.table 
         is not necessary."""
-        return self.db.dbname + "_" + self.table.tablename
+        return self.db.dbname + "_" + self.table.name
         
     def table_exists(self, dbname, tablename):
         connection = self.get_connection()
