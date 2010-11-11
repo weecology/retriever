@@ -87,10 +87,7 @@ class Frame(wx.Frame):
         # Layout
         self.vsizer = wx.BoxSizer(wx.VERTICAL)
         self.progress_window = ProgressWindow(self, style=wx.RAISED_BORDER)
-        self.progress_window.SetHtml("""
-<h2>Welcome to the Database Toolkit!</h2>
-<p>Choose from data categories on the left, and double click a dataset on the right
-to begin your download. Download progress will be shown here.</p>""")
+        self.progress_window.SetHtml("")
         self.splitter = wx.SplitterWindow(self, -1)
         
         self.cat_list = CategoryList(self.splitter, -1, style=wx.RAISED_BORDER | wx.LB_SINGLE,

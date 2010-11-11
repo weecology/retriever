@@ -8,30 +8,30 @@ from dbtk.lib.tools import final_cleanup
 
 
 class DownloadThread(Thread):
-    def __init__(self, engine, scripts):
+    def __init__(self, engine, script):
         Thread.__init__(self)
         self.engine = engine
-        self.scripts = scripts
-        self.scriptnum = 0
-        self.progress_max = 1
+        self.script = script
         self.daemon = True
         self.output_lock = Lock()
         self.output = []
+        self.done = False
 
     def run(self):
         try:
-            self.download_scripts()
-            self.scriptnum = self.progress_max + 1
+            self.download_script()
+            self.done = True
         except:
+            raise
             return
         
     def finished(self):
-        return (self.scriptnum > self.progress_max)
+        return self.done
 
-    def download_scripts(self):
+    def download_script(self):
         engine = self.engine
+        script = self.script
         worker = self
-        scripts = self.scripts
         
         start = time()
         
@@ -43,47 +43,29 @@ class DownloadThread(Thread):
                     worker.output_lock.release()
                 
         sys.stdout = download_stdout()
-            
-        worker.progress_max = len(scripts)            
+        
+        print "Connecting to database..."
+        
+        # Connect
+        try:
+            engine.get_cursor()
+        except Exception as e:
+            print "<font color='red'>There was an error with your database connection.</font>" 
+            return
+        
+        # Download script
+        error = False
+
+        print "<b><font color='blue'>Downloading. . .</font></b>"
+        try:
+            script.download(engine)
+        except Exception as e:
+            error = True
+            print "<b><font color='red'>Error: " + e.__str__() + "</font></b>"
                 
-        def start_download():
-            worker.scriptnum = 0
-            
-            print "Connecting to database..."
-            
-            # Connect
-            try:
-                engine.get_cursor()
-            except Exception as e:
-                print "<font color='red'>There was an error with your database connection.</font>" 
-                return
-            
-            
-            # Download scripts
-            errors = []
-            for script in scripts:
-                worker.scriptnum += 1
-                msg = "<b><font color='blue'>Downloading: " + script.name + "</font></b>"
-                print msg
-                try:
-                    script.download(engine)
-                except Exception as e:
-                    errors.append("There was an error downloading " + 
-                                  script.name + ".")
-                    print "<font color='red'>Error: " + e.__str__() + "</font>"
-                    
-            final_cleanup(engine)
-            
-            if errors:
-                error_txt = "<b><font color='red'>The following errors occurred:</font></b>"
-                error_txt += "<ul>"
-                for error in errors:
-                    error_txt += "<li><font color='red'>" + error + "</font></li>"
-                error_txt += "</ul>"
-                print error_txt
-            else:
-                print "<b>Done!</b>"
-                
+        final_cleanup(engine)
+        
+        if not error:
             finish = time()
             
             time_diff = finish - start
@@ -102,6 +84,4 @@ class DownloadThread(Thread):
             if len(s.split('.')[0]) < 2:
                 s = "0" + s
             
-            print "<i>Elapsed time: %02d:%02d:%s</i>" % (h, m, s)
-        
-        start_download()
+            print "<b>Done!</b> <i>Elapsed time: %02d:%02d:%s</i>" % (h, m, s)

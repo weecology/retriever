@@ -37,18 +37,15 @@ For more information, visit <a href="http://www.ecologicaldata.org">http://www.e
 
 class ScriptList(wx.HtmlListBox):
     def __init__(self, parent, scripts, style=0):
-        wx.HtmlListBox.__init__(self, parent, -1, style=style)
         self.scripts = scripts
+        self.script_status = dict()
+        wx.HtmlListBox.__init__(self, parent, -1, style=style)
         self.SetItemCount(len(scripts))
         self.Bind(wx.EVT_LISTBOX, self.RefreshMe)
         self.Bind(wx.EVT_LISTBOX_DCLICK, self.Download)
     
     def OnGetItem(self, index):
-        return HtmlScriptSummary(self.scripts[index],
-                                 self.GetSelection()==index,
-                                 index,
-                                 self.Parent.Parent.progress_window,
-                                 self.Parent.Parent.engine)
+        return self.HtmlScriptSummary(index)
 
     def OnLinkClicked(self, n, link):
         if link.GetHref()[:10] == "download:/":
@@ -67,42 +64,53 @@ class ScriptList(wx.HtmlListBox):
         self.RefreshAll()
         
     def Download(self, evt):
-        script = self.scripts[self.GetSelection()] 
-        self.Parent.Parent.progress_window.Download(script)
-        
-        
-def HtmlScriptSummary(script, selected, index, progress_window, engine):
-    desc = "<table><tr><td>"
-    link = None
-    if script in progress_window.queue or (progress_window.worker and
-                                           script in progress_window.worker.scripts):
-        img = "cycle"
-    else:
-        if script in progress_window.errors:
-            link = True
-            img = "error"
-        elif script in progress_window.downloaded or script.exists(engine):
-            img = "downloaded"
+        script = self.scripts[self.GetSelection()]
+        if self.Parent.Parent.progress_window.Download(script):
+            self.SetStatus(script.name, "Waiting...")        
+            
+    def HtmlScriptSummary(self, index):
+        script = self.scripts[index]
+        selected = self.GetSelection() == index
+        progress_window = self.Parent.Parent.progress_window
+        engine = self.Parent.Parent.engine
+        desc = "<table><tr><td>"
+        link = None
+        if script in progress_window.queue or (progress_window.worker and
+                                               script == progress_window.worker.script):
+            img = "cycle"
         else:
-            link = True
-            img = "download"
-    if img:
-        img_tag = "<img src='memory:" + img + ".png' />"
-        desc += ("<a href='download:/" + str(index) + "'>%s</a>" % img_tag
-                 if link else img_tag)
-    desc += "</td><td>"
-    desc += ("<b>" + script.name + "</b>"
-             if selected else script.name)
-    if script.reference_url():
-        desc += "<br /><a href='" + script.reference_url() + "'>" 
-        desc += script.reference_url() + "</a><br />"
-    if selected:
-        if script.addendum:
-            desc += "<p><i>"
-            desc += script.addendum.replace('\n', "<br />")
-            desc += "</i></p>"
-    desc += "</td></tr></table>"
-    return desc
+            if script in progress_window.errors:
+                link = True
+                img = "error"
+            elif script in progress_window.downloaded or script.exists(engine):
+                img = "downloaded"
+            else:
+                link = True
+                img = "download"
+        if img:
+            img_tag = "<img src='memory:" + img + ".png' />"
+            desc += ("<a href='download:/" + str(index) + "'>%s</a>" % img_tag
+                     if link else img_tag)
+        desc += "</td><td>"
+        desc += ("<b>" + script.name + "</b>"
+                 if selected else script.name)
+        if script.reference_url():
+            desc += "<br /><a href='" + script.reference_url() + "'>" 
+            desc += script.reference_url() + "</a><br />"
+        if selected:
+            if script.addendum:
+                desc += "<p><i>"
+                desc += script.addendum.replace('\n', "<br />")
+                desc += "</i></p>"
+        if script.name in self.script_status.keys():
+            desc += "<p>" + self.script_status[script.name] + "</p>"
+        desc += "</td></tr></table>"
+        return desc
+        
+        
+    def SetStatus(self, script, txt):
+        self.script_status[script] = "<p>" + txt + "</p>"
+        self.RefreshAll()
         
         
 class CategoryList(wx.ListBox):
@@ -117,47 +125,50 @@ class CategoryList(wx.ListBox):
         if self.GetSelections():
             selected = self.lists[self.GetSelections()[0]]
             self.Parent.Parent.script_list.Redraw(selected.scripts)
+            
 
-
-class HtmlWindow(wx.html.HtmlWindow):
+class ProgressWindow(wx.html.HtmlWindow):
     def __init__(self, parent, style=0):
         wx.html.HtmlWindow.__init__(self, parent, style=style)
         if "gtk2" in wx.PlatformInfo:
             self.SetStandardFonts()
-    def OnLinkClicked(self, link):
-        wx.LaunchDefaultBrowser(link.GetHref())
-    def SetHtml(self, html):
-        self.SetPage(html)
-        #self.SetBackgroundColour(self.Parent.Parent.bgcolor)
-            
-
-class ProgressWindow(HtmlWindow):
-    dialog = None
-    html = ""
-    worker = None
-    queue = []
-    downloaded = set()
-    errors = set()
-    def __init__(self, parent, style=0):
-        HtmlWindow.__init__(self, parent, style=style)
+        self.dialog = None
+        self.html = ""
+        self.worker = None
+        self.queue = []
+        self.downloaded = set()
+        self.errors = set()
+        self.help_text = """<h2>Welcome to the Database Toolkit!</h2>
+<p>Choose from data categories on the left, and double click a dataset on the right
+to begin your download.</p>"""
         self.timer = wx.Timer(self, -1)
         self.timer.interval = 10
         self.Bind(wx.EVT_TIMER, self.update, self.timer)
         
+    def OnLinkClicked(self, link):
+        wx.LaunchDefaultBrowser(link.GetHref())
+        
+    def SetHtml(self, html):
+        self.html = html
+        self.SetPage(self.help_text + self.html)
+        
     def Download(self, script):
-        self.queue.append(script)
-        self.downloaded.add(script)
-        if script in self.errors:
-            self.errors.remove(script)
-        self.Parent.script_list.RefreshMe(None)
-        if not self.timer.IsRunning() and not self.worker and len(self.queue) < 2:
-            self.timer.Start(self.timer.interval)
+        if not script in self.queue and not (self.worker and self.worker.script == script):
+            self.queue.append(script)
+            self.downloaded.add(script)
+            if script in self.errors:
+                self.errors.remove(script)
+            self.Parent.script_list.RefreshMe(None)
+            if not self.timer.IsRunning() and not self.worker and len(self.queue) < 2:
+                self.timer.Start(self.timer.interval)
+            return True
+        return False
     
     def update(self, evt):
         self.timer.Stop()
         terminate = False
         if self.worker:
-            script = self.worker.scripts[0]
+            script = self.worker.script
             if self.worker.finished() and len(self.worker.output) == 0:
                 self.Parent.SetStatusText("")
                 self.worker = None
@@ -169,7 +180,7 @@ class ProgressWindow(HtmlWindow):
                     if "Error:" in self.worker.output[0] and script in self.downloaded:
                         self.downloaded.remove(script)
                         self.errors.add(script)
-                    if self.write(self.worker.output[0]) == False:
+                    if self.write(self.worker) == False:
                         terminate = True
                     self.worker.output = self.worker.output[1:]
                 #self.gauge.SetValue(100 * ((self.worker.scriptnum) /
@@ -182,12 +193,14 @@ class ProgressWindow(HtmlWindow):
         elif self.queue:
             script = self.queue[0]
             self.queue = self.queue[1:]
-            self.worker = DownloadThread(self.Parent.engine, [script])
+            self.worker = DownloadThread(self.Parent.engine, script)
             self.worker.parent = self
             self.worker.start()
             self.timer.Start(10)
     
-    def write(self, s):
+    def write(self, worker):
+        s = worker.output[0]
+        
         if '\b' in s:
             s = s.replace('\b', '')
             if not self.dialog:
@@ -226,11 +239,11 @@ class ProgressWindow(HtmlWindow):
                 self.dialog.Update(1000, "")
                 self.dialog.Destroy()
                 self.dialog = None
-                
-            if "..." in s:
+            
+            if '...' in s:
                 self.Parent.SetStatusText(s)
             else:
-                self.html += "\n<p>" + s + "</p>"
+                self.Parent.script_list.SetStatus(worker.script.name, s)
                 self.refresh_html()
 
         wx.GetApp().Yield()
