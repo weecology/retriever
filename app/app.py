@@ -1,6 +1,7 @@
 import wx
 from dbtk.app.connect_wizard import ConnectWizard
 from dbtk.app.controls import *
+from dbtk.app.download_manager import DownloadManager
 from dbtk.app.images import globe_icon, cycle, download, downloaded, error
 from dbtk.lib.tools import get_default_connection, get_saved_connection, choose_engine
 from dbtk import ENGINE_LIST
@@ -56,6 +57,8 @@ class Frame(wx.Frame):
         wx.Frame.__init__(self, parent, ID, title,
                           size=(800, 550))
         
+        self.download_manager = DownloadManager(self)
+        
         self.dialog = None
         self.lists = lists
         self.engine = engine
@@ -86,8 +89,6 @@ class Frame(wx.Frame):
         
         # Layout
         self.vsizer = wx.BoxSizer(wx.VERTICAL)
-        self.progress_window = ProgressWindow(self, style=wx.RAISED_BORDER)
-        self.progress_window.SetHtml("")
         self.splitter = wx.SplitterWindow(self, -1)
         
         self.cat_list = CategoryList(self.splitter, -1, style=wx.RAISED_BORDER | wx.LB_SINGLE,
@@ -103,8 +104,6 @@ class Frame(wx.Frame):
         self.splitter.SplitVertically(self.cat_list, self.script_list, 200)
         
         self.vsizer.Add(self.splitter, 3, wx.EXPAND | wx.ALL, 2)
-        self.vsizer.Add(self.progress_window, 1, 
-                        wx.EXPAND | wx. RIGHT | wx.BOTTOM | wx.LEFT, 2)
         
         self.SetSizer(self.vsizer)
         self.vsizer.Layout()
@@ -115,7 +114,7 @@ class Frame(wx.Frame):
         dlg.Destroy()
     
     def Connection(self, evt):
-        if self.progress_window.worker or self.progress_window.queue:
+        if self.download_manager.worker or self.download_manager.queue:
             dlg = wx.MessageDialog(self, 
                                    "You can't change the connection while datasets are downloading.",
                                    style=wx.OK)
@@ -143,26 +142,27 @@ class Frame(wx.Frame):
             except:
                 pass
                 
-            self.progress_window.downloaded = set()
-            self.progress_window.errors = set()
+            self.download_manager.downloaded = set()
+            self.download_manager.errors = set()
+            self.script_list.script_status = dict()
             self.script_list.RefreshMe(None)
             
     def Quit(self, evt):
-        if self.progress_window.worker:
+        if self.download_manager.worker:
             dlg = wx.MessageDialog(self, 
                                    'Your download is still in progress. Are you sure you want to quit?', 
                                    'Quit',
                                    wx.YES | wx.NO)
             result = dlg.ShowModal()
             if result == wx.ID_YES:
-                self.progress_window.worker = None
+                self.download_manager.worker = None
             else:
-                if self.progress_window.dialog:
-                    self.progress_window.dialog.Resume()
-                self.progress_window.timer.Start(self.progress_window.timer.interval)
+                if self.download_manager.dialog:
+                    self.download_manager.dialog.Resume()
+                self.download_manager.timer.Start(self.download_manager.timer.interval)
                 return
                 
-        if self.progress_window.dialog:
-            self.progress_window.dialog.Destroy()
+        if self.download_manager.dialog:
+            self.download_manager.dialog.Destroy()
         
         self.Destroy()
