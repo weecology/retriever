@@ -47,7 +47,7 @@ mkdir linux
 mv *.deb linux/
 mv linux ../../
 mv globe.ico ../
-sudo rm .svn lib/.svn engines/.svn ui/.svn -rf
+sudo rm .svn lib/.svn engines/.svn app/.svn -rf
 
 # build src package
 cd .. # current-release/src
