@@ -17,6 +17,7 @@ class main(DbTk):
         DbTk.__init__(self, **kwargs)
         self.name = "Forest Inventory and Analysis"
         self.shortname = "FIA"
+        self.public = False
         self.ref = "http://fia.fs.fed.us/"
         self.urls = {"main": "http://199.128.173.17/fiadb4-downloads/"}
         self.addendum = """This dataset requires downloading many large files - please be patient."""
