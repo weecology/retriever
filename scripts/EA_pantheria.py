@@ -7,13 +7,11 @@ from dbtk.lib.tools import DbTkTest
 
 VERSION = '0.4'
 
-
-class main(BasicTextTemplate):
-    def __init__(self, **kwargs):
-        BasicTextTemplate.__init__(self, **kwargs)
-        self.name = "Pantheria (Ecological Archives 2008)"
-        self.shortname = "Pantheria"
-        self.urls = {"species": "http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt"}
+SCRIPT = BasicTextTemplate(
+                           name="Pantheria (Ecological Archives 2008)",
+                           shortname="Pantheria",
+                           urls={"species": "http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt"}
+                           )
 
 
 class EAPantheriaTest(DbTkTest):
