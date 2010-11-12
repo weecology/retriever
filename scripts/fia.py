@@ -46,3 +46,6 @@ class main(DbTk):
                                                    [state[0] + "_" + table + ".CSV"])
         
         return engine
+        
+        
+SCRIPT = main()

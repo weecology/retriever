@@ -10,13 +10,11 @@ from dbtk.lib.tools import DbTkTest
 
 VERSION = '0.4'
 
-
-class main(BasicTextTemplate):
-    def __init__(self, **kwargs):
-        BasicTextTemplate.__init__(self, **kwargs)
-        self.name = "Avian Body Size (Ecological Archives 2007)"
-        self.shortname = "AvianBodySize"
-        self.urls = {"species": "http://esapubs.org/archive/ecol/E088/096/avian_ssd_jan07.txt"}
+SCRIPT = BasicTextTemplate(
+                           name="Avian Body Size (Ecological Archives 2007)",
+                           shortname="AvianBodySize",
+                           urls={"species": "http://esapubs.org/archive/ecol/E088/096/avian_ssd_jan07.txt"}
+                           )
 
 
 class EAAvianBodySize2007Test(DbTkTest):

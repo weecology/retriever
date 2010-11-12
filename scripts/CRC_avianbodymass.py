@@ -177,3 +177,6 @@ class main(DbTk):
                 engine.add_to_table()
                         
         return engine
+        
+        
+SCRIPT = main()

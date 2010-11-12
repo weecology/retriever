@@ -154,3 +154,6 @@ class GentryTest(DbTkTest):
                                 "species_id")
                               ],
                               include_pk = True)
+                              
+                              
+SCRIPT = main()
