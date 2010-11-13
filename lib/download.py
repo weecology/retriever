@@ -50,7 +50,7 @@ class DownloadThread(Thread):
         try:
             engine.get_cursor()
         except Exception as e:
-            print "<font color='red'>There was an error with your database connection.</font>" 
+            print "<b><font color='red'>Error: There was an error with your database connection.</font></b>"
             return
         
         # Download script
