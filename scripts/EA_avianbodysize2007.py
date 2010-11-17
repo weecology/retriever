@@ -1,10 +1,3 @@
-"""Database Toolkit for Avian Body Size
-
-Authors: Terje Lislevand, Jordi Figuerola, and Tamas Szekely
-Published: Ecological Archives, 2007
- 
-"""
-
 from dbtk.lib.templates import BasicTextTemplate
 from dbtk.lib.tools import DbTkTest
 
@@ -12,6 +5,7 @@ VERSION = '0.4'
 
 SCRIPT = BasicTextTemplate(
                            name="Avian Body Size (Ecological Archives 2007)",
+                           description="Terje Lislevand, Jordi Figuerola, and Tamás Székely. 2007. Avian body sizes in relation to fecundity, mating system, display behavior, and resource sharing. Ecology 88:1605.",
                            shortname="AvianBodySize",
                            urls={"species": "http://esapubs.org/archive/ecol/E088/096/avian_ssd_jan07.txt"}
                            )
