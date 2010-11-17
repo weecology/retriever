@@ -186,9 +186,15 @@ class Engine():
                            ("references", "refs"),
                            ("long", "lon"),
                            ]
+            replace = [
+                       ("%", "percent"),
+                       ("\xb0", "degrees"),
+                       ]
             for combo in not_allowed:
                 if this_column.lower() == combo[0]:
                     this_column = combo[1]
+            for combo in replace:
+                this_column = this_column.replace(combo[0], combo[1])
             
             if this_column:
                 columns.append([this_column, None])
