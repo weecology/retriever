@@ -10,7 +10,7 @@ categories = ['.'.join(cat.split('.')[:-1]) for cat in os.listdir("categories")
               if cat[-4:] == ".cat"]
 modules = MODULE_LIST()
 scripts = [module.__name__ + "," + module.VERSION for module in modules
-                                                  if module.main().public]
+                                                  if module.SCRIPT.public]
 version_file.write(','.join(categories))
 for script in scripts:
     version_file.write('\n' + script)
