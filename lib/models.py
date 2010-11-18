@@ -69,6 +69,7 @@ class Engine():
     """A generic database system. Specific database platforms will inherit 
     from this class."""
     name = ""
+    instructions = "Enter your database connection information:"
     db = None
     table = None
     connection = None
