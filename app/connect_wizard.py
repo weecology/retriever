@@ -45,7 +45,7 @@ class ConnectWizard(wx.wizard.Wizard):
         
         self.pages.append(ConnectPage(self, 
                                       "Connection Info", 
-                                      "Please enter your connection information:"))
+                                      ""))
 
         self.TITLE, self.CHOOSEDB, self.CONNECTION = [self.pages[i] 
                                                       for i in range(len(self.pages))]
@@ -135,7 +135,9 @@ class ConnectPage(TitledPage):
                     if db.name == self.sel:
                         self.engine = db
                 self.fields.Clear(True)     
-                self.fields = wx.BoxSizer(wx.VERTICAL)                
+                self.fields = wx.BoxSizer(wx.VERTICAL)
+                if self.engine.instructions:
+                    self.fields.Add(StaticText(self, -1, '\n' + self.engine.instructions + '\n'))
                 self.fieldset = dict()
                 self.option = dict()
                 saved_opts = get_saved_connection(self.engine.name)

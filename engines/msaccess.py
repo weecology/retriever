@@ -5,6 +5,7 @@ from dbtk.lib.models import Engine, no_cleanup
 class engine(Engine):
     """Engine instance for Microsoft Access."""
     name = "Microsoft Access"
+    instructions = """Create a database in Microsoft Access, then select it using this dialog."""
     abbreviation = "a"
     datatypes = ["AUTOINCREMENT",
                  "INTEGER",
