@@ -9,7 +9,7 @@ Dataset published by Ernest et al. 2009 in Ecological Archives.
 from dbtk.lib.templates import BasicTextTemplate
 from dbtk.lib.models import Table, Cleanup, correct_invalid_value
 
-VERSION = '0.4'
+VERSION = '0.4.1'
 
 SCRIPT = BasicTextTemplate(
                            name="Portal Project Mammals (Ecological Archives 2002)",

@@ -9,7 +9,7 @@ from decimal import Decimal
 from dbtk.lib.templates import DbTk
 from dbtk.lib.models import Table, Cleanup, no_cleanup
 
-VERSION = '0.4'
+VERSION = '0.4.1'
 
 class main(DbTk):
     def __init__(self, **kwargs):
