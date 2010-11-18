@@ -125,24 +125,25 @@ class Engine():
             self.download_file(url, filename)
             if not self.keep_raw_data:
                 need_to_delete = True
-                
-        source = self.skip_rows(self.table.column_names_row - 1, 
-                                open(self.format_filename(filename), "rb"))
-        header = source.readline()
-        source.close()
         
-        source = self.skip_rows(self.table.header_rows, 
-                                open(self.format_filename(filename), "rb"))
-        
-        if pk is None:
-            self.table.columns = [("record_id", ("pk-auto",))]
-        else:
-            self.table.columns = []
-            self.table.contains_pk = True
-        
-        columns, column_values = self.auto_get_columns(header)
-        
-        self.auto_get_datatypes(pk, source, columns, column_values)
+        if not self.table.columns:
+            source = self.skip_rows(self.table.column_names_row - 1, 
+                                    open(self.format_filename(filename), "rb"))
+            header = source.readline()
+            source.close()
+            
+            source = self.skip_rows(self.table.header_rows, 
+                                    open(self.format_filename(filename), "rb"))
+            
+            if pk is None:
+                self.table.columns = [("record_id", ("pk-auto",))]
+            else:
+                self.table.columns = []
+                self.table.contains_pk = True
+            
+            columns, column_values = self.auto_get_columns(header)
+            
+            self.auto_get_datatypes(pk, source, columns, column_values)
         
         self.create_table()
         
