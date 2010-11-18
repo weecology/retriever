@@ -1,7 +1,7 @@
 from dbtk.lib.templates import BasicTextTemplate
 from dbtk.lib.tools import DbTkTest
 
-VERSION = '0.4'
+VERSION = '0.4.1'
 
 SCRIPT = BasicTextTemplate(
                            name="Mammal Life History Database (Ecological Archives 2003)",

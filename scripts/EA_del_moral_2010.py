@@ -5,7 +5,7 @@ Helens, Washington. Ecology 91:2185.
 
 from dbtk.lib.templates import BasicTextTemplate
 
-VERSION = '0.4'
+VERSION = '0.4.1'
 
 SCRIPT = BasicTextTemplate(
                            name="Vegetation plots - del Moral, 2010",

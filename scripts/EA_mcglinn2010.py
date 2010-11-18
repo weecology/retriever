@@ -1,6 +1,6 @@
 from dbtk.lib.templates import BasicTextTemplate
 
-VERSION = '0.4'
+VERSION = '0.4.1'
 
 SCRIPT = BasicTextTemplate(
                            name="Vascular plant composition - McGlinn, et al., 2010",
