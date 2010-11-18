@@ -130,9 +130,12 @@ def check_for_updates():
                     pass
                     
                 if need_to_download:
-                    os.remove(os.path.join("scripts", script_name + ".py"))
-                    download_from_repository("scripts/" + script_name + ".py",
-                                             "scripts/" + script_name + ".py")
+                    try:
+                        os.remove(os.path.join("scripts", script_name + ".py"))
+                        download_from_repository("scripts/" + script_name + ".py",
+                                                 "scripts/" + script_name + ".py")
+                    except:
+                        pass
         
     if more_recent(latest, VERSION):
         if running_from[-4:] == ".exe":
