@@ -13,7 +13,7 @@ from dbtk.lib.templates import DbTk
 from dbtk.lib.models import Table, Cleanup, no_cleanup
 from dbtk.lib.excel import Excel
 
-VERSION = '0.4'
+VERSION = '0.4.1'
 
 
 class main(DbTk):
@@ -177,3 +177,6 @@ class main(DbTk):
                 engine.add_to_table()
                         
         return engine
+        
+        
+SCRIPT = main()

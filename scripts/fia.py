@@ -9,7 +9,7 @@ from decimal import Decimal
 from dbtk.lib.templates import DbTk
 from dbtk.lib.models import Table, Cleanup, no_cleanup
 
-VERSION = '0.4'
+VERSION = '0.4.1'
 
 
 class main(DbTk):
@@ -46,3 +46,6 @@ class main(DbTk):
                                                    [state[0] + "_" + table + ".CSV"])
         
         return engine
+        
+        
+SCRIPT = main()

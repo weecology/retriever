@@ -69,6 +69,7 @@ class Engine():
     """A generic database system. Specific database platforms will inherit 
     from this class."""
     name = ""
+    instructions = "Enter your database connection information:"
     db = None
     table = None
     connection = None
@@ -124,24 +125,25 @@ class Engine():
             self.download_file(url, filename)
             if not self.keep_raw_data:
                 need_to_delete = True
-                
-        source = self.skip_rows(self.table.column_names_row - 1, 
-                                open(self.format_filename(filename), "rb"))
-        header = source.readline()
-        source.close()
         
-        source = self.skip_rows(self.table.header_rows, 
-                                open(self.format_filename(filename), "rb"))
-        
-        if pk is None:
-            self.table.columns = [("record_id", ("pk-auto",))]
-        else:
-            self.table.columns = []
-            self.table.contains_pk = True
-        
-        columns, column_values = self.auto_get_columns(header)
-        
-        self.auto_get_datatypes(pk, source, columns, column_values)
+        if not self.table.columns:
+            source = self.skip_rows(self.table.column_names_row - 1, 
+                                    open(self.format_filename(filename), "rb"))
+            header = source.readline()
+            source.close()
+            
+            source = self.skip_rows(self.table.header_rows, 
+                                    open(self.format_filename(filename), "rb"))
+            
+            if pk is None:
+                self.table.columns = [("record_id", ("pk-auto",))]
+            else:
+                self.table.columns = []
+                self.table.contains_pk = True
+            
+            columns, column_values = self.auto_get_columns(header)
+            
+            self.auto_get_datatypes(pk, source, columns, column_values)
         
         self.create_table()
         
@@ -186,9 +188,15 @@ class Engine():
                            ("references", "refs"),
                            ("long", "lon"),
                            ]
+            replace = [
+                       ("%", "percent"),
+                       ("\xb0", "degrees"),
+                       ]
             for combo in not_allowed:
                 if this_column.lower() == combo[0]:
                     this_column = combo[1]
+            for combo in replace:
+                this_column = this_column.replace(combo[0], combo[1])
             
             if this_column:
                 columns.append([this_column, None])

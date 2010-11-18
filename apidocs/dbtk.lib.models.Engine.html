@@ -1,728 +1,194 @@
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-  "DTD/xhtml1-strict.dtd">
-<html>
-  <head>
-    <title>dbtk.lib.models.Engine : API documentation</title>
-    <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
-    <link href="apidocs.css" type="text/css" rel="stylesheet" />
-    
-    
-  </head>
-  <body>
-    <h1 class="class">d.l.m.Engine : class documentation</h1>
-    <p>
-      <span id="part">Part of <a href="dbtk.html">dbtk</a>.<a href="dbtk.lib.html">lib</a>.<a href="dbtk.lib.models.html">models</a></span>
-      
-      <a href="classIndex.html#dbtk.lib.models.Engine">View In Hierarchy</a>
-    </p>
-    <div>
-      <p>Known subclasses: <a href="dbtk.engines.msaccess.engine.html">dbtk.engines.msaccess.engine</a>, <a href="dbtk.engines.mysql.engine.html">dbtk.engines.mysql.engine</a>, <a href="dbtk.engines.postgres.engine.html">dbtk.engines.postgres.engine</a>, <a href="dbtk.engines.sqlite.engine.html">dbtk.engines.sqlite.engine</a></p>
-    </div>
-    <div>A generic database system. Specific database platforms will inherit from
-this class.<table class="fieldTable"></table></div>
-
-    
-    
-    <div id="splitTables">
-      <table class="children sortable" id="id18">
-  
-  
-<tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#add_to_table">add_to_table</a></td>
-    <td><span>This function adds data to a table from one or more lines specified</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#auto_create_table">auto_create_table</a></td>
-    <td><span>Creates a table automatically by analyzing a data source and</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#auto_get_columns">auto_get_columns</a></td>
-    <td><span>Finds the delimiter and column names from the header row.</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#auto_get_datatypes">auto_get_datatypes</a></td>
-    <td><span>Determines data types for each column.</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#convert_data_type">convert_data_type</a></td>
-    <td><span>Converts DBTK generic data types to database platform specific data</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#create_db">create_db</a></td>
-    <td><span>Creates a new database based on settings supplied in Database object</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#create_db_statement">create_db_statement</a></td>
-    <td><span>Returns a SQL statement to create a database.</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#create_raw_data_dir">create_raw_data_dir</a></td>
-    <td><span>Checks to see if the archive directory exists and creates it if</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#create_table">create_table</a></td>
-    <td><span>Creates a new database table based on settings supplied in Table</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#create_table_statement">create_table_statement</a></td>
-    <td><span>Returns a SQL statement to create a table.</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#download_file">download_file</a></td>
-    <td><span>Downloads a file to the raw data directory.</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#download_files_from_archive">download_files_from_archive</a></td>
-    <td><span>Downloads one or more files from an archive into the raw data</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#drop_statement">drop_statement</a></td>
-    <td><span>Returns a drop table or database SQL statement.</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#extract_values">extract_values</a></td>
-    <td><span>Given a line of data, this function returns a list of the individual</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#final_cleanup">final_cleanup</a></td>
-    <td><span>Close the database connection.</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#format_column_name">format_column_name</a></td>
-    <td><span class="undocumented">Undocumented</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#format_data_dir">format_data_dir</a></td>
-    <td><span>Returns the correctly formatted raw data directory location.</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#format_filename">format_filename</a></td>
-    <td><span>Returns the full path of a file in the archive directory.</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#format_insert_value">format_insert_value</a></td>
-    <td><span>Formats a value for an insert statement, for example by surrounding</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#get_input">get_input</a></td>
-    <td><span>Manually get user input for connection information when script is</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#get_insert_columns">get_insert_columns</a></td>
-    <td><span>Gets a set of column names for insert statements.</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#insert_data_from_archive">insert_data_from_archive</a></td>
-    <td><span>Insert data from files located in an online archive. This function</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#insert_data_from_file">insert_data_from_file</a></td>
-    <td><span>The default function to insert data from a file. This function</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#insert_data_from_url">insert_data_from_url</a></td>
-    <td><span>Insert data from a web resource, such as a text file.</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#insert_statement">insert_statement</a></td>
-    <td><span>Returns a SQL statement to insert a set of values.</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#skip_rows">skip_rows</a></td>
-    <td><span>Skip over the header lines by reading them before processing.</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#table_exists">table_exists</a></td>
-    <td><span>This can be overridden to return True if a table exists. It</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#tablename">tablename</a></td>
-    <td><span>Returns the full tablename in the format db.table.</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#values_from_line">values_from_line</a></td>
-    <td><span class="undocumented">Undocumented</span></td>
-  </tr>
-  
-</table>
-      
-      
-    </div>
-    
-    
-    
-
-    <div class="function">
-  <a name="dbtk.lib.models.Engine.add_to_table">
-    
-  </a>
-  <a name="add_to_table">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    add_to_table(self):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div>This function adds data to a table from one or more lines specified in 
-engine.table.source.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.auto_create_table">
-    
-  </a>
-  <a name="auto_create_table">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    auto_create_table(self, table, url=None, filename=None, pk=None):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div>Creates a table automatically by analyzing a data source and predicting 
-column names, data types, delimiter, etc.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.auto_get_columns">
-    
-  </a>
-  <a name="auto_get_columns">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    auto_get_columns(self, header):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div>Finds the delimiter and column names from the header row.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.auto_get_datatypes">
-    
-  </a>
-  <a name="auto_get_datatypes">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    auto_get_datatypes(self, pk, source, columns, column_values):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div>Determines data types for each column.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.convert_data_type">
-    
-  </a>
-  <a name="convert_data_type">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    convert_data_type(self, datatype):
-    
-  </div>
-  <div class="functionBody">
-    <div class="interfaceinfo">overridden in <a href="dbtk.engines.msaccess.engine.html">dbtk.engines.msaccess.engine</a></div>
-    <div>Converts DBTK generic data types to database platform specific data 
-types<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.create_db">
-    
-  </a>
-  <a name="create_db">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    create_db(self):
-    
-  </div>
-  <div class="functionBody">
-    <div class="interfaceinfo">overridden in <a href="dbtk.engines.msaccess.engine.html">dbtk.engines.msaccess.engine</a>, <a href="dbtk.engines.postgres.engine.html">dbtk.engines.postgres.engine</a>, <a href="dbtk.engines.sqlite.engine.html">dbtk.engines.sqlite.engine</a></div>
-    <div>Creates a new database based on settings supplied in Database object 
-engine.db<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.create_db_statement">
-    
-  </a>
-  <a name="create_db_statement">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    create_db_statement(self):
-    
-  </div>
-  <div class="functionBody">
-    <div class="interfaceinfo">overridden in <a href="dbtk.engines.mysql.engine.html">dbtk.engines.mysql.engine</a>, <a href="dbtk.engines.postgres.engine.html">dbtk.engines.postgres.engine</a></div>
-    <div>Returns a SQL statement to create a database.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.create_raw_data_dir">
-    
-  </a>
-  <a name="create_raw_data_dir">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    create_raw_data_dir(self):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div>Checks to see if the archive directory exists and creates it if 
-necessary.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.create_table">
-    
-  </a>
-  <a name="create_table">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    create_table(self):
-    
-  </div>
-  <div class="functionBody">
-    <div class="interfaceinfo">overridden in <a href="dbtk.engines.postgres.engine.html">dbtk.engines.postgres.engine</a></div>
-    <div>Creates a new database table based on settings supplied in Table object 
-engine.table.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.create_table_statement">
-    
-  </a>
-  <a name="create_table_statement">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    create_table_statement(self):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div>Returns a SQL statement to create a table.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.download_file">
-    
-  </a>
-  <a name="download_file">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    download_file(self, url, filename):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div>Downloads a file to the raw data directory.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.download_files_from_archive">
-    
-  </a>
-  <a name="download_files_from_archive">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    download_files_from_archive(self, url, filenames):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div>Downloads one or more files from an archive into the raw data 
-directory.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.drop_statement">
-    
-  </a>
-  <a name="drop_statement">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    drop_statement(self, objecttype, objectname):
-    
-  </div>
-  <div class="functionBody">
-    <div class="interfaceinfo">overridden in <a href="dbtk.engines.msaccess.engine.html">dbtk.engines.msaccess.engine</a>, <a href="dbtk.engines.postgres.engine.html">dbtk.engines.postgres.engine</a></div>
-    <div>Returns a drop table or database SQL statement.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.extract_values">
-    
-  </a>
-  <a name="extract_values">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    extract_values(self, line):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div>Given a line of data, this function returns a list of the individual 
-data values.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.final_cleanup">
-    
-  </a>
-  <a name="final_cleanup">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    final_cleanup(self):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div>Close the database connection.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.format_column_name">
-    
-  </a>
-  <a name="format_column_name">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    format_column_name(self, column):
-    
-  </div>
-  <div class="functionBody">
-    <div class="interfaceinfo">overridden in <a href="dbtk.engines.msaccess.engine.html">dbtk.engines.msaccess.engine</a></div>
-    <div class="undocumented">Undocumented</div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.format_data_dir">
-    
-  </a>
-  <a name="format_data_dir">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    format_data_dir(self):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div>Returns the correctly formatted raw data directory location.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.format_filename">
-    
-  </a>
-  <a name="format_filename">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    format_filename(self, filename):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div>Returns the full path of a file in the archive directory.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.format_insert_value">
-    
-  </a>
-  <a name="format_insert_value">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    format_insert_value(self, value):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div>Formats a value for an insert statement, for example by surrounding it 
-in single quotes.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.get_input">
-    
-  </a>
-  <a name="get_input">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    get_input(self):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div>Manually get user input for connection information when script is run 
-from terminal.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.get_insert_columns">
-    
-  </a>
-  <a name="get_insert_columns">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    get_insert_columns(self, join=True):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div>Gets a set of column names for insert statements.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.insert_data_from_archive">
-    
-  </a>
-  <a name="insert_data_from_archive">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    insert_data_from_archive(self, url, filenames):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div>Insert data from files located in an online archive. This function 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+        <html><head>
+        <link rel="stylesheet" type="text/css" href="apidocs.css"/>
+        <title>API docs for &ldquo;dbtk.lib.models.Engine&rdquo;</title>
+        </head>
+        <body><h1 class="class">Class d.l.m.Engine:</h1><span id="part">Part of <a href="dbtk.lib.models.html">dbtk.lib.models</a></span><p>known subclasses: <a href="dbtk.engines.sqlite.engine.html">dbtk.engines.sqlite.engine</a>, <a href="dbtk.engines.msaccess.engine.html">dbtk.engines.msaccess.engine</a>, <a href="dbtk.engines.postgres.engine.html">dbtk.engines.postgres.engine</a>, <a href="dbtk.engines.mysql.engine.html">dbtk.engines.mysql.engine</a></p><div class="toplevel"><div><p>A generic database system. Specific database platforms will inherit from
+this class.</p>
+</div></div><table class="children"><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.add_to_table">add_to_table</a></td><td><div><p>This function adds data to a table from one or more lines specified</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.auto_create_table">auto_create_table</a></td><td><div><p>Creates a table automatically by analyzing a data source and</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.auto_get_columns">auto_get_columns</a></td><td><div><p>Finds the delimiter and column names from the header row.</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.auto_get_datatypes">auto_get_datatypes</a></td><td><div><p>Determines data types for each column.</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.convert_data_type">convert_data_type</a></td><td><div><p>Converts DBTK generic data types to database platform specific data</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.create_db">create_db</a></td><td><div><p>Creates a new database based on settings supplied in Database object</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.create_db_statement">create_db_statement</a></td><td><div><p>Returns a SQL statement to create a database.</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.create_raw_data_dir">create_raw_data_dir</a></td><td><div><p>Checks to see if the archive directory exists and creates it if</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.create_table">create_table</a></td><td><div><p>Creates a new database table based on settings supplied in Table</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.create_table_statement">create_table_statement</a></td><td><div><p>Returns a SQL statement to create a table.</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.download_file">download_file</a></td><td><div><p>Downloads a file to the raw data directory.</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.download_files_from_archive">download_files_from_archive</a></td><td><div><p>Downloads one or more files from an archive into the raw data</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.drop_statement">drop_statement</a></td><td><div><p>Returns a drop table or database SQL statement.</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.extract_values">extract_values</a></td><td><div><p>Given a line of data, this function returns a list of the individual</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.final_cleanup">final_cleanup</a></td><td><div><p>Close the database connection.</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.format_column_name">format_column_name</a></td><td><span class="undocumented">Undocumented</span></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.format_data_dir">format_data_dir</a></td><td><div><p>Returns the correctly formatted raw data directory location.</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.format_filename">format_filename</a></td><td><div><p>Returns the full path of a file in the archive directory.</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.format_insert_value">format_insert_value</a></td><td><div><p>Formats a value for an insert statement, for example by surrounding</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.get_input">get_input</a></td><td><div><p>Manually get user input for connection information when script is</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.get_insert_columns">get_insert_columns</a></td><td><div><p>Gets a set of column names for insert statements.</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.insert_data_from_archive">insert_data_from_archive</a></td><td><div><p>Insert data from files located in an online archive. This function</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.insert_data_from_file">insert_data_from_file</a></td><td><div><p>The default function to insert data from a file. This function</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.insert_data_from_url">insert_data_from_url</a></td><td><div><p>Insert data from a web resource, such as a text file.</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.insert_statement">insert_statement</a></td><td><div><p>Returns a SQL statement to insert a set of values.</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.skip_rows">skip_rows</a></td><td><div><p>Skip over the header lines by reading them before processing.</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.table_exists">table_exists</a></td><td><div><p>This can be overridden to return True if a table exists. It</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.tablename">tablename</a></td><td><div><p>Returns the full tablename in the format db.table.</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.models.Engine.values_from_line">values_from_line</a></td><td><span class="undocumented">Undocumented</span></td></tr></table>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.add_to_table">add_to_table(self):</a></div>
+            <div class="functionBody"><div><p>This function adds data to a table from one or more lines specified in 
+engine.table.source.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.auto_create_table">auto_create_table(self, table, url=None, filename=None, pk=None):</a></div>
+            <div class="functionBody"><div><p>Creates a table automatically by analyzing a data source and predicting 
+column names, data types, delimiter, etc.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.auto_get_columns">auto_get_columns(self, header):</a></div>
+            <div class="functionBody"><div><p>Finds the delimiter and column names from the header row.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.auto_get_datatypes">auto_get_datatypes(self, pk, source, columns, column_values):</a></div>
+            <div class="functionBody"><div><p>Determines data types for each column.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.convert_data_type">convert_data_type(self, datatype):</a></div>
+            <div class="functionBody"><div><p>Converts DBTK generic data types to database platform specific data 
+types</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.create_db">create_db(self):</a></div>
+            <div class="functionBody"><div><p>Creates a new database based on settings supplied in Database object 
+engine.db</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.create_db_statement">create_db_statement(self):</a></div>
+            <div class="functionBody"><div><p>Returns a SQL statement to create a database.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.create_raw_data_dir">create_raw_data_dir(self):</a></div>
+            <div class="functionBody"><div><p>Checks to see if the archive directory exists and creates it if 
+necessary.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.create_table">create_table(self):</a></div>
+            <div class="functionBody"><div><p>Creates a new database table based on settings supplied in Table object 
+engine.table.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.create_table_statement">create_table_statement(self):</a></div>
+            <div class="functionBody"><div><p>Returns a SQL statement to create a table.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.download_file">download_file(self, url, filename):</a></div>
+            <div class="functionBody"><div><p>Downloads a file to the raw data directory.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.download_files_from_archive">download_files_from_archive(self, url, filenames):</a></div>
+            <div class="functionBody"><div><p>Downloads one or more files from an archive into the raw data 
+directory.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.drop_statement">drop_statement(self, objecttype, objectname):</a></div>
+            <div class="functionBody"><div><p>Returns a drop table or database SQL statement.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.extract_values">extract_values(self, line):</a></div>
+            <div class="functionBody"><div><p>Given a line of data, this function returns a list of the individual 
+data values.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.final_cleanup">final_cleanup(self):</a></div>
+            <div class="functionBody"><div><p>Close the database connection.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.format_column_name">format_column_name(self, column):</a></div>
+            <div class="functionBody"><div class="undocumented">Undocumented</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.format_data_dir">format_data_dir(self):</a></div>
+            <div class="functionBody"><div><p>Returns the correctly formatted raw data directory location.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.format_filename">format_filename(self, filename):</a></div>
+            <div class="functionBody"><div><p>Returns the full path of a file in the archive directory.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.format_insert_value">format_insert_value(self, value):</a></div>
+            <div class="functionBody"><div><p>Formats a value for an insert statement, for example by surrounding it 
+in single quotes.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.get_input">get_input(self):</a></div>
+            <div class="functionBody"><div><p>Manually get user input for connection information when script is run 
+from terminal.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.get_insert_columns">get_insert_columns(self, join=True):</a></div>
+            <div class="functionBody"><div><p>Gets a set of column names for insert statements.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.insert_data_from_archive">insert_data_from_archive(self, url, filenames):</a></div>
+            <div class="functionBody"><div><p>Insert data from files located in an online archive. This function 
 extracts the file, inserts the data, and deletes the file if raw data 
-archiving is not set.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.insert_data_from_file">
-    
-  </a>
-  <a name="insert_data_from_file">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    insert_data_from_file(self, filename):
-    
-  </div>
-  <div class="functionBody">
-    <div class="interfaceinfo">overridden in <a href="dbtk.engines.msaccess.engine.html">dbtk.engines.msaccess.engine</a>, <a href="dbtk.engines.mysql.engine.html">dbtk.engines.mysql.engine</a>, <a href="dbtk.engines.postgres.engine.html">dbtk.engines.postgres.engine</a></div>
-    <div>The default function to insert data from a file. This function simply 
+archiving is not set.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.insert_data_from_file">insert_data_from_file(self, filename):</a></div>
+            <div class="functionBody"><div><p>The default function to insert data from a file. This function simply 
 inserts the data row by row. Database platforms with support for inserting 
-bulk data from files can override this function.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.insert_data_from_url">
-    
-  </a>
-  <a name="insert_data_from_url">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    insert_data_from_url(self, url):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div>Insert data from a web resource, such as a text file.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.insert_statement">
-    
-  </a>
-  <a name="insert_statement">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    insert_statement(self, values):
-    
-  </div>
-  <div class="functionBody">
-    <div class="interfaceinfo">overridden in <a href="dbtk.engines.postgres.engine.html">dbtk.engines.postgres.engine</a></div>
-    <div>Returns a SQL statement to insert a set of values.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.skip_rows">
-    
-  </a>
-  <a name="skip_rows">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    skip_rows(self, rows, source):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div>Skip over the header lines by reading them before processing.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.table_exists">
-    
-  </a>
-  <a name="table_exists">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    table_exists(self, dbname, tablename):
-    
-  </div>
-  <div class="functionBody">
-    <div class="interfaceinfo">overridden in <a href="dbtk.engines.mysql.engine.html">dbtk.engines.mysql.engine</a>, <a href="dbtk.engines.postgres.engine.html">dbtk.engines.postgres.engine</a>, <a href="dbtk.engines.sqlite.engine.html">dbtk.engines.sqlite.engine</a></div>
-    <div>This can be overridden to return True if a table exists. It returns 
-False by default.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.tablename">
-    
-  </a>
-  <a name="tablename">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    tablename(self):
-    
-  </div>
-  <div class="functionBody">
-    <div class="interfaceinfo">overridden in <a href="dbtk.engines.msaccess.engine.html">dbtk.engines.msaccess.engine</a>, <a href="dbtk.engines.sqlite.engine.html">dbtk.engines.sqlite.engine</a></div>
-    <div>Returns the full tablename in the format db.table.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.models.Engine.values_from_line">
-    
-  </a>
-  <a name="values_from_line">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    values_from_line(self, line):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div class="undocumented">Undocumented</div>
-  </div>
-</div>
-    <address>
-      <a href="index.html">API Documentation</a> for dbtk, generated by <a href="http://codespeak.net/~mwh/pydoctor/">pydoctor</a> at 2010-11-11 14:29:52.
-    </address>
-  </body>
-</html>
+bulk data from files can override this function.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.insert_data_from_url">insert_data_from_url(self, url):</a></div>
+            <div class="functionBody"><div><p>Insert data from a web resource, such as a text file.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.insert_statement">insert_statement(self, values):</a></div>
+            <div class="functionBody"><div><p>Returns a SQL statement to insert a set of values.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.skip_rows">skip_rows(self, rows, source):</a></div>
+            <div class="functionBody"><div><p>Skip over the header lines by reading them before processing.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.table_exists">table_exists(self, dbname, tablename):</a></div>
+            <div class="functionBody"><div><p>This can be overridden to return True if a table exists. It returns 
+False by default.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.tablename">tablename(self):</a></div>
+            <div class="functionBody"><div><p>Returns the full tablename in the format db.table.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.models.Engine.values_from_line">values_from_line(self, line):</a></div>
+            <div class="functionBody"><div class="undocumented">Undocumented</div></div>
+            </div></body>
+        

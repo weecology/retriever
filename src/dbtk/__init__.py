@@ -9,7 +9,7 @@ import os
 import imp
 
 
-VERSION = '0.4'
+VERSION = '0.4.1'
 
 REPOSITORY = 'http://www.ecologicaldata.org/dbtk/'
 
@@ -33,7 +33,7 @@ def MODULE_LIST():
 
 
 def DBTK_LIST():    
-    return [module.main() for module in MODULE_LIST()]
+    return [module.SCRIPT for module in MODULE_LIST()]
 
 
 def ENGINE_LIST():

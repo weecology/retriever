@@ -1,239 +1,54 @@
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-  "DTD/xhtml1-strict.dtd">
-<html>
-  <head>
-    <title>dbtk.lib.tools : API documentation</title>
-    <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
-    <link href="apidocs.css" type="text/css" rel="stylesheet" />
-    
-    
-  </head>
-  <body>
-    <h1 class="module">d.l.tools : module documentation</h1>
-    <p>
-      <span id="part">Part of <a href="dbtk.html">dbtk</a>.<a href="dbtk.lib.html">lib</a></span>
-      
-      
-    </p>
-    <div>
-      
-    </div>
-    <div>Database Toolkit Tools</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+        <html><head>
+        <link rel="stylesheet" type="text/css" href="apidocs.css"/>
+        <title>API docs for &ldquo;dbtk.lib.tools&rdquo;</title>
+        </head>
+        <body><h1 class="module">Module d.l.tools</h1><span id="part">Part of <a href="dbtk.lib.html">dbtk.lib</a></span><div class="toplevel"><div><p>Database Toolkit Tools</p>
 <p>This module contains miscellaneous classes and functions used in DBTK 
-scripts.<table class="fieldTable"></table></div>
-
-    
-    
-    <div id="splitTables">
-      <table class="children sortable" id="id6">
-  
-  
-<tr class="class">
-    
-    
-    <td>Class</td>
-    <td><a href="dbtk.lib.tools.DbTkTest.html">DbTkTest</a></td>
-    <td><span class="undocumented">No class docstring; 2/2 methods documented</span></td>
-  </tr><tr class="function">
-    
-    
-    <td>Function</td>
-    <td><a href="dbtk.lib.tools.html#get_opts">get_opts</a></td>
-    <td><span>Checks for command line arguments</span></td>
-  </tr><tr class="function">
-    
-    
-    <td>Function</td>
-    <td><a href="dbtk.lib.tools.html#getmd5">getmd5</a></td>
-    <td><span>Get MD5 value of a set of lines.</span></td>
-  </tr><tr class="function">
-    
-    
-    <td>Function</td>
-    <td><a href="dbtk.lib.tools.html#checkagainstfile">checkagainstfile</a></td>
-    <td><span>Checks a set of lines against a file, and prints all lines that 
-don't</span></td>
-  </tr><tr class="function">
-    
-    
-    <td>Function</td>
-    <td><a href="dbtk.lib.tools.html#final_cleanup">final_cleanup</a></td>
-    <td><span>Perform final cleanup operations after all scripts have run.</span></td>
-  </tr><tr class="function">
-    
-    
-    <td>Function</td>
-    <td><a href="dbtk.lib.tools.html#get_saved_connection">get_saved_connection</a></td>
-    <td><span class="undocumented">Undocumented</span></td>
-  </tr><tr class="function">
-    
-    
-    <td>Function</td>
-    <td><a href="dbtk.lib.tools.html#save_connection">save_connection</a></td>
-    <td><span class="undocumented">Undocumented</span></td>
-  </tr><tr class="function">
-    
-    
-    <td>Function</td>
-    <td><a href="dbtk.lib.tools.html#get_default_connection">get_default_connection</a></td>
-    <td><span class="undocumented">Undocumented</span></td>
-  </tr><tr class="function">
-    
-    
-    <td>Function</td>
-    <td><a href="dbtk.lib.tools.html#choose_engine">choose_engine</a></td>
-    <td><span>Prompts the user to select a database engine</span></td>
-  </tr>
-  
-</table>
-      
-      
-    </div>
-    
-    
-    
-
-    <div class="function">
-  <a name="dbtk.lib.tools.get_opts">
-    
-  </a>
-  <a name="get_opts">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    get_opts():
-    
-  </div>
-  <div class="functionBody">
-    
-    <div>Checks for command line arguments<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.tools.getmd5">
-    
-  </a>
-  <a name="getmd5">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    getmd5(lines):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div>Get MD5 value of a set of lines.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.tools.checkagainstfile">
-    
-  </a>
-  <a name="checkagainstfile">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    checkagainstfile(lines, filename):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div>Checks a set of lines against a file, and prints all lines that don't 
-match.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.tools.final_cleanup">
-    
-  </a>
-  <a name="final_cleanup">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    final_cleanup(engine):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div>Perform final cleanup operations after all scripts have run.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.tools.get_saved_connection">
-    
-  </a>
-  <a name="get_saved_connection">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    get_saved_connection(engine_name):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div class="undocumented">Undocumented</div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.tools.save_connection">
-    
-  </a>
-  <a name="save_connection">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    save_connection(engine_name, values_dict):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div class="undocumented">Undocumented</div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.tools.get_default_connection">
-    
-  </a>
-  <a name="get_default_connection">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    get_default_connection():
-    
-  </div>
-  <div class="functionBody">
-    
-    <div class="undocumented">Undocumented</div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.lib.tools.choose_engine">
-    
-  </a>
-  <a name="choose_engine">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    choose_engine(opts):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div>Prompts the user to select a database engine<table class="fieldTable"></table></div>
-  </div>
-</div>
-    <address>
-      <a href="index.html">API Documentation</a> for dbtk, generated by <a href="http://codespeak.net/~mwh/pydoctor/">pydoctor</a> at 2010-11-11 14:29:52.
-    </address>
-  </body>
-</html>
+scripts.</p>
+</div></div><table class="children"><tr class="class"><td>Class</td><td><a href="dbtk.lib.tools.DbTkTest.html">DbTkTest</a></td><td><span class="undocumented">Undocumented</span></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.tools.get_opts">get_opts</a></td><td><div><p>Checks for command line arguments</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.tools.getmd5">getmd5</a></td><td><div><p>Get MD5 value of a set of lines.</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.tools.checkagainstfile">checkagainstfile</a></td><td><div><p>Checks a set of lines against a file, and prints all lines that 
+don't</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.tools.final_cleanup">final_cleanup</a></td><td><div><p>Perform final cleanup operations after all scripts have run.</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.tools.get_saved_connection">get_saved_connection</a></td><td><span class="undocumented">Undocumented</span></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.tools.save_connection">save_connection</a></td><td><span class="undocumented">Undocumented</span></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.tools.get_default_connection">get_default_connection</a></td><td><span class="undocumented">Undocumented</span></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.lib.tools.choose_engine">choose_engine</a></td><td><div><p>Prompts the user to select a database engine</p>
+</div></td></tr></table>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.tools.get_opts">get_opts():</a></div>
+            <div class="functionBody"><div><p>Checks for command line arguments</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.tools.getmd5">getmd5(lines):</a></div>
+            <div class="functionBody"><div><p>Get MD5 value of a set of lines.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.tools.checkagainstfile">checkagainstfile(lines, filename):</a></div>
+            <div class="functionBody"><div><p>Checks a set of lines against a file, and prints all lines that don't 
+match.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.tools.final_cleanup">final_cleanup(engine):</a></div>
+            <div class="functionBody"><div><p>Perform final cleanup operations after all scripts have run.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.tools.get_saved_connection">get_saved_connection(engine_name):</a></div>
+            <div class="functionBody"><div class="undocumented">Undocumented</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.tools.save_connection">save_connection(engine_name, values_dict):</a></div>
+            <div class="functionBody"><div class="undocumented">Undocumented</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.tools.get_default_connection">get_default_connection():</a></div>
+            <div class="functionBody"><div class="undocumented">Undocumented</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.lib.tools.choose_engine">choose_engine(opts):</a></div>
+            <div class="functionBody"><div><p>Prompts the user to select a database engine</p>
+</div></div>
+            </div></body>
+        

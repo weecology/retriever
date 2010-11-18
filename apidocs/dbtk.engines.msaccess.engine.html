@@ -1,377 +1,54 @@
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-  "DTD/xhtml1-strict.dtd">
-<html>
-  <head>
-    <title>dbtk.engines.msaccess.engine : API documentation</title>
-    <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
-    <link href="apidocs.css" type="text/css" rel="stylesheet" />
-    
-    
-  </head>
-  <body>
-    <h1 class="class">d.e.m.engine(<a href="dbtk.lib.models.Engine.html">Engine</a>) : class documentation</h1>
-    <p>
-      <span id="part">Part of <a href="dbtk.html">dbtk</a>.<a href="dbtk.engines.html">engines</a>.<a href="dbtk.engines.msaccess.html">msaccess</a></span>
-      
-      <a href="classIndex.html#dbtk.engines.msaccess.engine">View In Hierarchy</a>
-    </p>
-    <div>
-      
-    </div>
-    <div>Engine instance for Microsoft Access.<table class="fieldTable"></table></div>
-
-    
-    
-    <div id="splitTables">
-      <table class="children sortable" id="id57">
-  
-  
-<tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.engines.msaccess.engine.html#convert_data_type">convert_data_type</a></td>
-    <td><span>MS Access can't handle complex Decimal types</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.engines.msaccess.engine.html#create_db">create_db</a></td>
-    <td><span>MS Access doesn't create databases.</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.engines.msaccess.engine.html#drop_statement">drop_statement</a></td>
-    <td><span>Returns a drop table or database SQL statement.</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.engines.msaccess.engine.html#format_column_name">format_column_name</a></td>
-    <td><span class="undocumented">Undocumented</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.engines.msaccess.engine.html#insert_data_from_file">insert_data_from_file</a></td>
-    <td><span>Perform a bulk insert.</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.engines.msaccess.engine.html#tablename">tablename</a></td>
-    <td><span>Returns the full tablename in the format db.table.</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.engines.msaccess.engine.html#get_connection">get_connection</a></td>
-    <td><span>Gets the db connection.</span></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.engines.msaccess.engine.html#get_cursor">get_cursor</a></td>
-    <td><span>Gets the db cursor.</span></td>
-  </tr>
-  
-</table>
-      
-        <p>
-          Inherited from <a href="dbtk.lib.models.Engine.html">Engine</a>:
-        </p>
-        <table class="children sortable" id="id58">
-  
-  
-<tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#add_to_table">add_to_table</a></td>
-    <td><span>This function adds data to a table from one or more lines specified</span></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#auto_create_table">auto_create_table</a></td>
-    <td><span>Creates a table automatically by analyzing a data source and</span></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#auto_get_columns">auto_get_columns</a></td>
-    <td><span>Finds the delimiter and column names from the header row.</span></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#auto_get_datatypes">auto_get_datatypes</a></td>
-    <td><span>Determines data types for each column.</span></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#create_db_statement">create_db_statement</a></td>
-    <td><span>Returns a SQL statement to create a database.</span></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#create_raw_data_dir">create_raw_data_dir</a></td>
-    <td><span>Checks to see if the archive directory exists and creates it if</span></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#create_table">create_table</a></td>
-    <td><span>Creates a new database table based on settings supplied in Table</span></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#create_table_statement">create_table_statement</a></td>
-    <td><span>Returns a SQL statement to create a table.</span></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#download_file">download_file</a></td>
-    <td><span>Downloads a file to the raw data directory.</span></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#download_files_from_archive">download_files_from_archive</a></td>
-    <td><span>Downloads one or more files from an archive into the raw data</span></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#extract_values">extract_values</a></td>
-    <td><span>Given a line of data, this function returns a list of the individual</span></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#final_cleanup">final_cleanup</a></td>
-    <td><span>Close the database connection.</span></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#format_data_dir">format_data_dir</a></td>
-    <td><span>Returns the correctly formatted raw data directory location.</span></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#format_filename">format_filename</a></td>
-    <td><span>Returns the full path of a file in the archive directory.</span></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#format_insert_value">format_insert_value</a></td>
-    <td><span>Formats a value for an insert statement, for example by surrounding</span></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#get_input">get_input</a></td>
-    <td><span>Manually get user input for connection information when script is</span></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#get_insert_columns">get_insert_columns</a></td>
-    <td><span>Gets a set of column names for insert statements.</span></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#insert_data_from_archive">insert_data_from_archive</a></td>
-    <td><span>Insert data from files located in an online archive. This function</span></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#insert_data_from_url">insert_data_from_url</a></td>
-    <td><span>Insert data from a web resource, such as a text file.</span></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#insert_statement">insert_statement</a></td>
-    <td><span>Returns a SQL statement to insert a set of values.</span></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#skip_rows">skip_rows</a></td>
-    <td><span>Skip over the header lines by reading them before processing.</span></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#table_exists">table_exists</a></td>
-    <td><span>This can be overridden to return True if a table exists. It</span></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="dbtk.lib.models.Engine.html#values_from_line">values_from_line</a></td>
-    <td><span class="undocumented">Undocumented</span></td>
-  </tr>
-  
-</table>
-      
-      
-    </div>
-    
-    
-    
-
-    <div class="function">
-  <a name="dbtk.engines.msaccess.engine.convert_data_type">
-    
-  </a>
-  <a name="convert_data_type">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    convert_data_type(self, datatype):
-    
-  </div>
-  <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="dbtk.lib.models.Engine.html#convert_data_type">dbtk.lib.models.Engine.convert_data_type</a></div>
-    <div>MS Access can't handle complex Decimal types<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.engines.msaccess.engine.create_db">
-    
-  </a>
-  <a name="create_db">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    create_db(self):
-    
-  </div>
-  <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="dbtk.lib.models.Engine.html#create_db">dbtk.lib.models.Engine.create_db</a></div>
-    <div>MS Access doesn't create databases.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.engines.msaccess.engine.drop_statement">
-    
-  </a>
-  <a name="drop_statement">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    drop_statement(self, objecttype, objectname):
-    
-  </div>
-  <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="dbtk.lib.models.Engine.html#drop_statement">dbtk.lib.models.Engine.drop_statement</a></div>
-    <div>Returns a drop table or database SQL statement.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.engines.msaccess.engine.format_column_name">
-    
-  </a>
-  <a name="format_column_name">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    format_column_name(self, column):
-    
-  </div>
-  <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="dbtk.lib.models.Engine.html#format_column_name">dbtk.lib.models.Engine.format_column_name</a></div>
-    <div class="undocumented">Undocumented</div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.engines.msaccess.engine.insert_data_from_file">
-    
-  </a>
-  <a name="insert_data_from_file">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    insert_data_from_file(self, filename):
-    
-  </div>
-  <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="dbtk.lib.models.Engine.html#insert_data_from_file">dbtk.lib.models.Engine.insert_data_from_file</a></div>
-    <div>Perform a bulk insert.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.engines.msaccess.engine.tablename">
-    
-  </a>
-  <a name="tablename">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    tablename(self):
-    
-  </div>
-  <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="dbtk.lib.models.Engine.html#tablename">dbtk.lib.models.Engine.tablename</a></div>
-    <div>Returns the full tablename in the format db.table.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.engines.msaccess.engine.get_connection">
-    
-  </a>
-  <a name="get_connection">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    get_connection(self):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div>Gets the db connection.<table class="fieldTable"></table></div>
-  </div>
-</div><div class="function">
-  <a name="dbtk.engines.msaccess.engine.get_cursor">
-    
-  </a>
-  <a name="get_cursor">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    get_cursor(self):
-    
-  </div>
-  <div class="functionBody">
-    
-    <div>Gets the db cursor.<table class="fieldTable"></table></div>
-  </div>
-</div>
-    <address>
-      <a href="index.html">API Documentation</a> for dbtk, generated by <a href="http://codespeak.net/~mwh/pydoctor/">pydoctor</a> at 2010-11-11 14:29:52.
-    </address>
-  </body>
-</html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+        <html><head>
+        <link rel="stylesheet" type="text/css" href="apidocs.css"/>
+        <title>API docs for &ldquo;dbtk.engines.msaccess.engine&rdquo;</title>
+        </head>
+        <body><h1 class="class">Class d.e.m.engine(<a href="dbtk.lib.models.Engine.html">Engine</a>):</h1><span id="part">Part of <a href="dbtk.engines.msaccess.html">dbtk.engines.msaccess</a></span><div class="toplevel"><div><p>Engine instance for Microsoft Access.</p>
+</div></div><table class="children"><tr class="function"><td>Function</td><td><a href="#dbtk.engines.msaccess.engine.convert_data_type">convert_data_type</a></td><td><div><p>MS Access can't handle complex Decimal types</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.engines.msaccess.engine.create_db">create_db</a></td><td><div><p>MS Access doesn't create databases.</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.engines.msaccess.engine.drop_statement">drop_statement</a></td><td><div><p>Returns a drop table or database SQL statement.</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.engines.msaccess.engine.format_column_name">format_column_name</a></td><td><span class="undocumented">Undocumented</span></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.engines.msaccess.engine.insert_data_from_file">insert_data_from_file</a></td><td><div><p>Perform a bulk insert.</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.engines.msaccess.engine.tablename">tablename</a></td><td><div><p>Returns the full tablename in the format db.table.</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.engines.msaccess.engine.get_connection">get_connection</a></td><td><div><p>Gets the db connection.</p>
+</div></td></tr><tr class="function"><td>Function</td><td><a href="#dbtk.engines.msaccess.engine.get_cursor">get_cursor</a></td><td><div><p>Gets the db cursor.</p>
+</div></td></tr></table>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.engines.msaccess.engine.convert_data_type">convert_data_type(self, datatype):</a></div>
+            <div class="functionBody"><div><p>MS Access can't handle complex Decimal types</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.engines.msaccess.engine.create_db">create_db(self):</a></div>
+            <div class="functionBody"><div><p>MS Access doesn't create databases.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.engines.msaccess.engine.drop_statement">drop_statement(self, objecttype, objectname):</a></div>
+            <div class="functionBody"><div><p>Returns a drop table or database SQL statement.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.engines.msaccess.engine.format_column_name">format_column_name(self, column):</a></div>
+            <div class="functionBody"><div class="undocumented">Undocumented</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.engines.msaccess.engine.insert_data_from_file">insert_data_from_file(self, filename):</a></div>
+            <div class="functionBody"><div><p>Perform a bulk insert.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.engines.msaccess.engine.tablename">tablename(self):</a></div>
+            <div class="functionBody"><div><p>Returns the full tablename in the format db.table.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.engines.msaccess.engine.get_connection">get_connection(self):</a></div>
+            <div class="functionBody"><div><p>Gets the db connection.</p>
+</div></div>
+            </div>
+            <div class="function">
+            <div class="functionHeader">def <a name="dbtk.engines.msaccess.engine.get_cursor">get_cursor(self):</a></div>
+            <div class="functionBody"><div><p>Gets the db cursor.</p>
+</div></div>
+            </div></body>
+        

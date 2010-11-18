@@ -11,7 +11,7 @@ from dbtk.lib.tools import DbTkTest
 from dbtk.lib.models import Table
 from dbtk.lib.excel import Excel
 
-VERSION = '0.4'
+VERSION = '0.4.1'
 
 
 class main(DbTk):
@@ -154,3 +154,6 @@ class GentryTest(DbTkTest):
                                 "species_id")
                               ],
                               include_pk = True)
+                              
+                              
+SCRIPT = main()

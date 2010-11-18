@@ -94,11 +94,12 @@ class ScriptList(wx.HtmlListBox):
             desc += ("<a href='download:/" + str(index) + "'>%s</a>" % img_tag
                      if link else img_tag)
         desc += "</td><td>"
-        desc += ("<b>" + script.name + "</b>"
-                 if selected else script.name)
+        desc += "<b>" + script.name + "</b>"
+        if script.description:
+            desc += "<p>" + script.description + "</p>"
         if script.reference_url():
-            desc += "<br /><a href='" + script.reference_url() + "'>" 
-            desc += script.reference_url() + "</a><br />"
+            desc += "<p><a href='" + script.reference_url() + "'>" 
+            desc += script.reference_url() + "</a></p>"
         if selected:
             if script.addendum:
                 desc += "<p><i>"
@@ -106,7 +107,7 @@ class ScriptList(wx.HtmlListBox):
                 desc += "</i></p>"
         if script.name in self.script_status.keys():
             desc += "<p>" + self.script_status[script.name] + "</p>"
-        desc += "</td></tr></table>"
+        desc += "</td></tr></table><hr />"
         return desc
         
         

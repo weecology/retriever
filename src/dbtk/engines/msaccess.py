@@ -5,6 +5,7 @@ from dbtk.lib.models import Engine, no_cleanup
 class engine(Engine):
     """Engine instance for Microsoft Access."""
     name = "Microsoft Access"
+    instructions = """Create a database in Microsoft Access, then select it using this dialog."""
     abbreviation = "a"
     datatypes = ["AUTOINCREMENT",
                  "INTEGER",
@@ -57,7 +58,7 @@ class engine(Engine):
                 hdr = "No"
             
             need_to_delete = False    
-            if self.table.pk and not self.table.hasindex:
+            if self.table.pk and not self.table.contains_pk:
                 newfilename = '.'.join(filename.split(".")[0:-1]) + "_new." + filename.split(".")[-1]
                 if not os.path.isfile(newfilename):
                     print "Adding index to " + os.path.abspath(newfilename) + "..."

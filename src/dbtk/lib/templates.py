@@ -8,10 +8,11 @@ from dbtk.lib.tools import get_opts, choose_engine
 class DbTk:
     """This class represents a database toolkit script. Scripts should inherit
     from this class and execute their code in the download method."""
-    def __init__(self, name="", shortname="", urls=dict(), tables=dict(), 
-                 ref="", public=True, addendum=None, **kwargs):
+    def __init__(self, name="", description="", shortname="", urls=dict(), 
+                 tables=dict(), ref="", public=True, addendum=None, **kwargs):
         self.name = name
         self.shortname = shortname
+        self.description = description
         self.urls = urls
         self.tables = tables
         self.ref = ref
