@@ -1,7 +1,7 @@
 from dbtk.lib.templates import BasicTextTemplate
 from dbtk.lib.tools import DbTkTest
 
-VERSION = '0.4.1'
+VERSION = '0.4.2'
 
 SCRIPT = BasicTextTemplate(
                            name="Avian Body Size (Ecological Archives 2007)",
