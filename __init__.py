@@ -25,6 +25,7 @@ def MODULE_LIST():
         file, pathname, desc = imp.find_module(script_name, ["scripts"])
         try:
             new_module = imp.load_module(script_name, file, pathname, desc)
+            new_module.SCRIPT
             modules.append(new_module)
         except:
             pass
@@ -32,7 +33,7 @@ def MODULE_LIST():
     return modules
 
 
-def DBTK_LIST():    
+def DBTK_LIST():
     return [module.SCRIPT for module in MODULE_LIST()]
 
 
