@@ -93,6 +93,33 @@ def check_for_updates():
     scripts = []
     for line in version_file:
         scripts.append(line.strip('\n').split(','))
+        
+    if more_recent(latest, VERSION):
+        if running_from[-4:] == ".exe":
+            msg = "You're running version " + VERSION + "."
+            msg += '\n\n'
+            msg += "Version " + latest + " is available. Do you want to upgrade?"
+            choice = wx.MessageDialog(None, msg, "Update", wx.YES_NO)
+            if choice.ShowModal() == wx.ID_YES:
+                print "Updating to latest version. Please wait..."
+                try:
+                    if not "_old" in running_from:
+                        os.rename(running_from,
+                                  '.'.join(running_from.split('.')[:-1])
+                                  + "_old." + running_from.split('.')[-1])
+                except:
+                    pass
+                    
+                download_from_repository("windows/dbtk.exe", "dbtk.exe")
+
+                progress.Update(101)
+                sys.stdout = sys.__stdout__
+
+                wx.MessageBox("Update complete. The program will now restart.")
+
+                os.execv('dbtk.exe', sys.argv)
+                
+                sys.exit()
     
     # get category files
     if not os.path.isdir("categories"):
@@ -136,33 +163,7 @@ def check_for_updates():
                                                  "scripts/" + script_name + ".py")
                     except:
                         pass
-        
-    if more_recent(latest, VERSION):
-        if running_from[-4:] == ".exe":
-            msg = "You're running version " + VERSION + "."
-            msg += '\n\n'
-            msg += "Version " + latest + " is available. Do you want to upgrade?"
-            choice = wx.MessageDialog(None, msg, "Update", wx.YES_NO)
-            if choice.ShowModal() == wx.ID_YES:
-                print "Updating to latest version. Please wait..."
-                try:
-                    if not "_old" in running_from:
-                        os.rename(running_from,
-                                  '.'.join(running_from.split('.')[:-1])
-                                  + "_old." + running_from.split('.')[-1])
-                except:
-                    pass
-                    
-                download_from_repository("windows/dbtk.exe", "dbtk.exe")
 
-                progress.Update(101)
-                sys.stdout = sys.__stdout__
-
-                wx.MessageBox("Update complete. The program will now restart.")
-
-                os.execv('dbtk.exe', sys.argv)
-                
-                sys.exit()
                 
     progress.Update(101)
     progress.Destroy()
