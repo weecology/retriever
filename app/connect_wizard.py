@@ -129,7 +129,7 @@ class ConnectPage(TitledPage):
                 self.fields.Clear(True)     
                 self.fields = wx.BoxSizer(wx.VERTICAL)
                 if self.engine.instructions:
-                    self.fields.Add(StaticText(self, -1, '\n' + self.engine.instructions + '\n'))
+                    self.fields.Add(StaticText(self, -1, '\n' + self.engine.instructions + '\n\n'))
                 self.fieldset = dict()
                 self.option = dict()
                 saved_opts = get_saved_connection(self.engine.name)
