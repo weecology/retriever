@@ -36,7 +36,6 @@ class App(wx.App):
         
             engine = wizard.CONNECTION.engine
             options = wizard.CONNECTION.option
-            engine.RAW_DATA_LOCATION = wizard.CHOOSEDB.raw_data_dir.Value
             opts = dict()
             for key in options.keys():
                 opts[key] = options[key].GetValue()
@@ -130,7 +129,6 @@ class Frame(wx.Frame):
         
             engine = wizard.CONNECTION.engine
             options = wizard.CONNECTION.option
-            engine.RAW_DATA_LOCATION = wizard.CHOOSEDB.raw_data_dir.Value
             opts = dict()
             for key in options.keys():
                 opts[key] = options[key].GetValue()

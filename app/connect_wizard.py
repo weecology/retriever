@@ -23,8 +23,11 @@ class ConnectWizard(wx.wizard.Wizard):
         
         welcome = """<h2>Connection Wizard</h2>
         
-        <p>This wizard will walk you through the process of setting up your 
-        database connection.</p>
+        <p>The EcoData Retriever downloads raw data files, stores them on your
+        computer, and imports the data into your own local database.</p>
+        <p>To begin, you'll need to set up your own database. Once you've done
+        that, this wizard will walk you through the steps to connect to your
+        database.</p>
         <p>Supported database systems currently include:</p>
         <ul>"""
         
@@ -51,6 +54,7 @@ class ConnectWizard(wx.wizard.Wizard):
                                                       for i in range(len(self.pages))]
         
         self.TITLE.welcome = HtmlWindow(self.TITLE)
+        self.TITLE.welcome.SetSize((450,400))
         self.TITLE.welcome.SetHtml(welcome)
         self.TITLE.sizer.Add(self.TITLE.welcome, 1, wx.EXPAND)
              
@@ -86,19 +90,7 @@ class ChooseDbPage(TitledPage):
         else:
             self.dblist.SetSelection(0)
         self.sizer.Add(self.dblist, -1, wx.EXPAND)
-        self.AddSpace()
-        self.sizer2 = wx.BoxSizer(wx.HORIZONTAL)    
-        self.sizer2.Add(StaticText(self, -1, "Data file directory:", 
-                                   size=wx.Size(150,35)))
-        self.raw_data_dir = TextCtrl(self, -1, 
-                                        Engine().RAW_DATA_LOCATION,
-                                        size=wx.Size(200,-1))
-        self.sizer2.Add(self.raw_data_dir)
-        self.dirbtn = wx.Button(self, id=-1, label='Change...',
-                                size=(120, -1))
-        self.sizer2.Add(self.dirbtn)
-        self.sizer.Add(self.sizer2)                    
-        self.dirbtn.Bind(wx.EVT_BUTTON, self.dirbtn_click)
+        
     def dirbtn_click(self, evt):
         dialog = wx.DirDialog(None, message="Choose a directory to " +
                                 "download your data files.")            
