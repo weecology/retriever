@@ -1,4 +1,4 @@
-"""Database Toolkit for Forest Inventory and Analysis
+"""Retriever script for Forest Inventory and Analysis
  
 """
 
@@ -6,15 +6,15 @@ import os
 import urllib
 import zipfile
 from decimal import Decimal
-from dbtk.lib.templates import DbTk
-from dbtk.lib.models import Table, Cleanup, no_cleanup
+from retriever.lib.templates import Script
+from retriever.lib.models import Table, Cleanup, no_cleanup
 
-VERSION = '0.4.1'
+VERSION = '0.5'
 
 
-class main(DbTk):
+class main(Script):
     def __init__(self, **kwargs):
-        DbTk.__init__(self, **kwargs)
+        Script.__init__(self, **kwargs)
         self.name = "Forest Inventory and Analysis"
         self.shortname = "FIA"
         self.public = False
@@ -22,7 +22,7 @@ class main(DbTk):
         self.urls = {"main": "http://199.128.173.17/fiadb4-downloads/"}
         self.addendum = """This dataset requires downloading many large files - please be patient."""
     def download(self, engine=None):
-        DbTk.download(self, engine)
+        Script.download(self, engine)
         
         engine = self.engine
         

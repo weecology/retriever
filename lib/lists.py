@@ -2,11 +2,11 @@
 
 import os
 from operator import attrgetter
-from dbtk.lib.models import *
-from dbtk.lib.templates import *
+from retriever.lib.models import *
+from retriever.lib.templates import *
 
 
-class DbTkList:
+class Category:
     """A categorical list of scripts."""
     def __init__(self, name, scripts):
         self.name = name
@@ -14,12 +14,12 @@ class DbTkList:
 
 
 def get_lists():
-    from dbtk import DBTK_LIST
-    DBTK_LIST = DBTK_LIST()
-    DBTK_LIST.sort(key=attrgetter('name'))
+    from retriever import SCRIPT_LIST
+    SCRIPT_LIST = SCRIPT_LIST()
+    SCRIPT_LIST.sort(key=attrgetter('name'))
 
     lists = []
-    lists.append(DbTkList("All Datasets", DBTK_LIST))
+    lists.append(Category("All Datasets", SCRIPT_LIST))
     
     # Check for .cat files
     files = os.listdir('categories')
@@ -29,30 +29,30 @@ def get_lists():
         scriptname = cat.readline().replace('\n', '')
         scripts = []
         for line in [line.replace('\n', '') for line in cat]:
-            new_scripts = [script for script in DBTK_LIST
+            new_scripts = [script for script in SCRIPT_LIST
                            if script.shortname == line]
             for script in new_scripts:
                 scripts.append(script)
         scripts.sort(key=attrgetter('name'))
-        lists.append(DbTkList(scriptname, scripts))
+        lists.append(Category(scriptname, scripts))
 
 
-    # Get list of additional datasets from dbtk.config file
+    # Get list of additional datasets from scripts.config file
     if os.path.isfile("scripts.config"):
-        other_dbtks = []
+        other_scripts = []
         config = open("scripts.config", 'rb')
         for line in config:
             if line:
                 try:
                     new_dataset = eval(line)
-                    other_dbtks.append(new_dataset)
+                    other_scripts.append(new_dataset)
                 except:
                     pass
         
-        other_dbtks.sort(key=attrgetter('name'))
-        if len(other_dbtks) > 0:
-            lists.append(DbTkList("Custom", other_dbtks))
-            for script in other_dbtks:
+        other_scripts.sort(key=attrgetter('name'))
+        if len(other_scripts) > 0:
+            lists.append(Category("Custom", other_scripts))
+            for script in other_scripts:
                 lists[0].scripts.append(script)
     
     return lists

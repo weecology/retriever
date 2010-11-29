@@ -1,10 +1,10 @@
 import wx
-from dbtk.app.connect_wizard import ConnectWizard
-from dbtk.app.controls import *
-from dbtk.app.download_manager import DownloadManager
-from dbtk.app.images import globe_icon, cycle, download, downloaded, error
-from dbtk.lib.tools import get_default_connection, get_saved_connection, choose_engine
-from dbtk import ENGINE_LIST
+from retriever.app.connect_wizard import ConnectWizard
+from retriever.app.controls import *
+from retriever.app.download_manager import DownloadManager
+from retriever.app.images import globe_icon, cycle, download, downloaded, error
+from retriever.lib.tools import get_default_connection, get_saved_connection, choose_engine
+from retriever import ENGINE_LIST
 
 ENGINE_LIST = ENGINE_LIST()
 
@@ -47,7 +47,7 @@ class App(wx.App):
         except:
             pass
         
-        self.frame = Frame(None, -1, "Database Toolkit", lists, engine)
+        self.frame = Frame(None, -1, "EcoData Retriever", lists, engine)
         self.frame.Show()
         
         

@@ -1,5 +1,5 @@
 import wx
-from dbtk.lib.download import DownloadThread
+from retriever.lib.download import DownloadThread
 
 
 class DownloadManager:

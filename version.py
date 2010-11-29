@@ -1,6 +1,6 @@
 """Generates a configuration file containing the version number."""
 import os
-from dbtk import VERSION, MODULE_LIST
+from retriever import VERSION, MODULE_LIST
 
 if os.path.isfile("version.txt"):
     os.remove("version.txt")

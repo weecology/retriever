@@ -1,1 +1,1 @@
-"""wxPython GUI for Database Toolkit."""
+"""wxPython GUI for EcoData Retriever."""

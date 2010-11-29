@@ -1,4 +1,4 @@
-"""Use the following command to install dbtk: python setup.py install"""
+"""Use the following command to install retriever: python setup.py install"""
 
 from setuptools import setup
 import platform
@@ -8,10 +8,10 @@ from __init__ import VERSION
 
 
 packages = [
-            'dbtk.lib',
-            'dbtk.engines',
-            'dbtk.app',
-            'dbtk',
+            'retriever.lib',
+            'retriever.engines',
+            'retriever.app',
+            'retriever',
             ]
             
 includes = [
@@ -36,20 +36,19 @@ excludes = [
             'Tkconstants', 'Tkinter', 'tcl',
             ]
 
-setup(name='dbtk',
+setup(name='retriever',
       version=VERSION,
-      description='Database Toolkit',
+      description='EcoData Retriever',
       author='Ben Morris',
       author_email='ben.morris@weecology.org',
       url='http://www.ecologicaldata.org/database-toolkits',
       packages=packages,
       package_dir={
-                'dbtk':''
+                'retriever':''
                 },
       entry_points={
         'console_scripts': [
-            'dbtk = dbtk.main:main',
-            'dbtkwizard = dbtk.main:wizard'
+            'retriever = retriever.main:main',
         ],
       },
       # py2exe options
@@ -62,7 +61,7 @@ setup(name='dbtk',
                             }
                  },
       windows = [{'script': "main.py",
-                  'dest_base': "dbtk",
+                  'dest_base': "retriever",
                   'icon_resources':[(1,'globe.ico')]
                   }],
       zipfile = None,

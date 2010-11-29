@@ -4,7 +4,7 @@ import sys
 from time import time
 from threading import Thread, Lock
 import wx
-from dbtk.lib.tools import final_cleanup
+from retriever.lib.tools import final_cleanup
 
 
 class DownloadThread(Thread):
@@ -50,7 +50,7 @@ class DownloadThread(Thread):
         try:
             engine.get_cursor()
         except Exception as e:
-            print "<b><font color='red'>Error: There was an error with your database connection.</font></b>"
+            print "<b><font color='red'>Error: There was an error with your database connection.<br />" + e.__str__() + "</font></b>"
             return
         
         # Download script

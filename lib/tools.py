@@ -1,6 +1,7 @@
-"""Database Toolkit Tools
+"""EcoData Retriever Tools
 
-This module contains miscellaneous classes and functions used in DBTK scripts.
+This module contains miscellaneous classes and functions used in Retriever 
+scripts.
 
 """
 
@@ -11,14 +12,14 @@ import unittest
 import getopt
 from decimal import Decimal
 from hashlib import md5
-from dbtk.lib.models import Database, Engine, Cleanup, correct_invalid_value
+from retriever.lib.models import Database, Engine, Cleanup, correct_invalid_value
 
 warnings.filterwarnings("ignore")
 
 TEST_ENGINES = dict()
 
 
-class DbTkTest(unittest.TestCase):    
+class ScriptTest(unittest.TestCase):    
     def strvalue(self, value, col_num):
         """Returns a string representing the cleaned value from a SELECT 
         statement, for use in tests.
@@ -74,9 +75,9 @@ class DbTkTest(unittest.TestCase):
             return ""                
     
     def default_test(self, script, tables, include_pk = False):
-        """The default unit test. Tests in DbTkTest classes can simply call 
+        """The default unit test. Tests in ScriptTest classes can simply call 
         this function with the appropriate paramaters. The "script" property 
-        should be an instance of DbTk, and tables is a list consisting of 
+        should be an instance of Script, and tables is a list consisting of 
         tuples in the following format:
         
         (table name, MD5 sum, [order by statement])
@@ -257,7 +258,7 @@ def get_default_connection():
 
 def choose_engine(opts):
     """Prompts the user to select a database engine"""    
-    from dbtk import ENGINE_LIST
+    from retriever import ENGINE_LIST
     ENGINE_LIST = ENGINE_LIST()
     
     if "engine" in opts.keys():

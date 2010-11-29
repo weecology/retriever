@@ -1,1 +1,1 @@
-"""dbtk.lib contains the core Database Toolkit modules."""
+"""retriever.lib contains the core EcoData Retriever modules."""

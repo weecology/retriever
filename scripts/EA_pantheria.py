@@ -1,11 +1,11 @@
-"""Database Toolkit for Pantheria dataset
+"""Retriever script for Pantheria dataset
 
 """
 
-from dbtk.lib.templates import BasicTextTemplate
-from dbtk.lib.tools import DbTkTest
+from retriever.lib.templates import BasicTextTemplate
+from retriever.lib.tools import ScriptTest
 
-VERSION = '0.4.1'
+VERSION = '0.5'
 
 SCRIPT = BasicTextTemplate(
                            name="Pantheria (Ecological Archives 2008)",
@@ -15,11 +15,11 @@ SCRIPT = BasicTextTemplate(
                            )
 
 
-class EAPantheriaTest(DbTkTest):
+class EAPantheriaTest(ScriptTest):
     def test_EAPantheria(self):        
-        DbTkTest.default_test(self,
-                              main(),
-                              [("species",
-                                "4d2d9c2f57f6ae0987aafd140aace1e3",
-                                "MSW05_Order, MSW05_Family, MSW05_Genus, MSW05_Species")
-                              ])
+        ScriptTest.default_test(self,
+                                main(),
+                                [("species",
+                                  "4d2d9c2f57f6ae0987aafd140aace1e3",
+                                  "MSW05_Order, MSW05_Family, MSW05_Genus, MSW05_Species")
+                                ])

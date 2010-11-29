@@ -1,6 +1,6 @@
-"""Database Toolkit Data Model
+"""EcoData Retriever Data Model
 
-This module contains basic class definitions for the Database Toolkit platform.
+This module contains basic class definitions for the Retriever platform.
 
 """
 
@@ -255,8 +255,8 @@ class Engine():
             self.table.columns.append((column[0], tuple(column[1])))
             
     def convert_data_type(self, datatype):
-        """Converts DBTK generic data types to database platform specific data
-        types"""
+        """Converts Retriever generic data types to database platform specific 
+        data types"""
         datatypes = dict()
         thistype = datatype[0]
         thispk = False

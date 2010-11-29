@@ -1,7 +1,7 @@
-from dbtk.lib.templates import BasicTextTemplate
-from dbtk.lib.tools import DbTkTest
+from retriever.lib.templates import BasicTextTemplate
+from retriever.lib.tools import ScriptTest
 
-VERSION = '0.4.1'
+VERSION = '0.5'
 
 SCRIPT = BasicTextTemplate(
                            name="Mammal Life History Database (Ecological Archives 2003)",
@@ -11,11 +11,11 @@ SCRIPT = BasicTextTemplate(
                            )
 
 
-class EAErnest2003Test(DbTkTest):
+class EAErnest2003Test(ScriptTest):
     def test_EAErnest2003(self):        
-        DbTkTest.default_test(self,
-                              main(),
-                              [("species",
-                                "afa09eed4ca4ce5db31d15c4daa49ed3",
-                                "sporder, family, genus, species")
-                              ])
+        ScriptTest.default_test(self,
+                                main(),
+                                [("species",
+                                  "afa09eed4ca4ce5db31d15c4daa49ed3",
+                                  "sporder, family, genus, species")
+                                ])
