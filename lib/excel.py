@@ -1,4 +1,4 @@
-"""Database Toolkit Excel Functions
+"""EcoData Retriever Excel Functions
 
 This module contains optional functions for importing data from Excel.
 

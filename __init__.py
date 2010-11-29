@@ -1,4 +1,4 @@
-"""Database Toolkit
+"""EcoData Retriever
 
 This package contains a framework for creating and running scripts designed to
 download published ecological data, and store the data in a database.
@@ -9,7 +9,7 @@ import os
 import imp
 
 
-VERSION = '0.4.1'
+VERSION = '0.5'
 
 REPOSITORY = 'http://www.ecologicaldata.org/dbtk/'
 
@@ -33,7 +33,7 @@ def MODULE_LIST():
     return modules
 
 
-def DBTK_LIST():
+def SCRIPT_LIST():
     return [module.SCRIPT for module in MODULE_LIST()]
 
 
@@ -46,7 +46,7 @@ def ENGINE_LIST():
                ]
 
     ENGINE_MODULE_LIST = [
-                          __import__("dbtk.engines." + module, fromlist="engines")
+                          __import__("retriever.engines." + module, fromlist="engines")
                           for module in engines
                           ]
     

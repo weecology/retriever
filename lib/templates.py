@@ -1,11 +1,11 @@
 """Class models for dataset scripts from various locations. Scripts should
 inherit from the most specific class available."""
 
-from dbtk.lib.models import Database, Table, Cleanup, correct_invalid_value
-from dbtk.lib.tools import get_opts, choose_engine
+from retriever.lib.models import Database, Table, Cleanup, correct_invalid_value
+from retriever.lib.tools import get_opts, choose_engine
 
 
-class DbTk:
+class Script:
     """This class represents a database toolkit script. Scripts should inherit
     from this class and execute their code in the download method."""
     def __init__(self, name="", description="", shortname="", urls=dict(), 
@@ -56,13 +56,13 @@ class DbTk:
                     for key in self.urls.keys() if key])
     
     
-class BasicTextTemplate(DbTk):
-    """DbTk script template based on data files from Ecological Archives."""
+class BasicTextTemplate(Script):
+    """Script template based on data files from Ecological Archives."""
     def __init__(self, **kwargs):
-        DbTk.__init__(self, **kwargs)
+        Script.__init__(self, **kwargs)
         
     def download(self, engine=None):
-        DbTk.download(self, engine)
+        Script.download(self, engine)
         
         for key in self.urls.keys():
             if not key in self.tables.keys():

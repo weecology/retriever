@@ -1,6 +1,7 @@
 import os
 import platform
-from dbtk.lib.models import Engine, no_cleanup
+from retriever.lib.models import Engine, no_cleanup
+
 
 class engine(Engine):
     """Engine instance for PostgreSQL."""
@@ -74,14 +75,15 @@ CSV HEADER"""
         return statement
             
     def table_exists(self, dbname, tablename):
-        connection = self.get_connection()
-        cursor = connection.cursor()
         try:
+            connection = self.get_connection()
+            cursor = connection.cursor()
             cursor.execute("SELECT * FROM " + dbname + "." + tablename + " LIMIT 1")
-            return len(cursor.fetchall()) > 0
+            l = len(cursor.fetchall())
+            connection.close()
+            return l > 0
         except:
             return False
-        connection.close()
             
     def get_connection(self):
         """Gets the db connection."""

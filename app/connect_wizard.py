@@ -1,4 +1,4 @@
-"""Classes representing pages for the DBTK wizard.
+"""Connection setup wizard.
 
 """
 
@@ -7,12 +7,12 @@ import sys
 import wx
 import wx.html
 import wx.wizard
-from dbtk.lib.models import Engine
-from dbtk.lib.tools import get_saved_connection, save_connection
-from dbtk.app.controls import *
-from dbtk.app.images import globe_icon
+from retriever.lib.models import Engine
+from retriever.lib.tools import get_saved_connection, save_connection
+from retriever.app.controls import *
+from retriever.app.images import globe_icon
 
-from dbtk import VERSION
+from retriever import VERSION
 
 
 class ConnectWizard(wx.wizard.Wizard):
@@ -68,7 +68,7 @@ class ConnectWizard(wx.wizard.Wizard):
         
     
     def check_for_updates(self):
-        reload(dbtk)
+        reload(retriever)
 
 
 class ChooseDbPage(TitledPage):

@@ -1,18 +1,18 @@
-"""Database Toolkit UI
+"""EcoData Retriever UI
 
-This module contains the UI elements of the database toolkit platform. 
+This module contains the UI elements of the EcoData Retriever platform. 
 
 The application can be started by running the launch_app function with a list
-of DbTkList objects.
+of Category objects.
 
 """
 
-from dbtk.app.app import App
+from retriever.app.app import App
 
 
 def launch_app(lists):
     """Launches the application GUI."""
-    print "Launching Database Toolkit..."                    
+    print "Launching EcoData Retriever..."                    
     
     app = App(lists)
     app.MainLoop()

@@ -1,6 +1,6 @@
-from dbtk.lib.templates import BasicTextTemplate
+from retriever.lib.templates import BasicTextTemplate
 
-VERSION = '0.4.1'
+VERSION = '0.5'
 
 SCRIPT = BasicTextTemplate(
                            name="Vascular plant composition - McGlinn, et al., 2010",

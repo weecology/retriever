@@ -1,6 +1,6 @@
 import wx
 import wx.lib.wxpTag
-from dbtk import VERSION
+from retriever import VERSION
 
         
 class AboutDialog(wx.Dialog):
@@ -8,11 +8,11 @@ class AboutDialog(wx.Dialog):
 <body bgcolor="#ACAA60">
 <center><table bgcolor="#455481" width="100%" cellspacing="0" cellpadding="0" border="1">
 <tr><td align="center"><h1>
-Database Toolkit
+EcoData Retriever
 </h1><h2>
 version """ + VERSION + """
 </h2></td></tr></table>
-<p>The Database Toolkit is designed to make it easy to download ecological data and set it
+<p>The EcoData Retriever is designed to make it easy to download ecological data and set it
 up on your own local database system.
 </p><p>
 To get started, double click on a dataset to download the data files and import the data into

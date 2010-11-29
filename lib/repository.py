@@ -5,11 +5,12 @@ import sys
 import urllib
 import imp
 import wx
-from dbtk import REPOSITORY, VERSION
-from dbtk.lib.models import file_exists
+from retriever import REPOSITORY, VERSION
+from retriever.lib.models import file_exists
 
-global abort
+global abort, executable_name
 abort = False
+executable_name = "retriever"
 
 
 def download_from_repository(filepath, newpath):
@@ -110,14 +111,15 @@ def check_for_updates():
                 except:
                     pass
                     
-                download_from_repository("windows/dbtk.exe", "dbtk.exe")
+                download_from_repository("windows/" + executable_name + ".exe", 
+                                         executable_name + ".exe")
 
                 progress.Update(101)
                 sys.stdout = sys.__stdout__
 
                 wx.MessageBox("Update complete. The program will now restart.")
 
-                os.execv('dbtk.exe', sys.argv)
+                os.execv(executable_name + ".exe", sys.argv)
                 
                 sys.exit()
     
