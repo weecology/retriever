@@ -16,7 +16,8 @@ from retriever.lib.lists import Category, get_lists
 from retriever.app.main import launch_app
 
 
-def main():    
+def main():
+    """This function launches the EcoData Retriever."""
     check_for_updates()
     launch_app(get_lists())
 
