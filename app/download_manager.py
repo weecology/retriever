@@ -1,3 +1,6 @@
+"""This class manages dataset downloads concurrently and processes progress
+output."""
+
 import wx
 from retriever.lib.download import DownloadThread
 

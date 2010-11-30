@@ -19,6 +19,7 @@ def no_cleanup(value, args):
     
     
 def file_exists(path):
+    """Returns true if a file exists and its size is greater than 0."""
     return (os.path.isfile(path) and os.path.getsize(path) > 0)    
     
 

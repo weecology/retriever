@@ -1,3 +1,5 @@
+"""Custom implementations of wxPython controls for use in the Retriever."""
+
 import wx
 import wx.lib.wxpTag
 from retriever import VERSION

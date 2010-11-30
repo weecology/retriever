@@ -1,3 +1,5 @@
+"""Embedded icons."""
+
 from wx.lib.embeddedimage import PyEmbeddedImage
 
 globe_icon = PyEmbeddedImage(

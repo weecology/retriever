@@ -1,3 +1,5 @@
+"""Contains implementations of wx.App and wx.Frame for the GUI."""
+
 import wx
 from retriever.app.connect_wizard import ConnectWizard
 from retriever.app.controls import *

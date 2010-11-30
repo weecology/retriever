@@ -19,7 +19,9 @@ warnings.filterwarnings("ignore")
 TEST_ENGINES = dict()
 
 
-class ScriptTest(unittest.TestCase):    
+class ScriptTest(unittest.TestCase):
+    """Automates the process of creating unit tests for Retriever scripts.
+    Uses the Python unittest module."""
     def strvalue(self, value, col_num):
         """Returns a string representing the cleaned value from a SELECT 
         statement, for use in tests.
@@ -215,6 +217,8 @@ def final_cleanup(engine):
         
 
 def get_saved_connection(engine_name):
+    """Given the name of an engine, returns the stored connection for that engine
+    from connections.config."""
     parameters = dict()
     if os.path.isfile("connections.config"):
         config = open("connections.config", "rb")
@@ -229,6 +233,7 @@ def get_saved_connection(engine_name):
 
 
 def save_connection(engine_name, values_dict):
+    """Saves connection information for an engine in connections.config."""
     lines = []
     if os.path.isfile("connections.config"):
         config = open("connections.config", "rb")
@@ -247,6 +252,8 @@ def save_connection(engine_name, values_dict):
     
     
 def get_default_connection():
+    """Gets the first (most recently used) stored connection from 
+    connections.config."""
     if os.path.isfile("connections.config"):
         config = open("connections.config", "rb")
         default_connection = config.readline().split(",")[0]
