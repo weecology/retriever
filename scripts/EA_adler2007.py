@@ -23,7 +23,7 @@ SCRIPT = BasicTextTemplate(
                            urls = {
                                    "main": "http://esapubs.org/archive/ecol/E088/161/allrecords.csv",
                                    "quadrat_info": "http://esapubs.org/archive/ecol/E088/161/quadrat_info.csv",
-                                   #"quadrat_inventory": "http://esapubs.org/archive/ecol/E088/161/quadrat_inventory.csv",
+                                   "quadrat_inventory": "http://esapubs.org/archive/ecol/E088/161/quadrat_inventory.csv",
                                    "species": "http://esapubs.org/archive/ecol/E088/161/species_list.csv",
                                    "monthly_temp": "http://esapubs.org/archive/ecol/E088/161/monthly_temp.csv",
                                    "monthly_ppt": "http://esapubs.org/archive/ecol/E088/161/monthly_ppt.csv",
@@ -34,6 +34,13 @@ SCRIPT = BasicTextTemplate(
                                                                            nulls=["NA"]),
                                                            replace_columns=replace_month_names),
                                      "monthly_ppt": Table("monthly_ppt",
-                                                          replace_columns=replace_month_names),
+                                                          replace_columns=replace_month_names,
+                                                          cleanup=Cleanup(correct_invalid_value,
+                                                                          nulls=["NA"]),
+                                                          ),
+                                     "quadrat_inventory": Table("quadrat_inventory",
+                                                                cleanup=Cleanup(correct_invalid_value,
+                                                                                nulls=["NA"]),
+                                                                )
                                     }
                            )
