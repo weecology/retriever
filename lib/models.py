@@ -62,6 +62,7 @@ class Table:
         self.cleanup = Cleanup()
         self.record_id = 0
         self.columns = []
+        self.replace_columns = []
         for key, item in kwargs.items():
             setattr(self, key, item[0] if isinstance(item, tuple) else item)
 
@@ -167,7 +168,7 @@ class Engine():
                     self.table.delimiter = other_delimiter
             
             # Get column names from header row
-            column_names = header.split(self.table.delimiter)
+            column_names = [name.strip() for name in header.split(self.table.delimiter)]
         
         columns = []
         column_values = dict()
@@ -192,11 +193,15 @@ class Engine():
             replace = [
                        ("%", "percent"),
                        ("\xb0", "degrees"),
-                       ]
+                       ("group", "grp")
+                       ] + self.table.replace_columns
+
             for combo in not_allowed:
                 if this_column.lower() == combo[0]:
                     this_column = combo[1]
             for combo in replace:
+                if this_column.lower() == combo[0].lower():
+                    this_column = combo[1]
                 this_column = this_column.replace(combo[0], combo[1])
             
             if this_column:
