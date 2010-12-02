@@ -11,7 +11,7 @@ import imp
 
 VERSION = '0.5'
 
-REPOSITORY = 'http://www.ecologicaldata.org/dbtk/'
+REPOSITORY = 'http://www.ecologicaldata.org/ecodataretriever/'
 
 
 def MODULE_LIST():
