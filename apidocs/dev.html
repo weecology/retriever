@@ -6,11 +6,11 @@
 <div class="toplevel"><div>
 <p>The EcoData Retriever system is a Python library created to simplify 
 downloading and importing ecological data. There's a lot of publically 
-available data out there, so we're limited by speed at which we can add 
-datasets to our system. We've designed the system to be easily extensible, 
-allowing developers to add their own custom dataset scripts.</p>
-<p>This document is a resource for Python developers interested in developing 
-scripts for use with the EcoData Retriever.</p>
+available data out there, and the speed at which we can add new datasets is
+limited. We've made it easy for developers to develop their own custom dataset 
+scripts.</p>
+<p>This document is a resource for Python developers or ecologists interested 
+in developing scripts for use with the EcoData Retriever.</p>
 <p><i>We encourage users who develop their own scripts to submit them to the 
 Retriever team, so that they can be used by other researchers in future 
 distributions.</i></p>
@@ -25,9 +25,10 @@ EcoData Retriever API.</p>
 <li>A wxPython-based GUI in <a href="retriever.ui.html">retriever.app</a></li>
 </ul>
 <p>The platform dynamically loads dataset scripts from Python (.py) files found
-in the scripts directory.</p>
-<p>Developers can use the retriever.lib functionality to create their own 
-individual scripts representing datasets not yet implemented in the Retriever.</p>
+in the "scripts" directory. Each script contains instructions to access a
+different dataset; if you need a dataset that's not yet supported, you can
+create your own script in the "scripts" directory and it will show up
+automatically.</p>
 <h3>A simple example</h3>
 <p>The EcoData Retriever platform was developed to take the most effort out of
 the most common tasks in importing data. As an example, the Ernest Mammal
