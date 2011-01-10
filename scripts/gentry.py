@@ -1,4 +1,4 @@
-"""Database Toolkit for Alwyn H. Gentry Forest Transact Dataset
+"""Database Toolkit for Alwyn H. Gentry Forest Transect Dataset
 
 """
 
@@ -17,7 +17,7 @@ VERSION = '0.4'
 class main(DbTk):
     def __init__(self, **kwargs):
         DbTk.__init__(self, **kwargs)
-        self.name = "Alwyn H. Gentry Forest Transact Dataset"
+        self.name = "Alwyn H. Gentry Forest Transect Dataset"
         self.shortname = "Gentry"
         self.urls = {"stems": "http://www.mobot.org/mobot/gentry/123/all_Excel.zip",
                      "sites": "http://www.ecologicaldata.org/sites/default/files/gentry_sites_data.txt"}
