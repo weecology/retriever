@@ -40,10 +40,19 @@ class main(Script):
                       ('UT', 2000), ('VT', 2003), ('VA', 1998), ('WA', 2002), 
                       ('WV', 2004), ('WI', 2000), ('PR', 2001)]
         
-        for state in stateslist:
-            for table in ["SURVEY", "PLOT", "COND", "SUBPLOT", "SUBP_COND", "TREE", "SEEDLING"]:
+        tablelist = ["SURVEY", "PLOT", "COND", "SUBPLOT", "SUBP_COND", "TREE", "SEEDLING"]
+        
+        for table in tablelist:
+            for state in stateslist:
                 engine.download_files_from_archive(self.urls["main"] + state[0] + "_" + table + ".ZIP", 
                                                    [state[0] + "_" + table + ".CSV"])
+        
+        for table in tablelist:
+            file = stateslist[0][0] + "_" + table + ".CSV"
+            self.engine.auto_create_table(Table(table), filename=file)
+            for state in stateslist:
+                file = state[0] + "_" + table + ".CSV"
+                self.engine.insert_data_from_url(file)
         
         return engine
         
