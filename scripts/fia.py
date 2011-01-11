@@ -48,6 +48,7 @@ class main(Script):
                                                    [state[0] + "_" + table + ".CSV"])
         
         for table in tablelist:
+            print "Creating table " + table + "..."
             file = stateslist[0][0] + "_" + table + ".CSV"
             self.engine.auto_create_table(Table(table), filename=file)
             for state in stateslist:
