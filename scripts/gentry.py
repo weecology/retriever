@@ -80,7 +80,7 @@ U.S.A. """
                         else:
                             id_level = "species"
                             full_id = 1
-                        tax.append((newline[1], newline[2], newline[3], id_level, str(full_id)))
+                        tax.append((newline[1], newline[2], newline[3].lower(), id_level, str(full_id)))
                     except:
                         pass                    
         
@@ -124,7 +124,7 @@ U.S.A. """
         stems = []
         for line in lines:
             species_info = [str(line[0]).split('.')[0], 
-                            tax_dict[(line[1], line[2], line[3])],
+                            tax_dict[(line[1], line[2], line[3].lower())],
                             line[4]
                             ]
             stem_count = len(line) - 5
