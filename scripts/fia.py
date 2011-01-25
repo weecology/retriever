@@ -1,4 +1,4 @@
-"""Database Toolkit for Forest Inventory and Analysis
+"""Retriever script for Forest Inventory and Analysis
  
 """
 
@@ -6,15 +6,15 @@ import os
 import urllib
 import zipfile
 from decimal import Decimal
-from dbtk.lib.templates import DbTk
-from dbtk.lib.models import Table, Cleanup, no_cleanup
+from retriever.lib.templates import Script
+from retriever.lib.models import Table, Cleanup, no_cleanup
 
-VERSION = '0.4.1'
+VERSION = '0.5'
 
 
-class main(DbTk):
+class main(Script):
     def __init__(self, **kwargs):
-        DbTk.__init__(self, **kwargs)
+        Script.__init__(self, **kwargs)
         self.name = "Forest Inventory and Analysis"
         self.shortname = "FIA"
         self.public = False
@@ -22,7 +22,7 @@ class main(DbTk):
         self.urls = {"main": "http://199.128.173.17/fiadb4-downloads/"}
         self.addendum = """This dataset requires downloading many large files - please be patient."""
     def download(self, engine=None):
-        DbTk.download(self, engine)
+        Script.download(self, engine)
         
         engine = self.engine
         
@@ -40,10 +40,20 @@ class main(DbTk):
                       ('UT', 2000), ('VT', 2003), ('VA', 1998), ('WA', 2002), 
                       ('WV', 2004), ('WI', 2000), ('PR', 2001)]
         
-        for state in stateslist:
-            for table in ["SURVEY", "PLOT", "COND", "SUBPLOT", "SUBP_COND", "TREE", "SEEDLING"]:
+        tablelist = ["SURVEY", "PLOT", "COND", "SUBPLOT", "SUBP_COND", "TREE", "SEEDLING"]
+        
+        for table in tablelist:
+            for state in stateslist:
                 engine.download_files_from_archive(self.urls["main"] + state[0] + "_" + table + ".ZIP", 
                                                    [state[0] + "_" + table + ".CSV"])
+        
+        for table in tablelist:
+            print "Creating table " + table + "..."
+            file = stateslist[0][0] + "_" + table + ".CSV"
+            self.engine.auto_create_table(Table(table), filename=file)
+            for state in stateslist:
+                file = state[0] + "_" + table + ".CSV"
+                self.engine.insert_data_from_url(file)
         
         return engine
         

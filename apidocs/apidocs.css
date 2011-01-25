@@ -34,6 +34,21 @@ h2
   font-style: italic;
 }
 
+#bigTable, #showSplitLink, #showBigLink, #moreSubclassesLink
+{
+  display: none;
+}
+
+.showIfJS
+{
+  display: none;
+}
+
+.hideIfJS
+{
+  display: inline;
+}
+
 .toplevel
 {
   margin-top: 2em;
@@ -44,39 +59,27 @@ div.toplevel p
   margin-top: 0em;
 }
 
-.function
-{
-  background: lightgreen;
-}
+.function         { background: lightgreen; }
+.method           { background: #90ee90; }
+.classmethod      { background: #c0ee90; }
+.staticmethod     { background: #90eec0; }
+.attribute        { background: #ddbbff; }
+.class            { background: #add8e6; }
+.interface        { background: #ffddff; }
+.module           { background: lightyellow;}
+.package          { background: #ffeeaa; }
+.basefunction     { background: #cceecc; }
+.basemethod       { background: #cceecc; }
+.baseclassmethod  { background: #e0f7cc; }
+.basestaticmethod { background: #ccf7e0; }
+.baseattribute    { background: #ffffff; }
+.baseclass        { background: #d6ecf3; }
+.baseinterface    { background: #ffffff; }
 
-.attribute
+.private
 {
-  background: #ddbbff;
-}
-
-.basefunction
-{
-  background: #cceecc;
-}
-
-.class
-{
-  background: lightblue;
-}
-
-.interface
-{
-  background: #ffddff;
-}
-
-.module
-{
-  background: lightyellow;
-}
-
-.package
-{
-  background: #ffeeaa;
+  color: grey;
+  background: lightgrey;
 }
 
 div.function
@@ -107,6 +110,11 @@ a:hover.functionSourceLink
 div.functionHeader a
 {
   color: black;
+}
+
+a.jslink
+{
+  color: #007FFF;
 }
 
 span.tag
@@ -193,4 +201,22 @@ td.fieldArg
 {
   font-size: 75%;
   padding-left: 8ex;
+}
+
+/* for the difflib-generated table */
+
+table.diff {font-family:Courier; border:medium;}
+.diff_header {background-color:#e0e0e0}
+td.diff_header {text-align:right}
+.diff_next {background-color:#c0c0c0}
+.diff_add {background-color:#aaffaa}
+.diff_chg {background-color:#ffff77}
+.diff_sub {background-color:#ffaaaa}
+
+.preview { margin: 0; }
+.error { background-color: #ff3333; }
+.errormessage {
+    margin: 0em 0em 0em 2em;
+    font-size: 75%;
+    color: #773333;
 }

@@ -1,4 +1,4 @@
-"""Database Toolkit for Alwyn H. Gentry Forest Transact Dataset
+"""Retriever script for Alwyn H. Gentry Forest Transect Dataset
 
 """
 
@@ -6,18 +6,18 @@ import os
 import sys
 import zipfile
 import xlrd
-from dbtk.lib.templates import DbTk
-from dbtk.lib.tools import DbTkTest
-from dbtk.lib.models import Table
-from dbtk.lib.excel import Excel
+from retriever.lib.templates import Script
+from retriever.lib.tools import ScriptTest
+from retriever.lib.models import Table
+from retriever.lib.excel import Excel
 
-VERSION = '0.4.1'
+VERSION = '0.5'
 
 
-class main(DbTk):
+class main(Script):
     def __init__(self, **kwargs):
-        DbTk.__init__(self, **kwargs)
-        self.name = "Alwyn H. Gentry Forest Transact Dataset"
+        Script.__init__(self, **kwargs)
+        self.name = "Alwyn H. Gentry Forest Transect Dataset"
         self.shortname = "Gentry"
         self.urls = {"stems": "http://www.mobot.org/mobot/gentry/123/all_Excel.zip",
                      "sites": "http://www.ecologicaldata.org/sites/default/files/gentry_sites_data.txt"}
@@ -30,7 +30,7 @@ P.O. Box 299
 St. Louis, MO 63166-0299
 U.S.A. """
     def download(self, engine=None):
-        DbTk.download(self, engine)
+        Script.download(self, engine)
         
         self.engine.auto_create_table(Table("sites"), url=self.urls["sites"])
         self.engine.insert_data_from_url(self.urls["sites"])
@@ -80,7 +80,7 @@ U.S.A. """
                         else:
                             id_level = "species"
                             full_id = 1
-                        tax.append((newline[1], newline[2], newline[3], id_level, str(full_id)))
+                        tax.append((newline[1], newline[2], newline[3].lower(), id_level, str(full_id)))
                     except:
                         pass                    
         
@@ -124,7 +124,7 @@ U.S.A. """
         stems = []
         for line in lines:
             species_info = [str(line[0]).split('.')[0], 
-                            tax_dict[(line[1], line[2], line[3])],
+                            tax_dict[(line[1], line[2], line[3].lower())],
                             line[4]
                             ]
             stem_count = len(line) - 5
@@ -140,20 +140,20 @@ U.S.A. """
         return self.engine
     
     
-class GentryTest(DbTkTest):
+class GentryTest(ScriptTest):
     def strvalue(self, value, col_num):
         value = DbTkTest.strvalue(self, value, col_num)
         if value[-3:] == ".00":
             value = value[0:len(value) - 3]
         return value
     def test_Gentry(self):
-        DbTkTest.default_test(self,
-                              main(),
-                              [("species",
-                                "8673559a7e35f1d2925d4add6d7347f7",
-                                "species_id")
-                              ],
-                              include_pk = True)
-                              
-                              
+        ScriptTest.default_test(self,
+                                main(),
+                                [("species",
+                                  "8673559a7e35f1d2925d4add6d7347f7",
+                                  "species_id")
+                                ],
+                                include_pk = True)
+
+
 SCRIPT = main()

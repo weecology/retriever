@@ -1,4 +1,4 @@
-"""Database Toolkit for Breeding Bird Survey
+"""Retriever script for Breeding Bird Survey
  
 """
 
@@ -6,14 +6,14 @@ import os
 import urllib
 import zipfile
 from decimal import Decimal
-from dbtk.lib.templates import DbTk
-from dbtk.lib.models import Table, Cleanup, no_cleanup
+from retriever.lib.templates import Script
+from retriever.lib.models import Table, Cleanup, no_cleanup
 
-VERSION = '0.4.1'
+VERSION = '0.5'
 
-class main(DbTk):
+class main(Script):
     def __init__(self, **kwargs):
-        DbTk.__init__(self, **kwargs)
+        Script.__init__(self, **kwargs)
         self.name = "USGS North American Breeding Bird Survey"
         self.shortname = "BBS"
         self.ref = "http://www.pwrc.usgs.gov/BBS/"
@@ -27,7 +27,7 @@ class main(DbTk):
                      
     def download(self, engine=None):
         try:
-            DbTk.download(self, engine)
+            Script.download(self, engine)
             
             engine = self.engine
             

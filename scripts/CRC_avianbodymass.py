@@ -1,4 +1,4 @@
-"""Database Toolkit for CRC Handbook of Avian Bird Masses companion CD
+"""Retriever script for CRC Handbook of Avian Bird Masses companion CD
 
 NOTE: This data is not publicly available. To download the data, you'll need
 the CRC Avian Body Masses CD. Create a new directory at 
@@ -9,16 +9,16 @@ this script.
 
 import os
 import xlrd
-from dbtk.lib.templates import DbTk
-from dbtk.lib.models import Table, Cleanup, no_cleanup
-from dbtk.lib.excel import Excel
+from retriever.lib.templates import Script
+from retriever.lib.models import Table, Cleanup, no_cleanup
+from retriever.lib.excel import Excel
 
-VERSION = '0.4.1'
+VERSION = '0.5'
 
 
-class main(DbTk):
+class main(Script):
     def __init__(self, **kwargs):
-        DbTk.__init__(self, **kwargs)
+        Script.__init__(self, **kwargs)
         self.name = "CRC Avian Body Masses"
         self.shortname = "AvianBodyMass"
         self.public = False
@@ -26,7 +26,7 @@ class main(DbTk):
         self.tables = {"mass": Table("mass", delimiter=",,")}
         self.urls = {"mass": ""}
     def download(self, engine=None):
-        DbTk.download(self, engine)
+        Script.download(self, engine)
         
         table = self.tables["mass"]
         
