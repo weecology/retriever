@@ -67,7 +67,8 @@ U.S.A. """
                                 if not Excel.empty_cell(cell) or n == 13:
                                     thisline.append(Excel.cell_value(cell))
                         
-                        newline = [str(value).title().replace("\\", "/") for value in thisline] 
+                        newline = [str(value).title().replace("\\", "/") for value in thisline]
+                        newline = newline[0:4] + [filename][0:-4] + newline[4:]
                         lines.append(newline)
                         
                         # Check how far the species is identified
@@ -119,14 +120,18 @@ U.S.A. """
         table.columns=[("stem_id"               ,   ("pk-auto",)    ),
                        ("line"                  ,   ("int",)        ),
                        ("species_id"            ,   ("int",)        ),
+                       ("site_code"             ,   ("char", 12)    ),
                        ("liana"                 ,   ("char", 10)    ),
                        ("stem"                  ,   ("double",)     )]
         stems = []
+        log = open("log.txt", 'w')
         for line in lines:
+            log.write(str(line))
             species_info = [str(line[0]).split('.')[0], 
                             tax_dict[(line[1], line[2], line[3].lower())],
                             line[4]
                             ]
+            site = []
             stem_count = len(line) - 5
             for i in range(stem_count):
                 stem = species_info + [line[(i + 1) * -1]]
