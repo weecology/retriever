@@ -102,12 +102,12 @@ class Engine():
                                                         (value, 
                                                          self.table.cleanup.args)) 
                                for value in linevalues]
-                insertstatement = self.insert_statement(cleanvalues)
+                insert_stmt = self.insert_statement(cleanvalues)
                 if self.table.record_id % 10 == 0 or self.table.record_id == total:
                     prompt = "Inserting rows to " + self.tablename() + ": "
                     prompt += str(self.table.record_id) + " / " + str(total)
                     sys.stdout.write(prompt + "\b" * len(prompt))
-                self.cursor.execute(insertstatement)
+                self.cursor.execute(insert_stmt)
         
         self.connection.commit()
         
@@ -308,8 +308,8 @@ class Engine():
         """Creates a new database table based on settings supplied in Table 
         object engine.table."""
         print "Creating table " + self.table.name + "..."
-        createstatement = self.create_table_statement()
-        self.cursor.execute(createstatement)
+        create_statement = self.create_table_statement()
+        self.cursor.execute(create_statement)
         
     def create_table_statement(self):
         """Returns a SQL statement to create a table."""
@@ -519,16 +519,16 @@ class Engine():
         """Returns a SQL statement to insert a set of values."""
         columns = self.get_insert_columns()
         columncount = len(self.get_insert_columns(False))
-        insertstatement = "INSERT INTO " + self.tablename()
-        insertstatement += " (" + columns + ")"  
-        insertstatement += " VALUES ("
+        insert_stmt = "INSERT INTO " + self.tablename()
+        insert_stmt += " (" + columns + ")"  
+        insert_stmt += " VALUES ("
         for i in range(0, columncount):
-            insertstatement += "%s, "
-        insertstatement = insertstatement.rstrip(", ") + ");"
-        while len(values) < insertstatement.count("%s"):
+            insert_stmt += "%s, "
+        insert_stmt = insert_stmt.rstrip(", ") + ");"
+        while len(values) < insert_stmt.count("%s"):
             values.append(self.format_insert_value(None))
-        insertstatement %= tuple(values)
-        return insertstatement
+        insert_stmt %= tuple(values)
+        return insert_stmt
         
     def skip_rows(self, rows, source):
         """Skip over the header lines by reading them before processing."""
