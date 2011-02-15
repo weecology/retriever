@@ -107,8 +107,10 @@ class Engine():
                     prompt = "Inserting rows to " + self.tablename() + ": "
                     prompt += str(self.table.record_id) + " / " + str(total)
                     sys.stdout.write(prompt + "\b" * len(prompt))
+                
                 self.cursor.execute(insert_stmt)
         
+        print
         self.connection.commit()
         
     def auto_create_table(self, table, url=None, filename=None, pk=None):
@@ -175,6 +177,21 @@ class Engine():
         
         for column_name in column_names:
             this_column = column_name
+            
+            replace = [
+                       ("%", "percent"),
+                       ("\xb0", "degrees"),
+                       ("group", "grp"),
+                       ("order", "sporder"),
+                       ("references", "refs"),
+                       ("long", "lon"),
+                       ] + self.table.replace_columns
+            for combo in replace:
+                if this_column.lower() == combo[0].lower():
+                    this_column = combo[1]
+                this_column = this_column.replace(combo[0], combo[1])
+            
+            
             for c in [")", "\n", "\r"]:
                 this_column = this_column.strip(c)
             for c in [".", '"', "'"]:
@@ -185,24 +202,6 @@ class Engine():
                 this_column = this_column.replace("__", "_")
             this_column = this_column.lstrip("0123456789_").rstrip("_")
             
-            not_allowed = [
-                           ("order","sporder"),
-                           ("references", "refs"),
-                           ("long", "lon"),
-                           ]
-            replace = [
-                       ("%", "percent"),
-                       ("\xb0", "degrees"),
-                       ("group", "grp")
-                       ] + self.table.replace_columns
-
-            for combo in not_allowed:
-                if this_column.lower() == combo[0]:
-                    this_column = combo[1]
-            for combo in replace:
-                if this_column.lower() == combo[0].lower():
-                    this_column = combo[1]
-                this_column = this_column.replace(combo[0], combo[1])
             
             if this_column:
                 columns.append([this_column, None])
@@ -309,6 +308,7 @@ class Engine():
         object engine.table."""
         print "Creating table " + self.table.name + "..."
         create_statement = self.create_table_statement()
+        print create_statement
         self.cursor.execute(create_statement)
         
     def create_table_statement(self):
@@ -425,7 +425,7 @@ class Engine():
             return "null"
         elif value:
             quotes = ["'", '"']
-            if strvalue[0] == strvalue[-1] and strvalue[0] in quotes:
+            if len(strvalue) > 0 and strvalue[0] == strvalue[-1] and strvalue[0] in quotes:
                 strvalue = strvalue.strip(''.join(quotes)) 
         else:
             return "null"
@@ -556,11 +556,11 @@ class Engine():
         for value in [(value if value != "None" else "")
                       for value in self.extract_values(line)]:
             column += 1
-            thiscolumn = self.table.columns[column][1][0]
+            this_column = self.table.columns[column][1][0]
             # If data type is "skip" ignore the value
-            if thiscolumn == "skip":
+            if this_column == "skip":
                 pass
-            elif thiscolumn == "combine":
+            elif this_column == "combine":
                 # If "combine" append value to end of previous column
                 linevalues[len(linevalues) - 1] += " " + value 
             else:

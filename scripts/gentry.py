@@ -124,9 +124,7 @@ U.S.A. """
                        ("liana"                 ,   ("char", 10)    ),
                        ("stem"                  ,   ("double",)     )]
         stems = []
-        log = open("log.txt", 'w')
         for line in lines:
-            log.write(str(line))
             species_info = [str(line[0]).split('.')[0], 
                             tax_dict[(line[1], line[2], line[3].lower())],
                             line[4]
