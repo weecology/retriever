@@ -176,7 +176,7 @@ class Engine():
         column_values = dict()
         
         for column_name in column_names:
-            this_column = column_name
+            this_column = column_name.lower()
             
             replace = [
                        ("%", "percent"),
@@ -187,7 +187,7 @@ class Engine():
                        ("long", "lon"),
                        ] + self.table.replace_columns
             for combo in replace:
-                if this_column.lower() == combo[0].lower():
+                if this_column == combo[0].lower():
                     this_column = combo[1]
                 this_column = this_column.replace(combo[0], combo[1])
             
