@@ -7,7 +7,7 @@ VERSION = '0.5'
 
 replace = [
            ("Subclass", "subclass"),
-           ("Order", "order"),
+           ("Order", "sporder"),
            ("Species", "species"),
            ("BMR (mlO2/hour)", "BMR_ml_O2_hr"),
            ("Body mass for BMR (gr)", "body_mass_bmr_g"),
