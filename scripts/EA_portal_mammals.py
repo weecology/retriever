@@ -12,7 +12,7 @@ from retriever.lib.models import Table, Cleanup, correct_invalid_value
 VERSION = '0.5'
 
 SCRIPT = BasicTextTemplate(
-                           name="Portal Project Mammals (Ecological Archives 2002)",
+                           name="Portal Project Mammals (Ecological Archives 2009)",
                            description="S. K. Morgan Ernest, Thomas J. Valone, and James H. Brown. 2009. Long-term monitoring and experimental manipulation of a Chihuahuan Desert ecosystem near Portal, Arizona, USA. Ecology 90:1708.",
                            shortname="PortalMammals",
                            ref="http://esapubs.org/archive/ecol/E090/118/",
