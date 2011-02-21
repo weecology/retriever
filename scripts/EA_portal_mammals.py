@@ -32,7 +32,7 @@ SCRIPT = BasicTextTemplate(
                                                    ),
                                      },
                            urls = {
-                                   "main": "http://esapubs.org/archive/ecol/E090/118/Portal_rodent_19772002.csv",
+                                   "main": "http://esapubs.org/archive/ecol/E090/118/Portal_rodents_19772002.csv",
                                    "species": "http://wiki.ecologicaldata.org/sites/default/files/portal_species.txt",
                                    "plots": "http://wiki.ecologicaldata.org/sites/default/files/portal_plots.txt"
                                    }
