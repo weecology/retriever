@@ -2,6 +2,7 @@
 name: Mammal Life History Database (Script Template Sample)
 shortname: MammalLH
 description: S. K. Morgan Ernest. 2003. Life history characteristics of placental non-volant mammals. Ecology 84:3402.
+url: http://esapubs.org/archive/ecol/E084/093/
 
 # tables
 table: species, http://esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt
