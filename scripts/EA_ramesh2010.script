@@ -7,5 +7,3 @@ table: macroplots, http://esapubs.org/archive/ecol/E091/216/Macroplot_data.txt
 table: microplots, http://esapubs.org/archive/ecol/E091/216/Microplot_data.txt
 table: sites, http://esapubs.org/archive/ecol/E091/216/Site_variables.txt
 table: species, http://esapubs.org/archive/ecol/E091/216/Species_list.txt
-                                   }
-                           )
