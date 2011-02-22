@@ -8,17 +8,20 @@ shortname = "%s"
 description = "%s"
 url = "%s"
 urls = %s
+tables = %s
 
 SCRIPT = BasicTextTemplate(name=name, description=description,
                            ref=url, shortname=shortname, 
-                           urls=urls)"""
+                           urls=urls, tables=tables)"""
 
 
 def compile_script(script_file):
     definition = open(script_file + ".script", 'rb')
     
-    values = dict()
-    urls = dict()
+    values = {}
+    urls = {}
+    tables = {}
+    last_table = ""
     
     for line in [line.strip() for line in definition]:
         if line and ':' in line and not line[0] == '#':
@@ -27,8 +30,17 @@ def compile_script(script_file):
             value = ':'.join(split_line[1:])
             if key == "table":
                 table_name = value.split(',')[0].strip()
+                last_table = table_name
                 table_url = ','.join(value.split(',')[1:]).strip()
                 urls[table_name] = table_url
+            elif key == "nulls":
+                if last_table:
+                    nulls = value.split(',')
+                    try:
+                        tables[last_table]
+                    except KeyError:
+                        tables[last_table] = {}
+                    tables[last_table]['cleanup'] = "Cleanup(correct_invalid_value, nulls=" + str(nulls) + ")"
             else:
                 values[key] = value
         
@@ -37,13 +49,21 @@ def compile_script(script_file):
             return values[key]
         except KeyError:
             return ""
+            
+    table_desc = "{"
+    for (key, value) in tables.items():
+        table_desc += "'" + key + "': Table('" + key + "', "
+        table_desc += ','.join([key + "=" + value for key, value, in value.items()])
+        table_desc += ")"
+    table_desc += "}"
     
     script_contents = (script_template % (
                                           get_value('name'),
                                           get_value('shortname'),
                                           get_value('description'),
                                           get_value('url'),
-                                          str(urls)
+                                          str(urls),
+                                          table_desc
                                           )
                        )
     
