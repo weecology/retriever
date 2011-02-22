@@ -7,7 +7,7 @@ SCRIPT = BasicTextTemplate(
                            name="Mammal Life History Database (Ecological Archives 2003)",
                            description="S. K. Morgan Ernest. 2003. Life history characteristics of placental non-volant mammals. Ecology 84:3402.",
                            shortname="MammalLH",
-                           urls = {"species": "http://esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"}                           
+                           urls = {"species": "http://esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"}
                            )
 
 

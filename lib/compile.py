@@ -4,8 +4,8 @@ from retriever.lib.models import Table, Cleanup, correct_invalid_value
 VERSION = '0.5'
 
 name = "%s"
-description = "%s"
 shortname = "%s"
+description = "%s"
 urls = %s
 
 SCRIPT = BasicTextTemplate(name=name, description=description,
@@ -21,11 +21,11 @@ def compile_script(script_file):
     for line in [line.strip() for line in definition]:
         if line and ':' in line and not line[0] == '#':
             split_line = [a.strip() for a in line.split(":")]
-            key = split_line[0]
+            key = split_line[0].lower()
             value = ':'.join(split_line[1:])
             if key == "table":
-                table_name = value.split(',')[0]
-                table_url = ','.join(value.split(',')[1:])
+                table_name = value.split(',')[0].strip()
+                table_url = ','.join(value.split(',')[1:]).strip()
                 urls[table_name] = table_url
             else:
                 values[key] = value
