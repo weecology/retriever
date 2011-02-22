@@ -6,10 +6,12 @@ VERSION = '0.5'
 name = "%s"
 shortname = "%s"
 description = "%s"
+url = "%s"
 urls = %s
 
 SCRIPT = BasicTextTemplate(name=name, description=description,
-                           shortname=shortname, urls=urls)"""
+                           ref=url, shortname=shortname, 
+                           urls=urls)"""
 
 
 def compile_script(script_file):
@@ -40,6 +42,7 @@ def compile_script(script_file):
                                           get_value('name'),
                                           get_value('shortname'),
                                           get_value('description'),
+                                          get_value('url'),
                                           str(urls)
                                           )
                        )
