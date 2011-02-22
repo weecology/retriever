@@ -22,6 +22,7 @@ def compile_script(script_file):
     urls = {}
     tables = {}
     last_table = ""
+    replace = []
     
     for line in [line.strip() for line in definition]:
         if line and ':' in line and not line[0] == '#':
@@ -39,8 +40,14 @@ def compile_script(script_file):
                     try:
                         tables[last_table]
                     except KeyError:
-                        tables[last_table] = {}
+                        if replace:
+                            tables[last_table] = {'replace_columns': str(replace)}
+                        else:
+                            tables[last_table] = {}
                     tables[last_table]['cleanup'] = "Cleanup(correct_invalid_value, nulls=" + str(nulls) + ")"
+            elif key == "replace":
+                replace = [(v.split(',')[0].strip(), v.split(',')[1].strip())
+                           for v in [v.strip() for v in value.split(';')]]
             else:
                 values[key] = value
         
@@ -54,8 +61,8 @@ def compile_script(script_file):
     for (key, value) in tables.items():
         table_desc += "'" + key + "': Table('" + key + "', "
         table_desc += ','.join([key + "=" + value for key, value, in value.items()])
-        table_desc += ")"
-    table_desc += "}"
+        table_desc += "),"
+    table_desc = table_desc[:-1] + "}"
     
     script_contents = (script_template % (
                                           get_value('name'),
