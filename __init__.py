@@ -18,7 +18,12 @@ REPOSITORY = 'http://www.ecologicaldata.org/ecodataretriever/'
 def MODULE_LIST():
     """Load scripts from scripts directory and return list of modules."""
     to_compile = [file for file in os.listdir("scripts")
-                  if file[-7:] == ".script" and file[0] != "_"]
+                  if file[-7:] == ".script" and file[0] != "_"
+                  and ((not os.path.isfile("scripts/" + file[:-7] + '.py')) or 
+                       (os.path.isfile("scripts/" + file[:-7] + '.py') and
+                        os.path.getmtime("scripts/" + file[:-7] + '.py') < 
+                        os.path.getmtime("scripts/" + file))
+                       )]
     for script in to_compile:
         script_name = '.'.join(script.split('.')[:-1])
         compile_script("scripts/" + script_name)
