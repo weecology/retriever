@@ -6,6 +6,7 @@ SCRIPT = BasicTextTemplate(
                            name="Masses of Mammals (Ecological Archives 2003)",
                            description="Felisa A. Smith, S. Kathleen Lyons, S. K. Morgan Ernest, Kate E. Jones, Dawn M. Kaufman, Tamar Dayan, Pablo A. Marquet, James H. Brown, and John P. Haskell. 2003. Body mass of late Quaternary mammals. Ecology 84:3403.",
                            shortname="MoM2003",
+                           tags=["Animals", "Mammals"],
                            ref="http://www.esapubs.org/archive/ecol/E084/094/",
                            urls = {
                                    "MOM": "http://www.esapubs.org/Archive/ecol/E084/094/MOMv3.3.txt"

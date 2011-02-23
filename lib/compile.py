@@ -3,16 +3,7 @@ from retriever.lib.models import Table, Cleanup, correct_invalid_value
 
 VERSION = '0.5'
 
-name = "%s"
-shortname = "%s"
-description = "%s"
-url = "%s"
-urls = %s
-tables = %s
-
-SCRIPT = BasicTextTemplate(name=name, description=description,
-                           ref=url, shortname=shortname, 
-                           urls=urls, tables=tables)"""
+SCRIPT = BasicTextTemplate(%s)"""
 
 
 def compile_script(script_file):
@@ -48,9 +39,13 @@ def compile_script(script_file):
             elif key == "replace":
                 replace = [(v.split(',')[0].strip(), v.split(',')[1].strip())
                            for v in [v.strip() for v in value.split(';')]]
+            elif key == "tags":
+                values['tags'] = [v.strip() for v in value.split(',')]
             else:
-                values[key] = value
+                values[key] = '"' + value + '"'
         
+    values['urls'] = str(urls)
+    
     def get_value(key):
         try:
             return values[key]
@@ -62,17 +57,20 @@ def compile_script(script_file):
         table_desc += "'" + key + "': Table('" + key + "', "
         table_desc += ','.join([key + "=" + value for key, value, in value.items()])
         table_desc += "),"
-    table_desc = table_desc[:-1] + "}"
+    if table_desc != '{':
+        table_desc = table_desc[:-1] 
+    table_desc += "}"
     
-    script_contents = (script_template % (
-                                          get_value('name'),
-                                          get_value('shortname'),
-                                          get_value('description'),
-                                          get_value('url'),
-                                          str(urls),
-                                          table_desc
-                                          )
-                       )
+    values['tables'] = table_desc
+    
+    script_desc = []
+    for key, value in values.items():
+        if key == "url":
+            key = "ref"
+        script_desc.append(key + "=" + str(value))
+    script_desc = (',\n' + ' ' * 27).join(script_desc)
+    
+    script_contents = (script_template % script_desc)
     
     new_script = open(script_file + '.py', 'wb')
     new_script.write(script_contents)

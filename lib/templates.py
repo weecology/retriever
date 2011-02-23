@@ -18,6 +18,7 @@ class Script:
         self.ref = ref
         self.public = public
         self.addendum = addendum
+        self.tags = []
         for key, item in kwargs.items():
             setattr(self, key, item[0] if isinstance(item, tuple) else item)
             

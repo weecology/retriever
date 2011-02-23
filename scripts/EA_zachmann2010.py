@@ -21,6 +21,7 @@ SCRIPT = BasicTextTemplate(
                            name="Sagebrush steppe quadrats (Ecological Archives 2010)",
                            description="Luke Zachmann, Corey Moffet, and Peter Adler. 2010. Mapped quadrats in sagebrush steppe: long-term data for analyzing demographic rates and plant-plant interactions. Ecology 91:3427.",
                            shortname="Zachmann2010",
+                           tags=["Plants"],
                            ref="http://esapubs.org/archive/ecol/E091/243/",
                            urls = {
                                    "density": "http://esapubs.org/archive/ecol/E091/243/allrecords_density.csv",

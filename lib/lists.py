@@ -18,24 +18,17 @@ def get_lists():
     SCRIPT_LIST = SCRIPT_LIST()
     SCRIPT_LIST.sort(key=attrgetter('name'))
 
+    all_tags = set()
+    for script in SCRIPT_LIST:
+        all_tags.update(script.tags)
+    all_tags = sorted(list(all_tags))
+
     lists = []
     lists.append(Category("All Datasets", SCRIPT_LIST))
     
-    # Check for .cat files
-    files = os.listdir('categories')
-    cat_files = [file for file in files if file[-4:] == ".cat"]
-    for file in cat_files:
-        cat = open(os.path.join('categories', file), 'rb')
-        scriptname = cat.readline().replace('\n', '')
-        scripts = []
-        for line in [line.replace('\n', '') for line in cat]:
-            new_scripts = [script for script in SCRIPT_LIST
-                           if script.shortname == line]
-            for script in new_scripts:
-                scripts.append(script)
-        scripts.sort(key=attrgetter('name'))
-        lists.append(Category(scriptname, scripts))
-
+    for tag in all_tags:
+        lists.append(Category(tag, [script for script in SCRIPT_LIST
+                                    if tag in script.tags]))
 
     # Get list of additional datasets from scripts.config file
     if os.path.isfile("scripts.config"):
