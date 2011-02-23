@@ -1,6 +1,7 @@
 name: Kansas plant quadrats (Ecological Archives 2007)
 description: Peter B. Adler, William R. Tyburczy, and William K. Lauenroth. 2007. Long-term mapped quadrats from Kansas prairie: demographic information for herbaceaous plants. Ecology 88:2673.
 shortname: Adler2007
+tags: Plants
 url: http://esapubs.org/archive/ecol/E088/161/
 
 table: main, http://esapubs.org/archive/ecol/E088/161/allrecords.csv

@@ -15,6 +15,7 @@ SCRIPT = BasicTextTemplate(
                            name="Portal Project Mammals (Ecological Archives 2009)",
                            description="S. K. Morgan Ernest, Thomas J. Valone, and James H. Brown. 2009. Long-term monitoring and experimental manipulation of a Chihuahuan Desert ecosystem near Portal, Arizona, USA. Ecology 90:1708.",
                            shortname="PortalMammals",
+                           tags=["Animals", "Mammals"],
                            ref="http://esapubs.org/archive/ecol/E090/118/",
                            tables = {
                                      "plots": Table("plots", 

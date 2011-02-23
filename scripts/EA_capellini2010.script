@@ -2,7 +2,7 @@
 name: Phylogeny and metabolic rates in mammals (Ecological Archives 2010)
 description: Isabella Capellini, Chris Venditti, and Robert A. Barton. 2010. Phylogeny and metabolic rates in mammals. Ecology 20:2783-2793.
 shortname: MammalMR2010
-url: http://www.esapubs.org/archive/ecol/E091/198/
+tags: Animals, Mammals
 
 table: MammalMR2010, http://www.esapubs.org/archive/ecol/E091/198/data.txt
 nulls: -9999
