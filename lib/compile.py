@@ -25,6 +25,11 @@ def compile_script(script_file):
                 last_table = table_name
                 table_url = ','.join(value.split(',')[1:]).strip()
                 urls[table_name] = table_url
+                if replace:
+                    try:
+                        tables[last_table]
+                    except:
+                        tables[table_name] = {'replace_columns': str(replace)}
             elif key == "nulls":
                 if last_table:
                     nulls = value.split(',')
@@ -65,6 +70,7 @@ def compile_script(script_file):
     
     script_desc = []
     for key, value in values.items():
+        print key, value
         if key == "url":
             key = "ref"
         script_desc.append(key + "=" + str(value))
