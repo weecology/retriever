@@ -1,0 +1,19 @@
+name: Sagebrush steppe quadrats (Ecological Archives 2010)
+description: Luke Zachmann, Corey Moffet, and Peter Adler. 2010. Mapped quadrats in sagebrush steppe: long-term data for analyzing demographic rates and plant-plant interactions. Ecology 91:3427.
+shortname: Zachmann2010
+tags: Plants
+url: http://esapubs.org/archive/ecol/E091/243/
+
+table: density, http://esapubs.org/archive/ecol/E091/243/allrecords_density.csv
+table: cover, http://esapubs.org/archive/ecol/E091/243/allrecords_cover.csv
+table: quad_info, http://esapubs.org/archive/ecol/E091/243/quad_info.csv
+table: grazing, http://esapubs.org/archive/ecol/E091/243/grazing_info.csv
+table: quad_inventory, http://esapubs.org/archive/ecol/E091/243/quad_inventory.csv
+table: species, http://esapubs.org/archive/ecol/E091/243/species_list.csv
+table: taxonomy, http://esapubs.org/archive/ecol/E091/243/taxonomic_grouping.csv
+table: counts, http://esapubs.org/archive/ecol/E091/243/annuals_counts_v3.csv
+
+replace: jan, january; feb, february; mar, march; apr, april; jun, june; jul, july; aug, august; sep, september; oct, october; nov, november; dec, december
+table: monthly_mean_temp, http://esapubs.org/archive/ecol/E091/243/monthly_mean_temp.csv
+table: monthly_ppt, http://esapubs.org/archive/ecol/E091/243/total_monthly_ppt.csv
+table: monthly_sno, http://esapubs.org/archive/ecol/E091/243/total_monthly_sno.csv
