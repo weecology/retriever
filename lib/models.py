@@ -212,7 +212,11 @@ class Engine():
     def auto_get_datatypes(self, pk, source, columns, column_values):
         """Determines data types for each column."""
         # Get all values for each column
-        for line in source.readlines(10000):
+        if hasattr(self, 'scan_lines'):
+            lines = self.scan_lines
+        else:
+            lines = 10000
+        for line in source.readlines(lines):
             if line.replace("\t", "").strip():
                 values = self.extract_values(line.strip("\n"))
                 for i in range(len(columns)):
