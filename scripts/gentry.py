@@ -21,6 +21,7 @@ class main(Script):
         self.shortname = "Gentry"
         self.urls = {"stems": "http://www.mobot.org/mobot/gentry/123/all_Excel.zip",
                      "sites": "http://www.ecologicaldata.org/sites/default/files/gentry_sites_data.txt"}
+        self.tags = ["Plants"]
         self.ref = "http://www.wlbcenter.org/gentry_data.htm"
         self.addendum = """Researchers who make use of the data in publications are requested to acknowledge Alwyn H. Gentry, the Missouri Botanical Garden, and collectors who assisted Gentry or contributed data for specific sites. It is also requested that a reprint of any publication making use of the Gentry Forest Transect Data be sent to:
 

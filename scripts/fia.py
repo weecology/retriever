@@ -20,6 +20,7 @@ class main(Script):
         self.public = False
         self.ref = "http://fia.fs.fed.us/"
         self.urls = {"main": "http://199.128.173.17/fiadb4-downloads/"}
+        self.tags = ["Plants"]
         self.addendum = """This dataset requires downloading many large files - please be patient."""
     def download(self, engine=None):
         Script.download(self, engine)
