@@ -212,7 +212,7 @@ class Engine():
     def auto_get_datatypes(self, pk, source, columns, column_values):
         """Determines data types for each column."""
         # Get all values for each column
-        for line in source:
+        for line in source.readlines(10000):
             if line.replace("\t", "").strip():
                 values = self.extract_values(line.strip("\n"))
                 for i in range(len(columns)):
@@ -241,7 +241,7 @@ class Engine():
                 datatype = "char"
         
             if datatype is "char":
-                max_length = max([len(s) for s in values if s])
+                max_length = max([len(s) for s in values if s]) + 5
                 column[1] = ["char", max_length]
             elif datatype is "int":
                 column[1] = ["int",]
