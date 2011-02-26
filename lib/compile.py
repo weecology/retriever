@@ -32,7 +32,7 @@ def compile_script(script_file):
                         tables[table_name] = {'replace_columns': str(replace)}
             elif key == "nulls":
                 if last_table:
-                    nulls = value.split(',')
+                    nulls = [v.strip() for v in value.split(',')]
                     try:
                         tables[last_table]
                     except KeyError:
