@@ -14,6 +14,7 @@ class Category:
 
 
 def get_lists():
+    # get a list of category tags from all scripts
     from retriever import SCRIPT_LIST
     SCRIPT_LIST = SCRIPT_LIST()
     SCRIPT_LIST.sort(key=attrgetter('name'))
