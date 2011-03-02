@@ -70,7 +70,6 @@ def compile_script(script_file):
     
     script_desc = []
     for key, value in values.items():
-        print key, value
         if key == "url":
             key = "ref"
         script_desc.append(key + "=" + str(value))

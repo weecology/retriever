@@ -52,7 +52,7 @@ def more_recent(latest, current):
 
 
 def check_for_updates():
-    """Check for updates to categories, scripts, and executable."""
+    """Check for updates to scripts and executable."""
     app = wx.PySimpleApp()
     progress = wx.ProgressDialog("Update",
                                  "Checking for updates. Please wait...",
@@ -93,7 +93,8 @@ def check_for_updates():
         return
         
     latest = version_file.readline().strip('\n')
-    cats = version_file.readline().strip('\n').split(',')
+    # for compatibility with previous versions, ignore the next line
+    version_file.readline()
     scripts = []
     for line in version_file:
         scripts.append(line.strip('\n').split(','))
@@ -125,14 +126,6 @@ def check_for_updates():
                 os.execv(executable_name + ".exe", sys.argv)
                 
                 sys.exit()
-    
-    # get category files
-    if not os.path.isdir("categories"):
-        os.mkdir("categories")    
-    for cat in cats:
-        if not file_exists(os.path.join("categories", cat + ".cat")):
-            download_from_repository("categories/" + cat + ".cat", 
-                                     "categories/" + cat + ".cat")
     
     # get script files
     if not os.path.isdir("scripts"):
