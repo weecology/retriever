@@ -5,6 +5,8 @@ VERSION = '0.5'
 
 SCRIPT = BasicTextTemplate(%s)"""
 
+TABLE_KEYS = ['contains_pk', 'header_rows', 'delimiter']
+
 
 def compile_script(script_file):
     definition = open(script_file + ".script", 'rb')
@@ -14,6 +16,7 @@ def compile_script(script_file):
     tables = {}
     last_table = ""
     replace = []
+    columns = []
     
     for line in [line.strip() for line in definition]:
         if line and ':' in line and not line[0] == '#':
@@ -32,7 +35,7 @@ def compile_script(script_file):
                         tables[table_name] = {'replace_columns': str(replace)}
             elif key == "nulls":
                 if last_table:
-                    nulls = [v.strip() for v in value.split(',')]
+                    nulls = [v if v != "EMPTY" else None for v in [v.strip() for v in value.split(',')]]
                     try:
                         tables[last_table]
                     except KeyError:
@@ -46,8 +49,33 @@ def compile_script(script_file):
                            for v in [v.strip() for v in value.split(';')]]
             elif key == "tags":
                 values['tags'] = [v.strip() for v in value.split(',')]
+            elif key == "column":
+                if last_table:                    
+                    vs = [v.strip() for v in value.split(',')]
+                    column = [(vs[0], (vs[1], vs[2]) if len(vs) > 2 else (vs[1],))]
+                    try:
+                        tables[last_table]
+                    except KeyError:
+                        tables[last_table] = {}
+
+                    try:
+                        tables[last_table]['columns'] += column
+                    except KeyError:
+                        tables[last_table]['columns'] = column
             else:
-                values[key] = '"' + value + '"'
+                if key in TABLE_KEYS:
+                    # attribute that should be applied to the most recently declared table
+                    if last_table:
+                        try:
+                            tables[last_table]
+                        except KeyError:
+                            tables[last_table] = {}
+                        
+                        e = eval(value)
+                        tables[last_table][key] = str(e) if e.__class__ != str else "'" + e + "'"
+                else:
+                    # general script attributes
+                    values[key] = '"' + value + '"'
         
     values['urls'] = str(urls)
     
@@ -60,7 +88,7 @@ def compile_script(script_file):
     table_desc = "{"
     for (key, value) in tables.items():
         table_desc += "'" + key + "': Table('" + key + "', "
-        table_desc += ','.join([key + "=" + value for key, value, in value.items()])
+        table_desc += ','.join([key + "=" + str(value) for key, value, in value.items()])
         table_desc += "),"
     if table_desc != '{':
         table_desc = table_desc[:-1] 
