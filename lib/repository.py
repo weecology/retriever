@@ -78,7 +78,7 @@ def check_for_updates():
                     abort = True
             except:
                 pass
-    sys.stdout = update_progress(progress)    
+    sys.stdout = update_progress(progress)
     running_from = os.path.basename(sys.argv[0])
     
     if os.path.isfile('dbtk_old.exe') and running_from != 'dbtk_old.exe':
@@ -90,6 +90,7 @@ def check_for_updates():
     try:
         version_file = urllib.urlopen(REPOSITORY + "version.txt")
     except IOError:
+        print "Couldn't open version.txt from repository"
         return
         
     latest = version_file.readline().strip('\n')
@@ -141,7 +142,7 @@ def check_for_updates():
         if not more_recent(script[1], VERSION):
             if not file_exists(os.path.join("scripts", script_name)):
                 # File doesn't exist: download it
-                print "DOESNT EXIST" + script_name
+                print "DOESNT EXIST: " + script_name
                 download_from_repository("scripts/" + script_name,
                                          "scripts/" + script_name)
             elif script_version:
