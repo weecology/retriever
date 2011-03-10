@@ -16,7 +16,6 @@ def compile_script(script_file):
     tables = {}
     last_table = ""
     replace = []
-    columns = []
     
     for line in [line.strip() for line in definition]:
         if line and ':' in line and not line[0] == '#':
