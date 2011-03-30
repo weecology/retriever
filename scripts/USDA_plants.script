@@ -5,7 +5,6 @@ tags: Plants, Taxonomy
 url: http://plants.usda.gov
 
 table: PlantTaxonomy, http://plants.usda.gov/java/downloadData?fileName=plantlst.txt&static=true
-nulls: 
 column: record_id, pk-auto
 column: symbol, char, 7
 column: synonym_symbol, char, 7
