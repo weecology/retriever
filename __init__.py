@@ -10,7 +10,7 @@ import imp
 from lib.compile import compile_script
 
 
-VERSION = '0.5'
+VERSION = '1.0'
 
 REPOSITORY = 'http://www.ecologicaldata.org/ecodataretriever/'
 
