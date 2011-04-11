@@ -58,7 +58,7 @@ def check_for_updates():
     app = wx.PySimpleApp()
     splash = Splash()
     #splash.Show()
-    splash.SetText("Loading...")
+    splash.SetText("\tLoading...")
     
     class update_progress:
         def __init__(self, parent):
@@ -66,7 +66,7 @@ def check_for_updates():
         def write(self, s):
             if s != "\n":
                 try:
-                    self.parent.SetText(s)
+                    self.parent.SetText('\t' + s)
                 except:
                     pass
                 
