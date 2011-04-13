@@ -14,10 +14,8 @@ cd retriever # current-release/src/retriever
 
 # remove non-source files from source directory
 sudo rm build.sh make-windows-executables.bat
-mv categories ../../
 mv scripts ../../
 cd ../.. # current-release
-sudo rm categories/.svn -rf
 sudo rm scripts/.svn -rf
 
 # install latest version
@@ -46,10 +44,10 @@ sudo rm deb_dist stdeb.cfg -rf
 mkdir linux
 mv *.deb linux/
 mv linux ../../
-mv globe.ico ../
+mv *.ico ../
 sudo rm .svn lib/.svn engines/.svn app/.svn -rf
 
 # build src package
 cd .. # current-release/src
 tar czvf retriever-src.tar.gz retriever
-mv globe.ico retriever/
+mv *.ico retriever/
