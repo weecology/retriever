@@ -1,7 +1,7 @@
 script_template = """from retriever.lib.templates import BasicTextTemplate
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 
-VERSION = '0.5'
+VERSION = '1.0'
 
 SCRIPT = BasicTextTemplate(%s)"""
 
