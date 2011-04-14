@@ -7,7 +7,9 @@ if os.path.isfile("version.txt"):
 version_file = open("version.txt", "wb")
 version_file.write(VERSION + '\n')
 modules = MODULE_LIST()
-scripts = [','.join([module.__name__ + ('.script' if '.script' in module.__file__ else '.py'), 
+scripts = [','.join([module.__name__ + ('.script' 
+                                        if os.path.isfile(module.__file__[:-4] + '.script')
+                                        else '.py'), 
                      module.VERSION]) 
            for module in modules
            if module.SCRIPT.public]
