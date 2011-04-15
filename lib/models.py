@@ -31,7 +31,7 @@ def correct_invalid_value(value, args):
         if float(value) in [float(item) for item in args["nulls"]]:            
             return None
         return value
-    except ValueError:
+    except:
         return value
 
     
@@ -180,6 +180,7 @@ class Engine():
             
             replace = [
                        ("%", "percent"),
+                       ("&", "and"),
                        ("\xb0", "degrees"),
                        ("group", "grp"),
                        ("order", "sporder"),
@@ -559,14 +560,20 @@ class Engine():
         for value in [(value if value != "None" else "")
                       for value in self.extract_values(line)]:
             column += 1
-            this_column = self.table.columns[column][1][0]
-            # If data type is "skip" ignore the value
-            if this_column == "skip":
-                pass
-            elif this_column == "combine":
-                # If "combine" append value to end of previous column
-                linevalues[len(linevalues) - 1] += " " + value 
-            else:
-                # Otherwise, add new value
-                linevalues.append(value) 
+            try:
+                this_column = self.table.columns[column][1][0]
+
+                # If data type is "skip" ignore the value
+                if this_column == "skip":
+                    passpr
+                elif this_column == "combine":
+                    # If "combine" append value to end of previous column
+                    linevalues[len(linevalues) - 1] += " " + value 
+                else:
+                    # Otherwise, add new value
+                    linevalues.append(value)
+            except:
+                # too many values for columns; ignore
+                pass 
+                
         return linevalues
