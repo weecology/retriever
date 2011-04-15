@@ -19,7 +19,8 @@ from retriever.app.main import launch_app
 def main():
     """This function launches the EcoData Retriever."""
     check_for_updates()
-    launch_app(get_lists())
+    lists = get_lists()
+    launch_app(lists)
 
 if __name__ == "__main__":
     main()

@@ -22,7 +22,6 @@ includes = [
 excludes = [
             '_ssl',
             'pyreadline',
-            'difflib',
             'doctest',
             'optparse',
             'pickle',
@@ -62,7 +61,7 @@ setup(name='retriever',
                  },
       windows = [{'script': "main.py",
                   'dest_base': "retriever",
-                  'icon_resources':[(1,'globe.ico')]
+                  'icon_resources':[(1,'icon.ico')]
                   }],
       zipfile = None,
      )

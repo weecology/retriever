@@ -21,6 +21,7 @@ class main(Script):
         self.shortname = "Gentry"
         self.urls = {"stems": "http://www.mobot.org/mobot/gentry/123/all_Excel.zip",
                      "sites": "http://www.ecologicaldata.org/sites/default/files/gentry_sites_data.txt"}
+        self.tags = ["Plants"]
         self.ref = "http://www.wlbcenter.org/gentry_data.htm"
         self.addendum = """Researchers who make use of the data in publications are requested to acknowledge Alwyn H. Gentry, the Missouri Botanical Garden, and collectors who assisted Gentry or contributed data for specific sites. It is also requested that a reprint of any publication making use of the Gentry Forest Transect Data be sent to:
 
@@ -67,7 +68,8 @@ U.S.A. """
                                 if not Excel.empty_cell(cell) or n == 13:
                                     thisline.append(Excel.cell_value(cell))
                         
-                        newline = [str(value).title().replace("\\", "/") for value in thisline] 
+                        newline = [str(value).title().replace("\\", "/") for value in thisline]
+                        newline = newline[0:4] + [filename][0:-4] + newline[4:]
                         lines.append(newline)
                         
                         # Check how far the species is identified
@@ -119,6 +121,7 @@ U.S.A. """
         table.columns=[("stem_id"               ,   ("pk-auto",)    ),
                        ("line"                  ,   ("int",)        ),
                        ("species_id"            ,   ("int",)        ),
+                       ("site_code"             ,   ("char", 12)    ),
                        ("liana"                 ,   ("char", 10)    ),
                        ("stem"                  ,   ("double",)     )]
         stems = []
@@ -127,6 +130,7 @@ U.S.A. """
                             tax_dict[(line[1], line[2], line[3].lower())],
                             line[4]
                             ]
+            site = []
             stem_count = len(line) - 5
             for i in range(stem_count):
                 stem = species_info + [line[(i + 1) * -1]]

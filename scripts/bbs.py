@@ -17,6 +17,7 @@ class main(Script):
         self.name = "USGS North American Breeding Bird Survey"
         self.shortname = "BBS"
         self.ref = "http://www.pwrc.usgs.gov/BBS/"
+        self.tags = ["Animals", "Birds"]
         self.urls = {
                      "counts": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/",
                      "routes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/CRoutes.exe",

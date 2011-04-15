@@ -4,7 +4,7 @@ import wx
 from retriever.app.connect_wizard import ConnectWizard
 from retriever.app.controls import *
 from retriever.app.download_manager import DownloadManager
-from retriever.app.images import globe_icon, cycle, download, downloaded, error
+from retriever.app.images import icon, cycle, download, downloaded, error
 from retriever.lib.tools import get_default_connection, get_saved_connection, choose_engine
 from retriever import ENGINE_LIST
 
@@ -16,7 +16,7 @@ class App(wx.App):
         
         mfs = wx.MemoryFSHandler()
         wx.FileSystem_AddHandler(mfs)
-        mfs.AddFile("globe.png", globe_icon.GetImage(), wx.BITMAP_TYPE_PNG)
+        mfs.AddFile("globe.png", icon.GetImage(), wx.BITMAP_TYPE_PNG)
         mfs.AddFile("cycle.png", cycle.GetImage(), wx.BITMAP_TYPE_PNG)
         mfs.AddFile("download.png", download.GetImage(), wx.BITMAP_TYPE_PNG)
         mfs.AddFile("downloaded.png", downloaded.GetImage(), wx.BITMAP_TYPE_PNG)
@@ -63,7 +63,7 @@ class Frame(wx.Frame):
         self.dialog = None
         self.lists = lists
         self.engine = engine
-        self.SetIcon(globe_icon.GetIcon())
+        self.SetIcon(icon.GetIcon())
         
         self.CreateStatusBar()        
         

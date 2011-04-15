@@ -102,13 +102,15 @@ class Engine():
                                                         (value, 
                                                          self.table.cleanup.args)) 
                                for value in linevalues]
-                insertstatement = self.insert_statement(cleanvalues)
+                insert_stmt = self.insert_statement(cleanvalues)
                 if self.table.record_id % 10 == 0 or self.table.record_id == total:
                     prompt = "Inserting rows to " + self.tablename() + ": "
                     prompt += str(self.table.record_id) + " / " + str(total)
                     sys.stdout.write(prompt + "\b" * len(prompt))
-                self.cursor.execute(insertstatement)
+                
+                self.cursor.execute(insert_stmt)
         
+        print
         self.connection.commit()
         
     def auto_create_table(self, table, url=None, filename=None, pk=None):
@@ -174,7 +176,22 @@ class Engine():
         column_values = dict()
         
         for column_name in column_names:
-            this_column = column_name
+            this_column = column_name.lower()
+            
+            replace = [
+                       ("%", "percent"),
+                       ("\xb0", "degrees"),
+                       ("group", "grp"),
+                       ("order", "sporder"),
+                       ("references", "refs"),
+                       ("long", "lon"),
+                       ] + self.table.replace_columns
+            for combo in replace:
+                if this_column == combo[0].lower():
+                    this_column = combo[1]
+                this_column = this_column.replace(combo[0], combo[1])
+            
+            
             for c in [")", "\n", "\r"]:
                 this_column = this_column.strip(c)
             for c in [".", '"', "'"]:
@@ -185,24 +202,6 @@ class Engine():
                 this_column = this_column.replace("__", "_")
             this_column = this_column.lstrip("0123456789_").rstrip("_")
             
-            not_allowed = [
-                           ("order","sporder"),
-                           ("references", "refs"),
-                           ("long", "lon"),
-                           ]
-            replace = [
-                       ("%", "percent"),
-                       ("\xb0", "degrees"),
-                       ("group", "grp")
-                       ] + self.table.replace_columns
-
-            for combo in not_allowed:
-                if this_column.lower() == combo[0]:
-                    this_column = combo[1]
-            for combo in replace:
-                if this_column.lower() == combo[0].lower():
-                    this_column = combo[1]
-                this_column = this_column.replace(combo[0], combo[1])
             
             if this_column:
                 columns.append([this_column, None])
@@ -213,7 +212,11 @@ class Engine():
     def auto_get_datatypes(self, pk, source, columns, column_values):
         """Determines data types for each column."""
         # Get all values for each column
-        for line in source:
+        if hasattr(self, 'scan_lines'):
+            lines = self.scan_lines
+        else:
+            lines = 10000
+        for line in source.readlines(lines):
             if line.replace("\t", "").strip():
                 values = self.extract_values(line.strip("\n"))
                 for i in range(len(columns)):
@@ -242,7 +245,7 @@ class Engine():
                 datatype = "char"
         
             if datatype is "char":
-                max_length = max([len(s) for s in values if s])
+                max_length = max([len(s) for s in values if s]) + 5
                 column[1] = ["char", max_length]
             elif datatype is "int":
                 column[1] = ["int",]
@@ -308,8 +311,8 @@ class Engine():
         """Creates a new database table based on settings supplied in Table 
         object engine.table."""
         print "Creating table " + self.table.name + "..."
-        createstatement = self.create_table_statement()
-        self.cursor.execute(createstatement)
+        create_statement = self.create_table_statement()
+        self.cursor.execute(create_statement)
         
     def create_table_statement(self):
         """Returns a SQL statement to create a table."""
@@ -425,7 +428,7 @@ class Engine():
             return "null"
         elif value:
             quotes = ["'", '"']
-            if strvalue[0] == strvalue[-1] and strvalue[0] in quotes:
+            if len(strvalue) > 0 and strvalue[0] == strvalue[-1] and strvalue[0] in quotes:
                 strvalue = strvalue.strip(''.join(quotes)) 
         else:
             return "null"
@@ -519,16 +522,16 @@ class Engine():
         """Returns a SQL statement to insert a set of values."""
         columns = self.get_insert_columns()
         columncount = len(self.get_insert_columns(False))
-        insertstatement = "INSERT INTO " + self.tablename()
-        insertstatement += " (" + columns + ")"  
-        insertstatement += " VALUES ("
+        insert_stmt = "INSERT INTO " + self.tablename()
+        insert_stmt += " (" + columns + ")"  
+        insert_stmt += " VALUES ("
         for i in range(0, columncount):
-            insertstatement += "%s, "
-        insertstatement = insertstatement.rstrip(", ") + ");"
-        while len(values) < insertstatement.count("%s"):
+            insert_stmt += "%s, "
+        insert_stmt = insert_stmt.rstrip(", ") + ");"
+        while len(values) < insert_stmt.count("%s"):
             values.append(self.format_insert_value(None))
-        insertstatement %= tuple(values)
-        return insertstatement
+        insert_stmt %= tuple(values)
+        return insert_stmt
         
     def skip_rows(self, rows, source):
         """Skip over the header lines by reading them before processing."""
@@ -556,11 +559,11 @@ class Engine():
         for value in [(value if value != "None" else "")
                       for value in self.extract_values(line)]:
             column += 1
-            thiscolumn = self.table.columns[column][1][0]
+            this_column = self.table.columns[column][1][0]
             # If data type is "skip" ignore the value
-            if thiscolumn == "skip":
+            if this_column == "skip":
                 pass
-            elif thiscolumn == "combine":
+            elif this_column == "combine":
                 # If "combine" append value to end of previous column
                 linevalues[len(linevalues) - 1] += " " + value 
             else:
