@@ -11,8 +11,13 @@ from lib.compile import compile_script
 
 
 VERSION = '1.0'
+# specify the build type - either 'release' or 'candidate'
+BUILD = 'release'
 
-REPOSITORY = 'http://www.ecologicaldata.org/ecodataretriever/'
+if BUILD == 'candidate':
+    REPOSITORY = 'http://www.ecologicaldata.org/ecodata-rc/'
+else:
+    REPOSITORY = 'http://www.ecologicaldata.org/ecodataretriever/'
 
 
 def MODULE_LIST():
