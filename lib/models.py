@@ -33,6 +33,10 @@ def correct_invalid_value(value, args):
         return value
     except:
         return value
+        
+        
+def filename_from_url(url):
+    return (url.split('?')[0]).split('/')[-1]
 
     
 class Cleanup:
@@ -117,7 +121,7 @@ class Engine():
         """Creates a table automatically by analyzing a data source and 
         predicting column names, data types, delimiter, etc."""
         if url and not filename:
-            filename = url.split('/')[-1]
+            filename = filename_from_url(url)
         self.create_raw_data_dir()
         need_to_delete = False
         self.table = table
@@ -352,7 +356,7 @@ class Engine():
         """Downloads one or more files from an archive into the raw data
         directory."""
         downloaded = False
-        archivename = self.format_filename(url.split('/')[-1])
+        archivename = self.format_filename(filename_from_url(url))
         
         for filename in filenames:
             if self.use_local and file_exists(self.format_filename(filename)):
@@ -362,7 +366,7 @@ class Engine():
                 self.create_raw_data_dir()
                 
                 if not downloaded:
-                    self.download_file(url, url.split('/')[-1])
+                    self.download_file(url, filename_from_url(url))
                     downloaded = True     
                         
                 local_zip = zipfile.ZipFile(archivename)
@@ -499,7 +503,7 @@ class Engine():
         
     def insert_data_from_url(self, url):
         """Insert data from a web resource, such as a text file."""
-        filename = url.split('/')[-1]
+        filename = filename_from_url(url)
         self.create_raw_data_dir()
         if self.use_local and file_exists(self.format_filename(filename)):
             # Use local copy            
