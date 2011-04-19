@@ -14,10 +14,11 @@ VERSION = '1.0'
 # specify the build type - either 'release' or 'candidate'
 BUILD = 'release'
 
-if BUILD == 'candidate':
-    REPOSITORY = 'http://www.ecologicaldata.org/ecodata-rc/'
-else:
-    REPOSITORY = 'http://www.ecologicaldata.org/ecodataretriever/'
+REPOSITORIES = {
+                'release': 'http://www.ecologicaldata.org/ecodataretriever/',
+                'candidate': 'http://www.ecologicaldata.org/ecodata-rc/'
+                }
+REPOSITORY = REPOSITORIES[BUILD]
 
 
 def MODULE_LIST():
