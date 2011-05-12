@@ -3,9 +3,40 @@ description: S. K. Morgan Ernest, Thomas J. Valone, and James H. Brown. 2009. Lo
 shortname: PortalMammals
 tags: Animals, Mammals
 url: http://esapubs.org/archive/ecol/E090/118/
+scan_lines: 40000
 
 table: main, http://esapubs.org/archive/ecol/E090/118/Portal_rodents_19772002.csv
 nulls: EMPTY
+column: record_id, pk-auto
+column: recordid, skip
+column: mo, int
+column: dy, int
+column: yr, int
+column: period, int
+column: plot, int
+column: note1, char, 9
+column: stake, int
+column: species, char, 9
+column: sex, char, 9
+column: age, char, 9
+column: reprod, char, 9
+column: testes, char, 9
+column: vagina, char, 9
+column: pregnant, char, 9
+column: nipples, char, 9
+column: lactation, char, 9
+column: hfl, char, 9
+column: wgt, char, 9
+column: tag, char, 9
+column: note2, char, 9
+column: ltag, char, 9
+column: note3, char, 9
+column: prevrt, char, 9
+column: prevlet, char, 9
+column: nestdir, char, 9
+column: neststk, char, 9
+column: note4, char, 9
+column: note5, char, 9
 
 table: species, http://wiki.ecologicaldata.org/sites/default/files/portal_species.txt
 
