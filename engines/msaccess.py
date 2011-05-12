@@ -60,7 +60,9 @@ class engine(Engine):
             
             need_to_delete = False    
             if self.table.pk and not self.table.contains_pk:
-                newfilename = '.'.join(filename.split(".")[0:-1]) + "_new." + filename.split(".")[-1]
+                proper_name = filename.split('.')
+                newfilename = '.'.join((proper_name[0:-1]) if len(proper_name) > 0 else proper_name[0]
+                                       ) + "_new." + filename.split(".")[-1]
                 if not os.path.isfile(newfilename):
                     print "Adding index to " + os.path.abspath(newfilename) + "..."
                     read = open(filename, "rb")
@@ -76,7 +78,7 @@ class engine(Engine):
             else:
                 newfilename = filename
             
-            columns = self.get_insert_columns()
+            columns = self.get_insert_columns()            
             filename = os.path.abspath(newfilename)
             filename_length = (len(os.path.basename(filename)) * -1) - 1
             filepath = filename[0:filename_length]

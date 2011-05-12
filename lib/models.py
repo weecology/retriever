@@ -218,7 +218,7 @@ class Engine():
         """Determines data types for each column."""
         # Get all values for each column
         if hasattr(self, 'scan_lines'):
-            lines = self.scan_lines
+            lines = int(self.scan_lines)
         else:
             lines = 10000
         for line in source.readlines(lines):
