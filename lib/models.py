@@ -111,7 +111,7 @@ class Engine():
                     prompt = "Inserting rows to " + self.tablename() + ": "
                     prompt += str(self.table.record_id) + " / " + str(total)
                     sys.stdout.write(prompt + "\b" * len(prompt))
-                
+
                 self.cursor.execute(insert_stmt)
         
         print
@@ -190,6 +190,7 @@ class Engine():
                        ("order", "sporder"),
                        ("references", "refs"),
                        ("long", "lon"),
+                       ("date", "record_date")
                        ] + self.table.replace_columns
             for combo in replace:
                 if this_column == combo[0].lower():
