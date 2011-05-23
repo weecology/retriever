@@ -92,8 +92,20 @@ class Engine():
         """This function adds data to a table from one or more lines specified 
         in engine.table.source."""
         lines = self.table.source
-        real_lines = [line for line in lines 
-                      if line.strip('\n\r\t ')]
+
+        if self.table.columns[-1][1][0][:3] == "ct-":
+            # cross-tab data
+            real_lines = []
+            for line in lines:
+                split_line = line.strip('\n\r\t').split(self.table.delimiter)
+                begin = split_line[:len(self.table.columns) - 2]
+                rest = split_line[len(self.table.columns) - 2:]
+                for item in rest:
+                    real_lines.append(self.table.delimiter.join(begin + [item]))
+        else:        
+            real_lines = [line for line in lines 
+                          if line.strip('\n\r\t ')]
+                          
         total = self.table.record_id + len(real_lines)
         for line in real_lines:
             line = line.strip()
@@ -278,10 +290,12 @@ class Engine():
         if thistype[0:3] == "pk-":
             thistype = thistype.lstrip("pk-")
             thispk = True
+        elif thistype[0:3] == "ct-":
+            thistype = thistype.lstrip("ct-")
         customtypes = ("auto", "int", "double", "decimal", "char", "bool")
         for i in range(0, len(customtypes)):
             datatypes[customtypes[i]] = i
-        datatypes["combine"], datatypes["skip"] = [-1, -1]        
+        datatypes["combine"], datatypes["skip"] = [-1] * 2
         mydatatypes = self.datatypes
         thisvartype = datatypes[thistype]
         if thisvartype > -1:
@@ -317,8 +331,8 @@ class Engine():
         """Creates a new database table based on settings supplied in Table 
         object engine.table."""
         print "Creating table " + self.table.name + "..."
-        create_statement = self.create_table_statement()
-        self.cursor.execute(create_statement)
+        create_stmt = self.create_table_statement()
+        self.cursor.execute(create_stmt)
         
     def create_table_statement(self):
         """Returns a SQL statement to create a table."""
@@ -327,16 +341,17 @@ class Engine():
         except:
             pass
         
-        createstatement = "CREATE TABLE " + self.tablename() + " ("
+        create_stmt = "CREATE TABLE " + self.tablename() + " ("
         
         for item in self.table.columns:
-            if (item[1][0] != "skip") and (item[1][0] != "combine"):
-                createstatement += (self.format_column_name(item[0]) + " "
-                                    + self.convert_data_type(item[1]) + ", ")    
+            if (not (item[1][0] in ["skip", "combine"])):
+                create_stmt += (self.format_column_name(item[0]) + " "
+                                + self.convert_data_type(item[1]) + ", ")    
 
-        createstatement = createstatement.rstrip(', ')    
-        createstatement += " );"
-        return createstatement
+        create_stmt = create_stmt.rstrip(', ')    
+        create_stmt += " );"
+
+        return create_stmt
         
     def download_file(self, url, filename):
         """Downloads a file to the raw data directory."""
