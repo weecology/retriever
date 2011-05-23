@@ -44,8 +44,9 @@ class engine(Engine):
         
     def insert_data_from_file(self, filename):
         """Perform a bulk insert."""
+        ct = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
         if (self.table.cleanup.function == no_cleanup and not self.table.fixed_width and
-            self.table.header_rows < 2) and (self.table.delimiter in ["\t", ","]):        
+            self.table.header_rows < 2) and (self.table.delimiter in ["\t", ","]) and not ct:  
             print ("Inserting data from " + os.path.basename(filename) + "...")
             
             if self.table.delimiter == "\t":
