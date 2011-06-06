@@ -13,6 +13,11 @@ class Category:
         self.scripts = scripts
 
 
+def tag_tree(all_tags):
+    return [[tag.strip() for tag in tags.split('>')] 
+            for tags in all_tags]
+
+
 def get_lists():
     # get a list of category tags from all scripts
     from retriever import SCRIPT_LIST
