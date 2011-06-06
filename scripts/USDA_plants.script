@@ -1,7 +1,7 @@
 name: USDA plants
-description: Plant taxonomy system available on the USDA plants sitee.
+description: Plant taxonomy system available on the USDA plants site.
 shortname: PlantTaxonomy
-tags: Plants, Taxonomy
+tags: Taxon > Plants, Data Type > Taxonomy
 url: http://plants.usda.gov
 
 table: PlantTaxonomy, http://plants.usda.gov/java/downloadData?fileName=plantlst.txt&static=true

@@ -1,7 +1,7 @@
 name: Indian Forest Stand Structure (Ecological Archives 2010
 description: B. R. Ramesh, M. H. Swaminath, Santoshgouda V. Patil, Dasappa, Raphael Pelissier, P. Dilip Venugopal, S. Aravajy, Claire Elouard, and S. Ramalingam. 2010. Forest stand structure and composition in 96 sites along environmental gradients in the central Western Ghats of India. Ecology 91:3118.
 shortname: Ramesh2010
-tags: Plants
+tags: Taxon > Plants
 
 table: macroplots, http://esapubs.org/archive/ecol/E091/216/Macroplot_data.txt
 table: microplots, http://esapubs.org/archive/ecol/E091/216/Microplot_data.txt
