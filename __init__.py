@@ -10,7 +10,7 @@ import imp
 from lib.compile import compile_script
 
 
-VERSION = '1.0'
+VERSION = '1.0.1'
 # specify the build type - either 'release' or 'candidate'
 BUILD = 'release'
 
