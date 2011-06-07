@@ -93,7 +93,7 @@ class Frame(wx.Frame):
         self.splitter = wx.SplitterWindow(self, -1)
         
         self.cat_list = CategoryList(self.splitter, -1, choice_tree=self.lists,
-                                     style=wx.RAISED_BORDER | wx.LB_SINGLE)
+                                     style=wx.TR_HAS_BUTTONS)
         self.cat_list.SetFont(big_font)
                 
         self.script_list = ScriptList(self.splitter, 

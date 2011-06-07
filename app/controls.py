@@ -134,37 +134,19 @@ class CategoryList(wx.TreeCtrl):
     def AddChild(self, choice, parent=None):
         new_node = self.AppendItem(self.root if parent == None else parent,
                                    choice.name)
+        self.SetItemPyData(new_node, choice)
         for child in choice.children:
             self.AddChild(child, new_node)
         
     def SelectRoot(self):
         self.SelectItem(self.root)
-        
-    def GetTreePath(self, node):
-        parent = self.GetItemParent(node)
-        if parent == self.root:
-            return [node]
-        else:
-            return self.GetTreePath(parent) + [node]
-    
-    def GetSelectedCategory(self, node, path):
-        if len(path) == 0:
-            return node
-        else:
-            matches = [child for child in node.children
-                             if child.name == self.GetItemText(path[0])]
-            if len(matches) == 0:
-                return node
-            else:
-                return self.GetSelectedCategory(matches[0], 
-                                                path[1:])
     
     
     def Redraw(self, evt):
-        if self.GetSelection() == self.root:
+        if evt.GetItem() == self.root:
             selected = self.lists
         else:
-            selected = self.GetSelectedCategory(self.lists, self.GetTreePath(self.GetSelection()))
+            selected = self.GetItemPyData(evt.GetItem())
 
         self.Parent.Parent.script_list.Redraw(selected.scripts)
 
