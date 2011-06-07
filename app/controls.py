@@ -118,18 +118,55 @@ class ScriptList(wx.HtmlListBox):
         self.RefreshMe(None)
         
         
-class CategoryList(wx.ListBox):
-    def __init__(self, parent, id, size=(-1,-1), choices=[], style=0):
-        wx.ListBox.__init__(self, parent, id, size=size, 
-                            choices=[choice.name for choice in choices], 
-                            style=style)
-        self.lists = choices
-        self.Bind(wx.EVT_LISTBOX, self.Redraw)
+class CategoryList(wx.TreeCtrl):
+    def __init__(self, parent, id, choice_tree, size=(-1,-1), style=0):
+        wx.TreeCtrl.__init__(self, parent, id, size=size, style=style)        
+        self.lists = choice_tree
+        self.root = self.AddRoot(choice_tree.name)
+        for choice in choice_tree.children:
+            self.AddChild(choice)
+            
+        self.Expand(self.root)
+        
+        self.Bind(wx.EVT_TREE_SEL_CHANGED, self.Redraw)
+        
+        
+    def AddChild(self, choice, parent=None):
+        new_node = self.AppendItem(self.root if parent == None else parent,
+                                   choice.name)
+        for child in choice.children:
+            self.AddChild(child, new_node)
+        
+    def SelectRoot(self):
+        self.SelectItem(self.root)
+        
+    def GetTreePath(self, node):
+        parent = self.GetItemParent(node)
+        if parent == self.root:
+            return [node]
+        else:
+            return self.GetTreePath(parent) + [node]
+    
+    def GetSelectedCategory(self, node, path):
+        if len(path) == 0:
+            return node
+        else:
+            matches = [child for child in node.children
+                             if child.name == self.GetItemText(path[0])]
+            if len(matches) == 0:
+                return node
+            else:
+                return self.GetSelectedCategory(matches[0], 
+                                                path[1:])
+    
     
     def Redraw(self, evt):
-        if self.GetSelections():
-            selected = self.lists[self.GetSelections()[0]]
-            self.Parent.Parent.script_list.Redraw(selected.scripts)
+        if self.GetSelection() == self.root:
+            selected = self.lists
+        else:
+            selected = self.GetSelectedCategory(self.lists, self.GetTreePath(self.GetSelection()))
+
+        self.Parent.Parent.script_list.Redraw(selected.scripts)
 
 
 class HtmlWindow(wx.html.HtmlWindow):

@@ -92,17 +92,19 @@ class Frame(wx.Frame):
         self.vsizer = wx.BoxSizer(wx.VERTICAL)
         self.splitter = wx.SplitterWindow(self, -1)
         
-        self.cat_list = CategoryList(self.splitter, -1, style=wx.RAISED_BORDER | wx.LB_SINGLE,
-                                     choices=self.lists)
-        self.cat_list.SetSelection(0)
+        self.cat_list = CategoryList(self.splitter, -1, choice_tree=self.lists,
+                                     style=wx.RAISED_BORDER | wx.LB_SINGLE)
         self.cat_list.SetFont(big_font)
                 
         self.script_list = ScriptList(self.splitter, 
                                       style=wx.RAISED_BORDER | wx.LB_SINGLE,
-                                      scripts=[script for script in lists[0].scripts])
+                                      scripts=[script for script in lists.scripts])
+
+        self.cat_list.SelectRoot()
         
-        self.splitter.SetMinimumPaneSize(200)
-        self.splitter.SplitVertically(self.cat_list, self.script_list, 200)
+        
+        self.splitter.SetMinimumPaneSize(300)
+        self.splitter.SplitVertically(self.cat_list, self.script_list, 300)
         
         self.vsizer.Add(self.splitter, 3, wx.EXPAND | wx.ALL, 2)
         
