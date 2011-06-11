@@ -20,7 +20,8 @@ class main(Script):
         self.name = "Alwyn H. Gentry Forest Transect Dataset"
         self.shortname = "Gentry"
         self.urls = {"stems": "http://www.mobot.org/mobot/gentry/123/all_Excel.zip",
-                     "sites": "http://www.ecologicaldata.org/sites/default/files/gentry_sites_data.txt"}
+                     "sites": "http://www.ecologicaldata.org/sites/default/files/gentry_sites_data.txt",
+                     "counts": ""}
         self.tags = ["Taxon > Plants", "Spatial Scale > Global"]
         self.ref = "http://www.wlbcenter.org/gentry_data.htm"
         self.addendum = """Researchers who make use of the data in publications are requested to acknowledge Alwyn H. Gentry, the Missouri Botanical Garden, and collectors who assisted Gentry or contributed data for specific sites. It is also requested that a reprint of any publication making use of the Gentry Forest Transect Data be sent to:
@@ -52,38 +53,49 @@ U.S.A. """
             sh = book.sheet_by_index(0)
             rows = sh.nrows
             for i in range(1, rows):
-                thisline = []
                 row = sh.row(i)
-                n = 0
                 cellcount = 0
                 for cell in row:
                     if not Excel.empty_cell(cell):
                         cellcount += 1 
                 if cellcount > 4 and not Excel.empty_cell(row[0]):
                     try:
-                        a = int(Excel.cell_value(row[0]).split('.')[0])
-                        for cell in row:
-                            n += 1
-                            if n < 5 or n > 12:
-                                if not Excel.empty_cell(cell) or n == 13:
-                                    thisline.append(Excel.cell_value(cell))
+                        this_line = {}
                         
-                        newline = [str(value).title().replace("\\", "/") for value in thisline]
-                        newline = newline[0:4] + [filename][0:-4] + newline[4:]
-                        lines.append(newline)
+                        def format_value(s):
+                            s = Excel.cell_value(s)
+                            return str(s).title().replace("\\", "/")
+                            
+                        this_line["line"] = format_value(row[0])
+                        this_line["family"] = format_value(row[1])
+                        this_line["genus"] = format_value(row[2])
+                        this_line["species"] = format_value(row[3])
+                        this_line["liana"] = format_value(row[12])
+                        this_line["count"] = format_value(row[13])
+                        this_line["stems"] = [Excel.cell_value(r) 
+                                              for r in row[14:]
+                                              if not Excel.empty_cell(r)]
+                        this_line["site"] = filename[0:-4]
+                        
+                        lines.append(this_line)
                         
                         # Check how far the species is identified
                         full_id = 0
-                        if len(newline[3]) < 3:
-                            if len(newline[2]) < 3:
+                        if len(this_line["species"]) < 3:
+                            if len(this_line["genus"]) < 3:
                                 id_level = "family"
                             else:
                                 id_level = "genus"
                         else:
                             id_level = "species"
                             full_id = 1
-                        tax.append((newline[1], newline[2], newline[3].lower(), id_level, str(full_id)))
+                        tax.append([this_line["family"], 
+                                    this_line["genus"], 
+                                    this_line["species"].lower(), 
+                                    id_level, 
+                                    str(full_id)])
                     except:
+                        raise
                         pass                    
         
         tax = sorted(tax, key=lambda group: group[0] + " " + group[1] + " " + group[2])
@@ -96,25 +108,27 @@ U.S.A. """
             if not (group in unique_tax):
                 unique_tax.append(group)
                 tax_count += 1
-                tax_dict[group[0:3]] = tax_count
+                tax_dict[tuple(group[0:3])] = tax_count
                 if tax_count % 10 == 0:
                     msg = "Generating taxonomic groups: " + str(tax_count) + " / 9819"
                     sys.stdout.write(msg + "\b" * len(msg))
         
+        
         # Create species table
         table = Table("species", delimiter="::")
         table.columns=[("species_id"            ,   ("pk-auto",)    ),
-                       ("family"                ,   ("char", 50)    ),
-                       ("genus"                 ,   ("char", 50)    ),
-                       ("species"               ,   ("char", 50)    ),
+                       ("family"                ,   ("char", 20)    ),
+                       ("genus"                 ,   ("char", 20)    ),
+                       ("species"               ,   ("char", 20)    ),
                        ("id_level"              ,   ("char", 10)    ),
                        ("full_id"               ,   ("bool",)       )]
 
-        table.source = ['::'.join([group[i] for i in range(5)]) 
+        table.source = ['::'.join(group) 
                         for group in unique_tax]
         self.engine.table = table
         self.engine.create_table()
         self.engine.add_to_table()        
+        
         
         # Create stems table
         table = Table("stems", delimiter="::", contains_pk=False)
@@ -125,18 +139,35 @@ U.S.A. """
                        ("liana"                 ,   ("char", 10)    ),
                        ("stem"                  ,   ("double",)     )]
         stems = []
+        counts = []
         for line in lines:
-            species_info = [str(line[0]).split('.')[0], 
-                            tax_dict[(line[1], line[2], line[3].lower())],
-                            line[4]
+            species_info = [line["line"], 
+                            tax_dict[(line["family"], 
+                                      line["genus"], 
+                                      line["species"].lower())],
+                            line["site"],
+                            line["liana"]
                             ]
-            site = []
-            stem_count = len(line) - 5
-            for i in range(stem_count):
-                stem = species_info + [line[(i + 1) * -1]]
+            counts.append([str(value) for value in species_info + [line["count"]]])
+            for i in line["stems"]:
+                stem = species_info + [i]
                 stems.append([str(value) for value in stem])
             
         table.source = ['::'.join(stem) for stem in stems]
+        self.engine.table = table
+        self.engine.create_table()
+        self.engine.add_to_table()
+        
+        
+        # Create counts table
+        table = Table("counts", delimiter="::", contains_pk=False)
+        table.columns=[("count_id"              ,   ("pk-auto",)    ),
+                       ("line"                  ,   ("int",)        ),
+                       ("species_id"            ,   ("int",)        ),
+                       ("site_code"             ,   ("char", 12)    ),
+                       ("liana"                 ,   ("char", 10)    ),
+                       ("count"                 ,   ("double",)     )]
+        table.source = ['::'.join(count) for count in counts]
         self.engine.table = table
         self.engine.create_table()
         self.engine.add_to_table()
