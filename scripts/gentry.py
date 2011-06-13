@@ -13,6 +13,8 @@ from retriever.lib.excel import Excel
 
 VERSION = '1.0.1'
 
+TAX_GROUPS = 9756 #9819
+
 
 class main(Script):
     def __init__(self, **kwargs):
@@ -21,6 +23,7 @@ class main(Script):
         self.shortname = "Gentry"
         self.urls = {"stems": "http://www.mobot.org/mobot/gentry/123/all_Excel.zip",
                      "sites": "http://www.ecologicaldata.org/sites/default/files/gentry_sites_data.txt",
+                     "species": "",
                      "counts": ""}
         self.tags = ["Taxon > Plants", "Spatial Scale > Global"]
         self.ref = "http://www.wlbcenter.org/gentry_data.htm"
@@ -52,12 +55,34 @@ U.S.A. """
             book = xlrd.open_workbook(self.engine.format_filename(filename))
             sh = book.sheet_by_index(0)
             rows = sh.nrows
+            cn = {'stems': []}
+            n = 0
+            for c in sh.row(0):
+                if not Excel.empty_cell(c):
+                    cid = Excel.cell_value(c).lower()
+                    # line number column is sometimes named differently
+                    if cid in ["sub", "number"]:
+                        cid = "line"
+                    # the "number of individuals" column is named in various
+                    # different ways; they always at least contain "nd"
+                    if "nd" in cid:
+                        cid = "count"
+                    # if column is a stem, add it to the list of stems;
+                    # otherwise, make note of the column name/number
+                    if "stem" in cid:
+                        cn["stems"].append(n)
+                    else:
+                        cn[cid] = n
+                n += 1
+            # sometimes, a data file does not contain a liana or count column
+            if not "liana" in cn.keys():
+                cn["liana"] = -1
+            if not "count" in cn.keys():
+                cn["count"] = -1
             for i in range(1, rows):
                 row = sh.row(i)
-                cellcount = 0
-                for cell in row:
-                    if not Excel.empty_cell(cell):
-                        cellcount += 1 
+                cellcount = len(row)
+                # make sure the row is real, not just empty cells
                 if cellcount > 4 and not Excel.empty_cell(row[0]):
                     try:
                         this_line = {}
@@ -65,16 +90,16 @@ U.S.A. """
                         def format_value(s):
                             s = Excel.cell_value(s)
                             return str(s).title().replace("\\", "/")
-                            
-                        this_line["line"] = format_value(row[0])
-                        this_line["family"] = format_value(row[1])
-                        this_line["genus"] = format_value(row[2])
-                        this_line["species"] = format_value(row[3])
-                        this_line["liana"] = format_value(row[12])
-                        this_line["count"] = format_value(row[13])
-                        this_line["stems"] = [Excel.cell_value(r) 
-                                              for r in row[14:]
-                                              if not Excel.empty_cell(r)]
+                        
+                        # get the following information from the appropriate columns
+                        for i in ["line", "family", "genus", "species", 
+                                  "liana", "count"]:
+                            if cn[i] > -1:
+                                this_line[i] = format_value(row[cn[i]])
+
+                        this_line["stems"] = [Excel.cell_value(row[c]) 
+                                              for c in cn["stems"]
+                                              if not Excel.empty_cell(row[c])]
                         this_line["site"] = filename[0:-4]
                         
                         lines.append(this_line)
@@ -89,11 +114,11 @@ U.S.A. """
                         else:
                             id_level = "species"
                             full_id = 1
-                        tax.append([this_line["family"], 
+                        tax.append((this_line["family"], 
                                     this_line["genus"], 
                                     this_line["species"].lower(), 
                                     id_level, 
-                                    str(full_id)])
+                                    str(full_id)))
                     except:
                         raise
                         pass                    
@@ -108,9 +133,9 @@ U.S.A. """
             if not (group in unique_tax):
                 unique_tax.append(group)
                 tax_count += 1
-                tax_dict[tuple(group[0:3])] = tax_count
+                tax_dict[group[0:3]] = tax_count
                 if tax_count % 10 == 0:
-                    msg = "Generating taxonomic groups: " + str(tax_count) + " / 9819"
+                    msg = "Generating taxonomic groups: " + str(tax_count) + " / " + str(TAX_GROUPS)
                     sys.stdout.write(msg + "\b" * len(msg))
         
         
@@ -125,6 +150,7 @@ U.S.A. """
 
         table.source = ['::'.join(group) 
                         for group in unique_tax]
+        
         self.engine.table = table
         self.engine.create_table()
         self.engine.add_to_table()        
@@ -141,14 +167,22 @@ U.S.A. """
         stems = []
         counts = []
         for line in lines:
+            try:
+                liana = line["liana"]
+            except KeyError:
+                liana = ""
             species_info = [line["line"], 
                             tax_dict[(line["family"], 
                                       line["genus"], 
                                       line["species"].lower())],
                             line["site"],
-                            line["liana"]
+                            liana
                             ]
-            counts.append([str(value) for value in species_info + [line["count"]]])
+            try:
+                counts.append([str(value) for value in species_info + [line["count"]]])
+            except KeyError:
+                pass
+
             for i in line["stems"]:
                 stem = species_info + [i]
                 stems.append([str(value) for value in stem])
