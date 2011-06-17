@@ -5,7 +5,7 @@ VERSION = '1.0'
 
 SCRIPT = BasicTextTemplate(%s)"""
 
-TABLE_KEYS = ['contains_pk', 'header_rows', 'delimiter']
+TABLE_KEYS = ['contains_pk', 'header_rows', 'delimiter', 'ct_column', 'ct_names']
 
 
 def compile_script(script_file):
@@ -47,7 +47,9 @@ def compile_script(script_file):
                 replace = [(v.split(',')[0].strip(), v.split(',')[1].strip())
                            for v in [v.strip() for v in value.split(';')]]
             elif key == "tags":
-                values['tags'] = [v.strip() for v in value.split(',')]
+                values[key] = [v.strip() for v in value.split(',')]
+            elif key == "ct_names":
+                tables[last_table][key] = [v.strip() for v in value.split(',')]
             elif key == "column":
                 if last_table:                    
                     vs = [v.strip() for v in value.split(',')]
@@ -70,7 +72,11 @@ def compile_script(script_file):
                         except KeyError:
                             tables[last_table] = {}
                         
-                        e = eval(value)
+                        try:
+                            e = eval(value)
+                        except:
+                            e = str(value)
+                            
                         tables[last_table][key] = str(e) if e.__class__ != str else "'" + e + "'"
                 else:
                     # general script attributes

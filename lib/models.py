@@ -99,10 +99,16 @@ class Engine():
             real_lines = []
             for line in lines:
                 split_line = line.strip('\n\r\t').split(self.table.delimiter)
-                begin = split_line[:len(self.table.columns) - 2]
+                begin = split_line[:len(self.table.columns) - (3 if hasattr(self.table, "ct_names") else 2)]
                 rest = split_line[len(self.table.columns) - 2:]
+                n = 0
                 for item in rest:
-                    real_lines.append(self.table.delimiter.join(begin + [item]))
+                    if hasattr(self.table, "ct_names"):
+                        name = [self.table.ct_names[n]]
+                        n += 1
+                    else:
+                        name = []
+                    real_lines.append(self.table.delimiter.join(begin + name + [item]))
         else:        
             real_lines = [line for line in lines 
                           if line.strip('\n\r\t ')]
@@ -120,6 +126,7 @@ class Engine():
                                                          self.table.cleanup.args)) 
                                for value in linevalues]
                 insert_stmt = self.insert_statement(cleanvalues)
+
                 if self.table.record_id % 10 == 0 or self.table.record_id == total:
                     prompt = "Inserting rows to " + self.tablename() + ": "
                     prompt += str(self.table.record_id) + " / " + str(total)
@@ -166,6 +173,10 @@ class Engine():
             columns, column_values = self.auto_get_columns(header)
             
             self.auto_get_datatypes(pk, source, columns, column_values)
+
+        if self.table.columns[-1][1][0][:3] == "ct-" and hasattr(self.table, "ct_names"):
+            self.table.columns = self.table.columns[:-1] + [(self.table.ct_column, ("char", 20))] + [self.table.columns[-1]]
+
         
         self.create_table()
         
@@ -296,7 +307,7 @@ class Engine():
             thistype = thistype.lstrip("pk-")
             thispk = True
         elif thistype[0:3] == "ct-":
-            thistype = thistype.lstrip("ct-")
+            thistype = thistype[3:]
         customtypes = ("auto", "int", "double", "decimal", "char", "bool")
         for i in range(0, len(customtypes)):
             datatypes[customtypes[i]] = i
@@ -324,8 +335,8 @@ class Engine():
         
     def create_db_statement(self):
         """Returns a SQL statement to create a database."""
-        createstatement = "CREATE DATABASE " + self.db.dbname
-        return createstatement
+        create_stmt = "CREATE DATABASE " + self.db.dbname
+        return create_stmt
 
         
     def create_raw_data_dir(self):
@@ -605,7 +616,7 @@ class Engine():
             column = 0
         else:
             column = -1
-         
+        
         for value in [(value if value != "None" else "")
                       for value in self.extract_values(line)]:
             column += 1
@@ -614,15 +625,15 @@ class Engine():
 
                 # If data type is "skip" ignore the value
                 if this_column == "skip":
-                    passpr
+                    pass
                 elif this_column == "combine":
                     # If "combine" append value to end of previous column
-                    linevalues[len(linevalues) - 1] += " " + value 
+                    linevalues[-1] += " " + value 
                 else:
                     # Otherwise, add new value
                     linevalues.append(value)
             except:
                 # too many values for columns; ignore
-                pass 
+                pass
                 
         return linevalues
