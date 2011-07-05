@@ -1,0 +1,9 @@
+# basic information about the script
+name: Tree growth, mortality, physical condition - Clark, 2006
+shortname: Clark2006
+description: David B. Clark and Deborah A. Clark. 2006. Tree growth, mortality, physical condition, and microsite in an old-growth lowland tropical rain forest. Ecology 87:2132.
+tags: Taxon > Plants
+
+# tables
+table: trees, http://esapubs.org/archive/ecol/E087/132/LS_trees_1983_2000.txt
+nulls: -999
