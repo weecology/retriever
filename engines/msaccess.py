@@ -92,6 +92,7 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
                 self.cursor.execute(statement)
                 self.connection.commit()
             except:
+                print statement
                 raise
                 exit()
                 self.connection.rollback()                
