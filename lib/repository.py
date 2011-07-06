@@ -46,8 +46,8 @@ def more_recent(latest, current):
     for n in range(len(latest_parts)):
         if len(current_parts) < (n + 1):
             return True
-        l = int(latest_parts[n])
-        c = int(current_parts[n])        
+        l = latest_parts[n]
+        c = current_parts[n]
         if l > c:
             return True
         elif c > l:
