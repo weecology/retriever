@@ -55,6 +55,20 @@ class Script:
     def exists(self, engine=None):
         return all([engine.table_exists(self.shortname, key) 
                     for key in self.urls.keys() if key])
+                    
+    def matches_terms(self, terms):
+        try:
+            for term in terms:
+                search_string = ' '.join([
+                                          self.name,
+                                          self.description,
+                                          self.shortname
+                                         ] + self.tags).upper()
+                if not term.upper() in search_string:
+                    return False
+            return True
+        except:
+            return False
     
     
 class BasicTextTemplate(Script):

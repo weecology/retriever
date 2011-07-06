@@ -6,7 +6,8 @@ from retriever.app.controls import *
 from retriever.app.download_manager import DownloadManager
 from retriever.app.images import icon, cycle, download, downloaded, error
 from retriever.lib.tools import get_default_connection, get_saved_connection, choose_engine
-from retriever import ENGINE_LIST
+from retriever.lib.lists import Category
+from retriever import ENGINE_LIST, SCRIPT_LIST
 
 ENGINE_LIST = ENGINE_LIST()
 
@@ -71,22 +72,28 @@ class Frame(wx.Frame):
         big_font.SetPointSize(int(big_font.GetPointSize() * 1.2))
         
         # Menu
-        self.menu = wx.Menu()
-        self.menu.Append(wx.ID_ABOUT, "&About",
+        file_menu = wx.Menu()
+        file_menu.Append(wx.ID_ABOUT, "&About",
                     "More information about this program")
         connection_id = wx.NewId()
-        self.menu.Append(connection_id, "&Connection",
+        file_menu.Append(connection_id, "&Connection",
                     "Set up your database connection")
-        self.menu.AppendSeparator()
-        self.menu.Append(wx.ID_EXIT, "E&xit", "Exit the program")
-        self.menu_bar = wx.MenuBar()
-        self.menu_bar.Append(self.menu, "&File");
-        self.SetMenuBar(self.menu_bar)
+        file_menu.AppendSeparator()
+        file_menu.Append(wx.ID_EXIT, "E&xit", "Exit the program")
+        
+        edit_menu = wx.Menu()
+        edit_menu.Append(wx.ID_FIND, "&Find")
+        
+        menu_bar = wx.MenuBar()
+        menu_bar.Append(file_menu, "&File");
+        menu_bar.Append(edit_menu, "E&dit");
+        self.SetMenuBar(menu_bar)
         
         self.Bind(wx.EVT_CLOSE, self.Quit)
         self.Bind(wx.EVT_MENU, self.About, id=wx.ID_ABOUT)
         self.Bind(wx.EVT_MENU, self.Connection, id=connection_id)
         self.Bind(wx.EVT_MENU, self.Quit, id=wx.ID_EXIT)
+        self.Bind(wx.EVT_MENU, self.Find, id=wx.ID_FIND)
         
         # Layout
         self.vsizer = wx.BoxSizer(wx.VERTICAL)
@@ -168,3 +175,30 @@ class Frame(wx.Frame):
             self.download_manager.dialog.Destroy()
         
         self.Destroy()
+        
+        
+    def Find(self, evt):
+        dlg = wx.TextEntryDialog(self, 
+                                 'Enter the keyword(s) to search for', 
+                                 'Find',
+                                 '')
+        dlg.ShowModal()
+        result = dlg.GetValue().strip()
+        
+        if result:
+            search_terms = [term.strip() for term in result.split(' ') 
+                                         if term.strip()]
+            scripts = []
+            for script in SCRIPT_LIST():
+                if script.matches_terms(search_terms):
+                    scripts.append(script)
+                    
+            if len(scripts) > 0:
+                results = Category("Search results: " + ', '.join(search_terms),
+                                   scripts)
+                self.cat_list.AddChild(results)
+            else:
+                wx.MessageBox("Your search returned no results.",
+                              "No results")
+            
+        dlg.Destroy()
