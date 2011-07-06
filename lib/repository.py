@@ -152,10 +152,10 @@ class InitThread(Thread):
                                                  "scripts/" + script_name)
                     elif script_version:
                         # File exists: import and check version
-                        file, pathname, desc = imp.find_module(''.join(script_name.split('.')[:-1]), 
-                                                               ["scripts"])
                         need_to_download = False
                         try:
+                            file, pathname, desc = imp.find_module(''.join(script_name.split('.')[:-1]), 
+                                                                   ["scripts"])
                             new_module = imp.load_module(script_name, file, pathname, desc)
                             need_to_download = more_recent(script_version, new_module.VERSION)
                         except:            
