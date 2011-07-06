@@ -52,7 +52,7 @@ def more_recent(latest, current):
             return True
         elif c > l:
             return False
-    return False
+    return (len(current_parts) > (n + 1) and current_parts[n + 1] == "rc")
 
 
 def check_for_updates():
