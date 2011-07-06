@@ -44,9 +44,9 @@ def more_recent(latest, current):
     latest_parts = latest.split('.')
     current_parts = current.split('.')
     for n in range(len(latest_parts)):
-        if len(current_parts) < (n + 1):
-            return True
         l = latest_parts[n]
+        if len(current_parts) < (n + 1):
+            return (l != "rc")
         c = current_parts[n]
         if l > c:
             return True
