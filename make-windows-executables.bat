@@ -1,7 +1,5 @@
-rmdir %~dp0current-release\windows /s
-mkdir %~dp0current-release\windows
-cd %~dp0current-release\srcretriever
+rmdir %~dp0windows /s
+mkdir %~dp0windows
 python setup.py py2exe
-move dist\retriever.exe %~dp0current-release\windows
+move dist\retriever.exe %~dp0windows
 rmdir build dist /s
-del __init__.pyc
