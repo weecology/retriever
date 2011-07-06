@@ -19,6 +19,7 @@ def download_from_repository(filepath, newpath, repo=REPOSITORY):
     """Downloads the latest version of a file from the repository."""
     try:
         filename = filepath.split('/')[-1]
+        print repo + filepath
         latest = urllib.urlopen(repo + filepath, 'rb')
         file_size = latest.info()['Content-Length']
         new_file = open(os.path.join(os.getcwd(), newpath), 'wb')
