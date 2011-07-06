@@ -131,12 +131,14 @@ class CategoryList(wx.TreeCtrl):
         self.Bind(wx.EVT_TREE_SEL_CHANGED, self.Redraw)
         
         
-    def AddChild(self, choice, parent=None):
+    def AddChild(self, choice, parent=None, select=False):
         new_node = self.AppendItem(self.root if parent == None else parent,
                                    choice.name)
         self.SetItemPyData(new_node, choice)
         for child in choice.children:
             self.AddChild(child, new_node)
+        if select:
+            self.SelectItem(new_node)
         
     def SelectRoot(self):
         self.SelectItem(self.root)

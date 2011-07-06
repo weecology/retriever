@@ -196,7 +196,7 @@ class Frame(wx.Frame):
             if len(scripts) > 0:
                 results = Category("Search results: " + ', '.join(search_terms),
                                    scripts)
-                self.cat_list.AddChild(results)
+                self.cat_list.AddChild(results, select=True)
             else:
                 wx.MessageBox("Your search returned no results.",
                               "No results")
