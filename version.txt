@@ -1,4 +1,4 @@
-master
+v1.1rc
 
 EA_clark2006.script,1.0
 EA_ramesh2010.script,1.0
