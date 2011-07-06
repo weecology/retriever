@@ -6,7 +6,7 @@ import urllib
 import imp
 import wx
 from threading import Thread
-from retriever import REPOSITORY, VERSION
+from retriever import REPOSITORY, VERSION, MASTER_BRANCH
 from retriever.lib.models import file_exists
 from retriever.app.splash import Splash
 
@@ -15,11 +15,11 @@ abort = False
 executable_name = "retriever"
 
 
-def download_from_repository(filepath, newpath):
+def download_from_repository(filepath, newpath, repo=REPOSITORY):
     """Downloads the latest version of a file from the repository."""
     try:
         filename = filepath.split('/')[-1]
-        latest = urllib.urlopen(REPOSITORY + filepath, 'rb')
+        latest = urllib.urlopen(repo + filepath, 'rb')
         file_size = latest.info()['Content-Length']
         new_file = open(os.path.join(os.getcwd(), newpath), 'wb')
         total_dl = 0
@@ -39,6 +39,8 @@ def download_from_repository(filepath, newpath):
 
 def more_recent(latest, current):
     """Given two version number strings, returns True if the first is more recent."""
+    if current == "master":
+        return False
     latest_parts = latest.split('.')
     current_parts = current.split('.')
     for n in range(len(latest_parts)):
@@ -91,7 +93,7 @@ class InitThread(Thread):
                     pass
             
             try:
-                version_file = urllib.urlopen(REPOSITORY + "version.txt")
+                version_file = urllib.urlopen(MASTER_BRANCH + "version.txt")
             except IOError:
                 print "Couldn't open version.txt from repository"
                 return

@@ -2,7 +2,7 @@
 
 import wx
 import wx.lib.wxpTag
-from retriever import VERSION, BUILD
+from retriever import VERSION
 
         
 class AboutDialog(wx.Dialog):
@@ -12,7 +12,7 @@ class AboutDialog(wx.Dialog):
 <tr><td align="center"><h1>
 EcoData Retriever
 </h1><h2>
-version """ + VERSION + " (" + BUILD + ")" + """
+version """ + VERSION + """
 </h2></td></tr></table>
 <p>The EcoData Retriever is designed to make it easy to download ecological data and set it
 up on your own local database system.
