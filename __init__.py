@@ -10,7 +10,7 @@ import imp
 from lib.compile import compile_script
 
 
-VERSION = 'master'
+VERSION = '1.1rc'
 
 REPO_URL = "https://raw.github.com/croryx/retriever/"
 MASTER_BRANCH = REPO_URL + "master/"
