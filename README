@@ -26,7 +26,7 @@ Installing From Source:
     1. Clone the repository
     2. From the directory containing setup.py, run the following command: python setup.py install
     3. After installing, type retriever from a command prompt to launch the Database Toolkit,
-       or find dbtk/main.py in your Python directory and run it in Python.
+       or find main.py in your Retriever directory and run it in Python.
 
 
 API:
