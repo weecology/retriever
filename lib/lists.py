@@ -12,6 +12,8 @@ class Category:
         self.name = name
         self.scripts = scripts
         self.children = children
+    def add_child(self, child):
+        self.children.append(child)
 
 
 def tag_tree(all_tags):

@@ -10,19 +10,17 @@ import imp
 from lib.compile import compile_script
 
 
-VERSION = '1.0.1'
-# specify the build type - either 'release' or 'candidate'
-BUILD = 'release'
+VERSION = 'master'
 
-REPOSITORIES = {
-                'release': 'http://www.ecologicaldata.org/ecodataretriever/',
-                'candidate': 'http://www.ecologicaldata.org/ecodata-rc/'
-                }
-REPOSITORY = REPOSITORIES[BUILD]
+REPO_URL = "https://raw.github.com/croryx/retriever/"
+MASTER_BRANCH = REPO_URL + "master/"
+REPOSITORY = REPO_URL + ("v" if VERSION != "master" else "") + VERSION + "/"
 
 
 def MODULE_LIST():
     """Load scripts from scripts directory and return list of modules."""
+    if not os.path.exists("scripts"):
+        os.mkdir("scripts")
     to_compile = [file for file in os.listdir("scripts")
                   if file[-7:] == ".script" and file[0] != "_"
                   and ((not os.path.isfile("scripts/" + file[:-7] + '.py')) or 

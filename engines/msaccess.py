@@ -58,7 +58,9 @@ class engine(Engine):
                 hdr = "Yes"
             else:
                 hdr = "No"
-            
+
+            columns = self.get_insert_columns()
+
             need_to_delete = False    
             if self.table.pk and not self.table.contains_pk:
                 proper_name = filename.split('.')
@@ -67,19 +69,21 @@ class engine(Engine):
                 if not os.path.isfile(newfilename):
                     print "Adding index to " + os.path.abspath(newfilename) + "..."
                     read = open(filename, "rb")
-                    write = open(newfilename, "wb")            
+                    write = open(newfilename, "wb")
+                    to_write = ""
                     id = self.table.record_id
                     for line in read:
-                        write.write(str(id) + self.table.delimiter + line)
+                        to_write += str(id) + self.table.delimiter + line.replace("\n", "\r\n")
                         id += 1
                     self.table.record_id = id
+                    write.write(to_write)
                     write.close()
                     read.close()
                     need_to_delete = True
+                columns = "record_id, " + columns
             else:
                 newfilename = filename
-            
-            columns = self.get_insert_columns()            
+                        
             filename = os.path.abspath(newfilename)
             filename_length = (len(os.path.basename(filename)) * -1) - 1
             filepath = filename[0:filename_length]
@@ -92,9 +96,10 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
                 self.cursor.execute(statement)
                 self.connection.commit()
             except:
-                raise
-                exit()
-                self.connection.rollback()                
+                print statement
+                print "Couldn't bulk insert. Trying manual insert."
+                self.connection.rollback()
+                self.create_table()
                 return Engine.insert_data_from_file(self, filename)
             
             if need_to_delete:

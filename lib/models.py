@@ -132,7 +132,11 @@ class Engine():
                     prompt += str(self.table.record_id) + " / " + str(total)
                     sys.stdout.write(prompt + "\b" * len(prompt))
 
-                self.cursor.execute(insert_stmt)
+                try:
+                    self.cursor.execute(insert_stmt)
+                except:
+                    print insert_stmt
+                    raise
         
         print
         self.connection.commit()
