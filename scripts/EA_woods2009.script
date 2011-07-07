@@ -1,7 +1,7 @@
 name: Michigan canopy dynamics (Ecological Archives 2009)
 description: Kerry D. Woods. 2009. Multi-decade, spatially explicit population studies of canopy dynamics in Michigan old-growth forests. Ecology 90:3587.
 shortname: Woods2009
-tags: Taxon > Plants
+tags: Taxon > Plants, Spatial Scale > Local, Data Type > Time Series, Data Type > Observational
 url: http://www.esapubs.org/archive/ecol/E090/251/
 
 table: all_plots_1935_1948, http://www.esapubs.org/archive/ecol/E090/251/datafiles/all_plots_1935_1948.txt

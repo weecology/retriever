@@ -25,7 +25,7 @@ class main(Script):
         self.ref = "http://www.crcpress.com/ecommerce_product/product_detail.jsf?isbn=1420064444"
         self.tables = {"mass": Table("mass", delimiter=",,")}
         self.urls = {"mass": ""}
-        self.tags = ["Taxon > Birds"]
+        self.tags = ["Taxon > Birds", "Data Type > Compilation"]
     def download(self, engine=None):
         Script.download(self, engine)
         
