@@ -12,7 +12,7 @@ Precompiled binaries the most recent release are available for Windows and Ubunt
 
 Installing From Source:
 
-  To install the Database Toolkit from source, you'll need Python 2.6 with the following packages installed:
+  To install the EcoData Retriever from source, you'll need Python 2.6 with the following packages installed:
     wxPython
     xlrd
 
