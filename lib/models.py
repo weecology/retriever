@@ -119,12 +119,14 @@ class Engine():
             if line:
                 self.table.record_id += 1            
                 linevalues = self.values_from_line(line)
-                            
+
+                types = self.get_column_datatypes()            
                 # Build insert statement with the correct # of values                
                 cleanvalues = [self.format_insert_value(self.table.cleanup.function
-                                                        (value, 
-                                                         self.table.cleanup.args)) 
-                               for value in linevalues]
+                                                        (linevalues[n], 
+                                                         self.table.cleanup.args),
+                                                        types[n]) 
+                               for n in range(len(linevalues))]
                 insert_stmt = self.insert_statement(cleanvalues)
 
                 if self.table.record_id % 10 == 0 or self.table.record_id == total:
@@ -474,7 +476,7 @@ class Engine():
         return os.path.join(self.format_data_dir(), filename)
 
         
-    def format_insert_value(self, value):
+    def format_insert_value(self, value, datatype):
         """Formats a value for an insert statement, for example by surrounding
         it in single quotes."""
         strvalue = str(value).strip()
@@ -498,7 +500,22 @@ class Engine():
             pass
             
         strvalue = strvalue.replace("'", "''")
-        return "'" + strvalue + "'"
+        if datatype == "char":
+            return "'" + strvalue + "'"
+        else:
+            if strvalue == "":
+                return 0            
+            return strvalue
+
+
+    def get_column_datatypes(self):
+        """Gets a set of column names for insert statements."""
+        columns = []
+        for item in self.get_insert_columns(False):
+            for column in self.table.columns:
+                if item == column[0]:
+                    columns.append(column[1][0])
+        return columns
 
         
     def get_input(self):
@@ -582,6 +599,7 @@ class Engine():
     def insert_statement(self, values):
         """Returns a SQL statement to insert a set of values."""
         columns = self.get_insert_columns()
+        types = self.get_column_datatypes()
         columncount = len(self.get_insert_columns(False))
         insert_stmt = "INSERT INTO " + self.tablename()
         insert_stmt += " (" + columns + ")"  
@@ -589,8 +607,11 @@ class Engine():
         for i in range(0, columncount):
             insert_stmt += "%s, "
         insert_stmt = insert_stmt.rstrip(", ") + ");"
+        n = 0
         while len(values) < insert_stmt.count("%s"):
-            values.append(self.format_insert_value(None))
+            values.append(self.format_insert_value(None,
+                                                   types[n]))
+            n += 1
         insert_stmt %= tuple(values)
         return insert_stmt
 
