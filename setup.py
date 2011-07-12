@@ -16,7 +16,8 @@ packages = [
             
 includes = [
             'xlrd',
-            'pyodbc'
+            'pyodbc',
+            'inspect'
             ]
             
 excludes = [
