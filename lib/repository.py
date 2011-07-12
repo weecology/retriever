@@ -8,7 +8,7 @@ import wx
 from hashlib import md5
 from inspect import getsourcelines
 from threading import Thread
-from retriever import REPOSITORY, VERSION, MASTER_BRANCH
+from retriever import REPOSITORY, VERSION, MASTER_BRANCH, REPO_URL
 from retriever.lib.models import file_exists
 from retriever.app.splash import Splash
 
@@ -126,7 +126,8 @@ class InitThread(Thread):
                                 pass
                                 
                             download_from_repository("windows/" + executable_name + ".exe", 
-                                                     executable_name + ".exe")
+                                                     executable_name + ".exe",
+                                                     repo=REPO_URL + latest + "/"))
 
                             sys.stdout = sys.__stdout__
 
