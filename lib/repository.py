@@ -125,9 +125,9 @@ class InitThread(Thread):
                             except:
                                 pass
                                 
-                            download_from_repository("windows/" + executable_name + ".exe", 
+                            download_from_repository("windows/" + executable_name + ".exe",
                                                      executable_name + ".exe",
-                                                     repo=REPO_URL + latest + "/"))
+                                                     repo=REPO_URL + latest + "/")
 
                             sys.stdout = sys.__stdout__
 
