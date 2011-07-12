@@ -6,7 +6,7 @@ import urllib
 import imp
 import wx
 from hashlib import md5
-from instance import getsourcelines
+from inspect import getsourcelines
 from threading import Thread
 from retriever import REPOSITORY, VERSION, MASTER_BRANCH
 from retriever.lib.models import file_exists
@@ -99,45 +99,52 @@ class InitThread(Thread):
                     os.remove('dbtk_old.exe')
                 except:
                     pass
-            
-            try:
-                version_file = urllib.urlopen(MASTER_BRANCH + "version.txt")
-            except IOError:
-                print "Couldn't open version.txt from repository"
-                return
-                
-            latest = version_file.readline().strip('\n')
+
+            if running_from[-4:] == ".exe":
+                # Windows: open master branch version file to find out most recent executable version            
+                try:
+                    version_file = urllib.urlopen(MASTER_BRANCH + "version.txt")
+                except IOError:
+                    print "Couldn't open version.txt from repository"
+                    return
+                    
+                latest = version_file.readline().strip('\n')
+                    
+                if more_recent(latest, VERSION):
+                        msg = "You're running version " + VERSION + "."
+                        msg += '\n\n'
+                        msg += "Version " + latest + " is available. Do you want to upgrade?"
+                        choice = wx.MessageDialog(None, msg, "Update", wx.YES_NO)
+                        if choice.ShowModal() == wx.ID_YES:
+                            print "Updating to latest version. Please wait..."
+                            try:
+                                if not "_old" in running_from:
+                                    os.rename(running_from,
+                                              '.'.join(running_from.split('.')[:-1])
+                                              + "_old." + running_from.split('.')[-1])
+                            except:
+                                pass
+                                
+                            download_from_repository("windows/" + executable_name + ".exe", 
+                                                     executable_name + ".exe")
+
+                            progress.Update(101)
+                            sys.stdout = sys.__stdout__
+
+                            wx.MessageBox("Update complete. The program will now restart.")
+
+                            os.execv(executable_name + ".exe", sys.argv)
+                            
+                            sys.exit()
+
+                version_file.close()
+
+            # open version.txt for current release branch and get script versions
+            version_file = urllib.urlopen(REPOSITORY + "version.txt")
+            version_file.readline()
             scripts = []
             for line in version_file:
                 scripts.append(line.strip('\n').split(','))
-                
-            if more_recent(latest, VERSION):
-                if running_from[-4:] == ".exe":
-                    msg = "You're running version " + VERSION + "."
-                    msg += '\n\n'
-                    msg += "Version " + latest + " is available. Do you want to upgrade?"
-                    choice = wx.MessageDialog(None, msg, "Update", wx.YES_NO)
-                    if choice.ShowModal() == wx.ID_YES:
-                        print "Updating to latest version. Please wait..."
-                        try:
-                            if not "_old" in running_from:
-                                os.rename(running_from,
-                                          '.'.join(running_from.split('.')[:-1])
-                                          + "_old." + running_from.split('.')[-1])
-                        except:
-                            pass
-                            
-                        download_from_repository("windows/" + executable_name + ".exe", 
-                                                 executable_name + ".exe")
-
-                        progress.Update(101)
-                        sys.stdout = sys.__stdout__
-
-                        wx.MessageBox("Update complete. The program will now restart.")
-
-                        os.execv(executable_name + ".exe", sys.argv)
-                        
-                        sys.exit()
             
             # get script files
             if not os.path.isdir("scripts"):
