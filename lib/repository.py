@@ -170,7 +170,8 @@ class InitThread(Thread):
                         new_module = imp.load_module(script_name, file, pathname, desc)
                         m = md5()
                         m.update(''.join(getsourcelines(new_module)[0]))
-                        need_to_download = script_version != m.hexdigest()
+                        m = m.hexdigest()
+                        need_to_download = script_version != m
                     except:            
                         pass
                                 
