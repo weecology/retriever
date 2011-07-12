@@ -34,7 +34,7 @@ def compile_script(script_file):
                         tables[table_name] = {'replace_columns': str(replace)}
             elif key == "nulls":
                 if last_table:
-                    nulls = [v if v != "EMPTY" else None for v in [v.strip() for v in value.split(',')]]
+                    nulls = [eval(v) for v in [v.strip() for v in value.split(',')]]
                     try:
                         tables[last_table]
                     except KeyError:
