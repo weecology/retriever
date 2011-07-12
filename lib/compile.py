@@ -1,8 +1,6 @@
 script_template = """from retriever.lib.templates import BasicTextTemplate
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 
-VERSION = '1.0'
-
 SCRIPT = BasicTextTemplate(%s)"""
 
 TABLE_KEYS = ['contains_pk', 'header_rows', 'delimiter', 'ct_column', 'ct_names']

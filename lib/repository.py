@@ -5,6 +5,8 @@ import sys
 import urllib
 import imp
 import wx
+from hashlib import md5
+from instance import getsourcelines
 from threading import Thread
 from retriever import REPOSITORY, VERSION, MASTER_BRANCH
 from retriever.lib.models import file_exists
@@ -82,6 +84,12 @@ def check_for_updates():
     
     
 class InitThread(Thread):
+    """This thread performs all of the necessary updates while the splash screen
+    is shown.
+
+    1. Check master/version.txt to get the latest version (Windows only).
+    2. Prompt for update if necessary (Windows only).
+    3. Download latest versions of scripts from current branch."""
     def run(self):
         try:
             running_from = os.path.basename(sys.argv[0])
@@ -99,8 +107,6 @@ class InitThread(Thread):
                 return
                 
             latest = version_file.readline().strip('\n')
-            # for compatibility with previous versions, ignore the next line
-            version_file.readline()
             scripts = []
             for line in version_file:
                 scripts.append(line.strip('\n').split(','))
@@ -143,31 +149,31 @@ class InitThread(Thread):
                 else:
                     script_version = None
 
-                # Only download if software version is at least script version
-                if not more_recent(script[1], VERSION):
-                    if not file_exists(os.path.join("scripts", script_name)):
-                        # File doesn't exist: download it
-                        print "Downloading script: " + script_name
-                        download_from_repository("scripts/" + script_name,
-                                                 "scripts/" + script_name)
-                    elif script_version:
-                        # File exists: import and check version
-                        need_to_download = False
+                if not file_exists(os.path.join("scripts", script_name)):
+                    # File doesn't exist: download it
+                    print "Downloading script: " + script_name
+                    download_from_repository("scripts/" + script_name,
+                                             "scripts/" + script_name)
+                elif script_version:
+                    # File exists: import and check MD5 sum
+                    need_to_download = False
+                    try:
+                        file, pathname, desc = imp.find_module(''.join(script_name.split('.')[:-1]), 
+                                                               ["scripts"])
+                        new_module = imp.load_module(script_name, file, pathname, desc)
+                        m = md5()
+                        m.update(''.join(getsourcelines(new_module)[0]))
+                        need_to_download = script_version != m.hexdigest()
+                    except:            
+                        pass
+                                
+                    if need_to_download:
                         try:
-                            file, pathname, desc = imp.find_module(''.join(script_name.split('.')[:-1]), 
-                                                                   ["scripts"])
-                            new_module = imp.load_module(script_name, file, pathname, desc)
-                            need_to_download = more_recent(script_version, new_module.VERSION)
-                        except:            
+                            os.remove(os.path.join("scripts", script_name))
+                            download_from_repository("scripts/" + script_name,
+                                                     "scripts/" + script_name)
+                        except:
                             pass
-                            
-                        if need_to_download:
-                            try:
-                                os.remove(os.path.join("scripts", script_name))
-                                download_from_repository("scripts/" + script_name,
-                                                         "scripts/" + script_name)
-                            except:
-                                pass
         except:
             raise
             return
