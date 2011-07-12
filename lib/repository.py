@@ -128,7 +128,6 @@ class InitThread(Thread):
                             download_from_repository("windows/" + executable_name + ".exe", 
                                                      executable_name + ".exe")
 
-                            progress.Update(101)
                             sys.stdout = sys.__stdout__
 
                             wx.MessageBox("Update complete. The program will now restart.")
