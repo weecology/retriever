@@ -21,7 +21,6 @@ includes = [
             ]
             
 excludes = [
-            '_ssl',
             'pyreadline',
             'doctest',
             'optparse',
