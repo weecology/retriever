@@ -36,7 +36,7 @@ excludes = [
             ]
 
 setup(name='retriever',
-      version=VERSION,
+      #version=VERSION,
       description='EcoData Retriever',
       author='Ben Morris',
       author_email='ben.morris@weecology.org',

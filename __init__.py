@@ -14,7 +14,7 @@ VERSION = 'master'
 
 REPO_URL = "https://raw.github.com/croryx/retriever/"
 MASTER_BRANCH = REPO_URL + "master/"
-REPOSITORY = REPO_URL + ("v" if VERSION != "master" else "") + VERSION + "/"
+REPOSITORY = REPO_URL + VERSION + "/"
 
 
 def MODULE_LIST():
