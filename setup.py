@@ -7,6 +7,11 @@ if "win" in platform.platform().lower():
 from __init__ import VERSION
 
 
+def clean_version(v):
+    if v == 'master':
+        return '1.0.0'
+    return v.replace('v', '').replace('.rc', '').replace('.beta', '')
+
 packages = [
             'retriever.lib',
             'retriever.engines',
@@ -36,7 +41,7 @@ excludes = [
             ]
 
 setup(name='retriever',
-      #version=VERSION,
+      version=clean_version(VERSION),
       description='EcoData Retriever',
       author='Ben Morris',
       author_email='ben.morris@weecology.org',
