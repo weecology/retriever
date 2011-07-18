@@ -21,7 +21,8 @@ class main(Script):
         self.urls = {"main": "http://199.128.173.17/fiadb4-downloads/"}
         self.tags = ["Taxon > Plants", "Spatial Scale > Continental",
                      "Data Type > Observational"]
-        self.addendum = """WARNING: This dataset requires downloading many large files and will probably take several hours to complete - please be patient."""
+        self.description = """WARNING: This dataset requires downloading many large files and will probably take several hours to finish installing."""
+        self.addendum = """This dataset requires downloading many large files - please be patient."""
     def download(self, engine=None):
         Script.download(self, engine)
         
