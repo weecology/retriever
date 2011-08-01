@@ -36,7 +36,7 @@ class main(Script):
         self.shortname = "AvianBodyMass"
         self.public = False
         self.ref = "http://www.crcpress.com/ecommerce_product/product_detail.jsf?isbn=1420064444"
-        self.tables = {"mass": Table("mass", delimiter="::", remove_quotes=True)}
+        self.tables = {"mass": Table("mass", delimiter="::", escape_single_quotes=True, escape_double_quotes=True)}
         self.urls = {"mass": ""}
         self.tags = ["Taxon > Birds", "Data Type > Compilation"]
         
@@ -99,7 +99,6 @@ class main(Script):
             family = ""
             for n in range(rows):
                 row = sh.row(n)
-                print len(row), [Excel.cell_value(row[n]) for n in range(len(row))]
                 if len(row) == 0:
                     continue
                 

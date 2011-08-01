@@ -439,6 +439,14 @@ class Engine():
         """Returns a drop table or database SQL statement."""
         dropstatement = "DROP %s IF EXISTS %s" % (objecttype, objectname)
         return dropstatement
+        
+
+    def escape_single_quotes(self, line):
+        return line.replace("'", "\\'")
+        
+        
+    def escape_double_quotes(self, line):
+        return line.replace('"', '\\"')
 
         
     def extract_values(self, line):
@@ -452,14 +460,17 @@ class Engine():
                 pos += width
             return values
         else:
-            newline = (line.replace(self.table.delimiter * 2, 
-                                    self.table.delimiter + "None" + 
-                                    self.table.delimiter)
-                           .replace(self.table.delimiter * 2, 
-                                    self.table.delimiter + "None" + 
-                                    self.table.delimiter))
-            if hasattr(self.table, "remove_quotes") and self.table.remove_quotes:
-                newline = newline.replace('"', '\\"').replace("'", "\\'")
+            newline = line
+            # add "None" between any two consecutive delimiters
+            for i in range(2):
+                newline = newline.replace(self.table.delimiter * 2, 
+                                          self.table.delimiter + "None" + 
+                                          self.table.delimiter)
+            # automatically escape quotes in string fields
+            if hasattr(self.table, "escape_double_quotes") and self.table.escape_double_quotes:
+                newline = self.escape_double_quotes(newline)
+            if hasattr(self.table, "escape_single_quotes") and self.table.escape_single_quotes:
+                newline = self.escape_single_quotes(newline)
             values = shlex.shlex(newline)
             values.whitespace = self.table.delimiter
             values.whitespace_split = True
@@ -508,7 +519,6 @@ class Engine():
         except ValueError:
             pass
             
-        strvalue = strvalue.replace("'", "''")
         if datatype == "char":
             return "'" + strvalue + "'"
         else:

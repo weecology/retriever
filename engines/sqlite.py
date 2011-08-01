@@ -23,6 +23,9 @@ class engine(Engine):
         a separate connection."""
         return None
         
+    def escape_single_quotes(self, line):
+        return line.replace("'", "''")
+        
     def tablename(self):
         """The database file is specifically connected to, so database.table 
         is not necessary."""

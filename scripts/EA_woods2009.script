@@ -5,31 +5,31 @@ tags: Taxon > Plants, Spatial Scale > Local, Data Type > Time Series, Data Type 
 url: http://www.esapubs.org/archive/ecol/E090/251/
 
 table: all_plots_1935_1948, http://www.esapubs.org/archive/ecol/E090/251/datafiles/all_plots_1935_1948.txt
-nulls: 'NA'
+*nulls: 'NA'
 table: all_plots_1974_1980, http://www.esapubs.org/archive/ecol/E090/251/datafiles/all_plots_1974-1980.txt
-nulls: 'NA'
+*nulls: 'NA'
 table: swamp, http://www.esapubs.org/archive/ecol/E090/251/datafiles/swamp_all_modern.txt
 table: species_codes, http://www.esapubs.org/archive/ecol/E090/251/datafiles/species_codes.txt
 
 table: upland_plots_1989_2007, http://www.esapubs.org/archive/ecol/E090/251/datafiles/upland_plots_89-07.txt
-nulls: 'NA', ''
+*nulls: 'NA', ''
 
 table: sampling_history, http://www.esapubs.org/archive/ecol/E090/251/datafiles/sampling_history.txt
-nulls: 'NA'
-column: record_id, pk-auto
-column: plot, char, 10
-column: yr_1935, char, 10
-column: yr_1948, char, 10
-column: yr_1974, char, 10
-column: yr_1978, char, 10
-column: yr_1979, char, 10
-column: yr_1989, char, 10
-column: yr_1992, char, 10
-column: yr_1993, char, 10
-column: yr_1994, char, 10
-column: yr_1997, char, 10
-column: yr_1999, char, 10
-column: yr_2001, char, 10
-column: yr_2002, char, 10
-column: yr_2004, char, 10
-column: yr_2007, char, 10
+*nulls: 'NA'
+*column: record_id, pk-auto
+*column: plot, char, 10
+*column: yr_1935, char, 10
+*column: yr_1948, char, 10
+*column: yr_1974, char, 10
+*column: yr_1978, char, 10
+*column: yr_1979, char, 10
+*column: yr_1989, char, 10
+*column: yr_1992, char, 10
+*column: yr_1993, char, 10
+*column: yr_1994, char, 10
+*column: yr_1997, char, 10
+*column: yr_1999, char, 10
+*column: yr_2001, char, 10
+*column: yr_2002, char, 10
+*column: yr_2004, char, 10
+*column: yr_2007, char, 10
