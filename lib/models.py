@@ -253,8 +253,9 @@ class Engine():
         # Get all values for each column
         if hasattr(self, 'scan_lines'):
             lines = int(self.scan_lines)
+            lines_to_scan = source.readlines(lines)
         else:
-            lines = 10000
+            lines_to_scan = source.readlines()
         for line in source.readlines(lines):
             if line.replace("\t", "").strip():
                 values = self.extract_values(line.strip("\n"))
@@ -363,6 +364,8 @@ class Engine():
         
     def create_table_statement(self):
         """Returns a SQL statement to create a table."""
+        # Try to drop the table if it exists; this may cause an exception if it doesn't exist,
+        # so ignore exceptions
         try:
             self.cursor.execute(self.drop_statement("TABLE", self.tablename()))
         except:
@@ -449,9 +452,15 @@ class Engine():
                 pos += width
             return values
         else:
-            values = shlex.shlex(line.replace(self.table.delimiter * 2, 
-                                              self.table.delimiter + "None" + 
-                                              self.table.delimiter))
+            newline = (line.replace(self.table.delimiter * 2, 
+                                    self.table.delimiter + "None" + 
+                                    self.table.delimiter)
+                           .replace(self.table.delimiter * 2, 
+                                    self.table.delimiter + "None" + 
+                                    self.table.delimiter))
+            if hasattr(self.table, "remove_quotes") and self.table.remove_quotes:
+                newline = newline.replace('"', '\\"').replace("'", "\\'")
+            values = shlex.shlex(newline)
             values.whitespace = self.table.delimiter
             values.whitespace_split = True
             return list(values)
@@ -481,7 +490,7 @@ class Engine():
         it in single quotes."""
         strvalue = str(value).strip()
         # Remove any quotes already surrounding the string
-        if strvalue.lower() == "null":
+        if strvalue.lower() in ("null", "none"):
             return "null"
         elif value:
             quotes = ["'", '"']
