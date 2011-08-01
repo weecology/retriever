@@ -256,7 +256,7 @@ class Engine():
             lines_to_scan = source.readlines(lines)
         else:
             lines_to_scan = source.readlines()
-        for line in source.readlines(lines):
+        for line in lines_to_scan:
             if line.replace("\t", "").strip():
                 values = self.extract_values(line.strip("\n"))
                 for i in range(len(columns)):
