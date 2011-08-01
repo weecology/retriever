@@ -4,5 +4,4 @@ shortname: AvianBodySize
 tags: Taxon > Birds, Data Type > Compilation
 
 table: species, http://esapubs.org/archive/ecol/E088/096/avian_ssd_jan07.txt
-*escape_single_quotes: True
 *nulls: -999

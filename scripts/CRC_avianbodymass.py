@@ -36,7 +36,7 @@ class main(Script):
         self.shortname = "AvianBodyMass"
         self.public = False
         self.ref = "http://www.crcpress.com/ecommerce_product/product_detail.jsf?isbn=1420064444"
-        self.tables = {"mass": Table("mass", delimiter="::", escape_single_quotes=True, escape_double_quotes=True)}
+        self.tables = {"mass": Table("mass", delimiter="::")}
         self.urls = {"mass": ""}
         self.tags = ["Taxon > Birds", "Data Type > Compilation"]
         
