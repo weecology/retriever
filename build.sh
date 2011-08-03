@@ -14,12 +14,6 @@ cp setup.py src
 sudo python setup.py install
 python version.py
 
-# make apidocs
-cd ..
-sudo pydoctor --add-package=retriever --make-html
-sudo mv apidocs retriever
-cd retriever
-
 # build deb package
 sudo python setup.py --command-packages=stdeb.command bdist_deb
 sudo rm retriever.egg-info build dist __init__.pyc -rf

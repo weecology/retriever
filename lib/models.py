@@ -67,6 +67,8 @@ class Table:
         self.record_id = 0
         self.columns = []
         self.replace_columns = []
+        self.escape_single_quotes=True
+        self.escape_double_quotes=True
         for key, item in kwargs.items():
             setattr(self, key, item[0] if isinstance(item, tuple) else item)
 
@@ -253,9 +255,10 @@ class Engine():
         # Get all values for each column
         if hasattr(self, 'scan_lines'):
             lines = int(self.scan_lines)
+            lines_to_scan = source.readlines(lines)
         else:
-            lines = 10000
-        for line in source.readlines(lines):
+            lines_to_scan = source.readlines()
+        for line in lines_to_scan:
             if line.replace("\t", "").strip():
                 values = self.extract_values(line.strip("\n"))
                 for i in range(len(columns)):
@@ -363,6 +366,8 @@ class Engine():
         
     def create_table_statement(self):
         """Returns a SQL statement to create a table."""
+        # Try to drop the table if it exists; this may cause an exception if it doesn't exist,
+        # so ignore exceptions
         try:
             self.cursor.execute(self.drop_statement("TABLE", self.tablename()))
         except:
@@ -436,6 +441,14 @@ class Engine():
         """Returns a drop table or database SQL statement."""
         dropstatement = "DROP %s IF EXISTS %s" % (objecttype, objectname)
         return dropstatement
+        
+
+    def escape_single_quotes(self, line):
+        return line.replace("'", "\\'")
+        
+        
+    def escape_double_quotes(self, line):
+        return line.replace('"', '\\"')
 
         
     def extract_values(self, line):
@@ -449,9 +462,18 @@ class Engine():
                 pos += width
             return values
         else:
-            values = shlex.shlex(line.replace(self.table.delimiter * 2, 
-                                              self.table.delimiter + "None" + 
-                                              self.table.delimiter))
+            newline = line
+            # add "None" between any two consecutive delimiters
+            for i in range(2):
+                newline = newline.replace(self.table.delimiter * 2, 
+                                          self.table.delimiter + "None" + 
+                                          self.table.delimiter)
+            # automatically escape quotes in string fields
+            if hasattr(self.table, "escape_double_quotes") and self.table.escape_double_quotes:
+                newline = self.escape_double_quotes(newline)
+            if hasattr(self.table, "escape_single_quotes") and self.table.escape_single_quotes:
+                newline = self.escape_single_quotes(newline)
+            values = shlex.shlex(newline)
             values.whitespace = self.table.delimiter
             values.whitespace_split = True
             return list(values)
@@ -481,7 +503,7 @@ class Engine():
         it in single quotes."""
         strvalue = str(value).strip()
         # Remove any quotes already surrounding the string
-        if strvalue.lower() == "null":
+        if strvalue.lower() in ("null", "none"):
             return "null"
         elif value:
             quotes = ["'", '"']
@@ -499,7 +521,6 @@ class Engine():
         except ValueError:
             pass
             
-        strvalue = strvalue.replace("'", "''")
         if datatype == "char":
             return "'" + strvalue + "'"
         else:

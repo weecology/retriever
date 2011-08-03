@@ -16,6 +16,19 @@ from retriever.lib.excel import Excel
 VERSION = '0.5'
 
 
+def sci_name(value):
+    """Returns genus/species/subspecies list from a scientific name"""
+    values = value.split()
+    list = []
+    if len(values) >= 2:
+        [list.append(value) for value in values[0:2]]                    
+    if len(values) == 3:
+        list.append(values[2])
+    while len(list) < 3:
+        list.append('')
+    return list
+
+
 class main(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
@@ -23,11 +36,15 @@ class main(Script):
         self.shortname = "AvianBodyMass"
         self.public = False
         self.ref = "http://www.crcpress.com/ecommerce_product/product_detail.jsf?isbn=1420064444"
-        self.tables = {"mass": Table("mass", delimiter=",,")}
+        self.tables = {"mass": Table("mass", delimiter="::")}
         self.urls = {"mass": ""}
         self.tags = ["Taxon > Birds", "Data Type > Compilation"]
+        
+        
     def download(self, engine=None):
         Script.download(self, engine)
+        
+        engine = self.engine
         
         table = self.tables["mass"]
         
@@ -72,18 +89,6 @@ class main(Script):
             # Open excel file with xlrd
             book = xlrd.open_workbook(full_filename)
             sh = book.sheet_by_index(0)
-            
-            def sci_name(value):
-                """Returns genus/species/subspecies list from a scientific name"""
-                values = value.split()
-                list = []
-                if len(values) >= 2:
-                    [list.append(value) for value in values[0:2]]                    
-                if len(values) == 3:
-                    list.append(values[2])
-                while len(list) < 3:
-                    list.append('')
-                return list 
 
             print "Inserting data from " + filename + " . . ."
             rows = sh.nrows
@@ -167,14 +172,14 @@ class main(Script):
                     
                     # Insert the previous row into the database
                     if lastvalues:
-                        lines.append(',,'.join(lastvalues))
+                        lines.append('::'.join(lastvalues))
                         
                     lastrow = row
                     lastvalues = values
             
             if lines:
-                lines.append(',,'.join(lastvalues))
-                table.source = lines                
+                lines.append('::'.join(lastvalues))
+                table.source = lines
                 engine.add_to_table()
                         
         return engine

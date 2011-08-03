@@ -5,4 +5,4 @@ shortname: MammalMR2010
 tags: Taxon > Mammals, Data Type > Compilation
 
 table: MammalMR2010, http://www.esapubs.org/archive/ecol/E091/198/data.txt
-nulls: -9999
+*nulls: -9999

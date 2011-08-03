@@ -5,4 +5,4 @@ shortname: MarineSize
 tags: Taxon > Fish, Data Type > Compilation
 
 table: main, http://www.esapubs.org/Archive/ecol/E089/051/Predator_and_prey_body_sizes_in_marine_food_webs_vsn3.txt
-nulls: 'n/a', '0.0000E+00'
+*nulls: 'n/a', '0.0000E+00'
