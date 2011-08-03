@@ -169,7 +169,7 @@ class InitThread(Thread):
                                                                ["scripts"])
                         new_module = imp.load_module(script_name, file, pathname, desc)
                         m = md5()
-                        m.update(''.join(getsourcelines(new_module)[0]))
+                        m.update(''.join(getsourcelines(new_module)[0]).replace("\r\n", "\n")
                         m = m.hexdigest()
                         need_to_download = script_version != m
                     except:            
