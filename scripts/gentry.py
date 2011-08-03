@@ -97,6 +97,8 @@ U.S.A. """
                                   "liana", "count"]:
                             if cn[i] > -1:
                                 this_line[i] = format_value(row[cn[i]])
+                                if this_line[i] == '`':
+                                    this_line[i] = 1
 
                         this_line["stems"] = [Excel.cell_value(row[c]) 
                                               for c in cn["stems"]
