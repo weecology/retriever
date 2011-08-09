@@ -19,6 +19,7 @@ REPOSITORY = REPO_URL + VERSION + "/"
 
 def MODULE_LIST():
     """Load scripts from scripts directory and return list of modules."""
+    modules = []
     if not os.path.exists("scripts"):
         os.mkdir("scripts")
     to_compile = [file for file in os.listdir("scripts")
@@ -35,7 +36,6 @@ def MODULE_LIST():
     files = [file for file in os.listdir("scripts")
              if file[-3:] == ".py" and file[0] != "_"]
     
-    modules = []
     for script in files:
         script_name = '.'.join(script.split('.')[:-1])
         file, pathname, desc = imp.find_module(script_name, ["scripts"])

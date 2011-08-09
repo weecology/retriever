@@ -116,7 +116,8 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
         
     def get_connection(self):
         """Gets the db connection."""
-        if not "win" in platform.platform().lower():
+        p = platform.platform().lower()
+        if "darwin" in p or not "win" in p:
             raise Exception("MS Access can only be used in Windows.")
         import pyodbc as dbapi
         self.get_input()

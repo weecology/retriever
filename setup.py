@@ -2,8 +2,14 @@
 
 from setuptools import setup
 import platform
-if "win" in platform.platform().lower():
+
+p = platform.platform().lower()
+extra_includes = []
+if "darwin" in p:
+    import py2app
+elif "win" in p:
     import py2exe
+    extra_includes = ['pyodbc']
 from __init__ import VERSION
 
 
@@ -21,9 +27,8 @@ packages = [
             
 includes = [
             'xlrd',
-            'pyodbc',
             'inspect'
-            ]
+            ] + extra_includes
             
 excludes = [
             'pyreadline',
@@ -40,6 +45,7 @@ excludes = [
             'Tkconstants', 'Tkinter', 'tcl',
             ]
 
+
 setup(name='retriever',
       version=clean_version(VERSION),
       description='EcoData Retriever',
@@ -55,18 +61,30 @@ setup(name='retriever',
             'retriever = retriever.main:main',
         ],
       },
-      # py2exe options
+
+      # py2exe flags
+      windows = [{'script': "main.py",
+                  'dest_base': "retriever",
+                  'icon_resources':[(1,'icon.ico')]
+                  }],
+      zipfile = None,
+
+      # py2app flags
+      app=['main.py'],
+      data_files=[],
+      setup_requires=['py2app'],
+
+      # options
       options = {'py2exe': {'bundle_files': 1,
                             'compressed': 2,
                             'optimize': 2,
                             'packages': packages,
                             'includes': includes,
                             'excludes': excludes,
-                            }
-                 },
-      windows = [{'script': "main.py",
-                  'dest_base': "retriever",
-                  'icon_resources':[(1,'icon.ico')]
-                  }],
-      zipfile = None,
-     )
+                            },
+                 'py2app': {'packages': packages + ['wx'],
+                            'site_packages': True,
+                            'resources': [],
+                            },
+                },
+      )
