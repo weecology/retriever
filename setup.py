@@ -7,9 +7,10 @@ p = platform.platform().lower()
 extra_includes = []
 if "darwin" in p:
     import py2app
+    extra_includes = ['wx', 'MySQLdb', 'psycopg2']
 elif "win" in p:
     import py2exe
-    extra_includes = ['pyodbc']
+    extra_includes = ['pyodbc', 'inspect']
 from __init__ import VERSION
 
 
@@ -26,8 +27,6 @@ packages = [
             ]
             
 includes = [
-            'xlrd',
-            'inspect'
             ] + extra_includes
             
 excludes = [
@@ -82,9 +81,13 @@ setup(name='retriever',
                             'includes': includes,
                             'excludes': excludes,
                             },
-                 'py2app': {'packages': packages + ['wx'],
+                 'py2app': {'packages': packages,
+                            'includes': includes,
                             'site_packages': True,
                             'resources': [],
+                            'optimize': 2,
+                            'argv_emulation': True,
+                            'no_chdir': True,
                             },
                 },
       )
