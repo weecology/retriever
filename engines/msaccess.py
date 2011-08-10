@@ -38,6 +38,9 @@ class engine(Engine):
         """Returns a drop table or database SQL statement."""
         dropstatement = "DROP %s %s" % (objecttype, objectname)
         return dropstatement
+
+    def escape_single_quotes(self):
+        return line.replace("'", "''")
         
     def format_column_name(self, column):
         return "[" + str(column) + "]"
