@@ -1,7 +1,5 @@
 """EcoData Retriever Wizard
 
-This module contains a list of all current Retriever scripts.
-
 Running this module directly will launch the download wizard, allowing the user
 to choose from all scripts.
 
