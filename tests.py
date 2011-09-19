@@ -33,18 +33,15 @@ for engine in ENGINE_LIST:
     
     
 errors = []
-def run_tests():
-    for module in MODULE_LIST:
-        for (key, value) in TEST_ENGINES.items():
-            if value and not module.SCRIPT.shortname in IGNORE:
-                print module.__name__, value.name
-                try:
-                    module.SCRIPT.download(value)
-                except Exception as e:
-                    print "ERROR."
-                    errors.append((key, module.__name__, e))
-    return suite
-    
-run_tests()
+for module in MODULE_LIST:
+    for (key, value) in TEST_ENGINES.items():
+        if value and not module.SCRIPT.shortname in IGNORE:
+            print "==>", module.__name__, value.name
+            try:
+                module.SCRIPT.download(value)
+            except Exception as e:
+                print "ERROR."
+                errors.append((key, module.__name__, e))
+
 for error in errors:
     print error
