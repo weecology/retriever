@@ -12,7 +12,7 @@ class engine(Engine):
                  "double precision",
                  "decimal", 
                  "varchar", 
-                 "bit"]
+                 "boolean"]
     required_opts = [["username", 
                       "Enter your PostgreSQL username: ", 
                       "postgres"],
@@ -85,6 +85,17 @@ CSV HEADER"""
             return l > 0
         except:
             return False
+            
+    def format_insert_value(self, value, datatype):
+        if datatype == "bool":
+            try:
+                if int(value) == 1:
+                    return "TRUE"
+                elif int(value) == 0:
+                    return "FALSE"
+            except:
+                pass
+        return Engine.format_insert_value(self, value, datatype)
             
     def get_connection(self):
         """Gets the db connection."""
