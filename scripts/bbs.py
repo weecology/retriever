@@ -7,7 +7,7 @@ import urllib
 import zipfile
 from decimal import Decimal
 from retriever.lib.templates import Script
-from retriever.lib.models import Table, Cleanup, no_cleanup
+from retriever.lib.models import Table, Cleanup, no_cleanup, correct_invalid_value
 
 VERSION = '0.5'
 
