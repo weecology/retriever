@@ -200,6 +200,8 @@ class main(Script):
             
             engine.table = table
             engine.create_table()
+            engine = Cleanup(correct_invalid_value,
+                             nulls=['*'])
             
             for state in stateslist:
                 try:
@@ -214,6 +216,7 @@ class main(Script):
                             
                 except:
                     print "There was an error in " + state + "."
+                    raise
             
         except zipfile.BadZipfile:            
             print "There was an unexpected error in the Breeding Bird Survey archives."
