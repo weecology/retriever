@@ -200,8 +200,8 @@ class main(Script):
             
             engine.table = table
             engine.create_table()
-            engine = Cleanup(correct_invalid_value,
-                             nulls=['*'])
+            engine.table.cleanup = Cleanup(correct_invalid_value,
+                                           nulls=['*'])
             
             for state in stateslist:
                 try:
