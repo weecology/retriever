@@ -1,7 +1,7 @@
 """Class models for dataset scripts from various locations. Scripts should
 inherit from the most specific class available."""
 
-from retriever.lib.models import Database, Table, Cleanup, correct_invalid_value
+from retriever.lib.models import *
 from retriever.lib.tools import get_opts, choose_engine
 
 
@@ -30,10 +30,7 @@ class Script:
         
     def download(self, engine=None):
         self.engine = self.checkengine(engine)
-        db = Database()
-        db.dbname = self.shortname
-        self.engine.db = db
-        self.engine.get_cursor()
+        self.engine.db_name = self.shortname
         self.engine.create_db()
         
     def reference_url(self):

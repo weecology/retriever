@@ -115,7 +115,7 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
             return Engine.insert_data_from_file(self, filename)    
             
     def tablename(self):
-        return "[" + self.db.dbname + " " + self.table.name + "]"
+        return "[" + self.db_name + " " + self.table.name + "]"
         
     def get_connection(self):
         """Gets the db connection."""

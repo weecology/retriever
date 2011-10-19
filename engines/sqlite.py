@@ -29,7 +29,7 @@ class engine(Engine):
     def tablename(self):
         """The database file is specifically connected to, so database.table 
         is not necessary."""
-        return self.db.dbname + "_" + self.table.name
+        return self.db_name + "_" + self.table.name
         
     def table_exists(self, dbname, tablename):
         try:
