@@ -461,6 +461,13 @@ class Engine():
                 if item == column[0]:
                     columns.append(column[1][0])
         return columns
+        
+        
+    def get_cursor(self):
+        """Gets the db cursor."""
+        if not self.cursor:
+            self.connection = self.get_connection()
+            self.cursor = self.connection.cursor()
 
         
     def get_input(self):

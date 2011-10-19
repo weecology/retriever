@@ -6,6 +6,7 @@ url: http://esapubs.org/archive/ecol/E090/118/
 scan_lines: 40000
 
 table: main, http://esapubs.org/archive/ecol/E090/118/Portal_rodents_19772002.csv
+*delimiter: ','
 *nulls: '', None
 *column: record_id, pk-auto
 *column: recordid, skip

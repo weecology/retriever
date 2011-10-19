@@ -106,8 +106,3 @@ CSV HEADER"""
                                         user = self.opts["username"],
                                         password = self.opts["password"],
                                         database = self.opts["database"])
-                                        
-    def get_cursor(self):
-        """Gets the db cursor."""
-        self.connection = self.get_connection()
-        self.cursor = self.connection.cursor()

@@ -71,8 +71,3 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
                              port = int(self.opts["port"]),
                              user = self.opts["username"],
                              passwd = self.opts["password"])
-        
-    def get_cursor(self):
-        """Gets the db cursor."""
-        self.connection = self.get_connection()
-        self.cursor = self.connection.cursor()

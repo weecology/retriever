@@ -47,8 +47,3 @@ class engine(Engine):
         import sqlite3 as dbapi
         self.get_input()
         return dbapi.connect(self.opts["file"])
-        
-    def get_cursor(self):
-        """Gets the db cursor."""
-        self.connection = self.get_connection()
-        self.cursor = self.connection.cursor()

@@ -127,8 +127,3 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
         connection_string = ("DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ="
                              + self.opts["file"].replace("/", "//") + ";")
         return dbapi.connect(connection_string, autocommit = False)
-                                        
-    def get_cursor(self):
-        """Gets the db cursor."""
-        self.connection = self.get_connection()
-        self.cursor = self.connection.cursor()
