@@ -39,6 +39,8 @@ for module in MODULE_LIST:
             print "==>", module.__name__, value.name
             try:
                 module.SCRIPT.download(value)
+            except KeyboardInterrupt:
+                pass
             except Exception as e:
                 print "ERROR."
                 errors.append((key, module.__name__, e))
