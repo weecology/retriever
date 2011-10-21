@@ -361,12 +361,12 @@ class Engine():
         return dropstatement
         
 
-    def escape_single_quotes(self, line):
-        return line.replace("'", "\\'")
+    def escape_single_quotes(self, value):
+        return value.replace("'", "\\'")
         
         
-    def escape_double_quotes(self, line):
-        return line.replace('"', '\\"')
+    def escape_double_quotes(self, value):
+        return value.replace('"', '\\"')
         
         
     def execute(self, statement, commit=True):
@@ -387,18 +387,7 @@ class Engine():
                 pos += width
             return values
         else:
-            newline = line
-            # add "None" between any two consecutive delimiters
-            for i in range(2):
-                newline = newline.replace(self.table.delimiter * 2, 
-                                          self.table.delimiter + "None" + 
-                                          self.table.delimiter)
-            # automatically escape quotes in string fields
-            if hasattr(self.table, "escape_double_quotes") and self.table.escape_double_quotes:
-                newline = self.escape_double_quotes(newline)
-            if hasattr(self.table, "escape_single_quotes") and self.table.escape_single_quotes:
-                newline = self.escape_single_quotes(newline)
-            values = shlex.shlex(newline)
+            values = shlex.shlex(line)
             values.whitespace = self.table.delimiter
             values.whitespace_split = True
             return list(values)
@@ -447,6 +436,13 @@ class Engine():
                 strvalue = strvalue[1:-1]
             if strvalue.lower() in nulls:
                 return "null"
+                
+            # automatically escape quotes in string fields
+            if hasattr(self.table, "escape_double_quotes") and self.table.escape_double_quotes:
+                strvalue = self.escape_double_quotes(strvalue)
+            if hasattr(self.table, "escape_single_quotes") and self.table.escape_single_quotes:
+                strvalue = self.escape_single_quotes(strvalue)
+                
             return "'" + strvalue + "'"
         elif datatype=="bool":
             return "true" if value else "false"
@@ -581,8 +577,7 @@ class Engine():
         else:
             column = -1
         
-        for value in [(value if value != "None" else "")
-                      for value in self.extract_values(line)]:
+        for value in self.extract_values(line):
             column += 1
             try:
                 this_column = self.table.columns[column][1][0]
@@ -599,7 +594,7 @@ class Engine():
             except:
                 # too many values for columns; ignore
                 pass
-                
+
         return linevalues
         
     

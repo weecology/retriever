@@ -39,8 +39,8 @@ class engine(Engine):
         dropstatement = "DROP %s %s" % (objecttype, objectname)
         return dropstatement
 
-    def escape_single_quotes(self, line):
-        return line.replace("'", "''")
+    def escape_single_quotes(self, value):
+        return value.replace("'", "''")
 
     def execute(self, statement, commit=True):
         Engine.execute(self, statement, commit=True)
@@ -67,7 +67,6 @@ class engine(Engine):
 
             columns = self.get_insert_columns()
 
-            need_to_delete = False    
             if self.table.pk and not self.table.contains_pk:
                 if '.' in os.path.basename(filename):
                     proper_name = filename.split('.')
@@ -94,12 +93,12 @@ class engine(Engine):
             else:
                 newfilename = filename
                         
-            filename = os.path.abspath(newfilename)
-            filename_length = (len(os.path.basename(filename)) * -1) - 1
-            filepath = filename[0:filename_length]
+            newfilename = os.path.abspath(newfilename)
+            filename_length = (len(os.path.basename(newfilename)) * -1) - 1
+            filepath = newfilename[0:filename_length]
             statement = """
 INSERT INTO """ + self.tablename() + " (" + columns + """)
-SELECT * FROM [""" + os.path.basename(filename) + ''']
+SELECT * FROM [""" + os.path.basename(newfilename) + ''']
 IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
             
             try:
@@ -111,9 +110,7 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
                 self.connection.rollback()
                 self.create_table()
                 return Engine.insert_data_from_file(self, filename)
-            
-            if need_to_delete:
-                os.remove(newfilename)
+
         else:
             return Engine.insert_data_from_file(self, filename)    
             
