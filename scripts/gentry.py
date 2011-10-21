@@ -140,10 +140,11 @@ U.S.A. """
                 if tax_count % 10 == 0:
                     msg = "Generating taxonomic groups: " + str(tax_count) + " / " + str(TAX_GROUPS)
                     sys.stdout.write(msg + "\b" * len(msg))
+        print "Generating taxonomic groups: " + str(TAX_GROUPS) + " / " + str(TAX_GROUPS)
         
         
         # Create species table
-        table = Table("species", delimiter="::")
+        table = Table("species", delimiter="~")
         table.columns=[("species_id"            ,   ("pk-auto",)    ),
                        ("family"                ,   ("char", 20)    ),
                        ("genus"                 ,   ("char", 20)    ),
@@ -151,7 +152,7 @@ U.S.A. """
                        ("id_level"              ,   ("char", 10)    ),
                        ("full_id"               ,   ("bool",)       )]
 
-        table.source = ['::'.join(group) 
+        table.source = ['~'.join(group) 
                         for group in unique_tax]
         
         self.engine.table = table
@@ -160,7 +161,7 @@ U.S.A. """
         
         
         # Create stems table
-        table = Table("stems", delimiter="::", contains_pk=False)
+        table = Table("stems", delimiter="~", contains_pk=False)
         table.columns=[("stem_id"               ,   ("pk-auto",)    ),
                        ("line"                  ,   ("int",)        ),
                        ("species_id"            ,   ("int",)        ),
@@ -190,21 +191,21 @@ U.S.A. """
                 stem = species_info + [i]
                 stems.append([str(value) for value in stem])
             
-        table.source = ['::'.join(stem) for stem in stems]
+        table.source = ['~'.join(stem) for stem in stems]
         self.engine.table = table
         self.engine.create_table()
         self.engine.add_to_table()
         
         
         # Create counts table
-        table = Table("counts", delimiter="::", contains_pk=False)
+        table = Table("counts", delimiter="~", contains_pk=False)
         table.columns=[("count_id"              ,   ("pk-auto",)    ),
                        ("line"                  ,   ("int",)        ),
                        ("species_id"            ,   ("int",)        ),
                        ("site_code"             ,   ("char", 12)    ),
                        ("liana"                 ,   ("char", 10)    ),
                        ("count"                 ,   ("double",)     )]
-        table.source = ['::'.join(count) for count in counts]
+        table.source = ['~'.join(count) for count in counts]
         self.engine.table = table
         self.engine.create_table()
         self.engine.add_to_table()

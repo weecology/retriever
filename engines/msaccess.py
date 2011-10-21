@@ -41,15 +41,13 @@ class engine(Engine):
 
     def escape_single_quotes(self, value):
         return value.replace("'", "''")
-
-    def execute(self, statement, commit=True):
-        Engine.execute(self, statement, commit=True)
         
     def format_column_name(self, column):
         return "[" + str(column) + "]"
         
     def insert_data_from_file(self, filename):
         """Perform a bulk insert."""
+        self.get_cursor()
         ct = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
         if (self.table.cleanup.function == no_cleanup and not self.table.fixed_width and
             self.table.header_rows < 2) and (self.table.delimiter in ["\t", ","]) and not ct:  
@@ -70,7 +68,6 @@ class engine(Engine):
             if self.table.pk and not self.table.contains_pk:
                 if '.' in os.path.basename(filename):
                     proper_name = filename.split('.')
-                    print proper_name
                     newfilename = '.'.join((proper_name[0:-1]) if len(proper_name) > 0 else proper_name[0]
                                            ) + "_new." + filename.split(".")[-1]
                 else:
@@ -102,8 +99,7 @@ SELECT * FROM [""" + os.path.basename(newfilename) + ''']
 IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
             
             try:
-                self.cursor.execute(statement)
-                self.connection.commit()
+                self.execute(statement)
             except:
                 print statement
                 print "Couldn't bulk insert. Trying manual insert."

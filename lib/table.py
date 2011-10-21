@@ -6,7 +6,7 @@ class Table:
         self.name = name
         self.pk = True
         self.contains_pk = False
-        self.delimiter = '\t'
+        self.delimiter = None
         self.header_rows = 1
         self.column_names_row = 1
         self.fixed_width = False

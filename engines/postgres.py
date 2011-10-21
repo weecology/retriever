@@ -50,6 +50,7 @@ class engine(Engine):
         
     def insert_data_from_file(self, filename):
         """Use PostgreSQL's "COPY FROM" statement to perform a bulk insert."""
+        self.get_cursor()
         ct = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
         if ([self.table.cleanup.function, self.table.delimiter, 
              self.table.header_rows] == [no_cleanup, ",", 1]) and not self.table.fixed_width and not ct:
@@ -61,8 +62,7 @@ FROM '""" + filename.replace("\\", "\\\\") + """'
 WITH DELIMITER ','
 CSV HEADER"""
             try:
-                self.cursor.execute(statement)
-                self.connection.commit()
+                self.execute(statement)
             except:
                 self.connection.rollback()
                 return Engine.insert_data_from_file(self, filename)

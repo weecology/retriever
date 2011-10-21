@@ -3,7 +3,7 @@ import os
 import getpass
 import zipfile
 import urllib
-import shlex
+import csv
 from decimal import Decimal
 
 
@@ -27,6 +27,7 @@ class Engine():
         """This function adds data to a table from one or more lines specified 
         in engine.table.source."""
         lines = self.table.source
+        self.get_cursor()
 
         if self.table.columns[-1][1][0][:3] == "ct-":
             # cross-tab data
@@ -89,13 +90,16 @@ class Engine():
         if url and not file_exists(self.format_filename(filename)):
             # If the file doesn't exist, download it
             self.download_file(url, filename)
+
+        source = self.skip_rows(self.table.column_names_row - 1, 
+                                open(self.format_filename(filename), "rb"))
+        header = source.readline()
+        source.close()
+
+        if not self.table.delimiter:
+            self.auto_get_delimiter(header)
         
-        if not self.table.columns:
-            source = self.skip_rows(self.table.column_names_row - 1, 
-                                    open(self.format_filename(filename), "rb"))
-            header = source.readline()
-            source.close()
-            
+        if not self.table.columns:            
             source = self.skip_rows(self.table.header_rows, 
                                     open(self.format_filename(filename), "rb"))
             
@@ -104,7 +108,7 @@ class Engine():
             else:
                 self.table.columns = []
                 self.table.contains_pk = True
-            
+                
             columns, column_values = self.auto_get_columns(header)
             
             self.auto_get_datatypes(pk, source, columns, column_values)
@@ -121,18 +125,9 @@ class Engine():
         if self.table.fixed_width:
             column_names = self.extract_values(header)
         else:
-            # Determine the delimiter by finding out which of a set of common
-            # delimiters occurs most in the header line
-            self.table.delimiter = "\t"
-            for other_delimiter in [",", ";"]:
-                if header.count(other_delimiter) > header.count(self.table.delimiter):
-                    self.table.delimiter = other_delimiter
-            
             # Get column names from header row
-            values = shlex.shlex(header)
-            values.whitespace = self.table.delimiter
-            values.whitespace_split = True
-            column_names = [name.strip() for name in list(values)]
+            values = self.split_on_delimiter(header)
+            column_names = [name.strip() for name in values]
         
         columns = []
         column_values = dict()
@@ -229,6 +224,15 @@ class Engine():
         for column in columns:
             self.table.columns.append((column[0], tuple(column[1])))
 
+
+    def auto_get_delimiter(self, header):
+        # Determine the delimiter by finding out which of a set of common
+        # delimiters occurs most in the header line
+        self.table.delimiter = "\t"
+        for other_delimiter in [",", ";"]:
+            if header.count(other_delimiter) > header.count(self.table.delimiter):
+                self.table.delimiter = other_delimiter
+
             
     def convert_data_type(self, datatype):
         """Converts Retriever generic data types to database platform specific 
@@ -263,6 +267,7 @@ class Engine():
         engine.db"""
         print "Creating database " + self.db_name + "..."
         # Create the database    
+        self.get_cursor()
         self.execute(self.create_db_statement())
 
         
@@ -284,6 +289,13 @@ class Engine():
         """Creates a new database table based on settings supplied in Table 
         object engine.table."""
         print "Creating table " + self.table.name + "..."
+        self.get_cursor()
+        
+        try:
+            self.execute(self.drop_statement("TABLE", self.tablename()))
+        except:
+            pass
+        
         create_stmt = self.create_table_statement()
         self.execute(create_stmt)        
 
@@ -292,11 +304,6 @@ class Engine():
         """Returns a SQL statement to create a table."""
         # Try to drop the table if it exists; this may cause an exception if it doesn't exist,
         # so ignore exceptions
-        try:
-            self.execute(self.drop_statement("TABLE", self.tablename()))
-        except:
-            pass
-        
         create_stmt = "CREATE TABLE " + self.tablename() + " ("
         
         for item in self.table.columns:
@@ -370,7 +377,6 @@ class Engine():
         
         
     def execute(self, statement, commit=True):
-        self.get_cursor()
         self.cursor.execute(statement)
         if commit:
             self.connection.commit()
@@ -387,10 +393,7 @@ class Engine():
                 pos += width
             return values
         else:
-            values = shlex.shlex(line)
-            values.whitespace = self.table.delimiter
-            values.whitespace_split = True
-            return list(values)
+            return self.split_on_delimiter(line)
 
             
     def final_cleanup(self):
@@ -416,13 +419,16 @@ class Engine():
         """Formats a value for an insert statement, for example by surrounding
         it in single quotes."""
         strvalue = str(value).strip()
+        quotes = ["'", '"']
+        if len(strvalue) > 0 and strvalue[0] == strvalue[-1] and strvalue[0] in quotes:
+            strvalue = strvalue[1:-1]        
         nulls = ("null", "none")
         # Remove any quotes already surrounding the string
         if strvalue.lower() in nulls:
             return "null"
-        elif datatype=="int":
+        elif datatype in ("int", "bool"):
             if strvalue:
-                return int(strvalue)
+                return int(strvalue.split('.')[0])
             else:
                 return 0
         elif datatype in ("double", "decimal"):
@@ -431,9 +437,6 @@ class Engine():
             else:
                 return 0
         elif datatype=="char":
-            quotes = ["'", '"']
-            if len(strvalue) > 0 and strvalue[0] == strvalue[-1] and strvalue[0] in quotes:
-                strvalue = strvalue[1:-1]
             if strvalue.lower() in nulls:
                 return "null"
                 
@@ -444,8 +447,8 @@ class Engine():
                 strvalue = self.escape_single_quotes(strvalue)
                 
             return "'" + strvalue + "'"
-        elif datatype=="bool":
-            return "true" if value else "false"
+        #elif datatype=="bool":
+            #return "'true'" if value else "'false'"
         else:
             return "null"
 
@@ -557,6 +560,13 @@ class Engine():
             for i in range(rows):
                 line = source.readline()
         return source
+
+
+    def split_on_delimiter(self, line):
+        dialect = csv.excel
+        dialect.escapechar = "\\"
+        r = csv.reader([line], dialect=dialect, delimiter=self.table.delimiter)
+        return r.next()
 
         
     def table_exists(self, dbname, tablename):

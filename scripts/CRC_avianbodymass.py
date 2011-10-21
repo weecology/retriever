@@ -36,7 +36,7 @@ class main(Script):
         self.shortname = "AvianBodyMass"
         self.public = False
         self.ref = "http://www.crcpress.com/ecommerce_product/product_detail.jsf?isbn=1420064444"
-        self.tables = {"mass": Table("mass", delimiter="::")}
+        self.tables = {"mass": Table("mass", delimiter="~")}
         self.urls = {"mass": ""}
         self.tags = ["Taxon > Birds", "Data Type > Compilation"]
         
@@ -172,13 +172,13 @@ class main(Script):
                     
                     # Insert the previous row into the database
                     if lastvalues:
-                        lines.append('::'.join(lastvalues))
+                        lines.append('~'.join(lastvalues))
                         
                     lastrow = row
                     lastvalues = values
             
             if lines:
-                lines.append('::'.join(lastvalues))
+                lines.append('~'.join(lastvalues))
                 table.source = lines
                 engine.add_to_table()
                         
