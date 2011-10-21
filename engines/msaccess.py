@@ -41,6 +41,9 @@ class engine(Engine):
 
     def escape_single_quotes(self, line):
         return line.replace("'", "''")
+
+    def execute(self, statement, commit=True):
+        Engine.execute(self, statement, commit=True)
         
     def format_column_name(self, column):
         return "[" + str(column) + "]"
