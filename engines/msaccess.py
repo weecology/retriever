@@ -39,7 +39,7 @@ class engine(Engine):
         dropstatement = "DROP %s %s" % (objecttype, objectname)
         return dropstatement
 
-    def escape_single_quotes(self):
+    def escape_single_quotes(self, line):
         return line.replace("'", "''")
         
     def format_column_name(self, column):

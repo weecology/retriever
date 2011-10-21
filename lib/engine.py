@@ -69,7 +69,7 @@ class Engine():
                     sys.stdout.write(prompt + "\b" * len(prompt))
 
                 try:
-                    self.execute(insert_stmt)
+                    self.execute(insert_stmt, commit=False)
                 except:
                     print insert_stmt
                     raise
@@ -88,7 +88,6 @@ class Engine():
         
         if url and not file_exists(self.format_filename(filename)):
             # If the file doesn't exist, download it
-            self.create_raw_data_dir()
             self.download_file(url, filename)
         
         if not self.table.columns:
@@ -286,7 +285,7 @@ class Engine():
         object engine.table."""
         print "Creating table " + self.table.name + "..."
         create_stmt = self.create_table_statement()
-        self.execute(create_stmt)
+        self.execute(create_stmt)        
 
         
     def create_table_statement(self):
@@ -370,9 +369,11 @@ class Engine():
         return line.replace('"', '\\"')
         
         
-    def execute(self, statement):
+    def execute(self, statement, commit=True):
         self.get_cursor()
         self.cursor.execute(statement)
+        if commit:
+            self.connection.commit()
 
         
     def extract_values(self, line):
@@ -426,31 +427,31 @@ class Engine():
         """Formats a value for an insert statement, for example by surrounding
         it in single quotes."""
         strvalue = str(value).strip()
+        nulls = ("null", "none")
         # Remove any quotes already surrounding the string
-        if strvalue.lower() in ("null", "none"):
+        if strvalue.lower() in nulls:
             return "null"
-        elif value:
+        elif datatype=="int":
+            if strvalue:
+                return int(strvalue)
+            else:
+                return 0
+        elif datatype in ("double", "decimal"):
+            if strvalue:
+                return strvalue
+            else:
+                return 0
+        elif datatype=="char":
             quotes = ["'", '"']
             if len(strvalue) > 0 and strvalue[0] == strvalue[-1] and strvalue[0] in quotes:
-                strvalue = strvalue.strip(''.join(quotes)) 
+                strvalue = strvalue[1:-1]
+            if strvalue.lower() in nulls:
+                return "null"
+            return "'" + strvalue + "'"
+        elif datatype=="bool":
+            return "true" if value else "false"
         else:
             return "null"
-        # If a value converts to an integer, return it in integer form
-        try:
-            strvalue = str(float(strvalue))
-            if '.' in strvalue:
-                decimal = strvalue.split('.')[1]
-                if all([char == '0' for char in decimal]):
-                    strvalue = strvalue.split('.')[0]
-        except ValueError:
-            pass
-            
-        if datatype == "char":
-            return "'" + strvalue + "'"
-        else:
-            if strvalue == "":
-                return 0            
-            return strvalue
 
 
     def get_column_datatypes(self):
@@ -465,9 +466,8 @@ class Engine():
         
     def get_cursor(self):
         """Gets the db cursor."""
-        if not self.cursor:
-            self.connection = self.get_connection()
-            self.cursor = self.connection.cursor()
+        self.connection = self.get_connection()
+        self.cursor = self.connection.cursor()
 
         
     def get_input(self):
@@ -541,7 +541,7 @@ class Engine():
         types = self.get_column_datatypes()
         columncount = len(self.get_insert_columns(False))
         insert_stmt = "INSERT INTO " + self.tablename()
-        insert_stmt += " (" + columns + ")"  
+        insert_stmt += " (" + columns + ")"
         insert_stmt += " VALUES ("
         for i in range(0, columncount):
             insert_stmt += "%s, "
@@ -551,7 +551,7 @@ class Engine():
             values.append(self.format_insert_value(None,
                                                    types[n]))
             n += 1
-        insert_stmt %= tuple(values)
+        insert_stmt %= tuple([str(value) for value in values])
         return insert_stmt
 
         
