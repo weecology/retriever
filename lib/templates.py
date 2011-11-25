@@ -28,8 +28,9 @@ class Script:
             desc += "\n" + self.reference_url()
         return desc
         
-    def download(self, engine=None):
+    def download(self, engine=None, debug=False):
         self.engine = self.checkengine(engine)
+        self.engine.debug = debug
         self.engine.db_name = self.shortname
         self.engine.create_db()
         
@@ -73,8 +74,8 @@ class BasicTextTemplate(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
         
-    def download(self, engine=None):
-        Script.download(self, engine)
+    def download(self, engine=None, debug=False):
+        Script.download(self, engine, debug)
         
         for key in self.urls.keys():
             if not key in self.tables.keys():

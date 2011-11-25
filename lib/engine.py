@@ -20,6 +20,7 @@ class Engine():
     required_opts = []
     pkformat = "%s PRIMARY KEY"
     script = None
+    debug = False
     RAW_DATA_LOCATION = os.path.join("raw_data", "{dataset}")
 
     
@@ -268,7 +269,9 @@ class Engine():
         print "Creating database " + self.db_name + "..."
         # Create the database    
         self.get_cursor()
-        self.execute(self.create_db_statement())
+        create_stmt = self.create_db_statement()
+        if self.debug: print create_stmt
+        self.execute(create_stmt)
 
         
     def create_db_statement(self):
@@ -297,6 +300,7 @@ class Engine():
             pass
         
         create_stmt = self.create_table_statement()
+        if self.debug: print create_stmt
         self.execute(create_stmt)        
 
         
@@ -551,6 +555,7 @@ class Engine():
                                                    types[n]))
             n += 1
         insert_stmt %= tuple([str(value) for value in values])
+        if self.debug: print insert_stmt
         return insert_stmt
 
         
