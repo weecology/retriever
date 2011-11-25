@@ -254,8 +254,14 @@ class Engine():
         thisvartype = datatypes[thistype]
         if thisvartype > -1:
             type = mydatatypes[thisvartype]
-            if len(datatype) > 1:
-                type += "(" + str(datatype[1]) + ")"
+            if isinstance(type, tuple):
+                if len(datatype) > 1:
+                    type = type[1] + "(" + str(datatype[1]) + ")"
+                else:
+                    type = type[0]
+            else:
+                if len(datatype) > 1:
+                    type += "(" + str(datatype[1]) + ")"
         else:
             type = ""
         if thispk:
