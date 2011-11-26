@@ -18,7 +18,7 @@ class main(Script):
         self.name = "Forest Inventory and Analysis"
         self.shortname = "FIA"
         self.ref = "http://fia.fs.fed.us/"
-        self.urls = {"main": "http://199.128.173.17/fiadb4-downloads/"}
+        self.urls = {"main": "http://apps.fs.fed.us/fiadb-downloads/"}
         self.tags = ["Taxon > Plants", "Spatial Scale > Continental",
                      "Data Type > Observational"]
         self.description = """WARNING: This dataset requires downloading many large files and will probably take several hours to finish installing."""
