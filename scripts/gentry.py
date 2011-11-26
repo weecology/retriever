@@ -35,8 +35,9 @@ Missouri Botanical Garden
 P.O. Box 299
 St. Louis, MO 63166-0299
 U.S.A. """
-    def download(self, engine=None):
-        Script.download(self, engine)
+
+    def download(self, engine=None, debug=False):
+        Script.download(self, engine, debug)
         
         self.engine.auto_create_table(Table("sites"), url=self.urls["sites"])
         self.engine.insert_data_from_url(self.urls["sites"])
@@ -146,9 +147,9 @@ U.S.A. """
         # Create species table
         table = Table("species", delimiter="~")
         table.columns=[("species_id"            ,   ("pk-auto",)    ),
-                       ("family"                ,   ("char", 20)    ),
-                       ("genus"                 ,   ("char", 20)    ),
-                       ("species"               ,   ("char", 20)    ),
+                       ("family"                ,   ("char", )    ),
+                       ("genus"                 ,   ("char", )    ),
+                       ("species"               ,   ("char", )    ),
                        ("id_level"              ,   ("char", 10)    ),
                        ("full_id"               ,   ("bool",)       )]
 
