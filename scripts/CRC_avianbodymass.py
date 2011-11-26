@@ -41,8 +41,8 @@ class main(Script):
         self.tags = ["Taxon > Birds", "Data Type > Compilation"]
         
         
-    def download(self, engine=None):
-        Script.download(self, engine)
+    def download(self, engine=None, debug=False):
+        Script.download(self, engine, debug)
         
         engine = self.engine
         

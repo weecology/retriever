@@ -20,8 +20,8 @@ class main(Script):
                                   }
                         )
         
-    def download(self, engine=None):
-        Script.download(self, engine)
+    def download(self, engine=None, debug=False):
+        Script.download(self, engine, debug)
         
         self.engine.download_file(self.urls["main"], "Succession_sampling_03-07_data_original.txt")
         data_path = self.engine.format_filename("Succession_sampling_03-07_data.txt")

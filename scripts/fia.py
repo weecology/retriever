@@ -23,8 +23,9 @@ class main(Script):
                      "Data Type > Observational"]
         self.description = """WARNING: This dataset requires downloading many large files and will probably take several hours to finish installing."""
         self.addendum = """This dataset requires downloading many large files - please be patient."""
-    def download(self, engine=None):
-        Script.download(self, engine)
+
+    def download(self, engine=None, debug=False):
+        Script.download(self, engine, debug)
         
         engine = self.engine
         

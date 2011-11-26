@@ -26,9 +26,9 @@ class main(Script):
                      "species": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/SpeciesList.txt"
                      }
                      
-    def download(self, engine=None):
+    def download(self, engine=None, debug=False):
         try:
-            Script.download(self, engine)
+            Script.download(self, engine, debug)
             
             engine = self.engine
             
