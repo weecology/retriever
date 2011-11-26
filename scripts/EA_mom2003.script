@@ -7,12 +7,12 @@ url: http://www.esapubs.org/archive/ecol/E084/094/
 table: MOM, http://www.esapubs.org/Archive/ecol/E084/094/MOMv3.3.txt
 *nulls: -999
 *column: record_id, pk-auto
-*column: continent, char, 7
-*column: status, char, 7
+*column: continent, char, 20
+*column: status, char, 20
 *column: sporder, char, 20
 *column: family, char, 20
 *column: genus, char, 20
 *column: species, char, 20
 *column: log_mass_g, double
 *column: comb_mass_g, double
-*column: reference, char, 10
+*column: reference, char
