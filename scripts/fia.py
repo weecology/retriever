@@ -53,8 +53,12 @@ class main(Script):
         for table in tablelist:
             prep_file_name = "prep.csv"
             prep_file = open(engine.format_filename(prep_file_name), "wb")
+            this_file = open(engine.format_filename(stateslist[0][0] + "_" + table + ".CSV"), "rb")
+            prep_file.write(this_file.readline())
+            this_file.close()
             for state in stateslist:
                 this_file = open(engine.format_filename(state[0] + "_" + table + ".CSV"), "rb")
+                this_file.readline()
                 for i in range(10):
                     prep_file.write(this_file.readline())
             prep_file.close()
