@@ -51,12 +51,21 @@ class main(Script):
                                                    [state[0] + "_" + table + ".CSV"])
         
         for table in tablelist:
-            print "Creating table " + table + "..."
-            file = stateslist[0][0] + "_" + table + ".CSV"
-            self.engine.auto_create_table(Table(table), filename=file)
+            prep_file_name = "prep.csv"
+            prep_file = open(engine.format_filename(prep_file_name), "wb")
+            for state in stateslist:
+                this_file = open(engine.format_filename(state[0] + "_" + table + ".CSV"), "rb")
+                for i in range(10):
+                    prep_file.write(this_file.readline())
+            prep_file.close()
+            self.engine.auto_create_table(Table(table), filename=prep_file_name)
             for state in stateslist:
                 file = state[0] + "_" + table + ".CSV"
-                self.engine.insert_data_from_url(file)
+                try:
+                    self.engine.insert_data_from_url(file)
+                except:
+                    print state[0]
+                    raise
         
         return engine
         
