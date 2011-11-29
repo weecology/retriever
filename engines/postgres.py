@@ -7,12 +7,15 @@ class engine(Engine):
     """Engine instance for PostgreSQL."""
     name = "PostgreSQL"
     abbreviation = "p"
-    datatypes = ["serial", 
-                 "integer", 
-                 "double precision",
-                 "decimal", 
-                 "varchar", 
-                 "boolean"]
+    datatypes = {
+                 "auto": "serial",
+                 "int": "integer",
+                 "bigint": "bigint",
+                 "double": "double precision",
+                 "decimal": "decimal",
+                 "char": "varchar",
+                 "bool": "boolean",
+                 }
     required_opts = [["username", 
                       "Enter your PostgreSQL username: ", 
                       "postgres"],

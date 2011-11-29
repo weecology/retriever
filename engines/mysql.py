@@ -7,12 +7,15 @@ class engine(Engine):
     """Engine instance for MySQL."""
     name = "MySQL"
     abbreviation = "m"
-    datatypes = ["INT(5) NOT NULL AUTO_INCREMENT", 
-                 "INT", 
-                 "DOUBLE",
-                 "DECIMAL", 
-                 ("TEXT", "VARCHAR"), 
-                 "BOOL"]
+    datatypes = {
+                 "auto": "INT(5) NOT NULL AUTO_INCREMENT",
+                 "int": "INT",
+                 "bigint": "INT",
+                 "double": "DOUBLE",
+                 "decimal": "DECIMAL",
+                 "char": ("TEXT", "VARCHAR"),
+                 "bool": "BOOL",
+                 }
     required_opts = [["username", 
                       "Enter your MySQL username: ", 
                       "root"],

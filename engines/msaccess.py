@@ -8,12 +8,15 @@ class engine(Engine):
     name = "Microsoft Access"
     instructions = """Create a database in Microsoft Access, close Access, then \nselect your database file using this dialog."""
     abbreviation = "a"
-    datatypes = ["AUTOINCREMENT",
-                 "INTEGER",
-                 "NUMERIC",
-                 "NUMERIC",
-                 "VARCHAR",
-                 "BIT"]
+    datatypes = {
+                 "auto": "AUTOINCREMENT",
+                 "int": "INTEGER",
+                 "bigint": "INTEGER",
+                 "double": "NUMERIC",
+                 "decimal": "NUMERIC",
+                 "char": "VARCHAR",
+                 "bool": "BIT",
+                 }
     required_opts = [["file", 
                       "Enter the filename of your Access database: ",
                       "access.accdb",

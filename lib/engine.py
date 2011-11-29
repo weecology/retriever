@@ -197,7 +197,10 @@ class Engine():
                 try:
                     int_values = [int(value) == value for value in float_values]
                     if all(int_values):
-                        datatype = "int"
+                        if max(values) > 32767:
+                            datatype = "bigint"
+                        else:
+                            datatype = "int"
                     else:
                         datatype = "float"
                 except:
@@ -209,8 +212,8 @@ class Engine():
             if datatype is "char":
                 max_length = max([len(s) for s in values if s]) + 5
                 column[1] = ["char", max_length]
-            elif datatype is "int":
-                column[1] = ["int",]
+            elif datatype in ["int", "bigint"]:
+                column[1] = [datatype,]
             elif datatype is "float":
                 column[1] = ["double",]
                 for value in values:
@@ -238,7 +241,6 @@ class Engine():
     def convert_data_type(self, datatype):
         """Converts Retriever generic data types to database platform specific 
         data types"""
-        datatypes = dict()
         thistype = datatype[0]
         thispk = False
         if thistype[0:3] == "pk-":
@@ -246,27 +248,25 @@ class Engine():
             thispk = True
         elif thistype[0:3] == "ct-":
             thistype = thistype[3:]
-        customtypes = ("auto", "int", "double", "decimal", "char", "bool")
-        for i in range(0, len(customtypes)):
-            datatypes[customtypes[i]] = i
-        datatypes["combine"], datatypes["skip"] = [-1] * 2
-        mydatatypes = self.datatypes
-        thisvartype = datatypes[thistype]
-        if thisvartype > -1:
-            type = mydatatypes[thisvartype]
-            if isinstance(type, tuple):
+            
+        if thistype in self.datatypes.keys():
+            thistype = self.datatypes[thistype]
+            
+            if isinstance(thistype, tuple):
                 if len(datatype) > 1:
-                    type = type[1] + "(" + str(datatype[1]) + ")"
+                    thistype = thistype[1] + "(" + str(datatype[1]) + ")"
                 else:
-                    type = type[0]
+                    thistype = thistype[0]
             else:
                 if len(datatype) > 1:
-                    type += "(" + str(datatype[1]) + ")"
+                    thistype += "(" + str(datatype[1]) + ")"
         else:
-            type = ""
+            thistype = ""
+            
         if thispk:
-            type = self.pkformat % type
-        return type
+            thistype = self.pkformat % thistype
+            
+        return thistype
 
         
     def create_db(self):
@@ -436,9 +436,13 @@ class Engine():
         # Remove any quotes already surrounding the string
         if strvalue.lower() in nulls:
             return "null"
-        elif datatype in ("int", "bool"):
+        elif datatype in ("int", "bigint", "bool"):
             if strvalue:
-                return int(strvalue.split('.')[0])
+                intvalue = strvalue.split('.')[0]
+                if intvalue:
+                    return int(intvalue)
+                else:
+                    return "null"
             else:
                 return 0
         elif datatype in ("double", "decimal"):

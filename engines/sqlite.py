@@ -7,12 +7,15 @@ class engine(Engine):
     """Engine instance for SQLite."""
     name = "SQLite"
     abbreviation = "s"
-    datatypes = ["INTEGER",
-                 "INTEGER",
-                 "REAL",
-                 "REAL",
-                 "TEXT",
-                 "INTEGER"]
+    datatypes = {
+                 "auto": "INTEGER",
+                 "int": "INTEGER",
+                 "bigint": "INTEGER",
+                 "double": "REAL",
+                 "decimal": "REAL",
+                 "char": "TEXT",
+                 "bool": "INTEGER",
+                 }
     required_opts = [["file", 
                       "Enter the filename of your SQLite database: ",
                       "sqlite.db",
