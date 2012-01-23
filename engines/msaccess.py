@@ -28,9 +28,12 @@ class engine(Engine):
         if "NUMERIC" in converted:
             converted = "NUMERIC"
         elif "VARCHAR" in converted:
-            length = int(converted.split('(')[1].split(')')[0].split(',')[0])
-            if length > 255:
-                converted = "TEXT"
+            try:
+                length = int(converted.split('(')[1].split(')')[0].split(',')[0])
+                if length > 255:
+                    converted = "TEXT"
+            except:
+                pass
         return converted
         
     def create_db(self):
