@@ -46,6 +46,9 @@ for module in MODULE_LIST:
                 errors.append((key, module.__name__, e))
 
 print('')
-print("Engine, Dataset, Error")
-for error in errors:
-    print(error)
+if errors:
+    print("Engine, Dataset, Error")
+    for error in errors:
+        print(error)
+else:
+    print("All tests passed")
