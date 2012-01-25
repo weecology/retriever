@@ -1,12 +1,12 @@
 """Database Toolkit Tests
 
-This module, when run, runs all unit tests from all DBTK scripts referenced in
-dbtk_wizard.py, for each engine in ALL_ENGINES from dbtk_engines.py. In other
-words, it runs tests for each possible combination of database platform and
-script.
+This module, when run, runs all unit tests from all Retriever scripts in
+the /scripts folder (except for those listed in IGNORE), for each engine in
+ENGINE_LIST() from __init__.py. In other words, it runs tests for each possible
+combination of database platform and script. 
 
-The tests generally run the script, import the resulting data, and check the
-MD5 checksum against a known static value.
+The tests generally run the script, import the resulting data, and checks to
+see if there are any errors. It does not check the values in the database.
 
 """
 
@@ -45,5 +45,7 @@ for module in MODULE_LIST:
                 print "ERROR."
                 errors.append((key, module.__name__, e))
 
+print('')
+print("Engine, Dataset, Error")
 for error in errors:
-    print error
+    print(error)
