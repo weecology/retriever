@@ -48,4 +48,4 @@ table: plots, http://wiki.ecologicaldata.org/sites/default/files/portal_plots.tx
 *column: PlotID, pk-auto
 *column: PlotTypeAlphaCode, char, 2
 *column: PlotTypeNumCode, int
-*column: PlotTypeDescript, char, 3
+*column: PlotTypeDescript, char, 30
