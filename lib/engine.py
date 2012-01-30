@@ -437,6 +437,7 @@ class Engine():
     def format_insert_value(self, value, datatype):
         """Formats a value for an insert statement, for example by surrounding
         it in single quotes."""
+        datatype = datatype.split('-')[-1]
         strvalue = str(value).strip()
         quotes = ["'", '"']
         if len(strvalue) > 0 and strvalue[0] == strvalue[-1] and strvalue[0] in quotes:
