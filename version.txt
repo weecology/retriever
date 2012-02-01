@@ -1,4 +1,4 @@
-v1.1
+v1.2
 EA_clark2006.script,e3ab3c5fb28751b6d732e36087838723
 EA_ramesh2010.script,88caeb4bd3c751fbd76b77d258f60c51
 EA_mcglinn2010.script,3740fca7ef213eac940c0dc1d65a8dc4
