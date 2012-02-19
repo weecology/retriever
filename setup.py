@@ -33,6 +33,7 @@ excludes = [
             'pyreadline',
             'doctest',
             'optparse',
+            'getopt',
             'pickle',
             'calendar',
             'pdb',

@@ -12,6 +12,7 @@ class Script:
                  tables=dict(), ref="", public=True, addendum=None, **kwargs):
         self.name = name
         self.shortname = shortname
+        self.filename = __name__
         self.description = description
         self.urls = urls
         self.tables = tables

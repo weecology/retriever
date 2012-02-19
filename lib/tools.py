@@ -9,7 +9,6 @@ import os
 import sys
 import warnings
 import unittest
-import getopt
 from decimal import Decimal
 from hashlib import md5
 from retriever.lib.models import *
@@ -132,37 +131,72 @@ class ScriptTest(unittest.TestCase):
                 self.assertEqual(sum, checksum)
                 
                 
-def get_opts():
+def name_matches(scripts, arg):
+    return [script for script in scripts 
+            if arg.lower() in
+            (script.shortname.lower(), script.name.lower(), script.filename.lower())
+            or arg.lower() in [tag.strip().lower() for tagset in script.tags for tag in tagset.split('>')]
+            or arg.lower() == 'all'
+            ]
+                
+                
+def get_opts(scripts):
     """Checks for command line arguments"""
     optsdict = dict()
-    #
-    try:
-        opts, args = getopt.getopt(sys.argv[1:], "e:u:p:hod", ["engine=", "user=", "password=", "host=", "port=", "database="])        
-        for opt, arg in opts:            
-            if opt in ("-e", "--engine"):      
-                optsdict["engine"] = arg                            
-            if opt in ("-u", "--user"):      
-                optsdict["username"] = arg                            
-            elif opt in ("-p", "--password"):     
-                optsdict["password"] = arg
-            elif opt in ("-h", "--host"):                 
-                if arg == "":
-                    optsdict["hostname"] = "default"
-                else:
-                    optsdict["hostname"] = arg
-            elif opt in ("-o", "--port"): 
+    args = sys.argv[1:]
+    n = 0
+    while n < len(args):
+        opt = args[n]
+        try:
+            if opt in ("help", "--help"):
+                pass
+            elif opt in ("-s", "--script", "install"):
+                n += 1
                 try:
-                    optsdict["port"] = int(arg)
+                    matches = name_matches(scripts, args[n])
+                    if len(matches) == 1:
+                        optsdict["script"] = matches[0]
+                    elif len(matches) > 1:
+                        optsdict["script"] = matches
+                except IndexError:
+                    pass
+            elif opt in ("-e", "--engine"):
+                n += 1
+                optsdict["engine"] = args[n]
+            elif opt in ("-u", "--user"):
+                n += 1
+                optsdict["username"] = args[n]
+            elif opt in ("-p", "--password"): 
+                n += 1    
+                optsdict["password"] = args[n]
+            elif opt in ("-h", "--host"):
+                n += 1
+                optsdict["hostname"] = args[n]
+            elif opt in ("-o", "--port"): 
+                n += 1
+                try:
+                    optsdict["port"] = int(args[n])
                 except ValueError:
+                    print "Invalid port number:", args[n]
                     optsdict["port"] = "default"                 
+            elif opt in ("-f", "--file"):
+                n += 1
+                optsdict["file"] = args[n]
             elif opt in ("-d", "--database"): 
-                if arg == "":
-                    optsdict["database"] = "default"
-                else:
-                    optsdict["database"] = arg                                 
-                 
-    except getopt.GetoptError:
-        pass
+                n += 1
+                optsdict["database"] = args[n]
+            else:
+                print "Unrecognized option:", args[n]
+
+            n += 1
+
+        except IndexError:
+            print "Not enough arguments to", args[n-1]
+            pass
+    
+    for default in ["hostname", "port", "file", "database"]:
+        if not default in optsdict.keys():
+            optsdict[default] = "default"
     
     return optsdict
 
