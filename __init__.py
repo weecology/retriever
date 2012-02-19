@@ -44,7 +44,6 @@ def MODULE_LIST():
             new_module.SCRIPT.download
             modules.append(new_module)
         except:
-            raise
             print "Failed to load script: " + script_name
     
     return modules
