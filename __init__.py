@@ -12,7 +12,7 @@ from lib.compile import compile_script
 
 VERSION = 'master'
 
-REPO_URL = "https://raw.github.com/croryx/retriever/"
+REPO_URL = "https://raw.github.com/weecology/retriever/"
 MASTER_BRANCH = REPO_URL + "master/"
 REPOSITORY = REPO_URL + VERSION + "/"
 

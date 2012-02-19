@@ -114,7 +114,7 @@ class Engine():
             
             self.auto_get_datatypes(pk, source, columns, column_values)
 
-        if self.table.columns[-1][1][0][:3] == "ct-" and hasattr(self.table, "ct_names"):
+        if self.table.columns[-1][1][0][:3] == "ct-" and hasattr(self.table, "ct_names") and not self.table.ct_column in [c[0] for c in self.table.columns]:
             self.table.columns = self.table.columns[:-1] + [(self.table.ct_column, ("char", 20))] + [self.table.columns[-1]]
 
         
@@ -300,6 +300,8 @@ class Engine():
         print "Creating table " + self.table.name + "..."
         self.get_cursor()
         
+        # Try to drop the table if it exists; this may cause an exception if it
+        # doesn't exist, so ignore exceptions
         try:
             self.execute(self.drop_statement("TABLE", self.tablename()))
         except:
@@ -312,16 +314,23 @@ class Engine():
         
     def create_table_statement(self):
         """Returns a SQL statement to create a table."""
-        # Try to drop the table if it exists; this may cause an exception if it doesn't exist,
-        # so ignore exceptions
         create_stmt = "CREATE TABLE " + self.tablename() + " ("
         
-        for item in self.table.columns:
-            if (not (item[1][0] in ["skip", "combine"])):
-                create_stmt += (self.format_column_name(item[0]) + " "
-                                + self.convert_data_type(item[1]) + ", ")    
+        columns = self.get_insert_columns(join=False)
+        
+        types = []
+        for column in self.table.columns:
+            for column_name in columns:
+                if column[0] == column_name:
+                    types.append(self.convert_data_type(column[1]))                    
+        
+        if self.debug: print columns
 
-        create_stmt = create_stmt.rstrip(', ')    
+        column_strings = []
+        for c, t in zip(columns, types):
+            column_strings.append(c + ' ' + t)
+
+        create_stmt += ', '.join(column_strings)
         create_stmt += " );"
 
         return create_stmt
@@ -428,6 +437,7 @@ class Engine():
     def format_insert_value(self, value, datatype):
         """Formats a value for an insert statement, for example by surrounding
         it in single quotes."""
+        datatype = datatype.split('-')[-1]
         strvalue = str(value).strip()
         quotes = ["'", '"']
         if len(strvalue) > 0 and strvalue[0] == strvalue[-1] and strvalue[0] in quotes:
