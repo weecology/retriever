@@ -131,5 +131,5 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
         import pyodbc as dbapi
         self.get_input()
         connection_string = ("DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ="
-                             + self.opts["file"].replace("/", "//") + ";")
+                             + os.path.abspath(self.opts["file"]).replace("/", "//") + ";")
         return dbapi.connect(connection_string, autocommit = False)
