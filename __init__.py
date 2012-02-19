@@ -41,6 +41,7 @@ def MODULE_LIST():
         file, pathname, desc = imp.find_module(script_name, ["scripts"])
         try:
             new_module = imp.load_module(script_name, file, pathname, desc)
+            new_module.SCRIPT.download
             modules.append(new_module)
         except:
             raise
