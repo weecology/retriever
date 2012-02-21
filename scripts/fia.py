@@ -61,7 +61,7 @@ class main(Script):
                 this_file = open(engine.format_filename(state[0] + "_" + table + ".CSV"), "rb")
                 this_file.readline()
                 for line in this_file:
-                    prep_file.write(line)
+                    prep_file.write(line.replace('"', ''))
             prep_file.close()
             engine.auto_create_table(Table(table), filename=prep_file_name)
 
