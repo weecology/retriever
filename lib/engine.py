@@ -70,8 +70,13 @@ class Engine():
                     if self.debug: print linevalues
                     if self.debug: print cleanvalues
                     raise
-                                                                                                                                    
-                if self.table.record_id % 10 == 0 or self.table.record_id == total:
+
+                try:
+                    update_frequency = int(self.update_frequency)
+                except:
+                    update_frequency = 100
+                    
+                if self.table.record_id % update_frequency == 0 or self.table.record_id == total:
                     prompt = "Inserting rows to " + self.tablename() + ": "
                     prompt += str(self.table.record_id) + " / " + str(total)
                     sys.stdout.write(prompt + "\b" * len(prompt))
