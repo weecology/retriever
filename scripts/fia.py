@@ -51,7 +51,8 @@ class main(Script):
                                                    [state[0] + "_" + table + ".CSV"])
         
         for table in tablelist:
-            prep_file_name = "prep.csv"
+            print "Scanning data for table %s..." % table
+            prep_file_name = "%s.csv" % table
             prep_file = open(engine.format_filename(prep_file_name), "wb")
             this_file = open(engine.format_filename(stateslist[0][0] + "_" + table + ".CSV"), "rb")
             prep_file.write(this_file.readline())
@@ -59,17 +60,17 @@ class main(Script):
             for state in stateslist:
                 this_file = open(engine.format_filename(state[0] + "_" + table + ".CSV"), "rb")
                 this_file.readline()
-                for i in range(1500):
-                    prep_file.write(this_file.readline())
+                for line in this_file:
+                    prep_file.write(line)
             prep_file.close()
-            self.engine.auto_create_table(Table(table), filename=prep_file_name)
-            for state in stateslist:
-                file = state[0] + "_" + table + ".CSV"
-                try:
-                    self.engine.insert_data_from_url(file)
-                except:
-                    print state[0]
-                    raise
+            engine.auto_create_table(Table(table), filename=prep_file_name)
+
+            engine.insert_data_from_file(engine.format_filename(prep_file_name))
+            
+            try:
+                os.remove(engine.format_filename(prep_file_name))
+            except:
+                pass
         
         return engine
         
