@@ -63,8 +63,14 @@ class Engine():
                                                          self.table.cleanup.args),
                                                         types[n]) 
                                for n in range(len(linevalues))]
-                insert_stmt = self.insert_statement(cleanvalues)
-
+                try:
+                    insert_stmt = self.insert_statement(cleanvalues)
+                except:
+                    if self.debug: print types
+                    if self.debug: print linevalues
+                    if self.debug: print cleanvalues
+                    raise
+                                                                                                                                    
                 if self.table.record_id % 10 == 0 or self.table.record_id == total:
                     prompt = "Inserting rows to " + self.tablename() + ": "
                     prompt += str(self.table.record_id) + " / " + str(total)

@@ -46,7 +46,7 @@ class Script:
                 
     def checkengine(self, engine=None):
         if not engine:
-            opts = get_opts()
+            opts = get_opts([])
             engine = choose_engine(opts)
         engine.script = self            
         return engine

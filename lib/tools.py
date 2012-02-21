@@ -185,6 +185,8 @@ def get_opts(scripts):
             elif opt in ("-d", "--database"): 
                 n += 1
                 optsdict["database"] = args[n]
+            elif opt in ("--debug",):
+                optsdict["debug"] = True
             else:
                 print "Unrecognized option:", args[n]
 

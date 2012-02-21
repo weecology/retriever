@@ -31,12 +31,11 @@ def main():
             print "EcoData Retriever, version", VERSION
             print "Usage: retriever [install script]"
             print "                 [-e engine]"
-            print "                 [-u username]"
-            print "                 [-p password]"
-            print "                 [-h host]"
-            print "                 [-o port]"
+            print "                 [-u username] [-p password]"
+            print "                 [-h host] [-o port]"
             print "                 [-f filename (sqlite/ms access)]"
             print "                 [-d database (postgresql)]"
+            print "                 [--debug]"
             print "Available engines:"
             for engine in ENGINE_LIST():
                 if engine.abbreviation:
@@ -53,11 +52,13 @@ def main():
             sys.exit()
         
         engine = choose_engine(opts)
+        debug = False
+        if "debug" in opts.keys() and opts["debug"]: debug = True
         if isinstance(script, list):
             for dataset in script:
                 print "=> Installing", dataset.name
                 try:
-                    dataset.download(engine)
+                    dataset.download(engine, debug=debug)
                 except KeyboardInterrupt:
                     pass
                 except Exception as e:
