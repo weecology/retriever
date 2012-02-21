@@ -59,7 +59,7 @@ class main(Script):
             for state in stateslist:
                 this_file = open(engine.format_filename(state[0] + "_" + table + ".CSV"), "rb")
                 this_file.readline()
-                for i in range(10):
+                for i in range(1500):
                     prep_file.write(this_file.readline())
             prep_file.close()
             self.engine.auto_create_table(Table(table), filename=prep_file_name)
