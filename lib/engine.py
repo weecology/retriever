@@ -155,7 +155,8 @@ class Engine():
                        ("order", "sporder"),
                        ("references", "refs"),
                        ("long", "lon"),
-                       ("date", "record_date")
+                       ("date", "record_date"),
+                       ("?", ""),
                        ] + self.table.replace_columns
             for combo in replace:
                 if this_column == combo[0].lower():
