@@ -19,12 +19,16 @@ from retriever.app.main import launch_app
 def main():
     """This function launches the EcoData Retriever."""
     if VERSION != "master":
-        check_for_updates()
+        check_for_updates(graphical=True)
         lists = get_lists()
         launch_app(lists)
     else:
         script_list = SCRIPT_LIST()
         opts = get_opts(script_list)
+        if "update" in opts.keys() and opts["update"]:
+            check_for_updates(graphical=False)
+            script_list = SCRIPT_LIST()
+            opts = get_opts(script_list)
         try:
             script = opts["script"]
         except KeyError:
@@ -35,6 +39,7 @@ def main():
             print "                 [-h host] [-o port]"
             print "                 [-f filename (sqlite/ms access)]"
             print "                 [-d database (postgresql)]"
+            print "                 [--update]"
             print "                 [--debug]"
             print "Available engines:"
             for engine in ENGINE_LIST():

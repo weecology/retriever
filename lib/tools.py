@@ -150,6 +150,8 @@ def get_opts(scripts):
         try:
             if opt in ("help", "--help"):
                 pass
+            elif opt in ("update", "--update"):
+                optsdict["update"] = True
             elif opt in ("-s", "--script", "install"):
                 n += 1
                 try:

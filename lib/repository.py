@@ -57,30 +57,32 @@ def more_recent(latest, current):
     return (len(current_parts) > (n + 1) and current_parts[n + 1] == "rc")
 
 
-def check_for_updates():
+def check_for_updates(graphical=False):
     """Check for updates to scripts and executable."""
-    app = wx.PySimpleApp()
-    splash = Splash()
-    #splash.Show()
-    splash.SetText("\tLoading...")
+    if graphical:
+        app = wx.PySimpleApp()
+        splash = Splash()
+        #splash.Show()
+        splash.SetText("\tLoading...")
     
-    class update_progress:
-        def __init__(self, parent):
-            self.parent = parent
-        def write(self, s):
-            if s != "\n":
-                try:
-                    self.parent.SetText('\t' + s)
-                except:
-                    pass
+        class update_progress:
+            def __init__(self, parent):
+                self.parent = parent
+            def write(self, s):
+                if s != "\n":
+                    try:
+                        self.parent.SetText('\t' + s)
+                    except:
+                        pass
                 
-    sys.stdout = update_progress(splash)
+        sys.stdout = update_progress(splash)
     
     init = InitThread()
     init.run()
     
-    splash.Hide()
-    sys.stdout = sys.__stdout__
+    if graphical:
+        splash.Hide()
+        sys.stdout = sys.__stdout__
     
     
 class InitThread(Thread):
