@@ -159,9 +159,7 @@ class Engine():
                        ("?", ""),
                        ] + self.table.replace_columns
             for combo in replace:
-                if this_column == combo[0].lower():
-                    this_column = combo[1]
-                this_column = this_column.replace(combo[0], combo[1])
+                this_column = this_column.lower().replace(combo[0].lower(), combo[1].lower())
             
             
             for c in [")", "\n", "\r"]:
@@ -189,51 +187,44 @@ class Engine():
             lines = int(self.scan_lines)
             lines_to_scan = source.readlines(lines)
         else:
-            lines_to_scan = source.readlines()
+            lines_to_scan = source
+            
+        column_types = [('int',) for i in range(len(columns))]
+            
+        # Check the values for each column to determine data type
         for line in lines_to_scan:
             if line.replace("\t", "").strip():
                 values = self.extract_values(line.strip("\n"))
                 for i in range(len(columns)):
                     try:
-                        column_values[columns[i][0]].append(values[i])
-                    except IndexError:
-                        column_values[columns[i][0]].append(None)
-        
-        # Check the values for each column to determine data type
-        # Priority: decimal - float - integer - string
-        for column in columns:
-            values = column_values[column[0]]
-            try:
-                float_values = [float(value) for value in values
-                                if value]
-                try:
-                    int_values = [int(value) == value for value in float_values]
-                    if all(int_values):
-                        if max(values) > 32767:
-                            datatype = "bigint"
-                        else:
-                            datatype = "int"
-                    else:
-                        datatype = "float"
-                except:
-                    datatype = "float"
-            except:
-                # Column is a string
-                datatype = "char"
-        
-            if datatype is "char":
-                max_length = max([len(s) for s in values if s]) + 5
-                column[1] = ["char", max_length]
-            elif datatype in ["int", "bigint"]:
-                column[1] = [datatype,]
-            elif datatype is "float":
-                column[1] = ["double",]
-                for value in values:
-                    if "e" in str(value) or ("." in str(value) and
-                                             len(str(value).split(".")[1]) > 10):
-                        column[1] = ["decimal","30,20"]
-                        break
+                        value = values[i]
                         
+                        if column_types[i][0] in ('int', 'bigint'):
+                            try:
+                                value = int(value)
+                                if column_types[i] == 'int' and value > 32767:
+                                    column_types[i] = 'bigint'
+                            except:
+                                column_types[i] = ['double',]
+                        if column_types[i][0] == 'double':
+                            try:
+                                value = float(value)
+                                if "e" in str(value) or ("." in str(value) and
+                                                         len(str(value).split(".")[1]) > 10):
+                                    column_types[i] = ["decimal","30,20"]
+                            except:
+                                column_types[i] = ['char',len(str(value))]
+                        if column_types[i][0] == 'char':
+                            if len(str(value)) > column_types[i][1]:
+                                column_types[i][1] = len(str(value))
+                
+                    except IndexError:
+                        pass
+                    
+        
+        for i in range(len(columns)):
+            column = columns[i]
+            column[1] = column_types[i]
             if pk == column[0]:
                 column[1][0] = "pk-" + column[1][0]
             
