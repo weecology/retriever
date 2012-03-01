@@ -442,11 +442,13 @@ class Engine():
         it in single quotes."""
         datatype = datatype.split('-')[-1]
         strvalue = str(value).strip()
+        
+        # Remove any quotes already surrounding the string
         quotes = ["'", '"']
-        if len(strvalue) > 0 and strvalue[0] == strvalue[-1] and strvalue[0] in quotes:
+        if len(strvalue) > 1 and strvalue[0] == strvalue[-1] and strvalue[0] in quotes:
             strvalue = strvalue[1:-1]        
         nulls = ("null", "none")
-        # Remove any quotes already surrounding the string
+        
         if strvalue.lower() in nulls:
             return "null"
         elif datatype in ("int", "bigint", "bool"):
@@ -541,7 +543,7 @@ class Engine():
         for inserting bulk data from files can override this function."""
         source = self.skip_rows(self.table.header_rows, 
                                 open(filename, "r"))
-        self.table.source = source.readlines()
+        self.table.source = source
         self.add_to_table()
         source.close()
 

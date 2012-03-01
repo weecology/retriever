@@ -52,6 +52,7 @@ class engine(Engine):
 LOAD DATA LOCAL INFILE '""" + filename.replace("\\", "\\\\") + """'
 INTO TABLE """ + self.tablename() + """
 FIELDS TERMINATED BY '""" + self.table.delimiter + """'
+OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\\n'
 IGNORE """ + str(self.table.header_rows) + """ LINES
 (""" + columns + ")"
