@@ -18,8 +18,9 @@ from retriever.app.main import launch_app
 
 def main():
     """This function launches the EcoData Retriever."""
-    if VERSION != "master":
-        check_for_updates(graphical=True)
+    if len(sys.argv) == 1:
+        if VERSION != "master":
+            check_for_updates(graphical=True)
         lists = get_lists()
         launch_app(lists)
     else:
