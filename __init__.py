@@ -23,8 +23,10 @@ MODULE_SEARCH_PATHS =   [
                          ]
 DATA_SEARCH_PATHS =     [
                          "./",
-                         "raw_data",
+                         "{dataset}",
+                         "raw_data/{dataset}",
                          ]
+DATA_WRITE_PATH =       "raw_data/{dataset}"
 
 
 def MODULE_LIST():

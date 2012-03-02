@@ -5,6 +5,7 @@ import zipfile
 import urllib
 import csv
 from decimal import Decimal
+from retriever import DATA_SEARCH_PATHS, DATA_WRITE_PATH
 
 
 class Engine():
@@ -21,7 +22,6 @@ class Engine():
     pkformat = "%s PRIMARY KEY"
     script = None
     debug = False
-    RAW_DATA_LOCATION = os.path.join("raw_data", "{dataset}")
 
     
     def add_to_table(self):
@@ -96,15 +96,15 @@ class Engine():
         predicting column names, data types, delimiter, etc."""
         if url and not filename:
             filename = filename_from_url(url)
-        self.create_raw_data_dir()
         self.table = table
         
-        if url and not file_exists(self.format_filename(filename)):
+        if url and not self.find_file(filename):
             # If the file doesn't exist, download it
             self.download_file(url, filename)
+        file_path = self.find_file(filename)
 
         source = self.skip_rows(self.table.column_names_row - 1, 
-                                open(self.format_filename(filename), "rb"))
+                                open(file_path, "rb"))
         header = source.readline()
         source.close()
 
@@ -113,7 +113,7 @@ class Engine():
         
         if not self.table.columns:            
             source = self.skip_rows(self.table.header_rows, 
-                                    open(self.format_filename(filename), "rb"))
+                                    open(file_path, "rb"))
             
             if pk is None:
                 self.table.columns = [("record_id", ("pk-auto",))]
@@ -362,7 +362,7 @@ class Engine():
         archivename = self.format_filename(filename_from_url(url))
         
         for filename in filenames:
-            if file_exists(self.format_filename(filename)):
+            if self.find_file(filename):
                 # Use local copy
                 pass
             else:
@@ -425,11 +425,20 @@ class Engine():
         
     def format_column_name(self, column):
         return column
+        
+        
+    def find_file(self, filename):
+        for search_path in DATA_SEARCH_PATHS:
+            search_path = search_path.replace("{dataset}", self.script.shortname)
+            file_path = os.path.join(search_path, filename)
+            if file_exists(file_path):
+                return file_path
+        return False
 
         
     def format_data_dir(self):
         """Returns the correctly formatted raw data directory location."""
-        return self.RAW_DATA_LOCATION.replace("{dataset}", self.script.shortname)
+        return DATA_WRITE_PATH.replace("{dataset}", self.script.shortname)
 
         
     def format_filename(self, filename):
@@ -533,8 +542,11 @@ class Engine():
         archiving is not set."""
         self.download_files_from_archive(url, filenames)
         for filename in filenames:
-            fileloc = self.format_filename(filename)
-            self.insert_data_from_file(fileloc)
+            file_path = self.find_file(filename)
+            if file_path:
+                self.insert_data_from_file(file_path)
+            else:
+                raise Exception("File not found: %s" % filename)
 
                     
     def insert_data_from_file(self, filename):
@@ -552,15 +564,16 @@ class Engine():
         """Insert data from a web resource, such as a text file."""
         filename = filename_from_url(url)
         self.create_raw_data_dir()
-        if file_exists(self.format_filename(filename)):
-            # Use local copy            
-            self.insert_data_from_file(self.format_filename(filename))            
+        find = self.find_file(filename)
+        if find:
+            # Use local copy
+            self.insert_data_from_file(find)
         else:
             # Save a copy of the file locally, then load from that file
             self.create_raw_data_dir()                        
             print "Saving a copy of " + filename + "..."
             self.download_file(url, filename)
-            self.insert_data_from_file(self.format_filename(filename))
+            self.insert_data_from_file(self.find_file(filename))
 
                 
     def insert_statement(self, values):
