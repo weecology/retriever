@@ -1,3 +1,4 @@
+#retriever
 """Retriever script for CRC Handbook of Avian Bird Masses companion CD
 
 NOTE: This data is not publicly available. To download the data, you'll need

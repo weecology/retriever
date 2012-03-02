@@ -53,7 +53,7 @@ def main():
             all_tags = set(["ALL"] + 
                             [tag.strip().upper() for script in script_list for tagset in script.tags for tag in tagset.split('>')])
             print "Available datasets (%s):" % len(all_scripts)
-            print '\t', '\t'.join(sorted(list(all_scripts)))
+            print '\t', '\t'.join(sorted(list(all_scripts), key=lambda s: s.lower()))
             print '\t', '\t'.join(sorted(list(all_tags)))
             sys.exit()
         

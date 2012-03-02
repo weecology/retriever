@@ -1,4 +1,5 @@
-script_template = """from retriever.lib.templates import BasicTextTemplate
+script_template = """#retriever
+from retriever.lib.templates import BasicTextTemplate
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 
 SCRIPT = BasicTextTemplate(%s)"""
@@ -79,6 +80,11 @@ def compile_script(script_file):
                 # general script attributes
                 values[key] = '"' + value + '"'
         
+    if not 'shortname' in values.keys():
+        try:
+            values['shortname'] = values['name']
+        except:
+            pass
     values['urls'] = str(urls)
     
     def get_value(key):
