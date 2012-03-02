@@ -341,9 +341,9 @@ class Engine():
         
     def download_file(self, url, filename):
         """Downloads a file to the raw data directory."""
-        self.create_raw_data_dir()
-        path = self.format_filename(filename)
-        if (not file_exists(path)):
+        if not self.find_file(filename):
+            path = self.format_filename(filename)
+            self.create_raw_data_dir()
             print "Downloading " + filename + "..."
             file = urllib.urlopen(url) 
             local_file = open(path, 'wb')
@@ -563,7 +563,6 @@ class Engine():
     def insert_data_from_url(self, url):
         """Insert data from a web resource, such as a text file."""
         filename = filename_from_url(url)
-        self.create_raw_data_dir()
         find = self.find_file(filename)
         if find:
             # Use local copy
