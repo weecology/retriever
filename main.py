@@ -34,14 +34,10 @@ def main():
             script = opts["script"]
         except KeyError:
             print "EcoData Retriever, version", VERSION
-            print "Usage: retriever [install script]"
-            print "                 [-e engine]"
-            print "                 [-u username] [-p password]"
-            print "                 [-h host] [-o port]"
-            print "                 [-f filename (sqlite/ms access)]"
-            print "                 [-d database (postgresql)]"
-            print "                 [--update]"
-            print "                 [--debug]"
+            print "Usage: retriever [install script_name]"
+            print "                 [-e engine] [-h host] [-o port] [-u username] [-p password]"
+            print "                 [-f filename (sqlite/ms access)] [-d database (postgresql)]"
+            print "                 [--update] [--debug]"
             print "Available engines:"
             for engine in ENGINE_LIST():
                 if engine.abbreviation:
