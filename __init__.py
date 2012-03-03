@@ -33,9 +33,7 @@ def MODULE_LIST():
     """Load scripts from scripts directory and return list of modules."""
     modules = []
     
-    for search_path in MODULE_SEARCH_PATHS:
-        if not exists(search_path):
-            os.makedirs(search_path)
+    for search_path in [search_path for search_path in MODULE_SEARCH_PATHS if exists(search_path)]:
         to_compile = [file for file in os.listdir(search_path)
                       if file[-7:] == ".script" and file[0] != "_"
                       and ((not isfile(join(search_path, file[:-7] + '.py'))) or 
