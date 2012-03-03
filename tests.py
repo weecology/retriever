@@ -22,7 +22,7 @@ TEST_ENGINES = {}
 IGNORE = ["AvianBodyMass", "FIA"]
 
 for engine in ENGINE_LIST:
-    opts = get_opts(SCRIPT_LIST)
+    opts = get_opts(SCRIPT_LIST, args=[])
     opts["engine"] = engine.abbreviation
 
     try:

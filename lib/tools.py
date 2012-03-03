@@ -140,10 +140,9 @@ def name_matches(scripts, arg):
             ]
                 
                 
-def get_opts(scripts):
+def get_opts(scripts, args=sys.argv[1:]):
     """Checks for command line arguments"""
     optsdict = dict()
-    args = sys.argv[1:]
     n = 0
     while n < len(args):
         opt = args[n]
@@ -165,6 +164,9 @@ def get_opts(scripts):
             elif opt in ("-e", "--engine"):
                 n += 1
                 optsdict["engine"] = args[n]
+                for default in ["hostname", "port", "file", "database"]:
+                    if not default in optsdict.keys():
+                        optsdict[default] = "default"
             elif opt in ("-u", "--user"):
                 n += 1
                 optsdict["username"] = args[n]
@@ -198,9 +200,6 @@ def get_opts(scripts):
             print "Not enough arguments to", args[n-1]
             pass
     
-    for default in ["hostname", "port", "file", "database"]:
-        if not default in optsdict.keys():
-            optsdict[default] = "default"
     
     return optsdict
 
