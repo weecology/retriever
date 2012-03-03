@@ -190,6 +190,7 @@ class Engine():
             lines_to_scan = source
             
         column_types = [('int',) for i in range(len(columns))]
+        max_lengths = [0 for i in range(len(columns))]
             
         # Check the values for each column to determine data type
         for line in lines_to_scan:
@@ -198,6 +199,9 @@ class Engine():
                 for i in range(len(columns)):
                     try:
                         value = values[i]
+                        
+                        if len(str(value)) > max_lengths[i]:
+                            max_lengths[i] = len(str(value))
                         
                         if column_types[i][0] in ('int', 'bigint'):
                             try:
@@ -216,7 +220,7 @@ class Engine():
                                 column_types[i] = ['char',len(str(value))]
                         if column_types[i][0] == 'char':
                             if len(str(value)) > column_types[i][1]:
-                                column_types[i][1] = len(str(value))
+                                column_types[i][1] = max_lengths[i]
                 
                     except IndexError:
                         pass
@@ -256,12 +260,12 @@ class Engine():
             thistype = self.datatypes[thistype]
             
             if isinstance(thistype, tuple):
-                if len(datatype) > 1:
+                if len(datatype) > 1 and datatype[1] > 0:
                     thistype = thistype[1] + "(" + str(datatype[1]) + ")"
                 else:
                     thistype = thistype[0]
             else:
-                if len(datatype) > 1:
+                if len(datatype) > 1 and datatype[1] > 0:
                     thistype += "(" + str(datatype[1]) + ")"
         else:
             thistype = ""
