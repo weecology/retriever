@@ -6,6 +6,7 @@ import urllib
 import csv
 from decimal import Decimal
 from retriever import DATA_SEARCH_PATHS, DATA_WRITE_PATH
+from retriever.lib.cleanup import no_cleanup
 
 
 class Engine():
@@ -200,27 +201,31 @@ class Engine():
                     try:
                         value = values[i]
                         
-                        if len(str(value)) > max_lengths[i]:
-                            max_lengths[i] = len(str(value))
-                        
-                        if column_types[i][0] in ('int', 'bigint'):
-                            try:
-                                value = int(value)
-                                if column_types[i] == 'int' and value > 32767:
-                                    column_types[i] = 'bigint'
-                            except:
-                                column_types[i] = ['double',]
-                        if column_types[i][0] == 'double':
-                            try:
-                                value = float(value)
-                                if "e" in str(value) or ("." in str(value) and
-                                                         len(str(value).split(".")[1]) > 10):
-                                    column_types[i] = ["decimal","30,20"]
-                            except:
-                                column_types[i] = ['char',len(str(value))]
-                        if column_types[i][0] == 'char':
-                            if len(str(value)) > column_types[i][1]:
-                                column_types[i][1] = max_lengths[i]
+                        if self.table.cleanup.function != no_cleanup:
+                            value = self.table.cleanup.function(value, self.table.cleanup.args)
+                            
+                        if value != None:                        
+                            if len(str(value)) > max_lengths[i]:
+                                max_lengths[i] = len(str(value))
+                            
+                            if column_types[i][0] in ('int', 'bigint'):
+                                try:
+                                    value = int(value)
+                                    if column_types[i] == 'int' and value > 32767:
+                                        column_types[i] = 'bigint'
+                                except:
+                                    column_types[i] = ['double',]
+                            if column_types[i][0] == 'double':
+                                try:
+                                    value = float(value)
+                                    if "e" in str(value) or ("." in str(value) and
+                                                             len(str(value).split(".")[1]) > 10):
+                                        column_types[i] = ["decimal","30,20"]
+                                except:
+                                    column_types[i] = ['char',max_lengths[i]]
+                            if column_types[i][0] == 'char':
+                                if len(str(value)) > column_types[i][1]:
+                                    column_types[i][1] = max_lengths[i]
                 
                     except IndexError:
                         pass
