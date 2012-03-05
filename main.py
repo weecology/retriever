@@ -50,6 +50,7 @@ def main():
                             [tag.strip().upper() for script in script_list for tagset in script.tags for tag in tagset.split('>')])
             print "Available datasets (%s):" % len(all_scripts)
             print '\t', '\t'.join(sorted(list(all_scripts), key=lambda s: s.lower()))
+            print "Groups:"
             print '\t', '\t'.join(sorted(list(all_tags)))
             if len(all_scripts) == 0:
                 print "Run 'retriever update' to download the latest scripts from the repository."
