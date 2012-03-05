@@ -51,6 +51,8 @@ def main():
             print "Available datasets (%s):" % len(all_scripts)
             print '\t', '\t'.join(sorted(list(all_scripts), key=lambda s: s.lower()))
             print '\t', '\t'.join(sorted(list(all_tags)))
+            if len(all_scripts) == 0:
+                print "Run 'retriever update' to download the latest scripts from the repository."
             sys.exit()
         
         engine = choose_engine(opts)
