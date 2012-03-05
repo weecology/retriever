@@ -30,6 +30,8 @@ def main():
             check_for_updates(graphical=False)
             script_list = SCRIPT_LIST()
             opts = get_opts(script_list)
+        if "force" in opts.keys() and opts["force"]:
+            script_list = SCRIPT_LIST(force_compile=True)
         try:
             script = opts["script"]
         except KeyError:

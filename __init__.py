@@ -64,8 +64,8 @@ def MODULE_LIST(force_compile=False):
     return modules
 
 
-def SCRIPT_LIST():
-    return [module.SCRIPT for module in MODULE_LIST()]
+def SCRIPT_LIST(force_compile=False):
+    return [module.SCRIPT for module in MODULE_LIST(force_compile)]
 
 
 def ENGINE_LIST():
