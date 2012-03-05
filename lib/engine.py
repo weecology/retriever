@@ -77,9 +77,9 @@ class Engine():
                 except:
                     update_frequency = 100
                     
-                if self.table.record_id % update_frequency == 0 
+                if (self.table.record_id % update_frequency == 0 
                     or self.table.record_id == 1 
-                    or self.table.record_id == total:
+                    or self.table.record_id == total):
                     prompt = "Inserting rows to " + self.tablename() + ": "
                     prompt += str(self.table.record_id) + " / " + str(total)
                     sys.stdout.write(prompt + "\b" * len(prompt))
