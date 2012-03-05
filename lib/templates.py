@@ -95,8 +95,14 @@ class BasicTextTemplate(Script):
         else:
             if len(self.urls) == 1:
                 return '/'.join(self.urls[self.urls.keys()[0]].split('/')[0:-1]) + '/'
+                
+                
+class HtmlTableTemplate(Script):
+    """Script template for parsing data in HTML tables"""
+    pass
         
         
 TEMPLATES = [
-             ("Basic Text", BasicTextTemplate)
+             ("Basic Text", BasicTextTemplate),
+             ("HTML Table", HtmlTableTemplate),
              ]
