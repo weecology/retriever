@@ -2,11 +2,9 @@
 from retriever.lib.templates import Script
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 
-VERSION = '0.5'
-
 class main(Script):
     def __init__(self):
-        Script.__init__(self,                      
+        Script.__init__(self,
                         name="Gulf of Maine intertidal density/cover (Ecological Archives 2008)",
                         description="Peter S. Petraitis, Harrison Liu, and Erika C. Rhile. 2008. Densities and cover data for intertidal organisms in the Gulf of Maine, USA, from 2003 to 2007. Ecology 89:588.",
                         shortname="Petraitis2008",
@@ -26,7 +24,7 @@ class main(Script):
         
         self.engine.download_file(self.urls["main"], "Succession_sampling_03-07_data_original.txt")
         data_path = self.engine.format_filename("Succession_sampling_03-07_data.txt")
-        old_data = open(self.engine.format_filename("Succession_sampling_03-07_data_original.txt"), 'rb')
+        old_data = open(self.engine.find_file("Succession_sampling_03-07_data_original.txt"), 'rb')
         new_data = open(data_path, 'wb')
         
         line1 = old_data.readline()
