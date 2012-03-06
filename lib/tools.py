@@ -241,12 +241,12 @@ def final_cleanup(engine):
     # directory if empty.
     engine.final_cleanup()
     try:
-       data_dirs = os.listdir(engine.RAW_DATA_LOCATION)
-       for dir in data_dirs:
-           try:
-               os.rmdir(os.path.join(engine.RAW_DATA_LOCATION, dir))
-           except OSError:
-               pass
+        data_dirs = os.listdir(engine.RAW_DATA_LOCATION)
+        for dir in data_dirs:
+            try:
+                os.rmdir(os.path.join(engine.RAW_DATA_LOCATION, dir))
+            except OSError:
+                pass
     except OSError:
         pass
     try:
