@@ -11,11 +11,12 @@ import imp
 from lib.compile import compile_script
 
 
-VERSION = 'master'
+VERSION = 'v1.2.1'
+MASTER = True
 
 REPO_URL = "https://raw.github.com/weecology/retriever/"
 MASTER_BRANCH = REPO_URL + "master/"
-REPOSITORY = REPO_URL + VERSION + "/"
+REPOSITORY = MASTER_BRANCH if MASTER else REPO_URL + VERSION + "/"
 
 MODULE_SEARCH_PATHS =   [
                          "./",

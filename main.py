@@ -9,7 +9,7 @@ The main() function can be used for bootstrapping.
 
 import os
 import sys
-from retriever import VERSION, SCRIPT_LIST, ENGINE_LIST
+from retriever import VERSION, MASTER, SCRIPT_LIST, ENGINE_LIST
 from retriever.lib.repository import check_for_updates
 from retriever.lib.lists import Category, get_lists
 from retriever.lib.tools import choose_engine, get_opts
@@ -19,7 +19,7 @@ from retriever.app.main import launch_app
 def main():
     """This function launches the EcoData Retriever."""
     if len(sys.argv) == 1:
-        if VERSION != "master":
+        if not MASTER:
             check_for_updates(graphical=True)
         lists = get_lists()
         launch_app(lists)
