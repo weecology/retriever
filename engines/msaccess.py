@@ -17,13 +17,13 @@ class engine(Engine):
                  "char": "VARCHAR",
                  "bool": "BIT",
                  }
-    required_opts = [["file", 
+    required_opts = [("file", 
                       "Enter the filename of your Access database",
                       "access.accdb",
-                      "Access databases (*.mdb, *.accdb)|*.mdb;*.accdb"],
-                     ["table_name",
+                      "Access databases (*.mdb, *.accdb)|*.mdb;*.accdb"),
+                     ("table_name",
                       "Format of table name",
-                      "[{db} {table}]"],
+                      "[{db} {table}]"),
                       ]
                       
     def convert_data_type(self, datatype):

@@ -16,13 +16,13 @@ class engine(Engine):
                  "char": "TEXT",
                  "bool": "INTEGER",
                  }
-    required_opts = [["file", 
+    required_opts = [("file", 
                       "Enter the filename of your SQLite database",
                       "sqlite.db",
-                      ""],
-                     ["table_name",
+                      ""),
+                     ("table_name",
                       "Format of table name",
-                      "{db}_{table}"],
+                      "{db}_{table}"),
                      ]
                       
     def create_db(self):
