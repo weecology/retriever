@@ -39,9 +39,9 @@ def MODULE_LIST(force_compile=False):
                       and ((not isfile(join(search_path, file[:-7] + '.py'))) or 
                            (isfile(join(search_path, file[:-7] + '.py')) and
                             (getmtime(join(search_path, file[:-7] + '.py')) < 
-                             getmtime(join(search_path, file))) 
-                             or force_compile)
-                          )]
+                             getmtime(join(search_path, file))))
+                            or force_compile)
+                          ]
         for script in to_compile:
             script_name = '.'.join(script.split('.')[:-1])
             compile_script(join(search_path, script_name))
