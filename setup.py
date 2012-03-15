@@ -92,3 +92,5 @@ setup(name='retriever',
                             },
                 },
       )
+
+import compile
