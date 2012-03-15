@@ -151,7 +151,7 @@ def get_opts(scripts, args=sys.argv[1:]):
                 pass
             elif opt in ("update", "--update"):
                 optsdict["update"] = True
-            elif opt in ("force", "--force"):
+            elif opt in ("force", "--force", "compile", "--compile"):
                 optsdict["force"] = True
             elif opt in ("-s", "--script", "install"):
                 n += 1

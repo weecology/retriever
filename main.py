@@ -39,7 +39,7 @@ def main():
             print "Usage: retriever [install script_name]"
             print "                 [-e engine] [-h host] [-o port] [-u username] [-p password]"
             print "                 [-f filename (sqlite/ms access)] [-d database (postgresql)]"
-            print "                 [--update] [--debug]"
+            print "                 [--update] [--debug] [--compile]"
             print "Available engines:"
             for engine in ENGINE_LIST():
                 if engine.abbreviation:
