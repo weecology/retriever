@@ -17,19 +17,24 @@ class engine(Engine):
                  "bool": "BOOL",
                  }
     required_opts = [["username", 
-                      "Enter your MySQL username: ", 
+                      "Enter your MySQL username", 
                       "root"],
                      ["password", 
                       "Enter your password: ", 
                       ""],
                      ["hostname", 
-                      "Enter your MySQL host or press Enter " +
-                      "for the default (localhost): ", 
+                      "Enter your MySQL host ", 
                       "localhost"],                     
                      ["port", 
-                      "Enter your MySQL port or press Enter " +
-                      "for the default (3306): ", 
-                      3306]]
+                      "Enter your MySQL port", 
+                      3306],
+                     ["database_name",
+                      "Format of database name",
+                      "{db}"],
+                     ["table_name",
+                      "Format of table name",
+                      "{db}.{table}"],
+                     ]
                       
     def create_db_statement(self):
         createstatement = "CREATE DATABASE IF NOT EXISTS " + self.db_name

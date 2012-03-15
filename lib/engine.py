@@ -286,17 +286,19 @@ class Engine():
     def create_db(self):
         """Creates a new database based on settings supplied in Database object
         engine.db"""
-        print "Creating database " + self.db_name + "..."
-        # Create the database    
-        self.get_cursor()
-        create_stmt = self.create_db_statement()
-        if self.debug: print create_stmt
-        self.execute(create_stmt)
+        db_name = self.database_name()
+        if db_name:
+            print "Creating database " + db_name + "..."
+            # Create the database    
+            self.get_cursor()
+            create_stmt = self.create_db_statement()
+            if self.debug: print create_stmt
+            self.execute(create_stmt)
 
         
     def create_db_statement(self):
         """Returns a SQL statement to create a database."""
-        create_stmt = "CREATE DATABASE " + self.db_name
+        create_stmt = "CREATE DATABASE " + self.database_name()
         return create_stmt
 
         
@@ -311,7 +313,7 @@ class Engine():
     def create_table(self):
         """Creates a new database table based on settings supplied in Table 
         object engine.table."""
-        print "Creating table " + self.table.name + "..."
+        print "Creating table " + self.tablename() + "..."
         self.get_cursor()
         
         # Try to drop the table if it exists; this may cause an exception if it
@@ -348,6 +350,18 @@ class Engine():
         create_stmt += " );"
 
         return create_stmt
+        
+        
+    def database_name(self):
+        db_name = (self.opts["database_name"]
+                   .replace('{db}', self.db_name))
+        try:
+            db_name = db_name.replace('{table}', self.table.name)
+        except:
+            pass
+        
+        return db_name
+                
 
         
     def download_file(self, url, filename):
@@ -527,7 +541,11 @@ class Engine():
                     print opt[1]
                     self.opts[opt[0]] = getpass.getpass(" ")                
                 else:
-                    self.opts[opt[0]] = raw_input(opt[1])
+                    prompt = opt[1]
+                    if opt[2]:
+                        prompt += " or press Enter for the default, %s" % opt[2]
+                    prompt += ':'
+                    self.opts[opt[0]] = raw_input(prompt)
             if self.opts[opt[0]] in ["", "default"]:
                 self.opts[opt[0]] = opt[2]
 
@@ -629,8 +647,10 @@ class Engine():
 
         
     def tablename(self):
-        """Returns the full tablename in the format db.table."""        
-        return self.db_name + "." + self.table.name
+        """Returns the full tablename in the format db.table."""
+        return (self.opts["table_name"]
+                .replace('{db}', self.db_name)
+                .replace('{table}', self.table.name))
 
         
     def values_from_line(self, line):

@@ -17,9 +17,13 @@ class engine(Engine):
                  "bool": "INTEGER",
                  }
     required_opts = [["file", 
-                      "Enter the filename of your SQLite database: ",
+                      "Enter the filename of your SQLite database",
                       "sqlite.db",
-                      ""]]
+                      ""],
+                     ["table_name",
+                      "Format of table name",
+                      "{db}_{table}"],
+                     ]
                       
     def create_db(self):
         """SQLite doesn't create databases; each database is a file and needs
@@ -28,11 +32,6 @@ class engine(Engine):
         
     def escape_single_quotes(self, line):
         return line.replace("'", "''")
-        
-    def tablename(self):
-        """The database file is specifically connected to, so database.table 
-        is not necessary."""
-        return self.db_name + "_" + self.table.name
         
     def table_exists(self, dbname, tablename):
         try:

@@ -17,18 +17,27 @@ class engine(Engine):
                  "bool": "boolean",
                  }
     required_opts = [["username", 
-                      "Enter your PostgreSQL username: ", 
+                      "Enter your PostgreSQL username", 
                       "postgres"],
                      ["password", 
-                      "Enter your password: ", ""],
+                      "Enter your password", 
+                      ""],
                      ["hostname", 
-                      "Enter your PostgreSQL host or press Enter " +
-                      "for the default (localhost): ", "localhost"],
-                     ["port", "Enter your PostgreSQL port or press" + 
-                      "Enter for the default (5432): ", 5432],
+                      "Enter your PostgreSQL host", 
+                      "localhost"],
+                     ["port", 
+                     "Enter your PostgreSQL port", 5432],
                      ["database", 
-                      "Enter your PostgreSQL database name or press " +
-                      "Enter for the default (postgres): ", "postgres"]]            
+                      "Enter your PostgreSQL database name", 
+                      "postgres"],
+                     ["database_name",
+                      "Format of schema name",
+                      "{db}"],
+                     ["table_name",
+                      "Format of table name",
+                      "{db}.{table}"],
+                     ]
+
     def create_db_statement(self):
         """In PostgreSQL, the equivalent of a SQL database is a schema."""
         return Engine.create_db_statement(self).replace("DATABASE", "SCHEMA")

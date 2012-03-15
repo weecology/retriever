@@ -48,7 +48,8 @@ class Script:
         if not engine:
             opts = get_opts([])
             engine = choose_engine(opts)
-        engine.script = self            
+        engine.get_input()
+        engine.script = self
         return engine
         
     def exists(self, engine=None):

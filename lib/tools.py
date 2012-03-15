@@ -237,22 +237,7 @@ def checkagainstfile(lines, filename):
 
 def final_cleanup(engine):
     """Perform final cleanup operations after all scripts have run."""
-    # Delete empty directories in RAW_DATA_LOCATION, then delete that
-    # directory if empty.
-    engine.final_cleanup()
-    try:
-        data_dirs = os.listdir(engine.RAW_DATA_LOCATION)
-        for dir in data_dirs:
-            try:
-                os.rmdir(os.path.join(engine.RAW_DATA_LOCATION, dir))
-            except OSError:
-                pass
-    except OSError:
-        pass
-    try:
-        os.rmdir(engine.RAW_DATA_LOCATION)
-    except OSError:
-        pass
+    pass
         
 
 def get_saved_connection(engine_name):

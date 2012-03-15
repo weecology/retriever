@@ -18,9 +18,13 @@ class engine(Engine):
                  "bool": "BIT",
                  }
     required_opts = [["file", 
-                      "Enter the filename of your Access database: ",
+                      "Enter the filename of your Access database",
                       "access.accdb",
-                      "Access databases (*.mdb, *.accdb)|*.mdb;*.accdb"]]
+                      "Access databases (*.mdb, *.accdb)|*.mdb;*.accdb"],
+                     ["table_name",
+                      "Format of table name",
+                      "[{db} {table}]"],
+                      ]
                       
     def convert_data_type(self, datatype):
         """MS Access can't handle complex Decimal types"""
@@ -120,9 +124,6 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
         else:
             return Engine.insert_data_from_file(self, filename)    
             
-    def tablename(self):
-        return "[" + self.db_name + " " + self.table.name + "]"
-        
     def get_connection(self):
         """Gets the db connection."""
         p = platform.platform().lower()
