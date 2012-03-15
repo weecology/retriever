@@ -1,0 +1,6 @@
+*.pyc
+dist/
+raw_data/
+build/
+connections.config
+sqlite.db*
