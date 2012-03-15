@@ -93,4 +93,9 @@ setup(name='retriever',
                 },
       )
 
-import compile
+
+try:
+    from compile import compile
+    compile()
+except:
+    pass
