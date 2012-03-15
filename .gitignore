@@ -4,3 +4,4 @@ raw_data/
 build/
 connections.config
 sqlite.db*
+scripts/
