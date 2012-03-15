@@ -166,9 +166,12 @@ def get_opts(scripts, args=sys.argv[1:]):
             elif opt in ("-e", "--engine"):
                 n += 1
                 optsdict["engine"] = args[n]
-                for default in ["hostname", "port", "file", "database"]:
-                    if not default in optsdict.keys():
-                        optsdict[default] = "default"
+                engine = choose_engine(optsdict, choice=False)
+                if engine:
+                    defaults = engine.required_opts
+                for default in defaults:
+                    if not default[0] in optsdict.keys() and default[2]:
+                        optsdict[default[0]] = default[2]
             elif opt in ("-u", "--user"):
                 n += 1
                 optsdict["username"] = args[n]
@@ -193,8 +196,13 @@ def get_opts(scripts, args=sys.argv[1:]):
                 optsdict["database"] = args[n]
             elif opt in ("--debug",):
                 optsdict["debug"] = True
-            else:
-                print "Unrecognized option:", args[n]
+            elif opt[:2] == '--':
+                opt = opt[2:]
+                n += 1
+                try:
+                    optsdict[opt] = eval(args[n])
+                except:
+                    optsdict[opt] = args[n]
 
             n += 1
 
@@ -287,7 +295,7 @@ def get_default_connection():
         return None
 
 
-def choose_engine(opts):
+def choose_engine(opts, choice=True):
     """Prompts the user to select a database engine"""    
     from retriever import ENGINE_LIST
     ENGINE_LIST = ENGINE_LIST()
@@ -295,6 +303,7 @@ def choose_engine(opts):
     if "engine" in opts.keys():
         enginename = opts["engine"]    
     else:
+        if not choice: return None
         print "Choose a database engine:"
         for engine in ENGINE_LIST:
             if engine.abbreviation:
