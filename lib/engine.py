@@ -544,7 +544,7 @@ class Engine():
                     prompt = opt[1]
                     if opt[2]:
                         prompt += " or press Enter for the default, %s" % opt[2]
-                    prompt += ':'
+                    prompt += ': '
                     self.opts[opt[0]] = raw_input(prompt)
             if self.opts[opt[0]] in ["", "default"]:
                 self.opts[opt[0]] = opt[2]
