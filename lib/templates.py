@@ -53,7 +53,9 @@ class Script:
         return engine
         
     def exists(self, engine=None):
-        return all([engine.table_exists(self.shortname, key) 
+        return all([engine.table_exists(engine.database_name(shortname=self.shortname), 
+                    key.replace("{db}", self.shortname).replace("{table}", key)
+                    ) 
                     for key in self.urls.keys() if key])
                     
     def matches_terms(self, terms):

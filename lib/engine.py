@@ -352,9 +352,14 @@ class Engine():
         return create_stmt
         
         
-    def database_name(self):
-        db_name = (self.opts["database_name"]
-                   .replace('{db}', self.db_name))
+    def database_name(self, shortname=None):
+        if not shortname:
+            try:
+                shortname = self.script.shortname
+            except:
+                shortname = "{db}"
+        db_name = self.opts["database_name"]
+        db_name = db_name.replace('{db}', shortname)
         try:
             db_name = db_name.replace('{table}', self.table.name)
         except:
