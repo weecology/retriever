@@ -6,3 +6,4 @@ connections.config
 sqlite.db*
 scripts/
 retriever.egg-info
+apidocs

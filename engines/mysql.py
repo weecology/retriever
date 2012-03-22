@@ -37,7 +37,7 @@ class engine(Engine):
                      ]
                       
     def create_db_statement(self):
-        createstatement = "CREATE DATABASE IF NOT EXISTS " + self.db_name
+        createstatement = "CREATE DATABASE IF NOT EXISTS " + self.database_name()
         return createstatement
         
     def insert_data_from_file(self, filename):
