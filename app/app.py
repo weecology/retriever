@@ -7,7 +7,7 @@ from retriever.app.download_manager import DownloadManager
 from retriever.app.images import icon, cycle, download, downloaded, error
 from retriever.lib.tools import get_default_connection, get_saved_connection, choose_engine
 from retriever.lib.lists import Category
-from retriever import ENGINE_LIST, SCRIPT_LIST
+from retriever import VERSION, ENGINE_LIST, SCRIPT_LIST
 
 ENGINE_LIST = ENGINE_LIST()
 
@@ -50,7 +50,7 @@ class App(wx.App):
         except:
             pass
         
-        self.frame = Frame(None, -1, "EcoData Retriever", lists, engine)
+        self.frame = Frame(None, -1, "EcoData Retriever version %s" % VERSION, lists, engine)
         self.frame.Show()
         
         

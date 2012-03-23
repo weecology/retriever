@@ -99,7 +99,8 @@ CSV HEADER"""
         try:
             connection = self.get_connection()
             cursor = connection.cursor()
-            cursor.execute("SELECT * FROM " + dbname + "." + tablename + " LIMIT 1")
+            tablename = self.tablename(name=tablename, dbname=dbname)
+            cursor.execute("SELECT * FROM " + tablename + " LIMIT 1")
             l = len(cursor.fetchall())
             connection.close()
             return l > 0

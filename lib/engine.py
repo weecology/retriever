@@ -352,14 +352,14 @@ class Engine():
         return create_stmt
         
         
-    def database_name(self, shortname=None):
-        if not shortname:
+    def database_name(self, name=None):
+        if not name:
             try:
-                shortname = self.script.shortname
+                name = self.script.shortname
             except:
-                shortname = "{db}"
+                name = "{db}"
         db_name = self.opts["database_name"]
-        db_name = db_name.replace('{db}', shortname)
+        db_name = db_name.replace('{db}', name)
         try:
             db_name = db_name.replace('{table}', self.table.name)
         except:
@@ -432,6 +432,15 @@ class Engine():
         self.cursor.execute(statement)
         if commit:
             self.connection.commit()
+            
+
+    def exists(self, script):            
+        return all([self.table_exists(
+                    script.shortname,
+                    key
+                    )
+                    for key in script.urls.keys() if key])
+
 
         
     def extract_values(self, line):
@@ -651,11 +660,15 @@ class Engine():
         return False
 
         
-    def tablename(self):
+    def tablename(self, name=None, dbname=None):
         """Returns the full tablename in the format db.table."""
+        if not name:
+            name = self.table.name
+        if not dbname:
+            dbname = self.script.shortname
         return (self.opts["table_name"]
-                .replace('{db}', self.db_name)
-                .replace('{table}', self.table.name))
+                .replace('{db}', dbname)
+                .replace('{table}', name))
 
         
     def values_from_line(self, line):
