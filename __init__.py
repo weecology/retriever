@@ -75,6 +75,7 @@ def ENGINE_LIST():
                "postgres",
                "sqlite",
                "msaccess",
+               "csv"
                ]
 
     ENGINE_MODULE_LIST = [
