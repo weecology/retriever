@@ -20,7 +20,11 @@ executable_name = "retriever"
 def download_from_repository(filepath, newpath, repo=REPOSITORY):
     """Downloads the latest version of a file from the repository."""
     try:
-        urllib.urlretrieve(repo + filepath, newpath)
+        filename = filepath.split('/')[-1]
+        def reporthook(a,b,c): 
+            print "%3.1f-%s" % (min(100, float(a * b) / c * 100), filename),
+            sys.stdout.flush()
+        urllib.urlretrieve(repo + filepath, newpath, reporthook=reporthook)
     except:
         raise
         pass
@@ -61,6 +65,8 @@ def check_for_updates(graphical=False):
                         self.parent.SetText('\t' + s)
                     except:
                         pass
+            def flush(self):
+                pass
                 
         sys.stdout = update_progress(splash)
     

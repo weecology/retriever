@@ -63,6 +63,9 @@ class DownloadManager:
             self.worker.start()
             self.timer.Start(10)
     
+    def flush(self):
+        pass
+    
     def write(self, worker):
         s = worker.output[0]
         
