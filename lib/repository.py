@@ -20,22 +20,9 @@ executable_name = "retriever"
 def download_from_repository(filepath, newpath, repo=REPOSITORY):
     """Downloads the latest version of a file from the repository."""
     try:
-        filename = filepath.split('/')[-1]
-        latest = urllib.urlopen(repo + filepath, 'rb')
-        file_size = latest.info()['Content-Length']
-        new_file = open(os.path.join(os.getcwd(), newpath), 'wb')
-        total_dl = 0
-        while not abort:
-            data = latest.read(1024)
-            total_dl += len(data)
-            if file_size > 102400:
-                print str(int(total_dl / float(file_size) * 100)) + "-" + filename
-            if len(data) == 0:
-                break
-            new_file.write(data)
-        new_file.close()
-        latest.close()
+        urllib.urlretrieve(repo + filepath, newpath)
     except:
+        raise
         pass
 
 
@@ -182,7 +169,8 @@ class InitThread(Thread):
                             os.remove(os.path.join("scripts", script_name))
                             download_from_repository("scripts/" + script_name,
                                                      "scripts/" + script_name)
-                        except:
+                        except Exception as e:
+                            print e
                             pass
         except:
             raise
