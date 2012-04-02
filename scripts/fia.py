@@ -47,22 +47,29 @@ class main(Script):
         tablelist = ["SURVEY", "PLOT", "COND", "SUBPLOT", "SUBP_COND", "TREE", "SEEDLING"]
         
         for table in tablelist:
-            for state in stateslist:
-                engine.download_files_from_archive(self.urls["main"] + state[0] + "_" + table + ".ZIP", 
-                                                   [state[0] + "_" + table + ".CSV"])
+            for state, year in stateslist:
+                engine.download_files_from_archive(self.urls["main"] + state + "_" + table + ".ZIP", 
+                                                   [state + "_" + table + ".CSV"])
         
         for table in tablelist:
             print "Scanning data for table %s..." % table
             prep_file_name = "%s.csv" % table
             prep_file = open(engine.format_filename(prep_file_name), "wb")
             this_file = open(engine.format_filename(stateslist[0][0] + "_" + table + ".CSV"), "rb")
-            prep_file.write(this_file.readline())
+            col_names = this_file.readline()
+            prep_file.write(col_names)
+            column_names = [col.strip('"') for col in col_names.split(',')]
+            year_column = column_names.index("INVYR")            
             this_file.close()
-            for state in stateslist:
-                this_file = open(engine.format_filename(state[0] + "_" + table + ".CSV"), "rb")
+            
+            for state, year in stateslist:
+                this_file = open(engine.format_filename(state + "_" + table + ".CSV"), "rb")
                 this_file.readline()
                 for line in this_file:
-                    prep_file.write(line.replace('"', ''))
+                    values = line.split(',')
+                    this_year = values[year_column]
+                    if int(this_year) >= year:
+                        prep_file.write(line.replace('"', ''))
             prep_file.close()
             engine.auto_create_table(Table(table), filename=prep_file_name)
 
