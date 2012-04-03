@@ -212,15 +212,15 @@ class main(Script):
                     print "Inserting data from " + state + "..."
                     try:
                         engine.table.cleanup = Cleanup()
-                        engine.insert_data_from_archive(self.urls["counts"] + "C" + shortstate + ".exe", 
-                                                        ["C" + shortstate + ".csv"])
+                        engine.insert_data_from_archive(self.urls["counts"] + shortstate + ".exe", 
+                                                        [shortstate + ".csv"])
                     except:               
                         print "Failed bulk insert on " + state + ", inserting manually."
                         engine.connection.rollback()
                         engine.table.cleanup = Cleanup(correct_invalid_value,
                                                        nulls=['*'])
-                        engine.insert_data_from_archive(self.urls["counts"] + "C" + shortstate + ".exe", 
-                                                        ["C" + shortstate + ".csv"])
+                        engine.insert_data_from_archive(self.urls["counts"] + shortstate + ".exe", 
+                                                        [shortstate + ".csv"])
                             
                 except:
                     print "There was an error in " + state + "."
