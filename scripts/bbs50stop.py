@@ -89,7 +89,7 @@ class main(Script):
             table.columns=[("species_id"            ,   ("pk-auto",)        ),
                            ("AOU"                   ,   ("int",)            ),
                            ("genus"                 ,   ("char",30)         ),
-                           ("species"               ,   ("char",30)         ),
+                           ("species"               ,   ("char",50)         ),
                            ("subspecies"            ,   ("char",30)         ),
                            ("id_to_species"         ,   ("bool",)           )]
             
