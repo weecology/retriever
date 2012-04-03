@@ -230,7 +230,7 @@ class main(Script):
                     try:
                         engine.table.cleanup = Cleanup()
                         engine.insert_data_from_archive(self.urls["counts"] + 
-                                                        "CFifty" + part + ".exe", 
+                                                        "Fifty" + part + ".exe", 
                                                         ["fifty" + part + ".csv"])
                     except:               
                         print "Failed bulk insert on " + part + ", inserting manually."
@@ -238,7 +238,7 @@ class main(Script):
                         engine.table.cleanup = Cleanup(correct_invalid_value,
                                                        nulls=['*'])
                         engine.insert_data_from_archive(self.urls["counts"] + 
-                                                        "CFifty" + part + ".exe", 
+                                                        "Fifty" + part + ".exe", 
                                                         ["fifty" + part + ".csv"])
                             
                 except:
