@@ -98,30 +98,24 @@ class main(Script):
             
             engine.download_file(self.urls["species"], "SpeciesList.txt")
             species_list = open(engine.format_filename("SpeciesList.txt"), "rb")
-            for n in range(7):
+            for n in range(8):
                 species_list.readline()
             
             rows = []
             for line in species_list:
-                if line and len(line) > 115:
-                    latin_name = line[115:].split()
+                if line and len(line) > 273:
+                    latin_name = line[273:].split()
                     if len(latin_name) < 2:
                         # If there's no species given, add "None" value
                         latin_name.append("None")
-                    if '.' in latin_name[1]:
-                        # If species is abbreviated, get it from previous row
-                        latin_name[1] = rows[-1].split(',')[2]
                     subspecies = ' '.join(latin_name[2:]) if len(latin_name) > 2 else "None"                    
                     id_to_species = "1" if latin_name[1] != "None" else "0"
-                    if latin_name[1] == "sp" or subspecies == "sp":
-                        subspecies = ""
+                    if latin_name[1] == "sp.":
                         latin_name[1] = "None"
                         id_to_species = "0"
-                    if ("X" in latin_name[1] or subspecies.lower() == "X" 
-                        or "/" in subspecies or "or" in subspecies.lower() 
-                        or "x" in subspecies.lower()):
-                        # Hybrid species
-                        latin_name[1] = "None"
+                    if ("x" in latin_name or "/" in latin_name or "or" in latin_name):
+                        # Hybrid species or only identified to a group of species
+                        latin_name[1] = ' '.join(latin_name[1:])
                         subspecies = "None"
                         id_to_species = "0"
                     
