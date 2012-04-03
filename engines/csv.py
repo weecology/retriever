@@ -3,14 +3,17 @@ import platform
 from retriever.lib.models import Engine, no_cleanup
 
 
-class DummyCursor:
-    pass
-
 class DummyConnection:
     def cursor(self):
         pass
     def commit(self):
         pass
+    def rollback(self):
+        pass
+
+class DummyCursor(DummyConnection):
+    pass
+
 
 class engine(Engine):
     """Engine instance for writing data to a CSV file."""
