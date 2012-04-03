@@ -90,7 +90,7 @@ class main(Script):
                            ("AOU"                   ,   ("int",)            ),
                            ("genus"                 ,   ("char",30)         ),
                            ("species"               ,   ("char",30)         ),
-                           ("subspecies"            ,   ("char",30)         ),
+                           ("subspecies"            ,   ("char",50)         ),
                            ("id_to_species"         ,   ("bool",)           )]
             
             engine.table = table
