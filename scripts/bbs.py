@@ -113,7 +113,8 @@ class main(Script):
                     if latin_name[1] == "sp.":
                         latin_name[1] = "None"
                         id_to_species = "0"
-                    if ("x" in latin_name or "/" in latin_name or "or" in latin_name):
+                    if ("x" in latin_name or "/" in latin_name
+                        or "/" in subspecies or "or" in latin_name):
                         # Hybrid species or only identified to a group of species
                         latin_name[1] = ' '.join(latin_name[1:])
                         subspecies = "None"
