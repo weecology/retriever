@@ -69,7 +69,7 @@ class main(Script):
                     values = line.split(',')
                     this_year = values[year_column]
                     if int(this_year) >= year:
-                        prep_file.write(line.replace('"', ''))
+                        prep_file.write(line)
             prep_file.close()
             engine.auto_create_table(Table(table), filename=prep_file_name)
 
