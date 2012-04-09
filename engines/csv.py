@@ -55,6 +55,15 @@ class engine(Engine):
         return v
         
     def insert_statement(self, values):
+        if not hasattr(self, 'auto_column_number'):
+            self.auto_column_number = 1
+        offset = 0
+        for i in range(len(self.table.columns)):
+            column = self.table.columns[i]
+            if 'auto' in column[1][0]:
+                values = values[:i+offset] + [self.auto_column_number] + values[i+offset:]
+                self.auto_column_number += 1
+                offset += 1
         return ','.join([str(value) for value in values])
         
     def table_exists(self, dbname, tablename):
