@@ -26,12 +26,20 @@ def main():
     else:
         script_list = SCRIPT_LIST()
         opts = get_opts(script_list)
+        
         if "update" in opts.keys() and opts["update"]:
             check_for_updates(graphical=False)
             script_list = SCRIPT_LIST()
             opts = get_opts(script_list)
+            
         if "force" in opts.keys() and opts["force"]:
             script_list = SCRIPT_LIST(force_compile=True)
+            
+        if "gui" in opts.keys():
+            lists = get_lists()
+            launch_app(lists)
+            return            
+            
         try:
             script = opts["script"]
         except KeyError:
