@@ -5,6 +5,7 @@ scripts.
 
 """
 
+import difflib
 import os
 import sys
 import warnings
@@ -132,12 +133,16 @@ class ScriptTest(unittest.TestCase):
                 
                 
 def name_matches(scripts, arg):
-    return [script for script in scripts 
-            if arg.lower() in
-            (script.shortname.lower(), script.name.lower(), script.filename.lower())
-            or arg.lower() in [tag.strip().lower() for tagset in script.tags for tag in tagset.split('>')]
-            or arg.lower() == 'all'
-            ]
+    matches = []
+    for script in scripts:
+        if arg.lower() == script.shortname.lower(): return [script]
+        max_ratio = max([difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in (script.shortname.lower(), script.name.lower(), script.filename.lower())] + 
+                        [difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in [tag.strip().lower() for tagset in script.tags for tag in tagset]]
+                        )
+        if arg.lower() == 'all': max_ratio = 1.0
+        matches.append((script, max_ratio))
+    matches = [m for m in sorted(matches, key=lambda m: m[1], reverse=True) if m[1] > 0.6]
+    return [match[0] for match in matches]
                 
                 
 def get_opts(scripts, args=sys.argv[1:]):
