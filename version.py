@@ -15,7 +15,7 @@ for module in modules:
         m = md5()
         m.update(''.join(getsourcelines(module)[0]))
         scripts.append(','.join([module.__name__ + ('.script' 
-                                                    if os.path.isfile(module.__file__[:-4] + '.script')
+                                                    if os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.script')
                                                     else '.py'), 
                                  m.hexdigest()]))
 
