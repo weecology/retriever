@@ -4,11 +4,11 @@
 sudo rm src -rf
 mkdir src
 mkdir src/retriever
-cp app src
-cp lib src 
-cp engines src 
-cp __init__.py src 
-cp main.py src 
+cp -r app/ src/
+cp -r lib/ src/
+cp -r engines/ src/
+cp __init__.py src
+cp main.py src
 cp setup.py src
 
 sudo python setup.py install
