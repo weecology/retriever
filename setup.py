@@ -7,7 +7,7 @@ p = platform.platform().lower()
 extra_includes = []
 if "darwin" in p:
     import py2app
-    extra_includes = ['wx', 'MySQLdb', 'psycopg2']
+    extra_includes = []
 elif "win" in p:
     import py2exe
     extra_includes = ['pyodbc', 'inspect']
@@ -28,6 +28,10 @@ packages = [
             
 includes = [
             'xlrd',
+            'wx',
+            'MySQLdb',
+            'psycopg2',
+            'sqlite3',
             ] + extra_includes
             
 excludes = [
