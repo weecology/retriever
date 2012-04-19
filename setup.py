@@ -27,6 +27,7 @@ packages = [
             ]
             
 includes = [
+            'xlrd',
             ] + extra_includes
             
 excludes = [
