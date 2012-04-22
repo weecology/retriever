@@ -206,7 +206,7 @@ class Engine():
                         if self.table.cleanup.function != no_cleanup:
                             value = self.table.cleanup.function(value, self.table.cleanup.args)
                             
-                        if value != None:                        
+                        if value != None and value != '':
                             if len(str(value)) > max_lengths[i]:
                                 max_lengths[i] = len(str(value))
                             
@@ -507,12 +507,12 @@ class Engine():
                 else:
                     return "null"
             else:
-                return 0
+                return "null"
         elif datatype in ("double", "decimal"):
             if strvalue:
                 return strvalue
             else:
-                return 0
+                return "null"
         elif datatype=="char":
             if strvalue.lower() in nulls:
                 return "null"
