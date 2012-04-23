@@ -10,12 +10,13 @@ class engine(Engine):
     datatypes = {
                  "auto": "INT(5) NOT NULL AUTO_INCREMENT",
                  "int": "INT",
-                 "bigint": "INT",
+                 "bigint": "BIGINT",
                  "double": "DOUBLE",
                  "decimal": "DECIMAL",
                  "char": ("TEXT", "VARCHAR"),
                  "bool": "BOOL",
                  }
+    max_int = 4294967295
     required_opts = [("username", 
                       "Enter your MySQL username", 
                       "root"),

@@ -213,8 +213,8 @@ class Engine():
                             if column_types[i][0] in ('int', 'bigint'):
                                 try:
                                     value = int(value)
-                                    if column_types[i] == 'int' and value > 32767:
-                                        column_types[i] = 'bigint'
+                                    if column_types[i][0] == 'int' and hasattr(self, 'max_int') and value > self.max_int:
+                                        column_types[i] = ['bigint',]
                                 except:
                                     column_types[i] = ['double',]
                             if column_types[i][0] == 'double':

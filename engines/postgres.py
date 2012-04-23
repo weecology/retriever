@@ -16,6 +16,7 @@ class engine(Engine):
                  "char": "varchar",
                  "bool": "boolean",
                  }
+    max_int = 2147483647
     required_opts = [("username", 
                       "Enter your PostgreSQL username", 
                       "postgres"),
