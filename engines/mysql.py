@@ -62,8 +62,11 @@ OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\\n'
 IGNORE """ + str(self.table.header_rows) + """ LINES
 (""" + columns + ")"
-            
-            self.cursor.execute(statement)
+            try:
+                self.cursor.execute(statement)
+            except Exception as e:
+                print "Failed bulk insert (%s), inserting manually" % e
+                return Engine.insert_data_from_file(self, filename)
         else:
             return Engine.insert_data_from_file(self, filename)
         
