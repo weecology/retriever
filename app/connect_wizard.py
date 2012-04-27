@@ -19,7 +19,7 @@ class ConnectWizard(wx.wizard.Wizard):
     def __init__(self, lists, engine_list, selected=None):
         wx.wizard.Wizard.__init__(self, None, -1, "Database Toolkit")
         
-        self.SetIcon(icon.GetIcon())
+        #self.SetIcon(icon.GetIcon())
         
         welcome = """<h2>Connection Wizard</h2>
         

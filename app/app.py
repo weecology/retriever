@@ -64,7 +64,7 @@ class Frame(wx.Frame):
         self.dialog = None
         self.lists = lists
         self.engine = engine
-        self.SetIcon(icon.GetIcon())
+        #self.SetIcon(icon.GetIcon())
         
         self.CreateStatusBar()        
         
