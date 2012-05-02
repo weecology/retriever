@@ -296,6 +296,8 @@ class Engine():
             try:
                 self.execute(create_stmt)
             except Exception as e:
+                try: self.connection.rollback()
+                except: pass
                 print "Couldn't create database (%s). Trying to continue anyway." % e
 
         
@@ -331,6 +333,8 @@ class Engine():
         try:
             self.execute(create_stmt) 
         except Exception as e:
+            try: self.connection.rollback()
+            except: pass
             print "Couldn't create table (%s). Trying to continue anyway." % e
 
         
