@@ -293,7 +293,10 @@ class Engine():
             self.get_cursor()
             create_stmt = self.create_db_statement()
             if self.debug: print create_stmt
-            self.execute(create_stmt)
+            try:
+                self.execute(create_stmt)
+            except Exception as e:
+                print "Couldn't create database (%s). Trying to continue anyway." % e
 
         
     def create_db_statement(self):
@@ -325,7 +328,10 @@ class Engine():
         
         create_stmt = self.create_table_statement()
         if self.debug: print create_stmt
-        self.execute(create_stmt)        
+        try:
+            self.execute(create_stmt) 
+        except Exception as e:
+            print "Couldn't create table (%s). Trying to continue anyway." % e
 
         
     def create_table_statement(self):
