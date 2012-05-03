@@ -10,7 +10,9 @@ if "darwin" in p:
     extra_includes = []
 elif "win" in p:
     import py2exe
+    import sys
     extra_includes = ['pyodbc', 'inspect']
+    sys.path.append("C:\\Windows\\winsxs\\x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_9.0.21022.8_none_bcb86ed6ac711f91")
 from __init__ import VERSION
 
 
