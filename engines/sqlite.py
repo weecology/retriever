@@ -34,16 +34,13 @@ class engine(Engine):
         return line.replace("'", "''")
         
     def table_exists(self, dbname, tablename):
-        try:
-            connection = self.get_connection()
-            cursor = connection.cursor()
-            tablename = self.tablename(name=tablename, dbname=dbname)
-            cursor.execute("SELECT * FROM " + tablename + " LIMIT 1")
-            l = len(cursor.fetchall())
-            connection.close()
-            return l > 0
-        except:
-            return False
+        if not hasattr(self, 'existing_table_names'):
+            self.get_cursor()
+            self.cursor.execute("SELECT name FROM sqlite_master;")
+            self.existing_table_names = set()
+            for line in self.cursor:
+                self.existing_table_names.add(line[0].lower())
+        return self.tablename(name=tablename, dbname=dbname).lower() in self.existing_table_names
         
     def get_connection(self):
         """Gets the db connection."""
