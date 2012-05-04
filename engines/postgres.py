@@ -97,16 +97,13 @@ CSV HEADER"""
         return statement
             
     def table_exists(self, dbname, tablename):
-        try:
-            connection = self.get_connection()
-            cursor = connection.cursor()
-            tablename = self.tablename(name=tablename, dbname=dbname)
-            cursor.execute("SELECT * FROM " + tablename + " LIMIT 1")
-            l = len(cursor.fetchall())
-            connection.close()
-            return l > 0
-        except:
-            return False
+        if not hasattr(self, 'existing_table_names'):
+            self.get_cursor()
+            self.cursor.execute("SELECT schemaname, tablename FROM pg_tables WHERE schemaname NOT LIKE 'pg_%';")
+            self.existing_table_names = set()
+            for schema, table in self.cursor:
+                self.existing_table_names.add((schema.lower(), table.lower()))
+        return (dbname.lower(), tablename.lower()) in self.existing_table_names
             
     def format_insert_value(self, value, datatype):
         if datatype == "bool":
