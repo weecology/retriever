@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# create src folder and checkout from SVN
+# create src folder
 sudo rm src -rf
 mkdir src
 mkdir src/retriever
