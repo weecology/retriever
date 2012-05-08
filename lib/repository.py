@@ -4,7 +4,6 @@ import os
 import sys
 import urllib
 import imp
-import wx
 from hashlib import md5
 from inspect import getsourcelines
 from threading import Thread
@@ -51,6 +50,7 @@ def more_recent(latest, current):
 def check_for_updates(graphical=False):
     """Check for updates to scripts and executable."""
     if graphical:
+        import wx
         app = wx.PySimpleApp()
         splash = Splash()
         #splash.Show()
@@ -106,31 +106,33 @@ class InitThread(Thread):
                 latest = version_file.readline().strip('\n')
                     
                 if more_recent(latest, VERSION):
-                        msg = "You're running version " + VERSION + "."
-                        msg += '\n\n'
-                        msg += "Version " + latest + " is available. Do you want to upgrade?"
-                        choice = wx.MessageDialog(None, msg, "Update", wx.YES_NO)
-                        if choice.ShowModal() == wx.ID_YES:
-                            print "Updating to latest version. Please wait..."
-                            try:
-                                if not "_old" in running_from:
-                                    os.rename(running_from,
-                                              '.'.join(running_from.split('.')[:-1])
-                                              + "_old." + running_from.split('.')[-1])
-                            except:
-                                pass
+                    import wx
+
+                    msg = "You're running version " + VERSION + "."
+                    msg += '\n\n'
+                    msg += "Version " + latest + " is available. Do you want to upgrade?"
+                    choice = wx.MessageDialog(None, msg, "Update", wx.YES_NO)
+                    if choice.ShowModal() == wx.ID_YES:
+                        print "Updating to latest version. Please wait..."
+                        try:
+                            if not "_old" in running_from:
+                                os.rename(running_from,
+                                          '.'.join(running_from.split('.')[:-1])
+                                          + "_old." + running_from.split('.')[-1])
+                        except:
+                            pass
                                 
-                            download_from_repository("windows/" + executable_name + ".exe",
-                                                     executable_name + ".exe",
-                                                     repo=REPO_URL + latest + "/")
+                        download_from_repository("windows/" + executable_name + ".exe",
+                                                 executable_name + ".exe",
+                                                 repo=REPO_URL + latest + "/")
 
-                            sys.stdout = sys.__stdout__
+                        sys.stdout = sys.__stdout__
 
-                            wx.MessageBox("Update complete. The program will now restart.")
+                        wx.MessageBox("Update complete. The program will now restart.")
 
-                            os.execv(executable_name + ".exe", sys.argv)
+                        os.execv(executable_name + ".exe", sys.argv)
                             
-                            sys.exit()
+                        sys.exit()
 
                 version_file.close()
 

@@ -13,7 +13,6 @@ from retriever import VERSION, MASTER, SCRIPT_LIST, ENGINE_LIST
 from retriever.lib.repository import check_for_updates
 from retriever.lib.lists import Category, get_lists
 from retriever.lib.tools import choose_engine, get_opts
-from retriever.app.main import launch_app
 
 
 def main():
@@ -22,6 +21,8 @@ def main():
         if not MASTER:
             check_for_updates(graphical=True)
         lists = get_lists()
+        
+        from retriever.app.main import launch_app
         launch_app(lists)
     else:
         script_list = SCRIPT_LIST()
@@ -37,6 +38,8 @@ def main():
             
         if "gui" in opts.keys():
             lists = get_lists()
+
+            from retriever.app.main import launch_app
             launch_app(lists)
             return            
             
