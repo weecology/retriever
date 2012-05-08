@@ -85,7 +85,10 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
         
     def get_connection(self):
         """Gets the db connection."""
-        import MySQLdb as dbapi
+        try:
+            import pymysql as dbapi
+        except ImportError:
+            import MySQLdb as dbapi
         self.get_input()
         return dbapi.connect(host = self.opts["hostname"],
                              port = int(self.opts["port"]),
