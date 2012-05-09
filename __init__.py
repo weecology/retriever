@@ -11,8 +11,8 @@ import imp
 from lib.compile import compile_script
 
 
-VERSION = 'v1.2.1'
-MASTER = True
+VERSION = 'v1.4'
+MASTER = False
 
 REPO_URL = "https://raw.github.com/weecology/retriever/"
 MASTER_BRANCH = REPO_URL + "master/"
