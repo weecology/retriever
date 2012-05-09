@@ -27,11 +27,21 @@ packages = [
             'retriever.app',
             'retriever',
             ]
-            
+
+try:
+    import pymysql
+    mysql_module = 'pymysql'
+except ImportError:
+    try:
+        import MySQLdb
+        mysql_module = 'MySQLdb'
+    except ImportError:
+        mysql_module = 'pymysql'
+
 includes = [
             'xlrd',
             'wx',
-            'MySQLdb',
+            mysql_module,
             'psycopg2',
             'sqlite3',
             ] + extra_includes
