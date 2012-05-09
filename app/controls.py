@@ -2,6 +2,7 @@
 
 import wx
 import wx.lib.wxpTag
+import platform
 from retriever import VERSION, MASTER
 
         
@@ -12,7 +13,8 @@ class AboutDialog(wx.Dialog):
 <tr><td align="center"><h1>
 EcoData Retriever
 </h1><h2>
-version """ + VERSION + (" (master branch)" if MASTER else "") +  """
+version """ + VERSION + (" (master branch)" if MASTER else "") +  """<br/>
+running on Python %s (%s)""" % (platform.python_version(), platform.architecture()[0]) + """
 </h2></td></tr></table>
 <p>The EcoData Retriever is designed to make it easy to download ecological data and set it
 up on your own local database system.
