@@ -9,6 +9,10 @@ The main() function can be used for bootstrapping.
 
 import os
 import sys
+if hasattr(sys, 'setdefaultencoding'):
+    sys.setdefaultencoding('latin-1')
+else:
+    pass
 from retriever import VERSION, MASTER, SCRIPT_LIST, ENGINE_LIST
 from retriever.lib.repository import check_for_updates
 from retriever.lib.lists import Category, get_lists
