@@ -9,6 +9,7 @@ The main() function can be used for bootstrapping.
 
 import os
 import sys
+reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding('latin-1')
 else:
