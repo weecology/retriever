@@ -153,17 +153,18 @@ class ConnectPage(TitledPage):
                     self.fieldset[opt[0]].AddMany([label, 
                                                    self.option[opt[0]]])
                     if opt[0] == "file":
+                        file_opt = opt
                         def open_file_dialog(evt):
                             filter = ""
-                            if opt[3]:
-                                filter = opt[3] + "|"
+                            if file_opt[3]:
+                                filter = file_opt[3] + "|"
                             filter += "All files (*.*)|*.*"                                    
                             dialog = wx.FileDialog(None, style = wx.OPEN,
                                                    wildcard = filter)
                             if dialog.ShowModal() == wx.ID_OK:
-                                self.option[opt[0]].SetValue(dialog.GetPath())
+                                self.option[file_opt[0]].SetValue(dialog.GetPath())
                         self.browse = wx.Button(self, -1, "Choose...")
-                        self.fieldset[opt[0]].Add(self.browse)
+                        self.fieldset[file_opt[0]].Add(self.browse)
                         self.browse.Bind(wx.EVT_BUTTON, open_file_dialog)                        
                     self.fieldset[opt[0]].Layout()
                     self.fields.Add(self.fieldset[opt[0]])
