@@ -2,5 +2,5 @@ python setup.py install
 rm -rf windows
 mkdir windows
 python setup.py py2exe
-move dist/retriever.exe windows/
+mv dist/retriever.exe windows/
 rm -rf build dist
