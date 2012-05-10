@@ -9,8 +9,10 @@ The main() function can be used for bootstrapping.
 
 import os
 import sys
+# sys removes the setdefaultencoding method at startup; reload to get it back
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
+    # set default encoding to latin-1 to avoid ascii encoding issues
     sys.setdefaultencoding('latin-1')
 else:
     pass
