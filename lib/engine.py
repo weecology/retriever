@@ -4,6 +4,7 @@ import getpass
 import zipfile
 import urllib
 import csv
+import itertools
 from decimal import Decimal
 from retriever import DATA_SEARCH_PATHS, DATA_WRITE_PATH
 from retriever.lib.cleanup import no_cleanup
@@ -30,12 +31,12 @@ class Engine():
         in engine.table.source."""
         lines = self.table.source
         self.get_cursor()
-
+        
         if self.table.columns[-1][1][0][:3] == "ct-":
             # cross-tab data
             real_lines = []
             for line in lines:
-                split_line = line.strip('\n\r\t').split(self.table.delimiter)
+                split_line = line.strip('\n\r\t ').split(self.table.delimiter)
                 begin = split_line[:len(self.table.columns) - (3 if hasattr(self.table, "ct_names") else 2)]
                 rest = split_line[len(self.table.columns) - 2:]
                 n = 0
@@ -46,17 +47,20 @@ class Engine():
                     else:
                         name = []
                     real_lines.append(self.table.delimiter.join(begin + name + [item]))
-        else:        
-            real_lines = [line for line in lines 
-                          if line.strip('\n\r\t ')]
-                          
-        total = self.table.record_id + len(real_lines)
+            real_line_length = len(real_lines)
+        else:            
+            source = (line for line in lines
+                      if line.strip('\n\r\t '))
+            real_lines, len_source = itertools.tee(source, 2)
+            real_line_length = sum(1 for _ in len_source)
+            
+        total = self.table.record_id + real_line_length
         for line in real_lines:
             line = line.strip()
             if line:
                 self.table.record_id += 1            
                 linevalues = self.values_from_line(line)
-
+                
                 types = self.get_column_datatypes()            
                 # Build insert statement with the correct # of values                
                 cleanvalues = [self.format_insert_value(self.table.cleanup.function
@@ -71,7 +75,7 @@ class Engine():
                     if self.debug: print linevalues
                     if self.debug: print cleanvalues
                     raise
-
+                
                 try:
                     update_frequency = int(self.update_frequency)
                 except:
@@ -83,7 +87,7 @@ class Engine():
                     prompt = "Inserting rows to " + self.tablename() + ": "
                     prompt += str(self.table.record_id) + " / " + str(total)
                     sys.stdout.write(prompt + "\b" * len(prompt))
-
+                
                 try:
                     self.execute(insert_stmt, commit=False)
                 except:
@@ -108,7 +112,7 @@ class Engine():
 
         source = self.skip_rows(self.table.column_names_row - 1, 
                                 open(file_path, "rb"))
-        header = source.readline()
+        header = source.next()
         source.close()
 
         if not self.table.delimiter:
@@ -136,7 +140,7 @@ class Engine():
 
                 
     def auto_get_columns(self, header):
-        """Finds the delimiter and column names from the header row."""        
+        """Finds the delimiter and column names from the header row."""
         if self.table.fixed_width:
             column_names = self.extract_values(header)
         else:
@@ -188,7 +192,11 @@ class Engine():
         # Get all values for each column
         if hasattr(self, 'scan_lines'):
             lines = int(self.scan_lines)
-            lines_to_scan = source.readlines(lines)
+            lines_to_scan = []
+            n = 0
+            while n < lines:
+                lines_to_scan.append(source.next())
+                n += 1
         else:
             lines_to_scan = source
             
@@ -653,7 +661,7 @@ class Engine():
         """Skip over the header lines by reading them before processing."""
         if rows > 0:
             for i in range(rows):
-                line = source.readline()
+                line = source.next()
         return source
 
 
