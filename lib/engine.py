@@ -4,6 +4,7 @@ import getpass
 import zipfile
 import urllib
 import csv
+import itertools
 from decimal import Decimal
 from retriever import DATA_SEARCH_PATHS, DATA_WRITE_PATH
 from retriever.lib.cleanup import no_cleanup
@@ -28,14 +29,15 @@ class Engine():
     def add_to_table(self):
         """This function adds data to a table from one or more lines specified 
         in engine.table.source."""
-        lines = self.table.source
         self.get_cursor()
-
-        if self.table.columns[-1][1][0][:3] == "ct-":
+        
+        if self.table.columns[-1][1][0][:3] == "ct-":        
             # cross-tab data
+            
+            lines = Engine.gen_from_source(self.table.source)
             real_lines = []
             for line in lines:
-                split_line = line.strip('\n\r\t').split(self.table.delimiter)
+                split_line = line.strip('\n\r\t ').split(self.table.delimiter)
                 begin = split_line[:len(self.table.columns) - (3 if hasattr(self.table, "ct_names") else 2)]
                 rest = split_line[len(self.table.columns) - 2:]
                 n = 0
@@ -46,17 +48,21 @@ class Engine():
                     else:
                         name = []
                     real_lines.append(self.table.delimiter.join(begin + name + [item]))
-        else:        
-            real_lines = [line for line in lines 
-                          if line.strip('\n\r\t ')]
-                          
-        total = self.table.record_id + len(real_lines)
+            real_line_length = len(real_lines)
+        else:
+            def source_gen():
+                return (line for line in Engine.gen_from_source(self.table.source)
+                         if line.strip('\n\r\t '))
+            real_lines, len_source = source_gen(), source_gen()
+            real_line_length = sum(1 for _ in len_source)
+            
+        total = self.table.record_id + real_line_length
         for line in real_lines:
             line = line.strip()
             if line:
                 self.table.record_id += 1            
                 linevalues = self.values_from_line(line)
-
+                
                 types = self.get_column_datatypes()            
                 # Build insert statement with the correct # of values                
                 cleanvalues = [self.format_insert_value(self.table.cleanup.function
@@ -71,7 +77,7 @@ class Engine():
                     if self.debug: print linevalues
                     if self.debug: print cleanvalues
                     raise
-
+                
                 try:
                     update_frequency = int(self.update_frequency)
                 except:
@@ -83,7 +89,7 @@ class Engine():
                     prompt = "Inserting rows to " + self.tablename() + ": "
                     prompt += str(self.table.record_id) + " / " + str(total)
                     sys.stdout.write(prompt + "\b" * len(prompt))
-
+                
                 try:
                     self.execute(insert_stmt, commit=False)
                 except:
@@ -106,17 +112,19 @@ class Engine():
             self.download_file(url, filename)
         file_path = self.find_file(filename)
 
-        source = self.skip_rows(self.table.column_names_row - 1, 
-                                open(file_path, "rb"))
-        header = source.readline()
-        source.close()
+        source = (self.skip_rows,
+                  (self.table.column_names_row - 1, 
+                   (open, (file_path, "rb"))))
+        lines = Engine.gen_from_source(source)
+
+        header = lines.next()
+        lines.close()
 
         if not self.table.delimiter:
             self.auto_get_delimiter(header)
         
         if not self.table.columns:            
-            source = self.skip_rows(self.table.header_rows, 
-                                    open(file_path, "rb"))
+            lines = Engine.gen_from_source(source)
             
             if pk is None:
                 self.table.columns = [("record_id", ("pk-auto",))]
@@ -126,7 +134,7 @@ class Engine():
                 
             columns, column_values = self.auto_get_columns(header)
             
-            self.auto_get_datatypes(pk, source, columns, column_values)
+            self.auto_get_datatypes(pk, lines, columns, column_values)
 
         if self.table.columns[-1][1][0][:3] == "ct-" and hasattr(self.table, "ct_names") and not self.table.ct_column in [c[0] for c in self.table.columns]:
             self.table.columns = self.table.columns[:-1] + [(self.table.ct_column, ("char", 20))] + [self.table.columns[-1]]
@@ -136,7 +144,7 @@ class Engine():
 
                 
     def auto_get_columns(self, header):
-        """Finds the delimiter and column names from the header row."""        
+        """Finds the delimiter and column names from the header row."""
         if self.table.fixed_width:
             column_names = self.extract_values(header)
         else:
@@ -188,7 +196,11 @@ class Engine():
         # Get all values for each column
         if hasattr(self, 'scan_lines'):
             lines = int(self.scan_lines)
-            lines_to_scan = source.readlines(lines)
+            lines_to_scan = []
+            n = 0
+            while n < lines:
+                lines_to_scan.append(source.next())
+                n += 1
         else:
             lines_to_scan = source
             
@@ -540,6 +552,18 @@ class Engine():
             return "null"
 
 
+    @staticmethod
+    def gen_from_source(source):
+        """Returns a generator from a source tuple.        
+        Source tuples are of the form (callable, args) where callable(*args) 
+        returns either a generator or another source tuple. 
+        This allows indefinite regeneration of data sources."""
+        while isinstance(source, tuple):
+            gen, args = source
+            source = gen(*args)
+        return source
+
+
     def get_column_datatypes(self):
         """Gets a set of column names for insert statements."""
         columns = []
@@ -606,11 +630,10 @@ class Engine():
         """The default function to insert data from a file. This function 
         simply inserts the data row by row. Database platforms with support
         for inserting bulk data from files can override this function."""
-        source = self.skip_rows(self.table.header_rows, 
-                                open(filename, "r"))
-        self.table.source = source
+        self.table.source = (self.skip_rows, 
+                             (self.table.header_rows, 
+                             (open, (filename, 'r'))))
         self.add_to_table()
-        source.close()
 
         
     def insert_data_from_url(self, url):
@@ -651,10 +674,10 @@ class Engine():
         
     def skip_rows(self, rows, source):
         """Skip over the header lines by reading them before processing."""
-        if rows > 0:
-            for i in range(rows):
-                line = source.readline()
-        return source
+        lines = Engine.gen_from_source(source)
+        for i in range(rows):
+            lines.next()
+        return lines
 
 
     def split_on_delimiter(self, line):
