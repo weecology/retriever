@@ -115,7 +115,6 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
             try:
                 self.execute(statement)
             except:
-                print statement
                 print "Couldn't bulk insert. Trying manual insert."
                 self.connection.rollback()
                 return Engine.insert_data_from_file(self, filename)
