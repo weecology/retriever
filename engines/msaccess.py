@@ -118,7 +118,6 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
                 print statement
                 print "Couldn't bulk insert. Trying manual insert."
                 self.connection.rollback()
-                self.create_table()
                 return Engine.insert_data_from_file(self, filename)
 
         else:
