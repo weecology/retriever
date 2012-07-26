@@ -120,6 +120,10 @@ class Engine():
         header = lines.next()
         lines.close()
 
+        source = (self.skip_rows,
+                  (self.table.header_rows, 
+                   (open, (file_path, "rb"))))
+                   
         if not self.table.delimiter:
             self.auto_get_delimiter(header)
         
