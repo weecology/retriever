@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "http://www.w3.org/TR/MathML2/dtd/xhtml-math11-f.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="GENERATOR" content="LyX 2.0.2" />
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+<title>LyX Document</title>
+
+<!-- Text Class Preamble -->
+<style type="text/css">
+div.toc {
+margin: 2em 0em;
+border-style: solid;
+border-width: 2px 0px;
+padding: 1em 0em;
+}
+div.tochead { font-size: x-large; font-weight: bold; }
+div.lyxtoc-0 {
+margin: 2em 0em 0em 0em;
+font-size: xx-large;
+font-weight: bold;
+}
+div.lyxtoc-1 {
+margin: 1em 0em 0em 0em;
+font-size: x-large;
+font-weight: bold;
+}
+div.lyxtoc-2 {
+margin: 0em 0em 0em 1em;
+font-size: large;
+font-weight: normal;
+}
+div.lyxtoc-3 { margin: 0em 0em 0em 0.5em; font-size: medium; }
+div.lyxtoc-4 { margin: 0em 0em 0em 0.5em; }
+div.lyxtoc-5 { margin: 0em 0em 0em 0.5em; }
+div.lyxtoc-6 { margin: 0em 0em 0em 0.5em; }
+a.tocentry {
+text-decoration: none;
+color: black;
+}
+a.tocentry:visited { color: black; }
+a.tocarrow {
+font-weight: bold;
+text-decoration: none;
+color: #909090;
+}
+a.tocarrow:visited { color: #C0C0C0; }
+</style>
+
+<!-- Preamble Snippets -->
+
+<!-- Layout-provided Styles -->
+<style type='text/css'>
+h2.section {
+font-weight: bold;
+font-size: x-large;
+margin-top: 1.3ex;
+margin-bottom: 0.7ex;
+text-align: left;
+
+}
+div.standard {
+margin-bottom: 2ex;
+}
+h3.subsection {
+font-weight: bold;
+font-size: large;
+margin-top: 0.9ex;
+margin-bottom: 0.5ex;
+text-align: left;
+
+}
+ul.itemize {
+margin-top: 0.7ex;
+margin-bottom: 0.7ex;
+margin-left: 3ex;
+text-align: left;
+
+}
+</style>
+</head>
+<body>
+<h2 class="section"><span class="section_label">1</span> <a id='magicparlabel-2' />
+Installation</h2>
+<div class="standard"><a id='magicparlabel-17' />
+Packages are provided for most operating systems, or you can install from the Python source.</div>
+<h3 class="subsection"><span class="subsection_label">1.1</span> <a id='magicparlabel-6' />
+Windows</h3>
+<div class="standard"><a id='magicparlabel-12' />
+Simply download and run retriever.exe. This can be run as a Windows application or from the command line using the command line interface.</div>
+<h3 class="subsection"><span class="subsection_label">1.2</span> <a id='magicparlabel-23' />
+Linux</h3>
+<div class="standard"><a id='magicparlabel-71' />
+A Debian package is provided;</div>
+
+<div class="standard"><a id='magicparlabel-82' />
+If you're on a non-Debian based system, refer to the instructions under Installing from Source.</div>
+<h3 class="subsection"><span class="subsection_label">1.3</span> <a id='magicparlabel-30' />
+Mac</h3>
+<div class="standard"><a id='magicparlabel-1004' />
+A 32-bit Mac package is provided. Download retriever.app and run it. Note that the Mac package will only work in graphical mode; if you wish to use the command line interface, see the instructions under Installing from Source.</div>
+<h3 class="subsection"><span class="subsection_label">1.4</span> <a id='magicparlabel-34' />
+Installing from Source</h3>
+<div class="standard"><a id='magicparlabel-126' />
+To install the EcoData Retriever from source, you'll need:</div>
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-139' />
+Python version 2.7.1 or greater (not Python 3.x)</li>
+<li class="itemize_item"><a id='magicparlabel-148' />
+wxPython version 2.8</li>
+<li class="itemize_item"><a id='magicparlabel-152' />
+xlrd</li>
+</ul>
+<div class="standard"><a id='magicparlabel-379' />
+On Ubuntu, the following command will install all required dependencies: </div>
+
+<div class="standard"><a id='magicparlabel-1099' />
+<em>sudo apt-get install python-setuptools python-wxgtk2.8 python-xlrd</em></div>
+
+<div class="standard"><a id='magicparlabel-159' />
+The following packages are optional:</div>
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-164' />
+PyMySQL (preferred) or MySQLdb (for MySQL)</li>
+<li class="itemize_item"><a id='magicparlabel-206' />
+sqlite3 (for SQLite)</li>
+<li class="itemize_item"><a id='magicparlabel-209' />
+psycopg2 (for PostgreSQL)</li>
+<li class="itemize_item"><a id='magicparlabel-214' />
+pyodbc (for Microsoft Access - this option is only available on Windows)</li>
+</ul>
+<div class="standard"><a id='magicparlabel-222' />
+To download and install the Retriever from source, use the following commands (Windows users should use a Unix-like environment such as Git bash or Cygwin):</div>
+
+<ul class="itemize"><li class="itemize_item"><a id='magicparlabel-305' />
+wget https://github.com/weecology/retriever/raw/v1.4/retriever-src.tar.gz</li>
+<li class="itemize_item"><a id='magicparlabel-309' />
+tar -xvzf retriever-src.tar.gz</li>
+<li class="itemize_item"><a id='magicparlabel-313' />
+cd src</li>
+<li class="itemize_item"><a id='magicparlabel-332' />
+sudo python setup.py install</li>
+</ul>
+<div class="standard"><a id='magicparlabel-546' />
+After installing, type &ldquo;retriever&rdquo; to launch.</div>
+<h2 class="section"><span class="section_label">2</span> <a id='magicparlabel-560' />
+Using the EcoData Retriever GUI</h2>
+<div class="standard"><a id='magicparlabel-571' />
+The first time you launch the EcoData Retriever, it will automatically download all available Retriever scripts. You'll then be prompted to choose a database system and enter your connection information.</div>
+
+<div class="standard"><a id='magicparlabel-603' />
+Once this process is complete, you'll see the following screen:</div>
+
+<div class="standard"><a id='magicparlabel-609' />
+<img src='0_home_ben_Dropbox_Documents_retriever_ms_Figure_1.png' alt='image: 0_home_ben_Dropbox_Documents_retriever_ms_Figure_1.png' />
+</div>
+
+<div class="standard"><a id='magicparlabel-674' />
+You'll see each available dataset with citation information and a link to the dataset website. Click on the box icon to start downloading the data.</div>
+
+<div class="standard"><a id='magicparlabel-695' />
+You can use the categories on the left to filter the data to show, for example, only data from a specific taxonomic group. You can also search for specific terms using Edit &gt; Find.</div>
+<h2 class="section"><span class="section_label">3</span> <a id='magicparlabel-711' />
+Using the Command Line Interface</h2>
+<div class="standard"><a id='magicparlabel-717' />
+You can run the retriever from the command line using additional arguments. This makes it easier to use in batch processes or on servers which don't have graphical capabilities.</div>
+
+<div class="standard"><a id='magicparlabel-748' />
+Use &ldquo;retriever help&rdquo; for a list of available command line options.</div>
+
+<div class="standard"><a id='magicparlabel-764' />
+After installing, you'll want to run &ldquo;retriever update&rdquo; to download all available dataset scripts. &ldquo;retriever help&rdquo; will then list the names of available datasets and categories.</div>
+
+<div class="standard"><a id='magicparlabel-848' />
+Use &ldquo;retriever install&rdquo; to install one or more datasets, like so:</div>
+
+<div class="standard"><a id='magicparlabel-879' />
+<em>retriever install [dataset name or category name] -e [m for mysql, s for sqlite, p for postgres, a for ms access, or c for csv] -h [host] -o [port] -u [username] -p [password] -f [filename, if using sqlite or ms access] -d [database, if using postgres]</em></div>
+
+<div class="standard"><a id='magicparlabel-910' />
+For example, &ldquo;retriever install bbs -e m&rdquo; will download the Breeding Bird Survey and upload the data to a MySQL database. You'll be prompted for all other necessary connection information.</div>
+</body>
+</html>
