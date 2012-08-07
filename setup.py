@@ -80,7 +80,7 @@ setup(name='retriever',
       },
 
       # py2exe flags
-      windows = [{'script': "main.py",
+      console = [{'script': "main.py",
                   'dest_base': "retriever",
                   'icon_resources':[(1,'icon.ico')]
                   }],
