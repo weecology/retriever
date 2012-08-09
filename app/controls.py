@@ -3,10 +3,12 @@
 import wx
 import wx.lib.wxpTag
 import platform
+import sys
 from retriever import VERSION, MASTER
 
         
 class AboutDialog(wx.Dialog):
+    arch = '32bit' if sys.maxsize < 2**32 else '64bit'
     text = """
 <body bgcolor="#ACAA60">
 <center><table bgcolor="#455481" width="100%" cellspacing="0" cellpadding="0" border="1">
@@ -14,7 +16,7 @@ class AboutDialog(wx.Dialog):
 EcoData Retriever
 </h1><h2>
 version """ + VERSION + (" (master branch)" if MASTER else "") +  """<br/>
-running on Python %s (%s)""" % (platform.python_version(), platform.architecture()[0]) + """
+running on Python %s (%s)""" % (platform.python_version(), arch) + """
 </h2></td></tr></table>
 <p>The EcoData Retriever is designed to make it easy to download ecological data and set it
 up on your own local database system.
