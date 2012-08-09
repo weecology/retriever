@@ -8,6 +8,7 @@ The main() function can be used for bootstrapping.
 """
 
 import os
+import platform
 import sys
 # sys removes the setdefaultencoding method at startup; reload to get it back
 reload(sys)
@@ -26,7 +27,7 @@ def main():
     """This function launches the EcoData Retriever."""
     if len(sys.argv) == 1:
         if not MASTER:
-            check_for_updates(graphical=True)
+            check_for_updates(graphical=False if 'darwin' in platform.platform().lower() else True)
         lists = get_lists()
         
         from retriever.app.main import launch_app
