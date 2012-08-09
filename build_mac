@@ -8,4 +8,6 @@ sudo rm -rf mac/scripts
 sudo ditto --rsrc --arch i386 mac/retriever.app mac/retriever2.app
 sudo rm -rf mac/retriever.app
 sudo mv mac/retriever2.app mac/retriever.app
-sudo zip -r mac/retriever.zip mac/retriever.app
+cd mac
+sudo zip -r retriever.zip retriever.app
+cd ..
