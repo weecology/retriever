@@ -4,3 +4,6 @@ sudo arch -i386 python2.7 setup.py py2app
 sudo mv dist mac
 sudo rm mac/*.egg
 sudo rm -rf mac/scripts
+ditto --rsrc --arch i386 mac/retriever.app mac/retriever2.app
+rm -rf mac/retriever.app
+mv mac/retriever2.app mac/retriever.app
