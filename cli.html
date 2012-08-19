@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>EcoData Retriever by weecology</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">EcoData Retriever</h1>
+        <p class="header">Download and Install Ecological Datasets</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/downloads/weecology/retriever/retriever.exe">Windows</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/downloads/weecology/retriever/retriever.zip">Mac</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/downloads/weecology/retriever/python-retriever_1.4-1_all.deb">Ubuntu/Debian</a></li>
+          <li><a class="buttons github" href="https://github.com/weecology/retriever">View On GitHub</a></li>
+        </ul>
+        
+        <h1 class="header" style='font-size:1.4em'><b>Documentation</b></h1>
+
+        <ul>
+          <li><a href="getting_started.html">Getting Started</a></li>
+          <li><a href="cli.html">Command Line</a></li>
+        </ul>
+
+        <p class="header">A <a class="header name" href="https://github.com/weecology">weecology</a> production.</p>
+
+
+      </header>
+      
+      
+      <section>
+        <h2>Using the Command Line Interface</h2>
+        <p>The Retriever includes a command line interface to allow it's capabilities to be integrated into scientific workflows involving non-Python programming languages. For example, the Retriever can easily be call from R (or run as part of a pipe workflow including R) to automate the downloading and installing of databases necessary for analysis. This also makes it easier to use in batch processes or on servers that don't have graphical capabilities.</p>
+        <p>After installing, run <code>retriever update</code> to download all of the available dataset scripts. To see the full list of command line options and datasets run <code>retriever help</code>.</p>
+        <h4>Standard Usage</h4>
+        <p>To install datasets, use <code>retriever install</code>:</p>
+        <pre>
+ retriever install [dataset name or category name] -e [m for mysql, s for
+ sqlite, p for postgres, a for ms access, or c for csv] -h [host] -o [port]
+ -u [username] -p [password] -f [filename, if using sqlite or ms access]
+ -d [database, if using postgres]</pre>
+        <p>For example, to install the Breeding Bird Survey data into an sqlite database named mydatabase.db you would use:</p>
+        <pre>
+retriever install BBS -e s -f mydatabase.db</pre>
+        <p>You will be prompted for any necessary connection information that is not provided.</p>
+        
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+		
+  </body>
+</html>
