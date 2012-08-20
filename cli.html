@@ -47,9 +47,10 @@
         <h4>Standard Usage</h4>
         <p>To install datasets, use <code>retriever install</code>:</p>
         <pre>
- retriever install [dataset name or category name] -e [m for mysql, s for
- sqlite, p for postgres, a for ms access, or c for csv] -h [host] -o [port]
- -u [username] -p [password] -f [filename, if using sqlite or ms access]
+ retriever install [dataset name or category name]
+ -e [m for mysql, s for sqlite, p for postgres, a for access, c for csv]
+ -h [host] -o [port] -u [username] -p [password]
+ -f [filename, if using sqlite or ms access]
  -d [database, if using postgres]</pre>
         <p>For example, to install the Breeding Bird Survey data into an sqlite database named mydatabase.db you would use:</p>
         <pre>
