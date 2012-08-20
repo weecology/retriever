@@ -57,7 +57,9 @@ retriever install BBS -e s -f mydatabase.db</pre>
         <p>You will be prompted for any necessary connection information that is not provided.</p>
         
         <h3>Using the Command Line Interface from inside R</h3>
-        <p>Because we have a command line interface, using the EcoData Retriever with languages other than the one it is written in is easy. Using the Retriever from inside of R just requires the use of the <code>system()</code> function and your preferred approach for importing data. For example. If you wanted to import the Gentry Forest Transect Data the following command from inside of R will download the data, convert it to a useable form, save it as comma delimited text files.</p>
+        <p>Because we have a command line interface, using the EcoData Retriever with languages other than the one it is written in is easy. Using the Retriever from inside of R just requires the use of the <code>system()</code> function and your preferred approach for importing data.</p>
+        <h4>Basics  (Linux and Installations from Source)</h4>
+        <p>In the simplest case, if you wanted to import the Gentry Forest Transect Data the following command from inside of R will download the data, convert it to a useable form, save it as comma delimited text files.</p>
         <pre>
 system("retriever install Gentry -e c")
 </pre>
@@ -69,6 +71,15 @@ species_data <- read.csv("Gentry_species.csv")
 sites_data <- read.csv("Gentry_sites.csv")
 </pre>
        <p>Alternatively you can use a modified version of the <code>system()</code> function to import into to the other database management systems and then interact with them through packages like <a href="http://cran.r-project.org/web/packages/RSQLite/index.html">RSQLite</a> and <a href="http://cran.r-project.org/web/packages/RMySQL/index.html">RMySQL</a></p>
+       <h4>Windows</h4>
+       <p>On Windows it is necessary for the working directory to be set to the location of the retriever.exe file so that R knows where the Retriever is located. So, if I placed the Retriever on my Desktop I would use the commands:</p>
+       <pre>
+setwd("C:\Users\ethan\Desktop")
+system("retriever install Gentry -e c")
+</pre>
+        <h4>Mac</h4> 
+        <p>To use the Command Line Interface on Macs it is necessary to install from source instead of using the app. Once the Retriever has been installed from source just follow the Basics instructions above.</p>
+         
          
       </section>
       <footer>
