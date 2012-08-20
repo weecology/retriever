@@ -56,6 +56,20 @@
 retriever install BBS -e s -f mydatabase.db</pre>
         <p>You will be prompted for any necessary connection information that is not provided.</p>
         
+        <h3>Using the Command Line Interface from inside R</h3>
+        <p>Because we have a command line interface, using the EcoData Retriever with languages other than the one it is written in is easy. Using the Retriever from inside of R just requires the use of the <code>system()</code> function and your preferred approach for importing data. For example. If you wanted to import the Gentry Forest Transect Data the following command from inside of R will download the data, convert it to a useable form, save it as comma delimited text files.</p>
+        <pre>
+system("retriever install Gentry -e c")
+</pre>
+        <p>The you can simply import the resulting files in the usual manner.</p>
+<pre>
+count_data <- read.csv("Gentry_counts.csv")
+stem_data <- read.csv("Gentry_stems.csv")
+species_data <- read.csv("Gentry_species.csv")
+sites_data <- read.csv("Gentry_sites.csv")
+</pre>
+       <p>Alternatively you can use a modified version of the <code>system()</code> function to import into to the other database management systems and then interact with them through packages like <a href="http://cran.r-project.org/web/packages/RSQLite/index.html">RSQLite</a> and <a href="http://cran.r-project.org/web/packages/RMySQL/index.html">RMySQL</a></p>
+         
       </section>
       <footer>
         <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
