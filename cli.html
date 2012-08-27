@@ -43,8 +43,25 @@
       
       <section>
         <h2>Using the Command Line Interface</h2>
-        <p>The Retriever includes a command line interface to allow it's capabilities to be integrated into scientific workflows involving non-Python programming languages. For example, the Retriever can easily be call from R (or run as part of a pipe workflow including R) to automate the downloading and installing of databases necessary for analysis. This also makes it easier to use in batch processes or on servers that don't have graphical capabilities.</p>
-        <p>After installing, run <code>retriever update</code> to download all of the available dataset scripts. To see the full list of command line options and datasets run <code>retriever help</code>.</p>
+        <p>The Retriever includes a command line interface to allow its capabilities to be integrated into scientific workflows involving non-Python programming languages. For example, the Retriever can easily be called from R (or run as part of a pipe workflow including R) to automate the downloading and installing of databases necessary for analysis. This also makes it easier to use in batch processes or on servers that don't have graphical capabilities.</p>
+        <p>After installing, run <code>retriever update</code> to download all of the available dataset scripts. To see the full list of command line options and datasets run <code>retriever help</code>. The output will look like this:</p>
+        <pre>
+EcoData Retriever, version v1.4
+Usage: retriever [install script_name]
+                 [-e engine] [-h host] [-o port] [-u username] [-p password]
+                 [-f filename (sqlite/ms access)] [-d database (postgresql)]
+                 [--update] [--debug] [--compile]
+Available engines:
+    (m)  MySQL
+    (p)  PostgreSQL
+    (s)  SQLite
+    (a)  Microsoft Access
+    (c)  CSV
+Available datasets (15):
+    Adler2007   AvianBodySize   DelMoral2010    MammalLH    MammalMR2010    MarineSize  MCDB    McGlinn2010 MoM2003 Pantheria   PlantTaxonomy   PortalMammals   Ramesh2010  Woods2009   Zachmann2010
+Groups:
+    ALL BIOME   BIRDS   COMPILATION DATA TYPE   DESERT  EXPERIMENTAL    FISH    GLOBAL  LOCAL   MAMMALS OBSERVATIONAL   PLANTS  REGIONAL    SPATIAL SCALE   TAXON   TAXONOMY    TIME SERIES</pre>
+
         <h4>Standard Usage</h4>
         <p>To install datasets, use <code>retriever install</code>:</p>
         <pre>
@@ -57,6 +74,10 @@
         <pre>
 retriever install BBS -e s -f mydatabase.db</pre>
         <p>You will be prompted for any necessary connection information that is not provided.</p>
+        <p>To download all data for a given category (such as all data related to BIRDS), you can use:</p>
+        <pre>
+retriever install birds -e s -f mydatabase.db</pre>
+        <p>This is the same as <code>retriever install ___</code> for every dataset with the BIRDS tag.</p>
         
         <h3>Using the Command Line Interface from inside R</h3>
         <p>Because we have a command line interface, using the EcoData Retriever with languages other than the one it is written in is easy. Using the Retriever from inside of R just requires the use of the <code>system()</code> function and your preferred approach for importing data.</p>
