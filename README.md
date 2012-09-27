@@ -49,4 +49,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 Acknowledgments
 ---------------
 
-This work was funded by the [National Science Foundation](http://nsf.gov/) as part of a [CAREER award to Ethan White](http://nsf.gov/awardsearch/showAward.do?AwardNumber=0953694).
+Development of this software was funded by the [National Science Foundation](http://nsf.gov/) as part of a [CAREER award to Ethan White](http://nsf.gov/awardsearch/showAward.do?AwardNumber=0953694).
