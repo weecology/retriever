@@ -20,16 +20,14 @@ To install the EcoData Retriever from source, you'll need Python 2.6 with the fo
 * wxPython
 * xlrd
 
-The following packages are optional
------------------------------------
+###The following packages are optional
 
 * PyMySQL or MySQLdb (for MySQL)
 * sqlite3 (for SQLite)
 * psycopg2 (for PostgreSQL)
 * pyodbc (for MS Access - this option is only available on Windows)
 
-To install from source
-----------------------
+###To install from source
 
 1. Clone the repository
 2. From the directory containing setup.py, run the following command: python setup.py install
