@@ -20,21 +20,25 @@ To install the EcoData Retriever from source, you'll need Python 2.6 with the fo
 * wxPython
 * xlrd
 
-The following packages are optional:
+The following packages are optional
+-----------------------------------
 
 * PyMySQL or MySQLdb (for MySQL)
 * sqlite3 (for SQLite)
 * psycopg2 (for PostgreSQL)
 * pyodbc (for MS Access - this option is only available on Windows)
 
-To install from source:
+To install from source
+----------------------
 
 1. Clone the repository
 2. From the directory containing setup.py, run the following command: python setup.py install
 3. After installing, type retriever from a command prompt to launch the Database Toolkit,
    or find main.py in your Retriever directory and run it in Python.
 
-MIT License:
+License
+-------
+The EcoData Retriever is licensed under the open source [MIT License](http://opensource.org/licenses/MIT)
 
 Copyright (c) 2011 Weecology
 
