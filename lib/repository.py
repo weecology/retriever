@@ -1,5 +1,6 @@
 """Checks the repository for updates."""
 
+
 import os
 import sys
 import urllib
@@ -144,8 +145,8 @@ class InitThread(Thread):
                 scripts.append(line.strip('\n').split(','))
             
             # get script files
-            if not os.path.isdir("scripts"):
-                os.mkdir("scripts")
+            if not os.path.isdir(SCRIPT_WRITE_PATH):
+                os.makedirs(SCRIPT_WRITE_PATH)
             for script in scripts:
                 script_name = script[0]
                 if len(script) > 1:

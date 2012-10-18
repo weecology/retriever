@@ -201,6 +201,9 @@ def get_opts(scripts, args=sys.argv[1:]):
                 optsdict["database"] = args[n]
             elif opt in ("--debug", "--gui"):
                 optsdict[opt[2:]] = True
+            elif opt in ('new',):
+                n += 1
+                optsdict['new'] = args[n]
             elif opt[:2] == '--':
                 opt = opt[2:]
                 n += 1
