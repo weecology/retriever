@@ -4,7 +4,7 @@ import wx
 from retriever.app.connect_wizard import ConnectWizard
 from retriever.app.controls import *
 from retriever.app.download_manager import DownloadManager
-from retriever.app.images import icon, cycle, download, downloaded, error
+from retriever.app.images import icon, cycle, download, downloaded, error, warning
 from retriever.lib.tools import get_default_connection, get_saved_connection, choose_engine
 from retriever.lib.lists import Category
 from retriever import VERSION, ENGINE_LIST, SCRIPT_LIST
@@ -22,6 +22,7 @@ class App(wx.App):
         mfs.AddFile("download.png", download.GetImage(), wx.BITMAP_TYPE_PNG)
         mfs.AddFile("downloaded.png", downloaded.GetImage(), wx.BITMAP_TYPE_PNG)
         mfs.AddFile("error.png", error.GetImage(), wx.BITMAP_TYPE_PNG)
+        mfs.AddFile("warning.png", warning.GetImage(), wx.BITMAP_TYPE_PNG)
         
         default_connection = get_default_connection()
         if default_connection:
@@ -153,6 +154,7 @@ class Frame(wx.Frame):
                 
             self.download_manager.downloaded = set()
             self.download_manager.errors = set()
+            self.download_manager.warnings = set()
             self.script_list.script_status = dict()
             self.script_list.RefreshMe(None)
             

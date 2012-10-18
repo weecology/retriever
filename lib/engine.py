@@ -493,8 +493,7 @@ class Engine():
         """Close the database connection."""
         self.connection.close()
         if self.warnings:
-            for warning in self.warnings:
-                print warning
+            print '\n'.join(str(w) for w in self.warnings)
 
         
     def format_column_name(self, column):

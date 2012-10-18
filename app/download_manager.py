@@ -12,6 +12,7 @@ class DownloadManager:
         self.queue = []
         self.downloaded = set()
         self.errors = set()
+        self.warnings = set()
         self.Parent = parent
         self.timer = wx.Timer(parent, -1)
         self.timer.interval = 10
@@ -23,6 +24,7 @@ class DownloadManager:
             self.downloaded.add(script)
             if script in self.errors:
                 self.errors.remove(script)
+                self.warnings.remove(script)
             self.Parent.script_list.RefreshMe(None)
             if not self.timer.IsRunning() and not self.worker and len(self.queue) < 2:
                 self.timer.Start(self.timer.interval)
@@ -35,7 +37,11 @@ class DownloadManager:
         if self.worker:
             script = self.worker.script
             if self.worker.finished() and len(self.worker.output) == 0:
-                self.Parent.SetStatusText("")
+                if script.warnings: 
+                    self.warnings.add(script)
+                    self.Parent.SetStatusText('\n'.join(str(w) for w in script.warnings))
+                else:
+                    self.Parent.SetStatusText("")
                 self.worker = None
                 self.Parent.script_list.RefreshMe(None)
                 self.timer.Start(self.timer.interval)
