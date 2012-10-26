@@ -91,7 +91,7 @@ setup(name='retriever',
       # py2app flags
       app=['main.py'],
       data_files=[],
-      setup_requires=['py2app'],
+      setup_requires=['py2app'] if 'darwin' in p else [],
 
       # options
       options = {'py2exe': {'bundle_files': 1,
