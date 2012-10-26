@@ -10,7 +10,6 @@ from inspect import getsourcelines
 from threading import Thread
 from retriever import REPOSITORY, VERSION, MASTER_BRANCH, REPO_URL, SCRIPT_WRITE_PATH
 from retriever.lib.models import file_exists
-from retriever.app.splash import Splash
 
 global abort, executable_name
 abort = False
@@ -53,6 +52,8 @@ def check_for_updates(graphical=False):
     if graphical:
         import wx
         app = wx.PySimpleApp()
+
+        from retriever.app.splash import Splash
         splash = Splash()
         #splash.Show()
         splash.SetText("\tLoading...")
