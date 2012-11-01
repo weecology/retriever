@@ -12,6 +12,7 @@ import warnings
 import unittest
 from decimal import Decimal
 from hashlib import md5
+from retriever import HOME_DIR
 from retriever.lib.models import *
 
 warnings.filterwarnings("ignore")
@@ -256,12 +257,14 @@ def final_cleanup(engine):
     pass
         
 
+config_path = os.path.join(HOME_DIR, 'connections.config')
+
 def get_saved_connection(engine_name):
     """Given the name of an engine, returns the stored connection for that engine
     from connections.config."""
-    parameters = dict()
-    if os.path.isfile("connections.config"):
-        config = open("connections.config", "rb")
+    parameters = {}
+    if os.path.isfile(config_path):
+        config = open(config_path, "rb")
         for line in config:
             values = line.rstrip('\n').split(',')
             if values[0] == engine_name:
@@ -275,16 +278,16 @@ def get_saved_connection(engine_name):
 def save_connection(engine_name, values_dict):
     """Saves connection information for an engine in connections.config."""
     lines = []
-    if os.path.isfile("connections.config"):
-        config = open("connections.config", "rb")
+    if os.path.isfile(config_path):
+        config = open(config_path, "rb")
         for line in config:
             if line.split(',')[0] != engine_name:
                 lines.append('\n' + line.rstrip('\n'))
         config.close()
-        os.remove("connections.config")
-        config = open("connections.config", "wb")
+        os.remove(config_path)
+        config = open(config_path, "wb")
     else:
-        config = open("connections.config", "wb")
+        config = open(config_path, "wb")
     config.write(engine_name + "," + str(values_dict))
     for line in lines:
         config.write(line)
@@ -294,8 +297,8 @@ def save_connection(engine_name, values_dict):
 def get_default_connection():
     """Gets the first (most recently used) stored connection from 
     connections.config."""
-    if os.path.isfile("connections.config"):
-        config = open("connections.config", "rb")
+    if os.path.isfile(config_path):
+        config = open(config_path, "rb")
         default_connection = config.readline().split(",")[0]
         config.close()
         return default_connection
