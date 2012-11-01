@@ -77,19 +77,19 @@ setup(name='retriever',
                 },
       entry_points={
         'console_scripts': [
-            'retriever = retriever.main:main',
+            'retriever = retriever.__main__:main',
         ],
       },
 
       # py2exe flags
-      console = [{'script': "main.py",
+      console = [{'script': "__main__.py",
                   'dest_base': "retriever",
                   'icon_resources':[(1,'icon.ico')]
                   }],
       zipfile = None,
 
       # py2app flags
-      app=['main.py'],
+      app=['__main__.py'],
       data_files=[],
       setup_requires=['py2app'] if 'darwin' in p else [],
 
