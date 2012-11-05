@@ -40,8 +40,9 @@ class Engine():
             real_lines = []
             for line in lines:
                 split_line = line.strip('\n\r\t ').split(self.table.delimiter)
-                begin = split_line[:len(self.table.columns) - (3 if hasattr(self.table, "ct_names") else 2)]
-                rest = split_line[len(self.table.columns) - 2:]
+                initial_cols = len(self.table.columns) - (3 if hasattr(self.table, "ct_names") else 2)
+                begin = split_line[:initial_cols]
+                rest = split_line[initial_cols:]
                 n = 0
                 for item in rest:
                     if hasattr(self.table, "ct_names"):
