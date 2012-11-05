@@ -147,15 +147,17 @@ U.S.A. """
         
         # Create species table
         table = Table("species", delimiter=",")
-        table.columns=[("species_id"            ,   ("pk-auto",)    ),
+        table.columns=[("species_id"            ,   ("pk-int",)    ),
                        ("family"                ,   ("char", )    ),
                        ("genus"                 ,   ("char", )    ),
                        ("species"               ,   ("char", )    ),
                        ("id_level"              ,   ("char", 10)    ),
                        ("full_id"               ,   ("bool",)       )]
 
-        table.source = [','.join(['"%s"' % g for g in group]) 
+        table.source = [','.join([str(tax_dict[group[:3]])] + ['"%s"' % g for g in group]) 
                         for group in unique_tax]
+        table.pk = 'species_id'
+        table.contains_pk = True
         
         self.engine.table = table
         self.engine.create_table()
