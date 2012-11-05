@@ -92,7 +92,7 @@ U.S.A. """
                         
                         def format_value(s):
                             s = Excel.cell_value(s)
-                            return str(s).title().replace("\\", "/")
+                            return str(s).title().replace("\\", "/").replace('"', '')
                         
                         # get the following information from the appropriate columns
                         for i in ["line", "family", "genus", "species", 
@@ -121,7 +121,7 @@ U.S.A. """
                             full_id = 1
                         tax.append((this_line["family"], 
                                     this_line["genus"], 
-                                    this_line["species"].lower(), 
+                                    this_line["species"].lower().replace('\\', '').replace('"', ''), 
                                     id_level, 
                                     str(full_id)))
                     except:
@@ -146,7 +146,7 @@ U.S.A. """
         
         
         # Create species table
-        table = Table("species", delimiter="~")
+        table = Table("species", delimiter=",")
         table.columns=[("species_id"            ,   ("pk-auto",)    ),
                        ("family"                ,   ("char", )    ),
                        ("genus"                 ,   ("char", )    ),
@@ -154,7 +154,7 @@ U.S.A. """
                        ("id_level"              ,   ("char", 10)    ),
                        ("full_id"               ,   ("bool",)       )]
 
-        table.source = ['~'.join(group) 
+        table.source = [','.join(['"%s"' % g for g in group]) 
                         for group in unique_tax]
         
         self.engine.table = table
@@ -163,7 +163,7 @@ U.S.A. """
         
         
         # Create stems table
-        table = Table("stems", delimiter="~", contains_pk=False)
+        table = Table("stems", delimiter=",", contains_pk=False)
         table.columns=[("stem_id"               ,   ("pk-auto",)    ),
                        ("line"                  ,   ("int",)        ),
                        ("species_id"            ,   ("int",)        ),
@@ -193,21 +193,21 @@ U.S.A. """
                 stem = species_info + [i]
                 stems.append([str(value) for value in stem])
             
-        table.source = ['~'.join(stem) for stem in stems]
+        table.source = [','.join(stem) for stem in stems]
         self.engine.table = table
         self.engine.create_table()
         self.engine.add_to_table()
         
         
         # Create counts table
-        table = Table("counts", delimiter="~", contains_pk=False)
+        table = Table("counts", delimiter=",", contains_pk=False)
         table.columns=[("count_id"              ,   ("pk-auto",)    ),
                        ("line"                  ,   ("int",)        ),
                        ("species_id"            ,   ("int",)        ),
                        ("site_code"             ,   ("char", 12)    ),
                        ("liana"                 ,   ("char", 10)    ),
                        ("count"                 ,   ("double",)     )]
-        table.source = ['~'.join(count) for count in counts]
+        table.source = [','.join(count) for count in counts]
         self.engine.table = table
         self.engine.create_table()
         self.engine.add_to_table()
