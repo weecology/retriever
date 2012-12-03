@@ -92,6 +92,8 @@ class ScriptList(wx.HtmlListBox):
                 img = "error"
             elif script in download_manager.downloaded or script.exists(engine):
                 img = "downloaded"
+                if script in download_manager.warnings:
+                    img = "warning"
             else:
                 link = True
                 img = "download"

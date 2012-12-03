@@ -1,5 +1,6 @@
 """Checks the repository for updates."""
 
+
 import os
 import sys
 import urllib
@@ -7,9 +8,8 @@ import imp
 from hashlib import md5
 from inspect import getsourcelines
 from threading import Thread
-from retriever import REPOSITORY, VERSION, MASTER_BRANCH, REPO_URL
+from retriever import REPOSITORY, VERSION, MASTER_BRANCH, REPO_URL, SCRIPT_WRITE_PATH
 from retriever.lib.models import file_exists
-from retriever.app.splash import Splash
 
 global abort, executable_name
 abort = False
@@ -52,6 +52,8 @@ def check_for_updates(graphical=False):
     if graphical:
         import wx
         app = wx.PySimpleApp()
+
+        from retriever.app.splash import Splash
         splash = Splash()
         #splash.Show()
         splash.SetText("\tLoading...")
@@ -144,8 +146,8 @@ class InitThread(Thread):
                 scripts.append(line.strip('\n').split(','))
             
             # get script files
-            if not os.path.isdir("scripts"):
-                os.mkdir("scripts")
+            if not os.path.isdir(SCRIPT_WRITE_PATH):
+                os.makedirs(SCRIPT_WRITE_PATH)
             for script in scripts:
                 script_name = script[0]
                 if len(script) > 1:
@@ -157,7 +159,7 @@ class InitThread(Thread):
                     # File doesn't exist: download it
                     print "Downloading script: " + script_name
                     download_from_repository("scripts/" + script_name,
-                                             "scripts/" + script_name)
+                                             os.path.join(SCRIPT_WRITE_PATH, script_name))
                 elif script_version:
                     # File exists: import and check MD5 sum
                     need_to_download = False
@@ -176,7 +178,7 @@ class InitThread(Thread):
                         try:
                             os.remove(os.path.join("scripts", script_name))
                             download_from_repository("scripts/" + script_name,
-                                                     "scripts/" + script_name)
+                                                     os.path.join(SCRIPT_WRITE_PATH, script_name))
                         except Exception as e:
                             print e
                             pass

@@ -17,7 +17,7 @@ if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding('latin-1')
 else:
     pass
-from retriever import VERSION, MASTER, SCRIPT_LIST, ENGINE_LIST
+from retriever import VERSION, MASTER, SCRIPT_LIST, ENGINE_LIST, sample_script
 from retriever.lib.repository import check_for_updates
 from retriever.lib.lists import Category, get_lists
 from retriever.lib.tools import choose_engine, get_opts
@@ -36,20 +36,29 @@ def main():
         script_list = SCRIPT_LIST()
         opts = get_opts(script_list)
         
-        if "update" in opts.keys() and opts["update"]:
+        if "update" in opts and opts["update"]:
             check_for_updates(graphical=False)
             script_list = SCRIPT_LIST()
             opts = get_opts(script_list)
             
-        if "force" in opts.keys() and opts["force"]:
+        if "force" in opts and opts["force"]:
             script_list = SCRIPT_LIST(force_compile=True)
             
-        if "gui" in opts.keys():
+        if "gui" in opts:
             lists = get_lists()
 
             from retriever.app.main import launch_app
             launch_app(lists)
-            return            
+            return
+
+        if "new" in opts:
+            filename = opts['new']
+
+            f = open(filename, 'w')
+            f.write(sample_script)
+            f.close()
+
+            return
             
         try:
             script = opts["script"]

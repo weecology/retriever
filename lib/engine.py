@@ -8,6 +8,7 @@ import itertools
 from decimal import Decimal
 from retriever import DATA_SEARCH_PATHS, DATA_WRITE_PATH
 from retriever.lib.cleanup import no_cleanup
+from retriever.lib.warning import Warning
 
 
 class Engine():
@@ -24,6 +25,7 @@ class Engine():
     pkformat = "%s PRIMARY KEY"
     script = None
     debug = False
+    warnings = []
 
     
     def add_to_table(self):
@@ -38,8 +40,9 @@ class Engine():
             real_lines = []
             for line in lines:
                 split_line = line.strip('\n\r\t ').split(self.table.delimiter)
-                begin = split_line[:len(self.table.columns) - (3 if hasattr(self.table, "ct_names") else 2)]
-                rest = split_line[len(self.table.columns) - 2:]
+                initial_cols = len(self.table.columns) - (3 if hasattr(self.table, "ct_names") else 2)
+                begin = split_line[:initial_cols]
+                rest = split_line[initial_cols:]
                 n = 0
                 for item in rest:
                     if hasattr(self.table, "ct_names"):
@@ -64,12 +67,16 @@ class Engine():
                 linevalues = self.values_from_line(line)
                 
                 types = self.get_column_datatypes()            
-                # Build insert statement with the correct # of values                
-                cleanvalues = [self.format_insert_value(self.table.cleanup.function
-                                                        (linevalues[n], 
-                                                         self.table.cleanup.args),
-                                                        types[n]) 
-                               for n in range(len(linevalues))]
+                # Build insert statement with the correct # of values
+                try: 
+                    cleanvalues = [self.format_insert_value(self.table.cleanup.function
+                                                            (linevalues[n], 
+                                                            self.table.cleanup.args),
+                                                            types[n]) 
+                                   for n in range(len(linevalues))]
+                except Exception as e:
+                    self.warning('Exception in line %s: %s' % (self.table.record_id, e))
+                    continue
                 try:
                     insert_stmt = self.insert_statement(cleanvalues)
                 except:
@@ -486,6 +493,8 @@ class Engine():
     def final_cleanup(self):
         """Close the database connection."""
         self.connection.close()
+        if self.warnings:
+            print '\n'.join(str(w) for w in self.warnings)
 
         
     def format_column_name(self, column):
@@ -734,6 +743,11 @@ class Engine():
                 pass
 
         return linevalues
+
+
+    def warning(self, warning):
+        new_warning = Warning('%s:%s' % (self.script.shortname, self.table.name), warning)
+        self.warnings.append(new_warning)
         
     
     

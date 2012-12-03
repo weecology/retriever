@@ -70,28 +70,28 @@ setup(name='retriever',
       description='EcoData Retriever',
       author='Ben Morris',
       author_email='ben.morris@weecology.org',
-      url='http://www.ecologicaldata.org/database-toolkits',
+      url='http://www.ecodataretriever.org',
       packages=packages,
       package_dir={
                 'retriever':''
                 },
       entry_points={
         'console_scripts': [
-            'retriever = retriever.main:main',
+            'retriever = retriever.__main__:main',
         ],
       },
 
       # py2exe flags
-      console = [{'script': "main.py",
+      console = [{'script': "__main__.py",
                   'dest_base': "retriever",
                   'icon_resources':[(1,'icon.ico')]
                   }],
       zipfile = None,
 
       # py2app flags
-      app=['main.py'],
+      app=['__main__.py'],
       data_files=[],
-      setup_requires=['py2app'],
+      setup_requires=['py2app'] if 'darwin' in p else [],
 
       # options
       options = {'py2exe': {'bundle_files': 1,
