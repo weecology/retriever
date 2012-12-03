@@ -79,6 +79,8 @@ class engine(Engine):
 
             columns = self.get_insert_columns()
 
+            need_to_delete = False
+
             if self.table.pk and not self.table.contains_pk:
                 if '.' in os.path.basename(filename):
                     proper_name = filename.split('.')
@@ -86,6 +88,7 @@ class engine(Engine):
                                            ) + "_new." + filename.split(".")[-1]
                 else:
                     newfilename = filename + "_new"
+
                 if not os.path.isfile(newfilename):
                     print "Adding index to " + os.path.abspath(newfilename) + "..."
                     read = open(filename, "rb")
@@ -106,7 +109,7 @@ class engine(Engine):
                         
             newfilename = os.path.abspath(newfilename)
             filename_length = (len(os.path.basename(newfilename)) * -1) - 1
-            filepath = newfilename[0:filename_length]
+            filepath = newfilename[:filename_length]
             statement = """
 INSERT INTO """ + self.tablename() + " (" + columns + """)
 SELECT * FROM [""" + os.path.basename(newfilename) + ''']
@@ -118,6 +121,9 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
                 print "Couldn't bulk insert. Trying manual insert."
                 self.connection.rollback()
                 return Engine.insert_data_from_file(self, filename)
+
+            if need_to_delete:
+                os.remove(newfilename)
 
         else:
             return Engine.insert_data_from_file(self, filename)    

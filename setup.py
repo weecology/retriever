@@ -70,7 +70,7 @@ setup(name='retriever',
       description='EcoData Retriever',
       author='Ben Morris',
       author_email='ben.morris@weecology.org',
-      url='http://www.ecologicaldata.org/database-toolkits',
+      url='http://www.ecodataretriever.org',
       packages=packages,
       package_dir={
                 'retriever':''
