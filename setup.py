@@ -82,7 +82,7 @@ setup(name='retriever',
       },
       install_requires=[
                         'xlrd',
-                        ]
+                        ],
 
       # py2exe flags
       console = [{'script': "__main__.py",
