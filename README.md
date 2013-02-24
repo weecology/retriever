@@ -30,8 +30,8 @@ To install the EcoData Retriever from source, you'll need Python 2.6 with the fo
 ###To install from source
 
 1. Clone the repository
-2. From the directory containing setup.py, run the following command: python setup.py install
-3. After installing, type retriever from a command prompt to launch the Database Toolkit,
+2. From the directory containing setup.py, run the following command: ``python setup.py install``
+3. After installing, type ``retriever`` from a command prompt to launch the Database Toolkit,
    or find main.py in your Retriever directory and run it in Python.
 
 License
