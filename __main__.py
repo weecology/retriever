@@ -17,7 +17,8 @@ if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding('latin-1')
 else:
     pass
-from retriever import VERSION, MASTER, SCRIPT_LIST, ENGINE_LIST, sample_script
+from retriever import VERSION, MASTER, SCRIPT_LIST, sample_script
+from retriever.engines import engine_list
 from retriever.lib.repository import check_for_updates
 from retriever.lib.lists import Category, get_lists
 from retriever.lib.tools import choose_engine, get_opts
@@ -26,13 +27,18 @@ from retriever.lib.tools import choose_engine, get_opts
 def main():
     """This function launches the EcoData Retriever."""
     if len(sys.argv) == 1:
+        # if no command line args are passed, launch GUI
+
         if not MASTER:
             check_for_updates(graphical=False if 'darwin' in platform.platform().lower() else True)
         lists = get_lists()
         
         from retriever.app.main import launch_app
         launch_app(lists)
+
     else:
+        # otherwise, parse them
+
         script_list = SCRIPT_LIST()
         opts = get_opts(script_list)
         
@@ -69,7 +75,7 @@ def main():
             print "                 [-f filename (sqlite/ms access)] [-d database (postgresql)]"
             print "                 [--update] [--debug] [--compile]"
             print "Available engines:"
-            for engine in ENGINE_LIST():
+            for engine in engine_list:
                 if engine.abbreviation:
                     abbreviation = "(" + engine.abbreviation + ") "
                 else:

@@ -83,21 +83,8 @@ def SCRIPT_LIST(force_compile=False):
 
 
 def ENGINE_LIST():
-    engines = [
-               "mysql",
-               "postgres",
-               "sqlite",
-               "msaccess",
-               "csv"
-               ]
-
-    ENGINE_MODULE_LIST = [
-                          __import__("retriever.engines." + module, fromlist="engines")
-                          for module in engines
-                          ]
-    
-    return [module.engine() for module in ENGINE_MODULE_LIST]
-
+    from retriever.engines import engine_list
+    return engine_list
 
 
 sample_script = """# basic information about the script

@@ -308,15 +308,14 @@ def get_default_connection():
 
 def choose_engine(opts, choice=True):
     """Prompts the user to select a database engine"""    
-    from retriever import ENGINE_LIST
-    ENGINE_LIST = ENGINE_LIST()
+    from retriever.engines import engine_list
     
     if "engine" in opts.keys():
         enginename = opts["engine"]    
     else:
         if not choice: return None
         print "Choose a database engine:"
-        for engine in ENGINE_LIST:
+        for engine in engine_list:
             if engine.abbreviation:
                 abbreviation = "(" + engine.abbreviation + ") "
             else:
@@ -327,9 +326,9 @@ def choose_engine(opts, choice=True):
     
     engine = Engine()
     if not enginename:
-        engine = ENGINE_LIST[0]
+        engine = engine_list[0]
     else:
-        for thisengine in ENGINE_LIST:
+        for thisengine in engine_list:
             if (enginename == thisengine.name.lower() 
                               or thisengine.abbreviation
                               and enginename == thisengine.abbreviation):
