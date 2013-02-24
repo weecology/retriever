@@ -133,7 +133,7 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
         p = platform.platform().lower()
         if "darwin" in p or not "win" in p:
             raise Exception("MS Access can only be used in Windows.")
-        import pyodbc as dbapi
+        import pypyodbc as dbapi
         self.get_input()
         connection_string = ("DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ="
                              + os.path.abspath(self.opts["file"]).replace("/", "//") + ";")
