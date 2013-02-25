@@ -7,6 +7,7 @@ The main() function can be used for bootstrapping.
 
 """
 
+import argparse
 import os
 import platform
 import sys
@@ -21,7 +22,7 @@ from retriever import VERSION, MASTER, SCRIPT_LIST, sample_script
 from retriever.engines import engine_list
 from retriever.lib.repository import check_for_updates
 from retriever.lib.lists import Category, get_lists
-from retriever.lib.tools import choose_engine, get_opts
+from retriever.lib.tools import choose_engine, get_opts, name_matches
 
 
 def main():
@@ -40,47 +41,57 @@ def main():
         # otherwise, parse them
 
         script_list = SCRIPT_LIST()
-        opts = get_opts(script_list)
         
-        if "update" in opts and opts["update"]:
+        parser = argparse.ArgumentParser()
+        parser.add_argument('-v', '--version', action='version', version=VERSION)
+        
+        subparsers = parser.add_subparsers(help='sub-command help', dest='command')
+        
+        install_parser = subparsers.add_parser('install', help='download and install dataset')
+        install_parser.add_argument('dataset', help='dataset name', nargs='?', default=None)
+        install_parser.add_argument('-e', '--engine', help='engine (%s)' % ', '.join('%s=%s' % (engine.abbreviation, engine.name) for engine in engine_list))
+        install_parser.add_argument('-u', '--user', help='username for database connection, if applicable', nargs='?')
+        install_parser.add_argument('-p', '--password', help='password for database connection, if applicable', nargs='?')
+        install_parser.add_argument('--host', help='host for engine, if applicable', nargs='?')
+        install_parser.add_argument('-o', '--port', help='port for engine, if applicable', nargs='?')
+        install_parser.add_argument('-d', '--db', help='database for engine, if applicable', nargs='?')
+        install_parser.add_argument('-f', '--file', help='file for engine, if applicable', nargs='?')
+        install_parser.add_argument('--compile', help='force re-compile of script before downloading', action='store_true')
+        install_parser.add_argument('--debug', help='run in debug mode', action='store_true')
+        
+        update_parser = subparsers.add_parser('update', help='download updated versions of scripts')
+        
+        gui_parser = subparsers.add_parser('gui', help='launch retriever in graphical mode')
+        
+        new_parser = subparsers.add_parser('new', help='create a new sample retriever script')
+        new_parser.add_argument('filename', help='new script filename')
+        
+        args = parser.parse_args()
+        
+        
+        if hasattr(args, 'compile') and args.compile:
+            script_list = SCRIPT_LIST(force_compile=True)
+        
+        if args.command == 'update':
             check_for_updates(graphical=False)
             script_list = SCRIPT_LIST()
-            opts = get_opts(script_list)
+            return
             
-        if "force" in opts and opts["force"]:
-            script_list = SCRIPT_LIST(force_compile=True)
-            
-        if "gui" in opts:
+        elif args.command == 'gui':
             lists = get_lists()
 
             from retriever.app.main import launch_app
             launch_app(lists)
             return
 
-        if "new" in opts:
-            filename = opts['new']
-
-            f = open(filename, 'w')
+        elif args.command == 'new':
+            f = open(args.filename, 'w')
             f.write(sample_script)
             f.close()
-
-            return
             
-        try:
-            script = opts["script"]
-        except KeyError:
-            print "EcoData Retriever, version", VERSION
-            print "Usage: retriever [install script_name]"
-            print "                 [-e engine] [-h host] [-o port] [-u username] [-p password]"
-            print "                 [-f filename (sqlite/ms access)] [-d database (postgresql)]"
-            print "                 [--update] [--debug] [--compile]"
-            print "Available engines:"
-            for engine in engine_list:
-                if engine.abbreviation:
-                    abbreviation = "(" + engine.abbreviation + ") "
-                else:
-                    abbreviation = ""
-                print "\t", abbreviation, engine.name
+            return
+        
+        if args.dataset is None:
             all_scripts = set([script.shortname for script in script_list])
             all_tags = set(["ALL"] + 
                             [tag.strip().upper() for script in script_list for tagset in script.tags for tag in tagset.split('>')])
@@ -90,23 +101,24 @@ def main():
             print '\t', '\t'.join(sorted(list(all_tags)))
             if len(all_scripts) == 0:
                 print "Run 'retriever update' to download the latest scripts from the repository."
-            sys.exit()
+            return
         
-        engine = choose_engine(opts)
-        debug = False
-        if "debug" in opts.keys() and opts["debug"]: debug = True
-        if isinstance(script, list):
-            for dataset in script:
-                print "=> Installing", dataset.name
-                try:
-                    dataset.download(engine, debug=debug)
-                except KeyboardInterrupt:
-                    pass
-                except Exception as e:
-                    print e
+        engine = choose_engine(get_opts(script_list, sys.argv[1:])) # TODO: update this
+        
+        if hasattr(args, 'debug') and args.debug: debug = True
+        else: debug = False
+        
+        scripts = name_matches(script_list, args.dataset)
+        
+        for dataset in scripts:
+            print "=> Installing", dataset.name
+            try:
+                dataset.download(engine, debug=debug)
+            except KeyboardInterrupt:
+                pass
+            except Exception as e:
+                print e
 
-        else:
-            script.download(engine)
         print "Done!"
                                                             
 
