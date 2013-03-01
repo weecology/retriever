@@ -37,7 +37,7 @@ class DownloadManager:
         if self.worker:
             script = self.worker.script
             if self.worker.finished() and len(self.worker.output) == 0:
-                if script.warnings: 
+                if hasattr(script, 'warnings') and script.warnings: 
                     self.warnings.add(script)
                     self.Parent.SetStatusText('\n'.join(str(w) for w in script.warnings))
                 else:
