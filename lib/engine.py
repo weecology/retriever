@@ -18,21 +18,29 @@ class Engine():
     instructions = "Enter your database connection information:"
     db = None
     table = None
-    connection = None
-    cursor = None
+    _connection = None
+    _cursor = None
     datatypes = []
     required_opts = []
     pkformat = "%s PRIMARY KEY"
     script = None
     debug = False
     warnings = []
-
+    
+    
+    def connect(self):
+        if self._connection is None:
+            self._connection = self.get_connection()
+            
+        return self._connection
+        
+    def get_connection(self):
+        pass
+    
     
     def add_to_table(self):
         """This function adds data to a table from one or more lines specified 
         in engine.table.source."""
-        self.get_cursor()
-        
         if self.table.columns[-1][1][0][:3] == "ct-":        
             # cross-tab data
             
@@ -313,7 +321,6 @@ class Engine():
         if db_name:
             print "Creating database " + db_name + "..."
             # Create the database    
-            self.get_cursor()
             create_stmt = self.create_db_statement()
             if self.debug: print create_stmt
             try:
@@ -342,8 +349,7 @@ class Engine():
         """Creates a new database table based on settings supplied in Table 
         object engine.table."""
         print "Creating table " + self.tablename() + "..."
-        self.get_cursor()
-        
+
         # Try to drop the table if it exists; this may cause an exception if it
         # doesn't exist, so ignore exceptions
         try:
@@ -589,9 +595,10 @@ class Engine():
         
     def get_cursor(self):
         """Gets the db cursor."""
-        self.connection = self.get_connection()
-        self.cursor = self.connection.cursor()
-
+        if self._cursor is None:
+            self._cursor = self.connection.cursor()
+        return self._cursor
+        
         
     def get_input(self):
         """Manually get user input for connection information when script is 
@@ -748,6 +755,10 @@ class Engine():
     def warning(self, warning):
         new_warning = Warning('%s:%s' % (self.script.shortname, self.table.name), warning)
         self.warnings.append(new_warning)
+        
+        
+    connection = property (connect)
+    cursor = property (get_cursor)
         
     
     
