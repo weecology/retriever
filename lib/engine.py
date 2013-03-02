@@ -28,13 +28,15 @@ class Engine():
     warnings = []
     
     
-    def connect(self):
-        if self._connection is None:
+    def connect(self, force_reconnect=False):
+        if self._connection is None or force_reconnect:
             self._connection = self.get_connection()
             
         return self._connection
         
     def get_connection(self):
+        '''This method should be overloaded by specific implementations
+        of Engine.'''
         pass
     
     

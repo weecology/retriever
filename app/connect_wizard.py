@@ -49,9 +49,12 @@ class ConnectWizard(wx.wizard.Wizard):
         self.pages.append(ConnectPage(self, 
                                       "Connection Info", 
                                       ""))
+                                      
+        self.pages.append(ConfirmPage(self, "Connection", ""))
 
-        self.TITLE, self.CHOOSEDB, self.CONNECTION = [self.pages[i] 
-                                                      for i in range(len(self.pages))]
+        (self.TITLE, self.CHOOSEDB, 
+         self.CONNECTION, self.CONFIRM) = [self.pages[i] 
+                                           for i in range(len(self.pages))]
         
         self.TITLE.welcome = HtmlWindow(self.TITLE)
         self.TITLE.welcome.SetSize((450,400))
@@ -59,6 +62,8 @@ class ConnectWizard(wx.wizard.Wizard):
         self.TITLE.sizer.Add(self.TITLE.welcome, 1, wx.EXPAND)
              
         self.CHOOSEDB.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CONNECTION.Draw)
+        self.CONNECTION.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CONFIRM.Draw)
+        self.CONFIRM.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.CONNECTION.Draw)
         
         for i in range(len(self.pages) - 1):
             wx.wizard.WizardPageSimple_Chain(self.pages[i], self.pages[i + 1])
@@ -106,17 +111,18 @@ class ConnectPage(TitledPage):
     def __init__(self, parent, title, label):
         TitledPage.__init__(self, parent, title, label)
         self.option = dict()
-        self.sel = ""
+        self.sel = None
         self.fields = wx.BoxSizer(wx.VERTICAL)
-        self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.SaveConnection)
-    def SaveConnection(self, evt):
-        values_dict = dict()
-        for key in self.option.keys():
-            values_dict[key] = str(self.option[key].Value)
-        save_connection(self.engine.name, values_dict)
+        self.parent = parent
+        
     def Draw(self, evt):
         """When the page is drawn, it may need to update its fields if 
         the selected database has changed."""
+        
+        if not evt.GetDirection():
+            btn = self.parent.FindWindowById(wx.ID_FORWARD) 
+            if btn: btn.Enable()
+        
         if len(self.Parent.CHOOSEDB.dblist.GetStringSelection()) == 0 and evt.Direction:
             evt.Veto()                  
         else:
@@ -170,3 +176,45 @@ class ConnectPage(TitledPage):
                     self.fields.Add(self.fieldset[opt[0]])
                 self.sizer.Add(self.fields)
                 self.sizer.Layout()
+                
+                
+class ConfirmPage(TitledPage):
+    """The final confirmation page."""
+    def __init__(self, parent, title, label):
+        TitledPage.__init__(self, parent, title, label)
+        self.fields = wx.BoxSizer(wx.VERTICAL)
+        self.parent = parent
+        
+    def Draw(self, evt):
+        if not evt.GetDirection(): return
+        
+        self.fields.Clear(True)
+        self.fields = wx.BoxSizer(wx.VERTICAL)
+        
+        self.values_dict = dict()
+        connect = self.parent.CONNECTION
+        for key in connect.option.keys():
+            self.values_dict[key] = str(connect.option[key].Value)
+        
+        try:
+            connect.engine.opts = self.values_dict
+            connect.engine.connect(force_reconnect=True)
+            message = '''<p><b>Success!</b>Your connection has been saved.</p>
+            <p>Click Finish to continue.</p>'''
+            save_connection(connect.engine.name, self.values_dict)
+            
+        except Exception as e:
+            message = message = '''<p><b>Error.</b>There was a problem with your
+            connection:</p><p>%s</p>
+            <p>Click Back to try again, or Cancel.</p>''' % e
+            
+            btn = self.parent.FindWindowById(wx.ID_FORWARD) 
+            if btn: btn.Disable()
+        
+        self.message = HtmlWindow(self)
+        self.message.SetSize((450,400))
+        self.message.SetHtml(message)
+        self.fields.Add(self.message, 1, wx.EXPAND)
+        self.sizer.Add(self.fields)
+        
+        self.sizer.Layout()
