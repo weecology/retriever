@@ -80,7 +80,8 @@ class engine(Engine):
             columns = self.get_insert_columns()
 
             need_to_delete = False
-
+            add_to_record_id = 0
+            
             if self.table.pk and not self.table.contains_pk:
                 if '.' in os.path.basename(filename):
                     proper_name = filename.split('.')
@@ -88,17 +89,18 @@ class engine(Engine):
                                            ) + "_new." + filename.split(".")[-1]
                 else:
                     newfilename = filename + "_new"
-
+                
                 if not os.path.isfile(newfilename):
                     print "Adding index to " + os.path.abspath(newfilename) + "..."
                     read = open(filename, "rb")
                     write = open(newfilename, "wb")
                     to_write = ""
-                    id = self.table.record_id
+                    
                     for line in read:
                         to_write += str(id) + self.table.delimiter + line.replace("\n", "\r\n")
-                        id += 1
-                    self.table.record_id = id
+                        add_to_record_id += 1
+                    self.table.record_id += add_to_record_id
+                    
                     write.write(to_write)
                     write.close()
                     read.close()
@@ -120,6 +122,9 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
             except:
                 print "Couldn't bulk insert. Trying manual insert."
                 self.connection.rollback()
+                
+                self.table.record_id -= add_to_record_id
+                
                 return Engine.insert_data_from_file(self, filename)
 
             if need_to_delete:
