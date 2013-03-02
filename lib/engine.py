@@ -29,7 +29,9 @@ class Engine():
     
     
     def connect(self, force_reconnect=False):
-        if self._connection is None or force_reconnect:
+        if force_reconnect: self.disconnect()
+        
+        if self._connection is None:
             self._connection = self.get_connection()
             
         return self._connection
