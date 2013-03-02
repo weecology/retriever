@@ -176,6 +176,8 @@ class Frame(wx.Frame):
         if self.download_manager.dialog:
             self.download_manager.dialog.Destroy()
         
+        self.engine.final_cleanup()
+        
         self.Destroy()
         
         

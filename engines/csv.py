@@ -10,6 +10,8 @@ class DummyConnection:
         pass
     def rollback(self):
         pass
+    def close(self):
+        pass
 
 class DummyCursor(DummyConnection):
     pass

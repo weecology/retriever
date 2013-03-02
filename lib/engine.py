@@ -34,6 +34,13 @@ class Engine():
             
         return self._connection
         
+        
+    def disconnect(self):
+        if self._connection:
+            self.connection.close()
+            self._connection = None
+        
+        
     def get_connection(self):
         '''This method should be overloaded by specific implementations
         of Engine.'''
@@ -500,9 +507,11 @@ class Engine():
             
     def final_cleanup(self):
         """Close the database connection."""
-        self.connection.close()
+        
         if self.warnings:
             print '\n'.join(str(w) for w in self.warnings)
+            
+        self.disconnect()
 
         
     def format_column_name(self, column):
