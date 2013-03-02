@@ -19,7 +19,7 @@ class engine(Engine):
                  }
     required_opts = [("file", 
                       "Enter the filename of your Access database",
-                      "access.accdb",
+                      "access.mdb",
                       "Access databases (*.mdb, *.accdb)|*.mdb;*.accdb"),
                      ("table_name",
                       "Format of table name",
@@ -140,6 +140,8 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
             raise Exception("MS Access can only be used in Windows.")
         import pypyodbc as dbapi
         self.get_input()
+        if not os.path.exists(self.opts['file']) and self.opts['file'].endswith('.mdb'):
+            dbapi.win_create_mdb(self.opts['file'])
         connection_string = ("DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ="
                              + os.path.abspath(self.opts["file"]).replace("/", "//") + ";")
         return dbapi.connect(connection_string, autocommit = False)
