@@ -728,7 +728,7 @@ class Engine():
 
         
     def tablename(self, name=None, dbname=None):
-        """Returns the full tablename in the format db.table."""
+        """Returns the full tablename."""
         if not name:
             name = self.table.name
         if not dbname:

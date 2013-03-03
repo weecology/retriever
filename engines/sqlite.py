@@ -35,7 +35,6 @@ class engine(Engine):
         
     def table_exists(self, dbname, tablename):
         if not hasattr(self, 'existing_table_names'):
-            self.get_cursor()
             self.cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
             self.existing_table_names = set()
             for line in self.cursor:

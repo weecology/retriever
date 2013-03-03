@@ -98,7 +98,6 @@ CSV HEADER"""
             
     def table_exists(self, dbname, tablename):
         if not hasattr(self, 'existing_table_names'):
-            self.get_cursor()
             self.cursor.execute("SELECT schemaname, tablename FROM pg_tables WHERE schemaname NOT LIKE 'pg_%';")
             self.existing_table_names = set()
             for schema, table in self.cursor:
