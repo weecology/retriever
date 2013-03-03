@@ -11,6 +11,7 @@ class DownloadThread(Thread):
     def __init__(self, engine, script):
         Thread.__init__(self)
         self.engine = engine
+        self.engine.disconnect()
         self.script = script
         self.daemon = True
         self.output_lock = Lock()
@@ -19,9 +20,12 @@ class DownloadThread(Thread):
 
     def run(self):
         try:
+            self.engine.connect()
             self.download_script()
             self.done = True
+            self.engine.disconnect()
         except:
+            self.engine.disconnect()
             raise
             return
         

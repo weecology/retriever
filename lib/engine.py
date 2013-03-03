@@ -41,6 +41,7 @@ class Engine():
         if self._connection:
             self.connection.close()
             self._connection = None
+            self._cursor = None
         
         
     def get_connection(self):
