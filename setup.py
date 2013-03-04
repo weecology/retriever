@@ -82,6 +82,7 @@ setup(name='retriever',
       },
       install_requires=[
                         'xlrd',
+                        'lscolumns',
                         ],
 
       # py2exe flags

@@ -65,6 +65,8 @@ def main():
         
         new_parser = subparsers.add_parser('new', help='create a new sample retriever script')
         new_parser.add_argument('filename', help='new script filename')
+
+        ls_parser = subparsers.add_parser('ls', help='display a list all available dataset scripts')
         
         args = parser.parse_args()
         
@@ -91,14 +93,17 @@ def main():
             
             return
         
-        if args.dataset is None:
+        if args.command == 'ls' or args.dataset is None:
+            import lscolumns
+
             all_scripts = set([script.shortname for script in script_list])
             all_tags = set(["ALL"] + 
                             [tag.strip().upper() for script in script_list for tagset in script.tags for tag in tagset.split('>')])
+
             print "Available datasets (%s):" % len(all_scripts)
-            print '\t', '\t'.join(sorted(list(all_scripts), key=lambda s: s.lower()))
+            lscolumns.printls(sorted(list(all_scripts), key=lambda s: s.lower()))
             print "Groups:"
-            print '\t', '\t'.join(sorted(list(all_tags)))
+            lscolumns.printls(sorted(list(all_tags)))
             if len(all_scripts) == 0:
                 print "Run 'retriever update' to download the latest scripts from the repository."
             return
