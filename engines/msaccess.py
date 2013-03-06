@@ -131,8 +131,19 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
                 os.remove(newfilename)
 
         else:
-            return Engine.insert_data_from_file(self, filename)    
+            return Engine.insert_data_from_file(self, filename)
+        
+    def table_exists(self, dbname, tablename):
+        try:
+            tablename = self.tablename(name=tablename, dbname=dbname)
+            test_statement = "SELECT * FROM " + tablename
+            self.cursor.execute(test_statement)
+            n = self.cursor.next()
+            return True
             
+        except:
+            return False
+        
     def get_connection(self):
         """Gets the db connection."""
         p = platform.platform().lower()

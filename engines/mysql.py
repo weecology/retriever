@@ -73,12 +73,9 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
     def table_exists(self, dbname, tablename):
         try:
             tablename = self.tablename(name=tablename, dbname=dbname)
-            connection = self.get_connection()
-            cursor = connection.cursor()
             test_statement = "SELECT * FROM " + tablename + " LIMIT 1"
-            cursor.execute(test_statement)
+            self.cursor.execute(test_statement)
             l = len(cursor.fetchall())
-            connection.close()
             return l > 0
         except:
             return False
