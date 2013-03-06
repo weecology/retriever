@@ -65,8 +65,13 @@ def main():
         
         new_parser = subparsers.add_parser('new', help='create a new sample retriever script')
         new_parser.add_argument('filename', help='new script filename')
+
+        help_parser = subparsers.add_parser('help', help='')
         
         args = parser.parse_args()
+
+        if args.command == 'help':
+            parser.parse_args(['-h'])
         
         
         if hasattr(args, 'compile') and args.compile:
