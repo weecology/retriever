@@ -91,13 +91,16 @@ class InitThread(Thread):
         try:
             running_from = os.path.basename(sys.argv[0])
             
-            if os.path.isfile('dbtk_old.exe') and running_from != 'dbtk_old.exe':
-                try:
-                    os.remove('dbtk_old.exe')
-                except:
-                    pass
+            # NOTE: exe auto-update functionality has been temporarily disabled 
+            # since the binaries were moved to AWS.
 
-            if running_from[-4:] == ".exe":
+            if False:#running_from[-4:] == ".exe":
+                if os.path.isfile('retriever_old.exe') and running_from != 'retriever_old.exe':
+                    try:
+                        os.remove('retriever_old.exe')
+                    except:
+                        pass
+
                 # Windows: open master branch version file to find out most recent executable version            
                 try:
                     version_file = urllib.urlopen(MASTER_BRANCH + "version.txt")
