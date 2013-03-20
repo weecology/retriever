@@ -4,7 +4,7 @@ import wx
 from retriever.app.connect_wizard import ConnectWizard
 from retriever.app.controls import *
 from retriever.app.download_manager import DownloadManager
-from retriever.app.images import icon, cycle, download, downloaded, error, warning
+from retriever.app.images import icon, cycle, download, downloaded, error, warning, logo
 from retriever.lib.tools import get_default_connection, get_saved_connection, choose_engine
 from retriever.lib.lists import Category
 from retriever import VERSION, ENGINE_LIST, SCRIPT_LIST
@@ -23,6 +23,7 @@ class App(wx.App):
         mfs.AddFile("downloaded.png", downloaded.GetImage(), wx.BITMAP_TYPE_PNG)
         mfs.AddFile("error.png", error.GetImage(), wx.BITMAP_TYPE_PNG)
         mfs.AddFile("warning.png", warning.GetImage(), wx.BITMAP_TYPE_PNG)
+        mfs.AddFile("logo.png", logo.GetImage(), wx.BITMAP_TYPE_PNG)
         
         default_connection = get_default_connection()
         if default_connection:

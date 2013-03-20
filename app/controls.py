@@ -12,9 +12,9 @@ class AboutDialog(wx.Dialog):
     text = """
 <body bgcolor="#ACAA60">
 <center><table bgcolor="#455481" width="100%" cellspacing="0" cellpadding="0" border="1">
-<tr><td align="center"><h1>
-EcoData Retriever
-</h1><h2>
+<tr><td align="center">
+<img src='memory:logo.png' />
+<h2>
 version """ + VERSION + (" (master branch)" if MASTER else "") +  """<br/>
 running on Python %s (%s)""" % (platform.python_version(), arch) + """
 </h2></td></tr></table>
@@ -28,7 +28,7 @@ For more information, visit <a href="http://www.ecologicaldata.org">http://www.e
 </p>
 </body>"""
     def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, -1, "About", size=(440, 400))
+        wx.Dialog.__init__(self, parent, -1, "About", size=(600, 600))
         
         self.html = HtmlWindow(self)
         self.html.SetPage(self.text)
