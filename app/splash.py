@@ -1,6 +1,6 @@
 import wx
 from wx.lib.agw.advancedsplash import AdvancedSplash
-from retriever.app.images import splash_img
+from retriever.app.images import logo
 
 class Splash(AdvancedSplash):
     def __init__(self, parent=None):
