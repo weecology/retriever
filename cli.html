@@ -46,7 +46,7 @@
         <p>The Retriever includes a command line interface to allow its capabilities to be integrated into scientific workflows involving non-Python programming languages. For example, the Retriever can easily be called from R (or run as part of a pipe workflow including R) to automate the downloading and installing of databases necessary for analysis. This also makes it easier to use in batch processes or on servers that don't have graphical capabilities.</p>
         <p>After installing, run <code>retriever update</code> to download all of the available dataset scripts. To see the full list of command line options and datasets run <code>retriever help</code>. The output will look like this:</p>
         <pre>
-EcoData Retriever, version v1.4
+EcoData Retriever, version v1.5
 Usage: retriever [install script_name]
                  [-e engine] [-h host] [-o port] [-u username] [-p password]
                  [-f filename (sqlite/ms access)] [-d database (postgresql)]
@@ -101,8 +101,6 @@ setwd("C:\Users\ethan\Desktop")
 system("retriever install Gentry -e c")
 </pre>
 <p>If you put a copy of the Retriever in the working directory for the project then setting the working directory manually is not necessary.</p>
-        <h4>Mac</h4> 
-        <p>To use the Command Line Interface on Macs it is necessary to install from source instead of using the app. Once the Retriever has been installed from source just follow the Basics instructions above.</p>
          
          
       </section>
