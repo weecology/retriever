@@ -30,8 +30,7 @@ def main():
     if len(sys.argv) == 1:
         # if no command line args are passed, launch GUI
 
-        if not MASTER:
-            check_for_updates(graphical=False if 'darwin' in platform.platform().lower() else True)
+        check_for_updates(graphical=False if 'darwin' in platform.platform().lower() else True)
         lists = get_lists()
         
         from retriever.app.main import launch_app

@@ -11,7 +11,7 @@ import imp
 from lib.compile import compile_script
 
 
-VERSION = 'v1.2.1'
+VERSION = 'v1.5'
 MASTER = True
 
 REPO_URL = "https://raw.github.com/weecology/retriever/"

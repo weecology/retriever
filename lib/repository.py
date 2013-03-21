@@ -31,8 +31,6 @@ def download_from_repository(filepath, newpath, repo=REPOSITORY):
 
 def more_recent(latest, current):
     """Given two version number strings, returns True if the first is more recent."""
-    if current == "master":
-        return False
     latest_parts = latest.split('.')
     current_parts = current.split('.')
     for n in range(len(latest_parts)):
