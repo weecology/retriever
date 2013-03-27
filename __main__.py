@@ -118,18 +118,19 @@ def main():
         else: debug = False
         
         scripts = name_matches(script_list, args.dataset)
-        
-        for dataset in scripts:
-            print "=> Installing", dataset.name
-            try:
-                dataset.download(engine, debug=debug)
-            except KeyboardInterrupt:
-                pass
-            except Exception as e:
-                print e
-
-        print "Done!"
-                                                            
+        if scripts:
+            for dataset in scripts:
+                print "=> Installing", dataset.name
+                try:
+                    dataset.download(engine, debug=debug)
+                except KeyboardInterrupt:
+                    pass
+                except Exception as e:
+                    print e
+            print "Done!"
+        else:
+            print "The dataset %s isn't currently availabe in the Retriever" % (args.dataset)
+            print "Run 'retriever -ls to see a list of currently available datasets"
 
 if __name__ == "__main__":
     main()
