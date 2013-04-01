@@ -21,8 +21,8 @@ class main(Script):
         self.tags = ["Taxon > Birds", "Spatial Scale > Continental"]
         self.urls = {
                      "counts": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/",
-                     "routes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/Routes.exe",
-                     "weather": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/Weather.exe",
+                     "routes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/Routes.zip",
+                     "weather": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/Weather.zip",
                      "region_codes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/RegionCodes.txt",
                      "species": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/SpeciesList.txt"
                      }
@@ -207,14 +207,14 @@ class main(Script):
                     print "Inserting data from " + state + "..."
                     try:
                         engine.table.cleanup = Cleanup()
-                        engine.insert_data_from_archive(self.urls["counts"] + shortstate + ".exe", 
+                        engine.insert_data_from_archive(self.urls["counts"] + shortstate + ".zip", 
                                                         [shortstate + ".csv"])
                     except:               
                         print "Failed bulk insert on " + state + ", inserting manually."
                         engine.connection.rollback()
                         engine.table.cleanup = Cleanup(correct_invalid_value,
                                                        nulls=['*'])
-                        engine.insert_data_from_archive(self.urls["counts"] + shortstate + ".exe", 
+                        engine.insert_data_from_archive(self.urls["counts"] + shortstate + ".zip", 
                                                         [shortstate + ".csv"])
                             
                 except:
