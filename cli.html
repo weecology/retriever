@@ -44,32 +44,55 @@
       <section>
         <h2>Using the Command Line Interface</h2>
         <p>The Retriever includes a command line interface to allow its capabilities to be integrated into scientific workflows involving non-Python programming languages. For example, the Retriever can easily be called from R (or run as part of a pipe workflow including R) to automate the downloading and installing of databases necessary for analysis. This also makes it easier to use in batch processes or on servers that don't have graphical capabilities.</p>
-        <p>After installing, run <code>retriever update</code> to download all of the available dataset scripts. To see the full list of command line options and datasets run <code>retriever help</code>. The output will look like this:</p>
+        <p>After installing, run <code>retriever update</code> to download all of the available dataset scripts. To see the full list of command line options and datasets run <code>retriever --help</code>. The output will look like this:</p>
         <pre>
-EcoData Retriever, version v1.5
-Usage: retriever [install script_name]
-                 [-e engine] [-h host] [-o port] [-u username] [-p password]
-                 [-f filename (sqlite/ms access)] [-d database (postgresql)]
-                 [--update] [--debug] [--compile]
-Available engines:
-    (m)  MySQL
-    (p)  PostgreSQL
-    (s)  SQLite
-    (a)  Microsoft Access
-    (c)  CSV
-Available datasets (15):
-    Adler2007   AvianBodySize   DelMoral2010    MammalLH    MammalMR2010    MarineSize  MCDB    McGlinn2010 MoM2003 Pantheria   PlantTaxonomy   PortalMammals   Ramesh2010  Woods2009   Zachmann2010
-Groups:
-    ALL BIOME   BIRDS   COMPILATION DATA TYPE   DESERT  EXPERIMENTAL    FISH    GLOBAL  LOCAL   MAMMALS OBSERVATIONAL   PLANTS  REGIONAL    SPATIAL SCALE   TAXON   TAXONOMY    TIME SERIES</pre>
+usage: retriever [-h] [-v] {install,update,gui,new,ls,help} ...
+
+positional arguments:
+  {install,update,gui,new,ls,help}
+                        sub-command help
+    install             download and install dataset
+    update              download updated versions of scripts
+    gui                 launch retriever in graphical mode
+    new                 create a new sample retriever script
+    ls                  display a list all available dataset scripts
+    help
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -v, --version         show program's version number and exit
+        </pre>
 
         <h4>Standard Usage</h4>
+        <p>To get the most recent versions of the data set scripts, run <code>retriever update</code></p>
         <p>To install datasets, use <code>retriever install</code>:</p>
         <pre>
- retriever install [dataset name or category name]
- -e [m for mysql, s for sqlite, p for postgres, a for access, c for csv]
- -h [host] -o [port] -u [username] -p [password]
- -f [filename, if using sqlite or ms access]
- -d [database, if using postgres]</pre>
+usage: retriever install [-h] [-e ENGINE] [-u [USER]] [-p [PASSWORD]]
+                         [--host [HOST]] [-o [PORT]] [-d [DB]] [-f [FILE]]
+                         [--compile] [--debug]
+                         [dataset]
+
+positional arguments:
+  dataset               dataset name
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -e ENGINE, --engine ENGINE
+                        engine (m=MySQL, p=PostgreSQL, s=SQLite, a=Microsoft
+                        Access, c=CSV)
+  -u [USER], --user [USER]
+                        username for database connection, if applicable
+  -p [PASSWORD], --password [PASSWORD]
+                        password for database connection, if applicable
+  --host [HOST]         host for engine, if applicable
+  -o [PORT], --port [PORT]
+                        port for engine, if applicable
+  -d [DB], --db [DB]    database for engine, if applicable
+  -f [FILE], --file [FILE]
+                        file for engine, if applicable
+  --compile             force re-compile of script before downloading
+  --debug               run in debug mode
+        </pre>
         <p>For example, to install the Breeding Bird Survey data into an sqlite database named mydatabase.db you would use:</p>
         <pre>
 retriever install BBS -e s -f mydatabase.db</pre>
