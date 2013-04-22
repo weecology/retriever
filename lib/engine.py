@@ -81,12 +81,12 @@ class Engine():
             
         total = self.table.record_id + real_line_length
         for line in real_lines:
-            line = line.strip()
+            if not self.table.fixed_width: line = line.strip()
             if line:
                 self.table.record_id += 1            
                 linevalues = self.values_from_line(line)
                 
-                types = self.get_column_datatypes()            
+                types = self.get_column_datatypes()
                 # Build insert statement with the correct # of values
                 try: 
                     cleanvalues = [self.format_insert_value(self.table.cleanup.function
