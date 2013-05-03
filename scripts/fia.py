@@ -19,16 +19,21 @@ class main(Script):
         self.name = "Forest Inventory and Analysis"
         self.shortname = "FIA"
         self.ref = "http://fia.fs.fed.us/"
-        self.urls = {"main": "http://apps.fs.fed.us/fiadb-downloads/"}
+        self.urls = {"main": "http://apps.fs.fed.us/fiadb-downloads/",
+                     'species': 'http://apps.fs.fed.us/fiadb-downloads/REF_SPECIES.CSV'}
         self.tags = ["Taxon > Plants", "Spatial Scale > Continental",
                      "Data Type > Observational"]
         self.description = """WARNING: This dataset requires downloading many large files and will probably take several hours to finish installing."""
         self.addendum = """This dataset requires downloading many large files - please be patient."""
 
     def download(self, engine=None, debug=False):
-        Script.download(self, engine, debug)
-        
+        Script.download(self, engine, debug)        
         engine = self.engine
+        
+        # download and create species table
+        table = Table('species')
+        self.engine.auto_create_table(table, url=self.urls['species'])
+        self.engine.insert_data_from_url(self.urls['species'])
         
         # State abbreviations with the year annual inventory began for that state
         stateslist = [('AL', 2001), ('AK', 2004), ('AZ', 2001), ('AR', 2000), 
