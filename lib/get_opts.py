@@ -17,9 +17,16 @@ install_parser.add_argument('--debug', help='run in debug mode', action='store_t
 for engine in engine_list:
     engine_parser = install_subparsers.add_parser(engine.abbreviation, help=engine.name)
     engine_parser.add_argument('dataset', help='dataset name', nargs='?', default=None)
+    abbreviations = set('h')
     for arg in engine.required_opts:
-        name, help, default = arg[:3]
-        engine_parser.add_argument('--%s' % name, help=help, nargs=1, default=default)            
+        arg_name, help, default = arg[:3]
+        potential_abbreviations = [char for char in arg_name if not char in abbreviations]
+        if potential_abbreviations:
+            abbreviation = potential_abbreviations[0]
+            abbreviations.add(abbreviation)
+        else: abbreviation = '-%s' % arg_name
+        
+        engine_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help, nargs=1, default=default)            
 
 update_parser = subparsers.add_parser('update', help='download updated versions of scripts')
 
