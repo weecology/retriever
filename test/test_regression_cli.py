@@ -3,7 +3,7 @@ import nose
 from hashlib import md5
 
 def getmd5(filename):
-    """Get MD5 value of a set of lines."""
+    """Get MD5 value for a file"""
     lines = open(filename, 'r')
     sum = md5()
     for line in lines:
