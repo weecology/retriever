@@ -22,7 +22,7 @@ def test_sqlite_regression():
 def check_sqlite_regression(dataset, known_md5):
     """Check for regression for a particular dataset and engine"""
     os.system("rm output_file") #reinstalling changes checksum in sqlite
-    os.system("retriever install %s -e s -f output_file" % dataset)
+    os.system("retriever install sqlite %s -f output_file" % dataset)
     current_md5 = getmd5('output_file')
     assert current_md5 == known_md5
     
