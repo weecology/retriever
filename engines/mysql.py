@@ -6,7 +6,7 @@ from retriever.lib.models import Engine, no_cleanup
 class engine(Engine):
     """Engine instance for MySQL."""
     name = "MySQL"
-    abbreviation = "m"
+    abbreviation = "mysql"
     datatypes = {
                  "auto": "INT(5) NOT NULL AUTO_INCREMENT",
                  "int": "INT",
@@ -17,16 +17,16 @@ class engine(Engine):
                  "bool": "BOOL",
                  }
     max_int = 4294967295
-    required_opts = [("username", 
+    required_opts = [("user",
                       "Enter your MySQL username", 
                       "root"),
-                     ("password", 
-                      "Enter your password: ", 
+                     ("password",
+                      "Enter your password", 
                       ""),
-                     ("hostname", 
-                      "Enter your MySQL host ", 
+                     ("host",
+                      "Enter your MySQL host", 
                       "localhost"),
-                     ("port", 
+                     ("port",
                       "Enter your MySQL port", 
                       3306),
                      ("database_name",
@@ -82,9 +82,9 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
         
     def get_connection(self):
         """Gets the db connection."""
-        args = {'host': self.opts['hostname'],
+        args = {'host': self.opts['host'],
                 'port': int(self.opts['port']),
-                'user': self.opts['username'],
+                'user': self.opts['user'],
                 'passwd': self.opts['password']}
 
         try:

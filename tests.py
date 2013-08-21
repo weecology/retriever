@@ -12,7 +12,7 @@ see if there are any errors. It does not check the values in the database.
 
 import os
 import unittest
-from retriever.lib.tools import get_opts, choose_engine
+from retriever.lib.tools import choose_engine
 from retriever import MODULE_LIST, ENGINE_LIST, SCRIPT_LIST
 
 MODULE_LIST = MODULE_LIST()
@@ -22,7 +22,7 @@ TEST_ENGINES = {}
 IGNORE = ["AvianBodyMass", "FIA"]
 
 for engine in ENGINE_LIST:
-    opts = get_opts(SCRIPT_LIST, args=[])
+    opts = {}
     print "** %s **" % engine.name
     opts["engine"] = engine.abbreviation
 
