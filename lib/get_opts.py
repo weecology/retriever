@@ -26,7 +26,7 @@ for engine in engine_list:
             abbreviations.add(abbreviation)
         else: abbreviation = '-%s' % arg_name
         
-        engine_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help, nargs=1, default=default)            
+        engine_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help, nargs='?', default=default)            
 
 update_parser = subparsers.add_parser('update', help='download updated versions of scripts')
 
