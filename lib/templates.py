@@ -2,7 +2,7 @@
 inherit from the most specific class available."""
 
 from retriever.lib.models import *
-from retriever.lib.tools import get_opts, choose_engine
+from retriever.lib.tools import choose_engine
 
 
 class Script:
@@ -46,7 +46,7 @@ class Script:
                 
     def checkengine(self, engine=None):
         if not engine:
-            opts = get_opts([])
+            opts = {}
             engine = choose_engine(opts)
         engine.get_input()
         engine.script = self
