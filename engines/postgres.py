@@ -6,7 +6,7 @@ from retriever.lib.models import Engine, no_cleanup
 class engine(Engine):
     """Engine instance for PostgreSQL."""
     name = "PostgreSQL"
-    abbreviation = "p"
+    abbreviation = "postgres"
     datatypes = {
                  "auto": "serial",
                  "int": "integer",
@@ -17,13 +17,13 @@ class engine(Engine):
                  "bool": "boolean",
                  }
     max_int = 2147483647
-    required_opts = [("username", 
+    required_opts = [("user", 
                       "Enter your PostgreSQL username", 
                       "postgres"),
                      ("password", 
                       "Enter your password", 
                       ""),
-                     ("hostname", 
+                     ("host", 
                       "Enter your PostgreSQL host", 
                       "localhost"),
                      ("port", 
@@ -119,8 +119,8 @@ CSV HEADER"""
         """Gets the db connection."""
         import psycopg2 as dbapi    
         self.get_input()            
-        return dbapi.connect(host = self.opts["hostname"],
+        return dbapi.connect(host = self.opts["host"],
                                         port = int(self.opts["port"]),
-                                        user = self.opts["username"],
+                                        user = self.opts["user"],
                                         password = self.opts["password"],
                                         database = self.opts["database"])
