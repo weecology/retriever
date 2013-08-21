@@ -7,7 +7,7 @@ class engine(Engine):
     """Engine instance for Microsoft Access."""
     name = "Microsoft Access"
     instructions = """Create a database in Microsoft Access, close Access, then \nselect your database file using this dialog."""
-    abbreviation = "a"
+    abbreviation = "msaccess"
     datatypes = {
                  "auto": "AUTOINCREMENT",
                  "int": "INTEGER",

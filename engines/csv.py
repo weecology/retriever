@@ -20,7 +20,7 @@ class DummyCursor(DummyConnection):
 class engine(Engine):
     """Engine instance for writing data to a CSV file."""
     name = "CSV"
-    abbreviation = "c"
+    abbreviation = "csv"
     datatypes = {
                  "auto": "INTEGER",
                  "int": "INTEGER",

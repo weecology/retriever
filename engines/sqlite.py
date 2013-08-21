@@ -6,7 +6,7 @@ from retriever.lib.models import Engine, no_cleanup
 class engine(Engine):
     """Engine instance for SQLite."""
     name = "SQLite"
-    abbreviation = "s"
+    abbreviation = "sqlite"
     datatypes = {
                  "auto": "INTEGER",
                  "int": "INTEGER",
