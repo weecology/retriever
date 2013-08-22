@@ -1,0 +1,6 @@
+retriever
+wxPython>=2.8
+xlrd>=0.7
+PyMySQL>=0.4
+psycopg2>=2.0
+pyodbc>=3.0
