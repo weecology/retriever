@@ -1,11 +1,9 @@
-"""Database Toolkit Tests
+"""Attempt to install all datasets into all database management systems
 
-This module, when run, runs all unit tests from all Retriever scripts in
-the /scripts folder (except for those listed in IGNORE), for each engine in
-ENGINE_LIST() from __init__.py. In other words, it runs tests for each possible
-combination of database platform and script. 
-
-The tests generally run the script, import the resulting data, and checks to
+This module, when run, attempts to install datasets from all Retriever scripts
+in the /scripts folder (except for those listed in IGNORE), for each engine in
+ENGINE_LIST() from __init__.py. In other words, it runs trys to install using
+all possible combinations of database platform and script and checks to
 see if there are any errors. It does not check the values in the database.
 
 """
