@@ -4,10 +4,12 @@ from hashlib import md5
 
 # First md5 is for csv, second md5 is for sqlite
 known_md5s_sqlite = {'AvianBodySize' : 'bbf85e30cd05b622da71508ee70d3b5f',
-                     'DelMoral2010' : '2630b6db704d88def23bca8929c24ce0'}
+                     'DelMoral2010' : '2630b6db704d88def23bca8929c24ce0',
+                     'MoM2003' : 'be9c50ef09542b552009aeba767977fe'}
 
 known_md5s_csv = {'AvianBodySize' : 'f42702a53e7d99d16e909676f30e5aa8',
-                  'DelMoral2010' : '606f97c3ddbfd6d63b474bc76d01646a'}
+                  'DelMoral2010' : '606f97c3ddbfd6d63b474bc76d01646a',
+                  'MoM2003' : 'ef0a31c132cfe1c6594739c872f70f54'}
 
 def getmd5(filename):
     """Get MD5 value for a file"""
