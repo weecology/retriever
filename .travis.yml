@@ -5,3 +5,8 @@ python:
 install: "pip install -r requirements.txt --use-mirrors"
 # command to run tests
 script: nosetests
+
+# database setup
+before_script:
+  - mysql -e 'create database myapp_test;'
+  - psql -c 'create database myapp_test;' -U postgres
