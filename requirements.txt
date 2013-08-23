@@ -1,5 +1,4 @@
-retriever
-wxPython>=2.8
+wxPython>=2.8.0.0
 xlrd>=0.7
 PyMySQL>=0.4
 psycopg2>=2.0
