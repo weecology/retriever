@@ -15,8 +15,6 @@ reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     # set default encoding to latin-1 to avoid ascii encoding issues
     sys.setdefaultencoding('latin-1')
-else:
-    pass
 from retriever import VERSION, MASTER, SCRIPT_LIST, sample_script
 from retriever.engines import engine_list
 from retriever.lib.repository import check_for_updates
@@ -42,6 +40,8 @@ def main():
         script_list = SCRIPT_LIST()
         
         args = parser.parse_args()
+        if args.quiet:
+            sys.stdout = open(os.devnull, 'w')
 
         if args.command == 'help':
             parser.parse_args(['-h'])
