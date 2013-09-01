@@ -5,6 +5,7 @@ from retriever.engines import engine_list
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-v', '--version', action='version', version=VERSION)
+parser.add_argument('-q', '--quiet', help='suppress command-line output', action='store_true')
 
 subparsers = parser.add_subparsers(help='sub-command help', dest='command')
 
