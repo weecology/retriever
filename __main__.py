@@ -53,6 +53,17 @@ def main():
             check_for_updates(graphical=False)
             script_list = SCRIPT_LIST()
             return
+
+        elif args.command == 'citation':
+            if args.dataset is None:
+                with open('CITATION') as citation_file:
+                    print citation_file.read()
+            else:
+                scripts = name_matches(script_list, args.dataset)
+                for dataset in scripts:
+                    print dataset.description
+
+            return
             
         elif args.command == 'gui':
             lists = get_lists()
