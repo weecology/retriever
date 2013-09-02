@@ -56,7 +56,9 @@ def main():
 
         elif args.command == 'citation':
             if args.dataset is None:
-                with open('CITATION') as citation_file:
+                citation_path = os.path.join(os.path.split(__file__)[0], '../CITATION')
+                print citation_path
+                with open(citation_path) as citation_file:
                     print citation_file.read()
             else:
                 scripts = name_matches(script_list, args.dataset)
