@@ -38,4 +38,7 @@ new_parser.add_argument('filename', help='new script filename')
 
 ls_parser = subparsers.add_parser('ls', help='display a list all available dataset scripts')
 
+citation_parser = subparsers.add_parser('citation', help='view citation')
+citation_parser.add_argument('dataset', help='dataset name', nargs='?', default=None)
+
 help_parser = subparsers.add_parser('help', help='')

@@ -93,7 +93,7 @@ setup(name='retriever',
 
       # py2app flags
       app=['__main__.py'],
-      data_files=[],
+      data_files=[('', ['CITATION'])],
       setup_requires=['py2app'] if 'darwin' in p else [],
 
       # options
