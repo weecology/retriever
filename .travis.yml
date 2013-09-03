@@ -10,7 +10,7 @@ install:
   - pip install -r requirements.txt --use-mirrors
   - python setup.py -q install
 # command to run tests
-script: nosetests
+script: cd ./test/ && nosetests
 
 # database setup
 before_script:
