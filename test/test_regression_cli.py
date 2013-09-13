@@ -11,6 +11,9 @@ known_md5s_csv = {'AvianBodySize' : 'f42702a53e7d99d16e909676f30e5aa8',
                   'DelMoral2010' : '606f97c3ddbfd6d63b474bc76d01646a',
                   'MoM2003' : 'ef0a31c132cfe1c6594739c872f70f54'}
 
+def setup_module():
+    os.system("retriever update")
+
 def getmd5(filename):
     """Get MD5 value for a file"""
     lines = open(filename, 'r')
