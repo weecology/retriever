@@ -2,6 +2,7 @@
 
 from StringIO import StringIO
 from engine import Engine
+from table import Table
 
 def test_escape_single_quotes():
     """Test escaping of single quotes"""
@@ -17,3 +18,24 @@ def test_drop_statement():
     "Test the creation of drop statements"
     test_engine = Engine()
     assert test_engine.drop_statement('TABLE', 'tablename') == "DROP TABLE IF EXISTS tablename"
+
+def test_auto_get_delimiter_comma():
+    """Test if commas are properly detected as delimiter"""
+    test_engine = Engine()
+    test_engine.table = Table("test")
+    test_engine.auto_get_delimiter("a,b,c;,d")
+    assert test_engine.table.delimiter == ","
+
+def test_auto_get_delimiter_tab():
+    """Test if commas are properly detected as delimiter"""
+    test_engine = Engine()
+    test_engine.table = Table("test")
+    test_engine.auto_get_delimiter("a\tb\tc\td,")
+    assert test_engine.table.delimiter == "\t"
+
+def test_auto_get_delimiter_semicolon():
+    """Test if commas are properly detected as delimiter"""
+    test_engine = Engine()
+    test_engine.table = Table("test")
+    test_engine.auto_get_delimiter("a;b;c;,d")
+    assert test_engine.table.delimiter == ";"
