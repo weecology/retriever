@@ -41,7 +41,7 @@ class main(Script):
             table.columns=[("species_id",               ("pk-int",)         ),
                            ("AOU",                      ("int",)            ),
                            ("english_common_name",      ("char",30)         ),
-                           ("french_common_name",       ("char",30)         ),
+                           ("french_common_name",       ("char",50)         ),
                            ("spanish_common_name",      ("char",30)         ),
                            ("sporder",                  ("char",30)         ),
                            ("family",                   ("char",30)         ),
