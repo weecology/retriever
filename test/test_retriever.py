@@ -49,3 +49,13 @@ def test_auto_get_columns_cleanup():
     columns, column_values = test_engine.auto_get_columns("a),b.b,c/c,d___d,group")
     assert columns == [['a', None], ['bb', None], ['c_c', None], ['d_d', None],
                        ['grp', None]]
+
+def test_extract_values():
+    """Test extraction of values from line of data with already know delimiter"""
+    test_engine.table.delimiter = ","
+    assert test_engine.extract_values('abcd,1,2,3.3') == ['abcd', '1', '2', '3.3']
+
+def test_extract_values_fixed_width():
+    """Test extraction of values from line of fixed width data"""
+    test_engine.table.fixed_width = [5, 2, 2, 3, 4]
+    assert test_engine.extract_values('abc  1 2 3  def ') == ['abc', '1', '2', '3', 'def']
