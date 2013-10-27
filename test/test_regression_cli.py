@@ -13,6 +13,7 @@ known_md5s_csv = {'AvianBodySize' : 'f42702a53e7d99d16e909676f30e5aa8',
                   'MoM2003' : 'ef0a31c132cfe1c6594739c872f70f54'}
 
 def setup_module():
+    """Update retriever scripts and cd to test directory to find data"""
     os.chdir("./test/")
     os.system("retriever update")
 
