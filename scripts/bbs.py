@@ -40,13 +40,13 @@ class main(Script):
             
             table.columns=[("species_id",               ("pk-int",)         ),
                            ("AOU",                      ("int",)            ),
-                           ("english_common_name",      ("char",30)         ),
+                           ("english_common_name",      ("char",50)         ),
                            ("french_common_name",       ("char",50)         ),
-                           ("spanish_common_name",      ("char",30)         ),
+                           ("spanish_common_name",      ("char",50)         ),
                            ("sporder",                  ("char",30)         ),
                            ("family",                   ("char",30)         ),
                            ("genus",                    ("char",30)         ),
-                           ("species",                  ("char",30)         ),
+                           ("species",                  ("char",50)         ),
                            ]
             table.fixed_width = [7,6,51,51,51,51,51,51,50]
             
