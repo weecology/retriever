@@ -18,8 +18,9 @@ def setup_module():
     os.system("retriever update")
 
 def teardown_module():
-    """Cleanup temporary output files after testing"""
+    """Cleanup temporary output files after testing and return to root directory"""
     os.system("rm output_*")
+    os.chdir("..")
 
 def getmd5(filename):
     """Get MD5 value for a file"""
