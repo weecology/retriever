@@ -175,7 +175,13 @@ class Engine():
 
                 
     def auto_get_columns(self, header):
-        """Finds the delimiter and column names from the header row."""
+        """Gets the column names from the header row
+
+        Identifies the column names from the header row.
+        Replaces database keywords with alternatives.
+        Replaces special characters and spaces.
+
+        """
         if self.table.fixed_width:
             column_names = self.extract_values(header)
         else:
