@@ -1,13 +1,17 @@
 """Tests for the EcoData Retriever"""
 
+import os
 from StringIO import StringIO
 from engine import Engine
 from table import Table
+from retriever.lib.templates import BasicTextTemplate
 from nose.tools import with_setup
 
 # Create simple engine fixture
 test_engine = Engine()
 test_engine.table = Table("test")
+test_engine.script = BasicTextTemplate(tables={'test':test_engine.table},
+                                       shortname='test')
 
 
 def test_escape_single_quotes():
@@ -59,3 +63,21 @@ def test_extract_values_fixed_width():
     """Test extraction of values from line of fixed width data"""
     test_engine.table.fixed_width = [5, 2, 2, 3, 4]
     assert test_engine.table.extract_values('abc  1 2 3  def ') == ['abc', '1', '2', '3', 'def']
+
+
+def test_find_file_absent():
+    """Test if find_file() properly returns false if no file is present"""
+    assert test_engine.find_file('missingfile.txt') is False
+
+def test_find_file_present():
+    """Test if existing datafile is found
+
+    Using the AvianBodySize dataset which is included for regression testing
+    Because all testing code and data is located in ./test/ it is necessary to
+    move into this directory for DATA_SEARCH_PATHS to work properly.
+
+    """
+    test_engine.script.shortname = 'AvianBodySize'
+    os.chdir('./test/')
+    assert test_engine.find_file('avian_ssd_jan07.txt') == 'raw_data/AvianBodySize/avian_ssd_jan07.txt'
+    os.chdir('..')
