@@ -5,6 +5,7 @@ from StringIO import StringIO
 from engine import Engine
 from table import Table
 from retriever.lib.templates import BasicTextTemplate
+from retriever import DATA_WRITE_PATH
 from nose.tools import with_setup
 
 # Create simple engine fixture
@@ -12,7 +13,7 @@ test_engine = Engine()
 test_engine.table = Table("test")
 test_engine.script = BasicTextTemplate(tables={'test':test_engine.table},
                                        shortname='test')
-
+HOMEDIR = os.environ['HOME']
 
 def test_escape_single_quotes():
     """Test escaping of single quotes"""
@@ -92,3 +93,15 @@ def test_find_file_present():
     os.chdir('./test/')
     assert test_engine.find_file('avian_ssd_jan07.txt') == 'raw_data/AvianBodySize/avian_ssd_jan07.txt'
     os.chdir('..')
+
+
+def test_format_data_dir():
+    "Test if directory for storing data is properly formated"
+    test_engine.script.shortname = "TestName"
+    assert test_engine.format_data_dir() == os.path.join(HOMEDIR,
+                                                         '.retriever/raw_data/TestName')
+
+def test_format_filename():
+    "Test if filenames for stored files are properly formated"
+    test_engine.script.shortname = "TestName"
+    assert test_engine.format_filename('testfile.csv') == os.path.join(HOMEDIR, '.retriever/raw_data/TestName/testfile.csv')
