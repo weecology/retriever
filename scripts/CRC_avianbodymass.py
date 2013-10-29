@@ -180,8 +180,7 @@ class main(Script):
             
             if lines:
                 lines.append('~'.join(lastvalues))
-                table.source = lines
-                engine.add_to_table()
+                engine.add_to_table(lines)
                         
         return engine
         

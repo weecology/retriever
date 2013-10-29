@@ -128,8 +128,7 @@ class main(Script):
                                           id_to_species
                                           ]))
                     
-            engine.table.source = rows
-            engine.add_to_table()
+            engine.add_to_table(rows)
             
             species_list.close()
             

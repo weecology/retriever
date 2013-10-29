@@ -35,8 +35,8 @@ class Engine():
             self._connection = self.get_connection()
             
         return self._connection
-        
-        
+    
+    
     def disconnect(self):
         if self._connection:
             self.connection.close()
@@ -50,13 +50,13 @@ class Engine():
         pass
     
     
-    def add_to_table(self):
+    def add_to_table(self, data_source):
         """This function adds data to a table from one or more lines specified 
         in engine.table.source."""
         if self.table.columns[-1][1][0][:3] == "ct-":        
             # cross-tab data
             
-            lines = Engine.gen_from_source(self.table.source)
+            lines = Engine.gen_from_source(data_source)
             real_lines = []
             for line in lines:
                 split_line = line.strip('\n\r\t ').split(self.table.delimiter)
@@ -73,9 +73,12 @@ class Engine():
                     real_lines.append(self.table.delimiter.join(begin + name + [item]))
             real_line_length = len(real_lines)
         else:
+            # this function returns a generator that iterates over the lines in
+            # the source data
             def source_gen():
-                return (line for line in Engine.gen_from_source(self.table.source)
+                return (line for line in Engine.gen_from_source(data_source)
                          if line.strip('\n\r\t '))
+            # use one generator to compute the length of the input
             real_lines, len_source = source_gen(), source_gen()
             real_line_length = sum(1 for _ in len_source)
             
@@ -670,10 +673,10 @@ class Engine():
         """The default function to insert data from a file. This function 
         simply inserts the data row by row. Database platforms with support
         for inserting bulk data from files can override this function."""
-        self.table.source = (self.skip_rows, 
-                             (self.table.header_rows, 
-                             (open, (filename, 'r'))))
-        self.add_to_table()
+        data_source = (self.skip_rows, 
+                       (self.table.header_rows, 
+                       (open, (filename, 'r'))))
+        self.add_to_table(data_source)
 
         
     def insert_data_from_url(self, url):
