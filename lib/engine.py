@@ -35,6 +35,8 @@ class Engine():
             self._connection = self.get_connection()
             
         return self._connection
+        
+    connection = property (connect)
     
     
     def disconnect(self):
@@ -56,7 +58,7 @@ class Engine():
         if self.table.columns[-1][1][0][:3] == "ct-":        
             # cross-tab data
             
-            lines = Engine.gen_from_source(data_source)
+            lines = gen_from_source(data_source)
             real_lines = []
             for line in lines:
                 split_line = line.strip('\n\r\t ').split(self.table.delimiter)
@@ -76,7 +78,7 @@ class Engine():
             # this function returns a generator that iterates over the lines in
             # the source data
             def source_gen():
-                return (line for line in Engine.gen_from_source(data_source)
+                return (line for line in gen_from_source(data_source)
                          if line.strip('\n\r\t '))
             # use one generator to compute the length of the input
             real_lines, len_source = source_gen(), source_gen()
@@ -142,15 +144,15 @@ class Engine():
             self.download_file(url, filename)
         file_path = self.find_file(filename)
 
-        source = (self.skip_rows,
+        source = (skip_rows,
                   (self.table.column_names_row - 1, 
                    (open, (file_path, "rb"))))
-        lines = Engine.gen_from_source(source)
+        lines = gen_from_source(source)
 
         header = lines.next()
         lines.close()
 
-        source = (self.skip_rows,
+        source = (skip_rows,
                   (self.table.header_rows, 
                    (open, (file_path, "rb"))))
                    
@@ -158,7 +160,7 @@ class Engine():
             self.auto_get_delimiter(header)
         
         if not self.table.columns:            
-            lines = Engine.gen_from_source(source)
+            lines = gen_from_source(source)
             
             if pk is None:
                 self.table.columns = [("record_id", ("pk-auto",))]
@@ -540,18 +542,6 @@ class Engine():
             return "null"
 
 
-    @staticmethod
-    def gen_from_source(source):
-        """Returns a generator from a source tuple.        
-        Source tuples are of the form (callable, args) where callable(*args) 
-        returns either a generator or another source tuple. 
-        This allows indefinite regeneration of data sources."""
-        while isinstance(source, tuple):
-            gen, args = source
-            source = gen(*args)
-        return source
-
-
     def get_column_datatypes(self):
         """Gets a set of column names for insert statements."""
         columns = []
@@ -568,6 +558,7 @@ class Engine():
             self._cursor = self.connection.cursor()
         return self._cursor
         
+    cursor = property (get_cursor)
         
     def get_input(self):
         """Manually get user input for connection information when script is 
@@ -619,7 +610,7 @@ class Engine():
         """The default function to insert data from a file. This function 
         simply inserts the data row by row. Database platforms with support
         for inserting bulk data from files can override this function."""
-        data_source = (self.skip_rows, 
+        data_source = (skip_rows, 
                        (self.table.header_rows, 
                        (open, (filename, 'r'))))
         self.add_to_table(data_source)
@@ -661,14 +652,6 @@ class Engine():
         return insert_stmt
 
         
-    def skip_rows(self, rows, source):
-        """Skip over the header lines by reading them before processing."""
-        lines = Engine.gen_from_source(source)
-        for i in range(rows):
-            lines.next()
-        return lines
-
-
     def table_exists(self, dbname, tablename):
         """This can be overridden to return True if a table exists. It
         returns False by default."""
@@ -719,11 +702,14 @@ class Engine():
         self.warnings.append(new_warning)
         
         
-    connection = property (connect)
-    cursor = property (get_cursor)
-        
+def skip_rows(rows, source):
+    """Skip over the header lines by reading them before processing."""
+    lines = gen_from_source(source)
+    for i in range(rows):
+        lines.next()
+    return lines
     
-    
+
 def file_exists(path):
     """Returns true if a file exists and its size is greater than 0."""
     return (os.path.isfile(path) and os.path.getsize(path) > 0)    
@@ -731,3 +717,14 @@ def file_exists(path):
         
 def filename_from_url(url):
     return url.split('/')[-1].split('?')[0]
+    
+    
+def gen_from_source(source):
+    """Returns a generator from a source tuple.        
+    Source tuples are of the form (callable, args) where callable(*args) 
+    returns either a generator or another source tuple. 
+    This allows indefinite regeneration of data sources."""
+    while isinstance(source, tuple):
+        gen, args = source
+        source = gen(*args)
+    return source
