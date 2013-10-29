@@ -89,7 +89,7 @@ class Engine():
             if not self.table.fixed_width: line = line.strip()
             if line:
                 self.table.record_id += 1            
-                linevalues = self.values_from_line(line)
+                linevalues = self.table.values_from_line(line)
                 
                 types = self.get_column_datatypes()
                 # Build insert statement with the correct # of values
@@ -198,7 +198,7 @@ class Engine():
         # Check the values for each column to determine data type
         for line in lines_to_scan:
             if line.replace("\t", "").strip():
-                values = self.extract_values(line.strip("\n"))
+                values = self.table.extract_values(line.strip("\n"))
                 for i in range(len(columns)):
                     try:
                         value = values[i]
@@ -449,21 +449,6 @@ class Engine():
                     )
                     for key in script.urls.keys() if key])
 
-
-        
-    def extract_values(self, line):
-        """Given a line of data, this function returns a list of the individual
-        data values."""
-        if self.table.fixed_width:
-            pos = 0
-            values = []
-            for width in self.table.fixed_width:
-                values.append(line[pos:pos+width].strip())
-                pos += width
-            return values
-        else:
-            return self.table.split_on_delimiter(line)
-
             
     def final_cleanup(self):
         """Close the database connection."""
@@ -669,33 +654,6 @@ class Engine():
                 .replace('{table}', name))
 
         
-    def values_from_line(self, line):
-        linevalues = []
-        if (self.table.pk and self.table.contains_pk == False):
-            column = 0
-        else:
-            column = -1
-        
-        for value in self.extract_values(line):
-            column += 1
-            try:
-                this_column = self.table.columns[column][1][0]
-
-                # If data type is "skip" ignore the value
-                if this_column == "skip":
-                    pass
-                elif this_column == "combine":
-                    # If "combine" append value to end of previous column
-                    linevalues[-1] += " " + value 
-                else:
-                    # Otherwise, add new value
-                    linevalues.append(value)
-            except:
-                # too many values for columns; ignore
-                pass
-
-        return linevalues
-
 
     def warning(self, warning):
         new_warning = Warning('%s:%s' % (self.script.shortname, self.table.name), warning)

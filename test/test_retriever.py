@@ -53,9 +53,9 @@ def test_auto_get_columns_cleanup():
 def test_extract_values():
     """Test extraction of values from line of data with already know delimiter"""
     test_engine.table.delimiter = ","
-    assert test_engine.extract_values('abcd,1,2,3.3') == ['abcd', '1', '2', '3.3']
+    assert test_engine.table.extract_values('abcd,1,2,3.3') == ['abcd', '1', '2', '3.3']
 
 def test_extract_values_fixed_width():
     """Test extraction of values from line of fixed width data"""
     test_engine.table.fixed_width = [5, 2, 2, 3, 4]
-    assert test_engine.extract_values('abc  1 2 3  def ') == ['abc', '1', '2', '3', 'def']
+    assert test_engine.table.extract_values('abc  1 2 3  def ') == ['abc', '1', '2', '3', 'def']

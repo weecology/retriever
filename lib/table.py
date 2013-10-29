@@ -72,3 +72,43 @@ class Table:
         dialect.escapechar = "\\"
         r = csv.reader([line], dialect=dialect, delimiter=self.delimiter)
         return r.next()
+        
+    def values_from_line(self, line):
+        linevalues = []
+        if (self.pk and self.contains_pk == False):
+            column = 0
+        else:
+            column = -1
+        
+        for value in self.extract_values(line):
+            column += 1
+            try:
+                this_column = self.columns[column][1][0]
+
+                # If data type is "skip" ignore the value
+                if this_column == "skip":
+                    pass
+                elif this_column == "combine":
+                    # If "combine" append value to end of previous column
+                    linevalues[-1] += " " + value 
+                else:
+                    # Otherwise, add new value
+                    linevalues.append(value)
+            except:
+                # too many values for columns; ignore
+                pass
+
+        return linevalues
+        
+    def extract_values(self, line):
+        """Given a line of data, this function returns a list of the individual
+        data values."""
+        if self.fixed_width:
+            pos = 0
+            values = []
+            for width in self.fixed_width:
+                values.append(line[pos:pos+width].strip())
+                pos += width
+            return values
+        else:
+            return self.split_on_delimiter(line)
