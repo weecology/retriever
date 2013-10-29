@@ -166,7 +166,7 @@ class Engine():
                 self.table.columns = []
                 self.table.contains_pk = True
                 
-            columns, column_values = self.auto_get_columns(header)
+            columns, column_values = self.table.auto_get_columns(header)
             
             self.auto_get_datatypes(pk, lines, columns, column_values)
 
@@ -177,60 +177,6 @@ class Engine():
         self.create_table()
 
                 
-    def auto_get_columns(self, header):
-        """Gets the column names from the header row
-
-        Identifies the column names from the header row.
-        Replaces database keywords with alternatives.
-        Replaces special characters and spaces.
-
-        """
-        if self.table.fixed_width:
-            column_names = self.extract_values(header)
-        else:
-            # Get column names from header row
-            values = self.split_on_delimiter(header)
-            column_names = [name.strip() for name in values]
-        
-        columns = []
-        column_values = dict()
-        
-        for column_name in column_names:
-            this_column = column_name.lower()
-            
-            replace = [
-                       ("%", "percent"),
-                       ("&", "and"),
-                       ("\xb0", "degrees"),
-                       ("group", "grp"),
-                       ("order", "sporder"),
-                       ("references", "refs"),
-                       ("long", "lon"),
-                       ("date", "record_date"),
-                       ("?", ""),
-                       ] + self.table.replace_columns
-            for combo in replace:
-                this_column = this_column.lower().replace(combo[0].lower(), combo[1].lower())
-            
-            
-            for c in [")", "\n", "\r"]:
-                this_column = this_column.strip(c)
-            for c in [".", '"', "'"]:
-                this_column = this_column.replace(c, "")
-            for c in [" ", "(", "/", ".", "-"]:
-                this_column = this_column.replace(c, "_")
-            while "__" in this_column:
-                this_column = this_column.replace("__", "_")
-            this_column = this_column.lstrip("0123456789_").rstrip("_")
-            
-            
-            if this_column:
-                columns.append([this_column, None])
-                column_values[this_column] = []
-
-        return columns, column_values
-
-        
     def auto_get_datatypes(self, pk, source, columns, column_values):
         """Determines data types for each column."""
         # Get all values for each column
@@ -514,7 +460,7 @@ class Engine():
                 pos += width
             return values
         else:
-            return self.split_on_delimiter(line)
+            return self.table.split_on_delimiter(line)
 
             
     def final_cleanup(self):
@@ -723,13 +669,6 @@ class Engine():
         return lines
 
 
-    def split_on_delimiter(self, line):
-        dialect = csv.excel
-        dialect.escapechar = "\\"
-        r = csv.reader([line], dialect=dialect, delimiter=self.table.delimiter)
-        return r.next()
-
-        
     def table_exists(self, dbname, tablename):
         """This can be overridden to return True if a table exists. It
         returns False by default."""

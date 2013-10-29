@@ -40,13 +40,13 @@ def test_auto_get_delimiter_semicolon():
 def test_auto_get_columns():
     """Basic test of getting column labels from header"""
     test_engine.table.delimiter = ","
-    columns, column_values = test_engine.auto_get_columns("a,b,c,d")
+    columns, column_values = test_engine.table.auto_get_columns("a,b,c,d")
     assert columns == [['a', None], ['b', None], ['c', None], ['d', None]]
 
 def test_auto_get_columns_cleanup():
     """Test of automatically cleaning up column labels from header"""
     test_engine.table.delimiter = ","
-    columns, column_values = test_engine.auto_get_columns("a),b.b,c/c,d___d,group")
+    columns, column_values = test_engine.table.auto_get_columns("a),b.b,c/c,d___d,group")
     assert columns == [['a', None], ['bb', None], ['c_c', None], ['d_d', None],
                        ['grp', None]]
 
