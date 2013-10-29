@@ -112,3 +112,27 @@ class Table:
             return values
         else:
             return self.split_on_delimiter(line)
+            
+    def get_insert_columns(self, join=True):
+        """Gets a set of column names for insert statements."""
+        columns = ""
+        for item in self.columns:
+            thistype = item[1][0]
+            if ((thistype != "skip") and (thistype !="combine") and 
+                (self.contains_pk == True or thistype[0:3] != "pk-")):
+                columns += item[0] + ", "
+        columns = columns.rstrip(', ')
+        if join:
+            return columns
+        else:
+            return columns.lstrip("(").rstrip(")").split(", ")
+            
+    def get_column_datatypes(self):
+        """Gets a set of column names for insert statements."""
+        columns = []
+        for item in self.get_insert_columns(False):
+            for column in self.columns:
+                if item == column[0]:
+                    columns.append(column[1][0])
+        return columns
+

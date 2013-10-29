@@ -27,7 +27,6 @@ class Engine():
     debug = False
     warnings = []
     
-    
     def connect(self, force_reconnect=False):
         if force_reconnect: self.disconnect()
         
@@ -38,19 +37,16 @@ class Engine():
         
     connection = property (connect)
     
-    
     def disconnect(self):
         if self._connection:
             self.connection.close()
             self._connection = None
             self._cursor = None
         
-        
     def get_connection(self):
         '''This method should be overloaded by specific implementations
         of Engine.'''
         pass
-    
     
     def add_to_table(self, data_source):
         """This function adds data to a table from one or more lines specified 
@@ -91,7 +87,7 @@ class Engine():
                 self.table.record_id += 1            
                 linevalues = self.table.values_from_line(line)
                 
-                types = self.get_column_datatypes()
+                types = self.table.get_column_datatypes()
                 # Build insert statement with the correct # of values
                 try: 
                     cleanvalues = [self.format_insert_value(self.table.cleanup.function
@@ -131,7 +127,6 @@ class Engine():
         print
         self.connection.commit()
 
-        
     def auto_create_table(self, table, url=None, filename=None, pk=None):
         """Creates a table automatically by analyzing a data source and 
         predicting column names, data types, delimiter, etc."""
@@ -178,7 +173,6 @@ class Engine():
         
         self.create_table()
 
-                
     def auto_get_datatypes(self, pk, source, columns, column_values):
         """Determines data types for each column."""
         # Get all values for each column
@@ -242,7 +236,6 @@ class Engine():
         for column in columns:
             self.table.columns.append((column[0], tuple(column[1])))
 
-
     def auto_get_delimiter(self, header):
         # Determine the delimiter by finding out which of a set of common
         # delimiters occurs most in the header line
@@ -251,7 +244,6 @@ class Engine():
             if header.count(other_delimiter) > header.count(self.table.delimiter):
                 self.table.delimiter = other_delimiter
 
-            
     def convert_data_type(self, datatype):
         """Converts Retriever generic data types to database platform specific 
         data types"""
@@ -281,7 +273,6 @@ class Engine():
             thistype = self.pkformat % thistype
             
         return thistype
-
         
     def create_db(self):
         """Creates a new database based on settings supplied in Database object
@@ -299,12 +290,10 @@ class Engine():
                 except: pass
                 print "Couldn't create database (%s). Trying to continue anyway." % e
 
-        
     def create_db_statement(self):
         """Returns a SQL statement to create a database."""
         create_stmt = "CREATE DATABASE " + self.database_name()
         return create_stmt
-
         
     def create_raw_data_dir(self):
         """Checks to see if the archive directory exists and creates it if 
@@ -312,7 +301,6 @@ class Engine():
         path = self.format_data_dir()
         if not os.path.exists(path):
             os.makedirs(path)
-
             
     def create_table(self):
         """Creates a new database table based on settings supplied in Table 
@@ -334,13 +322,12 @@ class Engine():
             try: self.connection.rollback()
             except: pass
             print "Couldn't create table (%s). Trying to continue anyway." % e
-
         
     def create_table_statement(self):
         """Returns a SQL statement to create a table."""
         create_stmt = "CREATE TABLE " + self.tablename() + " ("
         
-        columns = self.get_insert_columns(join=False)
+        columns = self.table.get_insert_columns(join=False)
         
         types = []
         for column in self.table.columns:
@@ -359,7 +346,6 @@ class Engine():
 
         return create_stmt
         
-        
     def database_name(self, name=None):
         if not name:
             try:
@@ -375,8 +361,6 @@ class Engine():
         
         return db_name
                 
-
-        
     def download_file(self, url, filename):
         """Downloads a file to the raw data directory."""
         if not self.find_file(filename):
@@ -392,7 +376,6 @@ class Engine():
             local_file.close()
             file.close()
 
-            
     def download_files_from_archive(self, url, filenames):
         """Downloads one or more files from an archive into the raw data
         directory."""
@@ -421,27 +404,22 @@ class Engine():
                 
                 local_zip.close()                                            
 
-                
     def drop_statement(self, objecttype, objectname):
         """Returns a drop table or database SQL statement."""
         dropstatement = "DROP %s IF EXISTS %s" % (objecttype, objectname)
         return dropstatement
-        
 
     def escape_single_quotes(self, value):
         return value.replace("'", "\\'")
         
-        
     def escape_double_quotes(self, value):
         return value.replace('"', '\\"')
-        
         
     def execute(self, statement, commit=True):
         self.cursor.execute(statement)
         if commit:
             self.connection.commit()
             
-
     def exists(self, script):            
         return all([self.table_exists(
                     script.shortname,
@@ -449,7 +427,6 @@ class Engine():
                     )
                     for key in script.urls.keys() if key])
 
-            
     def final_cleanup(self):
         """Close the database connection."""
         
@@ -458,10 +435,8 @@ class Engine():
             
         self.disconnect()
 
-        
     def format_column_name(self, column):
         return column
-        
         
     def find_file(self, filename):
         for search_path in DATA_SEARCH_PATHS:
@@ -471,17 +446,14 @@ class Engine():
                 return file_path
         return False
 
-        
     def format_data_dir(self):
         """Returns the correctly formatted raw data directory location."""
         return DATA_WRITE_PATH.replace("{dataset}", self.script.shortname)
 
-        
     def format_filename(self, filename):
         """Returns the full path of a file in the archive directory."""
         return os.path.join(self.format_data_dir(), filename)
 
-        
     def format_insert_value(self, value, datatype):
         """Formats a value for an insert statement, for example by surrounding
         it in single quotes."""
@@ -526,17 +498,6 @@ class Engine():
         else:
             return "null"
 
-
-    def get_column_datatypes(self):
-        """Gets a set of column names for insert statements."""
-        columns = []
-        for item in self.get_insert_columns(False):
-            for column in self.table.columns:
-                if item == column[0]:
-                    columns.append(column[1][0])
-        return columns
-        
-        
     def get_cursor(self):
         """Gets the db cursor."""
         if self._cursor is None:
@@ -561,23 +522,7 @@ class Engine():
                     self.opts[opt[0]] = raw_input(prompt)
             if self.opts[opt[0]] in ["", "default"]:
                 self.opts[opt[0]] = opt[2]
-
                 
-    def get_insert_columns(self, join=True):
-        """Gets a set of column names for insert statements."""
-        columns = ""
-        for item in self.table.columns:
-            thistype = item[1][0]
-            if ((thistype != "skip") and (thistype !="combine") and 
-                (self.table.contains_pk == True or thistype[0:3] != "pk-")):
-                columns += item[0] + ", "
-        columns = columns.rstrip(', ')
-        if join:
-            return columns
-        else:
-            return columns.lstrip("(").rstrip(")").split(", ")
-
-            
     def insert_data_from_archive(self, url, filenames):
         """Insert data from files located in an online archive. This function
         extracts the file, inserts the data, and deletes the file if raw data 
@@ -590,7 +535,6 @@ class Engine():
             else:
                 raise Exception("File not found: %s" % filename)
 
-                    
     def insert_data_from_file(self, filename):
         """The default function to insert data from a file. This function 
         simply inserts the data row by row. Database platforms with support
@@ -600,7 +544,6 @@ class Engine():
                        (open, (filename, 'r'))))
         self.add_to_table(data_source)
 
-        
     def insert_data_from_url(self, url):
         """Insert data from a web resource, such as a text file."""
         filename = filename_from_url(url)
@@ -615,12 +558,11 @@ class Engine():
             self.download_file(url, filename)
             self.insert_data_from_file(self.find_file(filename))
 
-                
     def insert_statement(self, values):
         """Returns a SQL statement to insert a set of values."""
-        columns = self.get_insert_columns()
-        types = self.get_column_datatypes()
-        columncount = len(self.get_insert_columns(False))
+        columns = self.table.get_insert_columns()
+        types = self.table.get_column_datatypes()
+        columncount = len(self.table.get_insert_columns(False))
         insert_stmt = "INSERT INTO " + self.tablename()
         insert_stmt += " (" + columns + ")"
         insert_stmt += " VALUES ("
@@ -636,13 +578,11 @@ class Engine():
         if self.debug: print insert_stmt
         return insert_stmt
 
-        
     def table_exists(self, dbname, tablename):
         """This can be overridden to return True if a table exists. It
         returns False by default."""
         return False
 
-        
     def tablename(self, name=None, dbname=None):
         """Returns the full tablename."""
         if not name:
@@ -654,7 +594,6 @@ class Engine():
                 .replace('{table}', name))
 
         
-
     def warning(self, warning):
         new_warning = Warning('%s:%s' % (self.script.shortname, self.table.name), warning)
         self.warnings.append(new_warning)
