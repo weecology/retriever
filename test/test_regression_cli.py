@@ -1,5 +1,6 @@
 import os
 import nose
+from unittest import TestCase
 from hashlib import md5
 
 # First md5 is for csv, second md5 is for sqlite
@@ -17,37 +18,46 @@ def setup_module():
 
 def getmd5(filename):
     """Get MD5 value for a file"""
-    lines = open(filename, 'r')
+    lines = open(filename, 'rb')
     sum = md5()
     for line in lines:
         sum.update(line)
     return sum.hexdigest()
 
-def test_sqlite_regression():
-    """Regression tests for CLI imports to sqlite based on md5 checksums"""
-    for dataset in known_md5s_sqlite:
-            yield check_sqlite_regression, dataset, known_md5s_sqlite[dataset]
-        
-def check_sqlite_regression(dataset, known_md5):
-    """Check for regression for a particular dataset imported to sqlite"""
-    os.system("rm output_database") #reinstalling changes checksum in sqlite
-    os.system("retriever install sqlite %s -f output_database" % dataset)
-    os.system("echo '.dump' | sqlite3 output_database > output_file")
-    current_md5 = getmd5('output_file')
-    assert current_md5 == known_md5
+def _test_factory(test_method, name, *args):
+    stub_test = lambda self: getattr(self, test_method)(*args)
+    stub_test.func_name = stub_test.__name__ = 'test_%s' % dataset
+    return stub_test
 
-def test_csv_regression():
-    """Regression tests for CLI imports to csv based on md5 checksums"""
-    for dataset in known_md5s_csv:
-        yield check_csv_regression, dataset, known_md5s_csv[dataset]
-    
-def check_csv_regression(dataset, known_md5):
-    """Check for regression for a particular dataset imported to csv"""
-    os.system("rm output_file*")
-    os.system("retriever install csv %s -t output_file_{table}" % dataset)
-    os.system("cat output_file_* > output_file")
-    current_md5 = getmd5('output_file')
-    assert current_md5 == known_md5
+class SqliteRegression(TestCase):
+    def check_sqlite_regression(self, dataset, known_md5):
+        """Check for regression for a particular dataset imported to sqlite"""
+        os.system("rm output_database") #reinstalling changes checksum in sqlite
+        os.system("retriever install sqlite %s -f output_database" % dataset)
+        os.system("echo '.dump' | sqlite3 output_database > output_file")
+        current_md5 = getmd5('output_file')
+        assert current_md5 == known_md5
+
+for dataset in known_md5s_sqlite:
+    stub_test = _test_factory('check_sqlite_regression', 'test_%s' % dataset, dataset, known_md5s_sqlite[dataset])
+    setattr(SqliteRegression, stub_test.__name__, stub_test)
+    del(stub_test)
+
+
+class CSVRegression(TestCase):
+    def check_csv_regression(self, dataset, known_md5):
+        """Check for regression for a particular dataset imported to csv"""
+        os.system("rm output_file*")
+        os.system("retriever install csv %s -t output_file_{table}" % dataset)
+        os.system("cat output_file_* > output_file")
+        current_md5 = getmd5('output_file')
+        assert current_md5 == known_md5
+
+for dataset in known_md5s_csv:
+    stub_test = _test_factory('check_csv_regression', 'test_%s' % dataset, dataset, known_md5s_csv[dataset])
+    setattr(CSVRegression, stub_test.__name__, stub_test)
+    del(stub_test)
+
 
 if __name__ == '__main__':
     nose.runmodule()
