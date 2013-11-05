@@ -37,9 +37,9 @@ class Table:
             column_names = [name.strip() for name in values]
         
         columns = map(lambda x: self.clean_column_name(x), column_names)
-        column_values = {x:[] for x in columns}
+        column_values = {x:[] for x in columns if x}
 
-        return [[x, None] for x in columns], column_values
+        return [[x, None] for x in columns if x], column_values
         
     def clean_column_name(self, column_name):
         '''Makes sure a column name is formatted correctly by removing reserved 
