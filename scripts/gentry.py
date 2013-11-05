@@ -154,14 +154,14 @@ U.S.A. """
                        ("id_level"              ,   ("char", 10)    ),
                        ("full_id"               ,   ("bool",)       )]
 
-        table.source = [','.join([str(tax_dict[group[:3]])] + ['"%s"' % g for g in group]) 
-                        for group in unique_tax]
+        data = [','.join([str(tax_dict[group[:3]])] + ['"%s"' % g for g in group]) 
+                for group in unique_tax]
         table.pk = 'species_id'
         table.contains_pk = True
         
         self.engine.table = table
         self.engine.create_table()
-        self.engine.add_to_table()        
+        self.engine.add_to_table(data)
         
         
         # Create stems table
@@ -195,10 +195,10 @@ U.S.A. """
                 stem = species_info + [i]
                 stems.append([str(value) for value in stem])
             
-        table.source = [','.join(stem) for stem in stems]
+        data = [','.join(stem) for stem in stems]
         self.engine.table = table
         self.engine.create_table()
-        self.engine.add_to_table()
+        self.engine.add_to_table(data)
         
         
         # Create counts table
@@ -209,10 +209,10 @@ U.S.A. """
                        ("site_code"             ,   ("char", 12)    ),
                        ("liana"                 ,   ("char", 10)    ),
                        ("count"                 ,   ("double",)     )]
-        table.source = [','.join(count) for count in counts]
+        data = [','.join(count) for count in counts]
         self.engine.table = table
         self.engine.create_table()
-        self.engine.add_to_table()
+        self.engine.add_to_table(data)
             
         return self.engine
     
