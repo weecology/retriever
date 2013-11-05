@@ -35,7 +35,7 @@ class Engine():
             
         return self._connection
         
-    connection = property (connect)
+    connection = property(connect)
     
     def disconnect(self):
         if self._connection:
@@ -504,7 +504,7 @@ class Engine():
             self._cursor = self.connection.cursor()
         return self._cursor
         
-    cursor = property (get_cursor)
+    cursor = property(get_cursor)
         
     def get_input(self):
         """Manually get user input for connection information when script is 
