@@ -15,6 +15,11 @@ test_engine.script = BasicTextTemplate(tables={'test':test_engine.table},
                                        shortname='test')
 HOMEDIR = os.environ['HOME']
 
+def test_database_name():
+    """Test creating database name"""
+    test_engine.opts = {'database_name': '{db}_{table}'}
+    assert test_engine.database_name() == 'test_test'
+
 def test_escape_single_quotes():
     """Test escaping of single quotes"""
     assert test_engine.escape_single_quotes("1,2,3,'a'") == "1,2,3,\\'a\\'"
