@@ -43,7 +43,7 @@ def test_auto_get_delimiter_tab():
 
 
 def test_auto_get_delimiter_semicolon():
-    """Test if commas are properly detected as delimiter"""
+    """Test if semicolons are properly detected as delimiter"""
     test_engine.auto_get_delimiter("a;b;c;,d")
     assert test_engine.table.delimiter == ";"
 
