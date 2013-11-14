@@ -13,11 +13,15 @@ test_engine = Engine()
 test_engine.table = Table("test")
 test_engine.script = BasicTextTemplate(tables={'test':test_engine.table},
                                        shortname='test')
+test_engine.opts = {'database_name': '{db}_{table}'}
 HOMEDIR = os.environ['HOME']
+
+def test_create_db_statement():
+    """Test creating the create database SQL statement"""
+    assert test_engine.create_db_statement() == 'CREATE DATABASE test_test'
 
 def test_database_name():
     """Test creating database name"""
-    test_engine.opts = {'database_name': '{db}_{table}'}
     assert test_engine.database_name() == 'test_test'
 
 def test_escape_single_quotes():
