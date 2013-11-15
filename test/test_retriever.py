@@ -36,6 +36,26 @@ def test_escape_double_quotes():
     assert test_engine.escape_double_quotes('"a",1,2,3') == '\\"a\\",1,2,3'
 
 
+def test_format_insert_value_int():
+    """Test formatting of values for insert statements"""
+    assert test_engine.format_insert_value(42, 'int') == 42
+
+
+def test_format_insert_value_double():
+    """Test formatting of values for insert statements"""
+    assert test_engine.format_insert_value(26.22, 'double') == '26.22'
+
+
+def test_format_insert_value_string_simple():
+    """Test formatting of values for insert statements"""
+    assert test_engine.format_insert_value('simple text', 'char') == "'simple text'"
+
+
+def test_format_insert_value_string_complex():
+    """Test formatting of values for insert statements"""
+    assert test_engine.format_insert_value('my notes: "have extra, stuff"', 'char') == '\'my notes: \\"have extra, stuff\\"\''
+
+
 def test_drop_statement():
     "Test the creation of drop statements"
     assert test_engine.drop_statement('TABLE', 'tablename') == "DROP TABLE IF EXISTS tablename"
