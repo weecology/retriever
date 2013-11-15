@@ -20,9 +20,11 @@ def test_create_db_statement():
     """Test creating the create database SQL statement"""
     assert test_engine.create_db_statement() == 'CREATE DATABASE test_test'
 
+
 def test_database_name():
     """Test creating database name"""
     assert test_engine.database_name() == 'test_test'
+
 
 def test_escape_single_quotes():
     """Test escaping of single quotes"""
