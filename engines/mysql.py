@@ -53,7 +53,7 @@ class engine(Engine):
             ):
             print ("Inserting data from " + os.path.basename(filename) + "...")
             
-            columns = self.get_insert_columns()            
+            columns = self.table.get_insert_columns()
             statement = """        
 LOAD DATA LOCAL INFILE '""" + filename.replace("\\", "\\\\") + """'
 INTO TABLE """ + self.tablename() + """

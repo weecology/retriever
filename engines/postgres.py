@@ -75,7 +75,7 @@ class engine(Engine):
             and not ct
             and (not hasattr(self.table, "do_not_bulk_insert") or not self.table.do_not_bulk_insert)
             ):
-            columns = self.get_insert_columns()    
+            columns = self.table.get_insert_columns()
             filename = os.path.abspath(filename)
             statement = """
 COPY """ + self.tablename() + " (" + columns + """)
