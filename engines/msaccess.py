@@ -77,7 +77,7 @@ class engine(Engine):
             else:
                 hdr = "No"
 
-            columns = self.get_insert_columns()
+            columns = self.table.get_insert_columns()
 
             need_to_delete = False
             add_to_record_id = 0
