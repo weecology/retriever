@@ -12,8 +12,8 @@ known_md5s_csv = {'AvianBodySize' : 'f42702a53e7d99d16e909676f30e5aa8',
                   'DelMoral2010' : '606f97c3ddbfd6d63b474bc76d01646a',
                   'MoM2003' : 'ef0a31c132cfe1c6594739c872f70f54'}
 
-known_md5s_mysql = {'AvianBodySize' : '16e87c7e14a4aca769157346ef189be2',
-                    'MoM2003' : '42d9b984185fa3e10048143229b6ea18'}
+known_md5s_mysql = {'AvianBodySize' : 'f60ac93d9be4671dbef77da9d10676b8',
+                    'MoM2003' : '9728728d72af4c21a2a6e29fec3edb48'}
 
 def setup_module():
     """Update retriever scripts and cd to test directory to find data"""
@@ -73,7 +73,7 @@ class MySQLRegression(TestCase):
         """Check for regression for a particular dataset imported to sqlite"""
         os.system('mysql -u travis -Bse "DROP DATABASE IF EXISTS testdb"') # installing over an existing database changes the dump
         os.system("retriever install mysql %s -u travis -d testdb" % dataset)   #user 'travis' for Travis CI
-        os.system("mysqldump testdb -u travis --compact --compatible=no_table_options > output_file")
+        os.system("mysqldump testdb -u travis --compact --compatible=no_table_options --no-create-db --no-create-info --result-file=output_file")
         current_md5 = getmd5('output_file')
         assert current_md5 == known_md5
 
