@@ -102,8 +102,8 @@ class ScriptTest(unittest.TestCase):
                     orderby = table[2]
                     
                 cursor = engine.connection.cursor()
-                engine.table.tablename = tablename
-                select_statement = "SELECT * FROM " + engine.tablename()
+                engine.table.table_name = tablename
+                select_statement = "SELECT * FROM " + engine.table_name()
                 if orderby:
                     select_statement += " ORDER BY " + orderby
                 select_statement += ";"

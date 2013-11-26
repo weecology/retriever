@@ -56,7 +56,7 @@ class engine(Engine):
             columns = self.table.get_insert_columns()
             statement = """        
 LOAD DATA LOCAL INFILE '""" + filename.replace("\\", "\\\\") + """'
-INTO TABLE """ + self.tablename() + """
+INTO TABLE """ + self.table_name() + """
 FIELDS TERMINATED BY '""" + self.table.delimiter + """'
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\\n'
@@ -72,7 +72,7 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
         
     def table_exists(self, dbname, tablename):
         try:
-            tablename = self.tablename(name=tablename, dbname=dbname)
+            tablename = self.table_name(name=tablename, dbname=dbname)
             test_statement = "SELECT * FROM " + tablename + " LIMIT 1"
             self.cursor.execute(test_statement)
             l = len(cursor.fetchall())

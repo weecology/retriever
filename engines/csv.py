@@ -40,7 +40,7 @@ class engine(Engine):
         return None
         
     def create_table(self):
-        self.output_file = open(self.tablename(), "w")
+        self.output_file = open(self.table_name(), "w")
         self.output_file.write(','.join(['"%s"' % c[0] for c in self.table.columns]))
         
     def execute(self, statement, commit=True):
@@ -70,7 +70,7 @@ class engine(Engine):
         
     def table_exists(self, dbname, tablename):
         try:
-            tablename = self.tablename(name=tablename, dbname=dbname)
+            tablename = self.table_name(name=tablename, dbname=dbname)
             return os.path.exists(tablename)
         except:
             return False
