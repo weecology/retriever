@@ -39,7 +39,7 @@ class engine(Engine):
             self.existing_table_names = set()
             for line in self.cursor:
                 self.existing_table_names.add(line[0].lower())
-        return self.tablename(name=tablename, dbname=dbname).lower() in self.existing_table_names
+        return self.table_name(name=tablename, dbname=dbname).lower() in self.existing_table_names
         
     def get_connection(self):
         """Gets the db connection."""

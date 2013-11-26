@@ -78,7 +78,7 @@ class engine(Engine):
             columns = self.table.get_insert_columns()
             filename = os.path.abspath(filename)
             statement = """
-COPY """ + self.tablename() + " (" + columns + """)
+COPY """ + self.table_name() + " (" + columns + """)
 FROM '""" + filename.replace("\\", "\\\\") + """'
 WITH DELIMITER ','
 CSV HEADER"""
