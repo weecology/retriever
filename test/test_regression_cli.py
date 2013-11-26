@@ -71,7 +71,7 @@ for dataset in known_md5s_csv:
 class MySQLRegression(TestCase):
     def check_mysql_regression(self, dataset, known_md5):
         """Check for regression for a particular dataset imported to sqlite"""
-        os.system('mysql -u travis -Bse "DROP DATABASE testdb"') # installing over an existing database changes the dump
+        os.system('mysql -u travis -Bse "DROP DATABASE IF EXISTS testdb"') # installing over an existing database changes the dump
         os.system("retriever install mysql %s -u travis -d testdb" % dataset)   #user 'travis' for Travis CI
         os.system("mysqldump testdb -u travis --skip-comments > output_file")
         current_md5 = getmd5('output_file')
