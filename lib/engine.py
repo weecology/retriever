@@ -114,7 +114,7 @@ class Engine():
                 if (self.table.record_id % update_frequency == 0 
                     or self.table.record_id == 1 
                     or self.table.record_id == total):
-                    prompt = "Inserting rows to " + self.tablename() + ": "
+                    prompt = "Inserting rows to " + self.table_name() + ": "
                     prompt += str(self.table.record_id) + " / " + str(total)
                     sys.stdout.write(prompt + "\b" * len(prompt))
                 
@@ -126,7 +126,7 @@ class Engine():
         
         print
         self.connection.commit()
-
+    
     def auto_create_table(self, table, url=None, filename=None, pk=None):
         """Creates a table automatically by analyzing a data source and 
         predicting column names, data types, delimiter, etc."""
@@ -138,15 +138,15 @@ class Engine():
             # If the file doesn't exist, download it
             self.download_file(url, filename)
         file_path = self.find_file(filename)
-
+        
         source = (skip_rows,
                   (self.table.column_names_row - 1, 
                    (open, (file_path, "rb"))))
         lines = gen_from_source(source)
-
+        
         header = lines.next()
         lines.close()
-
+        
         source = (skip_rows,
                   (self.table.header_rows, 
                    (open, (file_path, "rb"))))
@@ -166,10 +166,9 @@ class Engine():
             columns, column_values = self.table.auto_get_columns(header)
             
             self.auto_get_datatypes(pk, lines, columns, column_values)
-
+        
         if self.table.columns[-1][1][0][:3] == "ct-" and hasattr(self.table, "ct_names") and not self.table.ct_column in [c[0] for c in self.table.columns]:
             self.table.columns = self.table.columns[:-1] + [(self.table.ct_column, ("char", 20))] + [self.table.columns[-1]]
-
         
         self.create_table()
 
@@ -305,12 +304,12 @@ class Engine():
     def create_table(self):
         """Creates a new database table based on settings supplied in Table 
         object engine.table."""
-        print "Creating table " + self.tablename() + "..."
+        print "Creating table " + self.table_name() + "..."
 
         # Try to drop the table if it exists; this may cause an exception if it
         # doesn't exist, so ignore exceptions
         try:
-            self.execute(self.drop_statement("TABLE", self.tablename()))
+            self.execute(self.drop_statement("TABLE", self.table_name()))
         except:
             pass
         
@@ -325,7 +324,7 @@ class Engine():
         
     def create_table_statement(self):
         """Returns a SQL statement to create a table."""
-        create_stmt = "CREATE TABLE " + self.tablename() + " ("
+        create_stmt = "CREATE TABLE " + self.table_name() + " ("
         
         columns = self.table.get_insert_columns(join=False)
         
@@ -340,7 +339,7 @@ class Engine():
         column_strings = []
         for c, t in zip(columns, types):
             column_strings.append(c + ' ' + t)
-
+        
         create_stmt += ', '.join(column_strings)
         create_stmt += " );"
 
@@ -350,14 +349,13 @@ class Engine():
         if not name:
             try:
                 name = self.script.shortname
-            except:
+            except AttributeError:
                 name = "{db}"
-        db_name = self.opts["database_name"]
-        db_name = db_name.replace('{db}', name)
+        
         try:
-            db_name = db_name.replace('{table}', self.table.name)
-        except:
-            pass
+            db_name = self.opts["database_name"].replace('{db}', name)
+        except KeyError:
+            db_name = name
         
         return db_name
                 
@@ -563,7 +561,7 @@ class Engine():
         columns = self.table.get_insert_columns()
         types = self.table.get_column_datatypes()
         columncount = len(self.table.get_insert_columns(False))
-        insert_stmt = "INSERT INTO " + self.tablename()
+        insert_stmt = "INSERT INTO " + self.table_name()
         insert_stmt += " (" + columns + ")"
         insert_stmt += " VALUES ("
         for i in range(0, columncount):
@@ -583,16 +581,16 @@ class Engine():
         returns False by default."""
         return False
 
-    def tablename(self, name=None, dbname=None):
+    def table_name(self, name=None, dbname=None):
         """Returns the full tablename."""
         if not name:
             name = self.table.name
         if not dbname:
-            dbname = self.script.shortname
+            dbname = self.database_name()
+            if not dbname: dbname = ''
         return (self.opts["table_name"]
                 .replace('{db}', dbname)
                 .replace('{table}', name))
-
         
     def warning(self, warning):
         new_warning = Warning('%s:%s' % (self.script.shortname, self.table.name), warning)

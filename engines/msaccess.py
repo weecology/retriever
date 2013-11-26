@@ -113,7 +113,7 @@ class engine(Engine):
             filename_length = (len(os.path.basename(newfilename)) * -1) - 1
             filepath = newfilename[:filename_length]
             statement = """
-INSERT INTO """ + self.tablename() + " (" + columns + """)
+INSERT INTO """ + self.table_name() + " (" + columns + """)
 SELECT * FROM [""" + os.path.basename(newfilename) + ''']
 IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
             
@@ -135,7 +135,7 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
         
     def table_exists(self, dbname, tablename):
         try:
-            tablename = self.tablename(name=tablename, dbname=dbname)
+            tablename = self.table_name(name=tablename, dbname=dbname)
             test_statement = "SELECT * FROM " + tablename
             self.cursor.execute(test_statement)
             n = self.cursor.next()

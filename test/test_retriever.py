@@ -2,8 +2,8 @@
 
 import os
 from StringIO import StringIO
-from engine import Engine
-from table import Table
+from retriever.lib.engine import Engine
+from retriever.lib.table import Table
 from retriever.lib.templates import BasicTextTemplate
 from retriever import DATA_WRITE_PATH
 from nose.tools import with_setup
@@ -13,7 +13,7 @@ test_engine = Engine()
 test_engine.table = Table("test")
 test_engine.script = BasicTextTemplate(tables={'test':test_engine.table},
                                        shortname='test')
-test_engine.opts = {'database_name': '{db}_{table}'}
+test_engine.opts = {'database_name': '{db}_abc'}
 HOMEDIR = os.environ['HOME']
 
 def test_auto_get_columns():
@@ -51,12 +51,12 @@ def test_auto_get_delimiter_semicolon():
 
 def test_create_db_statement():
     """Test creating the create database SQL statement"""
-    assert test_engine.create_db_statement() == 'CREATE DATABASE test_test'
+    assert test_engine.create_db_statement() == 'CREATE DATABASE test_abc'
 
 
 def test_database_name():
     """Test creating database name"""
-    assert test_engine.database_name() == 'test_test'
+    assert test_engine.database_name() == 'test_abc'
 
 
 def test_drop_statement():
