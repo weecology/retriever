@@ -15,7 +15,4 @@ script: nosetests
 # database setup
 before_script:
   - mysql -e 'create database myapp_test;'
-  - psql -c "CREATE USER testuser WITH PASSWORD 'testpass';" -U postgres
-  - psql -c 'GRANT ALL PRIVILEGES ON DATABASE testdb to testuser;' -U postgres
-  - psql -c 'CREATE DATABASE testdb;' -U postgres
-  - psql -c 'GRANT ALL PRIVILEGES ON DATABASE testdb to testuser;' -U postgres
+  - psql -c 'create database testdb;' -U postgres
