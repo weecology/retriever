@@ -4,20 +4,17 @@ from unittest import TestCase
 from hashlib import md5
 
 # First md5 is for csv, second md5 is for sqlite
-known_md5s_sqlite = {'AvianBodySize' : '72256f681cdce96eba32d4ece270bcb2',
-                     'DelMoral2010' : '92b6cd535f8e6c82d6fc19802d6ba64f',
-                     'MoM2003' : 'd3bdce86e0fc5888449884dfb0ef4611'}
-
-known_md5s_csv = {'AvianBodySize' : 'f42702a53e7d99d16e909676f30e5aa8',
-                  'DelMoral2010' : '606f97c3ddbfd6d63b474bc76d01646a',
-                  'MoM2003' : 'ef0a31c132cfe1c6594739c872f70f54'}
-
-known_md5s_mysql = {'AvianBodySize' : 'f60ac93d9be4671dbef77da9d10676b8',
-                    'MoM2003' : '9728728d72af4c21a2a6e29fec3edb48'}
-
-known_md5s_postgres = {'AvianBodySize' : '60c252af74d914e3c15fa9af43edefca',
-                  'DelMoral2010' : '1e8de8fa3ddbd4ca3a7cab921926e70e',
-                  'MoM2003' : 'a55c8308722c8e20950e0d1e6d9639e6'}
+known_md5s = {'sqlite': {'AvianBodySize' : '72256f681cdce96eba32d4ece270bcb2',
+                         'DelMoral2010' : '92b6cd535f8e6c82d6fc19802d6ba64f',
+                         'MoM2003' : 'd3bdce86e0fc5888449884dfb0ef4611'},
+              'csv': {'AvianBodySize' : 'f42702a53e7d99d16e909676f30e5aa8',
+                      'DelMoral2010' : '606f97c3ddbfd6d63b474bc76d01646a',
+                      'MoM2003' : 'ef0a31c132cfe1c6594739c872f70f54'},
+              'mysql': {'AvianBodySize' : 'f60ac93d9be4671dbef77da9d10676b8',
+                        'MoM2003' : '9728728d72af4c21a2a6e29fec3edb48'},
+              'postgres': {'AvianBodySize' : '60c252af74d914e3c15fa9af43edefca',
+                         'DelMoral2010' : '1e8de8fa3ddbd4ca3a7cab921926e70e',
+                         'MoM2003' : 'a55c8308722c8e20950e0d1e6d9639e6'}}
 
 
 def setup_module():
@@ -52,11 +49,6 @@ class SqliteRegression(TestCase):
         current_md5 = getmd5('output_file')
         assert current_md5 == known_md5
 
-for dataset in known_md5s_sqlite:
-    stub_test = _test_factory('check_sqlite_regression', 'test_%s' % dataset, dataset, known_md5s_sqlite[dataset])
-    setattr(SqliteRegression, stub_test.__name__, stub_test)
-    del(stub_test)
-
 
 class CSVRegression(TestCase):
     def check_csv_regression(self, dataset, known_md5):
@@ -66,11 +58,6 @@ class CSVRegression(TestCase):
         os.system("cat output_file_* > output_file")
         current_md5 = getmd5('output_file')
         assert current_md5 == known_md5
-
-for dataset in known_md5s_csv:
-    stub_test = _test_factory('check_csv_regression', 'test_%s' % dataset, dataset, known_md5s_csv[dataset])
-    setattr(CSVRegression, stub_test.__name__, stub_test)
-    del(stub_test)
 
 
 class MySQLRegression(TestCase):
@@ -82,10 +69,6 @@ class MySQLRegression(TestCase):
         current_md5 = getmd5('output_file')
         assert current_md5 == known_md5
 
-for dataset in known_md5s_mysql:
-    stub_test = _test_factory('check_mysql_regression', 'test_%s' % dataset, dataset, known_md5s_mysql[dataset])
-    setattr(MySQLRegression, stub_test.__name__, stub_test)
-    del(stub_test)
 
 class PostgreSQLRegression(TestCase):
     def check_postgres_regression(self, dataset, known_md5):
@@ -96,10 +79,15 @@ class PostgreSQLRegression(TestCase):
         current_md5 = getmd5('output_file')
         assert current_md5 == known_md5
 
-for dataset in known_md5s_postgres:
-    stub_test = _test_factory('check_postgres_regression', 'test_%s' % dataset, dataset, known_md5s_postgres[dataset])
-    setattr(PostgreSQLRegression, stub_test.__name__, stub_test)
-    del(stub_test)
+dbms_test_classes = {'sqlite': SqliteRegression, 'csv': CSVRegression,
+                     'mysql': MySQLRegression, 'postgres': PostgreSQLRegression}
+
+for dbms in known_md5s:
+    for dataset in known_md5s[dbms]:
+        stub_test = _test_factory('check_%s_regression' % dbms, 'test_%s' % dataset,
+                                  dataset, known_md5s[dbms][dataset])
+        setattr(dbms_test_classes[dbms], stub_test.__name__, stub_test)
+        del(stub_test)
 
 if __name__ == '__main__':
     nose.runmodule()
