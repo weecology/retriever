@@ -94,6 +94,12 @@ class PostgreSQLRegression(TestCase):
         os.system("retriever install postgres %s -u postgres -d testdb -a testschema" % dataset)
         os.system("pg_dump testdb -n testschema --data-only -U postgres -h localhost -f output_file")
         current_md5 = getmd5('output_file')
+
+        print("Head of output file")
+        os.system("head -20 output_file")
+        print("Tail of output file")
+        os.system("tail output_file")
+
         assert current_md5 == known_md5
 
 for dataset in known_md5s_postgres:
