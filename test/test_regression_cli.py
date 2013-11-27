@@ -15,6 +15,11 @@ known_md5s_csv = {'AvianBodySize' : 'f42702a53e7d99d16e909676f30e5aa8',
 known_md5s_mysql = {'AvianBodySize' : 'f60ac93d9be4671dbef77da9d10676b8',
                     'MoM2003' : '9728728d72af4c21a2a6e29fec3edb48'}
 
+known_md5s_postgres = {'AvianBodySize' : '60c252af74d914e3c15fa9af43edefca',
+                  'DelMoral2010' : '1e8de8fa3ddbd4ca3a7cab921926e70e',
+                  'MoM2003' : 'a55c8308722c8e20950e0d1e6d9639e6'}
+
+
 def setup_module():
     """Update retriever scripts and cd to test directory to find data"""
     os.chdir("./test/")
@@ -80,6 +85,20 @@ class MySQLRegression(TestCase):
 for dataset in known_md5s_mysql:
     stub_test = _test_factory('check_mysql_regression', 'test_%s' % dataset, dataset, known_md5s_mysql[dataset])
     setattr(MySQLRegression, stub_test.__name__, stub_test)
+    del(stub_test)
+
+class PostgreSQLRegression(TestCase):
+    def check_postgres_regression(self, dataset, known_md5):
+        """Check for regression for a particular dataset imported to sqlite"""
+        os.system('psql -U postgres -d testdb -h localhost -c "DROP SCHEMA IF EXISTS testschema CASCADE"')
+        os.system("retriever install postgres %s -u postgres -d testdb -a testschema" % dataset)
+        os.system("pg_dump testdb -n testschema --data-only -U postgres -h localhost -f output_file")
+        current_md5 = getmd5('output_file')
+        assert current_md5 == known_md5
+
+for dataset in known_md5s_postgres:
+    stub_test = _test_factory('check_postgres_regression', 'test_%s' % dataset, dataset, known_md5s_postgres[dataset])
+    setattr(PostgreSQLRegression, stub_test.__name__, stub_test)
     del(stub_test)
 
 if __name__ == '__main__':
