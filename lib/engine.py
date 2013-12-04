@@ -47,6 +47,12 @@ class Engine():
         '''This method should be overloaded by specific implementations
         of Engine.'''
         pass
+
+    def reset_connection(self):
+        """Reset the database connection"""
+        self.disconnect()
+        self.get_connection()
+        self.get_cursor()
     
     def add_to_table(self, data_source):
         """This function adds data to a table from one or more lines specified 
