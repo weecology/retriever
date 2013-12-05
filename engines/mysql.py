@@ -66,7 +66,7 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
                 self.cursor.execute(statement)
             except Exception as e:
                 print "Failed bulk insert (%s), inserting manually" % e
-                self.reset_connection() # If the execute fails the database connection can get hung up
+                self.disconnect() # If the execute fails the database connection can get hung up
                 return Engine.insert_data_from_file(self, filename)
         else:
             return Engine.insert_data_from_file(self, filename)
