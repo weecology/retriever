@@ -1,10 +1,13 @@
 ---
 layout: page
-title: "Installation"
+title: "Getting Started"
 comments: false
 sharing: false
 footer: true
 ---
+
+Installation
+------------
 
 ### Installing Packages
 
