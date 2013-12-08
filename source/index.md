@@ -49,9 +49,7 @@ Naturalist 181: E83-90.
 
 ### Acknowledgements
 
-The EcoData Retriever was written by [Ben
-Morris](http://www.bendmorris.com) with help from [Ethan
-White](http://whitelab.weecology.org). This work was funded by the
-[National Science Foundation](http://nsf.gov/) as part of a [CAREER
-award to Ethan
-White](http://nsf.gov/awardsearch/showAward.do?AwardNumber=0953694).
+The EcoData Retriever was written by [Ben Morris](http://www.bendmorris.com)
+with help from [Ethan White](http://whitelab.weecology.org). This work was
+funded by the [National Science Foundation](http://nsf.gov/) as part of a
+[CAREER award to Ethan White](http://nsf.gov/awardsearch/showAward.do?AwardNumber=0953694).
