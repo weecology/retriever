@@ -1,7 +1,6 @@
 ---
 layout: page
 title: "EcoData Retriever"
-date: 2013-12-08 1:31
 comments: false
 sharing: false
 footer: true
