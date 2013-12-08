@@ -6,9 +6,6 @@ sharing: false
 footer: true
 ---
 
-Using the Command Line Interface
---------------------------------
-
 The Retriever includes a command line interface to allow its
 capabilities to be integrated into scientific workflows involving
 non-Python programming languages. For example, the Retriever can easily

@@ -6,9 +6,6 @@ sharing: false
 footer: true
 ---
 
-Installation
-------------
-
 ### Installing Packages
 
 Packages are provided for Windows and Ubuntu/Debian Linux, or you can

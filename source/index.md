@@ -7,9 +7,6 @@ sharing: false
 footer: true
 --- 
 
-EcoData Retriever
-===============================
-
 ### Finding data is one thing. Getting it ready to use is another. EcoData Retriever does the work so that you can focus on doing science.
 
 Most ecological datasets do not adhere to any agreed-upon standards in

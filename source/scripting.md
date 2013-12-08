@@ -6,9 +6,6 @@ sharing: false
 footer: true
 ---
 
-Writing Scripts for the EcoData Retriever
-=========================================
-
 Text Based Scripts
 ------------------
 
