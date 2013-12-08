@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Writing scripts of the EcoData Retriever"
+comments: false
+sharing: false
+footer: true
+---
+
 Writing Scripts for the EcoData Retriever
 =========================================
 

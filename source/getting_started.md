@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Installation"
+comments: false
+sharing: false
+footer: true
+---
+
 Installation
 ------------
 

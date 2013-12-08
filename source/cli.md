@@ -1,3 +1,11 @@
+---
+layout: page
+title: "Using the command line interface"
+comments: false
+sharing: false
+footer: true
+---
+
 Using the Command Line Interface
 --------------------------------
 
