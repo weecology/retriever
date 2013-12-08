@@ -2,12 +2,12 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://yoursite.com
-title: My Octopress Blog
-subtitle: A blogging framework for hackers.
-author: Your Name
+url: http://ecodataretriever.org
+title: EcoData Retriever
+subtitle: We handle the data so you can focus on the science
+author: Ethan White
 simple_search: http://google.com/search
-description:
+description: The EcoData Retriever automatically downloads, cleans, and installs ecological data into your favorite database management system.
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
