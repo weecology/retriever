@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "Writing scripts of the EcoData Retriever"
+title: "Writing scripts for the EcoData Retriever"
 comments: false
 sharing: false
 footer: true
