@@ -1,78 +1,94 @@
-// JSON-P Twitter fetcher for Octopress
-// (c) Brandon Mathis // MIT License
+(function($){
+	$.fn.getTwitterFeed = function(userid, count, reply){
+		var banner = $(this),
+			feed = banner.find('.feed'),
+			interval = 10000,
+			speed = 500;
 
-/* Sky Slavin, Ludopoli. MIT license.  * based on JavaScript Pretty Date * Copyright (c) 2008 John Resig (jquery.com) * Licensed under the MIT license.  */
-function prettyDate(time) {
-  if (navigator.appName === 'Microsoft Internet Explorer') {
-    return "<span>&infin;</span>"; // because IE date parsing isn't fun.
-  }
-  var say = {
-    just_now:    " now",
-    minute_ago:  "1m",
-    minutes_ago: "m",
-    hour_ago:    "1h",
-    hours_ago:   "h",
-    yesterday:   "1d",
-    days_ago:    "d",
-    last_week:   "1w",
-    weeks_ago:   "w"
-  };
+		var linkify = function(text){
+			text = text.replace(/(https?:\/\/)([\w\-:;?&=+.%#\/]+)/gi, '<a href="$1$2">$2</a>').replace(/(^|\W)@(\w+)/g, '$1<a href="http://twitter.com/$2">@$2</a>').replace(/(^|\W)#(\w+)/g, '$1<a href="http://search.twitter.com/search?q=%23$2">#$2</a>');
 
-  var current_date = new Date(),
-      current_date_time = current_date.getTime(),
-      current_date_full = current_date_time + (1 * 60000),
-      date = new Date(time),
-      diff = ((current_date_full - date.getTime()) / 1000),
-      day_diff = Math.floor(diff / 86400);
+			return text;
+		}
 
-  if (isNaN(day_diff) || day_diff < 0) { return "<span>&infin;</span>"; }
+		var relativeDate = function(date){
+			if (navigator.appName === 'Microsoft Internet Explorer') return '';
 
-  return day_diff === 0 && (
-    diff < 60 && say.just_now ||
-    diff < 120 && say.minute_ago ||
-    diff < 3600 && Math.floor(diff / 60) + say.minutes_ago ||
-    diff < 7200 && say.hour_ago ||
-    diff < 86400 && Math.floor(diff / 3600) + say.hours_ago) ||
-    day_diff === 1 && say.yesterday ||
-    day_diff < 7 && day_diff + say.days_ago ||
-    day_diff === 7 && say.last_week ||
-    day_diff > 7 && Math.ceil(day_diff / 7) + say.weeks_ago;
-}
+			var unit = {
+				now: 'Now',
+				minute: '1 min',
+				minutes: ' mins',
+				hour: '1 hr',
+				hours: ' hrs',
+				day: 'Yesterday',
+				days: ' days',
+				week: '1 week',
+				weeks: ' weeks'
+			};
 
-function linkifyTweet(text, url) {
-  // Linkify urls, usernames, hashtags
-  text = text.replace(/(https?:\/\/)([\w\-:;?&=+.%#\/]+)/gi, '<a href="$1$2">$2</a>')
-    .replace(/(^|\W)@(\w+)/g, '$1<a href="https://twitter.com/$2">@$2</a>')
-    .replace(/(^|\W)#(\w+)/g, '$1<a href="https://search.twitter.com/search?q=%23$2">#$2</a>');
+			var current = new Date(),
+				tweet = new Date(date),
+				diff = (((current.getTime() + (1 * 60000)) - tweet.getTime()) / 1000),
+				day_diff = Math.floor(diff / 86400);
+			
+			if (day_diff == 0){
+				if (diff < 60) return unit.now;
+				else if (diff < 120) return unit.minute;
+				else if (diff < 3600) return Math.floor(diff / 60) + unit.minutes;
+				else if (diff < 7200) return unit.hour;
+				else if (diff < 86400) return Math.floor(diff / 3600) + unit.hours;
+				else return '';
+			} else if (day_diff == 1) {
+				return unit.day;
+			} else if (day_diff < 7) {
+				return day_diff + unit.days;
+			} else if (day_diff == 7) {
+				return unit.week;
+			} else if (day_diff > 7) {
+				return Math.ceil(day_diff / 7) + unit.weeks;
+			} else {
+				return '';
+			}
+		}
 
-  // Use twitter's api to replace t.co shortened urls with expanded ones.
-  for (var u in url) {
-    if(url[u].expanded_url != null){
-      var shortUrl = new RegExp(url[u].url, 'g');
-      text = text.replace(shortUrl, url[u].expanded_url);
-      var shortUrl = new RegExp(">"+(url[u].url.replace(/https?:\/\//, '')), 'g');
-      text = text.replace(shortUrl, ">"+url[u].display_url);
-    }
-  }
-  return text
-}
+		if ($(window).width() > 600){
+			var url = 'https://api.twitter.com/1/statuses/user_timeline.json?screen_name='+userid+'&count='+count+'&include_rts=true&trim_user=true&exclude_repies='+(reply ? '0' : '1')+'&callback=?';
+			banner.show();
+			$.getJSON(url, function(json){
+				var length = json.length,
+					fragment = document.createDocumentFragment(),
+					counts = 0,
+					timeout;
 
-function showTwitterFeed(tweets, twitter_user) {
-  var timeline = document.getElementById('tweets'),
-      content = '';
+				for (var i=0; i<length; i++){
+					var item = document.createElement('li');
+					item.innerHTML = linkify(json[i].text) + '<small>'+relativeDate(json[i].created_at)+'</small>';
+					fragment.appendChild(item);
+				}
 
-  for (var t in tweets) {
-    content += '<li>'+'<p>'+'<a href="https://twitter.com/'+twitter_user+'/status/'+tweets[t].id_str+'">'+prettyDate(tweets[t].created_at)+'</a>'+linkifyTweet(tweets[t].text.replace(/\n/g, '<br>'), tweets[t].entities.urls)+'</p>'+'</li>';
-  }
-  timeline.innerHTML = content;
-}
+				var play = function(){				
+					timeout = setTimeout(function(){
+						feed.animate({top: -30}, speed, function(){
+							//move the first item and put it as last item
+							$(this).children('li:last').after($(this).children('li:first'));
+							//set the default item to correct position
+							$(this).css({'top' : '0px'});
+							play();
+						});
+					}, interval);
+				}
 
-function getTwitterFeed(user, count, replies) {
-  count = parseInt(count, 10);
-  $.ajax({
-      url: "https://api.twitter.com/1/statuses/user_timeline/" + user + ".json?trim_user=true&count=" + (count + 20) + "&include_entities=1&exclude_replies=" + (replies ? "0" : "1") + "&callback=?"
-    , type: 'jsonp'
-    , error: function (err) { $('#tweets li.loading').addClass('error').text("Twitter's busted"); }
-    , success: function(data) { showTwitterFeed(data.slice(0, count), user); }
-  })
-}
+				var pause = function(){
+					clearTimeout(timeout);
+				}
+
+				banner.on('mouseenter', pause).on('mouseleave', play)
+				.children('.loading').hide().end()
+				.children('.container').show()
+				.children('.feed').append(fragment);
+
+				play();
+			});
+		}
+	};
+})(jQuery);

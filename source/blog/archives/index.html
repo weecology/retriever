@@ -1,18 +1,11 @@
 ---
-layout: page
-title: Blog Archive
-footer: false
+layout: default
+title: Blog Archives
 ---
 
-<div id="blog-archives">
+<div itemscope itemtype="http://schema.org/Blog">
 {% for post in site.posts reverse %}
-{% capture this_year %}{{ post.date | date: "%Y" }}{% endcapture %}
-{% unless year == this_year %}
-  {% assign year = this_year %}
-  <h2>{{ year }}</h2>
-{% endunless %}
-<article>
-  {% include archive_post.html %}
-</article>
+	{% include archive_post.html %}
 {% endfor %}
+  </section>
 </div>
