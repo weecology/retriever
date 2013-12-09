@@ -4,10 +4,12 @@
 
 url: http://ecodataretriever.org
 title: EcoData Retriever
-subtitle: We handle the data so you can focus on the science
+subtitle: We handle the data, you handle the science
 author: Ethan White
 simple_search: http://google.com/search
 description: The EcoData Retriever automatically downloads, cleans, and installs ecological data into your favorite database management system.
+
+email_md5: ea09e950a307e273ef8d85184c49e7d7
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
@@ -19,7 +21,6 @@ date_format: "ordinal"
 subscribe_rss: /atom.xml
 subscribe_email:
 # RSS feeds can list your email address if you like
-email:
 
 # ----------------------- #
 #    Jekyll & Plugins     #
