@@ -6,9 +6,6 @@ sharing: false
 footer: true
 ---
 
-Text Based Scripts
-------------------
-
 The EcoData Retriever includes a simple text file format for adding new
 datasets. This allows users with no programming experience to quickly
 add most standard datasets to the Retriever by specifying the names and
@@ -17,7 +14,7 @@ configuration of the data. Running custom scripts that are not part of
 the Retriever is as easy as adding them to the directory where the
 Retriever is being run, or to a subdirectory named \`\`scripts\`\`.
 
-### Basic Scripts
+## Basic Scripts
 
 The most basic scripts require only some general metadata about the
 dataset, the name of the database and table, and the location of the
@@ -55,7 +52,7 @@ Ecological Archives is simply:
 -   The last line gives the name for each table (there is only one table
     in this case), and its URL
 
-### Multiple Tables
+## Multiple Tables
 
 Adding datasets with multiple tables is handled simply by adding more
 `table: ` lines to the script. For example, the script for adding
@@ -73,7 +70,7 @@ McGlinn et al. 2010 from Ecological Archives is:
     table: environment, http://esapubs.org/archive/ecol/E091/124/TGPP_env.csv
     table: climate, http://esapubs.org/archive/ecol/E091/124/TGPP_clim.csv
 
-### Null Values
+## Null Values
 
 The Retriever can replace non-standard null values by adding an
 additional line to the script with a comma separated list of those null
@@ -94,7 +91,7 @@ null values.
     table: MammalMR2010, http://www.esapubs.org/archive/ecol/E091/198/data.txt
     *nulls: -9999
 
-### Headers
+## Headers
 
 If the first row of a table is the headers then naming the columns will,
 be default, be handled automatically. If you want to rename an existing
@@ -128,7 +125,7 @@ includes this functionality.
     table: monthly_ppt, http://esapubs.org/archive/ecol/E088/161/monthly_ppt.csv
     *nulls: 'NA'
 
-### Full control over column names and data types
+## Full control over column names and data types
 
 By default the Retriever automatically detects both column names and
 data types, but you can also exercise complete over the structure of the
@@ -160,7 +157,7 @@ functionality.
     *column: comb_mass_g, double
     *column: reference, char
 
-### Restructuring cross-tab data
+## Restructuring cross-tab data
 
 It is common in ecology to see where the rows indicated one level of
 grouping (e.g., by site) and the columns indicate another level of

@@ -6,36 +6,33 @@ sharing: false
 footer: true
 ---
 
-Installation
-------------
-
-### Installing Packages
+## Installing Packages
 
 Packages are provided for Windows and Ubuntu/Debian Linux, or you can
 install from the Python source.
 
-#### Windows
+### Windows
 
 Simply download and run
 [retriever.exe](https://s3.amazonaws.com/ecodata-retriever/retriever.exe).
 This can be run as a Windows application or from the command line using
 the command line interface.
 
-#### Linux
+### Linux
 
 [A Debian
 package](https://s3.amazonaws.com/ecodata-retriever/python-retriever_1.4-1_all.deb)
 is provided; If you're on a non-Debian based system, refer to the
 instructions under Installing from Source.
 
-#### Mac
+### Mac
 
 Install from source.*Please note that we do not work with Macs and
 therefore testing and running down Mac specific bugs is difficult. If
 you'd like to help us make the Mac packages better, please get in touch.
 Users have had variable success installing from source.*
 
-### Installing from Source
+## Installing from Source
 
 A [source
 tarball](https://github.com/weecology/retriever/raw/v1.4/retriever-src.tar.gz)
@@ -71,8 +68,7 @@ bash or Cygwin):
 
 After installing, type `retriever` to launch.
 
-Using the Graphical User Interface
-----------------------------------
+## Using the Graphical User Interface
 
 The first time you launch the EcoData Retriever, it will automatically
 download all available Retriever scripts. You'll then be prompted to
@@ -92,12 +88,10 @@ image above). You can also search for specific terms using Edit \> Find.
 If you need to change the database management system that you are using
 just select File \> Connection from the menu.
 
-Using custom scripts
---------------------
+## Using custom scripts
 
 You can also write your own scripts for datasets that aren't currently
 included in the Retriever. Follow the [instructions for adding
 datasets](scripting.html) and then place your custom script in either
 the directory where you are running the Retriever or in a subdirectory
 named \`\`scripts\`\`.
-

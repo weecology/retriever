@@ -34,7 +34,7 @@ and datasets run `retriever --help`. The output will look like this:
       -h, --help            show this help message and exit
       -v, --version         show program's version number and exit
 
-#### Standard Usage
+## Standard Usage
 
 To get the most recent versions of the data set scripts, run
 `retriever update`
@@ -83,7 +83,7 @@ BIRDS), you can use:
 This is the same as `retriever install ___` for every dataset with the
 BIRDS tag.
 
-### Using the Command Line Interface from inside R
+## Using the Command Line Interface from inside R
 
 Because we have a command line interface, using the EcoData Retriever
 with languages other than the one it is written in is easy. Using the
