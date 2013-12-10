@@ -87,7 +87,7 @@ download all available Retriever scripts. You'll then be prompted to
 choose a database system and enter your connection information. Once
 this process is complete, you'll see the following screen:
 
-![EcoData Retriever GUI](figure1.png)
+![EcoData Retriever GUI](images/figure1.png)
 
 You'll see each available dataset with citation information and a link
 to the dataset website. Click on the box icon to start downloading the
