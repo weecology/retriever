@@ -21,23 +21,29 @@ the command line interface.
 ### Linux
 
 [A Debian
-package](https://s3.amazonaws.com/ecodata-retriever/python-retriever_1.4-1_all.deb)
+package](https://s3.amazonaws.com/ecodata-retriever/python-retriever_1.5-1_all.deb)
 is provided; If you're on a non-Debian based system, refer to the
 instructions under Installing from Source.
 
 ### Mac
 
-Install from source.*Please note that we do not work with Macs and
-therefore testing and running down Mac specific bugs is difficult. If
-you'd like to help us make the Mac packages better, please get in touch.
-Users have had variable success installing from source.*
+Install from source. The following recipe is known to work for OSX 10.8+.
+
+1. Install Xcode
+2. Install the Xcode command line tools ``xcode-select --install``
+3. Install Homebrew ``ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"``
+4. Install Python ``brew install python``
+5. Install wxPython using Homebrew ``brew install --python wxmac --devel``. **NOTE: This takes a very long time**
+6. Make brew's Python the default ``echo export PATH='usr/local/bin:$PATH' >> ~/.bash_profile``
+7. Install xlrd via pip ``pip install xlrd``. No ``sudo`` is necessary since we're using brew.
+8. Install py2app via pip ``pip install py2app``.
+9. Clone the Retriever ``git clone git@github.com:weecology/retriever.git``
+10. Switch directories ``cd retriever``
+11. Standard install ``python setup.py install``
 
 ## Installing from Source
 
-A [source
-tarball](https://github.com/weecology/retriever/raw/v1.4/retriever-src.tar.gz)
-is also available. To install the EcoData Retriever from source, you'll
-need:
+To install the EcoData Retriever from source, you'll need:
 
 -   Python version 2.7.1 or greater (not Python 3.x)
 -   wxPython version 2.8; *Mac users need to use the experimental
@@ -61,10 +67,16 @@ To download and install the Retriever from source, use the following
 commands (Windows users should use a Unix-like environment such as Git
 bash or Cygwin):
 
-1.  `wget https://github.com/weecology/retriever/raw/v1.4/retriever-src.tar.gz`
+1.  `wget https://s3.amazonaws.com/ecodata-retriever/retriever-src.tar.gz`
 2.  `tar -xvzf retriever-src.tar.gz`
 3.  `cd src`
 4.  `sudo python setup.py install`
+
+If you prefer to install the current master branch:
+
+1.  `git clone git@github.com:weecology/retriever.git`
+2.  `cd retriever`
+3.  `sudo python setup.py install`
 
 After installing, type `retriever` to launch.
 
