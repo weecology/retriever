@@ -99,8 +99,6 @@ def main():
             lscolumns.printls(sorted(list(all_scripts), key=lambda s: s.lower()))
             print "Groups:"
             lscolumns.printls(sorted(list(all_tags)))
-            if len(all_scripts) == 0:
-                print "Run 'retriever update' to download the latest scripts from the repository."
             return
         
         engine = choose_engine(args.__dict__)
