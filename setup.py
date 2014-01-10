@@ -97,6 +97,7 @@ setup(name='retriever',
       setup_requires=['py2app'] if 'darwin' in p else [],
 
       # options
+      # optimize is set to 1 of py2app to avoid errors with pymysql
       options = {'py2exe': {'bundle_files': 1,
                             'compressed': 2,
                             'optimize': 2,
@@ -108,7 +109,7 @@ setup(name='retriever',
                             'includes': includes,
                             'site_packages': True,
                             'resources': [],
-                            'optimize': 2,
+                            'optimize': 1,
                             'argv_emulation': True,
                             'no_chdir': True,
                             },
