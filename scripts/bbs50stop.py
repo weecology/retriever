@@ -21,8 +21,8 @@ class main(Script):
         self.tags = ["Taxon > Birds", "Spatial Scale > Continental"]
         self.urls = {
                      "counts": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/50-StopData/1997ToPresent_SurveyWide/",
-                     "routes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/Routes.exe",
-                     "weather": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/Weather.exe",
+                     "routes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/Routes.zip",
+                     "weather": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/Weather.zip",
                      "region_codes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/RegionCodes.txt",
                      "species": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/SpeciesList.txt"
                      }
@@ -30,9 +30,29 @@ class main(Script):
     def download(self, engine=None, debug=False):
         try:
             Script.download(self, engine, debug)
-            
+
             engine = self.engine
-            
+
+            # Species table
+            table = Table("species", cleanup=Cleanup(), contains_pk=True,
+                          header_rows=6)
+
+            table.columns=[("species_id", ("pk-int",) ),
+                           ("AOU", ("int",) ),
+                           ("english_common_name", ("char",50) ),
+                           ("french_common_name", ("char",50) ),
+                           ("spanish_common_name", ("char",50) ),
+                           ("sporder", ("char",30) ),
+                           ("family", ("char",30) ),
+                           ("genus", ("char",30) ),
+                           ("species", ("char",50) ),
+                           ]
+            table.fixed_width = [7,6,51,51,51,51,51,51,50]
+
+            engine.table = table
+            engine.create_table()
+            engine.insert_data_from_url(self.urls["species"])
+
             # Routes table            
             if not os.path.isfile(engine.format_filename("routes_new.csv")):
                 engine.download_files_from_archive(self.urls["routes"],
@@ -81,56 +101,6 @@ class main(Script):
             engine.auto_create_table(Table("weather", pk="RouteDataId", cleanup=Cleanup()), 
                                      filename="weather_new.csv")
             engine.insert_data_from_file(engine.format_filename("weather_new.csv"))
-            
-            
-            # Species table
-            table = Table("species", pk=False, delimiter=',')
-            
-            table.columns=[("species_id"            ,   ("pk-auto",)        ),
-                           ("AOU"                   ,   ("int",)            ),
-                           ("genus"                 ,   ("char",30)         ),
-                           ("species"               ,   ("char",50)         ),
-                           ("subspecies"            ,   ("char",30)         ),
-                           ("id_to_species"         ,   ("bool",)           )]
-            
-            engine.table = table
-            engine.create_table()
-            
-            engine.download_file(self.urls["species"], "SpeciesList.txt")
-            species_list = open(engine.format_filename("SpeciesList.txt"), "rb")
-            for n in range(8):
-                species_list.readline()
-            
-            rows = []
-            for line in species_list:
-                if line and len(line) > 273:
-                    latin_name = line[273:].split()
-                    if len(latin_name) < 2:
-                        # If there's no species given, add "None" value
-                        latin_name.append("None")
-                    subspecies = ' '.join(latin_name[2:]) if len(latin_name) > 2 else "None"                    
-                    id_to_species = "1" if latin_name[1] != "None" else "0"
-                    if latin_name[1] == "sp.":
-                        latin_name[1] = "None"
-                        id_to_species = "0"
-                    if ("x" in latin_name or "/" in latin_name
-                        or "/" in subspecies or "or" in latin_name):
-                        # Hybrid species or only identified to a group of species
-                        latin_name[1] = ' '.join(latin_name[1:])
-                        subspecies = "None"
-                        id_to_species = "0"
-                    
-                    rows.append(','.join([
-                                          line.split()[1], 
-                                          latin_name[0],
-                                          latin_name[1],
-                                          subspecies,
-                                          id_to_species
-                                          ]))
-                    
-            engine.add_to_table(rows)
-            
-            species_list.close()
             
             
             # Region_codes table
@@ -224,7 +194,7 @@ class main(Script):
                     try:
                         engine.table.cleanup = Cleanup()
                         engine.insert_data_from_archive(self.urls["counts"] + 
-                                                        "Fifty" + part + ".exe", 
+                                                        "Fifty" + part + ".zip",
                                                         ["fifty" + part + ".csv"])
                     except:               
                         print "Failed bulk insert on " + part + ", inserting manually."
@@ -232,7 +202,7 @@ class main(Script):
                         engine.table.cleanup = Cleanup(correct_invalid_value,
                                                        nulls=['*'])
                         engine.insert_data_from_archive(self.urls["counts"] + 
-                                                        "Fifty" + part + ".exe", 
+                                                        "Fifty" + part + ".zip",
                                                         ["fifty" + part + ".csv"])
                             
                 except:
