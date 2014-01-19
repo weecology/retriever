@@ -72,14 +72,12 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
             return Engine.insert_data_from_file(self, filename)
         
     def table_exists(self, dbname, tablename):
-        try:
-            tablename = self.table_name(name=tablename, dbname=dbname)
-            test_statement = "SELECT * FROM " + tablename + " LIMIT 1"
-            self.cursor.execute(test_statement)
-            l = len(cursor.fetchall())
-            return l > 0
-        except:
-            return False
+        if not hasattr(self, 'existing_table_names'):
+            self.cursor.execute("SELECT table_schema, table_name FROM information_schema.tables WHERE table_schema NOT IN ('mysql', 'information_schema', 'performance_schema');")
+            self.existing_table_names = set()
+            for schema, table in self.cursor:
+                self.existing_table_names.add((schema.lower(), table.lower()))
+        return (dbname.lower(), tablename.lower()) in self.existing_table_names
         
     def get_connection(self):
         """Gets the db connection."""
