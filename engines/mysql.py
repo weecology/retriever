@@ -85,15 +85,8 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
                 'port': int(self.opts['port']),
                 'user': self.opts['user'],
                 'passwd': self.opts['password']}
-
-        try:
-            import pymysql as dbapi
-            import pymysql.constants.CLIENT as client
-            args['client_flag'] = client.LOCAL_FILES
-        except ImportError:
-            import MySQLdb as dbapi
-            import MySQLdb.constants.CLIENT as client
-            args['client_flag'] = client.LOCAL_FILES
+        import pymysql as dbapi
+        import pymysql.constants.CLIENT as client
+        args['client_flag'] = client.LOCAL_FILES
         self.get_input()
-        
         return dbapi.connect(**args)

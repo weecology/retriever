@@ -30,20 +30,10 @@ packages = [
             'retriever',
             ]
 
-try:
-    import pymysql
-    mysql_module = 'pymysql'
-except ImportError:
-    try:
-        import MySQLdb
-        mysql_module = 'MySQLdb'
-    except ImportError:
-        mysql_module = 'pymysql'
-
 includes = [
             'xlrd',
             'wx',
-            mysql_module,
+            'pymysql',
             'psycopg2',
             'sqlite3',
             ] + extra_includes
