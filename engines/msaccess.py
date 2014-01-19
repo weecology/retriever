@@ -134,15 +134,13 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
             return Engine.insert_data_from_file(self, filename)
         
     def table_exists(self, dbname, tablename):
-        try:
-            tablename = self.table_name(name=tablename, dbname=dbname)
-            test_statement = "SELECT * FROM " + tablename
-            self.cursor.execute(test_statement)
-            n = self.cursor.next()
-            return True
-            
-        except:
-            return False
+        """Determine if the table already exists in the database"""
+        if not hasattr(self, 'existing_table_names'):
+            self.existing_table_names = set()
+            for table in self.cursor.tables():
+                self.existing_table_names.add((table[0].lower()))
+        return self.table_name(name=tablename, dbname=dbname).lower() in self.existing_table_names
+
         
     def get_connection(self):
         """Gets the db connection."""
