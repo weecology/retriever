@@ -147,14 +147,8 @@ class ConnectPage(TitledPage):
                     self.fieldset[opt[0]] = wx.BoxSizer(wx.HORIZONTAL)
                     label = StaticText(self, -1, opt[0] + ": ", 
                                           size=wx.Size(90,35))
-                    if opt[0] == "password":
-                        txt = TextCtrl(self, -1, 
-                                          str(default), 
-                                          size=wx.Size(200,-1), 
-                                          style=wx.TE_PASSWORD)
-                    else:
-                        txt = TextCtrl(self, -1, str(default),
-                                          size=wx.Size(200,-1))
+                    style = wx.TE_PASSWORD if opt[0] == "password" else 0
+                    txt = TextCtrl(self, -1, str(default), size=wx.Size(200,-1), style=style)
                     self.option[opt[0]] = txt
                     self.fieldset[opt[0]].AddMany([label, 
                                                    self.option[opt[0]]])
