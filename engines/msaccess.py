@@ -137,8 +137,12 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
         """Determine if the table already exists in the database"""
         if not hasattr(self, 'existing_table_names'):
             self.existing_table_names = set()
-            for table in self.cursor.tables():
-                self.existing_table_names.add((table[0].lower()))
+            for row in self.cursor.tables():
+                tableinfo = row[2]
+                if not tableinfo.startswith("MSys"):
+                    #ignore system tables
+                    database, table = tableinfo.split()
+                    self.existing_table_names.add((database, table))
         return self.table_name(name=tablename, dbname=dbname).lower() in self.existing_table_names
 
         
