@@ -95,6 +95,14 @@ class ChooseDbPage(TitledPage):
         else:
             self.dblist.SetSelection(0)
         self.sizer.Add(self.dblist, -1, wx.EXPAND)
+
+        #TODO: This is a hack to force the wizard to be large enough to not hide
+        #the Choose button on the Connect Page when the engine has a file
+        #attribute. This should be fixed properly by figuring out how to make wx
+        #work with the fact that the connect page has varying fields depending
+        #on the engine.
+        longspace = StaticText(self, -1, "", wx.Size(375, -1))
+        self.sizer.Add(longspace, -1)
         
     def dirbtn_click(self, evt):
         dialog = wx.DirDialog(None, message="Choose a directory to " +
@@ -147,14 +155,8 @@ class ConnectPage(TitledPage):
                     self.fieldset[opt[0]] = wx.BoxSizer(wx.HORIZONTAL)
                     label = StaticText(self, -1, opt[0] + ": ", 
                                           size=wx.Size(90,35))
-                    if opt[0] == "password":
-                        txt = TextCtrl(self, -1, 
-                                          str(default), 
-                                          size=wx.Size(200,-1), 
-                                          style=wx.TE_PASSWORD)
-                    else:
-                        txt = TextCtrl(self, -1, str(default),
-                                          size=wx.Size(200,-1))
+                    style = wx.TE_PASSWORD if opt[0] == "password" else 0
+                    txt = TextCtrl(self, -1, str(default), size=wx.Size(200,-1), style=style)
                     self.option[opt[0]] = txt
                     self.fieldset[opt[0]].AddMany([label, 
                                                    self.option[opt[0]]])
