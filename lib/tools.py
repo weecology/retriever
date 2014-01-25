@@ -212,6 +212,8 @@ def save_connection(engine_name, values_dict):
         config = open(config_path, "wb")
     else:
         config = open(config_path, "wb")
+    if "file" in values_dict:
+        values_dict["file"] = os.path.abspath(values_dict["file"])
     config.write(engine_name + "," + str(values_dict))
     for line in lines:
         config.write(line)
