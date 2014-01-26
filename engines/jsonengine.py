@@ -77,7 +77,8 @@ class engine(Engine):
         Overrides default behavior by:
         1. Storing decimal numbers as floats rather than strings
         2. Not escaping quotes (handled by the json module)
-        3. Replacing "null" with "" to allow easy checking for inclusion
+        3. Replacing "null" with None which will convert to the 'null' keyword
+           in json
 
         """
         #TODO There is a lot of duplicated code with engine.format_insert_value
@@ -92,28 +93,28 @@ class engine(Engine):
         nulls = ("null", "none")
 
         if strvalue.lower() in nulls:
-            return ""
+            return None
         elif datatype in ("int", "bigint", "bool"):
             if strvalue:
                 intvalue = strvalue.split('.')[0]
                 if intvalue:
                     return int(intvalue)
                 else:
-                    return ""
+                    return None
             else:
-                return ""
+                return None
         elif datatype in ("double", "decimal"):
             if strvalue:
                 return float(strvalue)
             else:
-                return ""
+                return None
         elif datatype=="char":
             if strvalue.lower() in nulls:
-                return ""
+                return None
             else:
                 return strvalue
         else:
-            return ""
+            return None
 
 
     def insert_statement(self, values):
