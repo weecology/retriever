@@ -1,7 +1,8 @@
 """Engine for writing data to a JSON file"""
 
 import os
-import json
+import simplejson
+from decimal import Decimal
 from retriever.lib.models import Engine, no_cleanup
 
 
@@ -37,13 +38,13 @@ class engine(Engine):
                       "Format of table name",
                       "{db}_{table}.json"),
                      ]
-                      
+
     def create_db(self):
-        """Override create_db since there is no database just a JSON file""" 
+        """Override create_db since there is no database just a JSON file"""
         return None
-        
+
     def create_table(self):
-        """Create the table by creating an empty json"""
+        """Create the table by creating an empty json file"""
         self.output_file = open(self.table_name(), "w")
         self.output_file.write('[')
 
@@ -51,21 +52,56 @@ class engine(Engine):
         """Close out the JSON with a [ and close the file"""
         self.output_file.write('\n]')
         self.output_file.close()
-        
+
     def execute(self, statement, commit=True):
         """Write a line to the output file"""
         self.output_file.write('\n' + statement + ',')
-        
+
     def format_insert_value(self, value, datatype):
-        v = Engine.format_insert_value(self, value, datatype)
-        if v == 'null': return ""
-        try:
-            if len(v) > 1 and v[0] == v[-1] == "'":
-                v = '"%s"' % v[1:-1]
-        except:
-            pass
-        return v
-        
+        """Formats a value for an insert statement
+
+        Overrides default behavior by:
+        1. Storing decimal numbers as Decimal rather than strings
+        2. Not escaping quotes (handled by the json module)
+        3. Replacing "null" with "" to allow easy checking for inclusion
+
+        """
+        #TODO There is a lot of duplicated code with engine.format_insert_value
+        #Refactoring so that this code could be properly shared would be preferable
+        datatype = datatype.split('-')[-1]
+        strvalue = str(value).strip()
+
+        # Remove any quotes already surrounding the string
+        quotes = ["'", '"']
+        if len(strvalue) > 1 and strvalue[0] == strvalue[-1] and strvalue[0] in quotes:
+            strvalue = strvalue[1:-1]
+        nulls = ("null", "none")
+
+        if strvalue.lower() in nulls:
+            return ""
+        elif datatype in ("int", "bigint", "bool"):
+            if strvalue:
+                intvalue = strvalue.split('.')[0]
+                if intvalue:
+                    return int(intvalue)
+                else:
+                    return ""
+            else:
+                return ""
+        elif datatype in ("double", "decimal"):
+            if strvalue:
+                return Decimal(strvalue)
+            else:
+                return ""
+        elif datatype=="char":
+            if strvalue.lower() in nulls:
+                return ""
+            else:
+                return strvalue
+        else:
+            return ""
+
+
     def insert_statement(self, values):
         if not hasattr(self, 'auto_column_number'):
             self.auto_column_number = 1
@@ -78,8 +114,8 @@ class engine(Engine):
                 offset += 1
         #FIXME: Should nulls be inserted here? I'm guessing the should be skipped. Find out.
         datadict = {column[0]: value for column, value in zip(self.table.columns, values)}
-        return json.dumps(datadict, indent=4)
-        
+        return simplejson.dumps(datadict, indent=4)
+
     def table_exists(self, dbname, tablename):
         """Check to see if the data file currently exists"""
         tablename = self.table_name(name=tablename, dbname=dbname)
