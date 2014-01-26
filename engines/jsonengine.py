@@ -46,17 +46,17 @@ class engine(Engine):
         """Create the table by creating an empty json"""
         self.output_file = open(self.table_name(), "w")
         self.output_file.write('[')
+
+    def disconnect(self):
+        """Close out the JSON with a [ and close the file"""
+        self.output_file.write('\n]')
+        self.output_file.close()
         
     def execute(self, statement, commit=True):
         """Write a line to the output file"""
         self.output_file.write('\n' + statement + ',')
         
     def format_insert_value(self, value, datatype):
-        """Cleanup values for inserting
-
-        Replace nulls with empty strings and single quotes with double quotes
-
-        """
         v = Engine.format_insert_value(self, value, datatype)
         if v == 'null': return ""
         try:
@@ -76,9 +76,9 @@ class engine(Engine):
                 values = values[:i+offset] + [self.auto_column_number] + values[i+offset:]
                 self.auto_column_number += 1
                 offset += 1
-        
+        #FIXME: Should nulls be inserted here? I'm guessing the should be skipped. Find out.
         datadict = {column[0]: value for column, value in zip(self.table.columns, values)}
-        return json.dumps(datadict)
+        return json.dumps(datadict, indent=4)
         
     def table_exists(self, dbname, tablename):
         """Check to see if the data file currently exists"""
