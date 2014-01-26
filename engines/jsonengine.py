@@ -49,8 +49,23 @@ class engine(Engine):
         self.output_file.write('[')
 
     def disconnect(self):
-        """Close out the JSON with a [ and close the file"""
-        self.output_file.write('\n]')
+        """Close out the JSON with a ] and close the file
+
+        Do to an extra comma after the last entry it is necessary to close the
+        current file, read it back in, and remove the extra comma, before adding
+        the closing bracket, and re-writing the file to disk. This will be
+        inefficient for large files and we may want to replace it with something
+        better.
+
+        """
+        self.output_file.close()
+        current_output_file = open(self.table_name(), "r")
+        file_contents = current_output_file.readlines()
+        current_output_file.close()
+        file_contents[-1] = file_contents[-1].strip(',')
+        file_contents.append('\n]\n')
+        self.output_file = open(self.table_name(), "w")
+        self.output_file.writelines(file_contents)
         self.output_file.close()
 
     def execute(self, statement, commit=True):
