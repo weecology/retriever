@@ -112,6 +112,7 @@ def main():
                 print "=> Installing", dataset.name
                 try:
                     dataset.download(engine, debug=debug)
+                    dataset.engine.final_cleanup()
                 except KeyboardInterrupt:
                     pass
                 except Exception as e:
