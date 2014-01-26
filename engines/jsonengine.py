@@ -1,8 +1,7 @@
 """Engine for writing data to a JSON file"""
 
 import os
-import simplejson
-from decimal import Decimal
+import json
 from retriever.lib.models import Engine, no_cleanup
 
 
@@ -76,7 +75,7 @@ class engine(Engine):
         """Formats a value for an insert statement
 
         Overrides default behavior by:
-        1. Storing decimal numbers as Decimal rather than strings
+        1. Storing decimal numbers as floats rather than strings
         2. Not escaping quotes (handled by the json module)
         3. Replacing "null" with "" to allow easy checking for inclusion
 
@@ -105,7 +104,7 @@ class engine(Engine):
                 return ""
         elif datatype in ("double", "decimal"):
             if strvalue:
-                return Decimal(strvalue)
+                return float(strvalue)
             else:
                 return ""
         elif datatype=="char":
@@ -129,7 +128,7 @@ class engine(Engine):
                 offset += 1
         #FIXME: Should nulls be inserted here? I'm guessing the should be skipped. Find out.
         datadict = {column[0]: value for column, value in zip(self.table.columns, values)}
-        return simplejson.dumps(datadict, indent=4)
+        return json.dumps(datadict, indent=4)
 
     def table_exists(self, dbname, tablename):
         """Check to see if the data file currently exists"""
