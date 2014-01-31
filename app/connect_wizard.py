@@ -184,14 +184,10 @@ class ConfirmPage(TitledPage):
     """The final confirmation page."""
     def __init__(self, parent, title, label):
         TitledPage.__init__(self, parent, title, label)
-        self.fields = wx.BoxSizer(wx.VERTICAL)
         self.parent = parent
         
     def Draw(self, evt):
         if not evt.GetDirection(): return
-        
-        self.fields.Clear(True)
-        self.fields = wx.BoxSizer(wx.VERTICAL)
         
         self.values_dict = dict()
         connect = self.parent.CONNECTION
@@ -201,12 +197,12 @@ class ConfirmPage(TitledPage):
         try:
             connect.engine.opts = self.values_dict
             connect.engine.connect(force_reconnect=True)
-            message = '''<p><b>Success!</b>Your connection has been saved.</p>
+            message = '''<p><b>Success!</b> Your connection has been saved.</p>
             <p>Click Finish to continue.</p>'''
             save_connection(connect.engine.name, self.values_dict)
             
         except Exception as e:
-            message = message = '''<p><b>Error.</b>There was a problem with your
+            message = message = '''<p><b>Error.</b> There was a problem with your
             connection:</p><p>%s</p>
             <p>Click Back to try again, or Cancel.</p>''' % e
             
@@ -216,7 +212,5 @@ class ConfirmPage(TitledPage):
         self.message = HtmlWindow(self)
         self.message.SetSize((450,400))
         self.message.SetHtml(message)
-        self.fields.Add(self.message, 1, wx.EXPAND)
-        self.sizer.Add(self.fields)
-        
+        self.sizer.Add(self.message, 1, wx.EXPAND)
         self.sizer.Layout()
