@@ -184,14 +184,10 @@ class ConfirmPage(TitledPage):
     """The final confirmation page."""
     def __init__(self, parent, title, label):
         TitledPage.__init__(self, parent, title, label)
-        self.fields = wx.BoxSizer(wx.VERTICAL)
         self.parent = parent
         
     def Draw(self, evt):
         if not evt.GetDirection(): return
-        
-        self.fields.Clear(True)
-        self.fields = wx.BoxSizer(wx.VERTICAL)
         
         self.values_dict = dict()
         connect = self.parent.CONNECTION
@@ -216,7 +212,5 @@ class ConfirmPage(TitledPage):
         self.message = HtmlWindow(self)
         self.message.SetSize((450,400))
         self.message.SetHtml(message)
-        self.fields.Add(self.message, 1, wx.EXPAND)
-        self.sizer.Add(self.fields)
-        
+        self.sizer.Add(self.message, 1, wx.EXPAND)
         self.sizer.Layout()
