@@ -197,12 +197,12 @@ class ConfirmPage(TitledPage):
         try:
             connect.engine.opts = self.values_dict
             connect.engine.connect(force_reconnect=True)
-            message = '''<p><b>Success!</b>Your connection has been saved.</p>
+            message = '''<p><b>Success!</b> Your connection has been saved.</p>
             <p>Click Finish to continue.</p>'''
             save_connection(connect.engine.name, self.values_dict)
             
         except Exception as e:
-            message = message = '''<p><b>Error.</b>There was a problem with your
+            message = message = '''<p><b>Error.</b> There was a problem with your
             connection:</p><p>%s</p>
             <p>Click Back to try again, or Cancel.</p>''' % e
             
