@@ -24,7 +24,7 @@ up on your own local database system.
 To get started, double click on a dataset to download the data files and import the data into
 your database.
 </p><p>
-For more information, visit <a href="http://www.ecologicaldata.org">http://www.ecologicaldata.org</a>.
+For more information, visit <a href="http://www.ecodataretriever.org">http://www.ecodataretriever.org</a>.
 </p>
 </body>"""
     def __init__(self, parent):
