@@ -129,7 +129,7 @@ class engine(Engine):
                 offset += 1
         #FIXME: Should nulls be inserted here? I'm guessing the should be skipped. Find out.
         datadict = {column[0]: value for column, value in zip(self.table.columns, values)}
-        return json.dumps(datadict, indent=4)
+        return json.dumps(datadict)
 
     def table_exists(self, dbname, tablename):
         """Check to see if the data file currently exists"""
