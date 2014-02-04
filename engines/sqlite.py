@@ -1,7 +1,7 @@
 import os
 import platform
 from retriever.lib.models import Engine, no_cleanup
-
+from retriever import DATA_DIR
 
 class engine(Engine):
     """Engine instance for SQLite."""
@@ -18,7 +18,7 @@ class engine(Engine):
                  }
     required_opts = [("file", 
                       "Enter the filename of your SQLite database",
-                      "sqlite.db",
+                      os.path.join(DATA_DIR, "sqlite.db"),
                       ""),
                      ("table_name",
                       "Format of table name",
