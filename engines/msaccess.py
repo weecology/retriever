@@ -1,7 +1,7 @@
 import os
 import platform
 from retriever.lib.models import Engine, no_cleanup
-
+from retriever import DATA_DIR
 
 class engine(Engine):
     """Engine instance for Microsoft Access."""
@@ -19,7 +19,7 @@ class engine(Engine):
                  }
     required_opts = [("file", 
                       "Enter the filename of your Access database",
-                      "access.mdb",
+                      os.path.join(DATA_DIR, "access.mdb"),
                       "Access databases (*.mdb, *.accdb)|*.mdb;*.accdb"),
                      ("table_name",
                       "Format of table name",
