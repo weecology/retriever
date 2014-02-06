@@ -57,15 +57,21 @@ class engine(Engine):
         better.
 
         """
-        self.output_file.close()
-        current_output_file = open(self.table_name(), "r")
-        file_contents = current_output_file.readlines()
-        current_output_file.close()
-        file_contents[-1] = file_contents[-1].strip(',')
-        file_contents.append('\n]\n')
-        self.output_file = open(self.table_name(), "w")
-        self.output_file.writelines(file_contents)
-        self.output_file.close()
+        try:
+            self.output_file.close()
+            current_output_file = open(self.table_name(), "r")
+            file_contents = current_output_file.readlines()
+            current_output_file.close()
+            file_contents[-1] = file_contents[-1].strip(',')
+            file_contents.append('\n]\n')
+            self.output_file = open(self.table_name(), "w")
+            self.output_file.writelines(file_contents)
+            self.output_file.close()
+        except:
+            #when disconnect is called by app.connect_wizard.ConfirmPage to
+            #confirm the connection, output_file doesn't exist yet, this is
+            #fine so just pass
+            pass
 
     def execute(self, statement, commit=True):
         """Write a line to the output file"""
