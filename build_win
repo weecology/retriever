@@ -1,6 +1,14 @@
+#setup
 python setup.py install
-rm -rf windows
-mkdir windows
-python setup.py py2exe
-mv dist/retriever.exe windows/
 rm -rf build dist
+mkdir packages
+
+#create distributable version
+python setup.py py2exe
+
+#package distributable installer
+ISCC.exe retriever_installer.iss
+
+#cleanup
+mv Output/RetrieverSetup.exe packages
+rm -rf build dist Output
