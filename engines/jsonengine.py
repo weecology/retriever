@@ -3,7 +3,7 @@
 import os
 import json
 from retriever.lib.models import Engine, no_cleanup
-
+from retriever import DATA_DIR
 
 class DummyConnection:
     def cursor(self):
@@ -35,7 +35,7 @@ class engine(Engine):
     required_opts = [
                      ("table_name",
                       "Format of table name",
-                      "{db}_{table}.json"),
+                      os.path.join(DATA_DIR, "{db}_{table}.json")),
                      ]
 
     def create_db(self):
