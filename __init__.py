@@ -12,7 +12,7 @@ from lib.compile import compile_script
 import platform
 
 
-VERSION = 'v1.5'
+VERSION = 'v1.6'
 MASTER = True
 
 REPO_URL = "https://raw.github.com/weecology/retriever/"
