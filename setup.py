@@ -88,7 +88,9 @@ setup(name='retriever',
 
       # options
       # optimize is set to 1 of py2app to avoid errors with pymysql
-      options = {'py2exe': {'bundle_files': 1,
+      # bundle_files = 1 or 2 was causing failed builds so we moved
+      # to bundle_files = 3 and Inno Setup
+      options = {'py2exe': {'bundle_files': 3,
                             'compressed': 2,
                             'optimize': 2,
                             'packages': packages,
