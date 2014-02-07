@@ -92,7 +92,7 @@ setup(name='retriever',
       # to bundle_files = 3 and Inno Setup
       options = {'py2exe': {'bundle_files': 3,
                             'compressed': 2,
-                            'optimize': 2,
+                            'optimize': 1,
                             'packages': packages,
                             'includes': includes,
                             'excludes': excludes,
