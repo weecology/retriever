@@ -5,8 +5,7 @@ engines = [
            "postgres",
            "sqlite",
            "msaccess",
-           "csv",
-           "jsonengine"
+           "csv"
            ]
 
 engine_module_list = [
