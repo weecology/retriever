@@ -46,8 +46,8 @@ DATA_WRITE_PATH =       DATA_SEARCH_PATHS[-1]
 # create a default data directory for Windows since the Windows installer places
 # the executable in a place where users won't expect the data to be stored.
 current_platform = platform.platform().lower()
-user_home_dir = os.path.expanduser('~')
-DATA_DIR = user_home_dir if "win" in current_platform else '.'
+user_desktop = os.path.join(os.path.expanduser('~'), 'Desktop')
+DATA_DIR = user_desktop if "win" in current_platform else '.'
 
 def MODULE_LIST(force_compile=False):
     """Load scripts from scripts directory and return list of modules."""
