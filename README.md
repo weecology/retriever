@@ -34,10 +34,10 @@ To install the EcoData Retriever from source, you'll need Python 2.6 with the fo
 
 Using the Command Line
 ----------------------
-After installing, run retriever update to download all of the available dataset scripts. 
-To see the full list of command line options and datasets run retriever --help. 
+After installing, run `retriever update` to download all of the available dataset scripts. 
+To see the full list of command line options and datasets run `retriever --help`. 
 The output will look like this:
-<pre><code>
+```
 usage: retriever [-h] [-v] [-q] {install,update,gui,new,ls,citation,help} ...
 
 positional arguments:
@@ -55,13 +55,13 @@ optional arguments:
   -h, --help            show this help message and exit
   -v, --version         show program's version number and exit
   -q, --quiet           suppress command-line output
-</code></pre>
+```
 
 To get the most recent versions of the data set scripts, run <code>retriever update</code>
 
 To install datasets, use <code>retriever install</code>:
 
-<pre><code>
+```
 usage: retriever install [-h] [--compile] [--debug]
                          {mysql,postgres,sqlite,msaccess,csv} ...
 
@@ -78,11 +78,11 @@ optional arguments:
   -h, --help            show this help message and exit
   --compile             force re-compile of script before downloading
   --debug               run in debug mode
-</code></pre>
+```
 
 For example, to install the Breeding Bird Survey data into an sqlite database named mydatabase.db you would use:
 
-<code>retriever install sqlite BBS -f mydatabase.db</code>
+`retriever install sqlite BBS -f mydatabase.db`
 
 
 Acknowledgments
