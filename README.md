@@ -57,7 +57,7 @@ optional arguments:
   -q, --quiet           suppress command-line output
 ```
 
-To install datasets, use <code>retriever install</code>:
+To install datasets, use `retriever install`:
 
 ```
 usage: retriever install [-h] [--compile] [--debug]
