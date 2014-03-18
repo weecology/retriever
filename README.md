@@ -57,8 +57,6 @@ optional arguments:
   -q, --quiet           suppress command-line output
 ```
 
-To get the most recent versions of the data set scripts, run <code>retriever update</code>
-
 To install datasets, use <code>retriever install</code>:
 
 ```
