@@ -109,7 +109,7 @@ class DownloadOnlyTemplate(Script):
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
         for filename, url  in self.urls.items():
-            self.engine.download_file(url, filename)
+            self.engine.download_file(url, filename, clean_line_endings=False)
             shutil.copy(self.engine.format_filename(filename), DATA_DIR)
 
 class HtmlTableTemplate(Script):
