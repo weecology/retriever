@@ -110,7 +110,11 @@ class DownloadOnlyTemplate(Script):
         Script.download(self, engine, debug)
         for filename, url  in self.urls.items():
             self.engine.download_file(url, filename, clean_line_endings=False)
-            shutil.copy(self.engine.format_filename(filename), DATA_DIR)
+            if os.path.exists(self.engine.format_filename(filename)):
+                shutil.copy(self.engine.format_filename(filename), DATA_DIR)
+            else:
+                print("%s was not downloaded" % filename)
+                print("A file with the same name may be in your working directory")
 
 class HtmlTableTemplate(Script):
     """Script template for parsing data in HTML tables"""
