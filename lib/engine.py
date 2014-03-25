@@ -359,7 +359,7 @@ class Engine():
         
         return db_name
                 
-    def download_file(self, url, filename):
+    def download_file(self, url, filename, clean_line_endings=True):
         """Downloads a file to the raw data directory."""
         if not self.find_file(filename):
             path = self.format_filename(filename)
@@ -367,7 +367,7 @@ class Engine():
             print "Downloading " + filename + "..."
             file = urllib.urlopen(url) 
             local_file = open(path, 'wb')
-            if not filename.split('.')[-1].lower() in ["exe", "zip"]:
+            if clean_line_endings and (filename.split('.')[-1].lower() not in ["exe", "zip"]):
                 local_file.write(file.read().replace("\r\n", "\n").replace("\r", "\n"))
             else:
                 local_file.write(file.read())
