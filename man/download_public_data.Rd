@@ -2,7 +2,7 @@
 \alias{download_public_data}
 \title{Download public datasets via the EcoData Retriever.}
 \usage{
-download_public_data(dataset, connection, file = NULL, log_dir = NULL,
+download_public_data(dataset, connection, db_file = NULL, log_dir = NULL,
   user = NULL, pwd = NULL, host = NULL, port = NULL)
 }
 \arguments{
@@ -13,8 +13,8 @@ download_public_data(dataset, connection, file = NULL, log_dir = NULL,
   be used. The options include: mysql, postgres, sqlite,
   msaccess, or csv'}
 
-  \item{data_dir}{the location where the datasets should be
-  downloaded to}
+  \item{db_file}{the name of the datbase file the dataset
+  should be loaded into}
 
   \item{log_dir}{the location where the retriever log
   should be stored if the progress is not printed to the
