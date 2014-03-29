@@ -11,7 +11,25 @@ data, and more time doing science.
 This package lets you access the Retriever using R, so that the Retriever's data
 handling can easily be integrated into R workflows.
 
-To use the EcoData Retriever from R you first need to install the
-Retriever. Installers are available for all major operating systems from the
-[Download page](http://ecodataretriever.org/download.html) or it can be
-installed from [source](https://github.com/weecology/retriever).
+Installation
+------------
+To use the R package `ecoretriever` you first need to install the Retriever.
+Installers are available for all major operating systems from the [Download page](http://ecodataretriever.org/download.html) or it can be installed from [source](https://github.com/weecology/retriever).
+
+
+To install the development version of the R package `ecoretriever`, use the `devtools` package:
+
+```coffee
+# install.packages("devtools")
+library(devtools)
+install_github("ecoretriever", "ropensci")
+```
+
+Example
+-------
+```coffee
+library(ecoretriever)
+
+# Download the Gentry dataset to csv files in your working directory
+download_publict_data('Gentry', 'csv')
+```
