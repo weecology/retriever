@@ -1,8 +1,8 @@
-\name{download_public_data}
-\alias{download_public_data}
+\name{install_data}
+\alias{install_data}
 \title{Download public datasets via the EcoData Retriever.}
 \usage{
-download_public_data(dataset, connection, db_file = NULL, log_dir = NULL,
+install_data(dataset, connection, db_file = NULL, log_dir = NULL,
   user = NULL, pwd = NULL, host = NULL, port = NULL)
 }
 \arguments{
@@ -33,10 +33,11 @@ download_public_data(dataset, connection, db_file = NULL, log_dir = NULL,
   database server}
 }
 \description{
-Data is either linked to one of the following connection
-types: MySQL, PostgreSQL, SQLite, Microsoft Access, CSV
+Data is stored in either CSV files or one of the following
+database management systems: MySQL, PostgreSQL, SQLite, or
+Microsoft Access.
 }
 \examples{
-download_public_data('MCDB', 'csv')
+install_data('MCDB', 'csv')
 }
 
