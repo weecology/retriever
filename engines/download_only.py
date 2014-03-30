@@ -80,6 +80,7 @@ keep_methods = {'table_exists',
                 'auto_create_table',
                 'insert_data_from_url',
                 }
+remove_methods = ['insert_data_from_file']
 for name, method in methods:
     if (not name in keep_methods
         and not 'download' in name
@@ -87,3 +88,5 @@ for name, method in methods:
         and not 'dir' in name):
         
         setattr(engine, name, dummy_method)
+for name in remove_methods:
+    setattr(engine, name, dummy_method)
