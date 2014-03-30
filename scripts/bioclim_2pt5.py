@@ -20,7 +20,5 @@ class main(Script):
         Script.download(self, engine, debug)
         file_names = ["bio%s.bil" % file_num for file_num in range(1, 20)]
         self.engine.download_files_from_archive(self.urls["climate"], file_names)
-        for file_name in file_names:
-            shutil.copy(os.path.join(HOME_DIR, "raw_data/%s/%s" % (self.shortname, file_name)), './')
 
 SCRIPT = main()

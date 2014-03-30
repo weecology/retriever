@@ -36,15 +36,25 @@ class engine(Engine):
         self.get_input()
         return DummyConnection()
 
+    def final_cleanup(self):
+        data_dir = self.format_data_dir()
+        for file_name in os.listdir(data_dir):
+            print file_name
+            shutil.copy(os.path.join(data_dir, file_name), './')
+
 
 # replace all other methods with a function that does nothing
 def dummy_method(self, *args, **kwargs):
     pass
 methods = inspect.getmembers(engine, predicate=inspect.ismethod)
-keep_methods = {'table_exists', 'get_connection'}
+keep_methods = {'table_exists',
+                'get_connection',
+                'final_cleanup',
+                }
 for name, method in methods:
     if (not name in keep_methods
         and not 'download' in name
-        and not 'filename' in name):
+        and not 'filename' in name
+        and not 'dir' in name):
         
         setattr(engine, name, dummy_method)
