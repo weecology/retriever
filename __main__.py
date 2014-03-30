@@ -117,6 +117,7 @@ def main():
                     pass
                 except Exception as e:
                     print e
+                    if debug: raise
             print "Done!"
         else:
             print "The dataset %s isn't currently availabe in the Retriever" % (args.dataset)
