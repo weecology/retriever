@@ -1,7 +1,7 @@
 #' Download public datasets via the EcoData Retriever.
 #'
-#' Data is either linked to one of the following connection types:
-#' MySQL, PostgreSQL, SQLite, Microsoft Access, CSV
+#' Data is stored in either CSV files or one of the following database management
+#' systems: MySQL, PostgreSQL, SQLite, or Microsoft Access.
 #'
 #' @param datasets the names of the datasets that you wish to download
 #' @param connection what type of database connection should be used. 
@@ -16,40 +16,59 @@
 #' @param port the port argument for connecting data to a database server
 #' @export
 #' @examples
-#' download_public_data('MCDB', 'csv')
-download_public_data = function(dataset, connection, db_file=NULL,
+#' install_data('MCDB', 'csv')
+install_data = function(dataset, connection, db_file=NULL,
                                 log_dir=NULL, user=NULL, pwd=NULL, host=NULL,
                                 port=NULL){
-  if (connection == 'mysql') {
-    cmd = paste('retriever install mysql --user', user, '--password',
-                pwd, '--host', host, '--port', port, dataset)
+  if (missing(connection)) {
+    stop("The argument 'connection' must be set to one of the following options: 'mysql', 'postgres', 'sqlite', 'msaccess', or 'csv'")
   }
-  if (connection == 'postgres') {
-    stop('postgres not currently supported')
+  else if (connection == 'mysql' | connection == 'postgres') {
+    cmd = paste('retriever install', connection, dataset, '--user', user,
+                '--password', pwd, '--host', host, '--port', port)
   }
-  if (connection == 'sqlite' | connection == 'msaccess') {
-    if (is.null(db_file)) {
-      if (connection == 'sqlite')
-        db_file = paste(data_dir, dataset, '.db', sep='')
-      else 
-        db_file = paste(data_dir, dataset, '.accdb', sep='')
-    }
-    ## check that blank database exists when using sqlite or msaccess
-    if (!file.exists(db_file))
-      stop(paste('The empty database file', db_file,
-                 'must exist so that the retreiver can access it'))
+  else if (connection == 'sqlite' | connection == 'msaccess') {
+    if (is.null(db_file))
+      cmd = paste('retriever install', connection, dataset)
     else
       cmd = paste('retriever install', connection, dataset, '--file', db_file)
   }
-  if (connection == 'csv') {
+  else if (connection == 'csv')
     cmd = paste('retriever install csv', dataset)
-  }
+  else
+    stop("The argument 'connection' must be set to one of the following options: 'mysql', 'postgres', 'sqlite', 'msaccess', or 'csv'")
   if (!is.null(log_dir)) {
-    if (substr(log_dir, nchar(log_dir), nchar(log_dir)) != '/')
-      log_dir = paste(log_dir, '/', sep='')
-    log_file = paste(log_dir, dataset, '_download.log', sep='')
+    log_file = file.path(log_dir, paste(dataset, '_download.log', sep=''))
     cmd = paste(cmd, '>', log_file, '2>&1')
   }
   system(cmd)
+}
+
+
+#' Update the scripts the EcoData Retriever uses to download datasets 
+#'
+#' @return returns the log of the Retriever's update
+#' @references http://ecodataretriever.org/cli.html
+#' @export
+#' @examples update_scripts()
+update_scripts = function() {
+  system('retriever update') 
+}
+
+#' Display a list all available dataset scripts
+#' @return returns the log of the available datasets for download
+#' @export
+#' @examples data_ls()
+data_ls = function(){
+  system('retriever ls') 
+}
+
+#' Create a new sample retriever script 
+#' 
+#' @param filename the name of the script to generate
+#' @export
+#' @examples new_script('newscript.py')
+new_script = function(filename){
+  system(paste('retriever new', filename)) 
 }
 
