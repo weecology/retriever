@@ -1,6 +1,7 @@
 import os
 import platform
 import shutil
+import inspect
 from retriever.lib.models import Engine, no_cleanup
 from retriever import DATA_DIR, HOME_DIR
 
@@ -23,21 +24,6 @@ class engine(Engine):
     name = "Download Only"
     abbreviation = "download"
 
-    def create_db(self):
-        return None
-
-    def create_table(self):
-        assert False, "Download Only should not trigger create_table()"
-
-    def execute(self, statement, commit=True):
-        assert False, "Download Only should not trigger execute()"
-        
-    def format_insert_value(self, value, datatype):
-        assert False, "Download Only should not trigger format_insert_value()"
-
-    def insert_statement(self, values):
-        assert False, "Download Only should not trigger format_insert_statement()"
-        
     def table_exists(self, dbname, tablename):
         try:
             tablename = self.table_name(name=tablename, dbname=dbname)
@@ -49,3 +35,16 @@ class engine(Engine):
         """Gets the db connection."""
         self.get_input()
         return DummyConnection()
+
+
+# replace all other methods with a function that does nothing
+def dummy_method(self, *args, **kwargs):
+    pass
+methods = inspect.getmembers(engine, predicate=inspect.ismethod)
+keep_methods = {'table_exists', 'get_connection'}
+for name, method in methods:
+    if (not name in keep_methods
+        and not 'download' in name
+        and not 'filename' in name):
+        
+        setattr(engine, name, dummy_method)
