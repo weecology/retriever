@@ -1,0 +1,9 @@
+Package: ecoretriever
+Title: 
+Description: 
+Version: 0.1
+Authors: Daniel McGlinn and Ethan White
+Depends:
+    R (>= 3.0.2)
+License: MIT licence
+LazyData: true
