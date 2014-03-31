@@ -237,7 +237,9 @@ def choose_engine(opts, choice=True):
     from retriever.engines import engine_list
     
     if "engine" in opts.keys():
-        enginename = opts["engine"]    
+        enginename = opts["engine"]
+    elif opts["command"] == "download":
+        enginename = "download"
     else:
         if not choice: return None
         print "Choose a database engine:"

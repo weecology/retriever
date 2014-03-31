@@ -17,10 +17,10 @@ class main(Script):
         self.urls = {"climate": "http://biogeo.ucdavis.edu/data/climate/worldclim/1_4/grid/cur/bio_2-5m_bil.zip"}
 
     def download(self, engine=None, debug=False):
+        if engine.name != "Download Only":
+            raise Exception("The Bioclim dataset contains only non-tabular data files, and can only be used with the 'download only' engine.")
         Script.download(self, engine, debug)
         file_names = ["bio%s.bil" % file_num for file_num in range(1, 20)]
         self.engine.download_files_from_archive(self.urls["climate"], file_names)
-        for file_name in file_names:
-            shutil.copy(os.path.join(HOME_DIR, "raw_data/%s/%s" % (self.shortname, file_name)), './')
 
 SCRIPT = main()
