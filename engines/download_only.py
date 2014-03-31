@@ -35,7 +35,6 @@ class engine(Engine):
     def get_connection(self):
         """Gets the db connection."""
         self.get_input()
-        self.all_files = set()
         return DummyConnection()
     
     def final_cleanup(self):
