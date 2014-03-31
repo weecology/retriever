@@ -41,7 +41,6 @@ class engine(Engine):
         data_dir = self.format_data_dir()
         if hasattr(self, "all_files"):
             for file_name in self.all_files:
-                print file_name
                 shutil.copy(os.path.join(data_dir, file_name), './')
         self.all_files = set()
             
