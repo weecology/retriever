@@ -24,6 +24,10 @@ class engine(Engine):
     """Engine instance for writing data to a CSV file."""
     name = "Download Only"
     abbreviation = "download"
+    required_opts = [("path",
+                      "File path to copy data files",
+                      "./"),
+                     ]
     
     def table_exists(self, dbname, tablename):
         try:
@@ -41,7 +45,7 @@ class engine(Engine):
         data_dir = self.format_data_dir()
         if hasattr(self, "all_files"):
             for file_name in self.all_files:
-                shutil.copy(os.path.join(data_dir, file_name), './')
+                shutil.copy(os.path.join(data_dir, file_name), self.opts['path'])
         self.all_files = set()
             
     def auto_create_table(self, table, url=None, filename=None, pk=None):
