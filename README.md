@@ -30,6 +30,15 @@ Example
 ```coffee
 library(ecoretriever)
 
+# List the datasets available via the Retriever
+data_ls()
+
 # Download the Gentry dataset to csv files in your working directory
-download_publict_data('Gentry', 'csv')
+install_data('Gentry', 'csv')
+
+# Update the Retriever scripts
+update_scripts()
+
+# Create a new example Retriever script
+new_script('newdataset.script')
 ```
