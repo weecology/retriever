@@ -9,11 +9,16 @@ see if there are any errors. It does not check the values in the database.
 """
 
 import os
+import sys
 from retriever.lib.tools import choose_engine
 from retriever import MODULE_LIST, ENGINE_LIST, SCRIPT_LIST
 
 MODULE_LIST = MODULE_LIST()
 ENGINE_LIST = ENGINE_LIST()
+if len(sys.argv) > 1:
+    ENGINE_LIST = [e for e in ENGINE_LIST 
+                   if e.name in sys.argv[1:]
+                   or e.abbreviation in sys.argv[1:]]
 SCRIPT_LIST = SCRIPT_LIST()
 TEST_ENGINES = {}
 IGNORE = ["AvianBodyMass", "FIA"]

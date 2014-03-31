@@ -1,6 +1,8 @@
 """Class models for dataset scripts from various locations. Scripts should
 inherit from the most specific class available."""
 
+import shutil
+from retriever import DATA_DIR
 from retriever.lib.models import *
 from retriever.lib.tools import choose_engine
 
@@ -99,7 +101,21 @@ class BasicTextTemplate(Script):
             if len(self.urls) == 1:
                 return '/'.join(self.urls[self.urls.keys()[0]].split('/')[0:-1]) + '/'
                 
-                
+class DownloadOnlyTemplate(Script):
+    """Script template for non-tabular data that are only for download"""
+    def __init__(self, **kwargs):
+        Script.__init__(self, **kwargs)
+
+    def download(self, engine=None, debug=False):
+        Script.download(self, engine, debug)
+        for filename, url  in self.urls.items():
+            self.engine.download_file(url, filename, clean_line_endings=False)
+            if os.path.exists(self.engine.format_filename(filename)):
+                shutil.copy(self.engine.format_filename(filename), DATA_DIR)
+            else:
+                print("%s was not downloaded" % filename)
+                print("A file with the same name may be in your working directory")
+
 class HtmlTableTemplate(Script):
     """Script template for parsing data in HTML tables"""
     pass

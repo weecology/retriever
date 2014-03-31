@@ -5,7 +5,8 @@ engines = [
            "postgres",
            "sqlite",
            "msaccess",
-           "csv"
+           "csv",
+           "download_only"
            ]
 
 engine_module_list = [

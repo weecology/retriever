@@ -15,19 +15,29 @@ install_subparsers = install_parser.add_subparsers(help='engine-specific help', 
 install_parser.add_argument('--compile', help='force re-compile of script before downloading', action='store_true')
 install_parser.add_argument('--debug', help='run in debug mode', action='store_true')
 
+engine_parsers = {}
 for engine in engine_list:
     engine_parser = install_subparsers.add_parser(engine.abbreviation, help=engine.name)
     engine_parser.add_argument('dataset', help='dataset name', nargs='?', default=None)
     abbreviations = set('h')
+
     for arg in engine.required_opts:
-        arg_name, help, default = arg[:3]
+        arg_name, help_msg, default = arg[:3]
         potential_abbreviations = [char for char in arg_name if not char in abbreviations]
         if potential_abbreviations:
             abbreviation = potential_abbreviations[0]
             abbreviations.add(abbreviation)
         else: abbreviation = '-%s' % arg_name
         
-        engine_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help, nargs='?', default=default)            
+        engine_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help_msg, nargs='?', default=default)
+
+    engine_parsers[engine.abbreviation] = engine_parser
+
+download_parser = subparsers.add_parser(
+                      'download',
+                      help='download raw data files for a dataset',
+                      parents=(engine_parsers['download'],),
+                      conflict_handler='resolve')
 
 update_parser = subparsers.add_parser('update', help='download updated versions of scripts')
 
