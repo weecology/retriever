@@ -67,7 +67,7 @@ data_ls = function(){
 #' 
 #' @param filename the name of the script to generate
 #' @export
-#' @examples new_script('newscript.py')
+#' @examples new_script('newscript.script')
 new_script = function(filename){
   system(paste('retriever new', filename)) 
 }

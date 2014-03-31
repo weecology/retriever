@@ -11,6 +11,6 @@ new_script(filename)
 Create a new sample retriever script
 }
 \examples{
-new_script('newscript.py')
+new_script('newscript.script')
 }
 
