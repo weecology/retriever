@@ -45,7 +45,13 @@ class engine(Engine):
         data_dir = self.format_data_dir()
         if hasattr(self, "all_files"):
             for file_name in self.all_files:
-                shutil.copy(os.path.join(data_dir, file_name), self.opts['path'])
+                file_path, file_name_nopath = os.path.split(file_name)
+                if file_path == DATA_DIR:
+                    print ("%s is already in the working directory" % file_name_nopath)
+                    print("Keeping existing copy.")
+                else:
+                    print("Copying %s from %s" % (file_name_nopath, file_path))
+                    shutil.copy(file_name, self.opts['path'])
         self.all_files = set()
             
     def auto_create_table(self, table, url=None, filename=None, pk=None):
