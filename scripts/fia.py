@@ -1,6 +1,6 @@
 #retriever
 """Retriever script for Forest Inventory and Analysis
- 
+
 """
 
 import os
@@ -27,21 +27,21 @@ class main(Script):
         self.addendum = """This dataset requires downloading many large files - please be patient."""
 
     def download(self, engine=None, debug=False):
-        Script.download(self, engine, debug)        
+        Script.download(self, engine, debug)
         engine = self.engine
-        
+
         # download and create species table
         table = Table('species')
         self.engine.auto_create_table(table, url=self.urls['species'])
         self.engine.insert_data_from_url(self.urls['species'])
-        
+
         # State abbreviations with the year annual inventory began for that state
-        stateslist = [('AL', 2001), ('AK', 2004), ('AZ', 2001), ('AR', 2000), 
-                      ('CA', 2001), ('CO', 2002), ('CT', 2003), ('DE', 2004), 
-                      ('FL', 2003), ('GA', 1998), ('ID', 2004), ('IL', 2001), 
-                      ('IN', 1999), ('IA', 1999), ('KS', 2001), ('KY', 1999), 
-                      ('LA', 2001), ('ME', 1999), ('MD', 2004), ('MA', 2003), 
-                      ('MI', 2000), ('MN', 1999), ('MO', 1999), ('MS', 2006), 
+        stateslist = [('AL', 2001), ('AK', 2004), ('AZ', 2001), ('AR', 2000),
+                      ('CA', 2001), ('CO', 2002), ('CT', 2003), ('DE', 2004),
+                      ('FL', 2003), ('GA', 1998), ('ID', 2004), ('IL', 2001),
+                      ('IN', 1999), ('IA', 1999), ('KS', 2001), ('KY', 1999),
+                      ('LA', 2001), ('ME', 1999), ('MD', 2004), ('MA', 2003),
+                      ('MI', 2000), ('MN', 1999), ('MO', 1999), ('MS', 2006),
                       ('MT', 2003), ('NE', 2001), ('NV', 2004), ('NH', 2002),
                       ('NJ', 2004), ('NM', 1999), ('NY', 2002), ('NC', 2003),
                       ('ND', 2001), ('OH', 2001), ('OK', 2008), ('OR', 2001),
@@ -49,14 +49,14 @@ class main(Script):
                       ('TN', 2000), ('TX', 2001), ('UT', 2000), ('VT', 2003),
                       ('VA', 1998), ('WA', 2002), ('WV', 2004), ('WI', 2000),
                       ('WY', 2000), ('PR', 2001)]
-        
+
         tablelist = ["SURVEY", "PLOT", "COND", "SUBPLOT", "SUBP_COND", "TREE", "SEEDLING"]
-        
+
         for table in tablelist:
             for state, year in stateslist:
-                engine.download_files_from_archive(self.urls["main"] + state + "_" + table + ".ZIP", 
+                engine.download_files_from_archive(self.urls["main"] + state + "_" + table + ".ZIP",
                                                    [state + "_" + table + ".CSV"])
-        
+
         for table in tablelist:
             print "Scanning data for table %s..." % table
             prep_file_name = "%s.csv" % table
@@ -65,9 +65,9 @@ class main(Script):
             col_names = this_file.readline()
             prep_file.write(col_names)
             column_names = [col.strip('"') for col in col_names.split(',')]
-            year_column = column_names.index("INVYR")            
+            year_column = column_names.index("INVYR")
             this_file.close()
-            
+
             for state, year in stateslist:
                 this_file = open(engine.format_filename(state + "_" + table + ".CSV"), "rb")
                 this_file.readline()
@@ -80,13 +80,13 @@ class main(Script):
             engine.auto_create_table(Table(table), filename=prep_file_name)
 
             engine.insert_data_from_file(engine.format_filename(prep_file_name))
-            
+
             try:
                 os.remove(engine.format_filename(prep_file_name))
             except:
                 pass
-        
+
         return engine
-        
-        
+
+
 SCRIPT = main()
