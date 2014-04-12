@@ -2,11 +2,8 @@
 
 """Retriever script for direct download of Bioclim data"""
 
-import os
-import shutil
-
-from retriever import HOME_DIR
 from retriever.lib.templates import Script
+
 
 class main(Script):
     def __init__(self, **kwargs):
