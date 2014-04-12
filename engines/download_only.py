@@ -75,7 +75,15 @@ class engine(Engine):
         if result: self.all_files.add(result)
         return result
 
+    def register_files(self, filenames):
+        """Identify a list of files to be moved by the download
 
+        When downloading archives with multiple files the engine needs to be
+        informed of all of the file names so that it can move them.
+
+        """
+        full_filenames = {self.find_file(filename) for filename in filenames}
+        self.all_files = self.all_files.union(full_filenames)
 
 
 # replace all other methods with a function that does nothing
