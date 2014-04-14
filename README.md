@@ -33,8 +33,11 @@ library(ecoretriever)
 # List the datasets available via the Retriever
 data_ls()
 
-# Download the Gentry dataset to csv files in your working directory
+# Install the Gentry dataset into csv files in your working directory
 install_data('Gentry', 'csv')
+
+# Download the raw Gentry dataset files without any processing to the `data` subdirectory
+download_data('Gentry', './data/')
 
 # Update the Retriever scripts
 update_scripts()

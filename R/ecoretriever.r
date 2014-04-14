@@ -1,14 +1,14 @@
-#' Download public datasets via the EcoData Retriever.
+#' Install datasets via the EcoData Retriever.
 #'
 #' Data is stored in either CSV files or one of the following database management
 #' systems: MySQL, PostgreSQL, SQLite, or Microsoft Access.
 #'
-#' @param datasets the names of the datasets that you wish to download
+#' @param dataset the name of the dataset that you wish to download
 #' @param connection what type of database connection should be used. 
 #' The options include: mysql, postgres, sqlite, msaccess, or csv'
 #' @param db_file the name of the datbase file the dataset should be loaded 
 #' into
-#' @param log_dir the location where the retriever log should be stored if 
+#' @param log_dir the location where the retriever log should be stored if
 #' the progress is not printed to the console
 #' @param user the user argument for connecting data to a database server
 #' @param pwd the password argument for connecting data to a database server
@@ -42,6 +42,27 @@ install_data = function(dataset, connection, db_file=NULL,
     cmd = paste(cmd, '>', log_file, '2>&1')
   }
   system(cmd)
+}
+
+#' Download datasets via the EcoData Retriever.
+#'
+#' Directly downloads data files with no processing, allowing downloading of
+#' non-tabular data.
+#'
+#' @param dataset the name of the dataset that you wish to download
+#' @param path the path where the data should be downloaded to
+#' @param log_dir the location where the retriever log should be stored if
+#' the progress is not printed to the console
+#' @export
+#' @examples
+#' download_data('MCDB', './data')
+download_data = function(dataset, path='.', log_dir=NULL) {
+    cmd = paste('retriever download', dataset, '-p', path)
+    if (!is.null(log_dir)) {
+        log_file = file.path(log_dir, paste(dataset, '_download.log', sep=''))
+        cmd = paste(cmd, '>', log_file, '2>&1')
+    }
+    system(cmd)
 }
 
 
