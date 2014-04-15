@@ -1,7 +1,7 @@
 ecoretriever
 ============
 
-R interface to the [EcoData Retriver](http://ecodataretriever.org).
+R interface to the [EcoData Retriever](http://ecodataretriever.org).
 
 The EcoData Retriever automates the tasks of finding, downloading, and cleaning
 up publicly available ecological data, and then stores them in a local database
