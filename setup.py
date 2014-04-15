@@ -37,7 +37,7 @@ includes = [
             'psycopg2',
             'sqlite3',
             ] + extra_includes
-            
+
 excludes = [
             'pyreadline',
             'doctest',
@@ -71,6 +71,7 @@ setup(name='retriever',
         ],
       },
       install_requires=[
+                        'wxpython',
                         'xlrd',
                         ],
 
