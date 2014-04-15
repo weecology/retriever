@@ -2,7 +2,7 @@
 
 from setuptools import setup
 import platform
-
+import sys
 p = platform.platform().lower()
 extra_includes = []
 if "darwin" in p:
@@ -17,6 +17,29 @@ elif "win" in p:
     sys.path.append("C:\\Windows\\winsxs\\x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_9.0.21022.8_none_bcb86ed6ac711f91")
 from __init__ import VERSION
 
+def is_importable(module):
+    """Returns True if 'module' is installed"""
+    try:
+        return __import__(module)
+    except ImportError:
+        return None
+
+
+def is_wxpython_installed():
+    """Returns True if  wxpython is installed"""
+    if is_importable('wx'):
+        return True
+    return False
+
+def continue_installation(question):
+    while True:
+        print question, "(y/n)"
+        response = raw_input().lower()
+        if response[0] in ['y', 'n']:
+            break
+        print ('Please answer y/n')
+
+    return response[0] == 'y'
 
 def clean_version(v):
     if v == 'master':
@@ -55,6 +78,14 @@ excludes = [
             ]
 
 
+wx_installed = is_wxpython_installed()
+
+if wx_installed is False:
+    should_continue = continue_installation('wxpython is not installed. Continue?')
+
+if should_continue is False:
+    sys.exit(1)
+
 setup(name='retriever',
       version=clean_version(VERSION),
       description='EcoData Retriever',
@@ -71,7 +102,6 @@ setup(name='retriever',
         ],
       },
       install_requires=[
-                        'wxpython',
                         'xlrd',
                         ],
 
