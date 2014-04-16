@@ -82,9 +82,8 @@ wx_installed = is_wxpython_installed()
 
 if wx_installed is False:
     should_continue = continue_installation('wxpython is not installed. Continue?')
-
-if should_continue is False:
-    sys.exit(1)
+    if should_continue is False:
+        sys.exit(1)
 
 setup(name='retriever',
       version=clean_version(VERSION),
