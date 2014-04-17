@@ -1,13 +1,13 @@
 \name{install_data}
 \alias{install_data}
-\title{Download public datasets via the EcoData Retriever.}
+\title{Install datasets via the EcoData Retriever.}
 \usage{
 install_data(dataset, connection, db_file = NULL, log_dir = NULL,
   user = NULL, pwd = NULL, host = NULL, port = NULL)
 }
 \arguments{
-  \item{datasets}{the names of the datasets that you wish
-  to download}
+  \item{dataset}{the name of the dataset that you wish to
+  download}
 
   \item{connection}{what type of database connection should
   be used. The options include: mysql, postgres, sqlite,
