@@ -44,6 +44,36 @@ install_data = function(dataset, connection, db_file=NULL,
   system(cmd)
 }
 
+#' Fetch a dataset via the EcoData Retriever
+#'
+#' Each datafile in a given dataset is downloaded to a temporary directory and
+#' then imported as a data.frame as a member of a named list.
+#'
+#' @param dataset the name of the dataset that you wish to download
+#' @export
+#' @examples
+#' ## fetch the Mammal Community Database (MCDB)
+#' MCDB = fetch('MCDB')
+#' class(MCDB)
+#' names(MCDB)
+#' ## preview the data in the MCDB communities datafile
+#' head(MCDB$communities)
+fetch = function(dataset){
+  start_dir = getwd()
+  setwd(tempdir())
+  install_data(dataset, 'csv')
+  files = dir('.')
+  files = files[grep(dataset, files)]
+  out = vector('list', length(files))
+  list_names = sub('.csv', '', files)
+  list_names = sub(paste(dataset, '_', sep=''), '', list_names)
+  names(out) = list_names
+  for (i in seq_along(files))
+    out[[i]] = read.csv(files[i])
+  setwd(start_dir)
+  return(out)
+}
+
 #' Download datasets via the EcoData Retriever.
 #'
 #' Directly downloads data files with no processing, allowing downloading of
@@ -93,3 +123,6 @@ new_script = function(filename){
   system(paste('retriever new', filename)) 
 }
 
+.onAttach <- function(...) {
+  packageStartupMessage("\nNew to ecoretriever? Examples at https://github.com/ropensci/ecoretriever/ \ncitation(package='ecoretriever') for the citation for this package \nUse suppressPackageStartupMessages() to suppress these startup messages in the future")
+}
