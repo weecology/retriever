@@ -2,9 +2,9 @@
 \name{ecoretriever}
 \alias{ecoretriever}
 \alias{ecoretriever-package}
-\title{ecoretriever: R interface to the EcoData Retriver.}
+\title{ecoretriever: R interface to the EcoData Retriever.}
 \description{
-ecoretriever: R interface to the EcoData Retriver.
+ecoretriever: R interface to the EcoData Retriever.
 }
 \section{About}{
   The EcoData Retriever automates the tasks of finding,
