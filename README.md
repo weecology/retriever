@@ -64,6 +64,11 @@ install_data('Gentry', 'csv')
 # Download the raw Gentry dataset files without any processing to the `data` subdirectory
 download_data('Gentry', './data/')
 
+# Install and load a dataset as a list
+Gentry = fetch('Gentry')
+names(Gentry)
+head(Gentry$counts)
+
 # Update the Retriever scripts
 update_scripts()
 
