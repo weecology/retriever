@@ -58,10 +58,13 @@ install_data = function(dataset, connection, db_file=NULL,
 #' names(MCDB)
 #' ## preview the data in the MCDB communities datafile
 #' head(MCDB$communities)
-fetch = function(dataset){
+fetch = function(dataset, quiet=TRUE){
   start_dir = getwd()
   setwd(tempdir())
-  install_data(dataset, 'csv')
+  if (quiet)
+    system(paste('retriever -q install csv', dataset))
+  else
+    install_data(dataset, 'csv')
   files = dir('.')
   files = files[grep(dataset, files)]
   out = vector('list', length(files))
