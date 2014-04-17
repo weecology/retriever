@@ -8,17 +8,17 @@
 #' The options include: mysql, postgres, sqlite, msaccess, or csv'
 #' @param db_file the name of the datbase file the dataset should be loaded 
 #' into
-#' @param log_dir the location where the retriever log should be stored if
-#' the progress is not printed to the console
 #' @param conn_file the path to the .conn file that contains the connection
 #' configuration options for mysql and postgres databases. This defaults to 
 #' mysql.conn or postgres.conn respectively. The connection file is a comma
 #' seperated file with four fields: user, password, host, and port. 
+#' @param log_dir the location where the retriever log should be stored if
+#' the progress is not printed to the console
 #' @export
 #' @examples
 #' install_data('MCDB', 'csv')
-install_data = function(dataset, connection, db_file=NULL,
-                                log_dir=NULL, conn_file=NULL){
+install_data = function(dataset, connection, db_file=NULL, conn_file=NULL,
+                        log_dir=NULL){
   if (missing(connection)) {
     stop("The argument 'connection' must be set to one of the following options: 'mysql', 'postgres', 'sqlite', 'msaccess', or 'csv'")
   }
