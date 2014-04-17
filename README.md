@@ -60,22 +60,22 @@ Examples
 library(ecoretriever)
 
 # List the datasets available via the Retriever
-data_ls()
+ecoretriever::ls()
 
 # Install the Gentry dataset into csv files in your working directory
-install_data('Gentry', 'csv')
+ecoretriever::install('Gentry', 'csv')
 
 # Download the raw Gentry dataset files without any processing to the `data` subdirectory
-download_data('Gentry', './data/')
+ecoretriever::download('Gentry', './data/')
 
 # Install and load a dataset as a list
-Gentry = fetch('Gentry')
+Gentry = ecoretriever::fetch('Gentry')
 names(Gentry)
 head(Gentry$counts)
 
 # Update the Retriever scripts
-update_scripts()
+ecoretriever::update()
 
 # Create a new example Retriever script
-new_script('newdataset.script')
+ecoretriever::new('newdataset.script')
 ```

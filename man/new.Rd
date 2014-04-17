@@ -1,8 +1,8 @@
-\name{new_script}
-\alias{new_script}
+\name{new}
+\alias{new}
 \title{Create a new sample retriever script}
 \usage{
-new_script(filename)
+new(filename)
 }
 \arguments{
   \item{filename}{the name of the script to generate}
@@ -11,6 +11,6 @@ new_script(filename)
 Create a new sample retriever script
 }
 \examples{
-new_script('newscript.script')
+ecoretriever::new('newscript.script')
 }
 

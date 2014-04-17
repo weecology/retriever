@@ -1,8 +1,8 @@
-\name{install_data}
-\alias{install_data}
+\name{install}
+\alias{install}
 \title{Install datasets via the EcoData Retriever.}
 \usage{
-install_data(dataset, connection, db_file = NULL, conn_file = NULL,
+install(dataset, connection, db_file = NULL, conn_file = NULL,
   data_dir = NULL, log_dir = NULL)
 }
 \arguments{
@@ -36,6 +36,8 @@ database management systems: MySQL, PostgreSQL, SQLite, or
 Microsoft Access.
 }
 \examples{
-install_data('MCDB', 'csv')
+ecoretriever::install('MCDB', 'csv')
+## list the files that were downloaded
+dir(pattern='MCDB')
 }
 
