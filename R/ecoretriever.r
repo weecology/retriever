@@ -10,22 +10,25 @@
 #' into
 #' @param log_dir the location where the retriever log should be stored if
 #' the progress is not printed to the console
-#' @param user the user argument for connecting data to a database server
-#' @param pwd the password argument for connecting data to a database server
-#' @param host the host argument for connecting data to a database server
-#' @param port the port argument for connecting data to a database server
+#' @param conn_file the path to the .conn file that contains the connection
+#' configuration options for mysql and postgres databases. This defaults to 
+#' mysql.conn or postgres.conn respectively. The connection file is a comma
+#' seperated file with four fields: user, password, host, and port. 
 #' @export
 #' @examples
 #' install_data('MCDB', 'csv')
 install_data = function(dataset, connection, db_file=NULL,
-                                log_dir=NULL, user=NULL, pwd=NULL, host=NULL,
-                                port=NULL){
+                                log_dir=NULL, conn_file=NULL){
   if (missing(connection)) {
     stop("The argument 'connection' must be set to one of the following options: 'mysql', 'postgres', 'sqlite', 'msaccess', or 'csv'")
   }
   else if (connection == 'mysql' | connection == 'postgres') {
-    cmd = paste('retriever install', connection, dataset, '--user', user,
-                '--password', pwd, '--host', host, '--port', port)
+    if (is.null(conn_file))
+      conn_file = paste('./', connection, '.conn', sep='')
+    conn = read.csv(conn_file, stringsAsFactors=F)
+    cmd = paste('retriever install', connection, dataset, '--user', conn$user,
+                '--password', conn$password, '--host', conn$host, '--port',
+                conn$port)
   }
   else if (connection == 'sqlite' | connection == 'msaccess') {
     if (is.null(db_file))
