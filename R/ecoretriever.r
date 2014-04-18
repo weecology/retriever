@@ -18,6 +18,7 @@
 #' the progress is not printed to the console
 #' @export
 #' @examples
+#' ## Use an explicit namespace call when using install() to avoid conflicts
 #' ecoretriever::install('MCDB', 'csv')
 #' ## list the files that were downloaded
 #' dir(pattern='MCDB')
@@ -75,6 +76,7 @@ install = function(dataset, connection, db_file=NULL, conn_file=NULL,
 #' @param quiet: logical, if true retriever runs in quiet mode
 #' @export
 #' @examples
+#' ## Use an explicit namespace call when using fetch() to avoid conflicts
 #' ## fetch the Mammal Community Database (MCDB)
 #' MCDB = ecoretriever::fetch('MCDB')
 #' class(MCDB)
@@ -111,6 +113,7 @@ fetch = function(dataset, quiet=TRUE){
 #' the progress is not printed to the console
 #' @export
 #' @examples
+#' ## Use an explicit namespace call when using fetch() to avoid conflicts
 #' ecoretriever::download('MCDB', './data')
 #' ## list files downloaded
 #' dir('./data', pattern='MCDB')
