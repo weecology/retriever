@@ -134,15 +134,6 @@ ls = function(){
   system('retriever ls') 
 }
 
-#' Create a new sample retriever script 
-#' 
-#' @param filename the name of the script to generate
-#' @export
-#' @examples ecoretriever::new('newscript.script')
-new = function(filename){
-  system(paste('retriever new', filename)) 
-}
-
 .onLoad = function(...) {
   packageStartupMessage(
     "\n  New to ecoretriever? Examples at
