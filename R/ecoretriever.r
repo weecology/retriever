@@ -126,17 +126,6 @@ download = function(dataset, path='.', log_dir=NULL) {
     system(cmd)
 }
 
-
-#' Update the scripts the EcoData Retriever uses to download datasets 
-#'
-#' @return returns the log of the Retriever's update
-#' @references http://ecodataretriever.org/cli.html
-#' @export
-#' @examples ecoretriever::update()
-update = function() {
-  system('retriever update') 
-}
-
 #' Display a list all available dataset scripts
 #' @return returns the log of the available datasets for download
 #' @export
@@ -154,6 +143,14 @@ new = function(filename){
   system(paste('retriever new', filename)) 
 }
 
-.onAttach <- function(...) {
-  packageStartupMessage("\nNew to ecoretriever? Examples at https://github.com/ropensci/ecoretriever/ \ncitation(package='ecoretriever') for the citation for this package \nUse suppressPackageStartupMessages() to suppress these startup messages in the future")
+.onLoad = function(...) {
+  packageStartupMessage(
+    "\n  New to ecoretriever? Examples at
+    https://github.com/ropensci/ecoretriever/
+    Use citation(package='ecoretriever') for the package citation
+    Use suppressPackageStartupMessages() to suppress these
+    messages in the future")
+  print('Please wait while retriever updates its scripts, ...')
+  system('retriever update', ignore.stdout=TRUE, ignore.stderr=TRUE)
+  print('Retriever script update complete!')
 }
