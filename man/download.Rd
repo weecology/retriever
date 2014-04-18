@@ -20,7 +20,7 @@ Directly downloads data files with no processing, allowing
 downloading of non-tabular data.
 }
 \examples{
-## Use an explicit namespace call when using fetch() to avoid conflicts
+## Use an explicit namespace call when using download() to avoid conflicts
 ecoretriever::download('MCDB', './data')
 ## list files downloaded
 dir('./data', pattern='MCDB')
