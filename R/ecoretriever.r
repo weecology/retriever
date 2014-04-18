@@ -129,8 +129,10 @@ download = function(dataset, path='.', log_dir=NULL) {
 #' Display a list all available dataset scripts
 #' @return returns the log of the available datasets for download
 #' @export
-#' @examples ecoretriever::ls()
-ls = function(){
+#' @examples 
+#' ## Use an explicit namespace call when using datasets() to avoid conflicts
+#' ecoretriever::datasets()
+datasets = function(){
   system('retriever ls') 
 }
 

@@ -1,4 +1,4 @@
+export(datasets)
 export(download)
 export(fetch)
 export(install)
-export(ls)
