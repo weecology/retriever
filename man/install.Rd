@@ -36,6 +36,7 @@ database management systems: MySQL, PostgreSQL, SQLite, or
 Microsoft Access.
 }
 \examples{
+## Use an explicit namespace call when using install() to avoid conflicts
 ecoretriever::install('MCDB', 'csv')
 ## list the files that were downloaded
 dir(pattern='MCDB')
