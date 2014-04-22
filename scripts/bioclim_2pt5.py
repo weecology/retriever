@@ -2,11 +2,8 @@
 
 """Retriever script for direct download of Bioclim data"""
 
-import os
-import shutil
-
-from retriever import HOME_DIR
 from retriever.lib.templates import Script
+
 
 class main(Script):
     def __init__(self, **kwargs):
@@ -22,5 +19,6 @@ class main(Script):
         Script.download(self, engine, debug)
         file_names = ["bio%s.bil" % file_num for file_num in range(1, 20)]
         self.engine.download_files_from_archive(self.urls["climate"], file_names)
+        self.engine.register_files(file_names)
 
 SCRIPT = main()
