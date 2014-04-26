@@ -72,7 +72,7 @@ U.S.A. """
                         cid = "count"
                     # if column is a stem, add it to the list of stems;
                     # otherwise, make note of the column name/number
-                    if "stem" in cid:
+                    if "stem" in cid or "dbh" in cid:
                         cn["stems"].append(n)
                     else:
                         cn[cid] = n
