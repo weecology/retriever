@@ -86,7 +86,7 @@ U.S.A. """
                 row = sh.row(i)
                 cellcount = len(row)
                 # make sure the row is real, not just empty cells
-                if cellcount > 4 and not Excel.empty_cell(row[0]):
+                if not all(Excel.empty_cell(cell) for cell in row):
                     try:
                         this_line = {}
                         
