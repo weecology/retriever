@@ -23,9 +23,19 @@ install_data = function(dataset, connection, db_file=NULL, conn_file=NULL,
     stop("The argument 'connection' must be set to one of the following options: 'mysql', 'postgres', 'sqlite', 'msaccess', or 'csv'")
   }
   else if (connection == 'mysql' | connection == 'postgres') {
-    if (is.null(conn_file))
+    if (is.null(conn_file)) {
       conn_file = paste('./', connection, '.conn', sep='')
-    conn = read.csv(conn_file, stringsAsFactors=F)
+    }
+    if (!file.exists(conn_file)) {
+      format = '\n    host my_server@myhost.com\n    port 1111\n    user my_user_name\n    password my_pass_word'
+      stop(paste("conn_file:", conn_file, "does not exist. To use a",
+                  connection, "server create a 'conn_file' with the format:", 
+                 format, "\nwhere order of arguments does not matter"))
+    }
+    conn = data.frame(t(read.table(conn_file, row.names=1)))
+    print(paste('Using conn_file:', conn_file,
+                'to connect to a', connection, 'server on host:',
+                conn$host))
     cmd = paste('retriever install', connection, dataset, '--user', conn$user,
                 '--password', conn$password, '--host', conn$host, '--port',
                 conn$port)
@@ -46,6 +56,8 @@ install_data = function(dataset, connection, db_file=NULL, conn_file=NULL,
   }
   system(cmd)
 }
+
+
 
 #' Fetch a dataset via the EcoData Retriever
 #'
