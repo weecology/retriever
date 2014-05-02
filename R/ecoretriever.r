@@ -12,13 +12,15 @@
 #' configuration options for mysql and postgres databases. This defaults to 
 #' mysql.conn or postgres.conn respectively. The connection file is a comma
 #' seperated file with four fields: user, password, host, and port. 
+#' @param data_dir the location where the dataset should be installed.
+#' Only relevant for csv connection types. 
 #' @param log_dir the location where the retriever log should be stored if
 #' the progress is not printed to the console
 #' @export
 #' @examples
 #' install_data('MCDB', 'csv')
 install_data = function(dataset, connection, db_file=NULL, conn_file=NULL,
-                        log_dir=NULL){
+                        data_dir=NULL, log_dir=NULL){
   if (missing(connection)) {
     stop("The argument 'connection' must be set to one of the following options: 'mysql', 'postgres', 'sqlite', 'msaccess', or 'csv'")
   }
@@ -46,8 +48,13 @@ install_data = function(dataset, connection, db_file=NULL, conn_file=NULL,
     else
       cmd = paste('retriever install', connection, dataset, '--file', db_file)
   }
-  else if (connection == 'csv')
-    cmd = paste('retriever install csv', dataset)
+  else if (connection == 'csv') {
+    if (!is.null(data_dir))
+      cmd = paste('retriever install csv --table_name',
+                  file.path(data_dir, '{db}_{table}.csv'), dataset)
+    else
+      cmd = paste('retriever install csv', dataset)
+  }
   else
     stop("The argument 'connection' must be set to one of the following options: 'mysql', 'postgres', 'sqlite', 'msaccess', or 'csv'")
   if (!is.null(log_dir)) {
@@ -56,8 +63,6 @@ install_data = function(dataset, connection, db_file=NULL, conn_file=NULL,
   }
   system(cmd)
 }
-
-
 
 #' Fetch a dataset via the EcoData Retriever
 #'
@@ -75,21 +80,21 @@ install_data = function(dataset, connection, db_file=NULL, conn_file=NULL,
 #' ## preview the data in the MCDB communities datafile
 #' head(MCDB$communities)
 fetch = function(dataset, quiet=TRUE){
-  start_dir = getwd()
-  setwd(tempdir())
+  temp_path = tempdir()
   if (quiet)
-    system(paste('retriever -q install csv', dataset))
+    system(paste('retriever -q install csv --table_name',
+                 file.path(temp_path, '{db}_{table}.csv'),
+                 dataset))
   else
-    install_data(dataset, 'csv')
-  files = dir('.')
+    install_data(dataset, 'csv', data_dir=temp_path)
+  files = dir(temp_path)
   files = files[grep(dataset, files)]
   out = vector('list', length(files))
   list_names = sub('.csv', '', files)
   list_names = sub(paste(dataset, '_', sep=''), '', list_names)
   names(out) = list_names
   for (i in seq_along(files))
-    out[[i]] = read.csv(files[i])
-  setwd(start_dir)
+    out[[i]] = read.csv(file.path(temp_path, files[i]))
   return(out)
 }
 
