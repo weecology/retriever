@@ -2,11 +2,14 @@
 \alias{fetch}
 \title{Fetch a dataset via the EcoData Retriever}
 \usage{
-fetch(dataset)
+fetch(dataset, quiet = TRUE)
 }
 \arguments{
   \item{dataset}{the name of the dataset that you wish to
   download}
+
+  \item{quiet:}{logical, if true retriever runs in quiet
+  mode}
 }
 \description{
 Each datafile in a given dataset is downloaded to a

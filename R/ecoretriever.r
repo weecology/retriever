@@ -65,6 +65,7 @@ install_data = function(dataset, connection, db_file=NULL, conn_file=NULL,
 #' then imported as a data.frame as a member of a named list.
 #'
 #' @param dataset the name of the dataset that you wish to download
+#' @param quiet: logical, if true retriever runs in quiet mode
 #' @export
 #' @examples
 #' ## fetch the Mammal Community Database (MCDB)
