@@ -1,13 +1,13 @@
 \name{install_data}
 \alias{install_data}
-\title{Download public datasets via the EcoData Retriever.}
+\title{Install datasets via the EcoData Retriever.}
 \usage{
-install_data(dataset, connection, db_file = NULL, log_dir = NULL,
-  user = NULL, pwd = NULL, host = NULL, port = NULL)
+install_data(dataset, connection, db_file = NULL, conn_file = NULL,
+  data_dir = NULL, log_dir = NULL)
 }
 \arguments{
-  \item{datasets}{the names of the datasets that you wish
-  to download}
+  \item{dataset}{the name of the dataset that you wish to
+  download}
 
   \item{connection}{what type of database connection should
   be used. The options include: mysql, postgres, sqlite,
@@ -16,21 +16,19 @@ install_data(dataset, connection, db_file = NULL, log_dir = NULL,
   \item{db_file}{the name of the datbase file the dataset
   should be loaded into}
 
+  \item{conn_file}{the path to the .conn file that contains
+  the connection configuration options for mysql and
+  postgres databases. This defaults to mysql.conn or
+  postgres.conn respectively. The connection file is a
+  comma seperated file with four fields: user, password,
+  host, and port.}
+
+  \item{data_dir}{the location where the dataset should be
+  installed. Only relevant for csv connection types.}
+
   \item{log_dir}{the location where the retriever log
   should be stored if the progress is not printed to the
   console}
-
-  \item{user}{the user argument for connecting data to a
-  database server}
-
-  \item{pwd}{the password argument for connecting data to a
-  database server}
-
-  \item{host}{the host argument for connecting data to a
-  database server}
-
-  \item{port}{the port argument for connecting data to a
-  database server}
 }
 \description{
 Data is stored in either CSV files or one of the following

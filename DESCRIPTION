@@ -4,6 +4,7 @@ Description:
 Version: 0.1
 Authors: Daniel McGlinn and Ethan White
 Depends:
-    R (>= 3.0.2)
+    R (>= 3.0.0)
+SystemRequirements: EcoData Retriever (>= 1.6)
 License: MIT licence
 LazyData: true

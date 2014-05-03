@@ -8,24 +8,39 @@
 #' The options include: mysql, postgres, sqlite, msaccess, or csv'
 #' @param db_file the name of the datbase file the dataset should be loaded 
 #' into
+#' @param conn_file the path to the .conn file that contains the connection
+#' configuration options for mysql and postgres databases. This defaults to 
+#' mysql.conn or postgres.conn respectively. The connection file is a comma
+#' seperated file with four fields: user, password, host, and port. 
+#' @param data_dir the location where the dataset should be installed.
+#' Only relevant for csv connection types. 
 #' @param log_dir the location where the retriever log should be stored if
 #' the progress is not printed to the console
-#' @param user the user argument for connecting data to a database server
-#' @param pwd the password argument for connecting data to a database server
-#' @param host the host argument for connecting data to a database server
-#' @param port the port argument for connecting data to a database server
 #' @export
 #' @examples
 #' install_data('MCDB', 'csv')
-install_data = function(dataset, connection, db_file=NULL,
-                                log_dir=NULL, user=NULL, pwd=NULL, host=NULL,
-                                port=NULL){
+install_data = function(dataset, connection, db_file=NULL, conn_file=NULL,
+                        data_dir=NULL, log_dir=NULL){
   if (missing(connection)) {
     stop("The argument 'connection' must be set to one of the following options: 'mysql', 'postgres', 'sqlite', 'msaccess', or 'csv'")
   }
   else if (connection == 'mysql' | connection == 'postgres') {
-    cmd = paste('retriever install', connection, dataset, '--user', user,
-                '--password', pwd, '--host', host, '--port', port)
+    if (is.null(conn_file)) {
+      conn_file = paste('./', connection, '.conn', sep='')
+    }
+    if (!file.exists(conn_file)) {
+      format = '\n    host my_server@myhost.com\n    port 1111\n    user my_user_name\n    password my_pass_word'
+      stop(paste("conn_file:", conn_file, "does not exist. To use a",
+                  connection, "server create a 'conn_file' with the format:", 
+                 format, "\nwhere order of arguments does not matter"))
+    }
+    conn = data.frame(t(read.table(conn_file, row.names=1)))
+    print(paste('Using conn_file:', conn_file,
+                'to connect to a', connection, 'server on host:',
+                conn$host))
+    cmd = paste('retriever install', connection, dataset, '--user', conn$user,
+                '--password', conn$password, '--host', conn$host, '--port',
+                conn$port)
   }
   else if (connection == 'sqlite' | connection == 'msaccess') {
     if (is.null(db_file))
@@ -33,8 +48,13 @@ install_data = function(dataset, connection, db_file=NULL,
     else
       cmd = paste('retriever install', connection, dataset, '--file', db_file)
   }
-  else if (connection == 'csv')
-    cmd = paste('retriever install csv', dataset)
+  else if (connection == 'csv') {
+    if (!is.null(data_dir))
+      cmd = paste('retriever install csv --table_name',
+                  file.path(data_dir, '{db}_{table}.csv'), dataset)
+    else
+      cmd = paste('retriever install csv', dataset)
+  }
   else
     stop("The argument 'connection' must be set to one of the following options: 'mysql', 'postgres', 'sqlite', 'msaccess', or 'csv'")
   if (!is.null(log_dir)) {
@@ -42,6 +62,40 @@ install_data = function(dataset, connection, db_file=NULL,
     cmd = paste(cmd, '>', log_file, '2>&1')
   }
   system(cmd)
+}
+
+#' Fetch a dataset via the EcoData Retriever
+#'
+#' Each datafile in a given dataset is downloaded to a temporary directory and
+#' then imported as a data.frame as a member of a named list.
+#'
+#' @param dataset the name of the dataset that you wish to download
+#' @param quiet: logical, if true retriever runs in quiet mode
+#' @export
+#' @examples
+#' ## fetch the Mammal Community Database (MCDB)
+#' MCDB = fetch('MCDB')
+#' class(MCDB)
+#' names(MCDB)
+#' ## preview the data in the MCDB communities datafile
+#' head(MCDB$communities)
+fetch = function(dataset, quiet=TRUE){
+  temp_path = tempdir()
+  if (quiet)
+    system(paste('retriever -q install csv --table_name',
+                 file.path(temp_path, '{db}_{table}.csv'),
+                 dataset))
+  else
+    install_data(dataset, 'csv', data_dir=temp_path)
+  files = dir(temp_path)
+  files = files[grep(dataset, files)]
+  out = vector('list', length(files))
+  list_names = sub('.csv', '', files)
+  list_names = sub(paste(dataset, '_', sep=''), '', list_names)
+  names(out) = list_names
+  for (i in seq_along(files))
+    out[[i]] = read.csv(file.path(temp_path, files[i]))
+  return(out)
 }
 
 #' Download datasets via the EcoData Retriever.
@@ -93,3 +147,6 @@ new_script = function(filename){
   system(paste('retriever new', filename)) 
 }
 
+.onAttach <- function(...) {
+  packageStartupMessage("\nNew to ecoretriever? Examples at https://github.com/ropensci/ecoretriever/ \ncitation(package='ecoretriever') for the citation for this package \nUse suppressPackageStartupMessages() to suppress these startup messages in the future")
+}
