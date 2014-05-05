@@ -2,6 +2,8 @@
 
 from setuptools import setup
 import platform
+import sys
+import warnings
 
 p = platform.platform().lower()
 extra_includes = []
@@ -17,6 +19,13 @@ elif "win" in p:
     sys.path.append("C:\\Windows\\winsxs\\x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_9.0.21022.8_none_bcb86ed6ac711f91")
 from __init__ import VERSION
 
+
+def is_wxpython_installed():
+    """Returns True if  wxpython is installed"""
+    try:
+        return __import__("wxpython")
+    except ImportError:
+        return False
 
 def clean_version(v):
     if v == 'master':
@@ -37,7 +46,7 @@ includes = [
             'psycopg2',
             'sqlite3',
             ] + extra_includes
-            
+
 excludes = [
             'pyreadline',
             'doctest',
@@ -54,6 +63,16 @@ excludes = [
             'Tkconstants', 'Tkinter', 'tcl',
             ]
 
+
+wx_installed = is_wxpython_installed()
+
+if wx_installed is False:
+    warnings.warn("""wxpython is not installed.
+                  Retriever will not work in GUI mode.
+                  For retriever-gui install python-wxpython and
+                  run 'python setup.py install' again.""",
+                  UserWarning
+                  )
 
 setup(name='retriever',
       version=clean_version(VERSION),
