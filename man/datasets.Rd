@@ -1,8 +1,8 @@
-\name{data_ls}
-\alias{data_ls}
+\name{datasets}
+\alias{datasets}
 \title{Display a list all available dataset scripts}
 \usage{
-data_ls()
+datasets()
 }
 \value{
 returns the log of the available datasets for download
@@ -11,6 +11,6 @@ returns the log of the available datasets for download
 Display a list all available dataset scripts
 }
 \examples{
-data_ls()
+ecoretriever::datasets()
 }
 

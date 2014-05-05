@@ -18,9 +18,9 @@
 #' the progress is not printed to the console
 #' @export
 #' @examples
-#' install_data('MCDB', 'csv')
-install_data = function(dataset, connection, db_file=NULL, conn_file=NULL,
-                        data_dir=NULL, log_dir=NULL){
+#' ecoretriever::install('MCDB', 'csv')
+install = function(dataset, connection, db_file=NULL, conn_file=NULL,
+                   data_dir=NULL, log_dir=NULL){
   if (missing(connection)) {
     stop("The argument 'connection' must be set to one of the following options: 'mysql', 'postgres', 'sqlite', 'msaccess', or 'csv'")
   }
@@ -74,7 +74,7 @@ install_data = function(dataset, connection, db_file=NULL, conn_file=NULL,
 #' @export
 #' @examples
 #' ## fetch the Mammal Community Database (MCDB)
-#' MCDB = fetch('MCDB')
+#' MCDB = ecoretriever::fetch('MCDB')
 #' class(MCDB)
 #' names(MCDB)
 #' ## preview the data in the MCDB communities datafile
@@ -109,8 +109,10 @@ fetch = function(dataset, quiet=TRUE){
 #' the progress is not printed to the console
 #' @export
 #' @examples
-#' download_data('MCDB', './data')
-download_data = function(dataset, path='.', log_dir=NULL) {
+#' ecoretriever::download('MCDB', './data')
+#' ## list files downloaded
+#' dir('./data', pattern='MCDB')
+download = function(dataset, path='.', log_dir=NULL) {
     cmd = paste('retriever download', dataset, '-p', path)
     if (!is.null(log_dir)) {
         log_file = file.path(log_dir, paste(dataset, '_download.log', sep=''))
@@ -119,34 +121,23 @@ download_data = function(dataset, path='.', log_dir=NULL) {
     system(cmd)
 }
 
-
-#' Update the scripts the EcoData Retriever uses to download datasets 
-#'
-#' @return returns the log of the Retriever's update
-#' @references http://ecodataretriever.org/cli.html
-#' @export
-#' @examples update_scripts()
-update_scripts = function() {
-  system('retriever update') 
-}
-
 #' Display a list all available dataset scripts
 #' @return returns the log of the available datasets for download
 #' @export
-#' @examples data_ls()
-data_ls = function(){
+#' @examples 
+#' ecoretriever::datasets()
+datasets = function(){
   system('retriever ls') 
 }
 
-#' Create a new sample retriever script 
-#' 
-#' @param filename the name of the script to generate
-#' @export
-#' @examples new_script('newscript.script')
-new_script = function(filename){
-  system(paste('retriever new', filename)) 
-}
-
-.onAttach <- function(...) {
-  packageStartupMessage("\nNew to ecoretriever? Examples at https://github.com/ropensci/ecoretriever/ \ncitation(package='ecoretriever') for the citation for this package \nUse suppressPackageStartupMessages() to suppress these startup messages in the future")
+.onLoad = function(...) {
+  packageStartupMessage(
+    "\n  New to ecoretriever? Examples at
+    https://github.com/ropensci/ecoretriever/
+    Use citation(package='ecoretriever') for the package citation
+    Use suppressPackageStartupMessages() to suppress these
+    messages in the future")
+  print('Please wait while retriever updates its scripts, ...')
+  system('retriever update', ignore.stdout=TRUE, ignore.stderr=TRUE)
+  print('Retriever script update complete!')
 }

@@ -18,7 +18,7 @@ member of a named list.
 }
 \examples{
 ## fetch the Mammal Community Database (MCDB)
-MCDB = fetch('MCDB')
+MCDB = ecoretriever::fetch('MCDB')
 class(MCDB)
 names(MCDB)
 ## preview the data in the MCDB communities datafile

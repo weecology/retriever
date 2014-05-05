@@ -1,8 +1,8 @@
-\name{download_data}
-\alias{download_data}
+\name{download}
+\alias{download}
 \title{Download datasets via the EcoData Retriever.}
 \usage{
-download_data(dataset, path = ".", log_dir = NULL)
+download(dataset, path = ".", log_dir = NULL)
 }
 \arguments{
   \item{dataset}{the name of the dataset that you wish to
@@ -20,6 +20,8 @@ Directly downloads data files with no processing, allowing
 downloading of non-tabular data.
 }
 \examples{
-download_data('MCDB', './data')
+ecoretriever::download('MCDB', './data')
+## list files downloaded
+dir('./data', pattern='MCDB')
 }
 
