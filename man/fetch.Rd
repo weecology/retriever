@@ -17,7 +17,6 @@ temporary directory and then imported as a data.frame as a
 member of a named list.
 }
 \examples{
-## Use an explicit namespace call when using fetch() to avoid conflicts
 ## fetch the Mammal Community Database (MCDB)
 MCDB = ecoretriever::fetch('MCDB')
 class(MCDB)

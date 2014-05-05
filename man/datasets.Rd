@@ -11,7 +11,6 @@ returns the log of the available datasets for download
 Display a list all available dataset scripts
 }
 \examples{
-## Use an explicit namespace call when using datasets() to avoid conflicts
 ecoretriever::datasets()
 }
 
