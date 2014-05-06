@@ -14,11 +14,13 @@ handling can easily be integrated into R workflows.
 Installation
 ------------
 To use the R package `ecoretriever` you first need to install the Retriever.
-Installers are available for all major operating systems from the [Download page](http://ecodataretriever.org/download.html) or it can be installed from [source](https://github.com/weecology/retriever).
+Installers are available for all major operating systems from the [Download page](http://ecodataretriever.org/download.html)
+or it can be installed from [source](https://github.com/weecology/retriever).
 
 Add Retriever to the path
 -------------------------
-The R package takes advantage of the EcoData Retriever's command line interface which must be enabled by adding it to the path on Windows and Mac platforms.
+The R package takes advantage of the EcoData Retriever's command line interface
+which must be enabled by adding it to the path on Windows and Mac platforms.
 
 ###Windows Specific Instructions
 
@@ -37,11 +39,20 @@ Sys.setenv('PATH' = newpath)
 
 ####Permanently add retriever to path
 
-How you set the path (aka environment variable) is system specific: * Under Windows 2000/XP/2003 you can use 'System' in the control panel or the properties of 'My Computer' (under the 'Advanced' tab). * Under Vista and Windows 7, go to 'User Accounts' in the control panel, and select your account and then 'Change my environment variables'
+How you set the path (aka environment variable) is system specific: 
 
-Once you are in the change environment variable box, select “New”. Name the new variable “PATH” and then set the value to (at a minimum):
+* Under Windows 2000/XP/2003 you can use 'System' in the control panel or the 
+properties of 'My Computer' (under the 'Advanced' tab). 
 
+* Under Vista and Windows 7, go to 'User Accounts' in the control panel, 
+and select your account and then 'Change my environment variables'
+
+Once you are in the change environment variable box, select "New". 
+Name the new variable "PATH" and then set the value to (at a minimum):
+
+```
 PATH=C:/Program Files/EcoDataRetriever;
+```
 
 Install R package
 -----------------
@@ -65,7 +76,8 @@ ecoretriever::datasets()
 # Install the Gentry dataset into csv files in your working directory
 ecoretriever::install('Gentry', 'csv')
 
-# Download the raw Gentry dataset files without any processing to the `data` subdirectory
+# Download the raw Gentry dataset files without any processing to the 
+# subdirectory named data
 ecoretriever::download('Gentry', './data/')
 
 # Install and load a dataset as a list
