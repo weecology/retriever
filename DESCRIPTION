@@ -6,5 +6,5 @@ Authors: Daniel McGlinn and Ethan White
 Depends:
     R (>= 3.0.0)
 SystemRequirements: EcoData Retriever (>= 1.6)
-License: MIT licence
+License: MIT + file LICENSE
 LazyData: true
