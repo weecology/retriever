@@ -7,7 +7,8 @@ Once the EcoData Retriever has loaded the data into the database it is easy to c
 Installing (binaries)
 ---------------------
 
-Precompiled binaries the most recent release are available for Windows and Ubuntu/Debian (OSX packages are available but hit and miss depending on the system) at the [project website](http://ecodataretriever.org).
+Precompiled binaries the most recent release are available for Windows, OS X,
+and Ubuntu/Debian at the [project website](http://ecodataretriever.org).
 
 
 Installing From Source
