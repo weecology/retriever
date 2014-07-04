@@ -14,14 +14,14 @@ and Ubuntu/Debian at the [project website](http://ecodataretriever.org).
 Installing From Source
 ----------------------
 
-To install the EcoData Retriever from source, you'll need Python 2.6 with the following packages installed:
+To install the EcoData Retriever from source, you'll need Python 2.6+ with the following packages installed:
 
 * wxPython
 * xlrd
 
 ###The following packages are optional
 
-* PyMySQL or MySQLdb (for MySQL)
+* PyMySQL (for MySQL)
 * sqlite3 (for SQLite)
 * psycopg2 (for PostgreSQL)
 * pyodbc (for MS Access - this option is only available on Windows)
