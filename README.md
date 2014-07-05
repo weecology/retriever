@@ -7,20 +7,21 @@ Once the EcoData Retriever has loaded the data into the database it is easy to c
 Installing (binaries)
 ---------------------
 
-Precompiled binaries the most recent release are available for Windows and Ubuntu/Debian (OSX packages are available but hit and miss depending on the system) at the [project website](http://ecodataretriever.org).
+Precompiled binaries the most recent release are available for Windows, OS X,
+and Ubuntu/Debian at the [project website](http://ecodataretriever.org).
 
 
 Installing From Source
 ----------------------
 
-To install the EcoData Retriever from source, you'll need Python 2.6 with the following packages installed:
+To install the EcoData Retriever from source, you'll need Python 2.6+ with the following packages installed:
 
 * wxPython
 * xlrd
 
 ###The following packages are optional
 
-* PyMySQL or MySQLdb (for MySQL)
+* PyMySQL (for MySQL)
 * sqlite3 (for SQLite)
 * psycopg2 (for PostgreSQL)
 * pyodbc (for MS Access - this option is only available on Windows)
@@ -29,8 +30,8 @@ To install the EcoData Retriever from source, you'll need Python 2.6 with the fo
 
 1. Clone the repository
 2. From the directory containing setup.py, run the following command: ``python setup.py install``
-3. After installing, type ``retriever`` from a command prompt to launch the Database Toolkit,
-   or find main.py in your Retriever directory and run it in Python.
+3. After installing, type ``retriever`` from a command prompt to launch the
+   EcoData Retriever
 
 Using the Command Line
 ----------------------
