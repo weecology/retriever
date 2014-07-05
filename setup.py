@@ -23,7 +23,7 @@ from __init__ import VERSION
 def is_wxpython_installed():
     """Returns True if  wxpython is installed"""
     try:
-        return __import__("wxpython")
+        return __import__("wx")
     except ImportError:
         return False
 
