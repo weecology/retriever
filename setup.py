@@ -123,6 +123,7 @@ setup(name='retriever',
                             'optimize': 1,
                             'argv_emulation': True,
                             'no_chdir': True,
+                            'iconfile': 'osx_icon.icns',
                             },
                 },
       )
