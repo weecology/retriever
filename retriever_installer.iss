@@ -18,12 +18,14 @@ DefaultGroupName=EcoData Retriever
 OutputBaseFilename=RetrieverSetup
 Compression=lzma
 SolidCompression=yes
+ChangesEnvironment=true
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+Name: modifypath; Description: Add application directory to your environmental path; Flags: checked
 
 [Files]
 Source: "dist\retriever.exe"; DestDir: "{app}"; Flags: ignoreversion
@@ -34,6 +36,18 @@ Source: "dist\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createal
 Name: "{group}\EcoData Retriever"; Filename: "{app}\retriever.exe"
 Name: "{group}\{cm:UninstallProgram,EcoData Retriever}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\EcoData Retriever"; Filename: "{app}\retriever.exe"; Tasks: desktopicon
+
+[Code]
+const
+    ModPathName = 'modifypath';
+    ModPathType = 'user';
+
+function ModPathDir(): TArrayOfString;
+begin
+    setArrayLength(Result, 1)
+    Result[0] := ExpandConstant('{app}');
+end;
+#include "modpath.iss"
 
 [Run]
 Filename: "{app}\retriever.exe"; Description: "{cm:LaunchProgram,EcoData Retriever}"; Flags: nowait postinstall skipifsilent
