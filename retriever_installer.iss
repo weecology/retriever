@@ -16,6 +16,7 @@ AppUpdatesURL=http://ecodataretriever.org
 DefaultDirName={pf}\EcoDataRetriever
 DefaultGroupName=EcoData Retriever
 OutputBaseFilename=RetrieverSetup
+SetupIconFile=icon.ico
 Compression=lzma
 SolidCompression=yes
 ChangesEnvironment=true
