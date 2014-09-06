@@ -66,7 +66,7 @@ U.S.A. """
             rows = sh.nrows
             cn = {'stems': []}
             n = 0
-            for c in sh.row(0):
+            for colnum, c in enumerate(sh.row(0)):
                 if not Excel.empty_cell(c):
                     cid = Excel.cell_value(c).lower()
                     # line number column is sometimes named differently
@@ -76,6 +76,12 @@ U.S.A. """
                     # different ways; they always at least contain "nd"
                     if "nd" in cid:
                         cid = "count"
+                    # in QUIAPACA.xls the "number of individuals" column is
+                    # misnamed "STEMDBH" just like the stems columns, so weep
+                    # for the state of scientific data and then fix manually
+                    if filename == "QUIAPACA.xls" and colnum == 13:
+                        cid = "count"
+
                     # if column is a stem, add it to the list of stems;
                     # otherwise, make note of the column name/number
                     if "stem" in cid or "dbh" in cid:
