@@ -1,6 +1,6 @@
 """Generates a configuration file containing the version number."""
 import os
-from retriever import VERSION, MODULE_LIST
+from retriever import VERSION, MODULE_LIST, MASTER
 from hashlib import md5
 from inspect import getsourcelines
 
@@ -14,10 +14,15 @@ for module in modules:
     if module.SCRIPT.public:
         m = md5()
         m.update(''.join(getsourcelines(module)[0]))
-        scripts.append(','.join([module.__name__ + ('.script' 
-                                                    if os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.script')
-                                                    else '.py'), 
-                                 m.hexdigest()]))
+
+        module_name = module.__name__ + ('.script'
+                                         if os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.script')
+                                         else '.py')
+        if MASTER:
+            scripts.append(module_name)
+        else:
+
+            scripts.append(','.join([module_name, m.hexdigest()]))
 
 for script in scripts:
     version_file.write('\n' + script)
