@@ -50,6 +50,12 @@ U.S.A. """
         self.engine.download_files_from_archive(self.urls["stems"], filelist)
         
         filelist = [os.path.basename(filename) for filename in filelist]
+
+        # Currently all_Excel.zip is missing CURUYUQU.xls
+        # Download it separately and add it to the file list
+        if not self.engine.find_file('CURUYUQU.xls'):
+            self.engine.download_file("http://www.mobot.org/mobot/gentry/123/samerica/CURUYUQU.xls", "CURUYUQU.xls", clean_line_endings=False)
+            filelist.append('CURUYUQU.xls')
         
         lines = []
         tax = []
@@ -60,7 +66,7 @@ U.S.A. """
             rows = sh.nrows
             cn = {'stems': []}
             n = 0
-            for c in sh.row(0):
+            for colnum, c in enumerate(sh.row(0)):
                 if not Excel.empty_cell(c):
                     cid = Excel.cell_value(c).lower()
                     # line number column is sometimes named differently
@@ -70,9 +76,15 @@ U.S.A. """
                     # different ways; they always at least contain "nd"
                     if "nd" in cid:
                         cid = "count"
+                    # in QUIAPACA.xls the "number of individuals" column is
+                    # misnamed "STEMDBH" just like the stems columns, so weep
+                    # for the state of scientific data and then fix manually
+                    if filename == "QUIAPACA.xls" and colnum == 13:
+                        cid = "count"
+
                     # if column is a stem, add it to the list of stems;
                     # otherwise, make note of the column name/number
-                    if "stem" in cid:
+                    if "stem" in cid or "dbh" in cid:
                         cn["stems"].append(n)
                     else:
                         cn[cid] = n
@@ -86,7 +98,7 @@ U.S.A. """
                 row = sh.row(i)
                 cellcount = len(row)
                 # make sure the row is real, not just empty cells
-                if cellcount > 4 and not Excel.empty_cell(row[0]):
+                if not all(Excel.empty_cell(cell) for cell in row):
                     try:
                         this_line = {}
                         
