@@ -6,6 +6,7 @@ download published ecological data, and store the data in a database.
 """
 
 import os
+import sys
 from os.path import join, isfile, getmtime, exists
 import imp
 from lib.compile import compile_script
@@ -78,8 +79,7 @@ def MODULE_LIST(force_compile=False):
                 new_module.SCRIPT.download
                 modules.append(new_module)
             except:
-                print "Failed to load script: %s (%s)" % (script_name, search_path)
-                raise
+                sys.stderr.write("Failed to load script: %s (%s)" % (script_name, search_path))
     
     return modules
 
