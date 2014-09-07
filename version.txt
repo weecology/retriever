@@ -1,7 +1,6 @@
 v1.6
 bbs.py
 bbs50stop.py
-bioclim_2pt5.py
 EA_adler2007.script
 EA_avianbodysize2007.script
 EA_barnes2008.script
@@ -21,7 +20,6 @@ EA_zachmann2010.script
 fia.py
 gentry.py
 MammalDiet.script
-MammalSuperTree.py
 npn.py
 USDA_plants.script
 fia.py
