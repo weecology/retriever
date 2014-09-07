@@ -26,7 +26,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: modifypath; Description: Add application directory to your environmental path; Flags: checked
+Name: modifypath; Description: Add application directory to your environmental path
 
 [Files]
 Source: "dist\retriever.exe"; DestDir: "{app}"; Flags: ignoreversion
