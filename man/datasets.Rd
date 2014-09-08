@@ -1,6 +1,6 @@
 \name{datasets}
 \alias{datasets}
-\title{Display a list all available dataset scripts}
+\title{Display a list all available dataset scripts.}
 \usage{
 datasets()
 }
@@ -8,7 +8,8 @@ datasets()
 returns the log of the available datasets for download
 }
 \description{
-Display a list all available dataset scripts
+Additional information on the available datasets can be
+found at http://ecodataretriever.org/available-data.html
 }
 \examples{
 ecoretriever::datasets()

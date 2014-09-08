@@ -127,7 +127,10 @@ download = function(dataset, path='.', log_dir=NULL) {
     system(cmd)
 }
 
-#' Display a list all available dataset scripts
+#' Display a list all available dataset scripts.
+#'
+#' Additional information on the available datasets can be found at http://ecodataretriever.org/available-data.html
+#' 
 #' @return returns the log of the available datasets for download
 #' @export
 #' @examples 
