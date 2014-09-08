@@ -21,7 +21,9 @@ downloading of non-tabular data.
 }
 \examples{
 ecoretriever::download('MCDB', './data')
+\dontrun{
 ## list files downloaded
 dir('./data', pattern='MCDB')
+}
 }
 
