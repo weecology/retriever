@@ -1,8 +1,18 @@
 Package: ecoretriever
-Title: 
-Description: 
+Title: R interface to the EcoData Retriever
+Description: The ecoretriever provides an R inferface to the
+    EcoData Retriever via the Retriever's command line interface.
+    The Retriever automates the tasks of finding, downloading,
+    and cleaning up ecological datasets, and then stores them in
+    a local database
 Version: 0.1
-Authors: Daniel McGlinn and Ethan White
+Date: 2014-09-07
+Authors@R: c(person("Daniel", "McGlinn", role = c("aut", "cre"),
+    email = "danmcglinn@gmail.com"),
+    person("Ethan", "White", role = "aut",
+    email = "ethan@weecology.org"))
+BugReports: https://github.com/ropensci/ecoretriever/issues
+URL: https://github.com/ropensci/ecoretriever/
 Depends:
     R (>= 3.0.0)
 SystemRequirements: EcoData Retriever (>= 1.6)
