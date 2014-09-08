@@ -3,7 +3,7 @@ Title: R interface to the EcoData Retriever
 Description: The ecoretriever provides an R inferface to the
     EcoData Retriever via the Retriever's command line interface.
     The Retriever automates the tasks of finding, downloading,
-    and cleaning up ecological data files, and then stores them in
+    and cleaning up ecological datasets, and then stores them in
     a local database
 Version: 0.1
 Date: 2014-09-07
