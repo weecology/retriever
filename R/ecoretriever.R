@@ -112,11 +112,11 @@ fetch = function(dataset, quiet=TRUE){
 #' @param log_dir the location where the retriever log should be stored if
 #' the progress is not printed to the console
 #' @export
-#' @examples
-#' ecoretriever::download('MCDB', './data')
+#' @examples 
 #' \dontrun{
+#' ecoretriever::download('MCDB')
 #' ## list files downloaded
-#' dir('./data', pattern='MCDB')
+#' dir('.', pattern='MCDB')
 #' }
 download = function(dataset, path='.', log_dir=NULL) {
     cmd = paste('retriever download', dataset, '-p', path)
