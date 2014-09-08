@@ -17,11 +17,13 @@ temporary directory and then imported as a data.frame as a
 member of a named list.
 }
 \examples{
+\dontrun{
 ## fetch the Mammal Community Database (MCDB)
 MCDB = ecoretriever::fetch('MCDB')
 class(MCDB)
 names(MCDB)
 ## preview the data in the MCDB communities datafile
 head(MCDB$communities)
+}
 }
 

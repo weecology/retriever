@@ -20,8 +20,10 @@ Directly downloads data files with no processing, allowing
 downloading of non-tabular data.
 }
 \examples{
-ecoretriever::download('MCDB', './data')
+\dontrun{
+ecoretriever::download('MCDB')
 ## list files downloaded
-dir('./data', pattern='MCDB')
+dir('.', pattern='MCDB')
+}
 }
 

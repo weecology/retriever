@@ -18,7 +18,9 @@
 #' the progress is not printed to the console
 #' @export
 #' @examples
+#' \dontrun{
 #' ecoretriever::install('MCDB', 'csv')
+#' }
 install = function(dataset, connection, db_file=NULL, conn_file=NULL,
                    data_dir=NULL, log_dir=NULL){
   if (missing(connection)) {
@@ -73,12 +75,14 @@ install = function(dataset, connection, db_file=NULL, conn_file=NULL,
 #' @param quiet: logical, if true retriever runs in quiet mode
 #' @export
 #' @examples
+#' \dontrun{
 #' ## fetch the Mammal Community Database (MCDB)
 #' MCDB = ecoretriever::fetch('MCDB')
 #' class(MCDB)
 #' names(MCDB)
 #' ## preview the data in the MCDB communities datafile
 #' head(MCDB$communities)
+#' }
 fetch = function(dataset, quiet=TRUE){
   temp_path = tempdir()
   if (quiet)
@@ -108,10 +112,12 @@ fetch = function(dataset, quiet=TRUE){
 #' @param log_dir the location where the retriever log should be stored if
 #' the progress is not printed to the console
 #' @export
-#' @examples
-#' ecoretriever::download('MCDB', './data')
+#' @examples 
+#' \dontrun{
+#' ecoretriever::download('MCDB')
 #' ## list files downloaded
-#' dir('./data', pattern='MCDB')
+#' dir('.', pattern='MCDB')
+#' }
 download = function(dataset, path='.', log_dir=NULL) {
     cmd = paste('retriever download', dataset, '-p', path)
     if (!is.null(log_dir)) {
@@ -121,7 +127,10 @@ download = function(dataset, path='.', log_dir=NULL) {
     system(cmd)
 }
 
-#' Display a list all available dataset scripts
+#' Display a list all available dataset scripts.
+#'
+#' Additional information on the available datasets can be found at http://ecodataretriever.org/available-data.html
+#' 
 #' @return returns the log of the available datasets for download
 #' @export
 #' @examples 
