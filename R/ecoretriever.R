@@ -147,6 +147,6 @@ datasets = function(){
     Use suppressPackageStartupMessages() to suppress these
     messages in the future")
   print('Please wait while retriever updates its scripts, ...')
-  system('retriever update', ignore.stdout=TRUE, ignore.stderr=TRUE)
-  print('Retriever script update complete!')
+  system('retriever update', ignore.stdout=FALSE, ignore.stderr=TRUE)
+  print('The retriever scripts are up-to-date!')
 }
