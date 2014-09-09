@@ -90,7 +90,7 @@ fetch = function(dataset, quiet=TRUE){
                  file.path(temp_path, '{db}_{table}.csv'),
                  dataset))
   else
-    install_data(dataset, 'csv', data_dir=temp_path)
+    install(dataset, connection='csv', data_dir=temp_path)
   files = dir(temp_path)
   files = files[grep(dataset, files)]
   out = vector('list', length(files))
