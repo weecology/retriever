@@ -36,7 +36,7 @@ database management systems: MySQL, PostgreSQL, SQLite, or
 Microsoft Access.
 }
 \examples{
-\dontrun{
+\donttest{
 ecoretriever::install('MCDB', 'csv')
 }
 }

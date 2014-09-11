@@ -18,7 +18,7 @@
 #' the progress is not printed to the console
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' ecoretriever::install('MCDB', 'csv')
 #' }
 install = function(dataset, connection, db_file=NULL, conn_file=NULL,
@@ -75,7 +75,7 @@ install = function(dataset, connection, db_file=NULL, conn_file=NULL,
 #' @param quiet: logical, if true retriever runs in quiet mode
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' ## fetch the Mammal Community Database (MCDB)
 #' MCDB = ecoretriever::fetch('MCDB')
 #' class(MCDB)
@@ -113,7 +113,7 @@ fetch = function(dataset, quiet=TRUE){
 #' the progress is not printed to the console
 #' @export
 #' @examples 
-#' \dontrun{
+#' \donttest{
 #' ecoretriever::download('MCDB')
 #' ## list files downloaded
 #' dir('.', pattern='MCDB')
