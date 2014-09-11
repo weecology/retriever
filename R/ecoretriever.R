@@ -146,7 +146,15 @@ datasets = function(){
     Use citation(package='ecoretriever') for the package citation
     Use suppressPackageStartupMessages() to suppress these
     messages in the future")
-  print('Please wait while retriever updates its scripts, ...')
-  system('retriever update', ignore.stdout=FALSE, ignore.stderr=TRUE)
-  print('The retriever scripts are up-to-date!')
+  retriever_path = Sys.which('retriever')
+  if (retriever_path != '') {
+    print('Please wait while retriever updates its scripts, ...')
+    system('retriever update', ignore.stdout=FALSE, ignore.stderr=TRUE)
+    print('The retriever scripts are up-to-date!')
+  }
+  else  {
+    cat('Warning: The retriever is not on your path and may not be installed.\n',
+        '         If the retriever is installed please add it to your path.\n',
+        '         See README.md at https://github.com/ropensci/ecoretriever')
+  }  
 }
