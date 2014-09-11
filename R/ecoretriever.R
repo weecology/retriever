@@ -37,7 +37,7 @@ install = function(dataset, connection, db_file=NULL, conn_file=NULL,
                  format, "\nwhere order of arguments does not matter"))
     }
     conn = data.frame(t(read.table(conn_file, row.names=1)))
-    print(paste('Using conn_file:', conn_file,
+    cat(paste('Using conn_file:', conn_file,
                 'to connect to a', connection, 'server on host:',
                 conn$host))
     cmd = paste('retriever install', connection, dataset, '--user', conn$user,
@@ -148,9 +148,9 @@ datasets = function(){
     messages in the future")
   retriever_path = Sys.which('retriever')
   if (retriever_path != '') {
-    print('Please wait while retriever updates its scripts, ...')
+    cat('Please wait while retriever updates its scripts, ...')
     system('retriever update', ignore.stdout=FALSE, ignore.stderr=TRUE)
-    print('The retriever scripts are up-to-date!')
+    cat('The retriever scripts are up-to-date!')
   }
   else  {
     cat('Warning: The retriever is not on your path and may not be installed.\n',
