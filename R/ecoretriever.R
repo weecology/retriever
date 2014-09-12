@@ -37,9 +37,9 @@ install = function(dataset, connection, db_file=NULL, conn_file=NULL,
                  format, "\nwhere order of arguments does not matter"))
     }
     conn = data.frame(t(read.table(conn_file, row.names=1)))
-    cat(paste('Using conn_file:', conn_file,
-                'to connect to a', connection, 'server on host:',
-                conn$host))
+    writeLines(strwrap(paste('Using conn_file:', conn_file,
+                             'to connect to a', connection,
+                             'server on host:', conn$host)))
     cmd = paste('retriever install', connection, dataset, '--user', conn$user,
                 '--password', conn$password, '--host', conn$host, '--port',
                 conn$port)
@@ -148,13 +148,14 @@ datasets = function(){
     messages in the future")
   retriever_path = Sys.which('retriever')
   if (retriever_path != '') {
-    cat('Please wait while retriever updates its scripts, ...')
+    writeLines(strwrap('Please wait while retriever updates its scripts, ...'))
     system('retriever update', ignore.stdout=FALSE, ignore.stderr=TRUE)
-    cat('The retriever scripts are up-to-date!')
+    writeLines(strwrap('The retriever scripts are up-to-date!'))
   }
   else  {
-    cat('Warning: The retriever is not on your path and may not be installed.\n',
-        '         If the retriever is installed please add it to your path.\n',
-        '         See README.md at https://github.com/ropensci/ecoretriever')
+    writeLines(strwrap('Warning:\n
+                        The retriever is not on your path and may not be installed.
+                        If the retriever is installed please add it to your path.
+                        See README.md at https://github.com/ropensci/ecoretriever'))
   }  
 }
