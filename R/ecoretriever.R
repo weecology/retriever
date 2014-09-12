@@ -153,9 +153,18 @@ datasets = function(){
     writeLines(strwrap('The retriever scripts are up-to-date!'))
   }
   else  {
-    writeLines(strwrap('Warning:\n
-                        The retriever is not on your path and may not be installed.
-                        If the retriever is installed please add it to your path.
-                        See README.md at https://github.com/ropensci/ecoretriever'))
+    path_warn = 'Warning:\n
+                 The retriever is not on your path and may not be installed.'
+    mac_instr = 'Follow the instructions for installing and manually adding the
+                 EcoData Retriever to your path at 
+                 http://ecodataretriever.org/download.html'
+    download_instr = 'Please upgrade to the most recent version of the EcoData 
+                      Retriever, which will automatically add itself to the path 
+                      http://ecodataretriever.org/download.html'
+    os = Sys.info()[['sysname']]
+    if (os == 'Darwin')
+      writeLines(strwrap(paste(path_warn, mac_instr)))
+    else 
+      writeLines(strwrap(paste(path_warn, download_instr)))
   }  
 }
