@@ -37,9 +37,9 @@ install = function(dataset, connection, db_file=NULL, conn_file=NULL,
                  format, "\nwhere order of arguments does not matter"))
     }
     conn = data.frame(t(read.table(conn_file, row.names=1)))
-    print(paste('Using conn_file:', conn_file,
-                'to connect to a', connection, 'server on host:',
-                conn$host))
+    writeLines(strwrap(paste('Using conn_file:', conn_file,
+                             'to connect to a', connection,
+                             'server on host:', conn$host)))
     cmd = paste('retriever install', connection, dataset, '--user', conn$user,
                 '--password', conn$password, '--host', conn$host, '--port',
                 conn$port)
@@ -146,7 +146,25 @@ datasets = function(){
     Use citation(package='ecoretriever') for the package citation
     Use suppressPackageStartupMessages() to suppress these
     messages in the future")
-  print('Please wait while retriever updates its scripts, ...')
-  system('retriever update', ignore.stdout=FALSE, ignore.stderr=TRUE)
-  print('The retriever scripts are up-to-date!')
+  retriever_path = Sys.which('retriever')
+  if (retriever_path != '') {
+    writeLines(strwrap('Please wait while retriever updates its scripts, ...'))
+    system('retriever update', ignore.stdout=FALSE, ignore.stderr=TRUE)
+    writeLines(strwrap('The retriever scripts are up-to-date!'))
+  }
+  else  {
+    path_warn = 'Warning:\n
+                 The retriever is not on your path and may not be installed.'
+    mac_instr = 'Follow the instructions for installing and manually adding the
+                 EcoData Retriever to your path at 
+                 http://ecodataretriever.org/download.html'
+    download_instr = 'Please upgrade to the most recent version of the EcoData 
+                      Retriever, which will automatically add itself to the path 
+                      http://ecodataretriever.org/download.html'
+    os = Sys.info()[['sysname']]
+    if (os == 'Darwin')
+      writeLines(strwrap(paste(path_warn, mac_instr)))
+    else 
+      writeLines(strwrap(paste(path_warn, download_instr)))
+  }  
 }
