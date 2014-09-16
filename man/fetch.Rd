@@ -8,8 +8,7 @@ fetch(dataset, quiet = TRUE)
   \item{dataset}{the name of the dataset that you wish to
   download}
 
-  \item{quiet:}{logical, if true retriever runs in quiet
-  mode}
+\item{quiet}{logical, if true retriever runs in quiet mode}
 }
 \description{
 Each datafile in a given dataset is downloaded to a
