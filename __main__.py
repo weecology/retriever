@@ -120,7 +120,7 @@ def main():
                     if debug: raise
             print "Done!"
         else:
-            print "The dataset %s isn't currently availabe in the Retriever" % (args.dataset)
+            print "The dataset %s isn't currently available in the Retriever" % (args.dataset)
             print "Run 'retriever -ls to see a list of currently available datasets"
 
 if __name__ == "__main__":
