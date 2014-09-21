@@ -72,7 +72,7 @@ install = function(dataset, connection, db_file=NULL, conn_file=NULL,
 #' then imported as a data.frame as a member of a named list.
 #'
 #' @param dataset the name of the dataset that you wish to download
-#' @param quiet: logical, if true retriever runs in quiet mode
+#' @param quiet logical, if true retriever runs in quiet mode
 #' @export
 #' @examples
 #' \donttest{
@@ -146,25 +146,29 @@ datasets = function(){
     Use citation(package='ecoretriever') for the package citation
     Use suppressPackageStartupMessages() to suppress these
     messages in the future")
-  retriever_path = Sys.which('retriever')
-  if (retriever_path != '') {
-    writeLines(strwrap('Please wait while retriever updates its scripts, ...'))
-    system('retriever update', ignore.stdout=FALSE, ignore.stderr=TRUE)
-    writeLines(strwrap('The retriever scripts are up-to-date!'))
-  }
-  else  {
-    path_warn = 'Warning:\n
+  check_for_retriever()
+}
+
+check_for_retriever = function(...) {
+    retriever_path = Sys.which('retriever')
+    if (retriever_path != '') {
+        writeLines(strwrap('Please wait while retriever updates its scripts, ...'))
+        system('retriever update', ignore.stdout=FALSE, ignore.stderr=TRUE)
+        writeLines(strwrap('The retriever scripts are up-to-date!'))
+    }
+    else  {
+        path_warn = 'Warning:\n
                  The retriever is not on your path and may not be installed.'
-    mac_instr = 'Follow the instructions for installing and manually adding the
+        mac_instr = 'Follow the instructions for installing and manually adding the
                  EcoData Retriever to your path at 
                  http://ecodataretriever.org/download.html'
-    download_instr = 'Please upgrade to the most recent version of the EcoData 
+        download_instr = 'Please upgrade to the most recent version of the EcoData 
                       Retriever, which will automatically add itself to the path 
                       http://ecodataretriever.org/download.html'
-    os = Sys.info()[['sysname']]
-    if (os == 'Darwin')
-      writeLines(strwrap(paste(path_warn, mac_instr)))
-    else 
-      writeLines(strwrap(paste(path_warn, download_instr)))
-  }  
+        os = Sys.info()[['sysname']]
+        if (os == 'Darwin')
+            writeLines(strwrap(paste(path_warn, mac_instr)))
+        else 
+            writeLines(strwrap(paste(path_warn, download_instr)))
+    }    
 }
