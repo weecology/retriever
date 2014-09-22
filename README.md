@@ -55,7 +55,7 @@ names(Gentry)
 head(Gentry$counts)
 ```
 
-Get citation information for `ecoretriever` in R doing `citation(package = 'ecoretriever')`
+To get citation information for the `ecoretriever` in R use `citation(package = 'ecoretriever')`
 
 Acknowledgements
 ----------------
