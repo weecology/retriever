@@ -54,3 +54,10 @@ Gentry = ecoretriever::fetch('Gentry')
 names(Gentry)
 head(Gentry$counts)
 ```
+
+Acknowledgements
+----------------
+A big thanks to Ben Morris for helping to develop the EcoData Retriever.
+Thanks to the rOpenSci team with special thanks to Gavin Simpson,
+Scott Chamberlain, and Karthik Ram who gave helpful advice and fostered
+the development of this R package.
