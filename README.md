@@ -54,3 +54,17 @@ Gentry = ecoretriever::fetch('Gentry')
 names(Gentry)
 head(Gentry$counts)
 ```
+
+To get citation information for the `ecoretriever` in R use `citation(package = 'ecoretriever')`
+
+Acknowledgements
+----------------
+A big thanks to Ben Morris for helping to develop the EcoData Retriever.
+Thanks to the rOpenSci team with special thanks to Gavin Simpson,
+Scott Chamberlain, and Karthik Ram who gave helpful advice and fostered
+the development of this R package.
+Development of this software was funded by the [National Science Foundation](http://nsf.gov/)
+as part of a [CAREER award to Ethan White](http://nsf.gov/awardsearch/showAward.do?AwardNumber=0953694).
+
+---
+[![](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)
