@@ -143,9 +143,12 @@ datasets = function(){
   packageStartupMessage(
     "\n  New to ecoretriever? Examples at
     https://github.com/ropensci/ecoretriever/
-    Use citation(package='ecoretriever') for the package citation")
-  check_for_retriever()
-  packageStartupMessage("\nUse suppressPackageStartupMessages() to suppress these messages in the future")
+    Use citation(package='ecoretriever') for the package citation
+    \nUse suppressPackageStartupMessages() to suppress these messages in the future")
+}
+
+.onLoad = function(...) {
+    check_for_retriever()
 }
 
 check_for_retriever = function(...) {
