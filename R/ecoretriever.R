@@ -143,32 +143,26 @@ datasets = function(){
   packageStartupMessage(
     "\n  New to ecoretriever? Examples at
     https://github.com/ropensci/ecoretriever/
-    Use citation(package='ecoretriever') for the package citation
-    Use suppressPackageStartupMessages() to suppress these
-    messages in the future")
+    Use citation(package='ecoretriever') for the package citation")
   check_for_retriever()
+  packageStartupMessage("\nUse suppressPackageStartupMessages() to suppress these messages in the future")
 }
 
 check_for_retriever = function(...) {
     retriever_path = Sys.which('retriever')
     if (retriever_path != '') {
-        writeLines(strwrap('Please wait while retriever updates its scripts, ...'))
+        packageStartupMessage('Please wait while retriever updates its scripts, ...')
         system('retriever update', ignore.stdout=FALSE, ignore.stderr=TRUE)
-        writeLines(strwrap('The retriever scripts are up-to-date!'))
+        packageStartupMessage('The retriever scripts are up-to-date!')
     }
     else  {
-                 The retriever is not on your path and may not be installed.'
-        mac_instr = 'Follow the instructions for installing and manually adding the
-                 EcoData Retriever to your path at 
-                 http://ecodataretriever.org/download.html'
-        download_instr = 'Please upgrade to the most recent version of the EcoData 
-                      Retriever, which will automatically add itself to the path 
-                      http://ecodataretriever.org/download.html'
         path_warn = 'The retriever is not on your path and may not be installed.'
+        mac_instr = 'Follow the instructions for installing and manually adding the EcoData Retriever to your path at http://ecodataretriever.org/download.html'
+        download_instr = 'Please upgrade to the most recent version of the EcoData Retriever, which will automatically add itself to the path http://ecodataretriever.org/download.html'
         os = Sys.info()[['sysname']]
         if (os == 'Darwin')
-            writeLines(strwrap(paste(path_warn, mac_instr)))
+            packageStartupMessage(paste(path_warn, mac_instr))
         else 
-            writeLines(strwrap(paste(path_warn, download_instr)))
+            packageStartupMessage(paste(path_warn, download_instr))
     }    
 }
