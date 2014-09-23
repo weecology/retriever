@@ -157,7 +157,6 @@ check_for_retriever = function(...) {
         writeLines(strwrap('The retriever scripts are up-to-date!'))
     }
     else  {
-        path_warn = 'Warning:\n
                  The retriever is not on your path and may not be installed.'
         mac_instr = 'Follow the instructions for installing and manually adding the
                  EcoData Retriever to your path at 
@@ -165,6 +164,7 @@ check_for_retriever = function(...) {
         download_instr = 'Please upgrade to the most recent version of the EcoData 
                       Retriever, which will automatically add itself to the path 
                       http://ecodataretriever.org/download.html'
+        path_warn = 'The retriever is not on your path and may not be installed.'
         os = Sys.info()[['sysname']]
         if (os == 'Darwin')
             writeLines(strwrap(paste(path_warn, mac_instr)))
