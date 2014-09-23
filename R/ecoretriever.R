@@ -139,7 +139,7 @@ datasets = function(){
   system('retriever ls') 
 }
 
-.onLoad = function(...) {
+.onAttach = function(...) {
   packageStartupMessage(
     "\n  New to ecoretriever? Examples at
     https://github.com/ropensci/ecoretriever/
