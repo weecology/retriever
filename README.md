@@ -31,7 +31,7 @@ To install the development version of the R package `ecoretriever`, use the `dev
 ```coffee
 # install.packages("devtools")
 library(devtools)
-install_github("ecoretriever", "ropensci")
+install_github("ropensci/ecoretriever")
 ```
 
 Examples
