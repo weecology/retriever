@@ -1,11 +1,10 @@
 Package: ecoretriever
-Title: R interface to the EcoData Retriever
-Description: The package provides an R inferface to the
-    EcoData Retriever (http://ecodataretriever.org/) via the
-    EcoData Retriever's command line interface. The EcoData
-    Retriever automates the tasks of finding, downloading, 
-    and cleaning ecological datasets, and then stores them
-    in a local database.
+Title: R Interface to the EcoData Retriever
+Description: Provides an R interface to the EcoData Retriever 
+    (http://ecodataretriever.org/) via the EcoData Retriever's
+    command line interface. The EcoData Retriever automates the
+    tasks of finding, downloading, and cleaning ecological datasets,
+    and then stores them in a local database.
 Version: 0.1
 Date: 2014-09-07
 Authors@R: c(person("Daniel", "McGlinn", role = c("aut", "cre"),
