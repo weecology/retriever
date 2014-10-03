@@ -13,8 +13,8 @@ from lib.compile import compile_script
 import platform
 
 
-VERSION = 'v1.6'
-MASTER = True
+VERSION = 'v1.7.0'
+MASTER = False
 
 REPO_URL = "https://raw.github.com/weecology/retriever/"
 MASTER_BRANCH = REPO_URL + "master/"

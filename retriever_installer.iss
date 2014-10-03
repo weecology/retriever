@@ -7,8 +7,8 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{0467A404-8C83-42A2-8C25-0903FBD14D9C}
 AppName=EcoData Retriever
-AppVersion=1.6
-;AppVerName=EcoData Retriever 1.6
+AppVersion=1.7.0
+;AppVerName=EcoData Retriever 1.7.0
 AppPublisher=Weecology
 AppPublisherURL=http://ecodataretriever.org
 AppSupportURL=http://ecodataretriever.org
