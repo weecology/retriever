@@ -41,7 +41,7 @@ Name: "{commondesktop}\EcoData Retriever"; Filename: "{app}\retriever.exe"; Task
 [Code]
 const
     ModPathName = 'modifypath';
-    ModPathType = 'user';
+    ModPathType = 'system';
 
 function ModPathDir(): TArrayOfString;
 begin
