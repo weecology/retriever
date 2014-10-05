@@ -14,7 +14,7 @@ import platform
 
 
 VERSION = 'v1.7.0'
-MASTER = False
+MASTER = True
 
 REPO_URL = "https://raw.github.com/weecology/retriever/"
 MASTER_BRANCH = REPO_URL + "master/"
