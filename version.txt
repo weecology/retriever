@@ -1,5 +1,4 @@
 v1.7.0
-MammalSuperTree.py,f30e4a1e71004ed2fd3122ad7c768a3c
 EA_capellini2010.script,1e4f8c7b4cf1c57512e448b5e4358c36
 EA_avianbodysize2007.script,3e1c7bf736d5daf1f2e1a740c98e85c7
 EA_mom2003.script,0c34feb4b77db8109159bf42f9100b89
@@ -10,7 +9,6 @@ EA_mcglinn2010.script,6352c934f4228c24f7f79e5b2dde22c7
 EA_barnes2008.script,d6b768223ce648903971e72ed91ea6de
 EA_ramesh2010.script,2db5f409fbaaec9d10d6fe57ba4e323c
 sev_small_mammals.py,261e15c95d03282a98a8edeaf55855bf
-bioclim_2pt5.py,87f2da7152cf0efe79c6119326d3bbb2
 EA_thibault2011.script,adfd9593d72dab649031e4a41d6e44ee
 npn.py,b33c75462d58a52bb408876a0c3f6d12
 EA_ernest2003.script,a0dd9482777e47aca3206d2354ce22ec
