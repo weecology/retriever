@@ -61,3 +61,7 @@ from `localhost`.
 We use [Travis CI](https://travis-ci.org/) for continuous integration
 testing. All pull requests will automatically report whether the tests are
 passing.
+
+Our postgreSQL tests fail idiosyncratically on Travis, so if only the postgres
+tests are failing it on Travis, and they are passing locally, it is likely not a
+problem.
