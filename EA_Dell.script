@@ -1,0 +1,6 @@
+name: The Thermal dependence of biological traits. - Dell, et al., 2013
+shortname: Thermal_dep
+description: Anthony I. Dell. 2013. The thermal dependence of biological traits. Ecology 94:1205.
+
+# tables
+table: TempTrait_001.txt, http://esapubs.org/archive/ecol/E094/108
