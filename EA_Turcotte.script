@@ -1,0 +1,4 @@
+name: Leaf herbivory dataset
+description: Turcotte et al. 2014. Percentage leaf herbivory across vascular plant species. Ecology 95:788
+shortname: leaf_herbovory
+table: Leaf_herbivory, http://www.esapubs.org/archive/ecol/E095/065/Leaf_herbivory.csv
