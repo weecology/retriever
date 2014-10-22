@@ -6,3 +6,4 @@ sqlite.db*
 scripts/
 retriever.egg-info
 apidocs
+.DS_Store
