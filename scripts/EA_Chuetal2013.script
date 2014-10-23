@@ -1,1 +1,13 @@
-name: Cover, density, and demographic of shortgrass steppe plants mapped 1997-2010 in permanent grazed and ungrazed quadrats. 
+#Chengjin Chu, John Norman, Robert Flynn, Nicole Kaplan, William K. Lauenroth, and Peter B. Adler. 2013. Cover, density, and demographics of shortgrass steppe plants mapped 1997–2010 in permanent grazed and ungrazed quadrats. Ecology 94:1435. http://dx.doi.org/10.1890/13-0121.1
+name: Shortgrass steppe plants.
+description: Cover, density, and demographic of shortgrass steppe plants mapped 1997-2010 in permanent grazed and ungrazed quadrats..
+shortname: Steppe_plants_2013
+table: allrecords_density, http://esapubs.org/archive/ecol/E094/128/allrecords_density.csv
+table: allrecords_cover, http://esapubs.org/archive/ecol/E094/128/allrecords_cover.csv
+table: quad_inventory, http://esapubs.org/archive/ecol/E094/128/quad_inventory.csv
+table: quad_info, http://esapubs.org/archive/ecol/E094/128/quad_info.csv
+table: quad_stocking_rate, http://esapubs.org/archive/ecol/E094/128/quad_stocking_rate.csv
+table: daily_climate, http://esapubs.org/archive/ecol/E094/128/daily_climate_data.csv
+table: species_list, http://esapubs.org/archive/ecol/E094/128/species_list.csv
+table: species_name_changes, http://esapubs.org/archive/ecol/E094/128/species_name_changes.csv
+
