@@ -1,0 +1,23 @@
+#Chengjin Chu, John Norman, Robert Flynn, Nicole Kaplan, William K. Lauenroth, and Peter B. Adler. 2013. Cover, density, and demographics of shortgrass steppe plants mapped 1997–2010 in permanent grazed and ungrazed quadrats. Ecology 94:1435. http://dx.doi.org/10.1890/13-0121.1
+#Users are requested to acknowledge their use of the data set in publications, research proposals, websites, and other outlets with citation of this data paper along with the following statement "Data sets were provided by the Shortgrass Steppe Long Term Ecological Research group, a partnership between Colorado State University, United States Department of Agriculture, Agricultural Research Service, and the U.S. Forest Service Pawnee National Grassland. Significant funding for these data was provided by the National Science Foundation Long Term Ecological Research program (NSF Grant Number DEB-1027319 and 0823405). " Users are requested to provide citations of publications using the data sets to Nicole.Kaplan@colostate.edu Shortgrass Steppe - LTER, Natural Resource Ecology Lab, Colorado State University, 1499 Campus Delivery, Fort Collins, CO 80523-1499 or Robert.Flynn@colostate.edu. 
+name: Shortgrass steppe plants.
+description: Cover, density, and demographic of shortgrass steppe plants mapped 1997-2010 in permanent grazed and ungrazed quadrats..
+shortname: Steppe_plants_2013
+tags: Taxon > Plants, Spatial Scale > Local, Data Type > Time Series, Data Type > Observational
+table: allrecords_density, http://esapubs.org/archive/ecol/E094/128/allrecords_density.csv
+*nulls: 'NA'
+table: allrecords_cover, http://esapubs.org/archive/ecol/E094/128/allrecords_cover.csv
+*nulls: 'NA'
+table: quad_inventory, http://esapubs.org/archive/ecol/E094/128/quad_inventory.csv
+*nulls: 'NA'
+table: quad_info, http://esapubs.org/archive/ecol/E094/128/quad_info.csv
+*nulls: 'NA'
+table: quad_stocking_rate, http://esapubs.org/archive/ecol/E094/128/quad_stocking_rate.csv
+*nulls: 'NA'
+table: daily_climate, http://esapubs.org/archive/ecol/E094/128/daily_climate_data.csv
+*nulls: 'NA'
+table: species_list, http://esapubs.org/archive/ecol/E094/128/species_list.csv
+*nulls: 'NA'
+table: species_name_changes, http://esapubs.org/archive/ecol/E094/128/species_name_changes.csv
+*nulls: 'NA'
+
