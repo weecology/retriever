@@ -5,11 +5,19 @@ description: Cover, density, and demographic of shortgrass steppe plants mapped 
 shortname: Steppe_plants_2013
 tags: Taxon > Plants, Spatial Scale > Local, Data Type > Time Series, Data Type > Observational
 table: allrecords_density, http://esapubs.org/archive/ecol/E094/128/allrecords_density.csv
+*nulls: 'NA'
 table: allrecords_cover, http://esapubs.org/archive/ecol/E094/128/allrecords_cover.csv
+*nulls: 'NA'
 table: quad_inventory, http://esapubs.org/archive/ecol/E094/128/quad_inventory.csv
+*nulls: 'NA'
 table: quad_info, http://esapubs.org/archive/ecol/E094/128/quad_info.csv
-table: quad_stocking_rate, http://esapubs.org/archive/ecol/E094/128/quad_stocking_rate.csv
+*nulls: 'NA'
+table: quad_stocking_rate, http://esapubs.org/archive/ecol/E094/128http://esapubs.org/archive/ecol/E094/128/quad_stocking_rate.csv
+*nulls: 'NA'
 table: daily_climate, http://esapubs.org/archive/ecol/E094/128/daily_climate_data.csv
+*nulls: 'NA'
 table: species_list, http://esapubs.org/archive/ecol/E094/128/species_list.csv
+*nulls: 'NA'
 table: species_name_changes, http://esapubs.org/archive/ecol/E094/128/species_name_changes.csv
+*nulls: 'NA'
 
