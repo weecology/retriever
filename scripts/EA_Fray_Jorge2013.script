@@ -27,7 +27,7 @@ table: seed_89_02, http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Seed
 *ct_column: sampling_date
 *ct_names:Apr-89, Aug-89, Dec-89, Apr-90, Aug-90, Dec-90, Apr-91, Aug-91, Dec-91, Apr-92, Aug-92, Dec-92, Apr-93, Aug-93, Dec-93, Apr-94, Aug-94, Dec-94, Apr-95, Aug-95, Dec-95, Apr-96, Aug-96, Dec-96, Dec-97, Apr-98, Aug-98, Dec-98, Apr-99, Aug-99, Dec-99, 2000, 2001, Apr-02, Aug-02, Dec-02
 
-table: precip, http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Precipitation_1989-2005.csvhttp://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Precipitation_1989-2005.csv
+table: precip, http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Precipitation_1989-2005.csv
 *nulls: '.', 'n/a' 
 
 
