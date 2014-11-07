@@ -7,3 +7,4 @@ tags: allocation > biomass > China > climate > forest type > necromass > stand s
 
 # tables
 table: biomass, http://esapubs.org/archive/ecol/E095/177/CForBioData_v1.0.txt
+*nulls: 'NA' 
