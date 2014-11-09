@@ -1,0 +1,6 @@
+name: Northern mixed prairie maps - Anderson et al. 2011
+description: long term plant quadrats of northern mixed prairie in Montana
+shortname: Anderson2011
+table: allrecords_density, http://esapubs.org/archive/ecol/E092/143/allrecords_density.csv
+table: allrecords_cover, http://esapubs.org/archive/ecol/E092/143/allrecords_cover.csv
+table: species_list, http://esapubs.org/archive/ecol/E092/143/species_list.csv
