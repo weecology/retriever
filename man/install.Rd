@@ -4,7 +4,7 @@
 \title{Install datasets via the EcoData Retriever.}
 \usage{
 install(dataset, connection, db_file = NULL, conn_file = NULL,
-  data_dir = NULL, log_dir = NULL)
+  data_dir = ".", log_dir = NULL)
 }
 \arguments{
 \item{dataset}{the name of the dataset that you wish to download}
@@ -21,7 +21,7 @@ mysql.conn or postgres.conn respectively. The connection file is a comma
 seperated file with four fields: user, password, host, and port.}
 
 \item{data_dir}{the location where the dataset should be installed.
-Only relevant for csv connection types.}
+Only relevant for csv connection types. Defaults to current working directory}
 
 \item{log_dir}{the location where the retriever log should be stored if
 the progress is not printed to the console}
