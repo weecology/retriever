@@ -13,7 +13,7 @@
 #' mysql.conn or postgres.conn respectively. The connection file is a comma
 #' seperated file with four fields: user, password, host, and port. 
 #' @param data_dir the location where the dataset should be installed.
-#' Only relevant for csv connection types. 
+#' Only relevant for csv connection types. Defaults to current working directory
 #' @param log_dir the location where the retriever log should be stored if
 #' the progress is not printed to the console
 #' @export
@@ -22,7 +22,7 @@
 #' ecoretriever::install('MCDB', 'csv')
 #' }
 install = function(dataset, connection, db_file=NULL, conn_file=NULL,
-                   data_dir=NULL, log_dir=NULL){
+                   data_dir='.', log_dir=NULL){ 
   if (missing(connection)) {
     stop("The argument 'connection' must be set to one of the following options: 'mysql', 'postgres', 'sqlite', 'msaccess', or 'csv'")
   }
@@ -51,11 +51,8 @@ install = function(dataset, connection, db_file=NULL, conn_file=NULL,
       cmd = paste('retriever install', connection, dataset, '--file', db_file)
   }
   else if (connection == 'csv') {
-    if (!is.null(data_dir))
-      cmd = paste('retriever install csv --table_name',
+    cmd = paste('retriever install csv --table_name',
                   file.path(data_dir, '{db}_{table}.csv'), dataset)
-    else
-      cmd = paste('retriever install csv', dataset)
   }
   else
     stop("The argument 'connection' must be set to one of the following options: 'mysql', 'postgres', 'sqlite', 'msaccess', or 'csv'")
