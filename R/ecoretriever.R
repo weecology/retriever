@@ -51,11 +51,8 @@ install = function(dataset, connection, db_file=NULL, conn_file=NULL,
       cmd = paste('retriever install', connection, dataset, '--file', db_file)
   }
   else if (connection == 'csv') {
-    if (data_dir != '.')
-      cmd = paste('retriever install csv --table_name',
+    cmd = paste('retriever install csv --table_name',
                   file.path(data_dir, '{db}_{table}.csv'), dataset)
-    else
-      cmd = paste('retriever install csv', dataset)
   }
   else
     stop("The argument 'connection' must be set to one of the following options: 'mysql', 'postgres', 'sqlite', 'msaccess', or 'csv'")
