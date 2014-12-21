@@ -67,4 +67,4 @@ Development of this software was funded by the [National Science Foundation](htt
 as part of a [CAREER award to Ethan White](http://nsf.gov/awardsearch/showAward.do?AwardNumber=0953694).
 
 ---
-[![](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)
+[![ropensci footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)
