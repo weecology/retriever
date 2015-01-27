@@ -10,12 +10,13 @@ The main() function can be used for bootstrapping.
 import os
 import platform
 import sys
+import shutil
 # sys removes the setdefaultencoding method at startup; reload to get it back
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     # set default encoding to latin-1 to avoid ascii encoding issues
     sys.setdefaultencoding('latin-1')
-from retriever import VERSION, MASTER, SCRIPT_LIST, sample_script
+from retriever import VERSION, MASTER, SCRIPT_LIST, sample_script, HOME_DIR
 from retriever.engines import engine_list
 from retriever.lib.repository import check_for_updates
 from retriever.lib.lists import Category, get_lists
@@ -80,7 +81,26 @@ def main():
             f.close()
             
             return
-        
+
+        elif args.command == 'reset':
+            warn_msg = """This will remove existing scripts, cached data, and
+information on database connections. Specifically it will remove
+the scripts and raw_data folders and the connections.config file
+in {}
+Do you want to proceed? (y/N)\n""".format(HOME_DIR)
+            confirm = raw_input(warn_msg)
+            while not (confirm.lower() in ['y', 'n', '']):
+                print("Please enter either y or n.")
+                confirm = raw_input(warn_msg)
+            if confirm.lower() == 'y':
+                shutil.rmtree(os.path.join(HOME_DIR, 'raw_data'))
+                shutil.rmtree(os.path.join(HOME_DIR, 'scripts'))
+                try:
+                    os.remove(os.path.join(HOME_DIR, 'connections.config'))
+                except:
+                    pass
+            return
+
         if args.command == 'ls' or args.dataset is None:
             import lscolumns
 
