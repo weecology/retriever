@@ -51,4 +51,6 @@ ls_parser = subparsers.add_parser('ls', help='display a list all available datas
 citation_parser = subparsers.add_parser('citation', help='view citation')
 citation_parser.add_argument('dataset', help='dataset name', nargs='?', default=None)
 
+reset_parser = subparsers.add_parser('reset', help='reset retriever: removes configation settings, scripts, and cached data')
+
 help_parser = subparsers.add_parser('help', help='')
