@@ -3,5 +3,5 @@ description: Community abundance data for fish, reptiles, amphibians, beetles, s
 shortname:MiscAbundanceDB
 table:main, http://files.figshare.com/98381/Species_abundances.csv
 table:sites, http://files.figshare.com/1869287/Sites_table_abundances.csv 
-table:citations, http://files.figshare.com/98382/Citations_table_abundances.csv
+table:citations, http://files.figshare.com/1875722/Citations_table_abundances.csv
 
