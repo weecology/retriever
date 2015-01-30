@@ -2,6 +2,8 @@ import sys
 import os
 import getpass
 import zipfile
+import gzip
+import tarfile
 import urllib
 import csv
 import itertools
@@ -374,7 +376,7 @@ class Engine():
             local_file.close()
             file.close()
 
-    def download_files_from_archive(self, url, filenames):
+    def download_files_from_archive(self, url, filenames, filetype="zip"):
         """Downloads one or more files from an archive into the raw data
         directory."""
         downloaded = False
@@ -390,17 +392,24 @@ class Engine():
                 if not downloaded:
                     self.download_file(url, filename_from_url(url))
                     downloaded = True     
-                        
-                local_zip = zipfile.ZipFile(archivename)
+
+                if filetype == 'zip':
+                    archive = zipfile.ZipFile(archivename)
+                    open_archive_file = archive.open(filename)
+                elif filetype == 'gz':
+                    #gzip archives can only contain a single file 
+                    open_archive_file = gzip.open(archivename)
+                elif filetype == 'tar':
+                    archive = tarfile.open(filename)
+                    open_archive_file = archive.extractfile(filename)
+
                 fileloc = self.format_filename(os.path.basename(filename))
-                        
-                open_zip = local_zip.open(filename)
                 unzipped_file = open(fileloc, 'wb')
-                unzipped_file.write(open_zip.read())
+                for line in open_archive_file:
+                    unzipped_file.write(line)
+                open_archive_file.close()
                 unzipped_file.close()
-                open_zip.close()
-                
-                local_zip.close()                                            
+                if 'archive' in locals(): archive.close()
 
     def drop_statement(self, objecttype, objectname):
         """Returns a drop table or database SQL statement."""
