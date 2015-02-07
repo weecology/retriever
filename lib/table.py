@@ -45,7 +45,9 @@ class Table:
         '''Makes sure a column name is formatted correctly by removing reserved 
         words, symbols, numbers, etc.'''
         column_name = column_name.lower()
-        
+        replace_columns = {old.lower(): new.lower()
+                           for old, new in self.replace_columns}
+        column_name = replace_columns.get(column_name, column_name)
         replace = [
                    ("%", "percent"),
                    ("&", "and"),
@@ -56,7 +58,7 @@ class Table:
                    ("long", "lon"),
                    ("date", "record_date"),
                    ("?", ""),
-                   ] + self.replace_columns
+                   ]
         replace += [(x, '') for x in (")", "\n", "\r", '"', "'")]
         replace += [(x, '_') for x in (" ", "(", "/", ".", "-")]
         column_name = reduce(lambda x, y: x.replace(*y), replace, column_name)
