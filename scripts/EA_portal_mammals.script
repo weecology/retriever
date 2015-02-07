@@ -26,8 +26,8 @@ table: main, http://esapubs.org/archive/ecol/E090/118/Portal_rodents_19772002.cs
 *column: pregnant, char, 9
 *column: nipples, char, 9
 *column: lactation, char, 9
-*column: hfl, char, 9
-*column: wgt, char, 9
+*column: hfl, int
+*column: wgt, int
 *column: tag, char, 9
 *column: note2, char, 9
 *column: ltag, char, 9
