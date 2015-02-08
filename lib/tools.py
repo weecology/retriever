@@ -10,6 +10,8 @@ import os
 import sys
 import warnings
 import unittest
+import shutil
+import os
 from decimal import Decimal
 from hashlib import md5
 from retriever import HOME_DIR
@@ -264,3 +266,28 @@ def choose_engine(opts, choice=True):
         
     engine.opts = opts
     return engine
+
+def reset_retriever(scope):
+    """Remove stored information on scripts, data, and connections"""
+
+    warning_messages= {'all': "This will remove existing scripts, cached data, and information on database connections. Specifically it will remove the scripts and raw_data folders and the connections.config file in {}. Do you want to proceed? (y/N)\n",
+                       'scripts': "This will remove existing scripts. Specifically it will remove the scripts folder in {}. Do you want to proceed? (y/N)\n",
+                       'data': "This will remove raw data cached by the Retriever. Specifically it will remove the raw_data folder in {}. Do you want to proceed? (y/N)\n",
+                       'connections': "This will remove stored information on database connections. Specifically it will remove the connections.config file in {}. Do you want to proceed? (y/N)\n"
+    }
+
+    warn_msg = warning_messages[scope].format(HOME_DIR)
+    confirm = raw_input(warn_msg)
+    while not (confirm.lower() in ['y', 'n', '']):
+        print("Please enter either y or n.")
+        confirm = raw_input()
+    if confirm.lower() == 'y':
+        if scope in ['data', 'all']:
+            shutil.rmtree(os.path.join(HOME_DIR, 'raw_data'))
+        if scope in ['scripts', 'all']:
+            shutil.rmtree(os.path.join(HOME_DIR, 'scripts'))
+        if scope in ['connections', 'all']:
+            try:
+                os.remove(os.path.join(HOME_DIR, 'connections.config'))
+            except:
+                pass
