@@ -8,7 +8,7 @@ import imp
 from hashlib import md5
 from inspect import getsourcelines
 from threading import Thread
-from retriever import REPOSITORY, VERSION, MASTER_BRANCH, REPO_URL, SCRIPT_WRITE_PATH
+from retriever import REPOSITORY, VERSION, MASTER_BRANCH, REPO_URL, SCRIPT_WRITE_PATH, HOME_DIR
 from retriever.lib.models import file_exists
 
 global abort, executable_name
@@ -156,7 +156,7 @@ class InitThread(Thread):
                 else:
                     script_version = None
 
-                if not file_exists(os.path.join("scripts", script_name)):
+                if not file_exists(os.path.join(HOME_DIR, "scripts", script_name)):
                     # File doesn't exist: download it
                     print "Downloading script: " + script_name
                     download_from_repository("scripts/" + script_name,
