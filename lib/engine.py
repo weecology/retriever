@@ -442,9 +442,6 @@ class Engine():
             
         self.disconnect()
 
-    def format_column_name(self, column):
-        return column
-        
     def find_file(self, filename):
         for search_path in DATA_SEARCH_PATHS:
             search_path = search_path.replace("{dataset}", self.script.shortname)

@@ -52,9 +52,6 @@ class engine(Engine):
     def escape_single_quotes(self, value):
         return value.replace("'", "''")
         
-    def format_column_name(self, column):
-        return "[" + str(column) + "]"
-        
     def insert_data_from_file(self, filename):
         """Perform a bulk insert."""
         self.get_cursor()
