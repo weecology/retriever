@@ -11,6 +11,17 @@ from threading import Thread
 from retriever import REPOSITORY, VERSION, MASTER_BRANCH, REPO_URL, SCRIPT_WRITE_PATH, HOME_DIR
 from retriever.lib.models import file_exists
 
+proxy = ["http_proxy","https_proxy","ftp_proxy","HTTP_PROXY","HTTPS_PROXY","FTP_PROXY"]
+
+flag = 0
+
+for i in range(len(proxy)):
+    if flag == 0:
+        if len(os.environ[proxy[i]]) != 0:
+            flag = 1
+            for j in range(len(proxy)):
+                os.environ[proxy[j]] = os.environ[proxy[i]]
+
 global abort, executable_name
 abort = False
 executable_name = "retriever"
