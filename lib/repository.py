@@ -17,10 +17,11 @@ flag = 0
 
 for i in range(len(proxy)):
     if flag == 0:
-        if len(os.environ[proxy[i]]) != 0:
-            flag = 1
-            for j in range(len(proxy)):
-                os.environ[proxy[j]] = os.environ[proxy[i]]
+        if os.getenv(proxy[i], 0) != 0:
+            if len(os.environ[proxy[i]]) != 0:
+                flag = 1
+                for j in range(len(proxy)):
+                    os.environ[proxy[j]] = os.environ[proxy[i]]
 
 global abort, executable_name
 abort = False
