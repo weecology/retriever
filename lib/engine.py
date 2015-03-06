@@ -13,6 +13,18 @@ from retriever.lib.cleanup import no_cleanup
 from retriever.lib.warning import Warning
 
 
+proxy = ["http_proxy","https_proxy","ftp_proxy","HTTP_PROXY","HTTPS_PROXY","FTP_PROXY"]
+
+flag = 0
+
+for i in range(len(proxy)):
+    if flag == 0:
+        if os.getenv(proxy[i], 0) != 0:
+            if len(os.environ[proxy[i]]) != 0:
+                flag = 1
+                for j in range(len(proxy)):
+                    os.environ[proxy[j]] = os.environ[proxy[i]]
+
 class Engine():
     """A generic database system. Specific database platforms will inherit 
     from this class."""
