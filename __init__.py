@@ -27,6 +27,7 @@ for dir in (HOME_DIR, os.path.join(HOME_DIR, 'raw_data'), os.path.join(HOME_DIR,
     if not os.path.exists(dir):
         try:
             os.makedirs(dir)
+            os.chmod(dir, 0o777)
         except OSError:
             print "The Retriever lacks permission to access the ~/.retriever/ directory."
             raise
