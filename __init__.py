@@ -12,6 +12,9 @@ import imp
 from lib.compile import compile_script
 import platform
 
+current_platform = platform.platform().lower()
+if not "win" in current_platform:
+    import pwd
 
 VERSION = 'v1.7.0'
 MASTER = True
@@ -23,18 +26,13 @@ REPOSITORY = MASTER_BRANCH if MASTER else REPO_URL + VERSION + "/"
 # create the necessary directory structure for storing scripts/raw_data
 # in the ~/.retriever directory
 HOME_DIR = os.path.expanduser('~/.retriever/')
-#if platform is not windows and the commond is called by SUDO,
-#the ownership of the directories should be changed to the user.
-ifchown = False if "win" in platform.platform().lower() or os.getenv("SUDO_USER") == None else True
-if ifchown:
-    import pwd
-    pw = pwd.getpwnam(os.getenv("SUDO_USER"))
 for dir in (HOME_DIR, os.path.join(HOME_DIR, 'raw_data'), os.path.join(HOME_DIR, 'scripts')):
     if not os.path.exists(dir):
         try:
             os.makedirs(dir)
-            if ifchown:
-                user = os.chown(dir, pw.pw_uid, pw.pw_gid)
+            if (not "win" in current_platform) and os.getenv("SUDO_USER"):
+                pw = pwd.getpwnam( os.getenv("SUDO_USER") )
+                os.chown(dir, pw.pw_uid, pw.pw_gid)
         except OSError:
             print "The Retriever lacks permission to access the ~/.retriever/ directory."
             raise
@@ -54,7 +52,6 @@ DATA_WRITE_PATH =       DATA_SEARCH_PATHS[-1]
 
 # create a default data directory for Windows since the Windows installer places
 # the executable in a place where users won't expect the data to be stored.
-current_platform = platform.platform().lower()
 user_desktop = os.path.join(os.path.expanduser('~'), 'Desktop')
 DATA_DIR = user_desktop if "win" in current_platform else '.'
 
