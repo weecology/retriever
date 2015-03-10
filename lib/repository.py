@@ -10,9 +10,6 @@ from inspect import getsourcelines
 from threading import Thread
 from retriever import REPOSITORY, VERSION, MASTER_BRANCH, REPO_URL, SCRIPT_WRITE_PATH
 from retriever.lib.models import file_exists
-from setproxy import proxy_function
-
-proxy_function()
 
 global abort, executable_name
 abort = False

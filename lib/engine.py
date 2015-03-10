@@ -11,10 +11,6 @@ from decimal import Decimal
 from retriever import DATA_SEARCH_PATHS, DATA_WRITE_PATH
 from retriever.lib.cleanup import no_cleanup
 from retriever.lib.warning import Warning
-from setproxy import proxy_function
-
-proxy_function()
-
 
 class Engine():
     """A generic database system. Specific database platforms will inherit
@@ -370,7 +366,7 @@ class Engine():
             path = self.format_filename(filename)
             self.create_raw_data_dir()
             print "Downloading " + filename + "..."
-            file = urllib.urlopen(url,proxies=proxies)
+            file = urllib.urlopen(url)
             local_file = open(path, 'wb')
             if clean_line_endings and (filename.split('.')[-1].lower() not in ["exe", "zip"]):
                 local_file.write(file.read().replace("\r\n", "\n").replace("\r", "\n"))
