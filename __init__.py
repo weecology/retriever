@@ -31,6 +31,7 @@ for dir in (HOME_DIR, os.path.join(HOME_DIR, 'raw_data'), os.path.join(HOME_DIR,
         try:
             os.makedirs(dir)
             if (not "win" in current_platform) and os.getenv("SUDO_USER"):
+                # change the ownership of dir directory to the user who is calling this sudo command 
                 pw = pwd.getpwnam( os.getenv("SUDO_USER") )
                 os.chown(dir, pw.pw_uid, pw.pw_gid)
         except OSError:
