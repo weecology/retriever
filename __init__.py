@@ -12,6 +12,9 @@ import imp
 from lib.compile import compile_script
 import platform
 
+current_platform = platform.platform().lower()
+if not "win" in current_platform:
+    import pwd
 
 VERSION = 'v1.7.0'
 MASTER = True
@@ -27,6 +30,10 @@ for dir in (HOME_DIR, os.path.join(HOME_DIR, 'raw_data'), os.path.join(HOME_DIR,
     if not os.path.exists(dir):
         try:
             os.makedirs(dir)
+            if (not "win" in current_platform) and os.getenv("SUDO_USER"):
+                # change the ownership of dir directory to the user who is calling this sudo command 
+                pw = pwd.getpwnam( os.getenv("SUDO_USER") )
+                os.chown(dir, pw.pw_uid, pw.pw_gid)
         except OSError:
             print "The Retriever lacks permission to access the ~/.retriever/ directory."
             raise
@@ -46,7 +53,6 @@ DATA_WRITE_PATH =       DATA_SEARCH_PATHS[-1]
 
 # create a default data directory for Windows since the Windows installer places
 # the executable in a place where users won't expect the data to be stored.
-current_platform = platform.platform().lower()
 user_desktop = os.path.join(os.path.expanduser('~'), 'Desktop')
 DATA_DIR = user_desktop if "win" in current_platform else '.'
 
