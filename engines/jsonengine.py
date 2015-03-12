@@ -62,8 +62,9 @@ class engine(Engine):
             current_output_file = open(self.table_name(), "r")
             file_contents = current_output_file.readlines()
             current_output_file.close()
-            file_contents[-1] = file_contents[-1].strip(',')
-            file_contents.append('\n]\n')
+            if(file_contents[-1]!=']'):
+                file_contents[-1] = file_contents[-1].strip(',')
+                file_contents.append('\n]')
             self.output_file = open(self.table_name(), "w")
             self.output_file.writelines(file_contents)
             self.output_file.close()
