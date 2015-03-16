@@ -9,7 +9,7 @@ def get_columns(values, cols):
     n = 0
     for i in range(cols):
         s = col_size
-        if i+1 <= extra: s += 1         
+        if i+1 <= extra: s += 1
         this_column = values[n:n+s]
         columns.append(this_column)
         n += s
@@ -19,8 +19,8 @@ def get_columns(values, cols):
 def printls(values, max_width=None, spacing=2):
     if sys.stdout.isatty() and max_width is None:
         cols,lines = get_terminal_size()
-        max_width = cols        
-    
+        max_width = cols
+
     if max_width:
         # if output to terminal or max_width is specified, use column output
 
@@ -29,13 +29,13 @@ def printls(values, max_width=None, spacing=2):
             widths = [max([len(c) for c in column])+spacing for column in columns]
             if sum(widths) < max_width:
                 break
-            
+
         for pos in range(len(columns[0])):
             for column, width in zip(columns, widths):
                 if len(column) > pos:
                     print column[pos].ljust(width-1),
             print
-            
+
     else:
         # otherwise, just output each value, one per line
         for value in values: print value

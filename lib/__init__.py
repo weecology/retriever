@@ -10,5 +10,5 @@ def set_proxy():
         for i in proxies:
           os.environ[i] = os.environ[proxy]
         break
-      
+
 set_proxy()

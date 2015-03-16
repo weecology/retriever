@@ -39,16 +39,16 @@ U.S.A. """
 
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
-        
+
         self.engine.auto_create_table(Table("sites"), url=self.urls["sites"])
         self.engine.insert_data_from_url(self.urls["sites"])
-              
+
         self.engine.download_file(self.urls["stems"], "all_Excel.zip")
-        local_zip = zipfile.ZipFile(self.engine.format_filename("all_Excel.zip"))        
+        local_zip = zipfile.ZipFile(self.engine.format_filename("all_Excel.zip"))
         filelist = local_zip.namelist()
-        local_zip.close()        
+        local_zip.close()
         self.engine.download_files_from_archive(self.urls["stems"], filelist)
-        
+
         filelist = [os.path.basename(filename) for filename in filelist]
 
         # Currently all_Excel.zip is missing CURUYUQU.xls
@@ -56,7 +56,7 @@ U.S.A. """
         if not self.engine.find_file('CURUYUQU.xls'):
             self.engine.download_file("http://www.mobot.org/mobot/gentry/123/samerica/CURUYUQU.xls", "CURUYUQU.xls", clean_line_endings=False)
             filelist.append('CURUYUQU.xls')
-        
+
         lines = []
         tax = []
         for filename in filelist:
@@ -101,26 +101,26 @@ U.S.A. """
                 if not all(Excel.empty_cell(cell) for cell in row):
                     try:
                         this_line = {}
-                        
+
                         def format_value(s):
                             s = Excel.cell_value(s)
                             return str(s).title().replace("\\", "/").replace('"', '')
-                        
+
                         # get the following information from the appropriate columns
-                        for i in ["line", "family", "genus", "species", 
+                        for i in ["line", "family", "genus", "species",
                                   "liana", "count"]:
                             if cn[i] > -1:
                                 this_line[i] = format_value(row[cn[i]])
                                 if this_line[i] == '`':
                                     this_line[i] = 1
 
-                        this_line["stems"] = [Excel.cell_value(row[c]) 
+                        this_line["stems"] = [Excel.cell_value(row[c])
                                               for c in cn["stems"]
                                               if not Excel.empty_cell(row[c])]
                         this_line["site"] = filename[0:-4]
-                        
+
                         lines.append(this_line)
-                        
+
                         # Check how far the species is identified
                         full_id = 0
                         if len(this_line["species"]) < 3:
@@ -131,20 +131,20 @@ U.S.A. """
                         else:
                             id_level = "species"
                             full_id = 1
-                        tax.append((this_line["family"], 
-                                    this_line["genus"], 
-                                    this_line["species"].lower().replace('\\', '').replace('"', ''), 
-                                    id_level, 
+                        tax.append((this_line["family"],
+                                    this_line["genus"],
+                                    this_line["species"].lower().replace('\\', '').replace('"', ''),
+                                    id_level,
                                     str(full_id)))
                     except:
                         raise
-                        pass                    
-        
+                        pass
+
         tax = sorted(tax, key=lambda group: group[0] + " " + group[1] + " " + group[2])
         unique_tax = []
         tax_dict = dict()
         tax_count = 0
-        
+
         # Get all unique families/genera/species
         for group in tax:
             if not (group in unique_tax):
@@ -155,8 +155,8 @@ U.S.A. """
                     msg = "Generating taxonomic groups: " + str(tax_count) + " / " + str(TAX_GROUPS)
                     sys.stdout.write(msg + "\b" * len(msg))
         print "Generating taxonomic groups: " + str(TAX_GROUPS) + " / " + str(TAX_GROUPS)
-        
-        
+
+
         # Create species table
         table = Table("species", delimiter=",")
         table.columns=[("species_id"            ,   ("pk-int",)    ),
@@ -166,16 +166,16 @@ U.S.A. """
                        ("id_level"              ,   ("char", 10)    ),
                        ("full_id"               ,   ("bool",)       )]
 
-        data = [','.join([str(tax_dict[group[:3]])] + ['"%s"' % g for g in group]) 
+        data = [','.join([str(tax_dict[group[:3]])] + ['"%s"' % g for g in group])
                 for group in unique_tax]
         table.pk = 'species_id'
         table.contains_pk = True
-        
+
         self.engine.table = table
         self.engine.create_table()
         self.engine.add_to_table(data)
-        
-        
+
+
         # Create stems table
         table = Table("stems", delimiter=",", contains_pk=False)
         table.columns=[("stem_id"               ,   ("pk-auto",)    ),
@@ -191,9 +191,9 @@ U.S.A. """
                 liana = line["liana"]
             except KeyError:
                 liana = ""
-            species_info = [line["line"], 
-                            tax_dict[(line["family"], 
-                                      line["genus"], 
+            species_info = [line["line"],
+                            tax_dict[(line["family"],
+                                      line["genus"],
                                       line["species"].lower())],
                             line["site"],
                             liana
@@ -206,13 +206,13 @@ U.S.A. """
             for i in line["stems"]:
                 stem = species_info + [i]
                 stems.append([str(value) for value in stem])
-            
+
         data = [','.join(stem) for stem in stems]
         self.engine.table = table
         self.engine.create_table()
         self.engine.add_to_table(data)
-        
-        
+
+
         # Create counts table
         table = Table("counts", delimiter=",", contains_pk=False)
         table.columns=[("count_id"              ,   ("pk-auto",)    ),
@@ -225,10 +225,10 @@ U.S.A. """
         self.engine.table = table
         self.engine.create_table()
         self.engine.add_to_table(data)
-            
+
         return self.engine
-    
-    
+
+
 class GentryTest(ScriptTest):
     def strvalue(self, value, col_num):
         value = DbTkTest.strvalue(self, value, col_num)

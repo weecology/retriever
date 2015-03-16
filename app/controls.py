@@ -6,7 +6,7 @@ import platform
 import sys
 from retriever import VERSION, MASTER
 
-        
+
 class AboutDialog(wx.Dialog):
     arch = '32bit' if sys.maxsize < 2**32 else '64bit'
     text = """
@@ -29,16 +29,16 @@ For more information, visit <a href="http://www.ecodataretriever.org">http://www
 </body>"""
     def __init__(self, parent):
         wx.Dialog.__init__(self, parent, -1, "About", size=(600, 600))
-        
+
         self.html = HtmlWindow(self)
         self.html.SetPage(self.text)
-        
+
         self.button = wx.Button(self, wx.ID_OK, "OK")
-        
+
         self.sizer = wx.BoxSizer(wx.VERTICAL)
         self.sizer.Add(self.html, 1, wx.EXPAND|wx.ALL, 5)
         self.sizer.Add(self.button, 0, wx.ALIGN_CENTER|wx.ALL, 5)
-        
+
         self.SetSizer(self.sizer)
         self.Layout()
 
@@ -51,7 +51,7 @@ class ScriptList(wx.HtmlListBox):
         self.SetItemCount(len(scripts))
         self.Bind(wx.EVT_LISTBOX, self.RefreshMe)
         self.Bind(wx.EVT_LISTBOX_DCLICK, self.Download)
-    
+
     def OnGetItem(self, index):
         return self.HtmlScriptSummary(index)
 
@@ -61,21 +61,21 @@ class ScriptList(wx.HtmlListBox):
             self.Download(None)
         else:
             wx.LaunchDefaultBrowser(link.GetHref())
-        
+
     def Redraw(self, scripts):
         self.SetSelection(-1)
         self.scripts = scripts
         self.SetItemCount(len(scripts))
         self.Refresh()
-        
+
     def RefreshMe(self, evt):
         self.RefreshAll()
-        
+
     def Download(self, evt):
         script = self.scripts[self.GetSelection()]
         if self.Parent.Parent.download_manager.Download(script):
-            self.SetStatus(script.name, "Waiting...")        
-            
+            self.SetStatus(script.name, "Waiting...")
+
     def HtmlScriptSummary(self, index):
         script = self.scripts[index]
         selected = self.GetSelection() == index
@@ -106,7 +106,7 @@ class ScriptList(wx.HtmlListBox):
         if script.description:
             desc += "<p>" + script.description + "</p>"
         if script.reference_url():
-            desc += "<p><a href='" + script.reference_url() + "'>" 
+            desc += "<p><a href='" + script.reference_url() + "'>"
             desc += script.reference_url() + "</a></p>"
         if selected:
             if script.addendum:
@@ -117,26 +117,26 @@ class ScriptList(wx.HtmlListBox):
             desc += "<p>" + self.script_status[script.name] + "</p>"
         desc += "</td></tr></table><hr />"
         return desc
-        
-        
+
+
     def SetStatus(self, script, txt):
         self.script_status[script] = "<p>" + txt + "</p>"
         self.RefreshMe(None)
-        
-        
+
+
 class CategoryList(wx.TreeCtrl):
     def __init__(self, parent, id, choice_tree, size=(-1,-1), style=0):
-        wx.TreeCtrl.__init__(self, parent, id, size=size, style=style)        
+        wx.TreeCtrl.__init__(self, parent, id, size=size, style=style)
         self.lists = choice_tree
         self.root = self.AddRoot(choice_tree.name)
         for choice in choice_tree.children:
             self.AddChild(choice)
-            
+
         self.Expand(self.root)
-        
+
         self.Bind(wx.EVT_TREE_SEL_CHANGED, self.Redraw)
-        
-        
+
+
     def AddChild(self, choice, parent=None, select=False):
         new_node = self.AppendItem(self.root if parent == None else parent,
                                    choice.name)
@@ -145,11 +145,11 @@ class CategoryList(wx.TreeCtrl):
             self.AddChild(child, new_node)
         if select:
             self.SelectItem(new_node)
-        
+
     def SelectRoot(self):
         self.SelectItem(self.root)
-    
-    
+
+
     def Redraw(self, evt):
         if evt.GetItem() == self.root:
             selected = self.lists
@@ -164,10 +164,10 @@ class HtmlWindow(wx.html.HtmlWindow):
         wx.html.HtmlWindow.__init__(self, parent, style=style)
         if "gtk2" in wx.PlatformInfo:
             self.SetStandardFonts()
-            
+
     def OnLinkClicked(self, link):
         wx.LaunchDefaultBrowser(link.GetHref())
-        
+
     def SetHtml(self, html):
         self.SetPage(html)
 
@@ -179,15 +179,15 @@ class StaticText(wx.StaticText):
     def __init__(self, parent, id, label, size=wx.Size(-1,-1)):
         wx.StaticText.__init__(self, parent, id, label, size=size)
         #self.SetForegroundColour(wx.BLACK)
-        
-        
+
+
 class TextCtrl(wx.TextCtrl):
     def __init__(self, parent, id, txt="", size=(-1,-1), style=0):
         wx.TextCtrl.__init__(self, parent, id, txt, size=size, style=style)
         #self.SetForegroundColour(wx.BLACK)
         #self.SetBackgroundColour(wx.WHITE)
-        
- 
+
+
 class CheckBox(wx.CheckBox):
     def __init__(self, parent, id, label):
         wx.CheckBox.__init__(self, parent, id, label)
@@ -200,15 +200,15 @@ class ListBox(wx.ListBox):
         wx.ListBox.__init__(self, parent, id, size=size, choices=choices, style=style)
         #self.SetForegroundColour(wx.BLACK)
         #self.SetBackgroundColour(wx.WHITE)
-        
-        
+
+
 class CheckListBox(wx.CheckListBox):
     def __init__(self, parent, id, size=(-1,-1), choices=[], style=0):
         wx.CheckListBox.__init__(self, parent, id, size=size, choices=choices, style=style)
         #self.SetForegroundColour(wx.BLACK)
         #self.SetBackgroundColour(wx.WHITE)
-        
-        
+
+
 class HtmlCheckListBox(wx.html.HtmlWindow):
     def __init__(self, parent, id, size=None, choices=None):
         wx.html.HtmlWindow.__init__(self, parent, size=size)
@@ -233,11 +233,11 @@ class HtmlCheckListBox(wx.html.HtmlWindow):
                 items.append(self._check_box % (i, choice))
             self._html += (items)
             self.SetPage()
-    
+
     def Clear(self):
         self._html = ""
         self.SetPage()
-        
+
     def Append(self, txt):
         i = wx.NewId()
         self.checkboxes[txt] = i
@@ -245,23 +245,23 @@ class HtmlCheckListBox(wx.html.HtmlWindow):
             #self._html += "<hr />"
         self._html += (self._check_box % (i, txt))
         self.SetPage()
-        
+
         self.Bind(wx.EVT_CHECKLISTBOX, self.Parent.OnCheck)
-    
+
     def SetPage(self):
         wx.html.HtmlWindow.SetPage(self, "<table>" + self._html + "</table>")
-        
+
     def GetCheckedStrings(self):
         return [key for key in self.checkboxes.keys()
                 if self.FindWindowById(self.checkboxes[key]).GetValue()]
-        
+
     def SetCheckedStrings(self, strings):
         for key in self.checkboxes.keys():
             self.FindWindowById(self.checkboxes[key]).SetValue(key in strings)
-            
+
     def OnLinkClicked(self, link):
         wx.LaunchDefaultBrowser(link.GetHref())
-        
+
 
 class TitledPage(wx.wizard.WizardPageSimple):
     """A standard wizard page with a title and label."""

@@ -1,6 +1,6 @@
 #retriever
 """Retriever script for Breeding Bird Survey
- 
+
 """
 
 import os
@@ -26,18 +26,18 @@ class main(Script):
                      "region_codes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/RegionCodes.txt",
                      "species": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/SpeciesList.txt"
                      }
-                     
+
     def download(self, engine=None, debug=False):
         try:
             Script.download(self, engine, debug)
-            
+
             engine = self.engine
-            
-            
+
+
             # Species table
             table = Table("species", cleanup=Cleanup(), contains_pk=True,
                           header_rows=6)
-            
+
             table.columns=[("species_id",               ("pk-int",)         ),
                            ("AOU",                      ("int",)            ),
                            ("english_common_name",      ("char",50)         ),
@@ -49,12 +49,12 @@ class main(Script):
                            ("species",                  ("char",50)         ),
                            ]
             table.fixed_width = [7,6,51,51,51,51,51,51,50]
-            
+
             engine.table = table
             engine.create_table()
             engine.insert_data_from_url(self.urls["species"])
-            
-            
+
+
             # Routes table
             if not os.path.isfile(engine.format_filename("routes_new.csv")):
                 engine.download_files_from_archive(self.urls["routes"],
@@ -71,16 +71,16 @@ class main(Script):
                     write.write(','.join(str(value) for value in values))
                 write.close()
                 read.close()
-                
-            engine.auto_create_table(Table("routes", cleanup=Cleanup()), 
+
+            engine.auto_create_table(Table("routes", cleanup=Cleanup()),
                                      filename="routes_new.csv")
             engine.insert_data_from_file(engine.format_filename("routes_new.csv"))
-            
-            
-            # Weather table                
+
+
+            # Weather table
             if not os.path.isfile(engine.format_filename("weather_new.csv")):
-                engine.download_files_from_archive(self.urls["weather"], 
-                                                   ["weather.csv"])            
+                engine.download_files_from_archive(self.urls["weather"],
+                                                   ["weather.csv"])
                 read = open(engine.format_filename("weather.csv"), "rb")
                 write = open(engine.format_filename("weather_new.csv"), "wb")
                 print "Cleaning weather data..."
@@ -88,7 +88,7 @@ class main(Script):
                     values = line.split(',')
                     newvalues = []
                     for value in values:
-                        
+
                         if ':' in value:
                             newvalues.append(value.replace(':', ''))
                         elif value == "N":
@@ -98,12 +98,12 @@ class main(Script):
                     write.write(','.join(str(value) for value in newvalues))
                 write.close()
                 read.close()
-            
-            engine.auto_create_table(Table("weather", pk="RouteDataId", cleanup=Cleanup()), 
+
+            engine.auto_create_table(Table("weather", pk="RouteDataId", cleanup=Cleanup()),
                                      filename="weather_new.csv")
             engine.insert_data_from_file(engine.format_filename("weather_new.csv"))
-            
-            
+
+
             # Region_codes table
             table = Table("region_codes", pk=False, header_rows=11,
                           fixed_width=[11, 11, 30])
@@ -115,20 +115,20 @@ class main(Script):
                         newvalue = newvalue.replace(key, replace[key])
                 return newvalue
             table.cleanup = Cleanup(regioncodes_cleanup)
-            
+
             table.columns=[("countrynum"            ,   ("int",)        ),
                            ("regioncode"            ,   ("int",)        ),
                            ("regionname"            ,   ("char",30)     )]
-            
+
             engine.table = table
             engine.create_table()
-                                    
+
             engine.insert_data_from_url(self.urls["region_codes"])
-                        
-            
+
+
             # Counts table
             table = Table("counts", delimiter=',')
-            
+
             table.columns=[("record_id"             ,   ("pk-auto",)    ),
                            ("countrynum"            ,   ("int",)        ),
                            ("statenum"              ,   ("int",)        ),
@@ -143,59 +143,59 @@ class main(Script):
                            ("Count50"               ,   ("int",)        ),
                            ("StopTotal"             ,   ("int",)        ),
                            ("SpeciesTotal"          ,   ("int",)        )]
-            
+
             stateslist = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado",
                           "Connecticut", "Delaware", "Florida", "Georgia", "Idaho",
                           "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine",
                           "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi",
-                          "Missouri", "Montana", "Nebraska", "Nevada", 
+                          "Missouri", "Montana", "Nebraska", "Nevada",
                           ["New Hampshire", "NHampsh"], ["New Jersey", "NJersey"],
-                          ["New Mexico", "NMexico"], ["New York", "NYork"], 
-                          ["North Carolina", "NCaroli"], ["North Dakota", "NDakota"], "Ohio", 
-                          "Oklahoma", "Oregon", "Pennsylvania", ["Rhode Island", "RhodeIs"], 
-                          ["South Carolina", "SCaroli"], ["South Dakota", "SDakota"], "Tennessee", 
-                          "Texas", "Utah", "Vermont", "Virginia", "Washington", 
-                          ["West Virginia", "W_Virgi"], "Wisconsin", "Wyoming", "Alberta", 
-                          ["British Columbia", "BritCol"], "Manitoba", ["New Brunswick", "NBrunsw"], 
-                          ["Northwest Territories", "NWTerri"], "Newfoundland", 
-                          ["Nova Scotia", "NovaSco"], "Nunavut", "Ontario", 
+                          ["New Mexico", "NMexico"], ["New York", "NYork"],
+                          ["North Carolina", "NCaroli"], ["North Dakota", "NDakota"], "Ohio",
+                          "Oklahoma", "Oregon", "Pennsylvania", ["Rhode Island", "RhodeIs"],
+                          ["South Carolina", "SCaroli"], ["South Dakota", "SDakota"], "Tennessee",
+                          "Texas", "Utah", "Vermont", "Virginia", "Washington",
+                          ["West Virginia", "W_Virgi"], "Wisconsin", "Wyoming", "Alberta",
+                          ["British Columbia", "BritCol"], "Manitoba", ["New Brunswick", "NBrunsw"],
+                          ["Northwest Territories", "NWTerri"], "Newfoundland",
+                          ["Nova Scotia", "NovaSco"], "Nunavut", "Ontario",
                           ["Prince Edward Island", "PEI"], "Quebec", "Saskatchewan", "Yukon"]
-            
+
             state = ""
             shortstate = ""
-            
+
             engine.table = table
             engine.create_table()
-            
+
             for state in stateslist:
                 try:
                     if len(state) > 2:
                         shortstate = state[0:7]
-                    else:        
+                    else:
                         state, shortstate = state[0], state[1]
-                    
+
                     print "Inserting data from " + state + "..."
                     try:
                         engine.table.cleanup = Cleanup()
-                        engine.insert_data_from_archive(self.urls["counts"] + shortstate + ".zip", 
+                        engine.insert_data_from_archive(self.urls["counts"] + shortstate + ".zip",
                                                         [shortstate + ".csv"])
-                    except:               
+                    except:
                         print "Failed bulk insert on " + state + ", inserting manually."
                         engine.connection.rollback()
                         engine.table.cleanup = Cleanup(correct_invalid_value,
                                                        nulls=['*'])
-                        engine.insert_data_from_archive(self.urls["counts"] + shortstate + ".zip", 
+                        engine.insert_data_from_archive(self.urls["counts"] + shortstate + ".zip",
                                                         [shortstate + ".csv"])
-                            
+
                 except:
                     print "There was an error in " + state + "."
                     raise
-            
-        except zipfile.BadZipfile:            
+
+        except zipfile.BadZipfile:
             print "There was an unexpected error in the Breeding Bird Survey archives."
-            raise    
-        
+            raise
+
         return engine
-        
-        
+
+
 SCRIPT = main()

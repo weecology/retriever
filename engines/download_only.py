@@ -28,19 +28,19 @@ class engine(Engine):
                       "File path to copy data files",
                       "./"),
                      ]
-    
+
     def table_exists(self, dbname, tablename):
         try:
             tablename = self.table_name(name=tablename, dbname=dbname)
             return os.path.exists(tablename)
         except:
             return False
-    
+
     def get_connection(self):
         """Gets the db connection."""
         self.get_input()
         return DummyConnection()
-    
+
     def final_cleanup(self):
         data_dir = self.format_data_dir()
         if hasattr(self, "all_files"):
@@ -53,22 +53,22 @@ class engine(Engine):
                     print("Copying %s from %s" % (file_name_nopath, file_path))
                     shutil.copy(file_name, self.opts['path'])
         self.all_files = set()
-            
+
     def auto_create_table(self, table, url=None, filename=None, pk=None):
         if url and not filename:
             filename = filename_from_url(url)
-            
+
         if url and not self.find_file(filename):
             # If the file doesn't exist, download it
             self.download_file(url, filename)
-            
+
     def insert_data_from_url(self, url):
         filename = filename_from_url(url)
         find = self.find_file(filename)
         if not find:
             self.create_raw_data_dir()
             self.download_file(url, filename)
-            
+
     def find_file(self, filename):
         result = Engine.find_file(self, filename)
         if not hasattr(self, "all_files"): self.all_files = set()
@@ -102,7 +102,7 @@ for name, method in methods:
         and not 'download' in name
         and not 'file' in name
         and not 'dir' in name):
-        
+
         setattr(engine, name, dummy_method)
 for name in remove_methods:
     setattr(engine, name, dummy_method)

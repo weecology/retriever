@@ -28,7 +28,7 @@ for engine in engine_list:
             abbreviation = potential_abbreviations[0]
             abbreviations.add(abbreviation)
         else: abbreviation = '-%s' % arg_name
-        
+
         engine_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help_msg, nargs='?', default=default)
 
     engine_parsers[engine.abbreviation] = engine_parser

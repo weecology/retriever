@@ -17,13 +17,13 @@ class Category:
 
 
 def tag_tree(all_tags):
-    return [tag.strip() for tag in all_tags.split('>')] 
-            
+    return [tag.strip() for tag in all_tags.split('>')]
+
 
 def tag_tree_desc(l):
     return ' > '.join(l)
-    
-    
+
+
 def children(node, scripts, tags, level):
     lists = []
     for tag in tags:
@@ -36,8 +36,8 @@ def children(node, scripts, tags, level):
                         valid_scripts.append(script)
 
             lists.append(Category(tag[0], valid_scripts,
-                                  children=children(tag, valid_scripts, 
-                                                    [tag[1:] for tag in tags], 
+                                  children=children(tag, valid_scripts,
+                                                    [tag[1:] for tag in tags],
                                                      level + 1)))
     return lists
 
@@ -47,7 +47,7 @@ def get_lists():
     from retriever import SCRIPT_LIST
     SCRIPT_LIST = SCRIPT_LIST()
     SCRIPT_LIST.sort(key=attrgetter('name'))
-    
+
     full_tags = set()
     tag_heads = set()
     for script in SCRIPT_LIST:
@@ -58,15 +58,15 @@ def get_lists():
     full_tags = sorted(list(full_tags))
     tag_heads = sorted(list(tag_heads))
 
-    lists = []    
+    lists = []
     for head in tag_heads:
-        valid_scripts = [script for script in SCRIPT_LIST 
+        valid_scripts = [script for script in SCRIPT_LIST
                                 if len([tag for tag in script.tags
-                                            if len(tag_tree(tag)) > 0 and 
+                                            if len(tag_tree(tag)) > 0 and
                                             tag_tree(tag)[0] == head]) > 0]
         lists.append(Category(head, valid_scripts,
-                              children=children(head, valid_scripts, 
-                                                [tag_tree(tag)[1:] 
+                              children=children(head, valid_scripts,
+                                                [tag_tree(tag)[1:]
                                                  for tag in full_tags
                                                  if tag_tree(tag)[0] == head],
                                                 1))
@@ -83,14 +83,14 @@ def get_lists():
                     other_scripts.append(new_dataset)
                 except:
                     pass
-        
+
         other_scripts.sort(key=attrgetter('name'))
         if len(other_scripts) > 0:
             lists.append(Category("Custom", other_scripts))
             for script in other_scripts:
                 lists[0].scripts.append(script)
-                
+
     choice_tree = Category("All Datasets", SCRIPT_LIST,
                            children=lists)
-    
+
     return choice_tree

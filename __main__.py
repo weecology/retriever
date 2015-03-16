@@ -30,7 +30,7 @@ def main():
 
         check_for_updates(graphical=False if 'darwin' in platform.platform().lower() else True)
         lists = get_lists()
-        
+
         from retriever.app.main import launch_app
         launch_app(lists)
 
@@ -38,17 +38,17 @@ def main():
         # otherwise, parse them
 
         script_list = SCRIPT_LIST()
-        
+
         args = parser.parse_args()
         if args.quiet:
             sys.stdout = open(os.devnull, 'w')
 
         if args.command == 'help':
             parser.parse_args(['-h'])
-        
+
         if hasattr(args, 'compile') and args.compile:
             script_list = SCRIPT_LIST(force_compile=True)
-        
+
         if args.command == 'update':
             check_for_updates(graphical=False)
             script_list = SCRIPT_LIST()
@@ -66,7 +66,7 @@ def main():
                     print dataset.description
 
             return
-            
+
         elif args.command == 'gui':
             lists = get_lists()
 
@@ -78,7 +78,7 @@ def main():
             f = open(args.filename, 'w')
             f.write(sample_script)
             f.close()
-            
+
             return
 
         elif args.command == 'reset':
@@ -96,7 +96,7 @@ def main():
                 script_list = SCRIPT_LIST()
 
             all_scripts = set([script.shortname for script in script_list])
-            all_tags = set(["ALL"] + 
+            all_tags = set(["ALL"] +
                             [tag.strip().upper() for script in script_list for tagset in script.tags for tag in tagset.split('>')])
 
             print "Available datasets (%s):" % len(all_scripts)
@@ -104,12 +104,12 @@ def main():
             print "Groups:"
             lscolumns.printls(sorted(list(all_tags)))
             return
-        
+
         engine = choose_engine(args.__dict__)
-        
+
         if hasattr(args, 'debug') and args.debug: debug = True
         else: debug = False
-        
+
         scripts = name_matches(script_list, args.dataset)
         if scripts:
             for dataset in scripts:

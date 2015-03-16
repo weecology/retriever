@@ -1,6 +1,6 @@
 #retriever
 """Retriever script for Breeding Bird Survey 50 stop data
- 
+
 """
 
 import os
@@ -26,7 +26,7 @@ class main(Script):
                      "region_codes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/RegionCodes.txt",
                      "species": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/SpeciesList.txt"
                      }
-                     
+
     def download(self, engine=None, debug=False):
         try:
             Script.download(self, engine, debug)
@@ -53,7 +53,7 @@ class main(Script):
             engine.create_table()
             engine.insert_data_from_url(self.urls["species"])
 
-            # Routes table            
+            # Routes table
             if not os.path.isfile(engine.format_filename("routes_new.csv")):
                 engine.download_files_from_archive(self.urls["routes"],
                                                    ["routes.csv"])
@@ -69,17 +69,17 @@ class main(Script):
                     write.write(','.join(str(value) for value in values))
                 write.close()
                 read.close()
-                
-            engine.auto_create_table(Table("routes", cleanup=Cleanup()), 
+
+            engine.auto_create_table(Table("routes", cleanup=Cleanup()),
                                      filename="routes_new.csv")
-                
+
             engine.insert_data_from_file(engine.format_filename("routes_new.csv"))
 
-            
-            # Weather table                
+
+            # Weather table
             if not os.path.isfile(engine.format_filename("weather_new.csv")):
-                engine.download_files_from_archive(self.urls["weather"], 
-                                                   ["weather.csv"])            
+                engine.download_files_from_archive(self.urls["weather"],
+                                                   ["weather.csv"])
                 read = open(engine.format_filename("weather.csv"), "rb")
                 write = open(engine.format_filename("weather_new.csv"), "wb")
                 print "Cleaning weather data..."
@@ -87,7 +87,7 @@ class main(Script):
                     values = line.split(',')
                     newvalues = []
                     for value in values:
-                        
+
                         if ':' in value:
                             newvalues.append(value.replace(':', ''))
                         elif value == "N":
@@ -97,12 +97,12 @@ class main(Script):
                     write.write(','.join(str(value) for value in newvalues))
                 write.close()
                 read.close()
-            
-            engine.auto_create_table(Table("weather", pk="RouteDataId", cleanup=Cleanup()), 
+
+            engine.auto_create_table(Table("weather", pk="RouteDataId", cleanup=Cleanup()),
                                      filename="weather_new.csv")
             engine.insert_data_from_file(engine.format_filename("weather_new.csv"))
-            
-            
+
+
             # Region_codes table
             table = Table("region_codes", pk=False, header_rows=11,
                           fixed_width=[11, 11, 30])
@@ -114,16 +114,16 @@ class main(Script):
                         newvalue = newvalue.replace(key, replace[key])
                 return newvalue
             table.cleanup = Cleanup(regioncodes_cleanup)
-            
+
             table.columns=[("countrynum"            ,   ("int",)        ),
                            ("regioncode"            ,   ("int",)        ),
                            ("regionname"            ,   ("char",30)     )]
-            
+
             engine.table = table
             engine.create_table()
-                                    
+
             engine.insert_data_from_url(self.urls["region_codes"])
-                        
+
             # Counts table
             table = Table("counts", delimiter=',')
             table.columns=[("countrynum"            ,   ("int",)        ),
@@ -182,7 +182,7 @@ class main(Script):
                            ("Stop48"                ,   ("int",)        ),
                            ("Stop49"                ,   ("int",)        ),
                            ("Stop50"                ,   ("int",)        )]
-            
+
             part = ""
             engine.table = table
             engine.create_table()
@@ -193,28 +193,28 @@ class main(Script):
                     print "Inserting data from part " + part + "..."
                     try:
                         engine.table.cleanup = Cleanup()
-                        engine.insert_data_from_archive(self.urls["counts"] + 
+                        engine.insert_data_from_archive(self.urls["counts"] +
                                                         "Fifty" + part + ".zip",
                                                         ["fifty" + part + ".csv"])
-                    except:               
+                    except:
                         print "Failed bulk insert on " + part + ", inserting manually."
                         engine.connection.rollback()
                         engine.table.cleanup = Cleanup(correct_invalid_value,
                                                        nulls=['*'])
-                        engine.insert_data_from_archive(self.urls["counts"] + 
+                        engine.insert_data_from_archive(self.urls["counts"] +
                                                         "Fifty" + part + ".zip",
                                                         ["fifty" + part + ".csv"])
-                            
+
                 except:
                     print "There was an error in part " + part + "."
                     raise
-            
-            
-        except zipfile.BadZipfile:            
+
+
+        except zipfile.BadZipfile:
             print "There was an unexpected error in the Breeding Bird Survey archives."
-            raise    
-        
+            raise
+
         return engine
-        
-        
+
+
 SCRIPT = main()

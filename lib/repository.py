@@ -20,7 +20,7 @@ def download_from_repository(filepath, newpath, repo=REPOSITORY):
     """Downloads the latest version of a file from the repository."""
     try:
         filename = filepath.split('/')[-1]
-        def reporthook(a,b,c): 
+        def reporthook(a,b,c):
             print "%3.1f-%s" % (min(100, float(a * b) / c * 100), filename),
             sys.stdout.flush()
         urllib.urlretrieve(repo + filepath, newpath, reporthook=reporthook)
@@ -55,7 +55,7 @@ def check_for_updates(graphical=False):
         splash = Splash()
         #splash.Show()
         splash.SetText("\tLoading...")
-    
+
         class update_progress:
             def __init__(self, parent):
                 self.parent = parent
@@ -67,17 +67,17 @@ def check_for_updates(graphical=False):
                         pass
             def flush(self):
                 pass
-                
+
         sys.stdout = update_progress(splash)
-    
+
     init = InitThread()
     init.run()
-    
+
     if graphical:
         splash.Hide()
         sys.stdout = sys.__stdout__
-    
-    
+
+
 class InitThread(Thread):
     """This thread performs all of the necessary updates while the splash screen
     is shown.
@@ -88,8 +88,8 @@ class InitThread(Thread):
     def run(self):
         try:
             running_from = os.path.basename(sys.argv[0])
-            
-            # NOTE: exe auto-update functionality has been temporarily disabled 
+
+            # NOTE: exe auto-update functionality has been temporarily disabled
             # since the binaries were moved to AWS.
 
             if False:#running_from[-4:] == ".exe":
@@ -99,15 +99,15 @@ class InitThread(Thread):
                     except:
                         pass
 
-                # Windows: open master branch version file to find out most recent executable version            
+                # Windows: open master branch version file to find out most recent executable version
                 try:
                     version_file = urllib.urlopen(MASTER_BRANCH + "version.txt")
                 except IOError:
                     print "Couldn't open version.txt from repository"
                     return
-                    
+
                 latest = version_file.readline().strip('\n')
-                    
+
                 if more_recent(latest, VERSION):
                     import wx
 
@@ -124,7 +124,7 @@ class InitThread(Thread):
                                           + "_old." + running_from.split('.')[-1])
                         except:
                             pass
-                                
+
                         download_from_repository("windows/" + executable_name + ".exe",
                                                  executable_name + ".exe",
                                                  repo=REPO_URL + latest + "/")
@@ -134,7 +134,7 @@ class InitThread(Thread):
                         wx.MessageBox("Update complete. The program will now restart.")
 
                         os.execv(executable_name + ".exe", sys.argv)
-                            
+
                         sys.exit()
 
                 version_file.close()
@@ -145,7 +145,7 @@ class InitThread(Thread):
             scripts = []
             for line in version_file:
                 scripts.append(line.strip('\n').split(','))
-            
+
             # get script files
             if not os.path.isdir(SCRIPT_WRITE_PATH):
                 os.makedirs(SCRIPT_WRITE_PATH)
@@ -165,16 +165,16 @@ class InitThread(Thread):
                     # File exists: import and check MD5 sum
                     need_to_download = False
                     try:
-                        file, pathname, desc = imp.find_module(''.join(script_name.split('.')[:-1]), 
+                        file, pathname, desc = imp.find_module(''.join(script_name.split('.')[:-1]),
                                                                ["scripts"])
                         new_module = imp.load_module(script_name, file, pathname, desc)
                         m = md5()
                         m.update(''.join(getsourcelines(new_module)[0]).replace("\r\n", "\n"))
                         m = m.hexdigest()
                         need_to_download = script_version != m
-                    except:            
+                    except:
                         pass
-                                
+
                     if need_to_download:
                         try:
                             os.remove(os.path.join("scripts", script_name))
