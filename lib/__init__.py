@@ -1,5 +1,6 @@
 
 """retriever.lib contains the core EcoData Retriever modules."""
+<<<<<<< HEAD
 import os
 
 def set_proxy():
@@ -12,3 +13,5 @@ def set_proxy():
         break
 
 set_proxy()
+=======
+>>>>>>> 86ff72097da457fea60adaf5191513e3bb68622e
