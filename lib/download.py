@@ -28,7 +28,7 @@ class DownloadThread(Thread):
             self.engine.disconnect()
             raise
             return
-        
+
     def finished(self):
         return self.done
 
@@ -36,27 +36,27 @@ class DownloadThread(Thread):
         engine = self.engine
         script = self.script
         worker = self
-        
+
         start = time()
-        
+
         class download_stdout:
             def write(self, s):
                 if s and s != '\n':
                     worker.output_lock.acquire()
                     worker.output.append(s)
                     worker.output_lock.release()
-                
+
         sys.stdout = download_stdout()
-        
+
         print "Connecting to database..."
-        
+
         # Connect
         try:
             engine.get_cursor()
         except Exception as e:
             print "<b><font color='red'>Error: There was an error with your database connection.<br />" + e.__str__() + "</font></b>"
             return
-        
+
         # Download script
         error = False
 
@@ -66,14 +66,14 @@ class DownloadThread(Thread):
         except Exception as e:
             error = True
             print "<b><font color='red'>Error: " + e.__str__() + "</font></b>"
-                
+
         final_cleanup(engine)
-        
+
         if not error:
             finish = time()
-            
+
             time_diff = finish - start
-            
+
             if time_diff > 3600:
                 h = time_diff // 3600
                 time_diff %= 3600
@@ -87,5 +87,5 @@ class DownloadThread(Thread):
             s = "%.2f" % (time_diff)
             if len(s.split('.')[0]) < 2:
                 s = "0" + s
-            
+
             print "<b>Done!</b> <i>Elapsed time: %02d:%02d:%s</i>" % (h, m, s)

@@ -59,24 +59,24 @@ DATA_DIR = user_desktop if "win" in current_platform else '.'
 def MODULE_LIST(force_compile=False):
     """Load scripts from scripts directory and return list of modules."""
     modules = []
-    
+
     for search_path in [search_path for search_path in SCRIPT_SEARCH_PATHS if exists(search_path)]:
         to_compile = [file for file in os.listdir(search_path)
                       if file[-7:] == ".script" and file[0] != "_"
-                      and ((not isfile(join(search_path, file[:-7] + '.py'))) or 
+                      and ((not isfile(join(search_path, file[:-7] + '.py'))) or
                            (isfile(join(search_path, file[:-7] + '.py')) and
-                            (getmtime(join(search_path, file[:-7] + '.py')) < 
+                            (getmtime(join(search_path, file[:-7] + '.py')) <
                              getmtime(join(search_path, file))))
                             or force_compile)
                           ]
         for script in to_compile:
             script_name = '.'.join(script.split('.')[:-1])
             compile_script(join(search_path, script_name))
-    
+
         files = [file for file in os.listdir(search_path)
                  if file[-3:] == ".py" and file[0] != "_"
                  and '#retriever' in open(join(search_path, file), 'r').readline().lower()]
-    
+
         for script in files:
             script_name = '.'.join(script.split('.')[:-1])
             file, pathname, desc = imp.find_module(script_name, [search_path])
@@ -86,7 +86,7 @@ def MODULE_LIST(force_compile=False):
                 modules.append(new_module)
             except:
                 sys.stderr.write("Failed to load script: %s (%s)" % (script_name, search_path))
-    
+
     return modules
 
 

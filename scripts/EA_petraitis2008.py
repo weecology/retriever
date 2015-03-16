@@ -18,29 +18,29 @@ class main(Script):
                                                                 nulls=[-999.9])),
                                   }
                         )
-        
+
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
-        
+
         self.engine.download_file(self.urls["main"], "Succession_sampling_03-07_data_original.txt")
         data_path = self.engine.format_filename("Succession_sampling_03-07_data.txt")
         old_data = open(self.engine.find_file("Succession_sampling_03-07_data_original.txt"), 'rb')
         new_data = open(data_path, 'wb')
-        
+
         line1 = old_data.readline()
         line2 = old_data.readline()
         newline = line1.replace("\n", "\t") + line2
         new_data.write(newline)
-        
+
         for line in old_data:
             new_data.write(line)
-        
+
         new_data.close()
         old_data.close()
-        
-        self.engine.auto_create_table(self.tables["main"], 
+
+        self.engine.auto_create_table(self.tables["main"],
                                       filename="Succession_sampling_03-07_data.txt")
         self.engine.insert_data_from_file(data_path)
-    
-    
+
+
 SCRIPT = main()

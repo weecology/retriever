@@ -38,14 +38,14 @@ class engine(Engine):
 
     def create_db(self):
         return None
-        
+
     def create_table(self):
         self.output_file = open(self.table_name(), "w")
         self.output_file.write(','.join(['"%s"' % c[0] for c in self.table.columns]))
-        
+
     def execute(self, statement, commit=True):
         self.output_file.write('\n' + statement)
-        
+
     def format_insert_value(self, value, datatype):
         v = Engine.format_insert_value(self, value, datatype)
         if v == 'null': return ""
@@ -55,7 +55,7 @@ class engine(Engine):
         except:
             pass
         return v
-        
+
     def insert_statement(self, values):
         if not hasattr(self, 'auto_column_number'):
             self.auto_column_number = 1
@@ -67,7 +67,7 @@ class engine(Engine):
                 self.auto_column_number += 1
                 offset += 1
         return ','.join([str(value) for value in values])
-        
+
     def table_exists(self, dbname, tablename):
         try:
             tablename = self.table_name(name=tablename, dbname=dbname)

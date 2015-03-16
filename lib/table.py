@@ -20,7 +20,7 @@ class Table:
         self.escape_double_quotes=True
         for key, item in kwargs.items():
             setattr(self, key, item[0] if isinstance(item, tuple) else item)
-            
+
     def auto_get_columns(self, header):
         """Gets the column names from the header row
 
@@ -35,14 +35,14 @@ class Table:
             # Get column names from header row
             values = self.split_on_delimiter(header)
             column_names = [name.strip() for name in values]
-        
+
         columns = map(lambda x: self.clean_column_name(x), column_names)
         column_values = {x:[] for x in columns if x}
 
         return [[x, None] for x in columns if x], column_values
-        
+
     def clean_column_name(self, column_name):
-        '''Makes sure a column name is formatted correctly by removing reserved 
+        '''Makes sure a column name is formatted correctly by removing reserved
         words, symbols, numbers, etc.'''
         column_name = column_name.lower()
         replace_columns = {old.lower(): new.lower()
@@ -62,26 +62,26 @@ class Table:
         replace += [(x, '') for x in (")", "\n", "\r", '"', "'")]
         replace += [(x, '_') for x in (" ", "(", "/", ".", "-")]
         column_name = reduce(lambda x, y: x.replace(*y), replace, column_name)
-        
+
         while "__" in column_name:
             column_name = column_name.replace("__", "_")
         column_name = column_name.lstrip("0123456789_").rstrip("_")
-        
+
         return column_name
-        
+
     def split_on_delimiter(self, line):
         dialect = csv.excel
         dialect.escapechar = "\\"
         r = csv.reader([line], dialect=dialect, delimiter=self.delimiter)
         return r.next()
-        
+
     def values_from_line(self, line):
         linevalues = []
         if (self.pk and self.contains_pk == False):
             column = 0
         else:
             column = -1
-        
+
         for value in self.extract_values(line):
             column += 1
             try:
@@ -92,7 +92,7 @@ class Table:
                     pass
                 elif this_column == "combine":
                     # If "combine" append value to end of previous column
-                    linevalues[-1] += " " + value 
+                    linevalues[-1] += " " + value
                 else:
                     # Otherwise, add new value
                     linevalues.append(value)
@@ -101,7 +101,7 @@ class Table:
                 pass
 
         return linevalues
-        
+
     def extract_values(self, line):
         """Given a line of data, this function returns a list of the individual
         data values."""
@@ -114,13 +114,13 @@ class Table:
             return values
         else:
             return self.split_on_delimiter(line)
-            
+
     def get_insert_columns(self, join=True):
         """Gets a set of column names for insert statements."""
         columns = ""
         for item in self.columns:
             thistype = item[1][0]
-            if ((thistype != "skip") and (thistype !="combine") and 
+            if ((thistype != "skip") and (thistype !="combine") and
                 (self.contains_pk == True or thistype[0:3] != "pk-")):
                 columns += item[0] + ", "
         columns = columns.rstrip(', ')
@@ -128,7 +128,7 @@ class Table:
             return columns
         else:
             return columns.lstrip("(").rstrip(")").split(", ")
-            
+
     def get_column_datatypes(self):
         """Gets a set of column names for insert statements."""
         columns = []

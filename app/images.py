@@ -483,7 +483,7 @@ download = PyEmbeddedImage(
     "TkSuQmCC")
 getdownloadData = download.GetData
 getdownloadImage = download.GetImage
-getdownloadBitmap = download.GetBitmap 
+getdownloadBitmap = download.GetBitmap
 
 
 downloaded = PyEmbeddedImage(

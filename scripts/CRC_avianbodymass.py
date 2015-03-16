@@ -2,7 +2,7 @@
 """Retriever script for CRC Handbook of Avian Body Masses companion CD
 
 NOTE: This data is not publicly available. To download the data, you'll need
-the CRC Avian Body Masses CD. Create a new directory at 
+the CRC Avian Body Masses CD. Create a new directory at
 raw_data/AvianBodyMass and copy the contents of the CD there before running
 this script.
 
@@ -22,7 +22,7 @@ def sci_name(value):
     values = value.split()
     list = []
     if len(values) >= 2:
-        [list.append(value) for value in values[0:2]]                    
+        [list.append(value) for value in values[0:2]]
     if len(values) == 3:
         list.append(values[2])
     while len(list) < 3:
@@ -40,15 +40,15 @@ class main(Script):
         self.tables = {"mass": Table("mass", delimiter="~")}
         self.urls = {"mass": ""}
         self.tags = ["Taxon > Birds", "Data Type > Compilation"]
-        
-        
+
+
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
-        
+
         engine = self.engine
-        
+
         table = self.tables["mass"]
-        
+
         # Database column names and their data types. Use data type "skip" to skip the value, and
         # "combine" to merge a string value into the previous column
         table.columns=[("record_id"             ,   ("pk-auto",)    ),
@@ -68,7 +68,7 @@ class main(Script):
                        ("source_num"            ,   ("char",50)     )]
         engine.table = table
         engine.create_table()
-        
+
         file_list = ["broadbills - tapaculos", "cotingas - NZ wrens",
                      "HA honeycreepers - icterids", "honeyeaters - corvids",
                      "jacanas - doves", "larks - accentors",
@@ -76,17 +76,17 @@ class main(Script):
                      "parrotbills - sugarbirds", "parrots - nightjars",
                      "starlings - finches", "swifts - woodpeckers",
                      "thrushes - gnatcatchers", "vultures - bustards"]
-        
-        lines = []        
-        
-        for file in file_list:            
+
+        lines = []
+
+        for file in file_list:
             filename = file + ".xls"
             full_filename = engine.format_filename(filename)
-            
+
             # Make sure file exists
             if not os.path.isfile(full_filename):
                 raise Exception("Missing raw data file: " + full_filename)
-            
+
             # Open excel file with xlrd
             book = xlrd.open_workbook(full_filename)
             sh = book.sheet_by_index(0)
@@ -102,12 +102,12 @@ class main(Script):
                 row = sh.row(n)
                 if len(row) == 0:
                     continue
-                
+
                 empty_cols = len([cell for cell in row[0:11] if Excel.empty_cell(cell)])
-                
+
                 # Skip this row if all cells or all cells but one are empty
                 # or if it's the legend row
-                if ((empty_cols == cols)                             
+                if ((empty_cols == cols)
                             or Excel.cell_value(row[0]) == "Scientific Name"
                             or Excel.cell_value(row[0])[0:7] == "Species"):
                     pass
@@ -125,7 +125,7 @@ class main(Script):
                     values.append(family)
                     # If the first two columns are empty, but not all of them are,
                     # use the first two columns from the previous row
-                    if Excel.empty_cell(row[0]) and Excel.empty_cell(row[1]):                        
+                    if Excel.empty_cell(row[0]) and Excel.empty_cell(row[1]):
                         [values.append(value) for value in sci_name(Excel.cell_value(lastrow[0]))]
                         values.append(Excel.cell_value(lastrow[1]))
                     else:
@@ -136,16 +136,16 @@ class main(Script):
                             values.append(lastvalues[2])
                             values.append(lastvalues[3])
                             for i in range(0, 3):
-                                if not values[3-i]:                                    
+                                if not values[3-i]:
                                     values[3-i] = Excel.cell_value(row[0])
                                     break
                             # Add new information to the previous scientific name
                             if lastvalues:
-                                lastvalues[1:4] = values[1:4]                                
+                                lastvalues[1:4] = values[1:4]
                         else:
                             [values.append(value) for value in sci_name(Excel.cell_value(row[0]))]
                         values.append(Excel.cell_value(row[1]))
-                        
+
                     if Excel.cell_value(row[2]) == "M":
                         values.append("Male")
                     elif Excel.cell_value(row[2]) == "F":
@@ -156,12 +156,12 @@ class main(Script):
                         values.append("Unknown")
                     else:
                         values.append(Excel.cell_value(row[2]))
-                        
-                    # Enter remaining values from cells 
+
+                    # Enter remaining values from cells
                     for i in range(3, cols):
                         values.append(Excel.cell_value(row[i]))
-                        
-                    # If there isn't a common name or location, get it from 
+
+                    # If there isn't a common name or location, get it from
                     # the previous row
                     if not values[4]:
                         values[4] = lastvalues[4]
@@ -170,19 +170,19 @@ class main(Script):
                             if lastvalues[5]:
                                 if lastvalues[5] == "Male" and values[5] == "Female":
                                     values[12] = lastvalues[12]
-                    
+
                     # Insert the previous row into the database
                     if lastvalues:
                         lines.append('~'.join(lastvalues))
-                        
+
                     lastrow = row
                     lastvalues = values
-            
+
             if lines:
                 lines.append('~'.join(lastvalues))
                 engine.add_to_table(lines)
-                        
+
         return engine
-        
-        
+
+
 SCRIPT = main()

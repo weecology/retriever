@@ -16,7 +16,7 @@ class engine(Engine):
                  "char": "TEXT",
                  "bool": "INTEGER",
                  }
-    required_opts = [("file", 
+    required_opts = [("file",
                       "Enter the filename of your SQLite database",
                       os.path.join(DATA_DIR, "sqlite.db"),
                       ""),
@@ -24,15 +24,15 @@ class engine(Engine):
                       "Format of table name",
                       "{db}_{table}"),
                      ]
-                      
+
     def create_db(self):
         """SQLite doesn't create databases; each database is a file and needs
         a separate connection."""
         return None
-        
+
     def escape_single_quotes(self, line):
         return line.replace("'", "''")
-        
+
     def table_exists(self, dbname, tablename):
         if not hasattr(self, 'existing_table_names'):
             self.cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
@@ -40,7 +40,7 @@ class engine(Engine):
             for line in self.cursor:
                 self.existing_table_names.add(line[0].lower())
         return self.table_name(name=tablename, dbname=dbname).lower() in self.existing_table_names
-        
+
     def get_connection(self):
         """Gets the db connection."""
         import sqlite3 as dbapi

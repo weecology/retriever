@@ -16,7 +16,7 @@ from retriever import MODULE_LIST, ENGINE_LIST, SCRIPT_LIST
 MODULE_LIST = MODULE_LIST()
 ENGINE_LIST = ENGINE_LIST()
 if len(sys.argv) > 1:
-    ENGINE_LIST = [e for e in ENGINE_LIST 
+    ENGINE_LIST = [e for e in ENGINE_LIST
                    if e.name in sys.argv[1:]
                    or e.abbreviation in sys.argv[1:]]
 SCRIPT_LIST = SCRIPT_LIST()
@@ -34,8 +34,8 @@ for engine in ENGINE_LIST:
     except:
         TEST_ENGINES[engine.abbreviation] = None
         pass
-    
-    
+
+
 errors = []
 for module in MODULE_LIST:
     for (key, value) in TEST_ENGINES.items():

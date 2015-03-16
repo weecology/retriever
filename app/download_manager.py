@@ -17,7 +17,7 @@ class DownloadManager:
         self.timer = wx.Timer(parent, -1)
         self.timer.interval = 10
         parent.Bind(wx.EVT_TIMER, self.update, self.timer)
-        
+
     def Download(self, script):
         if not script in self.queue and not (self.worker and self.worker.script == script):
             self.queue.append(script)
@@ -30,14 +30,14 @@ class DownloadManager:
                 self.timer.Start(self.timer.interval)
             return True
         return False
-    
+
     def update(self, evt):
         self.timer.Stop()
         terminate = False
         if self.worker:
             script = self.worker.script
             if self.worker.finished() and len(self.worker.output) == 0:
-                if hasattr(script, 'warnings') and script.warnings: 
+                if hasattr(script, 'warnings') and script.warnings:
                     self.warnings.add(script)
                     self.Parent.SetStatusText('\n'.join(str(w) for w in script.warnings))
                 else:
@@ -68,20 +68,20 @@ class DownloadManager:
             self.worker.parent = self
             self.worker.start()
             self.timer.Start(10)
-    
+
     def flush(self):
         pass
-    
+
     def write(self, worker):
         s = worker.output[0]
-        
+
         if '\b' in s:
             s = s.replace('\b', '')
             if not self.dialog:
                 wx.GetApp().Yield()
-                self.dialog = wx.ProgressDialog("Download Progress", 
+                self.dialog = wx.ProgressDialog("Download Progress",
                                                 "Downloading datasets . . .\n"
-                                                + "  " * len(s), 
+                                                + "  " * len(s),
                                                 maximum=1000,
                                                 parent=None,
                                                 style=wx.PD_SMOOTH
@@ -99,13 +99,13 @@ class DownloadManager:
                     return (progress if progress > 1 else 1)
                 else:
                     return None
-                    
+
             current_progress = progress(s)
             if current_progress:
                 (keepgoing, skip) = self.dialog.Update(current_progress, s)
             else:
                 (keepgoing, skip) = self.dialog.Pulse(s)
-                
+
             if not keepgoing:
                 return False
         else:
@@ -113,7 +113,7 @@ class DownloadManager:
                 self.dialog.Update(1000, "")
                 self.dialog.Destroy()
                 self.dialog = None
-            
+
             if '...' in s:
                 self.Parent.SetStatusText(s)
             else:

@@ -15,14 +15,14 @@ SCRIPT = HtmlTableTemplate(%s)""",
 
 def compile_script(script_file):
     definition = open(script_file + ".script", 'rb')
-    
+
     values = {}
     urls = {}
     tables = {}
     last_table = ""
     replace = []
     keys_to_ignore = ["template"]
-    
+
     for line in [line.strip() for line in definition]:
         if line and ':' in line and not line[0] == '#':
             split_line = [a.strip() for a in line.split(":")]
@@ -57,7 +57,7 @@ def compile_script(script_file):
             elif key == "*ct_names":
                 tables[last_table]["ct_names"] = [v.strip() for v in value.split(',')]
             elif key == "*column":
-                if last_table:                    
+                if last_table:
                     vs = [v.strip() for v in value.split(',')]
                     column = [(vs[0], (vs[1], vs[2]) if len(vs) > 2 else (vs[1],))]
                     try:
@@ -78,41 +78,41 @@ def compile_script(script_file):
                         tables[last_table]
                     except KeyError:
                         tables[last_table] = {}
-                    
+
                     try:
                         e = eval(value)
                     except:
                         e = str(value)
-                        
+
                     tables[last_table][key] = str(e) if e.__class__ != str else "'" + e + "'"
             else:
                 # general script attributes
                 values[key] = '"' + value + '"'
-        
+
     if not 'shortname' in values.keys():
         try:
             values['shortname'] = values['name']
         except:
             pass
     values['urls'] = str(urls)
-    
+
     def get_value(key):
         try:
             return values[key]
         except KeyError:
             return ""
-            
+
     table_desc = "{"
     for (key, value) in tables.items():
         table_desc += "'" + key + "': Table('" + key + "', "
         table_desc += ','.join([key + "=" + str(value) for key, value, in value.items()])
         table_desc += "),"
     if table_desc != '{':
-        table_desc = table_desc[:-1] 
+        table_desc = table_desc[:-1]
     table_desc += "}"
-    
+
     values['tables'] = table_desc
-    
+
     script_desc = []
     for key, value in values.items():
         if key == "url":
@@ -120,15 +120,15 @@ def compile_script(script_file):
         if not key in keys_to_ignore:
             script_desc.append(key + "=" + str(value))
     script_desc = (',\n' + ' ' * 27).join(script_desc)
-    
+
     if 'template' in values.keys():
         template = values["template"]
     else:
         template = "default"
     script_contents = (script_templates[template] % script_desc)
-    
+
     new_script = open(script_file + '.py', 'wb')
     new_script.write(script_contents)
     new_script.close()
-    
+
     definition.close()
