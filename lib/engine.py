@@ -369,7 +369,7 @@ class Engine():
             print "Downloading " + filename + "..."
             file = urllib.urlopen(url)
             local_file = open(path, 'wb')
-            if clean_line_endings and (filename.split('.')[-1].lower() not in ["exe", "zip"]):
+            if clean_line_endings and (filename.split('.')[-1].lower() not in ["exe", "zip", "xls"]):
                 local_file.write(file.read().replace("\r\n", "\n").replace("\r", "\n"))
             else:
                 local_file.write(file.read())
