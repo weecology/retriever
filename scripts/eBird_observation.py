@@ -46,5 +46,6 @@ class main(Script):
         engine.table = table
         engine.create_table()
         engine.insert_data_from_file(engine.format_filename(data_file_name))
+    return engine
 
 SCRIPT = main()
