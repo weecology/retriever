@@ -51,7 +51,18 @@ class engine(Engine):
                     print("Keeping existing copy.")
                 else:
                     print("Copying %s from %s" % (file_name_nopath, file_path))
-                    shutil.copy(file_name, self.opts['path'])
+                    if os.path.isdir(self.opts['path']):
+                        try:
+                            shutil.copy(file_name, self.opts['path'])
+                        except:
+                            print("Couldn't copy file to %s" % self.opts['path'])
+                    else:
+                        try:
+                            print("Creating directory %s" % self.opts['path'])
+                            os.mkdir(self.opts['path'])
+                            shutil.copy(file_name, self.opts['path'])
+                        except:
+                            print("Couldn't create directory %s" % self.opts['path'])
         self.all_files = set()
 
     def auto_create_table(self, table, url=None, filename=None, pk=None):
