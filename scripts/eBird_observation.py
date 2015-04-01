@@ -1,3 +1,4 @@
+#retriever
 """EcoData Retriever script for the eBird Observation Dataset"""
 
 from retriever.lib.templates import Script
