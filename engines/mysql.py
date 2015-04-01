@@ -72,6 +72,7 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
             return Engine.insert_data_from_file(self, filename)
 
     def table_exists(self, dbname, tablename):
+        """Checks to see if the given table exists"""
         if not hasattr(self, 'existing_table_names'):
             self.cursor.execute("SELECT table_schema, table_name FROM information_schema.tables WHERE table_schema NOT IN ('mysql', 'information_schema', 'performance_schema');")
             self.existing_table_names = set()

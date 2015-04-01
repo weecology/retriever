@@ -45,6 +45,7 @@ class engine(Engine):
         return Engine.create_db_statement(self).replace("DATABASE", "SCHEMA")
 
     def create_db(self):
+        """Creates the database"""
         try:
             Engine.create_db(self)
         except:
@@ -91,12 +92,14 @@ CSV HEADER"""
             return Engine.insert_data_from_file(self, filename)
 
     def insert_statement(self, values):
+        """Returns a SQL statement to insert a set of values"""
         statement = Engine.insert_statement(self, values)
         if isinstance(statement, basestring):
             statement = statement.decode("utf-8", "ignore")
         return statement
 
     def table_exists(self, dbname, tablename):
+        """Checks to see if the given table exists"""
         if not hasattr(self, 'existing_table_names'):
             self.cursor.execute("SELECT schemaname, tablename FROM pg_tables WHERE schemaname NOT LIKE 'pg_%';")
             self.existing_table_names = set()

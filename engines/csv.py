@@ -37,16 +37,20 @@ class engine(Engine):
                      ]
 
     def create_db(self):
+        """Override create_db since there is no database just a CSV file"""
         return None
 
     def create_table(self):
+        """Create the table by creating an empty csv file"""
         self.output_file = open(self.table_name(), "w")
         self.output_file.write(','.join(['"%s"' % c[0] for c in self.table.columns]))
 
     def execute(self, statement, commit=True):
+        """Write a line to the output file"""
         self.output_file.write('\n' + statement)
 
     def format_insert_value(self, value, datatype):
+        """Formats a value for an insert statement"""
         v = Engine.format_insert_value(self, value, datatype)
         if v == 'null': return ""
         try:
@@ -69,11 +73,9 @@ class engine(Engine):
         return ','.join([str(value) for value in values])
 
     def table_exists(self, dbname, tablename):
-        try:
-            tablename = self.table_name(name=tablename, dbname=dbname)
-            return os.path.exists(tablename)
-        except:
-            return False
+        """Check to see if the data file currently exists"""
+        tablename = self.table_name(name=tablename, dbname=dbname)
+        return os.path.exists(tablename)
 
     def get_connection(self):
         """Gets the db connection."""
