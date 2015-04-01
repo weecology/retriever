@@ -458,7 +458,7 @@ class Engine():
         """Returns the full path of a file in the archive directory."""
         return os.path.join(self.format_data_dir(), filename)
 
-    def format_insert_value(self, value, datatype):
+    def format_insert_value(self, value, datatype, json=False):
         """Formats a value for an insert statement, for example by surrounding
         it in single quotes."""
         datatype = datatype.split('-')[-1]
@@ -469,38 +469,44 @@ class Engine():
         if len(strvalue) > 1 and strvalue[0] == strvalue[-1] and strvalue[0] in quotes:
             strvalue = strvalue[1:-1]        
         nulls = ("null", "none")
+        if json:
+            value = None
+        else:
+            value = nulls[0]
         
         if strvalue.lower() in nulls:
-            return "null"
+            return value
         elif datatype in ("int", "bigint", "bool"):
             if strvalue:
                 intvalue = strvalue.split('.')[0]
                 if intvalue:
                     return int(intvalue)
                 else:
-                    return "null"
+                    return value
             else:
-                return "null"
+                return value
         elif datatype in ("double", "decimal"):
             if strvalue:
                 return strvalue
             else:
-                return "null"
+                return value
         elif datatype=="char":
-            if strvalue.lower() in nulls:
-                return "null"
-                
             # automatically escape quotes in string fields
-            if hasattr(self.table, "escape_double_quotes") and self.table.escape_double_quotes:
-                strvalue = self.escape_double_quotes(strvalue)
-            if hasattr(self.table, "escape_single_quotes") and self.table.escape_single_quotes:
-                strvalue = self.escape_single_quotes(strvalue)
-                
-            return "'" + strvalue + "'"
+            if not json:
+                if hasattr(self.table, "escape_double_quotes") and self.table.escape_double_quotes:
+                    strvalue = self.escape_double_quotes(strvalue)
+                if hasattr(self.table, "escape_single_quotes") and self.table.escape_single_quotes:
+                    strvalue = self.escape_single_quotes(strvalue)
+                return "'" + strvalue + "'"
+
+            if strvalue.lower() in nulls:
+                return value
+            else:
+                return strvalue
         #elif datatype=="bool":
             #return "'true'" if value else "'false'"
         else:
-            return "null"
+            return value
 
     def get_cursor(self):
         """Gets the db cursor."""

@@ -87,40 +87,7 @@ class engine(Engine):
            in json
 
         """
-        #TODO There is a lot of duplicated code with engine.format_insert_value
-        #Refactoring so that this code could be properly shared would be preferable
-        datatype = datatype.split('-')[-1]
-        strvalue = str(value).strip()
-
-        # Remove any quotes already surrounding the string
-        quotes = ["'", '"']
-        if len(strvalue) > 1 and strvalue[0] == strvalue[-1] and strvalue[0] in quotes:
-            strvalue = strvalue[1:-1]
-        nulls = ("null", "none")
-
-        if strvalue.lower() in nulls:
-            return None
-        elif datatype in ("int", "bigint", "bool"):
-            if strvalue:
-                intvalue = strvalue.split('.')[0]
-                if intvalue:
-                    return int(intvalue)
-                else:
-                    return None
-            else:
-                return None
-        elif datatype in ("double", "decimal"):
-            if strvalue:
-                return float(strvalue)
-            else:
-                return None
-        elif datatype=="char":
-            if strvalue.lower() in nulls:
-                return None
-            else:
-                return strvalue
-        else:
-            return None
+        self.format_insert_value(value, datatype, json=True)
 
 
     def insert_statement(self, values):
