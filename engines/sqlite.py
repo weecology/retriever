@@ -34,6 +34,7 @@ class engine(Engine):
         return line.replace("'", "''")
         
     def table_exists(self, dbname, tablename):
+        """Determine if the table already exists in the database"""
         if not hasattr(self, 'existing_table_names'):
             self.cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
             self.existing_table_names = set()
