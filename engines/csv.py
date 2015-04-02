@@ -61,6 +61,7 @@ class engine(Engine):
         return v
 
     def insert_statement(self, values):
+        """Returns a SQL statement to insert a set of values."""
         if not hasattr(self, 'auto_column_number'):
             self.auto_column_number = 1
         offset = 0

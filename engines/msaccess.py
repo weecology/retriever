@@ -50,6 +50,7 @@ class engine(Engine):
         return dropstatement
 
     def escape_single_quotes(self, value):
+        """Escapes the single quotes in the value"""
         return value.replace("'", "''")
 
     def insert_data_from_file(self, filename):

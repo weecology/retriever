@@ -38,6 +38,7 @@ class engine(Engine):
                      ]
 
     def create_db_statement(self):
+        """Returns a SQL statement to create a database."""
         createstatement = "CREATE DATABASE IF NOT EXISTS " + self.database_name()
         return createstatement
 
