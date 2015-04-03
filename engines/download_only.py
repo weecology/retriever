@@ -46,12 +46,15 @@ class engine(Engine):
         if hasattr(self, "all_files"):
             for file_name in self.all_files:
                 file_path, file_name_nopath = os.path.split(file_name)
+                full_path = os.path.join(self.opts['path'], file_name_nopath)
                 if file_path == DATA_DIR:
                     print ("%s is already in the working directory" % file_name_nopath)
                     print("Keeping existing copy.")
+                elif os.path.exists(full_path):
+                    print ("File already exists at specified location")
                 else:
-                    print("Copying %s from %s" % (file_name_nopath, file_path))
                     if os.path.isdir(self.opts['path']):
+                        print("Copying %s from %s" % (file_name_nopath, file_path))
                         try:
                             shutil.copy(file_name, self.opts['path'])
                         except:
@@ -60,6 +63,7 @@ class engine(Engine):
                         try:
                             print("Creating directory %s" % self.opts['path'])
                             os.mkdir(self.opts['path'])
+                            print("Copying %s from %s" % (file_name_nopath, file_path))
                             shutil.copy(file_name, self.opts['path'])
                         except:
                             print("Couldn't create directory %s" % self.opts['path'])
@@ -117,3 +121,4 @@ for name, method in methods:
         setattr(engine, name, dummy_method)
 for name in remove_methods:
     setattr(engine, name, dummy_method)
+
