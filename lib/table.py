@@ -12,6 +12,7 @@ class Table:
         self.header_rows = 1
         self.column_names_row = 1
         self.fixed_width = False
+        self.cleaned_columns = False
         self.cleanup = Cleanup()
         self.record_id = 0
         self.columns = []
@@ -37,6 +38,7 @@ class Table:
             column_names = [name.strip() for name in values]
 
         columns = map(lambda x: self.clean_column_name(x), column_names)
+        self.cleaned_columns = True
         column_values = {x:[] for x in columns if x}
 
         return [[x, None] for x in columns if x], column_values
@@ -118,6 +120,11 @@ class Table:
     def get_insert_columns(self, join=True):
         """Gets a set of column names for insert statements."""
         columns = ""
+        if not self.cleaned_columns:
+            column_names = list(self.columns)
+            self.columns[:] = []
+            self.columns = [(self.clean_column_name(name[0]), name[1]) for name in column_names]
+            self.cleaned_columns = True
         for item in self.columns:
             thistype = item[1][0]
             if ((thistype != "skip") and (thistype !="combine") and
