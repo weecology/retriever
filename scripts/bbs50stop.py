@@ -126,7 +126,8 @@ class main(Script):
 
             # Counts table
             table = Table("counts", delimiter=',')
-            table.columns=[("countrynum"            ,   ("int",)        ),
+            table.columns=[("RouteDataID"           ,   ("int",)        ),
+                           ("countrynum"            ,   ("int",)        ),
                            ("statenum"              ,   ("int",)        ),
                            ("Route"                 ,   ("int",)        ),
                            ("RPID"                  ,   ("int",)        ),
