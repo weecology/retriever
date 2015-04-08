@@ -125,8 +125,9 @@ class main(Script):
             engine.insert_data_from_url(self.urls["region_codes"])
 
             # Counts table
-            table = Table("counts", delimiter=',')
-            table.columns=[("countrynum"            ,   ("int",)        ),
+            table = Table("counts", pk=False, delimiter=',')
+            table.columns=[("RouteDataID"           ,   ("int",)        ),
+                           ("countrynum"            ,   ("int",)        ),
                            ("statenum"              ,   ("int",)        ),
                            ("Route"                 ,   ("int",)        ),
                            ("RPID"                  ,   ("int",)        ),
