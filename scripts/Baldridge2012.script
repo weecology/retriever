@@ -1,7 +1,7 @@
 name: Miscellaneous Abundance Database (figshare 2012)
 description: Community abundance data for fish, reptiles, amphibians, beetles, spiders, and birds, compiled from the literature by Elita Baldridge.
 shortname:MiscAbundanceDB
-table:main, http://files.figshare.com/2023505/Species_abundances.csv
+table:main, http://files.figshare.com/2023547/Species_abundances.csv
 table:sites, http://files.figshare.com/2023504/Sites_table_abundances.csv 
 table:citations, http://files.figshare.com/2023506/Citations_table_abundances.csv
 
