@@ -41,28 +41,6 @@ def getmd5(lines):
         sum.update(line)
     return sum.hexdigest()
 
-def checkagainstfile(lines, filename):
-    """Checks a set of lines against a file, and prints all lines that don't
-    match."""
-    TEST_DATA_LOCATION = "test_data"
-
-    testfile = open(os.path.join(TEST_DATA_LOCATION, filename), 'rb')
-    i = 0
-    for line in lines:
-        i += 1
-        print i
-        line2 = testfile.readline()
-        if line != line2:
-            print i
-            print "LINE1: " + line
-            print "LINE2: " + line2
-            values1 = line.split(',')
-            values2 = line2.split(',')
-            for i in range(0, len(values1)):
-                if values1[i] != values2[i]:
-                    print str(i) + ": " + values1[i] + ", " + values2[i]
-    testfile.close()
-
 
 def final_cleanup(engine):
     """Perform final cleanup operations after all scripts have run."""
