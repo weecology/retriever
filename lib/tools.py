@@ -42,11 +42,6 @@ def getmd5(lines):
     return sum.hexdigest()
 
 
-def final_cleanup(engine):
-    """Perform final cleanup operations after all scripts have run."""
-    pass
-
-
 config_path = os.path.join(HOME_DIR, 'connections.config')
 
 def get_saved_connection(engine_name):
