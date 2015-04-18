@@ -5,6 +5,7 @@ from StringIO import StringIO
 from retriever.lib.engine import Engine
 from retriever.lib.table import Table
 from retriever.lib.templates import BasicTextTemplate
+from retriever.lib.tools import getmd5
 from retriever import DATA_WRITE_PATH
 from nose.tools import with_setup
 
@@ -135,3 +136,9 @@ def test_format_insert_value_string_simple():
 def test_format_insert_value_string_complex():
     """Test formatting of values for insert statements"""
     assert test_engine.format_insert_value('my notes: "have extra, stuff"', 'char') == '\'my notes: \\"have extra, stuff\\"\''
+
+
+def test_getmd5():
+    """Test md5 sum calculation"""
+    lines = ['a,b,c\n', '1,2,3\n', '4,5,6\n']
+    assert getmd5(lines) == '0bec5bf6f93c547bc9c6774acaf85e1a'
