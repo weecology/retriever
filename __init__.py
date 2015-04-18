@@ -51,10 +51,14 @@ DATA_SEARCH_PATHS =     [
                          ]
 DATA_WRITE_PATH =       DATA_SEARCH_PATHS[-1]
 
-# create a default data directory for Windows since the Windows installer places
-# the executable in a place where users won't expect the data to be stored.
-user_desktop = os.path.join(os.path.expanduser('~'), 'Desktop')
-DATA_DIR = user_desktop if "win" in current_platform else '.'
+# Create default data directory
+isgui = len(sys.argv) == 1 or ((len(sys.argv) > 1 and sys.argv[1] == 'gui'))
+if "win" in current_platform and isgui:
+    # The run path for installer based GUI on Windows is a system path.
+    # Users won't expect the data to be stored there, so store it on the Desktop
+    DATA_DIR = os.path.join(os.path.expanduser('~'), 'Desktop')
+else:
+    DATA_DIR = '.'
 
 def MODULE_LIST(force_compile=False):
     """Load scripts from scripts directory and return list of modules."""
