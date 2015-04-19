@@ -6,6 +6,7 @@ ref: http://esapubs.org/archive/ecol/E088/162/
 
 table: pres, http://esapubs.org/archive/ecol/E088/162/Oosting_pres2.txt
 table: species, http://esapubs.org/archive/ecol/E088/162/species_codes.txt
+replace: check, checkrec
 table: trees, http://esapubs.org/archive/ecol/E088/162/Oosting_Trees_1998.txt
 *nulls: '.', ''
 table: env, http://esapubs.org/archive/ecol/E088/162/Oosting_env.txt
