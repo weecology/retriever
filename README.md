@@ -35,8 +35,8 @@ To install the EcoData Retriever from source, you'll need Python 2.6+ with the f
 
 Using the Command Line
 ----------------------
-After installing, run `retriever update` to download all of the available dataset scripts. 
-To see the full list of command line options and datasets run `retriever --help`. 
+After installing, run `retriever update` to download all of the available dataset scripts.
+To see the full list of command line options and datasets run `retriever --help`.
 The output will look like this:
 ```
 usage: retriever [-h] [-v] [-q] {install,update,gui,new,ls,citation,help} ...
@@ -87,4 +87,9 @@ For example, to install the Breeding Bird Survey data into an sqlite database na
 Acknowledgments
 ---------------
 
-Development of this software was funded by the [National Science Foundation](http://nsf.gov/) as part of a [CAREER award to Ethan White](http://nsf.gov/awardsearch/showAward.do?AwardNumber=0953694).
+Development of this software was funded by [the Gordon and Betty Moore
+Foundation's Data-Driven Discovery
+Initiative](http://www.moore.org/programs/science/data-driven-discovery) through
+[Grant GBMF4563](http://www.moore.org/grants/list/GBMF4563) to Ethan White and
+the [National Science Foundation](http://nsf.gov/) as part of a [CAREER award to
+Ethan White](http://nsf.gov/awardsearch/showAward.do?AwardNumber=0953694).
