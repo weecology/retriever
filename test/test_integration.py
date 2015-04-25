@@ -15,3 +15,19 @@ crosstab = {'name': 'crosstab',
             'expect_out': "a,b,c,val\n1,1,c1,1.1\n1,1,c2,1.2\n1,2,c1,2.1\n1,2,c2,2.2"}
 
 tests = [simple_csv, crosstab]
+
+def setup_module():
+    """Put raw data and scripts in appropriate .retriever directories"""
+    for test in tests:
+        if not os.path.exists(os.path.join(HOME_DIR, "raw_data", test['name'])):
+            os.makedirs(os.path.join(HOME_DIR, "raw_data", test['name']))
+        data_file = open(os.path.join(HOME_DIR, "raw_data", test['name'], test['name'] + '.txt'), 'w')
+        script_file = open(os.path.join(HOME_DIR, "scripts", test['name'] + '.script'), 'w')
+        data_file.write(test['raw_data'])
+        script_file.write(test['script'])
+
+def teardown_module():
+    """Remove test data and scripts from .retriever directories"""
+    for test in tests:
+        shutil.rmtree(os.path.join(HOME_DIR, "raw_data", test['name']))
+        os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.script'))
