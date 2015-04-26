@@ -3,7 +3,7 @@
 import os
 import shutil
 from retriever.lib.compile import compile_script
-from retriever import HOME_DIR
+from retriever import HOME_DIR, ENGINE_LIST
 
 simple_csv = {'name': 'simple_csv',
               'raw_data': "a,b,c\n1,2,3\n4,5,6",
@@ -33,3 +33,6 @@ def teardown_module():
     for test in tests:
         shutil.rmtree(os.path.join(HOME_DIR, "raw_data", test['name']))
         os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.script'))
+
+mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, csv_engine, download_engine = ENGINE_LIST()
+csv_engine.opts = {'engine': 'csv', 'table_name': './{db}_{table}.csv'}
