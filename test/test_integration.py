@@ -2,6 +2,7 @@
 
 import os
 import shutil
+from retriever.lib.compile import compile_script
 from retriever import HOME_DIR
 
 simple_csv = {'name': 'simple_csv',
@@ -25,6 +26,7 @@ def setup_module():
         script_file = open(os.path.join(HOME_DIR, "scripts", test['name'] + '.script'), 'w')
         data_file.write(test['raw_data'])
         script_file.write(test['script'])
+        compile_script(os.path.join(HOME_DIR, "scripts", test['name']))
 
 def teardown_module():
     """Remove test data and scripts from .retriever directories"""
