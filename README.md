@@ -1,4 +1,4 @@
-ecoretriever
+ecoretriever [![Build Status](http://cranlogs.r-pkg.org/badges/grand-total/ecoretriever)](http://cran.rstudio.com/web/packages/ecoretriever/index.html)
 ============
 
 R interface to the [EcoData Retriever](http://ecodataretriever.org).
