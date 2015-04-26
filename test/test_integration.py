@@ -1,5 +1,6 @@
 """Integrations tests for EcoData Retriever"""
 
+import imp
 import os
 import shutil
 from retriever.lib.compile import compile_script
@@ -34,5 +35,14 @@ def teardown_module():
         shutil.rmtree(os.path.join(HOME_DIR, "raw_data", test['name']))
         os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.script'))
 
+def get_script_module(script_name):
+    """Load a script module"""
+    file, pathname, desc = imp.find_module(script_name, [os.path.join(HOME_DIR, "scripts")])
+    return imp.load_module(script_name, file, pathname, desc)
+
 mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, csv_engine, download_engine = ENGINE_LIST()
 csv_engine.opts = {'engine': 'csv', 'table_name': './{db}_{table}.csv'}
+
+def test_csv_from_csv():
+    simple_csv_module = get_script_module('simple_csv')
+    simple_csv_module.SCRIPT.download(csv_engine)
