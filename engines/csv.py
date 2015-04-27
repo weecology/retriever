@@ -45,6 +45,10 @@ class engine(Engine):
         self.output_file = open(self.table_name(), "w")
         self.output_file.write(','.join(['"%s"' % c[0] for c in self.table.columns]))
 
+    def disconnect(self):
+        """Close the last file"""
+        self.output_file.close()
+
     def execute(self, statement, commit=True):
         """Write a line to the output file"""
         self.output_file.write('\n' + statement)
