@@ -7,9 +7,9 @@ from retriever.lib.compile import compile_script
 from retriever import HOME_DIR, ENGINE_LIST
 
 simple_csv = {'name': 'simple_csv',
-              'raw_data': "a,b,c\n1,2,3\n4,5,6",
+              'raw_data': "a,b,c\n1,2,3\n4,5,6\n",
               'script': "shortname: simple_csv\ntable: simple_csv, http://example.com/simple_csv.txt",
-              'expect_out': "a,b,c\n1,2,3\n4,5,6"}
+              'expect_out': '"record_id","a","b","c"\n1,1,2,3\n2,4,5,6'}
 
 crosstab = {'name': 'crosstab',
             'raw_data': "a,b,c1,c2\n1,1,1.1,1.2\n1,2,2.1,2.2",
@@ -41,8 +41,13 @@ def get_script_module(script_name):
     return imp.load_module(script_name, file, pathname, desc)
 
 mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, csv_engine, download_engine = ENGINE_LIST()
-csv_engine.opts = {'engine': 'csv', 'table_name': './{db}_{table}.csv'}
+csv_engine.opts = {'engine': 'csv', 'table_name': './{db}_{table}.txt'}
 
 def test_csv_from_csv():
     simple_csv_module = get_script_module('simple_csv')
     simple_csv_module.SCRIPT.download(csv_engine)
+    simple_csv_module.SCRIPT.engine.disconnect()
+    with open("simple_csv_simple_csv.txt", 'r') as obs_out_file:
+        obs_out = obs_out_file.read()
+    print len(obs_out)
+    assert obs_out == simple_csv['expect_out']
