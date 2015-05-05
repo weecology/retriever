@@ -124,16 +124,16 @@ download = function(dataset, path='.', log_dir=NULL) {
     system(cmd)
 }
 
-#' Display a list all available dataset scripts.
+#' Name all available dataset scripts.
 #'
 #' Additional information on the available datasets can be found at http://ecodataretriever.org/available-data.html
 #' 
-#' @return returns the log of the available datasets for download
+#' @return returns a character vector with the available datasets for download
 #' @export
 #' @examples 
 #' ecoretriever::datasets()
 datasets = function(){
-  system('retriever ls') 
+  system('retriever ls', intern = TRUE) 
 }
 
 .onAttach = function(...) {
