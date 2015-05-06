@@ -3,4 +3,5 @@
 export(datasets)
 export(download)
 export(fetch)
+export(get_updates)
 export(install)
