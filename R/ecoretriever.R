@@ -131,33 +131,44 @@ download = function(dataset, path='.', log_dir=NULL) {
 #' @return returns a character vector with the available datasets for download
 #' @export
 #' @examples 
+#' \donttest{
 #' ecoretriever::datasets()
+#' }
 datasets = function(){
   system('retriever ls', intern = TRUE) 
 }
 
-#' Update the retrievers download script to the most recent official release.
+#' Update the retriever's dataset scripts to the most recent versions.
 #' 
-#' This function will check if the version of retriever scripts in your local
-#' directory ~/.retriever/scripts/ is up-to-date with the most recent offical
+#' This function will check if the version of the retriever's scripts in your local
+#' directory \file{~/.retriever/scripts/} is up-to-date with the most recent official
 #' retriever release. Note it is possible that even more updated scripts exist
-#' at the retriever repository https://github.com/weecology/retriever/tree/master/scripts 
+#' at the retriever repository \url{https://github.com/weecology/retriever/tree/master/script}
 #' that have not yet been incorperated into an official release, and you should 
 #' consider checking that page if you have any concerns. 
-#' 
+#' @keywords utilities
 #' @export
 #' @examples
+#' \donttest{
 #' ecoretriever::get_updates()
+#' }
 get_updates = function() {
-    print('Please wait while retriever updates its scripts, ...')
+    cat('Please wait while the retriever updates its scripts, ...\n')
     update_log = system('retriever update', intern=TRUE, ignore.stdout=FALSE,
                         ignore.stderr=TRUE)
+    cat('The retriever scripts are up-to-date with the most recent official release!')
+    class(update_log) = "update_log"
+    return(update_log)
+}
+
+update_log = function(object, ...) UseMethod("update_log")
+
+print.update_log = function(object, ...) {
     # clean up and print the update log output
-    update_log = strsplit(paste(update_log, collapse = ' ; '), 'Downloading ')
-    update_log = sort(sapply(strsplit(update_log[[1]][-1], ' ; '), 
-                             function(x) x[[1]][1]))
-    print(paste('Downloaded', update_log))
-    print('The retriever scripts are up-to-date with the most recent offical release!')
+    object = strsplit(paste(object, collapse = ' ; '), 'Downloading script: ')
+    object = sort(sapply(strsplit(object[[1]][-1], ' ; '), 
+                       function(x) x[[1]][1]))
+    cat('Downloaded scripts: \n', paste(object, '\n', sep=''))
 }
 
 .onAttach = function(...) {
