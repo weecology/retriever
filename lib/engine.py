@@ -355,7 +355,7 @@ class Engine():
                 name = "{db}"
 
         try:
-            db_name = self.opts["database_name"].replace('{db}', name)
+            db_name = self.opts["database_name"].format(db=name)
         except KeyError:
             db_name = name
 
@@ -444,7 +444,7 @@ class Engine():
 
     def find_file(self, filename):
         for search_path in DATA_SEARCH_PATHS:
-            search_path = search_path.replace("{dataset}", self.script.shortname)
+            search_path = search_path.format(dataset=self.script.shortname)
             file_path = os.path.join(search_path, filename)
             if file_exists(file_path):
                 return file_path
@@ -452,7 +452,7 @@ class Engine():
 
     def format_data_dir(self):
         """Returns the correctly formatted raw data directory location."""
-        return DATA_WRITE_PATH.replace("{dataset}", self.script.shortname)
+        return DATA_WRITE_PATH.format(dataset=self.script.shortname)
 
     def format_filename(self, filename):
         """Returns the full path of a file in the archive directory."""
@@ -594,9 +594,7 @@ class Engine():
         if not dbname:
             dbname = self.database_name()
             if not dbname: dbname = ''
-        return (self.opts["table_name"]
-                .replace('{db}', dbname)
-                .replace('{table}', name))
+        return self.opts["table_name"].format(db=dbname, table=name)
 
     def warning(self, warning):
         new_warning = Warning('%s:%s' % (self.script.shortname, self.table.name), warning)
