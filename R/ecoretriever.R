@@ -153,22 +153,22 @@ datasets = function(){
 #' ecoretriever::get_updates()
 #' }
 get_updates = function() {
-    cat('Please wait while the retriever updates its scripts, ...\n')
+    writeLines(strwrap('Please wait while the retriever updates its scripts, ...'))
     update_log = system('retriever update', intern=TRUE, ignore.stdout=FALSE,
                         ignore.stderr=TRUE)
-    cat('The retriever scripts are up-to-date with the most recent official release!')
+    writeLines(strwrap('The retriever scripts are up-to-date with the most recent official release!'))
     class(update_log) = "update_log"
     return(update_log)
 }
 
-update_log = function(object, ...) UseMethod("update_log")
-
+#' @export
 print.update_log = function(object, ...) {
     # clean up and print the update log output
     object = strsplit(paste(object, collapse = ' ; '), 'Downloading script: ')
     object = sort(sapply(strsplit(object[[1]][-1], ' ; '), 
                        function(x) x[[1]][1]))
-    cat('Downloaded scripts: \n', paste(object, '\n', sep=''))
+    object[1] = paste('Downloaded scripts:', object[1])
+    cat(object, fill=TRUE, sep=', ')
 }
 
 .onAttach = function(...) {
