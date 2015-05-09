@@ -364,18 +364,25 @@ class Engine():
     def download_file(self, url, filename, clean_line_endings=True):
         """Downloads a file to the raw data directory."""
         if not self.find_file(filename):
-            path = self.format_filename(filename)
             self.create_raw_data_dir()
-            print "Downloading " + filename + "..."
-            file = urllib.urlopen(url)
-            local_file = open(path, 'wb')
-            if clean_line_endings and (filename.split('.')[-1].lower() not in ["exe", "zip", "xls"]):
-                local_file.write(file.read().replace("\r\n", "\n").replace("\r", "\n"))
+            print "Downloading {}...".format(filename)
+            ext = os.path.splitext(filename)[1].lower()
+            if clean_line_endings and ext not in ['exe', 'zip', 'xls']:
+                tmp_path = self.format_buffer_filename(filename)
+                urllib.urlretrieve(url, tmp_path) 
+                self.clean_line_endings(tmp_path, filename)
             else:
-                local_file.write(file.read())
-            local_file.close()
-            file.close()
+                path = self.format_filename(filename)
+                urllib.urlretrieve(url, path) 
 
+    def clean_line_endings(self, tmp_path, filename):
+        """Writes new file with decoded newlines and removes buffer file."""
+        with open(tmp_path, 'rU') as tmp_file:
+            with open(path, 'wb') as dest_file:
+                for line in tmp_file:
+                    dest_file.write(line)
+        os.remove(tmp_path)
+ 
     def download_files_from_archive(self, url, filenames, filetype="zip"):
         """Downloads one or more files from an archive into the raw data
         directory."""
@@ -457,6 +464,10 @@ class Engine():
     def format_filename(self, filename):
         """Returns the full path of a file in the archive directory."""
         return os.path.join(self.format_data_dir(), filename)
+
+    def format_buffer_filename(self, filename):
+        """Returns the full path of a buffer file in the archive directory."""
+        return os.path.join(self.format_data_dir(), 'temp-{}'.format(filename))
 
     def format_insert_value(self, value, datatype):
         """Formats a value for an insert statement, for example by surrounding
