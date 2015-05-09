@@ -15,7 +15,7 @@ reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     # set default encoding to latin-1 to avoid ascii encoding issues
     sys.setdefaultencoding('latin-1')
-from retriever import VERSION, MASTER, SCRIPT_LIST, sample_script
+from retriever import VERSION, MASTER, SCRIPT_LIST, sample_script, current_platform
 from retriever.engines import engine_list
 from retriever.lib.repository import check_for_updates
 from retriever.lib.lists import Category, get_lists
@@ -28,7 +28,7 @@ def main():
     if len(sys.argv) == 1 or (len(sys.argv) > 1 and sys.argv[1] == 'gui'):
         # if no command line args are passed, launch GUI
 
-        check_for_updates(graphical=False if 'darwin' in platform.platform().lower() else True)
+        check_for_updates(graphical=False if current_platform == 'darwin' else True)
         lists = get_lists()
 
         from retriever.app.main import launch_app
