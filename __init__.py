@@ -86,8 +86,11 @@ def MODULE_LIST(force_compile=False):
             file, pathname, desc = imp.find_module(script_name, [search_path])
             try:
                 new_module = imp.load_module(script_name, file, pathname, desc)
-                new_module.SCRIPT.download
-                modules.append(new_module)
+                if not new_module in modules:
+                    # if the script wasn't found in an early search path
+                    # make sure it works and then add it
+                    new_module.SCRIPT.download
+                    modules.append(new_module)
             except:
                 sys.stderr.write("Failed to load script: %s (%s)" % (script_name, search_path))
 
