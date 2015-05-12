@@ -1,7 +1,6 @@
 import os
-import platform
 from retriever.lib.models import Engine, no_cleanup
-from retriever import DATA_DIR
+from retriever import DATA_DIR, current_platform
 
 class engine(Engine):
     """Engine instance for Microsoft Access."""
@@ -145,8 +144,7 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
 
     def get_connection(self):
         """Gets the db connection."""
-        p = platform.platform().lower()
-        if "darwin" in p or not "win" in p:
+        if current_platform != "windows":
             raise Exception("MS Access can only be used in Windows.")
         import pypyodbc as dbapi
         self.get_input()

@@ -12,8 +12,8 @@ import imp
 from lib.compile import compile_script
 import platform
 
-current_platform = platform.platform().lower()
-if not "win" in current_platform:
+current_platform = platform.system().lower()
+if current_platform != 'windows':
     import pwd
 
 VERSION = 'v1.7.0'
@@ -30,7 +30,7 @@ for dir in (HOME_DIR, os.path.join(HOME_DIR, 'raw_data'), os.path.join(HOME_DIR,
     if not os.path.exists(dir):
         try:
             os.makedirs(dir)
-            if (not "win" in current_platform) and os.getenv("SUDO_USER"):
+            if (current_platform != 'windows') and os.getenv("SUDO_USER"):
                 # owner of .retriever should be user even when installing w/sudo
                 pw = pwd.getpwnam( os.getenv("SUDO_USER") )
                 os.chown(dir, pw.pw_uid, pw.pw_gid)
@@ -53,7 +53,7 @@ DATA_WRITE_PATH =       DATA_SEARCH_PATHS[-1]
 
 # Create default data directory
 isgui = len(sys.argv) == 1 or ((len(sys.argv) > 1 and sys.argv[1] == 'gui'))
-if "win" in current_platform and isgui:
+if current_platform == 'windows' and isgui:
     # The run path for installer based GUI on Windows is a system path.
     # Users won't expect the data to be stored there, so store it on the Desktop
     DATA_DIR = os.path.join(os.path.expanduser('~'), 'Desktop')

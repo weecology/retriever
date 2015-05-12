@@ -5,13 +5,13 @@ import platform
 import sys
 import warnings
 
-p = platform.platform().lower()
+current_platform = platform.system().lower()
 extra_includes = []
-if "darwin" in p:
+if current_platform == "darwin":
     try: import py2app
     except ImportError: pass
     extra_includes = []
-elif "win" in p:
+elif current_platform == "windows":
     try: import py2exe
     except ImportError: pass
     import sys
@@ -103,7 +103,7 @@ setup(name='retriever',
       # py2app flags
       app=['__main__.py'],
       data_files=[('', ['CITATION'])],
-      setup_requires=['py2app'] if 'darwin' in p else [],
+      setup_requires=['py2app'] if current_platform == 'darwin' else [],
 
       # options
       # optimize is set to 1 of py2app to avoid errors with pymysql
