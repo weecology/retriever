@@ -109,7 +109,7 @@ class DownloadOnlyTemplate(Script):
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
         for filename, url  in self.urls.items():
-            self.engine.download_file(url, filename, clean_line_endings=False)
+            self.engine.download_file(url, filename)
             if os.path.exists(self.engine.format_filename(filename)):
                 shutil.copy(self.engine.format_filename(filename), DATA_DIR)
             else:

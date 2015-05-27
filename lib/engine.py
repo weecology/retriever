@@ -361,28 +361,14 @@ class Engine():
 
         return db_name
 
-    def download_file(self, url, filename, clean_line_endings=True):
+    def download_file(self, url, filename):
         """Downloads a file to the raw data directory."""
         if not self.find_file(filename):
             self.create_raw_data_dir()
+            path = self.format_filename(filename)
             print "Downloading {}...".format(filename)
-            ext = os.path.splitext(filename)[1].lower()
-            if clean_line_endings and ext not in ['exe', 'zip', 'xls']:
-                tmp_path = self.format_buffer_filename(filename)
-                urllib.urlretrieve(url, tmp_path) 
-                self.clean_line_endings(tmp_path, filename)
-            else:
-                path = self.format_filename(filename)
-                urllib.urlretrieve(url, path) 
+            urllib.urlretrieve(url, path) 
 
-    def clean_line_endings(self, tmp_path, filename):
-        """Writes new file with decoded newlines and removes buffer file."""
-        with open(tmp_path, 'rU') as tmp_file:
-            with open(path, 'wb') as dest_file:
-                for line in tmp_file:
-                    dest_file.write(line)
-        os.remove(tmp_path)
- 
     def download_files_from_archive(self, url, filenames, filetype="zip"):
         """Downloads one or more files from an archive into the raw data
         directory."""
@@ -402,12 +388,12 @@ class Engine():
 
                 if filetype == 'zip':
                     archive = zipfile.ZipFile(archivename)
-                    open_archive_file = archive.open(filename)
+                    open_archive_file = archive.open(filename, 'rU')
                 elif filetype == 'gz':
                     #gzip archives can only contain a single file
-                    open_archive_file = gzip.open(archivename)
+                    open_archive_file = gzip.open(archivename, 'rU')
                 elif filetype == 'tar':
-                    archive = tarfile.open(filename)
+                    archive = tarfile.open(filename, 'rU')
                     open_archive_file = archive.extractfile(filename)
 
                 fileloc = self.format_filename(os.path.basename(filename))
@@ -464,10 +450,6 @@ class Engine():
     def format_filename(self, filename):
         """Returns the full path of a file in the archive directory."""
         return os.path.join(self.format_data_dir(), filename)
-
-    def format_buffer_filename(self, filename):
-        """Returns the full path of a buffer file in the archive directory."""
-        return os.path.join(self.format_data_dir(), 'temp-{}'.format(filename))
 
     def format_insert_value(self, value, datatype):
         """Formats a value for an insert statement, for example by surrounding
