@@ -131,16 +131,53 @@ download = function(dataset, path='.', log_dir=NULL) {
 #' @return returns a character vector with the available datasets for download
 #' @export
 #' @examples 
+#' \donttest{
 #' ecoretriever::datasets()
+#' }
 datasets = function(){
   system('retriever ls', intern = TRUE) 
 }
 
+#' Update the retriever's dataset scripts to the most recent versions.
+#' 
+#' This function will check if the version of the retriever's scripts in your local
+#' directory \file{~/.retriever/scripts/} is up-to-date with the most recent official
+#' retriever release. Note it is possible that even more updated scripts exist
+#' at the retriever repository \url{https://github.com/weecology/retriever/tree/master/script}
+#' that have not yet been incorperated into an official release, and you should 
+#' consider checking that page if you have any concerns. 
+#' @keywords utilities
+#' @export
+#' @examples
+#' \donttest{
+#' ecoretriever::get_updates()
+#' }
+get_updates = function() {
+    writeLines(strwrap('Please wait while the retriever updates its scripts, ...'))
+    update_log = system('retriever update', intern=TRUE, ignore.stdout=FALSE,
+                        ignore.stderr=TRUE)
+    writeLines(strwrap('The retriever scripts are up-to-date with the most recent official release!'))
+    class(update_log) = "update_log"
+    return(update_log)
+}
+
+#' @export
+print.update_log = function(object, ...) {
+    # clean up and print the update log output
+    object = strsplit(paste(object, collapse = ' ; '), 'Downloading script: ')
+    object = sort(sapply(strsplit(object[[1]][-1], ' ; '), 
+                       function(x) x[[1]][1]))
+    object[1] = paste('Downloaded scripts:', object[1])
+    cat(object, fill=TRUE, sep=', ')
+}
+
 .onAttach = function(...) {
-  packageStartupMessage(
-    "\n  New to ecoretriever? Examples at
-    https://github.com/ropensci/ecoretriever/
-    Use citation(package='ecoretriever') for the package citation
+    packageStartupMessage(
+        "\n  Use get_updates() to download the most recent release of download scripts
+     
+    New to ecoretriever? Examples at
+      https://github.com/ropensci/ecoretriever/
+      Use citation(package='ecoretriever') for the package citation
     \nUse suppressPackageStartupMessages() to suppress these messages in the future")
 }
 
@@ -150,12 +187,7 @@ datasets = function(){
 
 check_for_retriever = function(...) {
     retriever_path = Sys.which('retriever')
-    if (retriever_path != '') {
-        packageStartupMessage('Please wait while retriever updates its scripts, ...')
-        system('retriever update', ignore.stdout=FALSE, ignore.stderr=TRUE)
-        packageStartupMessage('The retriever scripts are up-to-date!')
-    }
-    else  {
+    if (retriever_path == '') {
         path_warn = 'The retriever is not on your path and may not be installed.'
         mac_instr = 'Follow the instructions for installing and manually adding the EcoData Retriever to your path at http://ecodataretriever.org/download.html'
         download_instr = 'Please upgrade to the most recent version of the EcoData Retriever, which will automatically add itself to the path http://ecodataretriever.org/download.html'

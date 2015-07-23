@@ -12,6 +12,8 @@ returns a character vector with the available datasets for download
 Additional information on the available datasets can be found at http://ecodataretriever.org/available-data.html
 }
 \examples{
+\donttest{
 ecoretriever::datasets()
+}
 }
 
