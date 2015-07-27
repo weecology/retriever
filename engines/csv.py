@@ -45,6 +45,16 @@ class engine(Engine):
         self.output_file = open(self.table_name(), "w")
         self.output_file.write(','.join(['"%s"' % c[0] for c in self.table.columns]))
 
+    def disconnect(self):
+        """Close the last file in the dataset"""
+        try:
+            self.output_file.close()
+        except:
+            #when disconnect is called by app.connect_wizard.ConfirmPage to
+            #confirm the connection, output_file doesn't exist yet, this is
+            #fine so just pass
+            pass
+
     def execute(self, statement, commit=True):
         """Write a line to the output file"""
         self.output_file.write('\n' + statement)
