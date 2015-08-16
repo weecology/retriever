@@ -48,9 +48,6 @@ def more_recent(latest, current):
 def check_for_updates(graphical=False):
     """Check for updates to scripts and executable."""
     if graphical:
-        import wx
-        app = wx.App(False)
-
         from retriever.app.splash import Splash
         splash = Splash()
         #splash.Show()

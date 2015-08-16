@@ -31,6 +31,7 @@ class engine(Engine):
         return None
 
     def escape_single_quotes(self, line):
+        """Escapes single quotes in the line"""
         return line.replace("'", "''")
 
     def table_exists(self, dbname, tablename):
