@@ -6,5 +6,5 @@ tags: Data Type > Compilation
 
 #tables
 table: ranges, http://datadryad.org/bitstream/handle/10255/dryad.84768/Tamburelloetal_HomeRangeDatabase.csv
-*nulls: NA
+*nulls: 'NA'
 
