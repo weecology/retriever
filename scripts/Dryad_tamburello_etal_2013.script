@@ -1,0 +1,10 @@
+#Database of Vertebrate Home Range Sizes
+name: Database of Vertebrate Home Range Sizes- Tamburello , et al., 2015
+description: Database of mean species masses and corresponding empirically measured home range sizes for 569 vertebrate species from across the globe, including birds, mammals, reptiles, and fishes.
+shortname: HomeRanges
+tags: Data Type > Compilation
+
+#tables
+table: ranges, http://datadryad.org/bitstream/handle/10255/dryad.84768/Tamburelloetal_HomeRangeDatabase.csv
+*nulls: 'NA'
+
