@@ -390,7 +390,8 @@ class Engine():
                 self.create_raw_data_dir()
 
                 if not downloaded:
-                    self.download_file(url, filename_from_url(url, prefix=archive_prefix))
+                    self.download_file(url, filename_from_url(url, prefix=archive_prefix),
+                                       clean_line_endings=False)
                     downloaded = True
 
                 if filetype == 'zip':
