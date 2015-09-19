@@ -376,14 +376,17 @@ class Engine():
             local_file.close()
             file.close()
 
-    def download_files_from_archive(self, url, filenames, filetype="zip"):
+    def download_files_from_archive(self, url, filenames, filetype="zip",
+                                    keep_in_dir=False):
         """Downloads one or more files from an archive into the raw data
         directory."""
         downloaded = False
         archivename = self.format_filename(filename_from_url(url))
 
+        archivebase = os.path.splitext(archivename)[0] if keep_in_dir else ''
+
         for filename in filenames:
-            if self.find_file(filename):
+            if self.find_file(os.path.join(archivebase, filename)):
                 # Use local copy
                 pass
             else:
@@ -404,7 +407,7 @@ class Engine():
                     open_archive_file = archive.extractfile(filename)
 
                 fileloc = self.format_filename(os.path.basename(filename))
-                unzipped_file = open(fileloc, 'wb')
+                unzipped_file = open(os.path.join(archivebase, fileloc), 'wb')
                 for line in open_archive_file:
                     unzipped_file.write(line)
                 open_archive_file.close()
