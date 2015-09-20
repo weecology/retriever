@@ -383,7 +383,14 @@ class Engine():
         downloaded = False
         archivename = self.format_filename(filename_from_url(url))
 
-        archivebase = os.path.splitext(archivename)[0] if keep_in_dir else ''
+        if keep_in_dir:
+            archivebase = os.path.splitext(os.path.basename(archivename))[0]
+            archivedir = os.path.join(DATA_WRITE_PATH, archivebase)
+            archivedir = archivedir.format(dataset=self.script.shortname)
+            if not os.path.exists(archivedir):
+                os.makedirs(archivedir)
+        else:
+            archivebase = ''
 
         for filename in filenames:
             if self.find_file(os.path.join(archivebase, filename)):
@@ -391,7 +398,6 @@ class Engine():
                 pass
             else:
                 self.create_raw_data_dir()
-
                 if not downloaded:
                     self.download_file(url, filename_from_url(url))
                     downloaded = True
@@ -406,8 +412,9 @@ class Engine():
                     archive = tarfile.open(filename)
                     open_archive_file = archive.extractfile(filename)
 
-                fileloc = self.format_filename(os.path.basename(filename))
-                unzipped_file = open(os.path.join(archivebase, fileloc), 'wb')
+                fileloc = self.format_filename(os.path.join(archivebase,
+                                                            os.path.basename(filename)))
+                unzipped_file = open(fileloc, 'wb')
                 for line in open_archive_file:
                     unzipped_file.write(line)
                 open_archive_file.close()
