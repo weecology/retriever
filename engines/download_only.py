@@ -93,7 +93,8 @@ class engine(Engine):
         informed of all of the file names so that it can move them.
 
         """
-        full_filenames = {self.find_file(filename) for filename in filenames}
+        full_filenames = {self.find_file(filename) for filename in filenames
+                          if self.find_file(filename)}
         self.all_files = self.all_files.union(full_filenames)
 
 
