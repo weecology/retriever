@@ -27,6 +27,9 @@ class engine(Engine):
     required_opts = [("path",
                       "File path to copy data files",
                       "./"),
+                     ("subdir",
+                      "Keep the subdirectories for archived files",
+                      False)
                      ]
 
     def table_exists(self, dbname, tablename):
@@ -46,23 +49,25 @@ class engine(Engine):
         if hasattr(self, "all_files"):
             for file_name in self.all_files:
                 file_path, file_name_nopath = os.path.split(file_name)
-                if file_path == DATA_DIR:
+                subdir = os.path.split(file_path)[1] if self.opts['subdir'] else ''
+                dest_path = os.path.join(self.opts['path'], subdir)
+                if os.path.abspath(file_path) == os.path.abspath(os.path.join(DATA_DIR, subdir)):
                     print ("%s is already in the working directory" % file_name_nopath)
                     print("Keeping existing copy.")
                 else:
                     print("Copying %s from %s" % (file_name_nopath, file_path))
-                    if os.path.isdir(self.opts['path']):
+                    if os.path.isdir(dest_path):
                         try:
-                            shutil.copy(file_name, self.opts['path'])
+                            shutil.copy(file_name, dest_path)
                         except:
-                            print("Couldn't copy file to %s" % self.opts['path'])
+                            print("Couldn't copy file to %s" % dest_path)
                     else:
                         try:
-                            print("Creating directory %s" % self.opts['path'])
-                            os.mkdir(self.opts['path'])
-                            shutil.copy(file_name, self.opts['path'])
+                            print("Creating directory %s" % dest_path)
+                            os.makedirs(dest_path)
+                            shutil.copy(file_name, dest_path)
                         except:
-                            print("Couldn't create directory %s" % self.opts['path'])
+                            print("Couldn't create directory %s" % dest_path)
         self.all_files = set()
 
     def auto_create_table(self, table, url=None, filename=None, pk=None):
