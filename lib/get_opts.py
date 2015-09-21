@@ -29,7 +29,13 @@ for engine in engine_list:
             abbreviations.add(abbreviation)
         else: abbreviation = '-%s' % arg_name
 
-        engine_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help_msg, nargs='?', default=default)
+        if default:
+            engine_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation,
+                                       help=help_msg, nargs='?', default=default)
+        else:
+            #If default == False then when the flag is used it indicates setting to True
+            engine_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation,
+                                       help=help_msg, default=default, action='store_true')
 
     engine_parsers[engine.abbreviation] = engine_parser
 
