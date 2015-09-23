@@ -129,11 +129,11 @@ class Engine():
         print
         self.connection.commit()
 
-    def auto_create_table(self, table, url=None, filename=None, pk=None):
+    def auto_create_table(self, table, url=None, filename=None, pk=None, filename_prefix=''):
         """Creates a table automatically by analyzing a data source and
         predicting column names, data types, delimiter, etc."""
         if url and not filename:
-            filename = filename_from_url(url)
+            filename = filename_from_url(url, prefix=filename_prefix)
         self.table = table
 
         if url and not self.find_file(filename):
@@ -377,11 +377,15 @@ class Engine():
             file.close()
 
     def download_files_from_archive(self, url, filenames, filetype="zip",
-                                    keep_in_dir=False):
-        """Downloads one or more files from an archive into the raw data
-        directory."""
+                                    keep_in_dir=False, archivename=None):
+        """Downloads files from an archive into the raw data directory.
+
+        """
         downloaded = False
-        archivename = self.format_filename(filename_from_url(url))
+        if archivename:
+            archivename = self.format_filename(archivename)
+        else:
+            archivename = self.format_filename(filename_from_url(url))
 
         if keep_in_dir:
             archivebase = os.path.splitext(os.path.basename(archivename))[0]
@@ -399,7 +403,7 @@ class Engine():
             else:
                 self.create_raw_data_dir()
                 if not downloaded:
-                    self.download_file(url, filename_from_url(url))
+                    self.download_file(url, archivename, clean_line_endings=False)
                     downloaded = True
 
                 if filetype == 'zip':
@@ -558,9 +562,9 @@ class Engine():
                        (open, (filename, 'r'))))
         self.add_to_table(data_source)
 
-    def insert_data_from_url(self, url):
+    def insert_data_from_url(self, url, filename_prefix=''):
         """Insert data from a web resource, such as a text file."""
-        filename = filename_from_url(url)
+        filename = filename_from_url(url, prefix=filename_prefix)
         find = self.find_file(filename)
         if find:
             # Use local copy
@@ -624,8 +628,15 @@ def file_exists(path):
     return (os.path.isfile(path) and os.path.getsize(path) > 0)
 
 
-def filename_from_url(url):
-    return url.split('/')[-1].split('?')[0]
+def filename_from_url(url, prefix=''):
+    """Return a filename based on the url
+
+    Optionally add a prefix to the start of the filename in cases where the
+    names will not be valid or reasonably unique. E.g., when retrieving a file
+    from a webservice.
+
+    """
+    return prefix + str(url.split('/')[-1].split('?')[0])
 
 
 def gen_from_source(source):
