@@ -377,11 +377,15 @@ class Engine():
             file.close()
 
     def download_files_from_archive(self, url, filenames, filetype="zip",
-                                    keep_in_dir=False):
-        """Downloads one or more files from an archive into the raw data
-        directory."""
+                                    keep_in_dir=False, archivename=None):
+        """Downloads files from an archive into the raw data directory.
+
+        """
         downloaded = False
-        archivename = self.format_filename(filename_from_url(url))
+        if archivename:
+            archivename = self.format_filename(archivename)
+        else:
+            archivename = self.format_filename(filename_from_url(url))
 
         if keep_in_dir:
             archivebase = os.path.splitext(os.path.basename(archivename))[0]
@@ -399,7 +403,7 @@ class Engine():
             else:
                 self.create_raw_data_dir()
                 if not downloaded:
-                    self.download_file(url, filename_from_url(url))
+                    self.download_file(url, archivename, clean_line_endings=False)
                     downloaded = True
 
                 if filetype == 'zip':
