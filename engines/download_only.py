@@ -45,7 +45,7 @@ class engine(Engine):
         return DummyConnection()
 
     def final_cleanup(self):
-        data_dir = self.format_data_dir()
+        #data_dir = self.format_data_dir() 
         if hasattr(self, "all_files"):
             for file_name in self.all_files:
                 file_path, file_name_nopath = os.path.split(file_name)
