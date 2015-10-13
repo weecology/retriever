@@ -79,10 +79,35 @@ optional arguments:
   --debug               run in debug mode
 ```
 
-For example, to install the Breeding Bird Survey data into an sqlite database named mydatabase.db you would use:
+Examples
+--------
 
-`retriever install sqlite BBS -f mydatabase.db`
+Using Breeding Bird Survey 
 
+  'retriever install sqlite BBS -f mydatabase.db'
+
+Using download 
+
+  "retriever download -h    (gives you help options)"
+  "retriever download BBS"
+  'retriever download BBS --path C:\Users\Documents'
+
+Using Install
+
+  'retriever install -h   (gives install options)'
+
+Using specific database engine, retriever install {Engine}
+
+  'retriever install mysql -h     (gives install mysql options)'
+  'retriever install mysql --user myuser --password ******** --host localhost --port 8888 --database_name testdbase BBS'
+
+install data into an sqlite database named mydatabase.db you would use:
+
+  `retriever install sqlite BBS -f mydatabase.db`
+
+Using citation
+  'retriever citation   (citation of the retriever engine)'
+  'retriever citation BBS   (citation of BBS data)' 
 
 Acknowledgments
 ---------------
