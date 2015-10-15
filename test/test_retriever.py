@@ -15,7 +15,7 @@ test_engine.table = Table("test")
 test_engine.script = BasicTextTemplate(tables={'test':test_engine.table},
                                        shortname='test')
 test_engine.opts = {'database_name': '{db}_abc'}
-HOMEDIR = os.environ['HOME']
+HOMEDIR = os.path.expanduser('~')
 
 def test_auto_get_columns():
     """Basic test of getting column labels from header"""
