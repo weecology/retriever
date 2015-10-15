@@ -41,7 +41,8 @@ class main(Script):
                 for month in months:
                     file_names = self.get_file_names(clim_var, mval, year, month)
                     file_url = urlparse.urljoin(self.urls["climate"], "{}/{}{}".format(clim_var, year, month))
-                    self.engine.download_files_from_archive(file_url, file_names, archive_prefix='PRISM_{}_'.format(clim_var))
+                    archivename = "PRISM_{}_stable_4km{}_{}{}_bil.zip".format(clim_var, mval, year, month)
+                    self.engine.download_files_from_archive(file_url, file_names, archivename=archivename, keep_in_dir=True)
                     self.engine.register_files(file_names)
 
 SCRIPT = main()
