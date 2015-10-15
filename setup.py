@@ -77,9 +77,9 @@ if wx_installed is False:
 setup(name='retriever',
       version=clean_version(VERSION),
       description='EcoData Retriever',
-      author='Ben Morris',
-      author_email='ben.morris@weecology.org',
-      url='http://www.ecodataretriever.org',
+      author='Ben Morris, Ethan White',
+      author_email='ethan@weecology.org',
+      url='https://github.com/weecology/retriever',
       packages=packages,
       package_dir={
                 'retriever':''
