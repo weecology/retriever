@@ -162,7 +162,7 @@ get_updates = function() {
 }
 
 #' @export
-print.update_log = function(object, ...) {
+print.update_log = function(x, ...) {
     # clean up and print the update log output
     object = strsplit(paste(object, collapse = ' ; '), 'Downloading script: ')
     object = sort(sapply(strsplit(object[[1]][-1], ' ; '), 
