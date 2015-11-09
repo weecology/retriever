@@ -2,7 +2,7 @@ ecoretriever 0.2
 ================
 
 NEW FEATURES
-* We added a new function `get_updates` which can be used to update the `retriever` scripts. This is a big improvement for users becuase the past behavior everytime the package was loaded it updated its scripts which resulted in annoying lag times. The log of the scripts update can be printed pretty easily as well. 
+* We added a new function `get_updates` which can be used to update the `retriever` scripts. This is a big improvement for users because it avoids automatically updating the scripts every time the package is imported. The log of the scripts update can be printed in a cleaner format as well. 
 
 MINOR IMPROVEMENTS
 
