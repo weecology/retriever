@@ -106,6 +106,7 @@ fetch = function(dataset, quiet=TRUE){
 #'
 #' @param dataset the name of the dataset that you wish to download
 #' @param path the path where the data should be downloaded to
+#' @param sub_dir if true and the downloaded dataset is stored in subdirectories those subdirectories will be preserved and placed according the path argument, defaults to false.
 #' @param log_dir the location where the retriever log should be stored if
 #' the progress is not printed to the console
 #' @export
@@ -115,8 +116,11 @@ fetch = function(dataset, quiet=TRUE){
 #' ## list files downloaded
 #' dir('.', pattern='MCDB')
 #' }
-download = function(dataset, path='.', log_dir=NULL) {
-    cmd = paste('retriever download', dataset, '-p', path)
+download = function(dataset, path='.', sub_dir=FALSE, log_dir=NULL) {
+    if (sub_dir)
+        cmd = paste('retriever download', dataset, dataset, '-p', path, '--subdir')
+    else 
+        cmd = paste('retriever download', dataset, '-p', path)
     if (!is.null(log_dir)) {
         log_file = file.path(log_dir, paste(dataset, '_download.log', sep=''))
         cmd = paste(cmd, '>', log_file, '2>&1')
@@ -162,7 +166,7 @@ get_updates = function() {
 }
 
 #' @export
-print.update_log = function(object, ...) {
+print.update_log = function(x, ...) {
     # clean up and print the update log output
     object = strsplit(paste(object, collapse = ' ; '), 'Downloading script: ')
     object = sort(sapply(strsplit(object[[1]][-1], ' ; '), 
