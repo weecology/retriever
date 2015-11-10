@@ -106,6 +106,7 @@ fetch = function(dataset, quiet=TRUE){
 #'
 #' @param dataset the name of the dataset that you wish to download
 #' @param path the path where the data should be downloaded to
+#' @param sub_dir if true the downloaded dataset is stored in a subdirectory of the working directory, defaults to false.
 #' @param log_dir the location where the retriever log should be stored if
 #' the progress is not printed to the console
 #' @export
