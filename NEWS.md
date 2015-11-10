@@ -3,7 +3,7 @@ ecoretriever 0.2
 
 NEW FEATURES
 * We added a new function `get_updates` which can be used to update the `retriever` scripts. This is a big improvement for users because it avoids automatically updating the scripts every time the package is imported. The log of the scripts update can be printed in a cleaner format as well. 
-* Added support for archiving a copy of a downloaded dataset in a subdirectory using the function `download`. 
+* Added support for maintaining subdirectory structure when using the function `download`. 
 
 MINOR IMPROVEMENTS
 

@@ -11,7 +11,7 @@ download(dataset, path = ".", sub_dir = FALSE, log_dir = NULL)
 
 \item{path}{the path where the data should be downloaded to}
 
-\item{sub_dir}{if true the downloaded dataset is stored in a subdirectory of the working directory, defaults to false.}
+\item{sub_dir}{if true and the downloaded dataset is stored in subdirectories those subdirectories will be preserved and placed according the path argument, defaults to false.}
 
 \item{log_dir}{the location where the retriever log should be stored if
 the progress is not printed to the console}
