@@ -115,8 +115,11 @@ fetch = function(dataset, quiet=TRUE){
 #' ## list files downloaded
 #' dir('.', pattern='MCDB')
 #' }
-download = function(dataset, path='.', log_dir=NULL) {
-    cmd = paste('retriever download', dataset, '-p', path)
+download = function(dataset, path='.', sub_dir=FALSE, log_dir=NULL) {
+    if (sub_dir)
+        cmd = paste('retriever download', dataset, dataset, '-p', path, '--subdir')
+    else 
+        cmd = paste('retriever download', dataset, '-p', path)
     if (!is.null(log_dir)) {
         log_file = file.path(log_dir, paste(dataset, '_download.log', sep=''))
         cmd = paste(cmd, '>', log_file, '2>&1')
