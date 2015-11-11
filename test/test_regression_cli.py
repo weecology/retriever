@@ -30,7 +30,7 @@ def teardown_module():
 
 def getmd5(filename):
     """Get MD5 value for a file"""
-    lines = open(filename, 'rb')
+    lines = open(filename, 'rU')
     sum = md5()
     for line in lines:
         sum.update(line)
