@@ -36,7 +36,7 @@ install = function(dataset, connection, db_file=NULL, conn_file=NULL,
                   connection, "server create a 'conn_file' with the format:", 
                  format, "\nwhere order of arguments does not matter"))
     }
-    conn = data.frame(t(read.table(conn_file, row.names=1)))
+    conn = data.frame(t(utils::read.table(conn_file, row.names=1)))
     writeLines(strwrap(paste('Using conn_file:', conn_file,
                              'to connect to a', connection,
                              'server on host:', conn$host)))
@@ -95,7 +95,7 @@ fetch = function(dataset, quiet=TRUE){
   list_names = sub(paste(dataset, '_', sep=''), '', list_names)
   names(out) = list_names
   for (i in seq_along(files))
-    out[[i]] = read.csv(file.path(temp_path, files[i]))
+    out[[i]] = utils::read.csv(file.path(temp_path, files[i]))
   return(out)
 }
 
@@ -147,7 +147,7 @@ datasets = function(){
 #' This function will check if the version of the retriever's scripts in your local
 #' directory \file{~/.retriever/scripts/} is up-to-date with the most recent official
 #' retriever release. Note it is possible that even more updated scripts exist
-#' at the retriever repository \url{https://github.com/weecology/retriever/tree/master/script}
+#' at the retriever repository \url{https://github.com/weecology/retriever/tree/master/scripts}
 #' that have not yet been incorperated into an official release, and you should 
 #' consider checking that page if you have any concerns. 
 #' @keywords utilities
