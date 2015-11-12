@@ -15,6 +15,8 @@ BugReports: https://github.com/ropensci/ecoretriever/issues
 URL: https://github.com/ropensci/ecoretriever/
 Depends:
     R (>= 3.0.0)
+Imports:
+    utils
 SystemRequirements: EcoData Retriever (>= 1.6)
 License: MIT + file LICENSE
 LazyData: true
