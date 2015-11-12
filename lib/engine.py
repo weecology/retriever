@@ -459,7 +459,7 @@ class Engine():
     def find_file(self, filename):
         for search_path in DATA_SEARCH_PATHS:
             search_path = search_path.format(dataset=self.script.shortname)
-            file_path = os.path.join(search_path, filename)
+            file_path = os.path.normpath(os.path.join(search_path, filename))
             if file_exists(file_path):
                 return file_path
         return False

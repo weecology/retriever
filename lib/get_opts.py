@@ -60,7 +60,14 @@ for engine in engine_list:
 
         if engine.name == "Download Only" or abbreviation == "download":
             # add attributes to Download::  (download [-h] [--path [PATH]] [--subdir [SUBDIR]]
-            download_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help_msg, nargs='?',
+
+            # subdir doesn't take any arguments, if included takes True if excluded takes False
+            if arg_name.lower()== "subdir":
+                download_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help_msg, default=default, action='store_true')
+                # parser.add_argument('--foo', action='store_const', const = False)
+            else:
+                # path must take arguments else it takes default "./"
+                download_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help_msg, nargs='?',
                                          default=default)
         else:
             engine_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help_msg, nargs='?',
