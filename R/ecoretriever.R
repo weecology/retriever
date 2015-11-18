@@ -167,12 +167,17 @@ get_updates = function() {
 
 #' @export
 print.update_log = function(x, ...) {
-    # clean up and print the update log output
-    object = strsplit(paste(object, collapse = ' ; '), 'Downloading script: ')
-    object = sort(sapply(strsplit(object[[1]][-1], ' ; '), 
+    if (length(x) == 0) {
+        cat('No scripts downloaded')
+    } 
+    else {
+        # clean up and print the update log output
+        object = strsplit(paste(x, collapse = ' ; '), 'Downloading script: ')
+        object = sort(sapply(strsplit(object[[1]][-1], ' ; '), 
                        function(x) x[[1]][1]))
-    object[1] = paste('Downloaded scripts:', object[1])
-    cat(object, fill=TRUE, sep=', ')
+        object[1] = paste('Downloaded scripts:', object[1])
+        cat(object, fill=TRUE, sep=', ')
+    }
 }
 
 .onAttach = function(...) {
