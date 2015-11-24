@@ -5,6 +5,7 @@ tags: Taxon > Mammals, Data Type > Compilation
 
 table: main, http://esapubs.org/archive/ecol/E096/269/Data_Files/Amniote_Database_Aug_2015.csv
 *delimiter: ','
+*column: record_id, pk-auto
 *column: class, char, 20
 *column: order, char, 20	
 *column: family, char, 20
