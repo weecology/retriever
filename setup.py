@@ -80,6 +80,7 @@ setup(name='retriever',
       author='Ben Morris, Ethan White',
       author_email='ethan@weecology.org',
       url='https://github.com/weecology/retriever',
+      classifiers=['Intended Audience :: Science/Research'],
       packages=packages,
       package_dir={
                 'retriever':''
