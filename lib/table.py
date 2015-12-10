@@ -1,5 +1,6 @@
 from retriever.lib.cleanup import *
 import csv
+import StringIO
 
 
 class Table:
@@ -74,6 +75,15 @@ class Table:
         dialect.escapechar = "\\"
         r = csv.reader([line], dialect=dialect, delimiter=self.delimiter)
         return r.next()
+
+    def combine_on_delimiter(self, line_as_list):
+        """Combine a list of values into a line of csv data"""
+        dialect = csv.excel
+        dialect.escapechar = "\\"
+        writer_file =  StringIO.StringIO()
+        writer = csv.writer(writer_file, dialect=dialect, delimiter=self.delimiter)
+        writer.writerow(line_as_list)
+        return writer_file.getvalue()
 
     def values_from_line(self, line):
         linevalues = []

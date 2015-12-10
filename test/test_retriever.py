@@ -102,20 +102,21 @@ def test_find_file_present():
     """
     test_engine.script.shortname = 'AvianBodySize'
     os.chdir('./test/')
-    assert test_engine.find_file('avian_ssd_jan07.txt') == 'raw_data/AvianBodySize/avian_ssd_jan07.txt'
+    assert test_engine.find_file('avian_ssd_jan07.txt') == os.path.normpath('raw_data/AvianBodySize/avian_ssd_jan07.txt')
     os.chdir('..')
 
 
 def test_format_data_dir():
     "Test if directory for storing data is properly formated"
     test_engine.script.shortname = "TestName"
-    assert test_engine.format_data_dir() == os.path.join(HOMEDIR,
-                                                         '.retriever/raw_data/TestName')
+    assert os.path.normpath(test_engine.format_data_dir()) == os.path.normpath(os.path.join(HOMEDIR,
+                                                         '.retriever/raw_data/TestName'))
 
 def test_format_filename():
     "Test if filenames for stored files are properly formated"
     test_engine.script.shortname = "TestName"
-    assert test_engine.format_filename('testfile.csv') == os.path.join(HOMEDIR, '.retriever/raw_data/TestName/testfile.csv')
+    assert os.path.normpath(test_engine.format_filename('testfile.csv')) == os.path.normpath(os.path.join(HOMEDIR, 
+                                                                        '.retriever/raw_data/TestName/testfile.csv'))
 
 
 def test_format_insert_value_int():

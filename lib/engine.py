@@ -59,7 +59,7 @@ class Engine():
             lines = gen_from_source(data_source)
             real_lines = []
             for line in lines:
-                split_line = line.strip('\n\r\t ').split(self.table.delimiter)
+                split_line = self.table.split_on_delimiter(line)
                 initial_cols = len(self.table.columns) - (3 if hasattr(self.table, "ct_names") else 2)
                 begin = split_line[:initial_cols]
                 rest = split_line[initial_cols:]
@@ -70,7 +70,7 @@ class Engine():
                         n += 1
                     else:
                         name = []
-                    real_lines.append(self.table.delimiter.join(begin + name + [item]))
+                    real_lines.append(self.table.combine_on_delimiter(begin + name + [item]))
             real_line_length = len(real_lines)
         else:
             # this function returns a generator that iterates over the lines in
@@ -459,7 +459,7 @@ class Engine():
     def find_file(self, filename):
         for search_path in DATA_SEARCH_PATHS:
             search_path = search_path.format(dataset=self.script.shortname)
-            file_path = os.path.join(search_path, filename)
+            file_path = os.path.normpath(os.path.join(search_path, filename))
             if file_exists(file_path):
                 return file_path
         return False
