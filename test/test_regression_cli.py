@@ -36,6 +36,21 @@ def getmd5(filename):
         sum.update(line)
     return sum.hexdigest()
 
+def unixfileformat(inputfile):
+    unix_outfilename = 'output_fileunix'
+    content = ''
+    try:
+        with open(inputfile, 'rb') as infile:
+            content = infile.read()
+        with open(unix_outfilename, 'wb') as output:
+            for line in content.splitlines():
+                output.write(line + '\n')
+        infile.close()
+        output.close()
+    except IOError as e:
+        print "I/O error({0}): {1} ".format(e.errno, e.strerror)
+    return unix_outfilename
+
 def _test_factory(test_method, name, *args):
     stub_test = lambda self: getattr(self, test_method)(*args)
     stub_test.func_name = stub_test.__name__ = 'test_%s' % dataset
@@ -46,10 +61,9 @@ class SqliteRegression(TestCase):
         """Check for regression for a particular dataset imported to sqlite"""
         os.system("rm output_database") #reinstalling changes checksum in sqlite
         os.system("retriever install sqlite %s -f output_database" % dataset)
-        os.system("echo '.dump' | sqlite3 output_database > output_file")
-        current_md5 = getmd5('output_file')
+        os.system("echo .dump | sqlite3 output_database > output_file")
+        current_md5 = getmd5(unixfileformat("output_file")) 
         assert current_md5 == known_md5
-
 
 class CSVRegression(TestCase):
     def check_csv_regression(self, dataset, known_md5):
@@ -60,24 +74,24 @@ class CSVRegression(TestCase):
         current_md5 = getmd5('output_file')
         assert current_md5 == known_md5
 
-
 class MySQLRegression(TestCase):
     def check_mysql_regression(self, dataset, known_md5):
         """Check for regression for a particular dataset imported to sqlite"""
+        os.system("rm output_file*")
         os.system('mysql -u travis -Bse "DROP DATABASE IF EXISTS testdb"') # installing over an existing database changes the dump
         os.system("retriever install mysql %s -u travis -d testdb" % dataset)   #user 'travis' for Travis CI
         os.system("mysqldump testdb -u travis --compact --compatible=no_table_options --no-create-db --no-create-info --result-file=output_file")
-        current_md5 = getmd5('output_file')
+        current_md5 = getmd5(unixfileformat("output_file")) 
         assert current_md5 == known_md5
-
 
 class PostgreSQLRegression(TestCase):
     def check_postgres_regression(self, dataset, known_md5):
         """Check for regression for a particular dataset imported to sqlite"""
+        os.system("rm output_file*")
         os.system('psql -U postgres -d testdb -h localhost -c "DROP SCHEMA IF EXISTS testschema CASCADE"')
         os.system("retriever install postgres %s -u postgres -d testdb -a testschema" % dataset)
-        os.system("pg_dump testdb -n testschema --data-only -U postgres -h localhost -f output_file")
-        current_md5 = getmd5('output_file')
+        os.system("pg_dump -n testschema --data-only -U postgres -h localhost -f output_file testdb")
+        current_md5 = getmd5(unixfileformat("output_file")) 
         assert current_md5 == known_md5
 
 dbms_test_classes = {'sqlite': SqliteRegression, 'csv': CSVRegression,
