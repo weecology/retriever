@@ -76,7 +76,7 @@ class PostgreSQLRegression(TestCase):
         """Check for regression for a particular dataset imported to sqlite"""
         os.system('psql -U postgres -d testdb -h localhost -c "DROP SCHEMA IF EXISTS testschema CASCADE"')
         os.system("retriever install postgres %s -u postgres -d testdb -a testschema" % dataset)
-        os.system("pg_dump testdb -n testschema --data-only -U postgres -h localhost -f output_file")
+        os.system("pg_dump -n testschema --data-only -U postgres -h localhost -f output_file testdb")
         current_md5 = getmd5('output_file')
         assert current_md5 == known_md5
 
