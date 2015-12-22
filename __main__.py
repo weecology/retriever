@@ -25,107 +25,98 @@ from retriever.lib.get_opts import parser
 
 def main():
     """This function launches the EcoData Retriever."""
-    if len(sys.argv) == 1 or (len(sys.argv) > 1 and sys.argv[1] == 'gui'):
-        # if no command line args are passed, launch GUI
+    if len(sys.argv) == 1:
+        sys.argv.append('-h')
 
-        check_for_updates(graphical=False if current_platform == 'darwin' else True)
-        lists = get_lists()
+    script_list = SCRIPT_LIST()
+    args = parser.parse_args()
 
-        from retriever.app.main import launch_app
-        launch_app(lists)
+    if args.quiet:
+        sys.stdout = open(os.devnull, 'w')
 
-    else:
-        # otherwise, parse them
+    if args.command == 'help':
+        parser.parse_args(['-h'])
 
+    if hasattr(args, 'compile') and args.compile:
+        script_list = SCRIPT_LIST(force_compile=True)
+
+    if args.command == 'update':
+        check_for_updates(graphical=False)
         script_list = SCRIPT_LIST()
+        return
 
-        args = parser.parse_args()
-        if args.quiet:
-            sys.stdout = open(os.devnull, 'w')
-
-        if args.command == 'help':
-            parser.parse_args(['-h'])
-
-        if hasattr(args, 'compile') and args.compile:
-            script_list = SCRIPT_LIST(force_compile=True)
-
-        if args.command == 'update':
-            check_for_updates(graphical=False)
-            script_list = SCRIPT_LIST()
-            return
-
-        elif args.command == 'citation':
-            if args.dataset is None:
-                citation_path = os.path.join(os.path.split(__file__)[0], '../CITATION')
-                print citation_path
-                with open(citation_path) as citation_file:
-                    print citation_file.read()
-            else:
-                scripts = name_matches(script_list, args.dataset)
-                for dataset in scripts:
-                    print dataset.description
-
-            return
-
-        elif args.command == 'gui':
-            lists = get_lists()
-
-            from retriever.app.main import launch_app
-            launch_app(lists)
-            return
-
-        elif args.command == 'new':
-            f = open(args.filename, 'w')
-            f.write(sample_script)
-            f.close()
-
-            return
-
-        elif args.command == 'reset':
-            reset_retriever(args.scope)
-            return
-
-        if args.command == 'ls' or args.dataset is None:
-            import lscolumns
-
-            #If scripts have never been downloaded there is nothing to list
-            if not script_list:
-                print "No scripts are currently available. Updating scripts now..."
-                check_for_updates(graphical=False)
-                print "\n\nScripts downloaded.\n"
-                script_list = SCRIPT_LIST()
-
-            all_scripts = set([script.shortname for script in script_list])
-            all_tags = set(["ALL"] +
-                            [tag.strip().upper() for script in script_list for tagset in script.tags for tag in tagset.split('>')])
-
-            print "Available datasets (%s):" % len(all_scripts)
-            lscolumns.printls(sorted(list(all_scripts), key=lambda s: s.lower()))
-            print "Groups:"
-            lscolumns.printls(sorted(list(all_tags)))
-            return
-
-        engine = choose_engine(args.__dict__)
-
-        if hasattr(args, 'debug') and args.debug: debug = True
-        else: debug = False
-
-        scripts = name_matches(script_list, args.dataset)
-        if scripts:
-            for dataset in scripts:
-                print "=> Installing", dataset.name
-                try:
-                    dataset.download(engine, debug=debug)
-                    dataset.engine.final_cleanup()
-                except KeyboardInterrupt:
-                    pass
-                except Exception as e:
-                    print e
-                    if debug: raise
-            print "Done!"
+    elif args.command == 'citation':
+        if args.dataset is None:
+            citation_path = os.path.join(os.path.split(__file__)[0], '../CITATION')
+            print citation_path
+            with open(citation_path) as citation_file:
+                print citation_file.read()
         else:
-            print "The dataset %s isn't currently available in the Retriever" % (args.dataset)
-            print "Run 'retriever -ls to see a list of currently available datasets"
+            scripts = name_matches(script_list, args.dataset)
+            for dataset in scripts:
+                print dataset.description
+
+        return
+
+    elif args.command == 'gui':
+        check_for_updates(graphical=False if current_platform == 'darwin' else True)
+        lists = get_lists() 
+        from retriever.app.main import launch_app
+        launch_app(lists)            
+        return
+
+    elif args.command == 'new':
+        f = open(args.filename, 'w')
+        f.write(sample_script)
+        f.close()
+
+        return
+
+    elif args.command == 'reset':
+        reset_retriever(args.scope)
+        return
+
+    if args.command == 'ls' or args.dataset is None:
+        import lscolumns
+
+        #If scripts have never been downloaded there is nothing to list
+        if not script_list:
+            print "No scripts are currently available. Updating scripts now..."
+            check_for_updates(graphical=False)
+            print "\n\nScripts downloaded.\n"
+            script_list = SCRIPT_LIST()
+
+        all_scripts = set([script.shortname for script in script_list])
+        all_tags = set(["ALL"] +
+                        [tag.strip().upper() for script in script_list for tagset in script.tags for tag in tagset.split('>')])
+
+        print "Available datasets (%s):" % len(all_scripts)
+        lscolumns.printls(sorted(list(all_scripts), key=lambda s: s.lower()))
+        print "Groups:"
+        lscolumns.printls(sorted(list(all_tags)))
+        return
+
+    engine = choose_engine(args.__dict__)
+
+    if hasattr(args, 'debug') and args.debug: debug = True
+    else: debug = False
+
+    scripts = name_matches(script_list, args.dataset)
+    if scripts:
+        for dataset in scripts:
+            print "=> Installing", dataset.name
+            try:
+                dataset.download(engine, debug=debug)
+                dataset.engine.final_cleanup()
+            except KeyboardInterrupt:
+                pass
+            except Exception as e:
+                print e
+                if debug: raise
+        print "Done!"
+    else:
+        print "The dataset %s isn't currently available in the Retriever" % (args.dataset)
+        print "Run 'retriever -ls to see a list of currently available datasets"
 
 if __name__ == "__main__":
     main()
