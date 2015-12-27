@@ -21,8 +21,9 @@ def download_from_repository(filepath, newpath, repo=REPOSITORY):
     try:
         filename = filepath.split('/')[-1]
         def reporthook(a,b,c):
-            print "%3.1f-%s" % (min(100, float(a * b) / c * 100), filename),
+            print "%3.1f-%s\n" % (min(100, float(a * b) / c * 100), filename),
             sys.stdout.flush()
+        
         urllib.urlretrieve(repo + filepath, newpath, reporthook=reporthook)
     except:
         raise
@@ -76,6 +77,7 @@ def check_for_updates(graphical=False):
     if graphical:
         splash.Hide()
         sys.stdout = sys.__stdout__
+    print "The retriever is up-to-date"
 
 
 class InitThread(Thread):
@@ -142,13 +144,16 @@ class InitThread(Thread):
             # open version.txt for current release branch and get script versions
             version_file = urllib.urlopen(REPOSITORY + "version.txt")
             version_file.readline()
+            
+            # read scripts from the repository and the checksums from the version.txt
             scripts = []
             for line in version_file:
                 scripts.append(line.strip('\n').split(','))
 
-            # get script files
+            # create script directory if not available
             if not os.path.isdir(SCRIPT_WRITE_PATH):
                 os.makedirs(SCRIPT_WRITE_PATH)
+            
             for script in scripts:
                 script_name = script[0]
                 if len(script) > 1:
@@ -156,33 +161,35 @@ class InitThread(Thread):
                 else:
                     script_version = None
 
-                if not file_exists(os.path.join(HOME_DIR, "scripts", script_name)):
-                    # File doesn't exist: download it
+                path_script_name = os.path.normpath(os.path.join(HOME_DIR, "scripts", script_name))
+ 
+                if not file_exists(path_script_name):
                     print "Downloading script: " + script_name
                     download_from_repository("scripts/" + script_name,
-                                             os.path.join(SCRIPT_WRITE_PATH, script_name))
-                elif script_version:
-                    # File exists: import and check MD5 sum
-                    need_to_download = False
-                    try:
-                        file, pathname, desc = imp.find_module(''.join(script_name.split('.')[:-1]),
-                                                               ["scripts"])
-                        new_module = imp.load_module(script_name, file, pathname, desc)
-                        m = md5()
-                        m.update(''.join(getsourcelines(new_module)[0]).replace("\r\n", "\n"))
-                        m = m.hexdigest()
-                        need_to_download = script_version != m
-                    except:
-                        pass
+                                             os.path.normpath(os.path.join(SCRIPT_WRITE_PATH, script_name)))
 
-                    if need_to_download:
-                        try:
-                            os.remove(os.path.join("scripts", script_name))
-                            download_from_repository("scripts/" + script_name,
-                                                     os.path.join(SCRIPT_WRITE_PATH, script_name))
-                        except Exception as e:
-                            print e
-                            pass
+                # check MD5sum based on the script version to download the right scripts
+                # if the MD5sum doesn't match need_to_download is set to True
+                need_to_download = False
+
+                try:
+                    file, pathname, desc = imp.find_module(''.join(script_name.split('.')[:-1]), ["scripts"])
+                    new_module = imp.load_module(script_name, file, pathname, desc)
+                    m = md5()
+                    m.update(''.join(getsourcelines(new_module)[0]).replace("\r\n", "\n"))
+                    m = m.hexdigest()
+                    need_to_download = script_version != m
+                except:
+                    pass
+
+                if need_to_download:
+                    try:
+                        os.remove(os.path.normpath(os.path.join(HOME_DIR,"scripts", script_name)))
+                        download_from_repository("scripts/" + script_name,
+                                             os.path.normpath(os.path.join(SCRIPT_WRITE_PATH, script_name)))
+                    except Exception as e:
+                        print e
+                        pass
         except:
             raise
             return
