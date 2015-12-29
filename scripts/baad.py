@@ -12,7 +12,7 @@ class main(Script):
         self.shortname = "BAAD"
         self.ref = "http://esapubs.org/archive/ecol/E096/128/"
         self.urls = {"BAAD": "http://www.esapubs.org/archive/ecol/E096/128/baad_data.zip"}
-        self.description = "Falster, D.S., Duursma, R.A., Ishihara, M.I., Barneche, D.R., FitzJohn, R.G., Varhammar, A., Aiba, M., Ando, M., Anten, N., Aspinwall, M.J. and Baltzer, J.L., 2015. BAAD: a Biomass And Allometry Database for woody plants."
+        self.citation = "Falster, D.S., Duursma, R.A., Ishihara, M.I., Barneche, D.R., FitzJohn, R.G., Varhammar, A., Aiba, M., Ando, M., Anten, N., Aspinwall, M.J. and Baltzer, J.L., 2015. BAAD: a Biomass And Allometry Database for woody plants."
         self.tags = ['Taxon > Plants', 'Data Type > Observational']
 
     def download(self, engine=None, debug=False):

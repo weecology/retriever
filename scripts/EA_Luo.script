@@ -2,7 +2,7 @@
 # basic information about the script
 name: Biomass and Its Allocation in Chinese Forest Ecosystems - Luo, et al., 2014
 shortname: CForBioData
-description: Yunjian Luo, Xiaoquan Zhang, Xiaoke Wang, and Fei Lu. 2014. Biomass and its allocation in Chinese forest ecosystems. Ecology 95:2026.
+citation: Yunjian Luo, Xiaoquan Zhang, Xiaoke Wang, and Fei Lu. 2014. Biomass and its allocation in Chinese forest ecosystems. Ecology 95:2026.
 tags: allocation > biomass > China > climate > forest type > necromass > stand structure
 
 # tables

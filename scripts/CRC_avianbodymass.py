@@ -36,7 +36,8 @@ class main(Script):
         self.name = "CRC Avian Body Masses"
         self.shortname = "AvianBodyMass"
         self.public = False
-        self.ref = "http://www.crcpress.com/ecommerce_product/product_detail.jsf?isbn=1420064444"
+        self.ref = "http://www.crcnetbase.com/isbn/9781420064452"
+        self.citation = "Robert B. Payne, CRC Handbook of Avian Body Masses. Second Edition. The Wilson Journal of Ornithology Sep 2009 : Vol. 121, Issue 3, pg(s) 661-662 doi: 10.1676/1559-4491-121.3.661" 
         self.tables = {"mass": Table("mass", delimiter="~")}
         self.urls = {"mass": ""}
         self.tags = ["Taxon > Birds", "Data Type > Compilation"]

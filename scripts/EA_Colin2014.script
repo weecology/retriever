@@ -1,7 +1,7 @@
 # basic information about the script
 name: Biovolumes for freshwater phytoplankton - Colin et al. 2014
 shortname: PhytoplankonBiovolume
-description: Colin T. Kremer, Jacob P. Gillette, Lars G. Rudstam, Pal Brettum, and Robert Ptacnik. 2014. A compendium of cell and natural unit biovolumes for >1200 freshwater phytoplankton species. Ecology 95:2984.
+citation: Colin T. Kremer, Jacob P. Gillette, Lars G. Rudstam, Pal Brettum, and Robert Ptacnik. 2014. A compendium of cell and natural unit biovolumes for >1200 freshwater phytoplankton species. Ecology 95:2984.
 tags: Taxon > Phytoplankton, Data Type > Compilation
 
 # tables
