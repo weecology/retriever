@@ -11,6 +11,7 @@ class main(Script):
         self.shortname = "eBirdOD"
         self.ref = "http://ebird.org/content/ebird/news/gbif/"
         self.urls = {"main": "https://dataone.ornith.cornell.edu/metacat/d1/mn/v1/object/CLOEODDATA.05192014.1"}
+        self.description = "A collection of observations from birders through portals managed and maintained by local partner conservation organizations"
 
     def download(self, engine=None, debug=False):
         data_file_name = "eBird_Observation_Dataset_2013.csv"

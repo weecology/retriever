@@ -1,9 +1,9 @@
 name: Michigan canopy dynamics (Ecological Archives 2009)
-description: Kerry D. Woods. 2009. Multi-decade, spatially explicit population studies of canopy dynamics in Michigan old-growth forests. Ecology 90:3587.
+citation: Kerry D. Woods. 2009. Multi-decade, spatially explicit population studies of canopy dynamics in Michigan old-growth forests. Ecology 90:3587.
 shortname: Woods2009
 tags: Taxon > Plants, Spatial Scale > Local, Data Type > Time Series, Data Type > Observational
 url: http://www.esapubs.org/archive/ecol/E090/251/
-
+description: The data set provides stem infomation from a regular grid of 256 permanent plots includes about 20% of a 100-ha old-growth forest at the Dukes Research Natural Area in northern Michigan, USA. 
 table: all_plots_1935_1948, http://www.esapubs.org/archive/ecol/E090/251/datafiles/all_plots_1935_1948.txt
 *nulls: 'NA'
 table: all_plots_1974_1980, http://www.esapubs.org/archive/ecol/E090/251/datafiles/all_plots_1974-1980.txt

@@ -21,8 +21,9 @@ class main(Script):
         self.tags = ["Taxon > Plants", "Spatial Scale > Global",
                      "Data Type > Observational"]
         self.ref = "http://datadryad.org/resource/doi:10.5061/dryad.234"
-        self.addendum = """Citation for the database: Zanne, A.E., Lopez-Gonzalez, G.*, Coomes, D.A., Ilic, J., Jansen, S., Lewis, S.L., Miller, R.B., Swenson, N.G., Wiemann, M.C., and Chave, J. 2009. Global wood density database. Dryad. Identifier: http://hdl.handle.net/10255/dryad.235. 
-        *Correspondence for updates to the database: G.Lopez-Gonzalez@leeds.ac.uk
+        self.description = "A collection  and collation of data on the major wood functional traits, including the largest wood density database to date (8412 taxa), mechanical strength measures and anatomical features, as well as clade-specific features such as secondary chemistry."
+        self.citation = "Chave J, Coomes DA, Jansen S, Lewis SL, Swenson NG, Zanne AE (2009) Towards a worldwide wood economics spectrum. Ecology Letters 12(4): 351-366. http://dx.doi.org/10.1111/j.1461-0248.2009.01285.x"
+        self.addendum = """ *Correspondence for updates to the database: G.Lopez-Gonzalez@leeds.ac.uk
         For descriptions of the database, see Chave et al. 2009. Towards a worldwide wood economics spectrum. Ecology Letters. Identifier: http://hdl.handle.net/10255/dryad.234
 
         Below we list the rules of use for the Global wood density database. 

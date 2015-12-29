@@ -1,6 +1,7 @@
 name: Spatial Population Data Alpine Butterfly -- Matter et al 2014
-description: Stephen F. Matter, Nusha Keyghobadhi, and Jens Roland. 2014. Ten years of abundance data within a spatial population network of the alpine butterfly, Parnassius smintheus. Ecology 95:2985
 shortname: Matter2014
+description: Stephen F. Matter, Nusha Keyghobadhi, and Jens Roland. 2014. Ten years of abundance data within a spatial population network of the alpine butterfly, Parnassius smintheus. Ecology 95:2985.
+citation: Matter, Stephen F., Nusha Keyghobadhi, and Jens Roland. 2014. Ten years of abundance data within a spatial population network of the alpine butterfly, Parnassius smintheus. Ecology 95:2985. Ecological Archives E095-258.
 tags: Taxon > Butterflies, Data Type > Observation, Spatial Scale > Metapopulation
 
 table: PopulationAbunMark-Recap, http://esapubs.org/archive/ecol/E095/258/PopulationAbunMark-Recap.csv

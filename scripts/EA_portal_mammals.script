@@ -1,6 +1,7 @@
 name: Portal Project Mammals (Ecological Archives 2009)
-description: S. K. Morgan Ernest, Thomas J. Valone, and James H. Brown. 2009. Long-term monitoring and experimental manipulation of a Chihuahuan Desert ecosystem near Portal, Arizona, USA. Ecology 90:1708.
+citation: S. K. Morgan Ernest, Thomas J. Valone, and James H. Brown. 2009. Long-term monitoring and experimental manipulation of a Chihuahuan Desert ecosystem near Portal, Arizona, USA. Ecology 90:1708.
 shortname: PortalMammals
+description: The data set represents a Desert ecosystems using the composition and abundances of ants, plants, and rodents has occurred continuously on 24 plots.  
 tags: Taxon > Mammals, Biome > Desert, Data Type > Time Series, Data Type > Experimental
 url: http://esapubs.org/archive/ecol/E090/118/
 scan_lines: 40000

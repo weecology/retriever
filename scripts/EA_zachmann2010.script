@@ -1,9 +1,9 @@
 name: Sagebrush steppe quadrats (Ecological Archives 2010)
-description: Luke Zachmann, Corey Moffet, and Peter Adler. 2010. Mapped quadrats in sagebrush steppe: long-term data for analyzing demographic rates and plant-plant interactions. Ecology 91:3427.
+citation: Luke Zachmann, Corey Moffet, and Peter Adler. 2010. Mapped quadrats in sagebrush steppe: long-term data for analyzing demographic rates and plant-plant interactions. Ecology 91:3427.
 shortname: Zachmann2010
 tags: Taxon > Plants, Spatial Scale > Local, Data Type > Time Series, Data Type > Observational
 url: http://esapubs.org/archive/ecol/E091/243/
-
+description: This data set consists of 26 permanent 1-m2 quadrats located on sagebrush steppe in eastern Idaho, USA.
 table: density, http://esapubs.org/archive/ecol/E091/243/allrecords_density.csv
 table: cover, http://esapubs.org/archive/ecol/E091/243/allrecords_cover.csv
 table: quad_info, http://esapubs.org/archive/ecol/E091/243/quad_info.csv

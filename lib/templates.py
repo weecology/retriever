@@ -11,7 +11,7 @@ class Script:
     """This class represents a database toolkit script. Scripts should inherit
     from this class and execute their code in the download method."""
     def __init__(self, name="", description="", shortname="", urls=dict(),
-                 tables=dict(), ref="", public=True, addendum=None, **kwargs):
+                 tables=dict(), ref="", public=True, addendum=None, citation="Not currently available",**kwargs):
         self.name = name
         self.shortname = shortname
         self.filename = __name__
@@ -21,6 +21,7 @@ class Script:
         self.ref = ref
         self.public = public
         self.addendum = addendum
+        self.citation= citation
         self.tags = []
         for key, item in kwargs.items():
             setattr(self, key, item[0] if isinstance(item, tuple) else item)
@@ -113,7 +114,7 @@ class DownloadOnlyTemplate(Script):
             if os.path.exists(self.engine.format_filename(filename)):
                 shutil.copy(self.engine.format_filename(filename), DATA_DIR)
             else:
-                print("%s was not downloaded" % filename)
+                print("{} was not downloaded".format(filename) )
                 print("A file with the same name may be in your working directory")
 
 class HtmlTableTemplate(Script):

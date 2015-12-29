@@ -12,7 +12,8 @@ class main(Script):
         self.shortname = "PRISM"
         self.ref = "http://prism.oregonstate.edu/"
         self.urls = {"climate": "http://services.nacse.org/prism/data/public/4km/"}
-
+        self.description = "The PRISM data set represents climate observations from a wide range of monitoring networks, applies sophisticated quality control measures, and develops spatial climate datasets to reveal short- and long-term climate patterns. "
+ 
     def get_file_names(self, clim_var, mval, year, month):
         """Create a list of all filenames in a given monthly data zip file """
 

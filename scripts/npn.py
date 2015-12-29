@@ -19,7 +19,8 @@ class main(Script):
         self.shortname = "NPN"
         self.ref = "http://www.usanpn.org/results/data"
         self.tags = ["Data Type > Phenology", "Spatial Scale > Continental"]
-
+        self.description = "The data set was collected via Nature's Notebook phenology observation program (2009-present), and (2) Lilac and honeysuckle data (1955-present)"
+        self.citation = "Schwartz, M. D., Ault, T. R., & J. L. Betancourt, 2012: Spring Onset Variations and Trends in the Continental USA: Past and Regional Assessment Using Temperature-Based Indices. International Journal of Climatology (published online, DOI: 10.1002/joc.3625)."
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
 

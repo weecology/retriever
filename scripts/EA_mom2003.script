@@ -1,8 +1,9 @@
 name: Masses of Mammals (Ecological Archives 2003)
-description: Felisa A. Smith, S. Kathleen Lyons, S. K. Morgan Ernest, Kate E. Jones, Dawn M. Kaufman, Tamar Dayan, Pablo A. Marquet, James H. Brown, and John P. Haskell. 2003. Body mass of late Quaternary mammals. Ecology 84:3403.
+citation: Felisa A. Smith, S. Kathleen Lyons, S. K. Morgan Ernest, Kate E. Jones, Dawn M. Kaufman, Tamar Dayan, Pablo A. Marquet, James H. Brown, and John P. Haskell. 2003. Body mass of late Quaternary mammals. Ecology 84:3403.
 shortname: MoM2003
 tags: Taxon > Mammals, Data Type > Compilation
 url: http://www.esapubs.org/archive/ecol/E084/094/
+description: A data set of compiled body mass information for all mammals on Earth. 
 
 table: MOM, http://www.esapubs.org/Archive/ecol/E084/094/MOMv3.3.txt
 *nulls: -999

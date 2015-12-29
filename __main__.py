@@ -60,13 +60,15 @@ def main():
         elif args.command == 'citation':
             if args.dataset is None:
                 citation_path = os.path.join(os.path.split(__file__)[0], '../CITATION')
-                print citation_path
+                print "\nCitation for retriever:\n"
                 with open(citation_path) as citation_file:
                     print citation_file.read()
             else:
                 scripts = name_matches(script_list, args.dataset)
                 for dataset in scripts:
-                    print dataset.description
+
+                    print ("\nCitation:   {}".format(dataset.citation))
+                    print ("Description:   {}\n".format(dataset.description))
 
             return
 
@@ -107,7 +109,7 @@ def main():
             all_tags = set(["ALL"] +
                             [tag.strip().upper() for script in script_list for tagset in script.tags for tag in tagset.split('>')])
 
-            print "Available datasets (%s):" % len(all_scripts)
+            print "Available datasets : {}".format(len(all_scripts))
             lscolumns.printls(sorted(list(all_scripts), key=lambda s: s.lower()))
             print "Groups:"
             lscolumns.printls(sorted(list(all_tags)))
@@ -132,7 +134,7 @@ def main():
                     if debug: raise
             print "Done!"
         else:
-            print "The dataset %s isn't currently available in the Retriever" % (args.dataset)
+            print "The dataset {} isn't currently available in the Retriever".format(args.dataset)
             print "Run 'retriever -ls to see a list of currently available datasets"
 
 if __name__ == "__main__":
