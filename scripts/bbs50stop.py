@@ -17,6 +17,8 @@ class main(Script):
         Script.__init__(self, **kwargs)
         self.name = "USGS North American Breeding Bird Survey 50 stop"
         self.shortname = "BBS50"
+        self.description = "A Cooperative effort between the U.S. Geological Survey's Patuxent Wildlife Research Center and Environment Canada's Canadian Wildlife Service to monitor the status and trends of North American bird populations."
+        self.citation = "Pardieck, K.L., D.J. Ziolkowski Jr., M.-A.R. Hudson. 2015. North American Breeding Bird Survey Dataset 1966 - 2014, version 2014.0. U.S. Geological Survey, Patuxent Wildlife Research Center."
         self.ref = "http://www.pwrc.usgs.gov/BBS/"
         self.tags = ["Taxon > Birds", "Spatial Scale > Continental"]
         self.urls = {

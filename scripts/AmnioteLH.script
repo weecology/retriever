@@ -1,6 +1,7 @@
 name: Amniote life History database
-description: Compilation of life history traits for birds, mammals, and reptiles
+description: Compilation of life history traits for birds, mammals, and reptiles.
 shortname: AmnioteDB
+citation: Myhrvold, N.P., Baldridge, E., Chan, B., Sivam, D., Freeman, D.L. and Ernest, S.M., 2015. An amniote life-history database to perform comparative analyses with birds, mammals, and reptiles: Ecological Archives E096-269. Ecology, 96(11), pp.3109-000.
 tags: Taxon > Mammals, Data Type > Compilation
 
 table: main, http://esapubs.org/archive/ecol/E096/269/Data_Files/Amniote_Database_Aug_2015.csv

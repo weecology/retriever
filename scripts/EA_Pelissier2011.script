@@ -1,7 +1,8 @@
 # basic information about the script
 name: Twenty years tree demography in Western Ghats of India - Pelissier, et al., 2011
 shortname: TreeWesternGhats
-description: Raphael Pelissier, Jean-Pierre Pascal, N. Ayyappan, B. R. Ramesh, S. Aravajy, and S. R. Ramalingam. 2011. Twenty years tree demography in an undisturbed Dipterocarp permanent sample plot at Uppangala, Western Ghats of India. Ecology 92:1376.
+citation: Raphael Pelissier, Jean-Pierre Pascal, N. Ayyappan, B. R. Ramesh, S. Aravajy, and S. R. Ramalingam. 2011. Twenty years tree demography in an undisturbed Dipterocarp permanent sample plot at Uppangala, Western Ghats of India. Ecology 92:1376.
+description: A data set on demography of trees monitored over 20 years in Uppangala permanent sample plot (UPSP).
 tags: Taxon > Plants, Data Type > Time Series, Data Type > Observational
 
 # tables

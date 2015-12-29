@@ -1,4 +1,6 @@
 name: Leaf herbivory dataset
-description: Turcotte et al. 2014. Percentage leaf herbivory across vascular plant species. Ecology 95:788
+description: spatially explicit measurements of population level leaf herbivory on 1145 species of vascular plants from 189 studies from across the globe.
+citation: Martin M. Turcotte, Christina J. M. Thomsen, Geoffrey T. Broadhead, Paul V. A. Fine, Ryan M. Godfrey, Greg P. A. Lamarre, Sebastian T. Meyer, Lora A. Richards, and Marc T. J. Johnson. 2014. Percentage leaf herbivory across vascular plant species. Ecology 95:788. http://dx.doi.org/10.1890/13-1741.1.
+tags: Taxon > Plants
 shortname: leaf_herbivory
 table: Leaf_herbivory, http://www.esapubs.org/archive/ecol/E095/065/Leaf_herbivory.csv

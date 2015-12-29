@@ -5,10 +5,11 @@ from retriever.lib.models import Table, Cleanup, correct_invalid_value
 class main(Script):
     def __init__(self):
         Script.__init__(self,
-                        name="Gulf of Maine intertidal density/cover (Ecological Archives 2008)",
-                        description="Peter S. Petraitis, Harrison Liu, and Erika C. Rhile. 2008. Densities and cover data for intertidal organisms in the Gulf of Maine, USA, from 2003 to 2007. Ecology 89:588.",
-                        shortname="Petraitis2008",
-                        ref="http://www.esapubs.org/archive/ecol/E089/032/",
+                        name = "Gulf of Maine intertidal density/cover (Ecological Archives 2008)",
+                        citation = "Peter S. Petraitis, Harrison Liu, and Erika C. Rhile. 2008. Densities and cover data for intertidal organisms in the Gulf of Maine, USA, from 2003 to 2007. Ecology 89:588.",
+                        shortname = "Petraitis2008",
+                        ref = "http://www.esapubs.org/archive/ecol/E089/032/",
+                        description = "The data set provides access to data on densities and percent cover in the 60 experimental plots from 2003 to 2007 and to update data from 1996 to 2002 that are already published in Ecological Archives.It includes densities of mussels, an herbivorous limpet, herbivorous snails, a predatory snail, a barnacle , and fucoid algae and percent cover by mussels, barnacles, fucoids, and other sessile organisms.",
                         urls = {
                                 "main": "http://www.esapubs.org/archive/ecol/E089/032/Succession_sampling_03-07_data.txt",
                                },
