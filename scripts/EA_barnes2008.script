@@ -1,6 +1,6 @@
 # Barnes et al. 2008, Ecological Archives, Retriever Script
 name: Marine Predator and Prey Body Sizes (Ecological Archives 2008)
-description: C. Barnes et al. 2008. Predator and prey body sizes in marine food webs. Ecology 89:881.
+citation: C. Barnes et al. 2008. Predator and prey body sizes in marine food webs. Ecology 89:881.
 shortname: MarineSize
 tags: Taxon > Fish, Data Type > Compilation
 

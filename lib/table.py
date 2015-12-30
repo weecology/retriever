@@ -55,6 +55,7 @@ class Table:
                    ("\xb0", "degrees"),
                    ("group", "grp"),
                    ("order", "sporder"),
+                   ("check", "checked"),
                    ("references", "refs"),
                    ("long", "lon"),
                    ("date", "record_date"),

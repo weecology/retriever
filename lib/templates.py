@@ -11,7 +11,7 @@ class Script:
     """This class represents a database toolkit script. Scripts should inherit
     from this class and execute their code in the download method."""
     def __init__(self, name="", description="", shortname="", urls=dict(),
-                 tables=dict(), ref="", public=True, addendum=None, **kwargs):
+                 tables=dict(), ref="", public=True, addendum=None, citaion="No Defined",**kwargs):
         self.name = name
         self.shortname = shortname
         self.filename = __name__
@@ -21,6 +21,7 @@ class Script:
         self.ref = ref
         self.public = public
         self.addendum = addendum
+        self.citation= citaion
         self.tags = []
         for key, item in kwargs.items():
             setattr(self, key, item[0] if isinstance(item, tuple) else item)

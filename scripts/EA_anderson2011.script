@@ -1,4 +1,6 @@
 name: Northern mixed prairie maps - Anderson et al. 2011
+citation: Chengjin Chu, John Norman, Robert Flynn, Nicole Kaplan, William K. Lauenroth, and Peter B. Adler. 2013. Cover, density, and demographics of shortgrass steppe plants mapped 1997-2010 in permanent grazed and ungrazed quadrats. Ecology 94:1435.
+ref: http://dx.doi.org/10.1890/13-0121.1
 description: long term plant quadrats of northern mixed prairie in Montana
 shortname: Anderson2011
 table: allrecords_density, http://esapubs.org/archive/ecol/E092/143/allrecords_density.csv
