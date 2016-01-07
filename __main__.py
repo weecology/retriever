@@ -25,9 +25,11 @@ from retriever.lib.get_opts import parser
 
 def main():
     """This function launches the EcoData Retriever."""
-    if len(sys.argv) == 1 or (len(sys.argv) > 1 and sys.argv[1] == 'gui'):
-        # if no command line args are passed, launch GUI
-
+    if len(sys.argv) == 1:
+        print "arguments required, use retriever -h for help"
+        sys.exit(1)
+ 
+    if len(sys.argv) > 1 and sys.argv[1] == 'gui':
         check_for_updates(graphical=False if current_platform == 'darwin' else True)
         lists = get_lists()
 
@@ -40,6 +42,7 @@ def main():
         script_list = SCRIPT_LIST()
 
         args = parser.parse_args()
+
         if args.quiet:
             sys.stdout = open(os.devnull, 'w')
 
@@ -68,6 +71,11 @@ def main():
             return
 
         elif args.command == 'gui':
+            check_for_updates(graphical=False if current_platform == 'darwin' else True)
+            lists = get_lists() 
+            from retriever.app.main import launch_app
+            launch_app(lists)            
+
             lists = get_lists()
 
             from retriever.app.main import launch_app
