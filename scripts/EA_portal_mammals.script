@@ -50,3 +50,11 @@ table: plots, http://wiki.ecologicaldata.org/sites/default/files/portal_plots.tx
 *column: PlotTypeAlphaCode, char, 2
 *column: PlotTypeNumCode, int
 *column: PlotTypeDescript, char, 30
+
+table: precip_new, http://esapubs.org/archive/ecol/E090/118/Portal_precipitation_19892002.csv
+*delimiter: ','
+*column: Year, int
+*column: Month, int
+*column: Day, int
+*column: Hour, int
+*column: Precipitation, double
