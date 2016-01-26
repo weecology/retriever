@@ -77,10 +77,13 @@ if wx_installed is False:
 setup(name='retriever',
       version=clean_version(VERSION),
       description='EcoData Retriever',
-      author='Ben Morris, Ethan White',
+      author='Ben Morris, Ethan White, Henry Senyondo',
       author_email='ethan@weecology.org',
       url='https://github.com/weecology/retriever',
-      classifiers=['Intended Audience :: Science/Research'],
+      classifiers=['Intended Audience :: Science/Research',
+                   'License :: OSI Approved :: MIT License',
+                   'Programming Language :: Python',
+                   'Programming Language :: Python :: 2',],
       packages=packages,
       package_dir={
                 'retriever':''
