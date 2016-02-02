@@ -1,12 +1,17 @@
 import os
 
+
 def get_terminal_size():
     env = os.environ
+
     def ioctl_GWINSZ(fd):
         try:
-            import fcntl, termios, struct, os
+            import fcntl
+            import termios
+            import struct
+            import os
             cr = struct.unpack('hh', fcntl.ioctl(fd, termios.TIOCGWINSZ,
-        '1234'))
+                                                 '1234'))
         except:
             return
         return cr

@@ -6,14 +6,12 @@ scripts.
 """
 
 import difflib
-import os
-import sys
 import warnings
 import unittest
 import shutil
-import os
 from decimal import Decimal
 from hashlib import md5
+
 from retriever import HOME_DIR
 from retriever.lib.models import *
 
@@ -25,6 +23,7 @@ TEST_ENGINES = dict()
 class ScriptTest(unittest.TestCase):
     """Automates the process of creating unit tests for Retriever scripts.
     Uses the Python unittest module."""
+
     def strvalue(self, value, col_num):
         """Returns a string representing the cleaned value from a SELECT
         statement, for use in tests.
@@ -36,7 +35,7 @@ class ScriptTest(unittest.TestCase):
                    useful when overriding this function
 
         """
-        if value != None:
+        if value is not None:
             if isinstance(value, str) or isinstance(value, unicode):
                 # If the value is a string or unicode, it's not a number and
                 # should be surrounded by quotes.
@@ -58,7 +57,7 @@ class ScriptTest(unittest.TestCase):
                     pass
 
                 value = str(value).rstrip('0')
-                if not '.' in value:
+                if '.' not in value:
                     value += ".0"
                 if len(value.split('.')) == 2:
                     while len(value.split('.')[-1]) < 2:
@@ -79,7 +78,7 @@ class ScriptTest(unittest.TestCase):
         else:
             return ""
 
-    def default_test(self, script, tables, include_pk = False):
+    def default_test(self, script, tables, include_pk=False):
         """The default unit test. Tests in ScriptTest classes can simply call
         this function with the appropriate paramaters. The "script" property
         should be an instance of Script, and tables is a list consisting of
@@ -138,13 +137,18 @@ class ScriptTest(unittest.TestCase):
 def name_matches(scripts, arg):
     matches = []
     for script in scripts:
-        if arg.lower() == script.shortname.lower(): return [script]
-        max_ratio = max([difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in (script.shortname.lower(), script.name.lower(), script.filename.lower())] +
-                        [difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in [tag.strip().lower() for tagset in script.tags for tag in tagset]]
+        if arg.lower() == script.shortname.lower():
+            return [script]
+        max_ratio = max([difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in
+                         (script.shortname.lower(), script.name.lower(), script.filename.lower())] +
+                        [difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in [
+                            tag.strip().lower() for tagset in script.tags for tag in tagset]]
                         )
-        if arg.lower() == 'all': max_ratio = 1.0
+        if arg.lower() == 'all':
+            max_ratio = 1.0
         matches.append((script, max_ratio))
-    matches = [m for m in sorted(matches, key=lambda m: m[1], reverse=True) if m[1] > 0.6]
+    matches = [m for m in sorted(matches, key=lambda m: m[
+        1], reverse=True) if m[1] > 0.6]
     return [match[0] for match in matches]
 
 
@@ -154,6 +158,7 @@ def getmd5(lines):
     for line in lines:
         sum.update(line)
     return sum.hexdigest()
+
 
 def checkagainstfile(lines, filename):
     """Checks a set of lines against a file, and prints all lines that don't
@@ -184,6 +189,7 @@ def final_cleanup(engine):
 
 
 config_path = os.path.join(HOME_DIR, 'connections.config')
+
 
 def get_saved_connection(engine_name):
     """Given the name of an engine, returns the stored connection for that engine
@@ -243,7 +249,8 @@ def choose_engine(opts, choice=True):
     elif opts["command"] == "download":
         enginename = "download"
     else:
-        if not choice: return None
+        if not choice:
+            return None
         print "Choose a database engine:"
         for engine in engine_list:
             if engine.abbreviation:
@@ -259,21 +266,23 @@ def choose_engine(opts, choice=True):
         engine = engine_list[0]
     else:
         for thisengine in engine_list:
-            if (enginename == thisengine.name.lower()
-                              or thisengine.abbreviation
-                              and enginename == thisengine.abbreviation):
+            if (enginename == thisengine.name.lower() or
+                    thisengine.abbreviation and
+                    enginename == thisengine.abbreviation):
                 engine = thisengine
 
     engine.opts = opts
     return engine
 
+
 def reset_retriever(scope):
     """Remove stored information on scripts, data, and connections"""
 
-    warning_messages= {'all': "This will remove existing scripts, cached data, and information on database connections. Specifically it will remove the scripts and raw_data folders and the connections.config file in {}. Do you want to proceed? (y/N)\n",
-                       'scripts': "This will remove existing scripts. Specifically it will remove the scripts folder in {}. Do you want to proceed? (y/N)\n",
-                       'data': "This will remove raw data cached by the Retriever. Specifically it will remove the raw_data folder in {}. Do you want to proceed? (y/N)\n",
-                       'connections': "This will remove stored information on database connections. Specifically it will remove the connections.config file in {}. Do you want to proceed? (y/N)\n"
+    warning_messages = {
+        'all': "This will remove existing scripts, cached data, and information on database connections. Specifically it will remove the scripts and raw_data folders and the connections.config file in {}. Do you want to proceed? (y/N)\n",
+        'scripts': "This will remove existing scripts. Specifically it will remove the scripts folder in {}. Do you want to proceed? (y/N)\n",
+        'data': "This will remove raw data cached by the Retriever. Specifically it will remove the raw_data folder in {}. Do you want to proceed? (y/N)\n",
+        'connections': "This will remove stored information on database connections. Specifically it will remove the connections.config file in {}. Do you want to proceed? (y/N)\n"
     }
 
     warn_msg = warning_messages[scope].format(HOME_DIR)

@@ -11,6 +11,8 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   introduction
+   scripts
    retriever 
 
 Indices and tables

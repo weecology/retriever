@@ -28,7 +28,8 @@ def main():
     if len(sys.argv) == 1 or (len(sys.argv) > 1 and sys.argv[1] == 'gui'):
         # if no command line args are passed, launch GUI
 
-        check_for_updates(graphical=False if current_platform == 'darwin' else True)
+        check_for_updates(
+            graphical=False if current_platform == 'darwin' else True)
         lists = get_lists()
 
         from retriever.app.main import launch_app
@@ -56,7 +57,8 @@ def main():
 
         elif args.command == 'citation':
             if args.dataset is None:
-                citation_path = os.path.join(os.path.split(__file__)[0], '../CITATION')
+                citation_path = os.path.join(
+                    os.path.split(__file__)[0], '../CITATION')
                 print citation_path
                 with open(citation_path) as citation_file:
                     print citation_file.read()
@@ -88,7 +90,7 @@ def main():
         if args.command == 'ls' or args.dataset is None:
             import lscolumns
 
-            #If scripts have never been downloaded there is nothing to list
+            # If scripts have never been downloaded there is nothing to list
             if not script_list:
                 print "No scripts are currently available. Updating scripts now..."
                 check_for_updates(graphical=False)
@@ -97,18 +99,21 @@ def main():
 
             all_scripts = set([script.shortname for script in script_list])
             all_tags = set(["ALL"] +
-                            [tag.strip().upper() for script in script_list for tagset in script.tags for tag in tagset.split('>')])
+                           [tag.strip().upper() for script in script_list for tagset in script.tags for tag in tagset.split('>')])
 
             print "Available datasets (%s):" % len(all_scripts)
-            lscolumns.printls(sorted(list(all_scripts), key=lambda s: s.lower()))
+            lscolumns.printls(
+                sorted(list(all_scripts), key=lambda s: s.lower()))
             print "Groups:"
             lscolumns.printls(sorted(list(all_tags)))
             return
 
         engine = choose_engine(args.__dict__)
 
-        if hasattr(args, 'debug') and args.debug: debug = True
-        else: debug = False
+        if hasattr(args, 'debug') and args.debug:
+            debug = True
+        else:
+            debug = False
 
         scripts = name_matches(script_list, args.dataset)
         if scripts:
@@ -121,7 +126,8 @@ def main():
                     pass
                 except Exception as e:
                     print e
-                    if debug: raise
+                    if debug:
+                        raise
             print "Done!"
         else:
             print "The dataset %s isn't currently available in the Retriever" % (args.dataset)

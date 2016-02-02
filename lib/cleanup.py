@@ -18,6 +18,7 @@ def no_cleanup(value, args):
 class Cleanup:
     """This class represents a custom cleanup function and a dictionary of
     arguments to be passed to that function."""
+
     def __init__(self, function=no_cleanup, **kwargs):
         self.function = function
         self.args = kwargs

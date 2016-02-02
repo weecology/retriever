@@ -8,14 +8,14 @@ class engine(Engine):
     name = "PostgreSQL"
     abbreviation = "postgres"
     datatypes = {
-                 "auto": "serial",
-                 "int": "integer",
-                 "bigint": "bigint",
-                 "double": "double precision",
-                 "decimal": "decimal",
-                 "char": "varchar",
-                 "bool": "boolean",
-                 }
+        "auto": "serial",
+        "int": "integer",
+        "bigint": "bigint",
+        "double": "double precision",
+        "decimal": "decimal",
+        "char": "varchar",
+        "bool": "boolean",
+    }
     max_int = 2147483647
     required_opts = [("user",
                       "Enter your PostgreSQL username",
@@ -71,11 +71,10 @@ class engine(Engine):
         self.get_cursor()
         ct = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
         if (([self.table.cleanup.function, self.table.delimiter,
-             self.table.header_rows] == [no_cleanup, ",", 1])
-            and not self.table.fixed_width
-            and not ct
-            and (not hasattr(self.table, "do_not_bulk_insert") or not self.table.do_not_bulk_insert)
-            ):
+                self.table.header_rows] == [no_cleanup, ",", 1]) and not
+                self.table.fixed_width and not
+            ct and (not hasattr(self.table, "do_not_bulk_insert") or not
+                    self.table.do_not_bulk_insert)):
             columns = self.table.get_insert_columns()
             filename = os.path.abspath(filename)
             statement = """
@@ -101,7 +100,8 @@ CSV HEADER"""
     def table_exists(self, dbname, tablename):
         """Checks to see if the given table exists"""
         if not hasattr(self, 'existing_table_names'):
-            self.cursor.execute("SELECT schemaname, tablename FROM pg_tables WHERE schemaname NOT LIKE 'pg_%';")
+            self.cursor.execute(
+                "SELECT schemaname, tablename FROM pg_tables WHERE schemaname NOT LIKE 'pg_%';")
             self.existing_table_names = set()
             for schema, table in self.cursor:
                 self.existing_table_names.add((schema.lower(), table.lower()))
@@ -122,8 +122,8 @@ CSV HEADER"""
         """Gets the db connection."""
         import psycopg2 as dbapi
         self.get_input()
-        return dbapi.connect(host = self.opts["host"],
-                                        port = int(self.opts["port"]),
-                                        user = self.opts["user"],
-                                        password = self.opts["password"],
-                                        database = self.opts["database"])
+        return dbapi.connect(host=self.opts["host"],
+                             port=int(self.opts["port"]),
+                             user=self.opts["user"],
+                             password=self.opts["password"],
+                             database=self.opts["database"])

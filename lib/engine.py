@@ -5,9 +5,7 @@ import zipfile
 import gzip
 import tarfile
 import urllib
-import csv
-import itertools
-from decimal import Decimal
+
 from retriever import DATA_SEARCH_PATHS, DATA_WRITE_PATH
 from retriever.lib.cleanup import no_cleanup
 from retriever.lib.warning import Warning
@@ -30,7 +28,8 @@ class Engine():
     warnings = []
 
     def connect(self, force_reconnect=False):
-        if force_reconnect: self.disconnect()
+        if force_reconnect:
+            self.disconnect()
 
         if self._connection is None:
             self._connection = self.get_connection()
@@ -60,7 +59,8 @@ class Engine():
             real_lines = []
             for line in lines:
                 split_line = self.table.split_on_delimiter(line)
-                initial_cols = len(self.table.columns) - (3 if hasattr(self.table, "ct_names") else 2)
+                initial_cols = len(self.table.columns) - \
+                    (3 if hasattr(self.table, "ct_names") else 2)
                 begin = split_line[:initial_cols]
                 rest = split_line[initial_cols:]
                 n = 0
@@ -70,21 +70,24 @@ class Engine():
                         n += 1
                     else:
                         name = []
-                    real_lines.append(self.table.combine_on_delimiter(begin + name + [item]))
+                    real_lines.append(
+                        self.table.combine_on_delimiter(begin + name + [item]))
             real_line_length = len(real_lines)
         else:
             # this function returns a generator that iterates over the lines in
             # the source data
             def source_gen():
                 return (line for line in gen_from_source(data_source)
-                         if line.strip('\n\r\t '))
+                        if line.strip('\n\r\t '))
+
             # use one generator to compute the length of the input
             real_lines, len_source = source_gen(), source_gen()
             real_line_length = sum(1 for _ in len_source)
 
         total = self.table.record_id + real_line_length
         for line in real_lines:
-            if not self.table.fixed_width: line = line.strip()
+            if not self.table.fixed_width:
+                line = line.strip()
             if line:
                 self.table.record_id += 1
                 linevalues = self.table.values_from_line(line)
@@ -94,18 +97,22 @@ class Engine():
                 try:
                     cleanvalues = [self.format_insert_value(self.table.cleanup.function
                                                             (linevalues[n],
-                                                            self.table.cleanup.args),
+                                                             self.table.cleanup.args),
                                                             types[n])
                                    for n in range(len(linevalues))]
                 except Exception as e:
-                    self.warning('Exception in line %s: %s' % (self.table.record_id, e))
+                    self.warning('Exception in line %s: %s' %
+                                 (self.table.record_id, e))
                     continue
                 try:
                     insert_stmt = self.insert_statement(cleanvalues)
                 except:
-                    if self.debug: print types
-                    if self.debug: print linevalues
-                    if self.debug: print cleanvalues
+                    if self.debug:
+                        print types
+                    if self.debug:
+                        print linevalues
+                    if self.debug:
+                        print cleanvalues
                     raise
 
                 try:
@@ -113,9 +120,9 @@ class Engine():
                 except:
                     update_frequency = 100
 
-                if (self.table.record_id % update_frequency == 0
-                    or self.table.record_id == 1
-                    or self.table.record_id == total):
+                if (self.table.record_id % update_frequency == 0 or
+                        self.table.record_id == 1 or
+                        self.table.record_id == total):
                     prompt = "Inserting rows to " + self.table_name() + ": "
                     prompt += str(self.table.record_id) + " / " + str(total)
                     sys.stdout.write(prompt + "\b" * len(prompt))
@@ -169,8 +176,12 @@ class Engine():
 
             self.auto_get_datatypes(pk, lines, columns, column_values)
 
-        if self.table.columns[-1][1][0][:3] == "ct-" and hasattr(self.table, "ct_names") and not self.table.ct_column in [c[0] for c in self.table.columns]:
-            self.table.columns = self.table.columns[:-1] + [(self.table.ct_column, ("char", 20))] + [self.table.columns[-1]]
+        if self.table.columns[-1][1][0][:3] == "ct-" and hasattr(self.table,
+                                                                 "ct_names") and self.table.ct_column not in [c[0] for c
+                                                                                                              in
+                                                                                                              self.table.columns]:
+            self.table.columns = self.table.columns[
+                :-1] + [(self.table.ct_column, ("char", 20))] + [self.table.columns[-1]]
 
         self.create_table()
 
@@ -199,34 +210,37 @@ class Engine():
                         value = values[i]
 
                         if self.table.cleanup.function != no_cleanup:
-                            value = self.table.cleanup.function(value, self.table.cleanup.args)
+                            value = self.table.cleanup.function(
+                                value, self.table.cleanup.args)
 
-                        if value != None and value != '':
+                        if value is not None and value is not '':
                             if len(str(value)) > max_lengths[i]:
                                 max_lengths[i] = len(str(value))
 
                             if column_types[i][0] in ('int', 'bigint'):
                                 try:
                                     value = int(value)
-                                    if column_types[i][0] == 'int' and hasattr(self, 'max_int') and value > self.max_int:
-                                        column_types[i] = ['bigint',]
+                                    if column_types[i][0] == 'int' and hasattr(self,
+                                                                               'max_int') and value > self.max_int:
+                                        column_types[i] = ['bigint', ]
                                 except:
-                                    column_types[i] = ['double',]
+                                    column_types[i] = ['double', ]
                             if column_types[i][0] == 'double':
                                 try:
                                     value = float(value)
-                                    if "e" in str(value) or ("." in str(value) and
-                                                             len(str(value).split(".")[1]) > 10):
-                                        column_types[i] = ["decimal","30,20"]
+                                    if "e" in str(value) or (
+                                                    "." in str(value) and
+                                                    len(str(value).split(".")[1]) > 10):
+
+                                        column_types[i] = ["decimal", "30,20"]
                                 except:
-                                    column_types[i] = ['char',max_lengths[i]]
+                                    column_types[i] = ['char', max_lengths[i]]
                             if column_types[i][0] == 'char':
                                 if len(str(value)) > column_types[i][1]:
                                     column_types[i][1] = max_lengths[i]
 
                     except IndexError:
                         pass
-
 
         for i in range(len(columns)):
             column = columns[i]
@@ -283,12 +297,15 @@ class Engine():
             print "Creating database " + db_name + "..."
             # Create the database
             create_stmt = self.create_db_statement()
-            if self.debug: print create_stmt
+            if self.debug:
+                print create_stmt
             try:
                 self.execute(create_stmt)
             except Exception as e:
-                try: self.connection.rollback()
-                except: pass
+                try:
+                    self.connection.rollback()
+                except:
+                    pass
                 print "Couldn't create database (%s). Trying to continue anyway." % e
 
     def create_db_statement(self):
@@ -316,12 +333,15 @@ class Engine():
             pass
 
         create_stmt = self.create_table_statement()
-        if self.debug: print create_stmt
+        if self.debug:
+            print create_stmt
         try:
             self.execute(create_stmt)
         except Exception as e:
-            try: self.connection.rollback()
-            except: pass
+            try:
+                self.connection.rollback()
+            except:
+                pass
             print "Couldn't create table (%s). Trying to continue anyway." % e
 
     def create_table_statement(self):
@@ -336,7 +356,8 @@ class Engine():
                 if column[0] == column_name:
                     types.append(self.convert_data_type(column[1]))
 
-        if self.debug: print columns
+        if self.debug:
+            print columns
 
         column_strings = []
         for c, t in zip(columns, types):
@@ -370,7 +391,8 @@ class Engine():
             file = urllib.urlopen(url)
             local_file = open(path, 'wb')
             if clean_line_endings and (filename.split('.')[-1].lower() not in ["exe", "zip", "xls"]):
-                local_file.write(file.read().replace("\r\n", "\n").replace("\r", "\n"))
+                local_file.write(file.read().replace(
+                    "\r\n", "\n").replace("\r", "\n"))
             else:
                 local_file.write(file.read())
             local_file.close()
@@ -403,14 +425,15 @@ class Engine():
             else:
                 self.create_raw_data_dir()
                 if not downloaded:
-                    self.download_file(url, archivename, clean_line_endings=False)
+                    self.download_file(
+                        url, archivename, clean_line_endings=False)
                     downloaded = True
 
                 if filetype == 'zip':
                     archive = zipfile.ZipFile(archivename)
                     open_archive_file = archive.open(filename)
                 elif filetype == 'gz':
-                    #gzip archives can only contain a single file
+                    # gzip archives can only contain a single file
                     open_archive_file = gzip.open(archivename)
                 elif filetype == 'tar':
                     archive = tarfile.open(filename)
@@ -423,7 +446,8 @@ class Engine():
                     unzipped_file.write(line)
                 open_archive_file.close()
                 unzipped_file.close()
-                if 'archive' in locals(): archive.close()
+                if 'archive' in locals():
+                    archive.close()
 
     def drop_statement(self, objecttype, objectname):
         """Returns a drop table or database SQL statement."""
@@ -443,10 +467,10 @@ class Engine():
 
     def exists(self, script):
         return all([self.table_exists(
-                    script.shortname,
-                    key
-                    )
-                    for key in script.urls.keys() if key])
+            script.shortname,
+            key
+        )
+            for key in script.urls.keys() if key])
 
     def final_cleanup(self):
         """Close the database connection."""
@@ -500,7 +524,7 @@ class Engine():
                 return strvalue
             else:
                 return "null"
-        elif datatype=="char":
+        elif datatype == "char":
             if strvalue.lower() in nulls:
                 return "null"
 
@@ -511,8 +535,8 @@ class Engine():
                 strvalue = self.escape_single_quotes(strvalue)
 
             return "'" + strvalue + "'"
-        #elif datatype=="bool":
-            #return "'true'" if value else "'false'"
+            # elif datatype=="bool":
+            # return "'true'" if value else "'false'"
         else:
             return "null"
 
@@ -535,7 +559,8 @@ class Engine():
                 else:
                     prompt = opt[1]
                     if opt[2]:
-                        prompt += " or press Enter for the default, %s" % opt[2]
+                        prompt += " or press Enter for the default, %s" % opt[
+                            2]
                     prompt += ': '
                     self.opts[opt[0]] = raw_input(prompt)
             if self.opts[opt[0]] in ["", "default"]:
@@ -559,7 +584,7 @@ class Engine():
         for inserting bulk data from files can override this function."""
         data_source = (skip_rows,
                        (self.table.header_rows,
-                       (open, (filename, 'r'))))
+                        (open, (filename, 'r'))))
         self.add_to_table(data_source)
 
     def insert_data_from_url(self, url):
@@ -593,7 +618,8 @@ class Engine():
                                                    types[n]))
             n += 1
         insert_stmt %= tuple([str(value) for value in values])
-        if self.debug: print insert_stmt
+        if self.debug:
+            print insert_stmt
         return insert_stmt
 
     def table_exists(self, dbname, tablename):
@@ -607,11 +633,13 @@ class Engine():
             name = self.table.name
         if not dbname:
             dbname = self.database_name()
-            if not dbname: dbname = ''
+            if not dbname:
+                dbname = ''
         return self.opts["table_name"].format(db=dbname, table=name)
 
     def warning(self, warning):
-        new_warning = Warning('%s:%s' % (self.script.shortname, self.table.name), warning)
+        new_warning = Warning('%s:%s' % (
+            self.script.shortname, self.table.name), warning)
         self.warnings.append(new_warning)
 
 

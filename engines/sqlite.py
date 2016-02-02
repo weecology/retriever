@@ -3,19 +3,20 @@ import platform
 from retriever.lib.models import Engine, no_cleanup
 from retriever import DATA_DIR
 
+
 class engine(Engine):
     """Engine instance for SQLite."""
     name = "SQLite"
     abbreviation = "sqlite"
     datatypes = {
-                 "auto": "INTEGER",
-                 "int": "INTEGER",
-                 "bigint": "INTEGER",
-                 "double": "REAL",
-                 "decimal": "REAL",
-                 "char": "TEXT",
-                 "bool": "INTEGER",
-                 }
+        "auto": "INTEGER",
+        "int": "INTEGER",
+        "bigint": "INTEGER",
+        "double": "REAL",
+        "decimal": "REAL",
+        "char": "TEXT",
+        "bool": "INTEGER",
+    }
     required_opts = [("file",
                       "Enter the filename of your SQLite database",
                       os.path.join(DATA_DIR, "sqlite.db"),
@@ -36,7 +37,8 @@ class engine(Engine):
     def table_exists(self, dbname, tablename):
         """Determine if the table already exists in the database"""
         if not hasattr(self, 'existing_table_names'):
-            self.cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+            self.cursor.execute(
+                "SELECT name FROM sqlite_master WHERE type='table';")
             self.existing_table_names = set()
             for line in self.cursor:
                 self.existing_table_names.add(line[0].lower())
