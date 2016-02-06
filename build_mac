@@ -1,11 +1,11 @@
 export DYLD_LIBRARY_PATH=/usr/local/mysql/lib/
 sudo rm -rf mac
-sudo arch -x86_64 python setup.py install
-sudo arch -x86_64 python setup.py py2app
+sudo  setup.py install
+sudo python setup.py py2app
 sudo mv dist mac
 sudo rm mac/*.egg
 sudo rm -rf mac/scripts
-sudo ditto --rsrc --arch x86_64 mac/retriever.app mac/retriever2.app
+sudo ditto --rsrc x86_64 mac/retriever.app mac/retriever2.app
 sudo rm -rf mac/retriever.app
 sudo mv mac/retriever2.app mac/retriever.app
 cd mac
