@@ -1,6 +1,6 @@
 export DYLD_LIBRARY_PATH=/usr/local/mysql/lib/
 sudo rm -rf mac
-sudo  setup.py install
+sudo python setup.py install
 sudo python setup.py py2app
 sudo mv dist mac
 sudo rm mac/*.egg
