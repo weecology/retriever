@@ -118,7 +118,7 @@ fetch = function(dataset, quiet=TRUE){
 #' }
 download = function(dataset, path='.', sub_dir=FALSE, log_dir=NULL) {
     if (sub_dir)
-        cmd = paste('retriever download', dataset, dataset, '-p', path, '--subdir')
+        cmd = paste('retriever download', dataset, '-p', path, '--subdir')
     else 
         cmd = paste('retriever download', dataset, '-p', path)
     if (!is.null(log_dir)) {
