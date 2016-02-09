@@ -8,7 +8,6 @@ import sys
 import zipfile
 import xlrd
 from retriever.lib.templates import Script
-from retriever.lib.tools import ScriptTest
 from retriever.lib.models import Table
 from retriever.lib.excel import Excel
 
@@ -227,22 +226,6 @@ U.S.A. """
         self.engine.add_to_table(data)
 
         return self.engine
-
-
-class GentryTest(ScriptTest):
-    def strvalue(self, value, col_num):
-        value = DbTkTest.strvalue(self, value, col_num)
-        if value[-3:] == ".00":
-            value = value[0:len(value) - 3]
-        return value
-    def test_Gentry(self):
-        ScriptTest.default_test(self,
-                                main(),
-                                [("species",
-                                  "8673559a7e35f1d2925d4add6d7347f7",
-                                  "species_id")
-                                ],
-                                include_pk = True)
 
 
 SCRIPT = main()
