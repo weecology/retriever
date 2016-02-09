@@ -67,8 +67,6 @@ class DownloadThread(Thread):
             error = True
             print "<b><font color='red'>Error: " + e.__str__() + "</font></b>"
 
-        final_cleanup(engine)
-
         if not error:
             finish = time()
 
