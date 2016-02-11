@@ -102,8 +102,8 @@ class DownloadManager:
 
             current_progress = progress(s)
             if current_progress:
-                (keepgoing, skip) = self.dialog.Update(current_progress, s)
-            else:
+            #     (keepgoing, skip) = self.dialog.Update(current_progress, s) #enable remaining time
+            # else:
                 (keepgoing, skip) = self.dialog.Pulse(s)
 
             if not keepgoing:
