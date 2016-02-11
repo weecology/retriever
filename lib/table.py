@@ -1,6 +1,7 @@
-from retriever.lib.cleanup import *
 import csv
 import StringIO
+
+from retriever.lib.cleanup import *
 
 
 class Table:
@@ -13,13 +14,13 @@ class Table:
         self.header_rows = 1
         self.column_names_row = 1
         self.fixed_width = False
-        self.cleaned_columns = False
         self.cleanup = Cleanup()
         self.record_id = 0
         self.columns = []
         self.replace_columns = []
         self.escape_single_quotes=True
         self.escape_double_quotes=True
+        self.cleaned_columns = False
         for key, item in kwargs.items():
             setattr(self, key, item[0] if isinstance(item, tuple) else item)
 
@@ -39,38 +40,54 @@ class Table:
             column_names = [name.strip() for name in values]
 
         columns = map(lambda x: self.clean_column_name(x), column_names)
-        self.cleaned_columns = True
         column_values = {x:[] for x in columns if x}
-
+        self.cleaned_columns = True
         return [[x, None] for x in columns if x], column_values
 
     def clean_column_name(self, column_name):
-        '''Makes sure a column name is formatted correctly by removing reserved
-        words, symbols, numbers, etc.'''
-        column_name = column_name.lower()
+        """Clean column names using the expected sql guidelines
+
+        remove leading whitespaces, replace sql key words, etc..
+        """
+        column_name = column_name.lower().strip()
         replace_columns = {old.lower(): new.lower()
                            for old, new in self.replace_columns}
-        column_name = replace_columns.get(column_name, column_name)
-        replace = [
-                   ("%", "percent"),
-                   ("&", "and"),
-                   ("\xb0", "degrees"),
-                   ("group", "grp"),
-                   ("order", "sporder"),
-                   ("check", "checked"),
-                   ("references", "refs"),
-                   ("long", "lon"),
-                   ("date", "record_date"),
-                   ("?", ""),
-                   ]
-        replace += [(x, '') for x in (")", "\n", "\r", '"', "'")]
-        replace += [(x, '_') for x in (" ", "(", "/", ".", "-")]
-        column_name = reduce(lambda x, y: x.replace(*y), replace, column_name)
 
+        column_name = replace_columns.get(column_name, column_name).strip()
+        replace = [
+            ("%", "percent"),
+            ("&", "and"),
+            ("\xb0", "degrees"),
+            ("?", ""),
+        ]
+        replace += [(x, '') for x in (")", "\n", "\r", '"', "'")]
+        replace += [(x, '_') for x in (" ", "(", "/", ".", "-", "*", ":")]
+        column_name = reduce(lambda x, y: x.replace(*y), replace, column_name)
         while "__" in column_name:
             column_name = column_name.replace("__", "_")
         column_name = column_name.lstrip("0123456789_").rstrip("_")
-
+        replace_dict = {
+            "group": "grp",
+            "order": "ordered",
+            "check": "checked",
+            "references": "refs",
+            "long": "lon",
+            "column": "columns",
+            "cursor": "cursors",
+            "delete": "deleted",
+            "insert": "inserted",
+            "join": "joins",
+            "select": "selects",
+            "table": "tables",
+            "update": "updates",
+            "date": "record_date"
+        }
+        for x in (")", "\n", "\r", '"', "'"):
+            replace_dict[x] = ''
+        for x in (" ", "(", "/", ".", "-"):
+            replace_dict[x] = '_'
+        if column_name in replace_dict:
+            column_name = replace_dict[column_name]
         return column_name
 
     def split_on_delimiter(self, line):
@@ -155,4 +172,3 @@ class Table:
                 if item == column[0]:
                     columns.append(column[1][0])
         return columns
-
