@@ -102,8 +102,9 @@ class DownloadManager:
 
             current_progress = progress(s)
             if current_progress:
-                (keepgoing, skip) = self.dialog.Update(current_progress, s)
-            else:
+            # download progress remaining-time disabled. causes bottle neck on Gentry ref: #396.
+            #     (keepgoing, skip) = self.dialog.Update(current_progress, s)
+            # else:
                 (keepgoing, skip) = self.dialog.Pulse(s)
 
             if not keepgoing:
