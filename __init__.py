@@ -16,8 +16,8 @@ current_platform = platform.system().lower()
 if current_platform != 'windows':
     import pwd
 
-VERSION = 'v1.8.3'
-MASTER = False
+VERSION = 'v1.9.0-dev'
+MASTER = True
 
 REPO_URL = "https://raw.github.com/weecology/retriever/"
 MASTER_BRANCH = REPO_URL + "master/"
