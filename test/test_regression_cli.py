@@ -1,7 +1,9 @@
 import os
+import shutil
 import nose
 from unittest import TestCase
 from hashlib import md5
+from glob import glob
 
 # First md5 is for csv, second md5 is for sqlite
 known_md5s = {
@@ -31,11 +33,13 @@ known_md5s = {
 def setup_module():
     """Update retriever scripts and cd to test directory to find data"""
     os.chdir("./test/")
+    os.mkdir("downloaddir")
     os.system("retriever update")
 
 def teardown_module():
     """Cleanup temporary output files after testing and return to root directory"""
     os.system("rm output_*")
+    shutil.rmtree("downloaddir")
     os.chdir("..")
 
 def getmd5(filename):
@@ -120,8 +124,9 @@ class PostgreSQLRegression(TestCase):
 class DownloadRegression(TestCase):
     def check_download_regression(self, dataset, known_md5):
         """Check for regression for a particular dataset downloaded only"""
-        os.system("retriever download {0} -p raw_data/{0}".format(dataset))
-        current_md5 = getmd5dir("raw_data/%s" %(dataset))
+        os.system("rm downloaddir/*")
+        os.system("retriever download {0} -p downloaddir".format(dataset))
+        current_md5 = getmd5dir("downloaddir")
         assert current_md5 == known_md5
 
 
