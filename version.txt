@@ -1,5 +1,5 @@
-v1.8.1
-AmnioteLH.script,af240497a9406cd0e81387684d28c5f2
+v1.8.2
+AmnioteLH.script,2d2364ec980e28de026694e3cbeb6e74
 baad.py,d3f077ceb5904f5269bdfff6ec1c6592
 Baldridge2012.script,d2bf0c85917a3446e0572023f302798c
 bbs.py,b9e1d6385f78ddfb53bf406160a6749a
@@ -19,7 +19,7 @@ EA_ernest2003.script,e75dd0119e065bde04603d5c9c5f1d66
 EA_Fray_Jorge2013.script,3eb0add273eba9c48f3ae1c52535a6ad
 EA_Luo.script,44960c940e506178857f2447a2e20a05
 EA_lynch2013.script,2d53d5ed471de8476cf71e70cdcd79a3
-EA_Matter_2014.script,5020eb373f2c500a645bcb4ef7cdf000
+EA_Matter_2014.script,9dfaaee7e417b6683328925613650050
 EA_mcglinn2010.script,6a883091d0dbd4e55309b96ceb15ab5f
 EA_mom2003.script,56e84865dd8ccd4f7eab7de579cee166
 EA_palmer2007.script,4a7c57375f41485139aa8807f614706f
@@ -37,7 +37,7 @@ EA_woods2009.script,4b84bac7e743ec9c436b8ed70c58ec68
 EA_zachmann2010.script,a2cfc4ecb2dae775df3626802e1280a0
 eBird_observation.py,d1056ce5ac29743d24399fe9822f0c03
 fia.py,9a745556ce7d1ec26f6c4773064edc80
-gentry.py,cdb2e2fe99c26fcf494f555f21916047
+gentry.py,071e62215874e25770eea013e5f5b46d
 gwdd.py,80986dc49b6d92467daf2c3328d74063
 MammalDiet.script,c9c45762f424122caf4a51631d76d13c
 MammalSuperTree.py,bc67d068d41064bfb73fa9d4e6c283e3

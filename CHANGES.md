@@ -1,3 +1,7 @@
+# v1.8.3
+
+* Fixed regression in GUI
+
 # v1.8.2
 
 * Improved cleaning of column names
