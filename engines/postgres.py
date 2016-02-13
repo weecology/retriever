@@ -64,6 +64,7 @@ class engine(Engine):
         return statement.replace(" DATABASE ", " SCHEMA ")
 
     def escape_single_quotes(self, value):
+        """Escapes single quotes in the value"""
         return value.replace("'", "''")
 
     def insert_data_from_file(self, filename):
@@ -108,6 +109,7 @@ CSV HEADER"""
         return (dbname.lower(), tablename.lower()) in self.existing_table_names
 
     def format_insert_value(self, value, datatype):
+        """Formats a value for an insert statement"""
         if datatype == "bool":
             try:
                 if int(value) == 1:

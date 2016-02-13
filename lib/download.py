@@ -19,6 +19,7 @@ class DownloadThread(Thread):
         self.done = False
 
     def run(self):
+        """Initiates the download"""
         try:
             self.engine.connect()
             self.download_script()
@@ -30,6 +31,7 @@ class DownloadThread(Thread):
             return
 
     def finished(self):
+        """Returns True if the download is complete"""
         return self.done
 
     def download_script(self):

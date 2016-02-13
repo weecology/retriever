@@ -33,6 +33,7 @@ class engine(Engine):
                      ]
 
     def table_exists(self, dbname, tablename):
+        """Checks if the file to be downloaded already exists"""
         try:
             tablename = self.table_name(name=tablename, dbname=dbname)
             return os.path.exists(tablename)
@@ -45,6 +46,12 @@ class engine(Engine):
         return DummyConnection()
 
     def final_cleanup(self):
+        """Copies downloaded files to desired directory
+
+        Copies the downloaded files into the chosen directory unless files with the same
+        name already exist in the directory.
+
+        """
         if hasattr(self, "all_files"):
             for file_name in self.all_files:
                 file_path, file_name_nopath = os.path.split(file_name)
@@ -70,6 +77,7 @@ class engine(Engine):
         self.all_files = set()
 
     def auto_create_table(self, table, url=None, filename=None, pk=None):
+        """Download the file if it doesn't exist"""
         if url and not filename:
             filename = filename_from_url(url)
 
@@ -78,6 +86,7 @@ class engine(Engine):
             self.download_file(url, filename)
 
     def insert_data_from_url(self, url):
+        """Insert data from a web resource"""
         filename = filename_from_url(url)
         find = self.find_file(filename)
         if not find:
@@ -85,6 +94,7 @@ class engine(Engine):
             self.download_file(url, filename)
 
     def find_file(self, filename):
+        """Checks for the given file and adds it to the list of all files"""
         result = Engine.find_file(self, filename)
         if not hasattr(self, "all_files"): self.all_files = set()
         if result: self.all_files.add(result)
