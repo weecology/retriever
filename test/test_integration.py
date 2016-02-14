@@ -16,7 +16,7 @@ crosstab = {'name': 'crosstab',
             'script': "shortname: crosstab\ntable: crosstab, http://example.com/crosstab.txt\n*column: record_id, pk-auto\n*column: a, int\n*column: b, int\n*ct_column: c\n*column: val, ct-double\n*ct_names: c1,c2",
             'expect_out': '"record_id","a","b","c","val"\n3,1,1,"c1",1.1\n4,1,1,"c2",1.2\n5,1,2,"c1",2.1\n6,1,2,"c2",2.2'}
 
-tests = [simple_csv]
+tests = [simple_csv, crosstab]
 
 def setup_module():
     """Put raw data and scripts in appropriate .retriever directories"""
@@ -51,3 +51,12 @@ def test_csv_from_csv():
         obs_out = obs_out_file.read()
     print len(obs_out)
     assert obs_out == simple_csv['expect_out']
+
+def test_crosstab_from_csv():
+    crosstab_module = get_script_module('crosstab')
+    crosstab_module.SCRIPT.download(csv_engine)
+    crosstab_module.SCRIPT.engine.disconnect()
+    with open("crosstab_crosstab.txt", 'r') as obs_out_file:
+        obs_out = obs_out_file.read()
+    print len(obs_out)
+    assert obs_out == crosstab['expect_out']
