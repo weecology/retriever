@@ -238,8 +238,12 @@ class Engine():
             self.table.columns.append((column[0], tuple(column[1])))
 
     def auto_get_delimiter(self, header):
-        # Determine the delimiter by finding out which of a set of common
-        # delimiters occurs most in the header line
+        """Determine the delimiter
+
+        Find out which of a set of common delimiters occurs most in the header
+        line and use this as the delimiter.
+
+        """
         self.table.delimiter = "\t"
         for other_delimiter in [",", ";"]:
             if header.count(other_delimiter) > header.count(self.table.delimiter):
@@ -348,6 +352,7 @@ class Engine():
         return create_stmt
 
     def database_name(self, name=None):
+        """Returns the name of the database"""
         if not name:
             try:
                 name = self.script.shortname
@@ -431,17 +436,21 @@ class Engine():
         return dropstatement
 
     def escape_single_quotes(self, value):
+        """Escapes single quotes in the value"""
         return value.replace("'", "\\'")
 
     def escape_double_quotes(self, value):
+        """Escapes double quotes in the value"""
         return value.replace('"', '\\"')
 
     def execute(self, statement, commit=True):
+        """Executes the given statement"""
         self.cursor.execute(statement)
         if commit:
             self.connection.commit()
 
     def exists(self, script):
+        """Checks to see if the given table exists"""
         return all([self.table_exists(
                     script.shortname,
                     key
@@ -457,6 +466,7 @@ class Engine():
         self.disconnect()
 
     def find_file(self, filename):
+        """Checks for an existing datafile"""
         for search_path in DATA_SEARCH_PATHS:
             search_path = search_path.format(dataset=self.script.shortname)
             file_path = os.path.normpath(os.path.join(search_path, filename))
@@ -629,6 +639,7 @@ def file_exists(path):
 
 
 def filename_from_url(url):
+    """Extracts and returns the filename from the url"""
     return url.split('/')[-1].split('?')[0]
 
 
