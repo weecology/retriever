@@ -20,10 +20,11 @@ def download_from_repository(filepath, newpath, repo=REPOSITORY):
     """Downloads the latest version of a file from the repository."""
     try:
         filename = filepath.split('/')[-1]
-        def reporthook(a,b,c):
+
+        def reporthook(a, b, c):
             print "%3.1f-%s\n" % (min(100, float(a * b) / c * 100), filename),
             sys.stdout.flush()
-        
+
         urllib.urlretrieve(repo + filepath, newpath, reporthook=reporthook)
     except:
         raise
@@ -54,18 +55,21 @@ def check_for_updates(graphical=False):
 
         from retriever.app.splash import Splash
         splash = Splash()
-        #splash.Show()
+        # splash.Show()
         splash.SetText("\tLoading...")
 
         class update_progress:
+
             def __init__(self, parent):
                 self.parent = parent
+
             def write(self, s):
                 if s != "\n":
                     try:
                         self.parent.SetText('\t' + s)
                     except:
                         pass
+
             def flush(self):
                 pass
 
@@ -87,6 +91,7 @@ class InitThread(Thread):
     1. Check master/version.txt to get the latest version (Windows only).
     2. Prompt for update if necessary (Windows only).
     3. Download latest versions of scripts from current branch."""
+
     def run(self):
         try:
             running_from = os.path.basename(sys.argv[0])
@@ -94,16 +99,18 @@ class InitThread(Thread):
             # NOTE: exe auto-update functionality has been temporarily disabled
             # since the binaries were moved to AWS.
 
-            if False:#running_from[-4:] == ".exe":
+            if False:  # running_from[-4:] == ".exe":
                 if os.path.isfile('retriever_old.exe') and running_from != 'retriever_old.exe':
                     try:
                         os.remove('retriever_old.exe')
                     except:
                         pass
 
-                # Windows: open master branch version file to find out most recent executable version
+                # Windows: open master branch version file to find out most
+                # recent executable version
                 try:
-                    version_file = urllib.urlopen(MASTER_BRANCH + "version.txt")
+                    version_file = urllib.urlopen(
+                        MASTER_BRANCH + "version.txt")
                 except IOError:
                     print "Couldn't open version.txt from repository"
                     return
@@ -120,10 +127,11 @@ class InitThread(Thread):
                     if choice.ShowModal() == wx.ID_YES:
                         print "Updating to latest version. Please wait..."
                         try:
-                            if not "_old" in running_from:
+                            if "_old" not in running_from:
                                 os.rename(running_from,
-                                          '.'.join(running_from.split('.')[:-1])
-                                          + "_old." + running_from.split('.')[-1])
+                                          '.'.join(
+                                              running_from.split('.')[:-1]) +
+                                          "_old." + running_from.split('.')[-1])
                         except:
                             pass
 
@@ -133,7 +141,8 @@ class InitThread(Thread):
 
                         sys.stdout = sys.__stdout__
 
-                        wx.MessageBox("Update complete. The program will now restart.")
+                        wx.MessageBox(
+                            "Update complete. The program will now restart.")
 
                         os.execv(executable_name + ".exe", sys.argv)
 
@@ -141,11 +150,13 @@ class InitThread(Thread):
 
                 version_file.close()
 
-            # open version.txt for current release branch and get script versions
+            # open version.txt for current release branch and get script
+            # versions
             version_file = urllib.urlopen(REPOSITORY + "version.txt")
             version_file.readline()
-            
-            # read scripts from the repository and the checksums from the version.txt
+
+            # read scripts from the repository and the checksums from the
+            # version.txt
             scripts = []
             for line in version_file:
                 scripts.append(line.strip('\n').split(','))
@@ -153,7 +164,7 @@ class InitThread(Thread):
             # create script directory if not available
             if not os.path.isdir(SCRIPT_WRITE_PATH):
                 os.makedirs(SCRIPT_WRITE_PATH)
-            
+
             for script in scripts:
                 script_name = script[0]
                 if len(script) > 1:
@@ -162,7 +173,7 @@ class InitThread(Thread):
                     script_version = None
 
                 path_script_name = os.path.normpath(os.path.join(HOME_DIR, "scripts", script_name))
- 
+
                 if not file_exists(path_script_name):
                     print "Downloading script: " + script_name
                     download_from_repository("scripts/" + script_name,
@@ -186,7 +197,7 @@ class InitThread(Thread):
                     try:
                         os.remove(os.path.normpath(os.path.join(HOME_DIR,"scripts", script_name)))
                         download_from_repository("scripts/" + script_name,
-                                             os.path.normpath(os.path.join(SCRIPT_WRITE_PATH, script_name)))
+                                                 os.path.normpath(os.path.join(SCRIPT_WRITE_PATH, script_name)))
                     except Exception as e:
                         print e
                         pass

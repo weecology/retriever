@@ -1,11 +1,11 @@
-script_templates =  {
-"default": """#retriever
+script_templates = {
+    "default": """#retriever
 from retriever.lib.templates import BasicTextTemplate
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 
 SCRIPT = BasicTextTemplate(%s)""",
 
-"html_table": """#retriever
+    "html_table": """#retriever
 from retriever.lib.templates import HtmlTableTemplate
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 
@@ -40,12 +40,14 @@ def compile_script(script_file):
                         tables[table_name] = {'replace_columns': str(replace)}
             elif key == "*nulls":
                 if last_table:
-                    nulls = [eval(v) for v in [v.strip() for v in value.split(',')]]
+                    nulls = [eval(v) for v in [v.strip()
+                                               for v in value.split(',')]]
                     try:
                         tables[last_table]
                     except KeyError:
                         if replace:
-                            tables[last_table] = {'replace_columns': str(replace)}
+                            tables[last_table] = {
+                                'replace_columns': str(replace)}
                         else:
                             tables[last_table] = {}
                     tables[last_table]['cleanup'] = "Cleanup(correct_invalid_value, nulls=" + str(nulls) + ")"
@@ -55,11 +57,13 @@ def compile_script(script_file):
             elif key == "tags":
                 values["tags"] = [v.strip() for v in value.split(',')]
             elif key == "*ct_names":
-                tables[last_table]["ct_names"] = [v.strip() for v in value.split(',')]
+                tables[last_table]["ct_names"] = [v.strip()
+                                                  for v in value.split(',')]
             elif key == "*column":
                 if last_table:
                     vs = [v.strip() for v in value.split(',')]
-                    column = [(vs[0], (vs[1], vs[2]) if len(vs) > 2 else (vs[1],))]
+                    column = [
+                        (vs[0], (vs[1], vs[2]) if len(vs) > 2 else (vs[1],))]
                     try:
                         tables[last_table]
                     except KeyError:
@@ -70,7 +74,8 @@ def compile_script(script_file):
                     except KeyError:
                         tables[last_table]['columns'] = column
             elif key[0] == "*":
-                # attribute that should be applied to the most recently declared table
+                # attribute that should be applied to the most recently
+                # declared table
                 if key[0] == "*":
                     key = key[1:]
                 if last_table:
@@ -89,7 +94,7 @@ def compile_script(script_file):
                 # general script attributes
                 values[key] = '"' + value + '"'
 
-    if not 'shortname' in values.keys():
+    if 'shortname' not in values.keys():
         try:
             values['shortname'] = values['name']
         except:
@@ -105,7 +110,8 @@ def compile_script(script_file):
     table_desc = "{"
     for (key, value) in tables.items():
         table_desc += "'" + key + "': Table('" + key + "', "
-        table_desc += ','.join([key + "=" + str(value) for key, value, in value.items()])
+        table_desc += ','.join([key + "=" + str(value)
+                                for key, value, in value.items()])
         table_desc += "),"
     if table_desc != '{':
         table_desc = table_desc[:-1]
@@ -117,7 +123,7 @@ def compile_script(script_file):
     for key, value in values.items():
         if key == "url":
             key = "ref"
-        if not key in keys_to_ignore:
+        if key not in keys_to_ignore:
             script_desc.append(key + "=" + str(value))
     script_desc = (',\n' + ' ' * 27).join(script_desc)
 

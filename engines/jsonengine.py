@@ -6,15 +6,20 @@ import json
 from retriever.lib.models import Engine
 from retriever import DATA_DIR
 
+
 class DummyConnection:
     def cursor(self):
         pass
+
     def commit(self):
         pass
+
     def rollback(self):
         pass
+
     def close(self):
         pass
+
 
 class DummyCursor(DummyConnection):
     pass
@@ -25,19 +30,19 @@ class engine(Engine):
     name = "JSON"
     abbreviation = "json"
     datatypes = {
-                 "auto": "INTEGER",
-                 "int": "INTEGER",
-                 "bigint": "INTEGER",
-                 "double": "REAL",
-                 "decimal": "REAL",
-                 "char": "TEXT",
-                 "bool": "INTEGER",
-                 }
+        "auto": "INTEGER",
+        "int": "INTEGER",
+        "bigint": "INTEGER",
+        "double": "REAL",
+        "decimal": "REAL",
+        "char": "TEXT",
+        "bool": "INTEGER",
+    }
     required_opts = [
-                     ("table_name",
-                      "Format of table name",
-                      os.path.join(DATA_DIR, "{db}_{table}.json")),
-                     ]
+        ("table_name",
+         "Format of table name",
+         os.path.join(DATA_DIR, "{db}_{table}.json")),
+    ]
 
     def create_db(self):
         """Override create_db since there is no database just a JSON file"""
@@ -63,16 +68,16 @@ class engine(Engine):
             current_output_file = open(self.table_name(), "r")
             file_contents = current_output_file.readlines()
             current_output_file.close()
-            if(file_contents[-1]!=']'):
+            if (file_contents[-1] != ']'):
                 file_contents[-1] = file_contents[-1].strip(',')
                 file_contents.append('\n]')
             self.output_file = open(self.table_name(), "w")
             self.output_file.writelines(file_contents)
             self.output_file.close()
         except:
-            #when disconnect is called by app.connect_wizard.ConfirmPage to
-            #confirm the connection, output_file doesn't exist yet, this is
-            #fine so just pass
+            # when disconnect is called by app.connect_wizard.ConfirmPage to
+            # confirm the connection, output_file doesn't exist yet, this is
+            # fine so just pass
             pass
 
     def execute(self, statement, commit=True):
@@ -113,14 +118,13 @@ class engine(Engine):
                 return float(strvalue)
             else:
                 return None
-        elif datatype=="char":
+        elif datatype == "char":
             if strvalue.lower() in nulls:
                 return None
             else:
                 return strvalue
         else:
             return None
-
 
     def insert_statement(self, values):
         if not hasattr(self, 'auto_column_number'):
@@ -129,7 +133,8 @@ class engine(Engine):
         for i in range(len(self.table.columns)):
             column = self.table.columns[i]
             if 'auto' in column[1][0]:
-                values = values[:i+offset] + [self.auto_column_number] + values[i+offset:]
+                values = values[:i + offset] + \
+                         [self.auto_column_number] + values[i + offset:]
                 self.auto_column_number += 1
                 offset += 1
         # FIXME: Should nulls be inserted here? I'm guessing the should be
