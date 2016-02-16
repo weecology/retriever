@@ -31,68 +31,71 @@ for dir in (HOME_DIR, os.path.join(HOME_DIR, 'raw_data'), os.path.join(HOME_DIR,
         try:
             os.makedirs(dir)
             if (current_platform != 'windows') and os.getenv("SUDO_USER"):
-                # owner of .retriever should be user even when installing w/sudo
-                pw = pwd.getpwnam( os.getenv("SUDO_USER") )
+                # owner of .retriever should be user even when installing
+                # w/sudo
+                pw = pwd.getpwnam(os.getenv("SUDO_USER"))
                 os.chown(dir, pw.pw_uid, pw.pw_gid)
         except OSError:
             print "The Retriever lacks permission to access the ~/.retriever/ directory."
             raise
-SCRIPT_SEARCH_PATHS =   [
-                         "./",
-                         "scripts",
-                         os.path.join(HOME_DIR, 'scripts/'),
-                         ]
-SCRIPT_WRITE_PATH =     SCRIPT_SEARCH_PATHS[-1]
-DATA_SEARCH_PATHS =     [
-                         "./",
-                         "{dataset}",
-                         "raw_data/{dataset}",
-                         os.path.join(HOME_DIR, 'raw_data/{dataset}'),
-                         ]
-DATA_WRITE_PATH =       DATA_SEARCH_PATHS[-1]
+SCRIPT_SEARCH_PATHS = [
+    "./",
+    "scripts",
+    os.path.join(HOME_DIR, 'scripts/'),
+]
+SCRIPT_WRITE_PATH = SCRIPT_SEARCH_PATHS[-1]
+DATA_SEARCH_PATHS = [
+    "./",
+    "{dataset}",
+    "raw_data/{dataset}",
+    os.path.join(HOME_DIR, 'raw_data/{dataset}'),
+]
+DATA_WRITE_PATH = DATA_SEARCH_PATHS[-1]
 
 # Create default data directory
 isgui = len(sys.argv) == 1 or ((len(sys.argv) > 1 and sys.argv[1] == 'gui'))
 if current_platform == 'windows' and isgui:
     # The run path for installer based GUI on Windows is a system path.
-    # Users won't expect the data to be stored there, so store it on the Desktop
+    # Users won't expect the data to be stored there, so store it on the
+    # Desktop
     DATA_DIR = os.path.join(os.path.expanduser('~'), 'Desktop')
 else:
     DATA_DIR = '.'
+
 
 def MODULE_LIST(force_compile=False):
     """Load scripts from scripts directory and return list of modules."""
     modules = []
 
     for search_path in [search_path for search_path in SCRIPT_SEARCH_PATHS if exists(search_path)]:
-        to_compile = [file for file in os.listdir(search_path)
-                      if file[-7:] == ".script" and file[0] != "_"
-                      and ((not isfile(join(search_path, file[:-7] + '.py'))) or
-                           (isfile(join(search_path, file[:-7] + '.py')) and
-                            (getmtime(join(search_path, file[:-7] + '.py')) <
-                             getmtime(join(search_path, file))))
-                            or force_compile)
-                          ]
+        to_compile = [
+            file for file in os.listdir(search_path) if file[-7:] == ".script" and
+            file[0] != "_" and (
+                (not isfile(join(search_path, file[:-7] + '.py'))) or (
+                    isfile(join(search_path, file[:-7] + '.py')) and (
+                        getmtime(join(search_path, file[:-7] + '.py')) < getmtime(
+                            join(search_path, file)))) or force_compile)]
         for script in to_compile:
             script_name = '.'.join(script.split('.')[:-1])
             compile_script(join(search_path, script_name))
 
         files = [file for file in os.listdir(search_path)
-                 if file[-3:] == ".py" and file[0] != "_"
-                 and '#retriever' in open(join(search_path, file), 'r').readline().lower()]
+                 if file[-3:] == ".py" and file[0] != "_" and
+                 '#retriever' in open(join(search_path, file), 'r').readline().lower()]
 
         for script in files:
             script_name = '.'.join(script.split('.')[:-1])
             file, pathname, desc = imp.find_module(script_name, [search_path])
             try:
                 new_module = imp.load_module(script_name, file, pathname, desc)
-                if not new_module in modules:
+                if new_module not in modules:
                     # if the script wasn't found in an early search path
                     # make sure it works and then add it
                     new_module.SCRIPT.download
                     modules.append(new_module)
             except:
-                sys.stderr.write("Failed to load script: %s (%s)" % (script_name, search_path))
+                sys.stderr.write("Failed to load script: %s (%s)" %
+                                 (script_name, search_path))
 
     return modules
 
@@ -108,7 +111,8 @@ def ENGINE_LIST():
 
 def set_proxy():
     """Check for proxies and makes them available to urllib"""
-    proxies = ["https_proxy", "http_proxy", "ftp_proxy", "HTTP_PROXY", "HTTPS_PROXY", "FTP_PROXY"]
+    proxies = ["https_proxy", "http_proxy", "ftp_proxy",
+               "HTTP_PROXY", "HTTPS_PROXY", "FTP_PROXY"]
     for proxy in proxies:
         if os.getenv(proxy):
             if len(os.environ[proxy]) != 0:
@@ -117,7 +121,6 @@ def set_proxy():
                 break
 
 set_proxy()
-
 
 sample_script = """# basic information about the script
 name: Mammal Life History Database - Ernest, et al., 2003

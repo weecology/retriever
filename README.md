@@ -91,26 +91,26 @@ These examples are using Breeding Bird Survey data (BBS)
 
 Using Install
 
-  'retriever install -h   (gives install options)`
+  retriever install -h   (gives install options)
 
 Using specific database engine, retriever install {Engine}
 
-  `retriever install mysql -h     (gives install mysql options)`
-  `retriever install mysql --user myuser --password ******** --host localhost --port 8888 --database_name testdbase BBS'
+  retriever install mysql -h     (gives install mysql options)
+  retriever install mysql --user myuser --password ******** --host localhost --port 8888 --database_name testdbase BBS
 
 install data into an sqlite database named mydatabase.db you would use:
 
-  `retriever install sqlite BBS -f mydatabase.db`
+  retriever install sqlite BBS -f mydatabase.db
 
 Using download
 
-  `retriever download -h    (gives you help options)
-  `retriever download BBS"
-  `retriever download BBS --path C:\Users\Documents
+  retriever download -h    (gives you help options)
+  retriever download BBS"
+  retriever download BBS --path C:\Users\Documents
 
 Using citation
-  `retriever citation   (citation of the retriever engine)`
-  `retriever citation BBS   (citation of BBS data)` 
+  retriever citation   (citation of the retriever engine)
+  retriever citation BBS   (citation of BBS data) 
   ```
 
 

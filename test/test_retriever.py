@@ -12,10 +12,11 @@ from nose.tools import with_setup
 # Create simple engine fixture
 test_engine = Engine()
 test_engine.table = Table("test")
-test_engine.script = BasicTextTemplate(tables={'test':test_engine.table},
+test_engine.script = BasicTextTemplate(tables={'test': test_engine.table},
                                        shortname='test')
 test_engine.opts = {'database_name': '{db}_abc'}
 HOMEDIR = os.path.expanduser('~')
+
 
 def test_auto_get_columns():
     """Basic test of getting column labels from header"""
@@ -27,7 +28,8 @@ def test_auto_get_columns():
 def test_auto_get_columns_cleanup():
     """Test of automatically cleaning up column labels from header"""
     test_engine.table.delimiter = ","
-    columns, column_values = test_engine.table.auto_get_columns("a),b.b,c/c,d___d,group")
+    columns, column_values = test_engine.table.auto_get_columns(
+        "a),b.b,c/c,d___d,group")
     assert columns == [['a', None], ['b_b', None], ['c_c', None], ['d_d', None],
                        ['grp', None]]
 
@@ -62,7 +64,8 @@ def test_database_name():
 
 def test_drop_statement():
     "Test the creation of drop statements"
-    assert test_engine.drop_statement('TABLE', 'tablename') == "DROP TABLE IF EXISTS tablename"
+    assert test_engine.drop_statement(
+        'TABLE', 'tablename') == "DROP TABLE IF EXISTS tablename"
 
 
 def test_escape_single_quotes():
@@ -78,13 +81,15 @@ def test_escape_double_quotes():
 def test_extract_values():
     """Test extraction of values from line of data with already know delimiter"""
     test_engine.table.delimiter = ","
-    assert test_engine.table.extract_values('abcd,1,2,3.3') == ['abcd', '1', '2', '3.3']
+    assert test_engine.table.extract_values('abcd,1,2,3.3') == [
+        'abcd', '1', '2', '3.3']
 
 
 def test_extract_values_fixed_width():
     """Test extraction of values from line of fixed width data"""
     test_engine.table.fixed_width = [5, 2, 2, 3, 4]
-    assert test_engine.table.extract_values('abc  1 2 3  def ') == ['abc', '1', '2', '3', 'def']
+    assert test_engine.table.extract_values('abc  1 2 3  def ') == [
+        'abc', '1', '2', '3', 'def']
 
 
 def test_find_file_absent():
@@ -102,7 +107,8 @@ def test_find_file_present():
     """
     test_engine.script.shortname = 'AvianBodySize'
     os.chdir('./test/')
-    assert test_engine.find_file('avian_ssd_jan07.txt') == os.path.normpath('raw_data/AvianBodySize/avian_ssd_jan07.txt')
+    assert test_engine.find_file('avian_ssd_jan07.txt') == os.path.normpath(
+        'raw_data/AvianBodySize/avian_ssd_jan07.txt')
     os.chdir('..')
 
 
@@ -110,13 +116,14 @@ def test_format_data_dir():
     "Test if directory for storing data is properly formated"
     test_engine.script.shortname = "TestName"
     assert os.path.normpath(test_engine.format_data_dir()) == os.path.normpath(os.path.join(HOMEDIR,
-                                                         '.retriever/raw_data/TestName'))
+                                                                                            '.retriever/raw_data/TestName'))
+
 
 def test_format_filename():
     "Test if filenames for stored files are properly formated"
     test_engine.script.shortname = "TestName"
-    assert os.path.normpath(test_engine.format_filename('testfile.csv')) == os.path.normpath(os.path.join(HOMEDIR, 
-                                                                        '.retriever/raw_data/TestName/testfile.csv'))
+    assert os.path.normpath(test_engine.format_filename('testfile.csv')) == os.path.normpath(os.path.join(HOMEDIR,
+                                                                                                          '.retriever/raw_data/TestName/testfile.csv'))
 
 
 def test_format_insert_value_int():
@@ -131,12 +138,14 @@ def test_format_insert_value_double():
 
 def test_format_insert_value_string_simple():
     """Test formatting of values for insert statements"""
-    assert test_engine.format_insert_value('simple text', 'char') == "'simple text'"
+    assert test_engine.format_insert_value(
+        'simple text', 'char') == "'simple text'"
 
 
 def test_format_insert_value_string_complex():
     """Test formatting of values for insert statements"""
-    assert test_engine.format_insert_value('my notes: "have extra, stuff"', 'char') == '\'my notes: \\"have extra, stuff\\"\''
+    assert test_engine.format_insert_value(
+        'my notes: "have extra, stuff"', 'char') == '\'my notes: \\"have extra, stuff\\"\''
 
 
 def test_getmd5():

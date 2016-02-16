@@ -8,6 +8,7 @@ from retriever.lib.tools import final_cleanup
 
 
 class DownloadThread(Thread):
+
     def __init__(self, engine, script):
         Thread.__init__(self)
         self.engine = engine
@@ -42,6 +43,7 @@ class DownloadThread(Thread):
         start = time()
 
         class download_stdout:
+
             def write(self, s):
                 if s and s != '\n':
                     worker.output_lock.acquire()

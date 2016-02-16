@@ -2,20 +2,21 @@ import os
 from retriever.lib.models import Engine, no_cleanup
 from retriever import DATA_DIR, current_platform
 
+
 class engine(Engine):
     """Engine instance for Microsoft Access."""
     name = "Microsoft Access"
     instructions = """Create a database in Microsoft Access, close Access, then \nselect your database file using this dialog."""
     abbreviation = "msaccess"
     datatypes = {
-                 "auto": "AUTOINCREMENT",
-                 "int": "INTEGER",
-                 "bigint": "INTEGER",
-                 "double": "NUMERIC",
-                 "decimal": "NUMERIC",
-                 "char": "VARCHAR",
-                 "bool": "BIT",
-                 }
+        "auto": "AUTOINCREMENT",
+        "int": "INTEGER",
+        "bigint": "INTEGER",
+        "double": "NUMERIC",
+        "decimal": "NUMERIC",
+        "char": "VARCHAR",
+        "bool": "BIT",
+    }
     required_opts = [("file",
                       "Enter the filename of your Access database",
                       os.path.join(DATA_DIR, "access.mdb"),
@@ -23,7 +24,7 @@ class engine(Engine):
                      ("table_name",
                       "Format of table name",
                       "[{db} {table}]"),
-                      ]
+                     ]
 
     def convert_data_type(self, datatype):
         """MS Access can't handle complex Decimal types"""
@@ -32,7 +33,8 @@ class engine(Engine):
             converted = "NUMERIC"
         elif "VARCHAR" in converted:
             try:
-                length = int(converted.split('(')[1].split(')')[0].split(',')[0])
+                length = int(converted.split(
+                    '(')[1].split(')')[0].split(',')[0])
                 if length > 255:
                     converted = "TEXT"
             except:
@@ -56,12 +58,10 @@ class engine(Engine):
         """Perform a bulk insert."""
         self.get_cursor()
         ct = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
-        if ((self.table.cleanup.function == no_cleanup and not self.table.fixed_width and
-             self.table.header_rows < 2)
-            and (self.table.delimiter in ["\t", ","])
-            and not ct
-            and (not hasattr(self.table, "do_not_bulk_insert") or not self.table.do_not_bulk_insert)
-            ):
+        if (not (not (self.table.cleanup.function == no_cleanup and not self.table.fixed_width and
+                      self.table.header_rows < 2) or not (self.table.delimiter in ["\t", ","]) or ct) and
+                (not hasattr(self.table, "do_not_bulk_insert") or not self.table.do_not_bulk_insert)):
+
             print ("Inserting data from " + os.path.basename(filename) + "...")
 
             if self.table.delimiter == "\t":
@@ -94,7 +94,8 @@ class engine(Engine):
                     to_write = ""
 
                     for line in read:
-                        to_write += str(id) + self.table.delimiter + line.replace("\n", "\r\n")
+                        to_write += str(id) + self.table.delimiter + \
+                            line.replace("\n", "\r\n")
                         add_to_record_id += 1
                     self.table.record_id += add_to_record_id
 
@@ -137,11 +138,10 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
             for row in self.cursor.tables():
                 tableinfo = row[2]
                 if not tableinfo.startswith("MSys"):
-                    #ignore system tables
+                    # ignore system tables
                     database, table = tableinfo.split()
                     self.existing_table_names.add((database, table))
         return self.table_name(name=tablename, dbname=dbname).lower() in self.existing_table_names
-
 
     def get_connection(self):
         """Gets the db connection."""
@@ -151,6 +151,6 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
         self.get_input()
         if not os.path.exists(self.opts['file']) and self.opts['file'].endswith('.mdb'):
             dbapi.win_create_mdb(self.opts['file'])
-        connection_string = ("DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ="
-                             + os.path.abspath(self.opts["file"]).replace("/", "//") + ";")
-        return dbapi.connect(connection_string, autocommit = False)
+        connection_string = ("DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=" +
+                             os.path.abspath(self.opts["file"]).replace("/", "//") + ";")
+        return dbapi.connect(connection_string, autocommit=False)

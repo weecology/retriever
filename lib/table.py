@@ -6,6 +6,7 @@ from retriever.lib.cleanup import *
 
 class Table:
     """Information about a database table."""
+
     def __init__(self, name, **kwargs):
         self.name = name
         self.pk = True
@@ -18,8 +19,8 @@ class Table:
         self.record_id = 0
         self.columns = []
         self.replace_columns = []
-        self.escape_single_quotes=True
-        self.escape_double_quotes=True
+        self.escape_single_quotes = True
+        self.escape_double_quotes = True
         self.cleaned_columns = False
         for key, item in kwargs.items():
             setattr(self, key, item[0] if isinstance(item, tuple) else item)
@@ -40,7 +41,7 @@ class Table:
             column_names = [name.strip() for name in values]
 
         columns = map(lambda x: self.clean_column_name(x), column_names)
-        column_values = {x:[] for x in columns if x}
+        column_values = {x: [] for x in columns if x}
         self.cleaned_columns = True
         return [[x, None] for x in columns if x], column_values
 
@@ -52,8 +53,7 @@ class Table:
         column_name = column_name.lower().strip()
         replace_columns = {old.lower(): new.lower()
                            for old, new in self.replace_columns}
-
-        column_name = replace_columns.get(column_name, column_name).strip()
+        column_name = replace_columns.get(column_name, column_name)
         replace = [
             ("%", "percent"),
             ("&", "and"),
@@ -63,6 +63,7 @@ class Table:
         replace += [(x, '') for x in (")", "\n", "\r", '"', "'")]
         replace += [(x, '_') for x in (" ", "(", "/", ".", "-", "*", ":")]
         column_name = reduce(lambda x, y: x.replace(*y), replace, column_name)
+
         while "__" in column_name:
             column_name = column_name.replace("__", "_")
         column_name = column_name.lstrip("0123456789_").rstrip("_")
@@ -100,14 +101,15 @@ class Table:
         """Combine a list of values into a line of csv data"""
         dialect = csv.excel
         dialect.escapechar = "\\"
-        writer_file =  StringIO.StringIO()
-        writer = csv.writer(writer_file, dialect=dialect, delimiter=self.delimiter)
+        writer_file = StringIO.StringIO()
+        writer = csv.writer(writer_file, dialect=dialect,
+                            delimiter=self.delimiter)
         writer.writerow(line_as_list)
         return writer_file.getvalue()
 
     def values_from_line(self, line):
         linevalues = []
-        if (self.pk and self.contains_pk == False):
+        if (self.pk and self.contains_pk is False):
             column = 0
         else:
             column = -1
@@ -139,7 +141,7 @@ class Table:
             pos = 0
             values = []
             for width in self.fixed_width:
-                values.append(line[pos:pos+width].strip())
+                values.append(line[pos:pos + width].strip())
                 pos += width
             return values
         else:
@@ -155,8 +157,8 @@ class Table:
             self.cleaned_columns = True
         for item in self.columns:
             thistype = item[1][0]
-            if ((thistype != "skip") and (thistype !="combine") and
-                (self.contains_pk == True or thistype[0:3] != "pk-")):
+            if ((thistype != "skip") and (thistype != "combine") and
+                    (self.contains_pk is True or thistype[0:3] != "pk-")):
                 columns += item[0] + ", "
         columns = columns.rstrip(', ')
         if join:
