@@ -3,7 +3,7 @@
 import os
 import json
 
-from retriever.lib.models import Engine, no_cleanup
+from retriever.lib.models import Engine
 from retriever import DATA_DIR
 
 
@@ -88,14 +88,11 @@ class engine(Engine):
         """Formats a value for an insert statement
 
         Overrides default behavior by:
-        1. Storing decimal numbers as floats rather than strings
-        2. Not escaping quotes (handled by the json module)
-        3. Replacing "null" with None which will convert to the 'null' keyword
-           in json
-
+            1. Storing decimal numbers as floats rather than strings
+            2. Not escaping quotes (handled by the json module)
+            3. Replacing "null" with None which will convert to the 'null' keyword
+               in json
         """
-        #TODO There is a lot of duplicated code with engine.format_insert_value
-        #Refactoring so that this code could be properly shared would be preferable
         datatype = datatype.split('-')[-1]
         strvalue = str(value).strip()
 
@@ -143,7 +140,7 @@ class engine(Engine):
         # FIXME: Should nulls be inserted here? I'm guessing the should be
         # skipped. Find out.
         datadict = {column[0]: value for column,
-                                         value in zip(self.table.columns, values)}
+                    value in zip(self.table.columns, values)}
         return json.dumps(datadict)
 
     def table_exists(self, dbname, tablename):

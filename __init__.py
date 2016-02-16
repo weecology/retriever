@@ -9,8 +9,9 @@ import os
 import sys
 from os.path import join, isfile, getmtime, exists
 import imp
-from lib.compile import compile_script
 import platform
+
+from lib.compile import compile_script
 
 current_platform = platform.system().lower()
 if current_platform != 'windows':
@@ -18,7 +19,7 @@ if current_platform != 'windows':
 
 VERSION = 'v1.9.0-dev'
 MASTER = True
-
+COPYRIGHT = "Copyright (C) 2011-2016 Weecology University of Florida"
 REPO_URL = "https://raw.github.com/weecology/retriever/"
 MASTER_BRANCH = REPO_URL + "master/"
 REPOSITORY = MASTER_BRANCH if MASTER else REPO_URL + VERSION + "/"
