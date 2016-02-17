@@ -25,12 +25,9 @@ TEST_ENGINES = dict()
 def name_matches(scripts, arg):
     matches = []
     for script in scripts:
-        if arg.lower() == script.shortname.lower():
-            return [script]
-        max_ratio = max([difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in
-                         (script.shortname.lower(), script.name.lower(), script.filename.lower())] +
-                        [difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in [
-                            tag.strip().lower() for tagset in script.tags for tag in tagset]]
+        if arg.lower() == script.shortname.lower(): return [script]
+        max_ratio = max([difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in (script.shortname.lower(), script.name.lower(), script.filename.lower())] +
+                        [difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in [tag.strip().lower() for tagset in script.tags for tag in tagset]]
                         )
         if arg.lower() == 'all':
             max_ratio = 1.0

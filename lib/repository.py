@@ -172,8 +172,7 @@ class InitThread(Thread):
                 else:
                     script_version = None
 
-                path_script_name = os.path.normpath(
-                    os.path.join(HOME_DIR, "scripts", script_name))
+                path_script_name = os.path.normpath(os.path.join(HOME_DIR, "scripts", script_name))
 
                 if not file_exists(path_script_name):
                     print "Downloading script: " + script_name
@@ -185,13 +184,10 @@ class InitThread(Thread):
                 need_to_download = False
 
                 try:
-                    file, pathname, desc = imp.find_module(
-                        ''.join(script_name.split('.')[:-1]), ["scripts"])
-                    new_module = imp.load_module(
-                        script_name, file, pathname, desc)
+                    file, pathname, desc = imp.find_module(''.join(script_name.split('.')[:-1]), ["scripts"])
+                    new_module = imp.load_module(script_name, file, pathname, desc)
                     m = md5()
-                    m.update(''.join(getsourcelines(new_module)
-                                     [0]).replace("\r\n", "\n"))
+                    m.update(''.join(getsourcelines(new_module)[0]).replace("\r\n", "\n"))
                     m = m.hexdigest()
                     need_to_download = script_version != m
                 except:
@@ -199,8 +195,7 @@ class InitThread(Thread):
 
                 if need_to_download:
                     try:
-                        os.remove(os.path.normpath(os.path.join(
-                            HOME_DIR, "scripts", script_name)))
+                        os.remove(os.path.normpath(os.path.join(HOME_DIR,"scripts", script_name)))
                         download_from_repository("scripts/" + script_name,
                                                  os.path.normpath(os.path.join(SCRIPT_WRITE_PATH, script_name)))
                     except Exception as e:

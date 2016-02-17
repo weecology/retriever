@@ -1,4 +1,5 @@
-import os, platform
+import os
+import platform
 import shutil
 import inspect
 
@@ -136,8 +137,7 @@ keep_methods = {'table_exists',
                 }
 remove_methods = ['insert_data_from_file']
 for name, method in methods:
-    if (
-            name not in keep_methods and
+    if (name not in keep_methods and
             'download' not in name and
             'file' not in name and
             'dir' not in name):

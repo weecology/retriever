@@ -33,8 +33,7 @@ class engine(Engine):
             converted = "NUMERIC"
         elif "VARCHAR" in converted:
             try:
-                length = int(converted.split(
-                    '(')[1].split(')')[0].split(',')[0])
+                length = int(converted.split('(')[1].split(')')[0].split(',')[0])
                 if length > 255:
                     converted = "TEXT"
             except:
@@ -58,10 +57,12 @@ class engine(Engine):
         """Perform a bulk insert."""
         self.get_cursor()
         ct = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
-        if (not (not (self.table.cleanup.function == no_cleanup and not self.table.fixed_width and
-                      self.table.header_rows < 2) or not (self.table.delimiter in ["\t", ","]) or ct) and
-                (not hasattr(self.table, "do_not_bulk_insert") or not self.table.do_not_bulk_insert)):
-
+        if ((self.table.cleanup.function == no_cleanup and not self.table.fixed_width and
+             self.table.header_rows < 2)
+            and (self.table.delimiter in ["\t", ","])
+            and not ct
+            and (not hasattr(self.table, "do_not_bulk_insert") or not self.table.do_not_bulk_insert)
+            ):
             print ("Inserting data from " + os.path.basename(filename) + "...")
 
             if self.table.delimiter == "\t":
@@ -94,8 +95,7 @@ class engine(Engine):
                     to_write = ""
 
                     for line in read:
-                        to_write += str(id) + self.table.delimiter + \
-                            line.replace("\n", "\r\n")
+                        to_write += str(id) + self.table.delimiter + line.replace("\n", "\r\n")
                         add_to_record_id += 1
                     self.table.record_id += add_to_record_id
 

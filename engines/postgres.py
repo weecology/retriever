@@ -72,10 +72,11 @@ class engine(Engine):
         self.get_cursor()
         ct = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
         if (([self.table.cleanup.function, self.table.delimiter,
-                self.table.header_rows] == [no_cleanup, ",", 1]) and not
-                self.table.fixed_width and not
-            ct and (not hasattr(self.table, "do_not_bulk_insert") or not
-                    self.table.do_not_bulk_insert)):
+             self.table.header_rows] == [no_cleanup, ",", 1])
+            and not self.table.fixed_width
+            and not ct
+            and (not hasattr(self.table, "do_not_bulk_insert") or not self.table.do_not_bulk_insert)
+            ):
             columns = self.table.get_insert_columns()
             filename = os.path.abspath(filename)
             statement = """

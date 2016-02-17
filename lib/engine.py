@@ -61,8 +61,7 @@ class Engine():
             real_lines = []
             for line in lines:
                 split_line = self.table.split_on_delimiter(line)
-                initial_cols = len(self.table.columns) - \
-                    (3 if hasattr(self.table, "ct_names") else 2)
+                initial_cols = len(self.table.columns) - (3 if hasattr(self.table, "ct_names") else 2)
                 begin = split_line[:initial_cols]
                 rest = split_line[initial_cols:]
                 n = 0
@@ -103,8 +102,7 @@ class Engine():
                                                             types[n])
                                    for n in range(len(linevalues))]
                 except Exception as e:
-                    self.warning('Exception in line %s: %s' %
-                                 (self.table.record_id, e))
+                    self.warning('Exception in line %s: %s' % (self.table.record_id, e))
                     continue
                 try:
                     insert_stmt = self.insert_statement(cleanvalues)
@@ -178,12 +176,8 @@ class Engine():
 
             self.auto_get_datatypes(pk, lines, columns, column_values)
 
-        if self.table.columns[-1][1][0][:3] == "ct-" and hasattr(self.table,
-                                                                 "ct_names") and self.table.ct_column not in [c[0] for c
-                                                                                                              in
-                                                                                                              self.table.columns]:
-            self.table.columns = self.table.columns[
-                :-1] + [(self.table.ct_column, ("char", 20))] + [self.table.columns[-1]]
+        if self.table.columns[-1][1][0][:3] == "ct-" and hasattr(self.table, "ct_names") and not self.table.ct_column in [c[0] for c in self.table.columns]:
+            self.table.columns = self.table.columns[:-1] + [(self.table.ct_column, ("char", 20))] + [self.table.columns[-1]]
 
         self.create_table()
 
@@ -212,8 +206,7 @@ class Engine():
                         value = values[i]
 
                         if self.table.cleanup.function != no_cleanup:
-                            value = self.table.cleanup.function(
-                                value, self.table.cleanup.args)
+                            value = self.table.cleanup.function(value, self.table.cleanup.args)
 
                         if value is not None and value is not '':
                             if len(str(value)) > max_lengths[i]:
@@ -222,19 +215,16 @@ class Engine():
                             if column_types[i][0] in ('int', 'bigint'):
                                 try:
                                     value = int(value)
-                                    if column_types[i][0] == 'int' and hasattr(self,
-                                                                               'max_int') and value > self.max_int:
-                                        column_types[i] = ['bigint', ]
+                                    if column_types[i][0] == 'int' and hasattr(self, 'max_int') and value > self.max_int:
+                                        column_types[i] = ['bigint',]
                                 except:
                                     column_types[i] = ['double', ]
                             if column_types[i][0] == 'double':
                                 try:
                                     value = float(value)
-                                    if "e" in str(value) or (
-                                                    "." in str(value) and
-                                                    len(str(value).split(".")[1]) > 10):
-
-                                        column_types[i] = ["decimal", "30,20"]
+                                    if "e" in str(value) or ("." in str(value) and
+                                                             len(str(value).split(".")[1]) > 10):
+                                        column_types[i] = ["decimal","30,20"]
                                 except:
                                     column_types[i] = ['char', max_lengths[i]]
                             if column_types[i][0] == 'char':
@@ -398,8 +388,7 @@ class Engine():
             file = urllib.urlopen(url)
             local_file = open(path, 'wb')
             if clean_line_endings and (filename.split('.')[-1].lower() not in ["exe", "zip", "xls"]):
-                local_file.write(file.read().replace(
-                    "\r\n", "\n").replace("\r", "\n"))
+                local_file.write(file.read().replace("\r\n", "\n").replace("\r", "\n"))
             else:
                 local_file.write(file.read())
             local_file.close()
@@ -432,8 +421,7 @@ class Engine():
             else:
                 self.create_raw_data_dir()
                 if not downloaded:
-                    self.download_file(
-                        url, archivename, clean_line_endings=False)
+                    self.download_file(url, archivename, clean_line_endings=False)
                     downloaded = True
 
                 if filetype == 'zip':
@@ -649,8 +637,7 @@ class Engine():
         return self.opts["table_name"].format(db=dbname, table=name)
 
     def warning(self, warning):
-        new_warning = Warning('%s:%s' % (
-            self.script.shortname, self.table.name), warning)
+        new_warning = Warning('%s:%s' % (self.script.shortname, self.table.name), warning)
         self.warnings.append(new_warning)
 
 

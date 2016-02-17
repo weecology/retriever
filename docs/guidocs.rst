@@ -2,7 +2,7 @@
 Using the Gui
 =============
 
-To start the gui using command line
+To start the Gui using command line
 
 ::
 
@@ -94,9 +94,10 @@ In case you are using Postgres or MySQL engines
 The figure below shows the download page. 
 
 
-Menu::
+**Menu**
 
-   The File menu bar has:
+The File menu bar has::
+
    About: used to get infomation about the EcoData retriever like version being run 
    Connection:  Use this menu bar to change to other database systems
    Exit: To exit the program
@@ -106,7 +107,7 @@ Menu::
     :align: center
     
     
-To download data, click on the download icon which is shwon below:
+To download data, click on the download icon which is shown below:
 
 .. figure:: _appdoc/downloadicon.png
     :align: center

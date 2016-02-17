@@ -112,8 +112,7 @@ class MySQLRegression(TestCase):
         os.system("rm output_file*")
         # installing over an existing database changes the dump
         os.system('mysql -u travis -Bse "DROP DATABASE IF EXISTS testdb"')
-        os.system("retriever install mysql %s -u travis -d testdb" %
-                  dataset)  # user 'travis' for Travis CI
+        os.system("retriever install mysql %s -u travis -d testdb" %dataset)  # user 'travis' for Travis CI
         os.system("mysqldump testdb -u travis --compact --compatible=no_table_options --no-create-db --no-create-info --result-file=output_file")
         current_md5 = getmd5(unixfileformat("output_file"))
         assert current_md5 == known_md5
@@ -124,12 +123,9 @@ class PostgreSQLRegression(TestCase):
     def check_postgres_regression(self, dataset, known_md5):
         """Check for regression for a particular dataset imported to postgres"""
         os.system("rm output_file*")
-        os.system(
-            'psql -U postgres -d testdb -h localhost -c "DROP SCHEMA IF EXISTS testschema CASCADE"')
-        os.system(
-            "retriever install postgres %s -u postgres -d testdb -a testschema" % dataset)
-        os.system(
-            "pg_dump -n testschema --data-only -U postgres -h localhost -f output_file testdb")
+        os.system('psql -U postgres -d testdb -h localhost -c "DROP SCHEMA IF EXISTS testschema CASCADE"')
+        os.system("retriever install postgres %s -u postgres -d testdb -a testschema" % dataset)
+        os.system("pg_dump -n testschema --data-only -U postgres -h localhost -f output_file testdb")
         current_md5 = getmd5(unixfileformat("output_file"))
         assert current_md5 == known_md5
 

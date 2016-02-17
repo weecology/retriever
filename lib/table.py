@@ -101,9 +101,8 @@ class Table:
         """Combine a list of values into a line of csv data"""
         dialect = csv.excel
         dialect.escapechar = "\\"
-        writer_file = StringIO.StringIO()
-        writer = csv.writer(writer_file, dialect=dialect,
-                            delimiter=self.delimiter)
+        writer_file =  StringIO.StringIO()
+        writer = csv.writer(writer_file, dialect=dialect, delimiter=self.delimiter)
         writer.writerow(line_as_list)
         return writer_file.getvalue()
 
