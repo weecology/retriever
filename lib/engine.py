@@ -366,20 +366,13 @@ class Engine():
 
         return db_name
 
-    def download_file(self, url, filename, clean_line_endings=True):
+    def download_file(self, url, filename):
         """Downloads a file to the raw data directory."""
         if not self.find_file(filename):
-            path = self.format_filename(filename)
             self.create_raw_data_dir()
-            print "Downloading " + filename + "..."
-            file = urllib.urlopen(url)
-            local_file = open(path, 'wb')
-            if clean_line_endings and (filename.split('.')[-1].lower() not in ["exe", "zip", "xls"]):
-                local_file.write(file.read().replace("\r\n", "\n").replace("\r", "\n"))
-            else:
-                local_file.write(file.read())
-            local_file.close()
-            file.close()
+            path = self.format_filename(filename)
+            print "Downloading {}...".format(filename)
+            urllib.urlretrieve(url, path) 
 
     def download_files_from_archive(self, url, filenames, filetype="zip",
                                     keep_in_dir=False, archivename=None):
@@ -413,12 +406,12 @@ class Engine():
 
                 if filetype == 'zip':
                     archive = zipfile.ZipFile(archivename)
-                    open_archive_file = archive.open(filename)
+                    open_archive_file = archive.open(filename, 'rU')
                 elif filetype == 'gz':
                     #gzip archives can only contain a single file
-                    open_archive_file = gzip.open(archivename)
+                    open_archive_file = gzip.open(archivename, 'rU')
                 elif filetype == 'tar':
-                    archive = tarfile.open(filename)
+                    archive = tarfile.open(filename, 'rU')
                     open_archive_file = archive.extractfile(filename)
 
                 fileloc = self.format_filename(os.path.join(archivebase,

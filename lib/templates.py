@@ -112,7 +112,7 @@ class DownloadOnlyTemplate(Script):
             raise Exception("This dataset contains only non-tabular data files, and can only be used with the 'download only' engine.\nTry 'retriever download datasetname instead.")
         Script.download(self, engine, debug)
         for filename, url  in self.urls.items():
-            self.engine.download_file(url, filename, clean_line_endings=False)
+            self.engine.download_file(url, filename)
             if os.path.exists(self.engine.format_filename(filename)):
                 shutil.copy(self.engine.format_filename(filename), DATA_DIR)
             else:

@@ -53,7 +53,7 @@ U.S.A. """
         # Currently all_Excel.zip is missing CURUYUQU.xls
         # Download it separately and add it to the file list
         if not self.engine.find_file('CURUYUQU.xls'):
-            self.engine.download_file("http://www.mobot.org/mobot/gentry/123/samerica/CURUYUQU.xls", "CURUYUQU.xls", clean_line_endings=False)
+            self.engine.download_file("http://www.mobot.org/mobot/gentry/123/samerica/CURUYUQU.xls", "CURUYUQU.xls")
             filelist.append('CURUYUQU.xls')
 
         lines = []
