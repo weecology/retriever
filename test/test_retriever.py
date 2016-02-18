@@ -12,10 +12,11 @@ from nose.tools import with_setup
 # Create simple engine fixture
 test_engine = Engine()
 test_engine.table = Table("test")
-test_engine.script = BasicTextTemplate(tables={'test':test_engine.table},
+test_engine.script = BasicTextTemplate(tables={'test': test_engine.table},
                                        shortname='test')
 test_engine.opts = {'database_name': '{db}_abc'}
 HOMEDIR = os.path.expanduser('~')
+
 
 def test_auto_get_columns():
     """Basic test of getting column labels from header"""
@@ -110,12 +111,13 @@ def test_format_data_dir():
     "Test if directory for storing data is properly formated"
     test_engine.script.shortname = "TestName"
     assert os.path.normpath(test_engine.format_data_dir()) == os.path.normpath(os.path.join(HOMEDIR,
-                                                         '.retriever/raw_data/TestName'))
+                                                                                            '.retriever/raw_data/TestName'))
+
 
 def test_format_filename():
     "Test if filenames for stored files are properly formated"
     test_engine.script.shortname = "TestName"
-    assert os.path.normpath(test_engine.format_filename('testfile.csv')) == os.path.normpath(os.path.join(HOMEDIR, 
+    assert os.path.normpath(test_engine.format_filename('testfile.csv')) == os.path.normpath(os.path.join(HOMEDIR,
                                                                         '.retriever/raw_data/TestName/testfile.csv'))
 
 

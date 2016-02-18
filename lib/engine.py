@@ -30,7 +30,8 @@ class Engine():
     warnings = []
 
     def connect(self, force_reconnect=False):
-        if force_reconnect: self.disconnect()
+        if force_reconnect:
+            self.disconnect()
 
         if self._connection is None:
             self._connection = self.get_connection()
@@ -70,21 +71,24 @@ class Engine():
                         n += 1
                     else:
                         name = []
-                    real_lines.append(self.table.combine_on_delimiter(begin + name + [item]))
+                    real_lines.append(
+                        self.table.combine_on_delimiter(begin + name + [item]))
             real_line_length = len(real_lines)
         else:
             # this function returns a generator that iterates over the lines in
             # the source data
             def source_gen():
                 return (line for line in gen_from_source(data_source)
-                         if line.strip('\n\r\t '))
+                        if line.strip('\n\r\t '))
+
             # use one generator to compute the length of the input
             real_lines, len_source = source_gen(), source_gen()
             real_line_length = sum(1 for _ in len_source)
 
         total = self.table.record_id + real_line_length
         for line in real_lines:
-            if not self.table.fixed_width: line = line.strip()
+            if not self.table.fixed_width:
+                line = line.strip()
             if line:
                 self.table.record_id += 1
                 linevalues = self.table.values_from_line(line)
@@ -94,7 +98,7 @@ class Engine():
                 try:
                     cleanvalues = [self.format_insert_value(self.table.cleanup.function
                                                             (linevalues[n],
-                                                            self.table.cleanup.args),
+                                                             self.table.cleanup.args),
                                                             types[n])
                                    for n in range(len(linevalues))]
                 except Exception as e:
@@ -103,9 +107,12 @@ class Engine():
                 try:
                     insert_stmt = self.insert_statement(cleanvalues)
                 except:
-                    if self.debug: print types
-                    if self.debug: print linevalues
-                    if self.debug: print cleanvalues
+                    if self.debug:
+                        print types
+                    if self.debug:
+                        print linevalues
+                    if self.debug:
+                        print cleanvalues
                     raise
 
                 try:
@@ -113,9 +120,9 @@ class Engine():
                 except:
                     update_frequency = 100
 
-                if (self.table.record_id % update_frequency == 0
-                    or self.table.record_id == 1
-                    or self.table.record_id == total):
+                if (self.table.record_id % update_frequency == 0 or
+                        self.table.record_id == 1 or
+                        self.table.record_id == total):
                     prompt = "Inserting rows to " + self.table_name() + ": "
                     prompt += str(self.table.record_id) + " / " + str(total)
                     sys.stdout.write(prompt + "\b" * len(prompt))
@@ -201,7 +208,7 @@ class Engine():
                         if self.table.cleanup.function != no_cleanup:
                             value = self.table.cleanup.function(value, self.table.cleanup.args)
 
-                        if value != None and value != '':
+                        if value is not None and value is not '':
                             if len(str(value)) > max_lengths[i]:
                                 max_lengths[i] = len(str(value))
 
@@ -211,7 +218,7 @@ class Engine():
                                     if column_types[i][0] == 'int' and hasattr(self, 'max_int') and value > self.max_int:
                                         column_types[i] = ['bigint',]
                                 except:
-                                    column_types[i] = ['double',]
+                                    column_types[i] = ['double', ]
                             if column_types[i][0] == 'double':
                                 try:
                                     value = float(value)
@@ -219,14 +226,13 @@ class Engine():
                                                              len(str(value).split(".")[1]) > 10):
                                         column_types[i] = ["decimal","30,20"]
                                 except:
-                                    column_types[i] = ['char',max_lengths[i]]
+                                    column_types[i] = ['char', max_lengths[i]]
                             if column_types[i][0] == 'char':
                                 if len(str(value)) > column_types[i][1]:
                                     column_types[i][1] = max_lengths[i]
 
                     except IndexError:
                         pass
-
 
         for i in range(len(columns)):
             column = columns[i]
@@ -287,12 +293,15 @@ class Engine():
             print "Creating database " + db_name + "..."
             # Create the database
             create_stmt = self.create_db_statement()
-            if self.debug: print create_stmt
+            if self.debug:
+                print create_stmt
             try:
                 self.execute(create_stmt)
             except Exception as e:
-                try: self.connection.rollback()
-                except: pass
+                try:
+                    self.connection.rollback()
+                except:
+                    pass
                 print "Couldn't create database (%s). Trying to continue anyway." % e
 
     def create_db_statement(self):
@@ -320,12 +329,15 @@ class Engine():
             pass
 
         create_stmt = self.create_table_statement()
-        if self.debug: print create_stmt
+        if self.debug:
+            print create_stmt
         try:
             self.execute(create_stmt)
         except Exception as e:
-            try: self.connection.rollback()
-            except: pass
+            try:
+                self.connection.rollback()
+            except:
+                pass
             print "Couldn't create table (%s). Trying to continue anyway." % e
 
     def create_table_statement(self):
@@ -340,7 +352,8 @@ class Engine():
                 if column[0] == column_name:
                     types.append(self.convert_data_type(column[1]))
 
-        if self.debug: print columns
+        if self.debug:
+            print columns
 
         column_strings = []
         for c, t in zip(columns, types):
@@ -415,7 +428,7 @@ class Engine():
                     archive = zipfile.ZipFile(archivename)
                     open_archive_file = archive.open(filename)
                 elif filetype == 'gz':
-                    #gzip archives can only contain a single file
+                    # gzip archives can only contain a single file
                     open_archive_file = gzip.open(archivename)
                 elif filetype == 'tar':
                     archive = tarfile.open(filename)
@@ -428,7 +441,8 @@ class Engine():
                     unzipped_file.write(line)
                 open_archive_file.close()
                 unzipped_file.close()
-                if 'archive' in locals(): archive.close()
+                if 'archive' in locals():
+                    archive.close()
 
     def drop_statement(self, objecttype, objectname):
         """Returns a drop table or database SQL statement."""
@@ -452,10 +466,10 @@ class Engine():
     def exists(self, script):
         """Checks to see if the given table exists"""
         return all([self.table_exists(
-                    script.shortname,
-                    key
-                    )
-                    for key in script.urls.keys() if key])
+            script.shortname,
+            key
+        )
+            for key in script.urls.keys() if key])
 
     def final_cleanup(self):
         """Close the database connection."""
@@ -510,7 +524,7 @@ class Engine():
                 return strvalue
             else:
                 return "null"
-        elif datatype=="char":
+        elif datatype == "char":
             if strvalue.lower() in nulls:
                 return "null"
 
@@ -521,8 +535,8 @@ class Engine():
                 strvalue = self.escape_single_quotes(strvalue)
 
             return "'" + strvalue + "'"
-        #elif datatype=="bool":
-            #return "'true'" if value else "'false'"
+            # elif datatype=="bool":
+            # return "'true'" if value else "'false'"
         else:
             return "null"
 
@@ -569,7 +583,7 @@ class Engine():
         for inserting bulk data from files can override this function."""
         data_source = (skip_rows,
                        (self.table.header_rows,
-                       (open, (filename, 'r'))))
+                        (open, (filename, 'r'))))
         self.add_to_table(data_source)
 
     def insert_data_from_url(self, url):
@@ -603,7 +617,8 @@ class Engine():
                                                    types[n]))
             n += 1
         insert_stmt %= tuple([str(value) for value in values])
-        if self.debug: print insert_stmt
+        if self.debug:
+            print insert_stmt
         return insert_stmt
 
     def table_exists(self, dbname, tablename):
@@ -617,7 +632,8 @@ class Engine():
             name = self.table.name
         if not dbname:
             dbname = self.database_name()
-            if not dbname: dbname = ''
+            if not dbname:
+                dbname = ''
         return self.opts["table_name"].format(db=dbname, table=name)
 
     def warning(self, warning):
@@ -647,7 +663,8 @@ def gen_from_source(source):
     """Returns a generator from a source tuple.
     Source tuples are of the form (callable, args) where callable(*args)
     returns either a generator or another source tuple.
-    This allows indefinite regeneration of data sources."""
+    This allows indefinite regeneration of data sources.
+    """
     while isinstance(source, tuple):
         gen, args = source
         source = gen(*args)

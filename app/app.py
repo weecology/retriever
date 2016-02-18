@@ -11,7 +11,9 @@ from retriever import VERSION, ENGINE_LIST, SCRIPT_LIST
 
 ENGINE_LIST = ENGINE_LIST()
 
+
 class App(wx.App):
+
     def __init__(self, lists):
         wx.App.__init__(self, redirect=False)
 
@@ -20,7 +22,8 @@ class App(wx.App):
         mfs.AddFile("globe.png", icon.GetImage(), wx.BITMAP_TYPE_PNG)
         mfs.AddFile("cycle.png", cycle.GetImage(), wx.BITMAP_TYPE_PNG)
         mfs.AddFile("download.png", download.GetImage(), wx.BITMAP_TYPE_PNG)
-        mfs.AddFile("downloaded.png", downloaded.GetImage(), wx.BITMAP_TYPE_PNG)
+        mfs.AddFile("downloaded.png", downloaded.GetImage(),
+                    wx.BITMAP_TYPE_PNG)
         mfs.AddFile("error.png", error.GetImage(), wx.BITMAP_TYPE_PNG)
         mfs.AddFile("warning.png", warning.GetImage(), wx.BITMAP_TYPE_PNG)
         mfs.AddFile("logo.png", logo.GetImage(), wx.BITMAP_TYPE_PNG)
@@ -52,11 +55,13 @@ class App(wx.App):
         except:
             pass
 
-        self.frame = Frame(None, -1, "EcoData Retriever version %s" % VERSION, lists, engine)
+        self.frame = Frame(
+            None, -1, "EcoData Retriever version %s" % VERSION, lists, engine)
         self.frame.Show()
 
 
 class Frame(wx.Frame):
+
     def __init__(self, parent, ID, title, lists, engine):
         wx.Frame.__init__(self, parent, ID, title,
                           size=(800, 550))
@@ -66,7 +71,7 @@ class Frame(wx.Frame):
         self.dialog = None
         self.lists = lists
         self.engine = engine
-        #self.SetIcon(icon.GetIcon())
+        # self.SetIcon(icon.GetIcon())
 
         self.CreateStatusBar()
 
@@ -76,10 +81,10 @@ class Frame(wx.Frame):
         # Menu
         file_menu = wx.Menu()
         file_menu.Append(wx.ID_ABOUT, "&About",
-                    "More information about this program")
+                         "More information about this program")
         connection_id = wx.NewId()
         file_menu.Append(connection_id, "&Connection",
-                    "Set up your database connection")
+                         "Set up your database connection")
         file_menu.AppendSeparator()
         file_menu.Append(wx.ID_EXIT, "E&xit", "Exit the program")
 
@@ -87,8 +92,8 @@ class Frame(wx.Frame):
         edit_menu.Append(wx.ID_FIND, "&Find")
 
         menu_bar = wx.MenuBar()
-        menu_bar.Append(file_menu, "&File");
-        menu_bar.Append(edit_menu, "E&dit");
+        menu_bar.Append(file_menu, "&File")
+        menu_bar.Append(edit_menu, "E&dit")
         self.SetMenuBar(menu_bar)
 
         self.Bind(wx.EVT_CLOSE, self.Quit)
@@ -110,7 +115,6 @@ class Frame(wx.Frame):
                                       scripts=[script for script in lists.scripts])
 
         self.cat_list.SelectRoot()
-
 
         self.splitter.SetMinimumPaneSize(300)
         self.splitter.SplitVertically(self.cat_list, self.script_list, 300)
@@ -171,7 +175,8 @@ class Frame(wx.Frame):
             else:
                 if self.download_manager.dialog:
                     self.download_manager.dialog.Resume()
-                self.download_manager.timer.Start(self.download_manager.timer.interval)
+                self.download_manager.timer.Start(
+                    self.download_manager.timer.interval)
                 return
 
         if self.download_manager.dialog:
@@ -180,7 +185,6 @@ class Frame(wx.Frame):
         self.engine.final_cleanup()
 
         self.Destroy()
-
 
     def Find(self, evt):
         dlg = wx.TextEntryDialog(self,
@@ -192,7 +196,7 @@ class Frame(wx.Frame):
 
         if result:
             search_terms = [term.strip() for term in result.split(' ')
-                                         if term.strip()]
+                            if term.strip()]
             scripts = []
             for script in SCRIPT_LIST():
                 if script.matches_terms(search_terms):
