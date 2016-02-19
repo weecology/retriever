@@ -2,19 +2,26 @@ import os
 import platform
 import shutil
 import inspect
+
 from retriever.lib.engine import filename_from_url
 from retriever.lib.models import Engine, no_cleanup
 from retriever import DATA_DIR, HOME_DIR
 
+
 class DummyConnection:
+
     def cursor(self):
         pass
+
     def commit(self):
         pass
+
     def rollback(self):
         pass
+
     def close(self):
         pass
+
 
 class DummyCursor(DummyConnection):
     pass
@@ -58,7 +65,8 @@ class engine(Engine):
                 subdir = os.path.split(file_path)[1] if self.opts['subdir'] else ''
                 dest_path = os.path.join(self.opts['path'], subdir)
                 if os.path.abspath(file_path) == os.path.abspath(os.path.join(DATA_DIR, subdir)):
-                    print ("%s is already in the working directory" % file_name_nopath)
+                    print ("%s is already in the working directory" %
+                           file_name_nopath)
                     print("Keeping existing copy.")
                 else:
                     print("Copying %s from %s" % (file_name_nopath, file_path))
@@ -96,8 +104,10 @@ class engine(Engine):
     def find_file(self, filename):
         """Checks for the given file and adds it to the list of all files"""
         result = Engine.find_file(self, filename)
-        if not hasattr(self, "all_files"): self.all_files = set()
-        if result: self.all_files.add(result)
+        if not hasattr(self, "all_files"):
+            self.all_files = set()
+        if result:
+            self.all_files.add(result)
         return result
 
     def register_files(self, filenames):
@@ -115,6 +125,8 @@ class engine(Engine):
 # replace all other methods with a function that does nothing
 def dummy_method(self, *args, **kwargs):
     pass
+
+
 methods = inspect.getmembers(engine, predicate=inspect.ismethod)
 keep_methods = {'table_exists',
                 'get_connection',
@@ -124,11 +136,10 @@ keep_methods = {'table_exists',
                 }
 remove_methods = ['insert_data_from_file']
 for name, method in methods:
-    if (not name in keep_methods
-        and not 'download' in name
-        and not 'file' in name
-        and not 'dir' in name):
-
+    if (name not in keep_methods and
+            'download' not in name and
+            'file' not in name and
+            'dir' not in name):
         setattr(engine, name, dummy_method)
 for name in remove_methods:
     setattr(engine, name, dummy_method)

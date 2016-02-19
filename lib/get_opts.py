@@ -59,7 +59,8 @@ for engine in engine_list:
             abbreviation = '-%s' % arg_name
 
         if engine.name == "Download Only" or abbreviation == "download":
-            # add attributes to Download::  (download [-h] [--path [PATH]] [--subdir [SUBDIR]]
+            # add attributes to Download::  (download [-h] [--path [PATH]]
+            # [--subdir [SUBDIR]]
 
             # subdir doesn't take any arguments, if included takes True if excluded takes False
             if arg_name.lower()== "subdir":
@@ -68,7 +69,7 @@ for engine in engine_list:
             else:
                 # path must take arguments else it takes default "./"
                 download_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help_msg, nargs='?',
-                                         default=default)
+                                             default=default)
         else:
             engine_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help_msg, nargs='?',
                                        default=default)

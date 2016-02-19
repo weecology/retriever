@@ -441,7 +441,6 @@ getcycleImage = cycle.GetImage
 getcycleBitmap = cycle.GetBitmap
 
 
-
 download = PyEmbeddedImage(
     "iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAAZiS0dE"
     "AP8A/wD/oL2nkwAAAAlwSFlzAAAN1wAADdcBQiibeAAAAAd0SU1FB9oKHQIfCFe3UMgAAAdU"

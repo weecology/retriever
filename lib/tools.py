@@ -14,6 +14,7 @@ import shutil
 import os
 from decimal import Decimal
 from hashlib import md5
+
 from retriever import HOME_DIR
 from retriever.lib.models import *
 
@@ -28,7 +29,8 @@ def name_matches(scripts, arg):
         max_ratio = max([difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in (script.shortname.lower(), script.name.lower(), script.filename.lower())] +
                         [difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in [tag.strip().lower() for tagset in script.tags for tag in tagset]]
                         )
-        if arg.lower() == 'all': max_ratio = 1.0
+        if arg.lower() == 'all':
+            max_ratio = 1.0
         matches.append((script, max_ratio))
     matches = [m for m in sorted(matches, key=lambda m: m[1], reverse=True) if m[1] > 0.6]
     return [match[0] for match in matches]
@@ -47,6 +49,7 @@ def final_cleanup(engine):
 
 
 config_path = os.path.join(HOME_DIR, 'connections.config')
+
 
 def get_saved_connection(engine_name):
     """Given the name of an engine, returns the stored connection for that engine
@@ -106,7 +109,8 @@ def choose_engine(opts, choice=True):
     elif opts["command"] == "download":
         enginename = "download"
     else:
-        if not choice: return None
+        if not choice:
+            return None
         print "Choose a database engine:"
         for engine in engine_list:
             if engine.abbreviation:
@@ -122,21 +126,23 @@ def choose_engine(opts, choice=True):
         engine = engine_list[0]
     else:
         for thisengine in engine_list:
-            if (enginename == thisengine.name.lower()
-                              or thisengine.abbreviation
-                              and enginename == thisengine.abbreviation):
+            if (enginename == thisengine.name.lower() or
+                    thisengine.abbreviation and
+                    enginename == thisengine.abbreviation):
                 engine = thisengine
 
     engine.opts = opts
     return engine
 
+
 def reset_retriever(scope):
     """Remove stored information on scripts, data, and connections"""
 
-    warning_messages= {'all': "This will remove existing scripts, cached data, and information on database connections. Specifically it will remove the scripts and raw_data folders and the connections.config file in {}. Do you want to proceed? (y/N)\n",
-                       'scripts': "This will remove existing scripts. Specifically it will remove the scripts folder in {}. Do you want to proceed? (y/N)\n",
-                       'data': "This will remove raw data cached by the Retriever. Specifically it will remove the raw_data folder in {}. Do you want to proceed? (y/N)\n",
-                       'connections': "This will remove stored information on database connections. Specifically it will remove the connections.config file in {}. Do you want to proceed? (y/N)\n"
+    warning_messages = {
+        'all': "This will remove existing scripts, cached data, and information on database connections. Specifically it will remove the scripts and raw_data folders and the connections.config file in {}. Do you want to proceed? (y/N)\n",
+        'scripts': "This will remove existing scripts. Specifically it will remove the scripts folder in {}. Do you want to proceed? (y/N)\n",
+        'data': "This will remove raw data cached by the Retriever. Specifically it will remove the raw_data folder in {}. Do you want to proceed? (y/N)\n",
+        'connections': "This will remove stored information on database connections. Specifically it will remove the connections.config file in {}. Do you want to proceed? (y/N)\n"
     }
 
     warn_msg = warning_messages[scope].format(HOME_DIR)

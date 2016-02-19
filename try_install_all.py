@@ -16,9 +16,11 @@ from retriever import MODULE_LIST, ENGINE_LIST, SCRIPT_LIST
 MODULE_LIST = MODULE_LIST()
 ENGINE_LIST = ENGINE_LIST()
 if len(sys.argv) > 1:
-    ENGINE_LIST = [e for e in ENGINE_LIST
-                   if e.name in sys.argv[1:]
-                   or e.abbreviation in sys.argv[1:]]
+    ENGINE_LIST = [
+                    e for e in ENGINE_LIST
+                    if e.name in sys.argv[1:] or
+                    e.abbreviation in sys.argv[1:]
+    ]
 SCRIPT_LIST = SCRIPT_LIST()
 TEST_ENGINES = {}
 IGNORE = ["AvianBodyMass", "FIA"]
@@ -39,7 +41,7 @@ for engine in ENGINE_LIST:
 errors = []
 for module in MODULE_LIST:
     for (key, value) in TEST_ENGINES.items():
-        if value and not module.SCRIPT.shortname in IGNORE:
+        if value and module.SCRIPT.shortname not in IGNORE:
             print "==>", module.__name__, value.name
             try:
                 module.SCRIPT.download(value)

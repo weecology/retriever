@@ -15,7 +15,7 @@ class AboutDialog(wx.Dialog):
 <tr><td align="center">
 <img src='memory:logo.png' />
 <h2>
-version """ + VERSION + (" (master branch)" if MASTER else "") +  """<br/>
+version """ + VERSION + (" (master branch)" if MASTER else "") + """<br/>
 running on Python %s (%s)""" % (platform.python_version(), arch) + """
 </h2></td></tr></table>
 <p>The EcoData Retriever is designed to make it easy to download ecological data and set it
@@ -27,6 +27,7 @@ your database.
 For more information, visit <a href="http://www.ecodataretriever.org">http://www.ecodataretriever.org</a>.
 </p>
 </body>"""
+
     def __init__(self, parent):
         wx.Dialog.__init__(self, parent, -1, "About", size=(600, 600))
 
@@ -36,14 +37,15 @@ For more information, visit <a href="http://www.ecodataretriever.org">http://www
         self.button = wx.Button(self, wx.ID_OK, "OK")
 
         self.sizer = wx.BoxSizer(wx.VERTICAL)
-        self.sizer.Add(self.html, 1, wx.EXPAND|wx.ALL, 5)
-        self.sizer.Add(self.button, 0, wx.ALIGN_CENTER|wx.ALL, 5)
+        self.sizer.Add(self.html, 1, wx.EXPAND | wx.ALL, 5)
+        self.sizer.Add(self.button, 0, wx.ALIGN_CENTER | wx.ALL, 5)
 
         self.SetSizer(self.sizer)
         self.Layout()
 
 
 class ScriptList(wx.HtmlListBox):
+
     def __init__(self, parent, scripts, style=0):
         self.scripts = scripts
         self.script_status = dict()
@@ -84,7 +86,7 @@ class ScriptList(wx.HtmlListBox):
         desc = "<table><tr><td>"
         link = None
         if script in download_manager.queue or (download_manager.worker and
-                                               script == download_manager.worker.script):
+                                                script == download_manager.worker.script):
             img = "cycle"
         else:
             if script in download_manager.errors:
@@ -118,14 +120,14 @@ class ScriptList(wx.HtmlListBox):
         desc += "</td></tr></table><hr />"
         return desc
 
-
     def SetStatus(self, script, txt):
         self.script_status[script] = "<p>" + txt + "</p>"
         self.RefreshMe(None)
 
 
 class CategoryList(wx.TreeCtrl):
-    def __init__(self, parent, id, choice_tree, size=(-1,-1), style=0):
+
+    def __init__(self, parent, id, choice_tree, size=(-1, -1), style=0):
         wx.TreeCtrl.__init__(self, parent, id, size=size, style=style)
         self.lists = choice_tree
         self.root = self.AddRoot(choice_tree.name)
@@ -136,9 +138,8 @@ class CategoryList(wx.TreeCtrl):
 
         self.Bind(wx.EVT_TREE_SEL_CHANGED, self.Redraw)
 
-
     def AddChild(self, choice, parent=None, select=False):
-        new_node = self.AppendItem(self.root if parent == None else parent,
+        new_node = self.AppendItem(self.root if parent is None else parent,
                                    choice.name)
         self.SetItemPyData(new_node, choice)
         for child in choice.children:
@@ -148,7 +149,6 @@ class CategoryList(wx.TreeCtrl):
 
     def SelectRoot(self):
         self.SelectItem(self.root)
-
 
     def Redraw(self, evt):
         if evt.GetItem() == self.root:
@@ -160,6 +160,7 @@ class CategoryList(wx.TreeCtrl):
 
 
 class HtmlWindow(wx.html.HtmlWindow):
+
     def __init__(self, parent, style=0):
         wx.html.HtmlWindow.__init__(self, parent, style=style)
         if "gtk2" in wx.PlatformInfo:
@@ -172,44 +173,49 @@ class HtmlWindow(wx.html.HtmlWindow):
         self.SetPage(html)
 
 
-
-
-
 class StaticText(wx.StaticText):
-    def __init__(self, parent, id, label, size=wx.Size(-1,-1)):
+
+    def __init__(self, parent, id, label, size=wx.Size(-1, -1)):
         wx.StaticText.__init__(self, parent, id, label, size=size)
-        #self.SetForegroundColour(wx.BLACK)
+        # self.SetForegroundColour(wx.BLACK)
 
 
 class TextCtrl(wx.TextCtrl):
-    def __init__(self, parent, id, txt="", size=(-1,-1), style=0):
+
+    def __init__(self, parent, id, txt="", size=(-1, -1), style=0):
         wx.TextCtrl.__init__(self, parent, id, txt, size=size, style=style)
-        #self.SetForegroundColour(wx.BLACK)
-        #self.SetBackgroundColour(wx.WHITE)
+        # self.SetForegroundColour(wx.BLACK)
+        # self.SetBackgroundColour(wx.WHITE)
 
 
 class CheckBox(wx.CheckBox):
+
     def __init__(self, parent, id, label):
         wx.CheckBox.__init__(self, parent, id, label)
-        #self.SetForegroundColour(wx.BLACK)
-        #self.SetBackgroundColour(parent.Parent.bgcolor)
+        # self.SetForegroundColour(wx.BLACK)
+        # self.SetBackgroundColour(parent.Parent.bgcolor)
 
 
 class ListBox(wx.ListBox):
-    def __init__(self, parent, id, size=(-1,-1), choices=[], style=0):
-        wx.ListBox.__init__(self, parent, id, size=size, choices=choices, style=style)
-        #self.SetForegroundColour(wx.BLACK)
-        #self.SetBackgroundColour(wx.WHITE)
+
+    def __init__(self, parent, id, size=(-1, -1), choices=[], style=0):
+        wx.ListBox.__init__(self, parent, id, size=size,
+                            choices=choices, style=style)
+        # self.SetForegroundColour(wx.BLACK)
+        # self.SetBackgroundColour(wx.WHITE)
 
 
 class CheckListBox(wx.CheckListBox):
-    def __init__(self, parent, id, size=(-1,-1), choices=[], style=0):
-        wx.CheckListBox.__init__(self, parent, id, size=size, choices=choices, style=style)
-        #self.SetForegroundColour(wx.BLACK)
-        #self.SetBackgroundColour(wx.WHITE)
+
+    def __init__(self, parent, id, size=(-1, -1), choices=[], style=0):
+        wx.CheckListBox.__init__(
+            self, parent, id, size=size, choices=choices, style=style)
+        # self.SetForegroundColour(wx.BLACK)
+        # self.SetBackgroundColour(wx.WHITE)
 
 
 class HtmlCheckListBox(wx.html.HtmlWindow):
+
     def __init__(self, parent, id, size=None, choices=None):
         wx.html.HtmlWindow.__init__(self, parent, size=size)
 
@@ -241,8 +247,6 @@ class HtmlCheckListBox(wx.html.HtmlWindow):
     def Append(self, txt):
         i = wx.NewId()
         self.checkboxes[txt] = i
-        #if self._html:
-            #self._html += "<hr />"
         self._html += (self._check_box % (i, txt))
         self.SetPage()
 
@@ -265,21 +269,23 @@ class HtmlCheckListBox(wx.html.HtmlWindow):
 
 class TitledPage(wx.wizard.WizardPageSimple):
     """A standard wizard page with a title and label."""
+
     def __init__(self, parent, title, label):
         wx.wizard.WizardPageSimple.__init__(self, parent)
-        #self.SetBackgroundColour(parent.bgcolor)
+        # self.SetBackgroundColour(parent.bgcolor)
         self.sizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(self.sizer)
         if title:
             titleText = wx.StaticText(self, -1, title)
             titleText.SetFont(wx.Font(18, wx.SWISS, wx.NORMAL, wx.BOLD))
-            #titleText.SetForegroundColour(wx.BLACK)
+            # titleText.SetForegroundColour(wx.BLACK)
             self.sizer.Add(titleText, 0, wx.ALIGN_CENTRE | wx.ALL, 5)
         if label:
             self.AddSpace()
             label = wx.StaticText(self, -1, label)
-            #label.SetForegroundColour(wx.BLACK)
+            # label.SetForegroundColour(wx.BLACK)
             self.sizer.Add(label)
             self.AddSpace()
+
     def AddSpace(self, n=1):
         self.sizer.Add(wx.StaticText(self, -1, "\n" * n))
