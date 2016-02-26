@@ -14,9 +14,10 @@ Contents:
    introduction
    scripts
    retriever
-   MacOsxBuild.rst
+   macbuild.rst
    guidocs.rst
    Release.rst
+   ecoretriever.rst
    modules.rst
 
 
