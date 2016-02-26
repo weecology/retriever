@@ -1,8 +1,10 @@
 =============
-Using the Gui
+Using the GUI
 =============
 
-To start the Gui using command line
+If you installed the Retriever using one of the installers you can start the GUI
+from the start menu (on Windows or Linux), or from the Applications folder (on
+OS X). You can also start the Gui from the command line using:
 
 ::
 
