@@ -35,6 +35,59 @@ class engine(Engine):
         """Escapes single quotes in the line"""
         return line.replace("'", "''")
 
+    def get_bulk_insert_statement(self):
+        """Get insert statement for bulk inserts
+
+        This places ?'s instead of the actual values so that executemany() can
+        operate as designed
+
+        """
+        columns = self.table.get_insert_columns()
+        types = self.table.get_column_datatypes()
+        columncount = len(self.table.get_insert_columns(False))
+        insert_stmt = "INSERT INTO " + self.table_name()
+        insert_stmt += " (" + columns + ")"
+        insert_stmt += " VALUES ("
+        for i in range(0, columncount):
+            insert_stmt += "?, "
+        insert_stmt = insert_stmt.rstrip(", ") + ");"
+        return insert_stmt
+
+    def insert_data_from_file(self, filename):
+        """Use executemany to perform a high speed bulk insert
+
+        Checks to see if a given file can be bulk inserted, and if so loads
+        it in chunks and inserts those chunks into the database using
+        executemany.
+
+        """
+        CHUNK_SIZE = 1000000
+        self.get_cursor()
+        ct = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
+        if (([self.table.cleanup.function, self.table.header_rows] == [no_cleanup, 1])
+            and not self.table.fixed_width
+            and not ct
+            and (not hasattr(self.table, "do_not_bulk_insert") or not self.table.do_not_bulk_insert)
+            ):
+            columns = self.table.get_insert_columns()
+            filename = os.path.abspath(filename)
+            try:
+                bulk_insert_statement = self.get_bulk_insert_statement()
+                with open(filename, 'r') as data_file:
+                    data_chunk = data_file.readlines(CHUNK_SIZE)
+                    del(data_chunk[:self.table.header_rows])
+                    while data_chunk:
+                        data_chunk_split = [row.split(self.table.delimiter)
+                                            for row in data_chunk]
+                        self.cursor.executemany(bulk_insert_statement, data_chunk_split)
+                        data_chunk = data_file.readlines(CHUNK_SIZE)
+                self.connection.commit()
+            except:
+                self.connection.rollback()
+                return Engine.insert_data_from_file(self, filename)
+        else:
+            return Engine.insert_data_from_file(self, filename)
+
     def table_exists(self, dbname, tablename):
         """Determine if the table already exists in the database"""
         if not hasattr(self, 'existing_table_names'):
