@@ -1,5 +1,36 @@
-import sys, os
 from retriever import VERSION,COPYRIGHT
+from retriever.lib.repository import check_for_updates
+from retriever import SCRIPT_LIST
+
+# Create the .rst file for the available datasets
+script_num = 1
+datasetfile = open("datasets.rst", "w")
+datasetfile_tittle = """
+==================
+Datasets Available
+==================
+
+
+"""
+check_for_updates(graphical=False)
+script_list = SCRIPT_LIST()
+
+check_for_updates(graphical=False)
+script_list = SCRIPT_LIST()
+
+# write the title of dataset rst file
+datasetfile.write(datasetfile_tittle)
+
+# get info from the scripts
+for script_num, script in enumerate(script_list, start=1):
+    reference_link = ""
+    if script.ref and script.ref is not "":
+        reference_link = script.ref
+    elif bool(script.urls.values()):
+        reference_link = script.urls.values()[0].rpartition('/')[0]
+    datasetfile.write("| " + str(script_num) + ". **{}** \n| shortname: {}\n| reference: {}\n\n".format(script.name, script.shortname, reference_link))
+datasetfile.close()
+
 needs_sphinx = '1.3'
 
 # Add any Sphinx extension module names here, as strings.

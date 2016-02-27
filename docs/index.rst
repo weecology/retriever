@@ -17,6 +17,7 @@ Contents:
    MacOsxBuild.rst
    guidocs.rst
    Release.rst
+   datasets.rst
    modules.rst
 
 
