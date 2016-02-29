@@ -59,9 +59,13 @@ class Table:
             ("&", "and"),
             ("\xb0", "degrees"),
             ("?", ""),
+            ("^","_power_"),
+            ("<","_lthn_"),
+            (">","_gthn_"),
         ]
         replace += [(x, '') for x in (")", "\n", "\r", '"', "'")]
-        replace += [(x, '_') for x in (" ", "(", "/", ".", "-", "*", ":")]
+        replace += [(x, '_') for x in (" ", "(", "/", ".", "-", "*", ":","[","]")]
+
         column_name = reduce(lambda x, y: x.replace(*y), replace, column_name)
 
         while "__" in column_name:
