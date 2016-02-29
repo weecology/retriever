@@ -18,6 +18,7 @@ Contents:
    guidocs.rst
    Release.rst
    ecoretriever.rst
+   datasets.rst
    modules.rst
 
 
