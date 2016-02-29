@@ -100,7 +100,8 @@ class main(Script):
                 write.close()
                 read.close()
 
-            engine.auto_create_table(Table("weather", pk="RouteDataId", cleanup=Cleanup()),
+            engine.auto_create_table(Table("weather", pk="RouteDataId",
+                                           cleanup=Cleanup(correct_invalid_value, nulls=['NULL'])),
                                      filename="weather_new.csv")
             engine.insert_data_from_file(engine.format_filename("weather_new.csv"))
 
