@@ -31,7 +31,8 @@ Basic Scripts
 
 The most basic scripts structure requires only some general metadata about the dataset, the name of the database and table, and the location of the table as below.
 
-:: 
+::
+
   name:  
   description:
   shortname: 
