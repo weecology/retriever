@@ -1,9 +1,17 @@
+def floatable(value):
+    """Check if a value can be converted to a float"""
+    try:
+        float(value)
+        return True
+    except ValueError:
+        return False
+
 def correct_invalid_value(value, args):
     """This cleanup function replaces null indicators with None."""
     try:
         if value in [item for item in args["nulls"]]:
             return None
-        if float(value) in [float(item) for item in args["nulls"]]:
+        if float(value) in [float(item) for item in args["nulls"] if floatable(item)]:
             return None
         return value
     except:
