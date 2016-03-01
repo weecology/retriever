@@ -27,6 +27,44 @@ The automation of this process reduces the time for a user to get most
 large datasets up and running by hours, and in some cases days.
 
 
+What data tasks does the Retriever handle
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The EcoData Retriever handles a number of common tasks including: 1) creating
+the underlying database structures, including automatically determining the data
+types; 2) downloading the data; 3) transforming data into appropriately
+normalized forms for database management systems (e.g., "wide" data into "long"
+data and splitting tables into proper sub-tables to reduce duplication); 4)
+converting heterogeneous null values (e.g., 999.0, -999, NaN) into standard null
+values; 5) combining multiple data files into single tables; and 6) placing all
+related tables in a single database or schema.
+
+A couple of examples on the more complicated end include the Breeding Bird
+Survey of North America (BBS) and the Alwyn Gentry Tree Transect data:
+
+- BBS data consists of multiple tables. The main table is divided into one file
+  per region in 70 individual compressed files. Supplemental tables required to
+  work with the data are posted in a variety of locations and formats. The
+  EcoData Retriever automates: downloading all data files, extracting data from
+  region-specific raw data files into single tables, correcting typographic
+  errors, replacing non-standard null values, and adding a Species table that
+  links numeric identifiers to actual species names.
+- The Gentry data is stored in over 200 Excel spreadsheets, each representing an
+  individual study site, and compressed in a zip archive. Each spreadsheet
+  contains counts of individuals found at a given site and all stems measured
+  from that individual; each stem measurement is placed in a separate column,
+  resulting in variable numbers of columns across rows, a format that is
+  difficult to work with in both database and analysis software. There is no
+  information on the site in the data files themselves, it is only present in
+  the names of the files. The Retriever downloads the archive, extracts the
+  files, and splits the data they contain into four tables: Sites, Species,
+  Stems, and Counts, keeping track of which file each row of count data
+  originated from in the Counts table and placing a single stem on each row in
+  the Stems table.
+
+*Adapted from `Morris & White 2013`_. *
+
+
 Installing (binaries)
 ~~~~~~~~~~~~~~~~~~~~~
 
@@ -165,3 +203,4 @@ of a `CAREER award to Ethan White`_.
 .. _National Science Foundation: http://nsf.gov/
 .. _CAREER award to Ethan White: http://nsf.gov/awardsearch/showAward.do?AwardNumber=0953694
 .. _project website: http://ecodataretriever.org
+.. _Morris & White 2013: https://10.1371/journal.pone.0065848
