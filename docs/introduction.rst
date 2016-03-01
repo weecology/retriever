@@ -62,7 +62,7 @@ Survey of North America (BBS) and the Alwyn Gentry Tree Transect data:
   originated from in the Counts table and placing a single stem on each row in
   the Stems table.
 
-*Adapted from `Morris & White 2013`_. *
+*Adapted from* `Morris & White 2013`_. 
 
 
 Installing (binaries)
@@ -203,4 +203,4 @@ of a `CAREER award to Ethan White`_.
 .. _National Science Foundation: http://nsf.gov/
 .. _CAREER award to Ethan White: http://nsf.gov/awardsearch/showAward.do?AwardNumber=0953694
 .. _project website: http://ecodataretriever.org
-.. _Morris & White 2013: https://10.1371/journal.pone.0065848
+.. _Morris & White 2013: https://dx.doi.org/10.1371/journal.pone.0065848
