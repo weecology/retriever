@@ -6,6 +6,7 @@ from retriever.lib.engine import Engine
 from retriever.lib.table import Table
 from retriever.lib.templates import BasicTextTemplate
 from retriever.lib.tools import getmd5
+from retriever.lib.cleanup import correct_invalid_value
 from retriever import DATA_WRITE_PATH
 from nose.tools import with_setup
 
@@ -50,7 +51,12 @@ def test_auto_get_delimiter_semicolon():
     test_engine.auto_get_delimiter("a;b;c;,d")
     assert test_engine.table.delimiter == ";"
 
+def test_correct_invalid_value_string():
+    assert correct_invalid_value('NA', {'nulls': ['NA', '-999']}) == None
 
+def test_correct_invalid_value_number():
+    assert correct_invalid_value(-999, {'nulls': ['NA', '-999']}) == None
+    
 def test_create_db_statement():
     """Test creating the create database SQL statement"""
     assert test_engine.create_db_statement() == 'CREATE DATABASE test_abc'
