@@ -55,13 +55,13 @@ class main(Script):
         for table in tablelist:
             for state, year in stateslist:
                 engine.download_files_from_archive(self.urls["main"] + state + "_" + table + ".ZIP",
-                                                   [state + "_" + table + ".CSV"])
+                                                   [state + "_" + table + ".csv"])
 
         for table in tablelist:
             print "Scanning data for table %s..." % table
             prep_file_name = "%s.csv" % table
             prep_file = open(engine.format_filename(prep_file_name), "wb")
-            this_file = open(engine.format_filename(stateslist[0][0] + "_" + table + ".CSV"), "rb")
+            this_file = open(engine.format_filename(stateslist[0][0] + "_" + table + ".csv"), "rb")
             col_names = this_file.readline()
             prep_file.write(col_names)
             column_names = [col.strip('"') for col in col_names.split(',')]
@@ -69,7 +69,7 @@ class main(Script):
             this_file.close()
 
             for state, year in stateslist:
-                this_file = open(engine.format_filename(state + "_" + table + ".CSV"), "rb")
+                this_file = open(engine.format_filename(state + "_" + table + ".csv"), "rb")
                 this_file.readline()
                 for line in this_file:
                     values = line.split(',')
