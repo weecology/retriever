@@ -1,6 +1,5 @@
 v1.9.0-dev
 EA_Fray_Jorge2013.script
-test.script
 EA_palmer2007.script
 EA_adler2007.script
 prism_4km_monthly_modern.py
@@ -39,7 +38,6 @@ bbs.py
 AmnioteLH.script
 npn.py
 EA_portal_mammals.script
-crosstabscript.script
 EA_Colin2014.script
 leda.py
 EA_clark2006.py
