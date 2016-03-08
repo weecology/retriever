@@ -20,12 +20,7 @@ def download_from_repository(filepath, newpath, repo=REPOSITORY):
     """Downloads the latest version of a file from the repository."""
     try:
         filename = filepath.split('/')[-1]
-
-        def reporthook(a, b, c):
-            print "%3.1f-%s\n" % (min(100, float(a * b) / c * 100), filename),
-            sys.stdout.flush()
-
-        urllib.urlretrieve(repo + filepath, newpath, reporthook=reporthook)
+        urllib.urlretrieve(repo + filepath, newpath)
     except:
         raise
         pass
@@ -81,7 +76,29 @@ def check_for_updates(graphical=False):
     if graphical:
         splash.Hide()
         sys.stdout = sys.__stdout__
-    print "The retriever is up-to-date"
+    print "\nThe retriever is up-to-date"
+
+
+def update_progressbar(progress):
+    """Show progressbar
+
+    Takes a number between 0 and 1 to indicate progress from 0 to 100%.
+
+    """
+    # Try to set the bar_length according to the console size
+    try:
+        rows, columns = os.popen('stty size', 'r').read().split()
+        bar_length = int(columns) - 35
+        if(not (bar_length > 1)):
+            bar_length = 20
+    except:
+        # Default value if determination of console size fails
+        bar_length = 20
+    block = int(round(bar_length*progress))
+    text = "\rDownload Progress: [{0}] {1:.2f}%".format(
+        "#"*block + "-"*(bar_length-block), progress*100)
+    sys.stdout.write(text)
+    sys.stdout.flush()
 
 
 class InitThread(Thread):
@@ -158,14 +175,18 @@ class InitThread(Thread):
             # read scripts from the repository and the checksums from the
             # version.txt
             scripts = []
+            print "Downloading scripts..."
             for line in version_file:
                 scripts.append(line.strip('\n').split(','))
+
+            total_script_count = len(scripts)
 
             # create script directory if not available
             if not os.path.isdir(SCRIPT_WRITE_PATH):
                 os.makedirs(SCRIPT_WRITE_PATH)
 
-            for script in scripts:
+            update_progressbar(0.0/float(total_script_count))
+            for index, script in enumerate(scripts):
                 script_name = script[0]
                 if len(script) > 1:
                     script_version = script[1]
@@ -175,7 +196,6 @@ class InitThread(Thread):
                 path_script_name = os.path.normpath(os.path.join(HOME_DIR, "scripts", script_name))
 
                 if not file_exists(path_script_name):
-                    print "Downloading script: " + script_name
                     download_from_repository("scripts/" + script_name,
                                              os.path.normpath(os.path.join(SCRIPT_WRITE_PATH, script_name)))
 
@@ -201,6 +221,7 @@ class InitThread(Thread):
                     except Exception as e:
                         print e
                         pass
+                update_progressbar(float(index + 1)/float(total_script_count))
         except:
             raise
             return
