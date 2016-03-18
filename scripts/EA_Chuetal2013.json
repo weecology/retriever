@@ -1,0 +1,81 @@
+{
+    "citation": "Cover, density, and demographics of shortgrass steppe plants mapped 1997-2010 in permanent grazed and ungrazed quadrats. Chengjin Chu, John Norman, Robert Flynn, Nicole Kaplan, William K. Lauenroth, and Peter B. Adler. Ecology 2013 94:6, 1435-1435.",
+    "description": "This data set maps and analyzes demographic rates of many common plant species in the shortgrass steppe of North America under grazed and ungrazed conditions.",
+    "name": "Shortgrass steppe plants.",
+    "ref": "http://www.esajournals.org/doi/abs/10.1890/13-0121.1",
+    "shortname": "Steppe_plants_2013",
+    "tables": {
+        "allrecords_cover": {
+            "cleanup": {
+                "nulls": [
+                    "NA"
+                ]
+            }
+        },
+        "allrecords_density": {
+            "cleanup": {
+                "nulls": [
+                    "NA"
+                ]
+            }
+        },
+        "daily_climate": {
+            "cleanup": {
+                "nulls": [
+                    "NA"
+                ]
+            }
+        },
+        "quad_info": {
+            "cleanup": {
+                "nulls": [
+                    "NA"
+                ]
+            }
+        },
+        "quad_inventory": {
+            "cleanup": {
+                "nulls": [
+                    "NA"
+                ]
+            }
+        },
+        "quad_stocking_rate": {
+            "cleanup": {
+                "nulls": [
+                    "NA"
+                ]
+            }
+        },
+        "species_list": {
+            "cleanup": {
+                "nulls": [
+                    "NA"
+                ]
+            }
+        },
+        "species_name_changes": {
+            "cleanup": {
+                "nulls": [
+                    "NA"
+                ]
+            }
+        }
+    },
+    "tags": [
+        "Taxon > Plants",
+        "Spatial Scale > Local",
+        "Data Type > Time Series",
+        "Data Type > Observational"
+    ],
+    "urls": {
+        "allrecords_cover": "http://esapubs.org/archive/ecol/E094/128/allrecords_cover.csv",
+        "allrecords_density": "http://esapubs.org/archive/ecol/E094/128/allrecords_density.csv",
+        "daily_climate": "http://esapubs.org/archive/ecol/E094/128/daily_climate_data.csv",
+        "quad_info": "http://esapubs.org/archive/ecol/E094/128/quad_info.csv",
+        "quad_inventory": "http://esapubs.org/archive/ecol/E094/128/quad_inventory.csv",
+        "quad_stocking_rate": "http://esapubs.org/archive/ecol/E094/128/quad_stocking_rate.csv",
+        "species_list": "http://esapubs.org/archive/ecol/E094/128/species_list.csv",
+        "species_name_changes": "http://esapubs.org/archive/ecol/E094/128/species_name_changes.csv"
+    }
+}
