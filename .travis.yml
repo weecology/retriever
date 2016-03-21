@@ -11,10 +11,14 @@ install:
   - pip install -r requirements.txt --use-mirrors
   - python setup.py -q install
   - pip install codecov
-  - pip install nose-cov
+  - pip install pytest-cov
+  - pip install pytest-xdist      
+
 
 # command to run tests
-script: nosetests --with-cov
+
+script:
+  - py.test --cov=retriever 
 
 # database setup
 before_script:
