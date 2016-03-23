@@ -5,3 +5,4 @@ numpydoc
 sphinx_py3doc_enhanced_theme
 future
 sphinxcontrib-napoleon
+urllib3

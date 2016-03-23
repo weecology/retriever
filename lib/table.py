@@ -1,10 +1,15 @@
+from future import standard_library
+standard_library.install_aliases()
+from builtins import next
+from builtins import object
 import csv
-import StringIO
+import io
 
 from retriever.lib.cleanup import *
+from functools import reduce
 
 
-class Table:
+class Table(object):
     """Information about a database table."""
 
     def __init__(self, name, **kwargs):
@@ -22,7 +27,7 @@ class Table:
         self.escape_single_quotes = True
         self.escape_double_quotes = True
         self.cleaned_columns = False
-        for key, item in kwargs.items():
+        for key, item in list(kwargs.items()):
             setattr(self, key, item[0] if isinstance(item, tuple) else item)
 
     def auto_get_columns(self, header):
@@ -40,7 +45,7 @@ class Table:
             values = self.split_on_delimiter(header)
             column_names = [name.strip() for name in values]
 
-        columns = map(lambda x: self.clean_column_name(x), column_names)
+        columns = [self.clean_column_name(x) for x in column_names]
         column_values = {x: [] for x in columns if x}
         self.cleaned_columns = True
         return [[x, None] for x in columns if x], column_values
@@ -99,13 +104,13 @@ class Table:
         dialect = csv.excel
         dialect.escapechar = "\\"
         r = csv.reader([line], dialect=dialect, delimiter=self.delimiter)
-        return r.next()
+        return next(r)
 
     def combine_on_delimiter(self, line_as_list):
         """Combine a list of values into a line of csv data"""
         dialect = csv.excel
         dialect.escapechar = "\\"
-        writer_file =  StringIO.StringIO()
+        writer_file =  io.BytesIO()
         writer = csv.writer(writer_file, dialect=dialect, delimiter=self.delimiter)
         writer.writerow(line_as_list)
         return writer_file.getvalue()
