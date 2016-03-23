@@ -2,9 +2,14 @@
 """Retriever script for Breeding Bird Survey
 
 """
+from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
+from builtins import chr
+from builtins import str
 
 import os
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import zipfile
 from decimal import Decimal
 from retriever.lib.templates import Script
@@ -63,7 +68,7 @@ class main(Script):
                                                    ["routes.csv"])
                 read = open(engine.format_filename("routes.csv"), "rb")
                 write = open(engine.format_filename("routes_new.csv"), "wb")
-                print "Cleaning routes data..."
+                print("Cleaning routes data...")
                 write.write(read.readline())
                 for line in read:
                     values = line.split(',')
@@ -85,7 +90,7 @@ class main(Script):
                                                    ["weather.csv"])
                 read = open(engine.format_filename("weather.csv"), "rb")
                 write = open(engine.format_filename("weather_new.csv"), "wb")
-                print "Cleaning weather data..."
+                print("Cleaning weather data...")
                 for line in read:
                     values = line.split(',')
                     newvalues = []
@@ -113,7 +118,7 @@ class main(Script):
             def regioncodes_cleanup(value, engine):
                 replace = {chr(225):"a", chr(233):"e", chr(237):"i", chr(243):"o"}
                 newvalue = str(value)
-                for key in replace.keys():
+                for key in list(replace.keys()):
                     if key in newvalue:
                         newvalue = newvalue.replace(key, replace[key])
                 return newvalue
@@ -177,13 +182,13 @@ class main(Script):
                     else:
                         state, shortstate = state[0], state[1]
 
-                    print "Inserting data from " + state + "..."
+                    print("Inserting data from " + state + "...")
                     try:
                         engine.table.cleanup = Cleanup()
                         engine.insert_data_from_archive(self.urls["counts"] + shortstate + ".zip",
                                                         [shortstate + ".csv"])
                     except:
-                        print "Failed bulk insert on " + state + ", inserting manually."
+                        print("Failed bulk insert on " + state + ", inserting manually.")
                         engine.connection.rollback()
                         engine.table.cleanup = Cleanup(correct_invalid_value,
                                                        nulls=['*'])
@@ -191,11 +196,11 @@ class main(Script):
                                                         [shortstate + ".csv"])
 
                 except:
-                    print "There was an error in " + state + "."
+                    print("There was an error in " + state + ".")
                     raise
 
         except zipfile.BadZipfile:
-            print "There was an unexpected error in the Breeding Bird Survey archives."
+            print("There was an unexpected error in the Breeding Bird Survey archives.")
             raise
 
         return engine
