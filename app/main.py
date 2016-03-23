@@ -6,13 +6,14 @@ The application can be started by running the launch_app function with a list
 of Category objects.
 
 """
+from __future__ import print_function
 
 from retriever.app.app import App
 
 
 def launch_app(lists):
     """Launches the application GUI."""
-    print "Launching EcoData Retriever..."
+    print("Launching EcoData Retriever...")
 
     app = App(lists)
     app.MainLoop()

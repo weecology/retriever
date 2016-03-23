@@ -1,4 +1,5 @@
 """Custom implementations of wxPython controls for use in the Retriever."""
+from builtins import str
 
 import wx
 import wx.lib.wxpTag
@@ -115,7 +116,7 @@ class ScriptList(wx.HtmlListBox):
                 desc += "<p><i>"
                 desc += script.addendum.replace('\n', "<br />")
                 desc += "</i></p>"
-        if script.name in self.script_status.keys():
+        if script.name in list(self.script_status.keys()):
             desc += "<p>" + self.script_status[script.name] + "</p>"
         desc += "</td></tr></table><hr />"
         return desc
@@ -256,11 +257,11 @@ class HtmlCheckListBox(wx.html.HtmlWindow):
         wx.html.HtmlWindow.SetPage(self, "<table>" + self._html + "</table>")
 
     def GetCheckedStrings(self):
-        return [key for key in self.checkboxes.keys()
+        return [key for key in list(self.checkboxes.keys())
                 if self.FindWindowById(self.checkboxes[key]).GetValue()]
 
     def SetCheckedStrings(self, strings):
-        for key in self.checkboxes.keys():
+        for key in list(self.checkboxes.keys()):
             self.FindWindowById(self.checkboxes[key]).SetValue(key in strings)
 
     def OnLinkClicked(self, link):

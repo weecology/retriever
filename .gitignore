@@ -8,3 +8,6 @@ retriever.egg-info
 apidocs
 .DS_Store
 .cache/*
+*.py.bak
+test/raw_data/*
+.coverage
