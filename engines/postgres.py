@@ -1,3 +1,4 @@
+from past.builtins import basestring
 import os
 import platform
 from retriever.lib.models import Engine, no_cleanup

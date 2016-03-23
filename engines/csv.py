@@ -1,10 +1,13 @@
+from builtins import str
+from builtins import range
+from builtins import object
 import os
 import platform
 from retriever.lib.models import Engine, no_cleanup
 from retriever import DATA_DIR
 
 
-class DummyConnection:
+class DummyConnection(object):
 
     def cursor(self):
         pass
