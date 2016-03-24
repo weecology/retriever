@@ -1,4 +1,5 @@
 """Embedded icons."""
+from __future__ import absolute_import
 
 from wx.lib.embeddedimage import PyEmbeddedImage
 
@@ -603,7 +604,7 @@ geterrorImage = error.GetImage
 geterrorBitmap = error.GetBitmap
 
 
-from logo import retriever_logo_liberation as logo
+from .logo import retriever_logo_liberation as logo
 
 
 warning = PyEmbeddedImage(

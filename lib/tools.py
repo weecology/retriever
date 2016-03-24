@@ -4,6 +4,9 @@ This module contains miscellaneous classes and functions used in Retriever
 scripts.
 
 """
+from __future__ import print_function
+from builtins import input
+from builtins import str
 
 import difflib
 import os
@@ -104,21 +107,21 @@ def choose_engine(opts, choice=True):
     """Prompts the user to select a database engine"""
     from retriever.engines import engine_list
 
-    if "engine" in opts.keys():
+    if "engine" in list(opts.keys()):
         enginename = opts["engine"]
     elif opts["command"] == "download":
         enginename = "download"
     else:
         if not choice:
             return None
-        print "Choose a database engine:"
+        print("Choose a database engine:")
         for engine in engine_list:
             if engine.abbreviation:
                 abbreviation = "(" + engine.abbreviation + ") "
             else:
                 abbreviation = ""
-            print "    " + abbreviation + engine.name
-        enginename = raw_input(": ")
+            print("    " + abbreviation + engine.name)
+        enginename = eval(input(": "))
     enginename = enginename.lower()
 
     engine = Engine()
@@ -146,10 +149,10 @@ def reset_retriever(scope):
     }
 
     warn_msg = warning_messages[scope].format(HOME_DIR)
-    confirm = raw_input(warn_msg)
+    confirm = eval(input(warn_msg))
     while not (confirm.lower() in ['y', 'n', '']):
         print("Please enter either y or n.")
-        confirm = raw_input()
+        confirm = eval(input())
     if confirm.lower() == 'y':
         if scope in ['data', 'all']:
             shutil.rmtree(os.path.join(HOME_DIR, 'raw_data'))

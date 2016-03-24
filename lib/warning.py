@@ -1,4 +1,5 @@
-class Warning:
+from builtins import object
+class Warning(object):
 
     def __init__(self, location, warning):
         self.location = location

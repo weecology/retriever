@@ -1,4 +1,8 @@
 """Engine for writing data to a JSON file"""
+from builtins import str
+from builtins import zip
+from builtins import range
+from builtins import object
 
 import os
 import json
@@ -7,7 +11,7 @@ from retriever.lib.models import Engine
 from retriever import DATA_DIR
 
 
-class DummyConnection:
+class DummyConnection(object):
     def cursor(self):
         pass
 

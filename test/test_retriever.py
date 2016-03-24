@@ -1,7 +1,9 @@
 """Tests for the EcoData Retriever"""
+from future import standard_library
+standard_library.install_aliases()
 
 import os
-from StringIO import StringIO
+from io import StringIO
 from retriever.lib.engine import Engine
 from retriever.lib.table import Table
 from retriever.lib.templates import BasicTextTemplate

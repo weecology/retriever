@@ -1,3 +1,5 @@
+from __future__ import print_function
+from builtins import str
 import os
 import platform
 from retriever.lib.models import Engine, no_cleanup
@@ -66,7 +68,7 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
             try:
                 self.cursor.execute(statement)
             except Exception as e:
-                print "Failed bulk insert (%s), inserting manually" % e
+                print("Failed bulk insert (%s), inserting manually" % e)
                 self.disconnect()  # If the execute fails the database connection can get hung up
                 return Engine.insert_data_from_file(self, filename)
         else:

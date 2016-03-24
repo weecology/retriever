@@ -2,9 +2,12 @@
 """Retriever script for Forest Inventory and Analysis
 
 """
+from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
 
 import os
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import zipfile
 from decimal import Decimal
 from retriever.lib.templates import Script
@@ -59,7 +62,7 @@ class main(Script):
                                                    [state + "_" + table + ".csv"])
 
         for table in tablelist:
-            print "Scanning data for table %s..." % table
+            print("Scanning data for table %s..." % table)
             prep_file_name = "%s.csv" % table
             prep_file = open(engine.format_filename(prep_file_name), "wb")
             this_file = open(engine.format_filename(stateslist[0][0] + "_" + table + ".csv"), "rb")

@@ -111,7 +111,7 @@ def compile_script(script_file):
     for (key, value) in tables.items():
         table_desc += "'" + key + "': Table('" + key + "', "
         table_desc += ','.join([key + "=" + str(value)
-                                for key, value, in value.items()])
+                                for key, value in value.items()])
         table_desc += "),"
     if table_desc != '{':
         table_desc = table_desc[:-1]

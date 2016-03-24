@@ -1,6 +1,8 @@
 """Connection setup wizard.
 
 """
+from builtins import str
+from builtins import range
 
 import os
 import sys
@@ -155,7 +157,7 @@ class ConnectPage(TitledPage):
                 self.option = dict()
                 saved_opts = get_saved_connection(self.engine.name)
                 for opt in self.engine.required_opts:
-                    if opt[0] in saved_opts.keys():
+                    if opt[0] in list(saved_opts.keys()):
                         default = saved_opts[opt[0]]
                     else:
                         default = opt[2]
@@ -203,7 +205,7 @@ class ConfirmPage(TitledPage):
 
         self.values_dict = dict()
         connect = self.parent.CONNECTION
-        for key in connect.option.keys():
+        for key in list(connect.option.keys()):
             self.values_dict[key] = str(connect.option[key].Value)
 
         try:

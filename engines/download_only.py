@@ -1,3 +1,5 @@
+from __future__ import print_function
+from builtins import object
 import os
 import platform
 import shutil
@@ -8,7 +10,7 @@ from retriever.lib.models import Engine, no_cleanup
 from retriever import DATA_DIR, HOME_DIR
 
 
-class DummyConnection:
+class DummyConnection(object):
 
     def cursor(self):
         pass

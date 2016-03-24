@@ -45,7 +45,7 @@ class App(wx.App):
             engine = wizard.CONNECTION.engine
             options = wizard.CONNECTION.option
             opts = dict()
-            for key in options.keys():
+            for key in list(options.keys()):
                 opts[key] = options[key].GetValue()
             engine.opts = opts
             wizard.Destroy()
@@ -147,7 +147,7 @@ class Frame(wx.Frame):
             engine = wizard.CONNECTION.engine
             options = wizard.CONNECTION.option
             opts = dict()
-            for key in options.keys():
+            for key in list(options.keys()):
                 opts[key] = options[key].GetValue()
             engine.opts = opts
             wizard.Destroy()

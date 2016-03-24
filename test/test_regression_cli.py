@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os
 import nose
 from unittest import TestCase
@@ -73,13 +74,13 @@ def unixfileformat(inputfile):
         infile.close()
         output.close()
     except IOError as e:
-        print "I/O error({0}): {1} ".format(e.errno, e.strerror)
+        print("I/O error({0}): {1} ".format(e.errno, e.strerror))
     return unix_outfilename
 
 
 def _test_factory(test_method, name, *args):
     stub_test = lambda self: getattr(self, test_method)(*args)
-    stub_test.func_name = stub_test.__name__ = 'test_%s' % dataset
+    stub_test.__name__ = stub_test.__name__ = 'test_%s' % dataset
     return stub_test
 
 

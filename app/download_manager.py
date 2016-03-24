@@ -1,11 +1,15 @@
 """This class manages dataset downloads concurrently and processes progress
 output."""
+from __future__ import division
+from builtins import str
+from builtins import object
+from past.utils import old_div
 
 import wx
 from retriever.lib.download import DownloadThread
 
 
-class DownloadManager:
+class DownloadManager(object):
 
     def __init__(self, parent):
         self.dialog = None
@@ -97,7 +101,7 @@ class DownloadManager:
                     s = s.split(' / ')
                     total = float(s[1])
                     current = float(s[0].split(': ')[1])
-                    progress = int((current / total) * 1000)
+                    progress = int((old_div(current, total)) * 1000)
                     return (progress if progress > 1 else 1)
                 else:
                     return None
