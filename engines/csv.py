@@ -62,6 +62,10 @@ class engine(Engine):
             # fine so just pass
             pass
 
+    def disconnect(self):
+        """Close the last file"""
+        self.output_file.close()
+
     def execute(self, statement, commit=True):
         """Write a line to the output file"""
         self.output_file.write('\n' + statement)
