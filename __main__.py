@@ -129,7 +129,7 @@ def main():
             print "Done!"
         else:
             print "The dataset {} isn't currently available in the Retriever".format(args.dataset)
-            print "Run 'retriever -ls to see a list of currently available datasets"
+            print "Run 'retriever ls to see a list of currently available datasets"
 
 if __name__ == "__main__":
     main()
