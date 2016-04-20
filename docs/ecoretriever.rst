@@ -53,3 +53,6 @@ Examples
 
 
 To get citation information for the ``ecoretriever`` in R use ``citation(package = 'ecoretriever')``:
+
+
+.. _EcoData Retriever: http://ecodataretriever.org
