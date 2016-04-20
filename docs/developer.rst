@@ -24,7 +24,7 @@ You need to install all the database infrastructures to enable local testing.
 
 ::  
   
-  SQlite
+  SQLite
   MySQL 5.6
   PostgreSQL 9.1
   MSAccess
@@ -52,10 +52,10 @@ In some cases ``pep`` shows errors for long lines, but that can be ignored.
 Testing
 =======
 
-Follow these instructions to run a complete set of test for any branch
-Clone the branch you want to test
+Follow these instructions to run a complete set of tests for any branch
+Clone the branch you want to test.
 
-two ways of installing the program using the `setup tools`_.
+Two ways of installing the program using the `setup tools`_.
 
 we can either install from source as 
 
@@ -69,7 +69,7 @@ or install in development mode.
 
   $  pip setup.py develop
 
-For more about `installing`_ refer to the python setuptool `documentation`_.
+For more about `installing`_ refer to the python setuptools `documentation`_.
 
 you can also install from Git.
 
@@ -98,7 +98,7 @@ In case we want to run tests on a specific test category, we add the path of the
 
 .. code-block:: sh
 
-  $   py.test .\test\test_retriever.py
+  $   py.test ./test/test_retriever.py
 
 This will only run test_retriever.py
 
@@ -107,7 +107,7 @@ Tests in the Cloud
 
 Currently we support Travis, a cloud testing platform.
 
-In case you make commits, Travis is automatically trigered and uses the ``travis.yml`` file.
+In case you make commits, Travis is automatically triggered and uses the ``travis.yml`` file.
 
 Services Used
 -------------
@@ -123,7 +123,7 @@ Check the services' home pages in case you have to add the same capabilities to 
    
 links `Read The Docs`_, `codecov`_ and  `Travis`_
 
-After installing the servers we need to configure them by granting privileges to our testing user 
+After installing the servers we need to configure them by granting privileges to our testing user .
 
 :: 
 
@@ -156,7 +156,7 @@ Sphinx uses reStructuredText as its markup language.
 Source Code documentation is automatically included after committing to the master.
 Other documentation (not source code) files are added as new reStructuredText in the docs folder
 
-In case you want to change the organization of the Documenntation, please refer to `Sphinx`_
+In case you want to change the organization of the Documentation, please refer to `Sphinx`_
 
 **Test Documentation locally**
 
@@ -166,12 +166,11 @@ In case you want to change the organization of the Documenntation, please refer 
   make html # Run
   
   Note: 
-  Do not commit the build direcotry after making html.
+  Do not commit the build directory after making html.
  
- 
-**Read The Docs  configuration**
+**Read The Docs configuration**
 
-Configure read the docs(advanced settings) so that the source is first installed then docs are built.
+Configure read the docs (advanced settings) so that the source is first installed then docs are built.
 This is already set up but could be change if need be.
 
 Collaborative Workflows with GitHub
@@ -186,11 +185,18 @@ Explain the issue explicitly with all details, giving examples and logs where ap
 
 From your local branch of retriever, commit to your origin.
 Once tests have passed you can then make a pull request to the retriever master (upstream) 
+For each commit, add the issue number at the end of the description with the tag ``fixes #[issue_number]``.
+
+Example; ``add version number to postgres.py to enable tracking. fixes #3``  
 
 **Clean histroy**
 
 We try to make one commit for each issue.
-As you work on an issue, try adding all the commits into one general commit rather than several commits. you can use commit amend to add new changes to a branch.
+As you work on an issue, try adding all the commits into one general commit rather than several commits. 
+
+Use ``git commit --amend`` to add new changes to a branch. 
+
+Use ``-f`` flag to force pushing changes to the branch. ``git push -f origin [branch_name]``
 
 
 .. _codecov: https://codecov.io/

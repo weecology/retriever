@@ -38,7 +38,7 @@ class main(Script):
 
             # Species table
             table = Table("species", cleanup=Cleanup(), contains_pk=True,
-                          header_rows=6)
+                          header_rows=9)
 
             table.columns=[("species_id",               ("pk-int",)         ),
                            ("AOU",                      ("int",)            ),
@@ -82,8 +82,8 @@ class main(Script):
             # Weather table
             if not os.path.isfile(engine.format_filename("weather_new.csv")):
                 engine.download_files_from_archive(self.urls["weather"],
-                                                   ["weather.csv"])
-                read = open(engine.format_filename("weather.csv"), "rb")
+                                                   ["Weather.csv"])
+                read = open(engine.format_filename("Weather.csv"), "rb")
                 write = open(engine.format_filename("weather_new.csv"), "wb")
                 print "Cleaning weather data..."
                 for line in read:
