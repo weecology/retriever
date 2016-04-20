@@ -56,27 +56,10 @@ class main(Script):
             engine.insert_data_from_url(self.urls["species"])
 
             # Routes table
-            if not os.path.isfile(engine.format_filename("routes_new.csv")):
-                engine.download_files_from_archive(self.urls["routes"],
-                                                   ["routes.csv"])
-                read = open(engine.format_filename("routes.csv"), "rb")
-                write = open(engine.format_filename("routes_new.csv"), "wb")
-                print "Cleaning routes data..."
-                write.write(read.readline())
-                for line in read:
-                    values = line.split(',')
-                    v = Decimal(values[5])
-                    if  v > 0:
-                        values[5] = str(v * Decimal("-1"))
-                    write.write(','.join(str(value) for value in values))
-                write.close()
-                read.close()
-
+            engine.download_files_from_archive(self.urls["routes"], ["routes.csv"])
             engine.auto_create_table(Table("routes", cleanup=Cleanup()),
-                                     filename="routes_new.csv")
-
-            engine.insert_data_from_file(engine.format_filename("routes_new.csv"))
-
+                                     filename="routes.csv")
+            engine.insert_data_from_file(engine.format_filename("routes.csv"))
 
             # Weather table
             if not os.path.isfile(engine.format_filename("weather_new.csv")):
