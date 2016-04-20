@@ -45,6 +45,10 @@ class engine(Engine):
     def insert_data_from_file(self, filename):
         """Calls MySQL "LOAD DATA LOCAL INFILE" statement to perform a bulk
         insert."""
+
+        mysql_set_autocommit_off = """SET autocommit=0; SET UNIQUE_CHECKS=0; SET FOREIGN_KEY_CHECKS=0; SET sql_log_bin=0;"""
+        mysql_set_autocommit_on = """SET GLOBAL innodb_flush_log_at_trx_commit=1; COMMIT; SET autocommit=1; SET unique_checks=1; SET foreign_key_checks=1;"""
+        
         self.get_cursor()
         ct = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
         if (self.table.cleanup.function == no_cleanup and
@@ -64,10 +68,13 @@ LINES TERMINATED BY '\\n'
 IGNORE """ + str(self.table.header_rows) + """ LINES
 (""" + columns + ")"
             try:
+                self.cursor.execute(mysql_set_autocommit_off)
                 self.cursor.execute(statement)
+
+                self.cursor.execute(mysql_set_autocommit_on)
             except Exception as e:
-                print "Failed bulk insert (%s), inserting manually" % e
                 self.disconnect()  # If the execute fails the database connection can get hung up
+                self.cursor.execute(mysql_set_autocommit_on)
                 return Engine.insert_data_from_file(self, filename)
         else:
             return Engine.insert_data_from_file(self, filename)
