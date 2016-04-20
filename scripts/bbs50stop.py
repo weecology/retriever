@@ -37,7 +37,7 @@ class main(Script):
 
             # Species table
             table = Table("species", cleanup=Cleanup(), contains_pk=True,
-                          header_rows=6)
+                          header_rows=9)
 
             table.columns=[("species_id", ("pk-int",) ),
                            ("AOU", ("int",) ),
