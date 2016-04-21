@@ -40,7 +40,7 @@ def get_script_module(script_name):
     file, pathname, desc = imp.find_module(script_name, [os.path.join(HOME_DIR, "scripts")])
     return imp.load_module(script_name, file, pathname, desc)
 
-mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, csv_engine, download_engine = ENGINE_LIST()
+mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, csv_engine, download_engine, json_engine = ENGINE_LIST()
 csv_engine.opts = {'engine': 'csv', 'table_name': './{db}_{table}.txt'}
 
 def test_csv_from_csv():
