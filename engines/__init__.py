@@ -8,6 +8,7 @@ engines = [
     "csv",
     "download_only",
     "jsonengine",
+    "xmlengine"
 ]
 
 engine_module_list = [
