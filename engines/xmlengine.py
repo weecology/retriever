@@ -1,13 +1,11 @@
-"""Engine for writing data to a JSON file"""
-
 import os
-import json
 
 from retriever.lib.models import Engine
 from retriever import DATA_DIR
-from collections import OrderedDict
+
 
 class DummyConnection:
+
     def cursor(self):
         pass
 
@@ -26,9 +24,9 @@ class DummyCursor(DummyConnection):
 
 
 class engine(Engine):
-    """Engine instance for writing data to a CSV file."""
-    name = "JSON"
-    abbreviation = "json"
+    """Engine instance for writing data to a XML file."""
+    name = "XML"
+    abbreviation = "xml"
     datatypes = {
         "auto": "INTEGER",
         "int": "INTEGER",
@@ -41,41 +39,39 @@ class engine(Engine):
     required_opts = [
         ("table_name",
          "Format of table name",
-         os.path.join(DATA_DIR, "{db}_{table}.json")),
+         os.path.join(DATA_DIR, "{db}_{table}.xml")),
     ]
 
     def create_db(self):
-        """Override create_db since there is no database just a JSON file"""
+        """Override create_db since there is no database just an XML file"""
         return None
 
     def create_table(self):
-        """Create the table by creating an empty json file"""
+        """Create the table by creating an empty XML file"""
         self.output_file = open(self.table_name(), "w")
-        self.output_file.write("{\"" + os.path.splitext(os.path.basename(self.table_name()))[0] + "\": [")
+        self.output_file.write('<?xml version="1.0"?>')
+        self.output_file.write('\n<' + os.path.splitext(os.path.basename(self.table_name()))[0] + '>')
 
     def disconnect(self):
-        """Close out the JSON with a ('\n]}') and close the file"""
         try:
             self.output_file.close()
             current_output_file = open(self.table_name(), "r")
             file_contents = current_output_file.readlines()
             current_output_file.close()
             file_contents[-1] = file_contents[-1].strip(',')
+            file_contents.append('\n</' + os.path.splitext(os.path.basename(self.table_name()))[0] + '>')
             self.output_file = open(self.table_name(), "w")
             self.output_file.writelines(file_contents)
-            self.output_file.write('\n]}')
             self.output_file.close()
         except:
-            # when disconnect is called by app.connect_wizard.ConfirmPage to
-            # confirm the connection, output_file doesn't exist yet, this is
-            # fine so just pass
             pass
 
     def execute(self, statement, commit=True):
         """Write a line to the output file"""
-        self.output_file.write('\n' + statement + ',')
+        self.output_file.write('\n' + statement)
 
     def format_insert_value(self, value, datatype):
+
         """Formats a value for an insert statement"""
         v = Engine.format_insert_value(self, value, datatype)
         if v == 'null':
@@ -94,15 +90,16 @@ class engine(Engine):
         for i in range(len(self.table.columns)):
             column = self.table.columns[i]
             if 'auto' in column[1][0]:
-                values = values[:i + offset] + \
-                         [self.auto_column_number] + values[i + offset:]
+                values = values[:i + offset] + [self.auto_column_number] + values[i + offset:]
                 self.auto_column_number += 1
                 offset += 1
-
+        open_tag = '<row>\n'
         keys = [columnname[0] for columnname in self.table.columns]
-        tuples = (zip(keys, values))
-        write_data = OrderedDict(tuples)
-        return json.dumps(write_data )
+        write_data = ""
+        for i in range(len(keys)):
+            write_data += '    ' + '<' + str(keys[i]) + '>' + str(values[i]) + '</' + str(keys[i]) + '>' + "\n"
+        end_tag = '</row>'
+        return open_tag + write_data + end_tag
 
     def table_exists(self, dbname, tablename):
         """Check to see if the data file currently exists"""
