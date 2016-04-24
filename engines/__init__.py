@@ -6,7 +6,8 @@ engines = [
     "sqlite",
     "msaccess",
     "csv",
-    "download_only"
+    "download_only",
+    "jsonengine",
 ]
 
 engine_module_list = [
