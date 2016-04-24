@@ -10,8 +10,14 @@
 #' into
 #' @param conn_file the path to the .conn file that contains the connection
 #' configuration options for mysql and postgres databases. This defaults to 
-#' mysql.conn or postgres.conn respectively. The connection file is a comma
-#' seperated file with four fields: user, password, host, and port. 
+#' mysql.conn or postgres.conn respectively. The connection file is a file that
+#' is formated in the following way:
+#' \tabular{ll}{
+#'   host     \tab my_server@my_host.com\cr
+#'   port     \tab my_port_number       \cr
+#'   user     \tab my_user_name         \cr
+#'   password \tab my_password
+#' }
 #' @param data_dir the location where the dataset should be installed.
 #' Only relevant for csv connection types. Defaults to current working directory
 #' @param log_dir the location where the retriever log should be stored if
@@ -31,7 +37,7 @@ install = function(dataset, connection, db_file=NULL, conn_file=NULL,
       conn_file = paste('./', connection, '.conn', sep='')
     }
     if (!file.exists(conn_file)) {
-      format = '\n    host my_server@myhost.com\n    port 1111\n    user my_user_name\n    password my_pass_word'
+      format = '\n    host my_server@myhost.com\n    port my_port_number\n    user my_user_name\n    password my_pass_word'
       stop(paste("conn_file:", conn_file, "does not exist. To use a",
                   connection, "server create a 'conn_file' with the format:", 
                  format, "\nwhere order of arguments does not matter"))
