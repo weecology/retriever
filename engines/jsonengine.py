@@ -5,7 +5,7 @@ import json
 
 from retriever.lib.models import Engine
 from retriever import DATA_DIR
-
+from collections import OrderedDict
 
 class DummyConnection:
     def cursor(self):
@@ -43,6 +43,7 @@ class engine(Engine):
          "Format of table name",
          os.path.join(DATA_DIR, "{db}_{table}.json")),
     ]
+    table_names = []
 
     def create_db(self):
         """Override create_db since there is no database just a JSON file"""
@@ -51,80 +52,48 @@ class engine(Engine):
     def create_table(self):
         """Create the table by creating an empty json file"""
         self.output_file = open(self.table_name(), "w")
-        self.output_file.write('[')
+        self.output_file.write("[")
+        self.table_names.append((self.output_file, self.table_name()))
 
     def disconnect(self):
-        """Close out the JSON with a ] and close the file
+        """Close out the JSON with a ('\n]}') and close the file
 
-        Do to an extra comma after the last entry it is necessary to close the
-        current file, read it back in, and remove the extra comma, before adding
-        the closing bracket, and re-writing the file to disk. This will be
-        inefficient for large files and we may want to replace it with something
-        better.
-
+        Close all the file objects that have been created
+        Re-write the files stripping off the last comma and then close with a ('\n]}')
         """
-        try:
-            self.output_file.close()
-            current_output_file = open(self.table_name(), "r")
-            file_contents = current_output_file.readlines()
-            current_output_file.close()
-            if (file_contents[-1] != ']'):
+        for output_file_i, file_name in self.table_names:
+
+            try:
+                output_file_i.close()
+                current_input_file = open(file_name, "r")
+                file_contents = current_input_file.readlines()
+                current_input_file.close()
                 file_contents[-1] = file_contents[-1].strip(',')
-                file_contents.append('\n]')
-            self.output_file = open(self.table_name(), "w")
-            self.output_file.writelines(file_contents)
-            self.output_file.close()
-        except:
-            # when disconnect is called by app.connect_wizard.ConfirmPage to
-            # confirm the connection, output_file doesn't exist yet, this is
-            # fine so just pass
-            pass
+                current_output_file = open(file_name, "w")
+                current_output_file.writelines(file_contents)
+                current_output_file.write('\n]')
+                current_output_file.close()
+            except:
+                # when disconnect is called by app.connect_wizard.ConfirmPage to
+                # confirm the connection, output_file doesn't exist yet, this is
+                # fine so just pass
+                pass
 
     def execute(self, statement, commit=True):
         """Write a line to the output file"""
         self.output_file.write('\n' + statement + ',')
 
     def format_insert_value(self, value, datatype):
-        """Formats a value for an insert statement
-
-        Overrides default behavior by:
-            1. Storing decimal numbers as floats rather than strings
-            2. Not escaping quotes (handled by the json module)
-            3. Replacing "null" with None which will convert to the 'null' keyword
-               in json
-        """
-        datatype = datatype.split('-')[-1]
-        strvalue = str(value).strip()
-
-        # Remove any quotes already surrounding the string
-        quotes = ["'", '"']
-        if len(strvalue) > 1 and strvalue[0] == strvalue[-1] and strvalue[0] in quotes:
-            strvalue = strvalue[1:-1]
-        nulls = ("null", "none")
-
-        if strvalue.lower() in nulls:
-            return None
-        elif datatype in ("int", "bigint", "bool"):
-            if strvalue:
-                intvalue = strvalue.split('.')[0]
-                if intvalue:
-                    return int(intvalue)
-                else:
-                    return None
-            else:
-                return None
-        elif datatype in ("double", "decimal"):
-            if strvalue:
-                return float(strvalue)
-            else:
-                return None
-        elif datatype == "char":
-            if strvalue.lower() in nulls:
-                return None
-            else:
-                return strvalue
-        else:
-            return None
+        """Formats a value for an insert statement"""
+        v = Engine.format_insert_value(self, value, datatype)
+        if v == 'null':
+            return ""
+        try:
+            if len(v) > 1 and v[0] == v[-1] == "'":
+                v = '"%s"' % v[1:-1]
+        except:
+            pass
+        return v
 
     def insert_statement(self, values):
         if not hasattr(self, 'auto_column_number'):
@@ -137,11 +106,11 @@ class engine(Engine):
                          [self.auto_column_number] + values[i + offset:]
                 self.auto_column_number += 1
                 offset += 1
-        # FIXME: Should nulls be inserted here? I'm guessing the should be
-        # skipped. Find out.
-        datadict = {column[0]: value for column,
-                    value in zip(self.table.columns, values)}
-        return json.dumps(datadict)
+
+        keys = [columnname[0] for columnname in self.table.columns]
+        tuples = (zip(keys, values))
+        write_data = OrderedDict(tuples)
+        return json.dumps(write_data)
 
     def table_exists(self, dbname, tablename):
         """Check to see if the data file currently exists"""
