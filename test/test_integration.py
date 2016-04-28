@@ -34,6 +34,7 @@ def teardown_module():
     for test in tests:
         shutil.rmtree(os.path.join(HOME_DIR, "raw_data", test['name']))
         os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.script'))
+    os.system("rm crosstab_crosstab.txt simple_csv_simple_csv.txt")
 
 def get_script_module(script_name):
     """Load a script module"""

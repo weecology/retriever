@@ -39,6 +39,7 @@ def setup_module():
 def teardown_module():
     """Cleanup temporary output files after testing and return to root directory"""
     os.system("rm output_*")
+    os.system("rm -r raw_data/MoM2003")
     os.chdir("..")
 
 
