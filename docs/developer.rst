@@ -11,10 +11,10 @@ If you are installing from source you will need a Python 2.6+ installation and t
 
   setuptools
   xlrd
-  wxPython 
+  wxPython
   Sphinx
-  
-  
+
+
 In case you find errors with wxPython, try `installing the wheel`_ from a third party distributor
 
 Setting up servers
@@ -22,23 +22,23 @@ Setting up servers
 
 You need to install all the database infrastructures to enable local testing.
 
-::  
-  
+::
+
   SQLite
   MySQL 5.6
-  PostgreSQL 9.1
+  PostgreSQL 9.2
   MSAccess
 
 You will also need the following modules:
 
 ::
-  
+
   mysqldb (MySQL)
   psycopg2 (PostgreSQL)
   pyodbc (MS Access).
   py2app (Mac)
   py2exe (Windows)
-  
+
 Style Guide for Python Code
 ===========================
 
@@ -57,7 +57,7 @@ Clone the branch you want to test.
 
 Two ways of installing the program using the `setup tools`_.
 
-we can either install from source as 
+we can either install from source as
 
 .. code-block:: bash
 
@@ -78,7 +78,7 @@ you can also install from Git.
   # Local repository
   pip install git+file:///path/to/your/git/repo #  test a PIP package located in a local git repository
   pip install git+file:///path/to/your/git/repo@branch  # checkout a specific branch by adding @branch_name at the end
-  
+
   # Remote github repository
   pip install git+git://github.com/myuser/myproject  #  package from a github repository
   pip install git+git://github.com/myuser/myproject@my_branch # github repository Specific branch
@@ -119,13 +119,13 @@ Check the services' home pages in case you have to add the same capabilities to 
   Travis
   readthedocs
   codecov
-  
-   
+
+
 links `Read The Docs`_, `codecov`_ and  `Travis`_
 
 After installing the servers we need to configure them by granting privileges to our testing user .
 
-:: 
+::
 
   MySQL
   -----
@@ -151,8 +151,8 @@ After installing the servers we need to configure them by granting privileges to
 Documentation
 =============
 
-We are using `Sphinx`_ and `Read the Docs`_. for the documentation. 
-Sphinx uses reStructuredText as its markup language. 
+We are using `Sphinx`_ and `Read the Docs`_. for the documentation.
+Sphinx uses reStructuredText as its markup language.
 Source Code documentation is automatically included after committing to the master.
 Other documentation (not source code) files are added as new reStructuredText in the docs folder
 
@@ -162,12 +162,12 @@ In case you want to change the organization of the Documentation, please refer t
 
 .. code-block:: bash
 
-  cd  docs  # go the docs directory 
+  cd  docs  # go the docs directory
   make html # Run
-  
-  Note: 
+
+  Note:
   Do not commit the build directory after making html.
- 
+
 **Read The Docs configuration**
 
 Configure read the docs (advanced settings) so that the source is first installed then docs are built.
@@ -184,17 +184,17 @@ Explain the issue explicitly with all details, giving examples and logs where ap
 **Commits**
 
 From your local branch of retriever, commit to your origin.
-Once tests have passed you can then make a pull request to the retriever master (upstream) 
+Once tests have passed you can then make a pull request to the retriever master (upstream)
 For each commit, add the issue number at the end of the description with the tag ``fixes #[issue_number]``.
 
-Example; ``add version number to postgres.py to enable tracking. fixes #3``  
+Example; ``add version number to postgres.py to enable tracking. fixes #3``
 
 **Clean histroy**
 
 We try to make one commit for each issue.
-As you work on an issue, try adding all the commits into one general commit rather than several commits. 
+As you work on an issue, try adding all the commits into one general commit rather than several commits.
 
-Use ``git commit --amend`` to add new changes to a branch. 
+Use ``git commit --amend`` to add new changes to a branch.
 
 Use ``-f`` flag to force pushing changes to the branch. ``git push -f origin [branch_name]``
 
