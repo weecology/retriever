@@ -1,6 +1,8 @@
 import os
+import csv
 
 from retriever.lib.models import Engine, no_cleanup
+from retriever.lib.tools import sortcsv
 
 
 class engine(Engine):
@@ -121,6 +123,34 @@ CSV HEADER"""
             except:
                 pass
         return Engine.format_insert_value(self, value, datatype)
+
+    def export_2csv(self, dbname, tablename, sortedcsv=False):
+        """Export table from Postgres to CSV file
+
+        check if the database "{db}"  is default or not:
+        if default use the dbname(dataset short name) else the db value from opts
+        """
+        csvfile_output = os.path.normpath(tablename + '.csv')
+        self.get_cursor()
+
+        if self.opts['database_name'] == "{db}":
+            sql_query = ("SELECT * FROM " + self.table_name(tablename, dbname) + ";")
+        else:
+            sql_query = ("SELECT * FROM " + self.table_name(tablename, self.opts['database_name']) + ";")
+
+        self.cursor.execute(sql_query)
+        data = self.cursor.fetchall()
+        colnames = [tuple_i[0] for tuple_i in self.cursor.description]
+
+        csv_out = open(csvfile_output, "wb")
+        csv_writer = csv.writer(csv_out, dialect='excel')
+
+        csv_writer.writerow(colnames)
+        for lines in data:
+            csv_writer.writerow(lines)
+        csv_out.close()
+        if sortedcsv:
+            sortcsv(csvfile_output)
 
     def get_connection(self):
         """Gets the db connection."""

@@ -471,6 +471,10 @@ class Engine():
             )
             for key in script.urls.keys() if key])
 
+    def export_2csv(self, dbname, tablename, sortedcsv=False):
+        """Export database table to CSV file"""
+        pass
+
     def final_cleanup(self):
         """Close the database connection."""
 

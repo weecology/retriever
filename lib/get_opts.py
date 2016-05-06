@@ -1,7 +1,7 @@
 import argparse
-from retriever import VERSION, MASTER, SCRIPT_LIST, sample_script
-from retriever.engines import engine_list
 
+from retriever import VERSION
+from retriever.engines import engine_list
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-v', '--version', action='version', version=VERSION)
@@ -17,6 +17,7 @@ subparsers = parser.add_subparsers(help='sub-command help', dest='command')
 # retriever download/install/gui/update/new help
 download_parser = subparsers.add_parser('download', help='download raw data files for a dataset')
 install_parser = subparsers.add_parser('install', help='download and install dataset')
+export_parser = subparsers.add_parser('export', help='export dataset from engines to csv')
 update_parser = subparsers.add_parser('update', help='download updated versions of scripts')
 gui_parser = subparsers.add_parser('gui', help='launch retriever in graphical mode')
 new_parser = subparsers.add_parser('new', help='create a new sample retriever script')
@@ -34,11 +35,13 @@ new_parser.add_argument('filename', help='new script filename')
 reset_parser.add_argument('scope', help='things to reset: all, scripts, data, or connections', choices=['all', 'scripts', 'data', 'connections'])
 install_parser.add_argument('--compile', help='force re-compile of script before downloading', action='store_true')
 install_parser.add_argument('--debug', help='run in debug mode', action='store_true')
+export_parser.add_argument('--sorted', help='export csv sorted', action='store_true')
 download_parser.add_argument('dataset', help='dataset name', nargs='?', default=None)
 
 # retriever Install {Engine} ..
 # retriever download [options]
 install_subparsers = install_parser.add_subparsers(help='engine-specific help', dest='engine')
+export_subparsers = export_parser.add_subparsers(help='engine-specific help', dest='engine')
 
 for engine in engine_list:
     if engine.name == "Download Only":   # skip the Download engine and just add attributes
@@ -46,6 +49,10 @@ for engine in engine_list:
     else:
         engine_parser = install_subparsers.add_parser(engine.abbreviation, help=engine.name)
         engine_parser.add_argument('dataset', help='dataset name', nargs='?', default=None)
+
+    if engine.name  in ["MySQL","PostgreSQL","SQLite"]:
+        export_engine_parser = export_subparsers.add_parser(engine.abbreviation, help=engine.name)
+        export_engine_parser.add_argument('dataset', help='dataset name', nargs='?', default=None)
 
     abbreviations = set('h')
 
@@ -71,5 +78,6 @@ for engine in engine_list:
                 download_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help_msg, nargs='?',
                                              default=default)
         else:
-            engine_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help_msg, nargs='?',
-                                       default=default)
+            engine_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help_msg, nargs='?', default=default)
+            if engine.name in ["MySQL", "PostgreSQL", "SQLite"]:
+                export_engine_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help_msg, nargs='?', default=default)

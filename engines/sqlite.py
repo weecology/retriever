@@ -1,7 +1,9 @@
 import os
-import platform
+import sys
+import csv
 from retriever.lib.models import Engine, no_cleanup
 from retriever import DATA_DIR
+from retriever.lib.tools import sortcsv
 
 
 class engine(Engine):
@@ -97,6 +99,33 @@ class engine(Engine):
             for line in self.cursor:
                 self.existing_table_names.add(line[0].lower())
         return self.table_name(name=tablename, dbname=dbname).lower() in self.existing_table_names
+
+    def export_2csv(self, dbname, tablename, sortedcsv=False):
+        """Export SQLite table to CSV"""
+        csvfile_output = tablename + '.csv'
+        try:
+            csv_out = open(csvfile_output, 'wb')
+            csv_writer = csv.writer(csv_out, dialect='excel')
+
+            # fixing SQLite encoding issue
+            self.connection.text_factory = str
+
+            self.get_cursor()
+            self.cursor.execute('SELECT * FROM ' + dbname + "_" + tablename + ';')
+            data = self.cursor.fetchall()
+
+            colnames = [tuple_i[0] for tuple_i in self.cursor.description]
+            csv_writer.writerow(colnames)
+            for lines in data:
+                csv_writer.writerow(lines)
+
+        # Catch the exception
+        except Exception as e:
+            print e
+        finally:
+            csv_out.close()
+        if sortedcsv:
+            sortcsv(csvfile_output)
 
     def get_connection(self):
         """Gets the db connection."""
