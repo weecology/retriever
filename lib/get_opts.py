@@ -35,7 +35,7 @@ reset_parser.add_argument('scope', help='things to reset: all, scripts, data, or
 install_parser.add_argument('--compile', help='force re-compile of script before downloading', action='store_true')
 install_parser.add_argument('--debug', help='run in debug mode', action='store_true')
 download_parser.add_argument('dataset', help='dataset name', nargs='?', default=None)
-
+ls_parser.add_argument('-l', help='verbose list of datasets containing following keywords (lists all when no keywords are specified)', nargs='*')
 # retriever Install {Engine} ..
 # retriever download [options]
 install_subparsers = install_parser.add_subparsers(help='engine-specific help', dest='engine')

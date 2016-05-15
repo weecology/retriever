@@ -88,7 +88,6 @@ def main():
             return
 
         if args.command == 'ls' or args.dataset is None:
-            import lscolumns
 
             # If scripts have never been downloaded there is nothing to list
             if not script_list:
@@ -97,14 +96,37 @@ def main():
                 print "\n\nScripts downloaded.\n"
                 script_list = SCRIPT_LIST()
 
-            all_scripts = set([script.shortname for script in script_list])
-            all_tags = set(["ALL"] +
-                           [tag.strip().upper() for script in script_list for tagset in script.tags for tag in tagset.split('>')])
+            all_scripts = []
 
-            print "Available datasets : {}".format(len(all_scripts))
-            lscolumns.printls(sorted(list(all_scripts), key=lambda s: s.lower()))
-            print "Groups:"
-            lscolumns.printls(sorted(list(all_tags)))
+            for script in script_list:
+                if script.name:
+                    if args.l!=None:
+                        script_name = script.name + "\nShortname: " + script.shortname+"\n"
+                        if script.tags:
+                            script_name += "Tags: "+str([tag for tag in script.tags])+"\n"
+                        not_found = 0
+                        for term in args.l:
+                            if script_name.lower().find(term.lower()) == -1:
+                                not_found = 1
+                                break
+                        if not_found == 0:
+                            all_scripts.append(script_name)
+                    else:
+                        script_name = script.shortname
+                        all_scripts.append(script_name)
+
+            all_scripts = sorted(all_scripts, key=lambda s: s.lower())
+
+            print "Available datasets : {}\n".format(len(all_scripts))
+
+            if args.l==None:
+                import lscolumns
+                lscolumns.printls(sorted(all_scripts, key=lambda s: s.lower()))
+            else:
+                count = 1
+                for script in all_scripts:
+                    print ("%d. %s"%(count, script))
+                    count += 1
             return
 
         engine = choose_engine(args.__dict__)
