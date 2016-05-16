@@ -89,7 +89,7 @@ def compile_script(script_file):
                     except:
                         e = str(value)
 
-                    tables[last_table][key] = str(e) if e.__class__ != str else "'" + e + "'"
+                    tables[last_table][key] = "'" + str(e) + "'"
             else:
                 # general script attributes
                 values[key] = '"' + value + '"'
