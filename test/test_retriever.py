@@ -151,3 +151,6 @@ def test_getmd5():
     """Test md5 sum calculation"""
     lines = ['a,b,c\n', '1,2,3\n', '4,5,6\n']
     assert getmd5(lines) == '0bec5bf6f93c547bc9c6774acaf85e1a'
+
+def test_invalid_value_number_exception():
+    assert correct_invalid_value(-999, {}) == -999
