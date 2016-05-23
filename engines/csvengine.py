@@ -2,6 +2,7 @@ import os
 import platform
 from retriever.lib.models import Engine, no_cleanup
 from retriever import DATA_DIR
+from retriever.lib.tools import sortcsv
 
 
 class DummyConnection:
@@ -96,6 +97,12 @@ class engine(Engine):
         """Check to see if the data file currently exists"""
         tablename = self.table_name(name=tablename, dbname=dbname)
         return os.path.exists(tablename)
+
+    def to_csv(self):
+        """Export table from json engine to CSV file"""
+        filename = self.table_name()
+        sortcsv(filename)
+        return filename
 
     def get_connection(self):
         """Gets the db connection."""

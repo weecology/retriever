@@ -15,10 +15,10 @@ install:
   - pip install pytest-xdist
 
 
-# command to run tests
+# command to run tests using py.test
 
 script:
-  - py.test --cov=retriever
+  - py.test -v --cov=retriever
 
 # database setup
 before_script:

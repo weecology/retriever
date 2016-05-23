@@ -4,28 +4,28 @@ This module contains miscellaneous classes and functions used in Retriever
 scripts.
 
 """
-
-import difflib
+from retriever.lib.models import *
+import csv
 import os
-import sys
-import warnings
-import unittest
+import json
 import shutil
-import os
-from decimal import Decimal
+import difflib
+import warnings
+import xml.etree.ElementTree as ET
 from hashlib import md5
 
 from retriever import HOME_DIR
-from retriever.lib.models import *
 
 warnings.filterwarnings("ignore")
 
 TEST_ENGINES = dict()
 
+
 def name_matches(scripts, arg):
     matches = []
     for script in scripts:
-        if arg.lower() == script.shortname.lower(): return [script]
+        if arg.lower() == script.shortname.lower():
+            return [script]
         max_ratio = max([difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in (script.shortname.lower(), script.name.lower(), script.filename.lower())] +
                         [difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in [tag.strip().lower() for tagset in script.tags for tag in tagset]]
                         )
@@ -35,13 +35,6 @@ def name_matches(scripts, arg):
     matches = [m for m in sorted(matches, key=lambda m: m[1], reverse=True) if m[1] > 0.6]
     return [match[0] for match in matches]
 
-
-def getmd5(lines):
-    """Get MD5 value of a set of lines."""
-    sum = md5()
-    for line in lines:
-        sum.update(line)
-    return sum.hexdigest()
 
 def final_cleanup(engine):
     """Perform final cleanup operations after all scripts have run."""
@@ -56,7 +49,7 @@ def get_saved_connection(engine_name):
     from connections.config."""
     parameters = {}
     if os.path.isfile(config_path):
-        config = open(config_path, "rb")
+        config = open(config_path, "rU")
         for line in config:
             values = line.rstrip('\n').split(',')
             if values[0] == engine_name:
@@ -111,13 +104,13 @@ def choose_engine(opts, choice=True):
     else:
         if not choice:
             return None
-        print "Choose a database engine:"
+        print ("Choose a database engine:")
         for engine in engine_list:
             if engine.abbreviation:
                 abbreviation = "(" + engine.abbreviation + ") "
             else:
                 abbreviation = ""
-            print "    " + abbreviation + engine.name
+            print( "    " + abbreviation + engine.name)
         enginename = raw_input(": ")
     enginename = enginename.lower()
 
@@ -160,3 +153,235 @@ def reset_retriever(scope):
                 os.remove(os.path.join(HOME_DIR, 'connections.config'))
             except:
                 pass
+
+
+def is_valid_json(input_file):
+    """Validate a json file"""
+    try:
+        fp = open(input_file, 'r')
+        json.loads(fp.read())
+    except ValueError:
+        return False
+    return True
+
+
+def json2csv(input_file, output_file=None, header_values=None):
+    """Convert Json file to CSV
+
+    [
+    {"User": "Alex", "Country": "US", "Age": "25"}
+    ]
+    Alex,US,25
+
+    cross tab
+    [
+    {"User": "Alex", "Country": ["US","PT"], "Age": "25"},
+    ]
+
+    User,Country,Age
+    Alex,US,25
+    Alex,PT,25
+    """
+    try:
+        fp = open(input_file, 'r')
+    except IOError as e:
+        print "I/O error({0}): {1}".format(e.errno, e.strerror)
+
+    if not is_valid_json(input_file):
+        print "invalid json file"
+        exit(1)
+
+    # set output file name and write header
+    if output_file is None:
+        output_file = str(os.path.splitext(os.path.basename(input_file))[0]) + ".csv"
+    outfile = open(output_file, 'w')
+    outfile.write(",".join(header_values))
+
+    raw_data = json.loads(fp.read())
+
+    # lines in json file
+    for item in raw_data:
+        previous_list = [""]
+        if header_values:
+            # for each line, get values corresponding to the column name values
+            for column_name in header_values:
+                new_list = []
+
+                # if column name has more than one value process ass a cross tab
+                if type(item[column_name]) is list:
+                    for child_item in item[column_name]:
+
+                        # Create new list with previous values and new cross-tab values added
+                        for old_lines in previous_list:
+                            temp = str(str(old_lines) + str(child_item) + ",")
+                            new_list.append(temp)
+                    previous_list = new_list
+
+                else:
+                    for p_strings in previous_list:
+                        new_list.append("".join(str(p_strings) + str(item[column_name]) + ","))
+                    previous_list = new_list
+
+        for lines in previous_list:
+            outfile.write("\n" + str(lines[0:-1]))
+    outfile.close()
+    fp.close()
+    os.system(" rm -r {}".format(input_file))
+    return output_file
+
+
+def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
+    """Convert xml to csv
+
+    <root>
+    <row>
+       <User>Alex</User>
+       <Country>US</Country>
+       <Country>PT</Country>
+       <Age>25</Age>
+    </row>
+    <row>
+       <User>Ben</User>
+       <Country>US</Country>S
+       <Age>24</Age>
+    </row>
+    </root>
+
+    User,Country,Age
+    Alex,US,25
+    Alex,Uk,25
+    Ben,US,24
+    """
+    fp = open(input_file, 'r')
+    tree = ET.parse(fp)
+    root = tree.getroot()
+
+    # set output file name and write header
+    if outputfile is None:
+        outputfile = str(os.path.splitext(os.path.basename(input_file))[0]) + ".csv"
+    outfile = open(outputfile, 'w')
+    outfile.write(",".join(header_values))
+
+    # lines in xml
+    for rows in root.findall(row_tag):
+        previous_lists = [""]
+        if header_values:
+            # for each line, extract values for corresponding to column name
+            for column_name in header_values:
+                new_list = []
+                # check if multiple values exist
+                if len(rows.findall(column_name)) > 1:
+                    for child_item in rows.findall(column_name):
+                        # create new list with previous values and new cross-tab values added
+                        for old_lines in previous_lists:
+                            value_x = ""
+
+                            if child_item.text is None:
+                                pass
+                            else:
+                                value_x = str(child_item.text)
+                            temp = str(str(old_lines) + value_x + ",")
+                            new_list.append(temp)
+                    previous_lists = new_list
+                else:
+                    # no multiple values, just add available child
+                    for p_strings in previous_lists:
+
+                        value_x = ""
+                        if rows.find(column_name).text is None:
+                            pass
+                        else:
+                            value_x = str(rows.find(column_name).text)
+                        new_list.append("".join(str(p_strings) + value_x + ","))
+                        previous_lists = new_list
+        else:
+            print ("no header provided")
+            exit()
+        for lines in previous_lists:
+            outfile.write("\n" + str(lines[0:-1]))
+    outfile.close()
+    fp.close()
+    os.system(" rm -r {}".format(input_file))
+    return outputfile
+
+
+def getmd5(path=None, mode='rb', lines=None):
+    """Get MD5 of a file, files in a directory or MD5 value of a set of lines
+
+    default mode 'rb'
+    """
+
+    if lines:
+        sum = md5()
+        for line in lines:
+            sum.update(line)
+        return sum.hexdigest()
+
+    files = []
+    if not path:
+        exit()
+    path = os.path.normpath(path)
+    if os.path.isfile(path):
+        files.append(path)
+    elif os.path.isdir(path):
+        for root, directories, filenames in os.walk(path):
+            for filename in sorted(filenames):
+                files.append(os.path.normpath(os.path.join(root, filename)))
+
+    sum = md5()
+    for file_path in files:
+        if mode is 'rb':
+            lines = open(file_path, 'rb')
+        else:
+            lines = open(file_path, 'rU')
+        sum = md5()
+        for line in lines:
+            sum.update(line)
+    return sum.hexdigest()
+
+
+def sort_file(file_path):
+    """Sort file by line and return the file"""
+    file_path = os.path.normpath(file_path)
+    infile = open(file_path, 'rU')
+    # useles if line.strip()
+    lines = [line.strip().replace('\x00', '') for line in infile]
+    infile.close()
+    outfile = open(file_path, 'w')
+    lines.sort()
+    for line in lines:
+        outfile.write(line)
+    outfile.close()
+    return file_path
+
+
+def sortcsv(filename):
+    """Sort CSV rows and return the file"""
+    filename = os.path.normpath(filename)
+    input_file = open(filename, 'rU')
+    csv_reader_infile = csv.reader(input_file)
+
+    # The first entry is the header line
+    infields = csv_reader_infile.next()
+
+    #  write the data to a temporary file and sort it
+    file_temp = open(os.path.normpath("tempfile"), 'wb')
+
+    csv_writer = csv.writer(file_temp, dialect='excel', escapechar='\\')
+    for row in csv_reader_infile:
+        csv_writer.writerow(row)
+    file_temp.close()
+    input_file.close()
+
+    # sort the temp file
+    sorted_txt = sort_file(os.path.normpath("tempfile"))
+
+    # write sorted row content to csv filename with header "infields"
+    tmp = open(sorted_txt, "rU")
+    in_txt = csv.reader(tmp, delimiter=',')
+    out_csv = csv.writer(open(filename, 'wb'))
+    out_csv.writerow(infields)
+    out_csv.writerows(in_txt)
+    tmp.close()
+    os.remove(os.path.normpath("tempfile"))
+    return (filename)

@@ -6,6 +6,8 @@ import json
 from retriever.lib.models import Engine
 from retriever import DATA_DIR
 from collections import OrderedDict
+from retriever.lib.tools import sortcsv, json2csv
+
 
 class DummyConnection:
     def cursor(self):
@@ -74,9 +76,6 @@ class engine(Engine):
                 current_output_file.write('\n]')
                 current_output_file.close()
             except:
-                # when disconnect is called by app.connect_wizard.ConfirmPage to
-                # confirm the connection, output_file doesn't exist yet, this is
-                # fine so just pass
                 pass
 
     def execute(self, statement, commit=True):
@@ -116,6 +115,14 @@ class engine(Engine):
         """Check to see if the data file currently exists"""
         tablename = self.table_name(name=tablename, dbname=dbname)
         return os.path.exists(tablename)
+
+    def to_csv(self):
+        """Export table from json engine to CSV file"""
+        keys = [columnname[0] for columnname in self.table.columns]
+        filename =self.table_name()
+        csv_outfile =json2csv(str(filename),header_values=keys)
+        sortcsv(csv_outfile)
+        return csv_outfile
 
     def get_connection(self):
         """Gets the db connection."""

@@ -2,6 +2,8 @@ import os
 
 from retriever.lib.models import Engine
 from retriever import DATA_DIR
+from retriever.lib.tools import sortcsv
+from retriever.lib.tools import xml2csv
 
 
 class DummyConnection:
@@ -74,11 +76,7 @@ class engine(Engine):
                 current_output_file.close()
 
             except:
-                # when disconnect is called by app.connect_wizard.ConfirmPage to
-                # confirm the connection, output_file doesn't exist yet, this is
-                # fine so just pass
                 pass
-
 
     def execute(self, statement, commit=True):
         """Write a line to the output file"""
@@ -119,6 +117,14 @@ class engine(Engine):
         """Check to see if the data file currently exists"""
         tablename = self.table_name(name=tablename, dbname=dbname)
         return os.path.exists(tablename)
+
+    def to_csv(self):
+        """Export table from xml engine to CSV file"""
+        keys = [columnname[0] for columnname in self.table.columns]
+        filename = self.table_name()
+        csv_outfile = xml2csv(str(filename), header_values=keys)
+        sortcsv(csv_outfile)
+        return csv_outfile
 
     def get_connection(self):
         """Gets the db connection."""

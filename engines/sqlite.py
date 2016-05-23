@@ -1,7 +1,9 @@
 import os
-import platform
+import csv
+
 from retriever.lib.models import Engine, no_cleanup
 from retriever import DATA_DIR
+from retriever.lib.tools import sortcsv
 
 
 class engine(Engine):
@@ -87,6 +89,30 @@ class engine(Engine):
                 return Engine.insert_data_from_file(self, filename)
         else:
             return Engine.insert_data_from_file(self, filename)
+
+    def to_csv(self):
+        """Export SQLite table to CSV"""
+        tablename = str(Engine.table_name(self))
+        csvfile_output = tablename + '.csv'
+        # fixing SQLite encoding issue
+        self.connection.text_factory = str
+        self.get_cursor()
+        sql_query = ("SELECT * FROM " + tablename + ";")
+        self.cursor.execute(sql_query)
+
+        row = self.cursor.fetchone()
+        colnames = [tuple_i[0] for tuple_i in self.cursor.description]
+        csv_out = open(csvfile_output, 'wb')
+        csv_writer = csv.writer(csv_out, dialect='excel')
+        csv_writer.writerow(colnames)
+
+        while row is not None:
+            csv_writer.writerow([values for values in row])
+            row = self.cursor.fetchone()
+
+        csv_out.close()
+        sortcsv(csvfile_output)
+        return csvfile_output
 
     def table_exists(self, dbname, tablename):
         """Determine if the table already exists in the database"""
