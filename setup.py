@@ -1,9 +1,8 @@
 """Use the following command to install retriever: python setup.py install"""
 
-from setuptools import setup
 import platform
-import sys
-import warnings
+
+from setuptools import setup
 
 current_platform = platform.system().lower()
 extra_includes = []
@@ -25,14 +24,6 @@ elif current_platform == "windows":
 from __init__ import VERSION
 
 
-def is_wxpython_installed():
-    """Returns True if  wxpython is installed"""
-    try:
-        return __import__("wx")
-    except ImportError:
-        return False
-
-
 def clean_version(v):
     if v == 'master':
         return '1.0.0'
@@ -47,7 +38,6 @@ packages = [
 
 includes = [
     'xlrd',
-    'wx',
     'pymysql',
     'psycopg2',
     'sqlite3',
@@ -70,16 +60,6 @@ excludes = [
 ]
 
 
-wx_installed = is_wxpython_installed()
-
-if wx_installed is False:
-    warnings.warn("""wxpython is not installed.
-                  Retriever will not work in GUI mode.
-                  For retriever-gui install python-wxpython and
-                  run 'python setup.py install' again.""",
-                  UserWarning
-                  )
-
 setup(name='retriever',
       version=clean_version(VERSION),
       description='EcoData Retriever',
@@ -89,7 +69,7 @@ setup(name='retriever',
       classifiers=['Intended Audience :: Science/Research',
                    'License :: OSI Approved :: MIT License',
                    'Programming Language :: Python',
-                   'Programming Language :: Python :: 2',],
+                   'Programming Language :: Python :: 2'],
       packages=packages,
       package_dir={
           'retriever': ''
@@ -138,9 +118,10 @@ setup(name='retriever',
                },
       )
 
-
 try:
     from compile import compile
+
     compile()
 except:
     pass
+

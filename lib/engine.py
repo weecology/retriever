@@ -136,9 +136,11 @@ class Engine():
         print
         self.connection.commit()
 
-    def auto_create_table(self, table, url=None, filename=None, pk=None):
+    def auto_create_table(self, table, url=None, filename=None, pk=None, populate=False):
         """Creates a table automatically by analyzing a data source and
-        predicting column names, data types, delimiter, etc."""
+        predicting column names, data types, delimiter, etc.
+        when populate is set to True, not create db
+        """
         if url and not filename:
             filename = filename_from_url(url)
         self.table = table
@@ -178,8 +180,8 @@ class Engine():
 
         if self.table.columns[-1][1][0][:3] == "ct-" and hasattr(self.table, "ct_names") and not self.table.ct_column in [c[0] for c in self.table.columns]:
             self.table.columns = self.table.columns[:-1] + [(self.table.ct_column, ("char", 20))] + [self.table.columns[-1]]
-
-        self.create_table()
+        if not populate:
+            self.create_table()
 
     def auto_get_datatypes(self, pk, source, columns, column_values):
         """Determines data types for each column."""
@@ -470,6 +472,9 @@ class Engine():
             key
             )
             for key in script.urls.keys() if key])
+
+    def to_csv(self):
+        pass
 
     def final_cleanup(self):
         """Close the database connection."""

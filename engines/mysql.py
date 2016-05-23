@@ -1,6 +1,8 @@
 import os
-import platform
+import csv
+
 from retriever.lib.models import Engine, no_cleanup
+from retriever.lib.tools import sortcsv
 
 
 class engine(Engine):
@@ -48,7 +50,7 @@ class engine(Engine):
 
         mysql_set_autocommit_off = """SET autocommit=0; SET UNIQUE_CHECKS=0; SET FOREIGN_KEY_CHECKS=0; SET sql_log_bin=0;"""
         mysql_set_autocommit_on = """SET GLOBAL innodb_flush_log_at_trx_commit=1; COMMIT; SET autocommit=1; SET unique_checks=1; SET foreign_key_checks=1;"""
-        
+
         self.get_cursor()
         ct = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
         if (self.table.cleanup.function == no_cleanup and
@@ -72,7 +74,7 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
                 self.cursor.execute(statement)
 
                 self.cursor.execute(mysql_set_autocommit_on)
-            except Exception as e:
+            except Exception:
                 self.disconnect()  # If the execute fails the database connection can get hung up
                 self.cursor.execute(mysql_set_autocommit_on)
                 return Engine.insert_data_from_file(self, filename)
@@ -90,6 +92,26 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
             for schema, table in self.cursor:
                 self.existing_table_names.add((schema.lower(), table.lower()))
         return (dbname.lower(), tablename.lower()) in self.existing_table_names
+
+    def to_csv(self):
+        csvfile_output = os.path.normpath(self.table_name() + '.csv')
+        self.get_cursor()
+        sql_query = ("SELECT * FROM " + self.table_name() + ";")
+        self.cursor.execute(sql_query)
+        row = self.cursor.fetchone()
+        colnames = [tuple_i[0] for tuple_i in self.cursor.description]
+        csv_out = open(csvfile_output, "wb")
+        csv_writer = csv.writer(csv_out, dialect='excel')
+        csv_writer.writerow(colnames)
+
+        while row is not None:
+            # csv_writer.writerow([values for values in row])
+            csv_writer.writerow(list(row))
+            row = self.cursor.fetchone()
+
+        csv_out.close()
+        sortcsv(csvfile_output)
+        return csvfile_output
 
     def get_connection(self):
         """Gets the db connection."""
