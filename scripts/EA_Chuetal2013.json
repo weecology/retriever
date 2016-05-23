@@ -6,60 +6,28 @@
     "shortname": "Steppe_plants_2013",
     "tables": {
         "allrecords_cover": {
-            "cleanup": {
-                "nulls": [
-                    "NA"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
         },
         "allrecords_density": {
-            "cleanup": {
-                "nulls": [
-                    "NA"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
         },
         "daily_climate": {
-            "cleanup": {
-                "nulls": [
-                    "NA"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
         },
         "quad_info": {
-            "cleanup": {
-                "nulls": [
-                    "NA"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
         },
         "quad_inventory": {
-            "cleanup": {
-                "nulls": [
-                    "NA"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
         },
         "quad_stocking_rate": {
-            "cleanup": {
-                "nulls": [
-                    "NA"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
         },
         "species_list": {
-            "cleanup": {
-                "nulls": [
-                    "NA"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
         },
         "species_name_changes": {
-            "cleanup": {
-                "nulls": [
-                    "NA"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
         }
     },
     "tags": [

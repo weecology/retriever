@@ -6,8 +6,8 @@
     "shortname": "DelMoral2010",
     "tables": {
         "species": {
-            "do_not_bulk_insert": "True",
-            "escape_single_quotes": "True"
+            "do_not_bulk_insert": "'True'",
+            "escape_single_quotes": "'True'"
         },
         "species_plot_year": {
             "columns": [

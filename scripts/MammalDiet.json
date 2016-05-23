@@ -5,11 +5,7 @@
     "shortname": "MammalDIET",
     "tables": {
         "diet": {
-            "cleanup": {
-                "nulls": [
-                    "NA"
-                ]
-            },
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])",
             "columns": [
                 [
                     "TaxonID",
@@ -192,7 +188,7 @@
                     ]
                 ]
             ],
-            "contains_pk": "True"
+            "contains_pk": "'True'"
         }
     },
     "tags": [

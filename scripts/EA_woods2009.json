@@ -5,25 +5,13 @@
     "shortname": "Woods2009",
     "tables": {
         "all_plots_1935_1948": {
-            "cleanup": {
-                "nulls": [
-                    "NA"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
         },
         "all_plots_1974_1980": {
-            "cleanup": {
-                "nulls": [
-                    "NA"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
         },
         "sampling_history": {
-            "cleanup": {
-                "nulls": [
-                    "NA"
-                ]
-            },
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])",
             "columns": [
                 [
                     "record_id",
@@ -146,12 +134,7 @@
             ]
         },
         "upland_plots_1989_2007": {
-            "cleanup": {
-                "nulls": [
-                    "NA",
-                    ""
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA', ''])"
         }
     },
     "tags": [

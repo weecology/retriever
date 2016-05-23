@@ -167,12 +167,7 @@
             ]
         },
         "precip": {
-            "cleanup": {
-                "nulls": [
-                    ".",
-                    "n/a"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['.', 'n/a'])"
         },
         "seed_89_02": {
             "columns": [

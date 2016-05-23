@@ -6,11 +6,7 @@
     "shortname": "AmnioteDB",
     "tables": {
         "main": {
-            "cleanup": {
-                "nulls": [
-                    -999
-                ]
-            },
+            "cleanup": "Cleanup(correct_invalid_value, nulls=[-999])",
             "columns": [
                 [
                     "record_id",

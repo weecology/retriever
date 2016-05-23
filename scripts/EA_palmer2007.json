@@ -6,26 +6,11 @@
     "shortname": "Palmer2007",
     "tables": {
         "env": {
-            "replace_columns": [
-                [
-                    "check",
-                    "checkrec"
-                ]
-            ]
+            "replace_columns": "[('check', 'checkrec')]"
         },
         "trees": {
-            "cleanup": {
-                "nulls": [
-                    ".",
-                    ""
-                ]
-            },
-            "replace_columns": [
-                [
-                    "check",
-                    "checkrec"
-                ]
-            ]
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['.', ''])",
+            "replace_columns": "[('check', 'checkrec')]"
         }
     },
     "tags": [

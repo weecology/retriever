@@ -5,18 +5,10 @@
     "shortname": "TreeWesternGhats",
     "tables": {
         "ind_loc_girth": {
-            "cleanup": {
-                "nulls": [
-                    "NA"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
         },
         "sp_list": {
-            "cleanup": {
-                "nulls": [
-                    "NA"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
         }
     },
     "tags": [

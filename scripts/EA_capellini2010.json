@@ -6,11 +6,7 @@
     "shortname": "MammalMR2010",
     "tables": {
         "MammalMR2010": {
-            "cleanup": {
-                "nulls": [
-                    -9999
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=[-9999])"
         }
     },
     "tags": [

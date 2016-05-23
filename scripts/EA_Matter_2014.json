@@ -5,32 +5,16 @@
     "shortname": "Matter2014",
     "tables": {
         "Dispersal": {
-            "cleanup": {
-                "nulls": [
-                    "n/a"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['n/a'])"
         },
         "Landscape": {
-            "cleanup": {
-                "nulls": [
-                    "n/a"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['n/a'])"
         },
         "PopulationAbunMark_Recap": {
-            "cleanup": {
-                "nulls": [
-                    "n/a"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['n/a'])"
         },
         "PopulationAbunTransect": {
-            "cleanup": {
-                "nulls": [
-                    "n/a"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['n/a'])"
         }
     },
     "tags": [

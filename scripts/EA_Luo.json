@@ -6,11 +6,7 @@
     "shortname": "CForBioData",
     "tables": {
         "biomass": {
-            "cleanup": {
-                "nulls": [
-                    "NA"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
         }
     },
     "tags": [

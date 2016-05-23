@@ -7,7 +7,7 @@ JSON_DIR = "../scripts/"
 
 
 def parse_script_to_json(script_file):
-    definition = open(SCRIPT_DIR+script_file+'.script', 'rb')
+    definition = open(SCRIPT_DIR + script_file + ".script", 'rb')
 
     values = {}
     urls = {}
@@ -30,7 +30,7 @@ def parse_script_to_json(script_file):
                     try:
                         tables[last_table]
                     except:
-                        tables[table_name] = {'replace_columns': replace}
+                        tables[table_name] = {'replace_columns': str(replace)}
             elif key == "*nulls":
                 if last_table:
                     nulls = [eval(v) for v in [v.strip()
@@ -40,10 +40,10 @@ def parse_script_to_json(script_file):
                     except KeyError:
                         if replace:
                             tables[last_table] = {
-                                'replace_columns': replace}
+                                'replace_columns': str(replace)}
                         else:
                             tables[last_table] = {}
-                    tables[last_table]['cleanup'] = {"nulls" :nulls}
+                    tables[last_table]['cleanup'] = "Cleanup(correct_invalid_value, nulls=" + str(nulls) + ")"
             elif key == "replace":
                 replace = [(v.split(',')[0].strip(), v.split(',')[1].strip())
                            for v in [v.strip() for v in value.split(';')]]
@@ -82,10 +82,7 @@ def parse_script_to_json(script_file):
                     except:
                         e = str(value)
 
-                    tables[last_table][key] = str(e) if e.__class__ != str else "'" + e + "'"
-            elif key == ["ref","tags","urls"]:
-                # general script attributes
-                values[key] = value
+                    tables[last_table][key] = "'" + str(e) + "'"
             else:
                 values[key] = str(value)
 
@@ -112,6 +109,8 @@ def parse_script_to_json(script_file):
     with open(JSON_DIR+script_file + '.json', 'w') as json_file:
         json.dump(values,json_file,sort_keys=True, indent=4,
             separators=(',', ': '))
+        json_file.write('\n')
+        json_file.close()
 
     definition.close()
 

@@ -6,12 +6,7 @@
     "shortname": "PortalMammals",
     "tables": {
         "main": {
-            "cleanup": {
-                "nulls": [
-                    "",
-                    null
-                ]
-            },
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['', None])",
             "columns": [
                 [
                     "recordid",
@@ -208,7 +203,7 @@
                     ]
                 ]
             ],
-            "contains_pk": "True",
+            "contains_pk": "'True'",
             "delimiter": "','"
         },
         "plots": {
@@ -240,9 +235,9 @@
                     ]
                 ]
             ],
-            "contains_pk": "True",
+            "contains_pk": "'True'",
             "delimiter": "','",
-            "header_rows": "0"
+            "header_rows": "'0'"
         }
     },
     "tags": [

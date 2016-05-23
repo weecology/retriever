@@ -6,46 +6,22 @@
     "shortname": "PhytoplankonBiovolume",
     "tables": {
         "bvd_genus_ag": {
-            "cleanup": {
-                "nulls": [
-                    "NA"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
         },
         "bvd_genus_raw": {
-            "cleanup": {
-                "nulls": [
-                    "NA"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
         },
         "bvd_raw": {
-            "cleanup": {
-                "nulls": [
-                    "NA"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
         },
         "bvd_species_ag": {
-            "cleanup": {
-                "nulls": [
-                    "NA"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
         },
         "bvd_species_raw": {
-            "cleanup": {
-                "nulls": [
-                    "NA"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
         },
         "taxa_table": {
-            "cleanup": {
-                "nulls": [
-                    "NA"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
         }
     },
     "tags": [

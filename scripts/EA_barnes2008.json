@@ -6,12 +6,7 @@
     "shortname": "MarineSize",
     "tables": {
         "main": {
-            "cleanup": {
-                "nulls": [
-                    "n/a",
-                    "0.0000E+00"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['n/a', '0.0000E+00'])"
         }
     },
     "tags": [

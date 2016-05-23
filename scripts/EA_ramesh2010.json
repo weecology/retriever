@@ -167,11 +167,7 @@
             "delimiter": "'\t'"
         },
         "species": {
-            "cleanup": {
-                "nulls": [
-                    "NA"
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
         }
     },
     "tags": [

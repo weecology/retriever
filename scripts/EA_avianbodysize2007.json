@@ -6,11 +6,7 @@
     "shortname": "AvianBodySize",
     "tables": {
         "species": {
-            "cleanup": {
-                "nulls": [
-                    -999
-                ]
-            }
+            "cleanup": "Cleanup(correct_invalid_value, nulls=[-999])"
         }
     },
     "tags": [
