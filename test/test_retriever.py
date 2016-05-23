@@ -57,6 +57,9 @@ def test_correct_invalid_value_string():
 def test_correct_invalid_value_number():
     assert correct_invalid_value(-999, {'nulls': ['NA', '-999']}) == None
     
+def test_correct_invalid_value_exception(): 
+    assert correct_invalid_value(-999, {}) == -999
+    
 def test_create_db_statement():
     """Test creating the create database SQL statement"""
     assert test_engine.create_db_statement() == 'CREATE DATABASE test_abc'
