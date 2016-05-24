@@ -37,7 +37,7 @@ class main(Script):
 
             # Species table
             table = Table("species", cleanup=Cleanup(), contains_pk=True,
-                          header_rows=6)
+                          header_rows=9)
 
             table.columns=[("species_id", ("pk-int",) ),
                            ("AOU", ("int",) ),
@@ -56,33 +56,16 @@ class main(Script):
             engine.insert_data_from_url(self.urls["species"])
 
             # Routes table
-            if not os.path.isfile(engine.format_filename("routes_new.csv")):
-                engine.download_files_from_archive(self.urls["routes"],
-                                                   ["routes.csv"])
-                read = open(engine.format_filename("routes.csv"), "rb")
-                write = open(engine.format_filename("routes_new.csv"), "wb")
-                print "Cleaning routes data..."
-                write.write(read.readline())
-                for line in read:
-                    values = line.split(',')
-                    v = Decimal(values[5])
-                    if  v > 0:
-                        values[5] = str(v * Decimal("-1"))
-                    write.write(','.join(str(value) for value in values))
-                write.close()
-                read.close()
-
+            engine.download_files_from_archive(self.urls["routes"], ["routes.csv"])
             engine.auto_create_table(Table("routes", cleanup=Cleanup()),
-                                     filename="routes_new.csv")
-
-            engine.insert_data_from_file(engine.format_filename("routes_new.csv"))
-
+                                     filename="routes.csv")
+            engine.insert_data_from_file(engine.format_filename("routes.csv"))
 
             # Weather table
             if not os.path.isfile(engine.format_filename("weather_new.csv")):
                 engine.download_files_from_archive(self.urls["weather"],
-                                                   ["weather.csv"])
-                read = open(engine.format_filename("weather.csv"), "rb")
+                                                   ["Weather.csv"])
+                read = open(engine.format_filename("Weather.csv"), "rb")
                 write = open(engine.format_filename("weather_new.csv"), "wb")
                 print "Cleaning weather data..."
                 for line in read:

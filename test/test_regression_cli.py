@@ -1,7 +1,9 @@
 import os
-import nose
 from unittest import TestCase
 from hashlib import md5
+
+import nose
+
 
 # First md5 is for csv, second md5 is for sqlite
 known_md5s = {
@@ -37,27 +39,25 @@ def setup_module():
 def teardown_module():
     """Cleanup temporary output files after testing and return to root directory"""
     os.system("rm output_*")
+    os.system("rm -r raw_data/MoM2003")
     os.chdir("..")
 
 
-def getmd5(filename):
-    """Get MD5 value for a file"""
-    lines = open(filename, 'rU')
+def getmd5(file_path):
+    """Get MD5 of a file, files in a directory or for specific files"""
+    files = []
+    if os.path.isfile(file_path):
+        files.append(file_path)
+    elif os.path.isdir(file_path):
+        for root, directories, filenames in os.walk(file_path):
+            for filename in sorted(filenames):
+                files.append(os.path.normpath(os.path.join(root, filename)))
     sum = md5()
-    for line in lines:
-        sum.update(line)
-    return sum.hexdigest()
-
-
-def getmd5dir(directoryname):
-    """Get MD5 value for files in a directory"""
-    sum = md5()
-    for root, directories, filenames in os.walk(directoryname):
-        for filename in filenames:
-            lines = open(os.path.normpath(os.path.join(root, filename)), 'rU')
-            sum = md5()
-            for line in lines:
-                sum.update(line)
+    for file_path in files:
+        lines = open(file_path, 'rU')
+        sum = md5()
+        for line in lines:
+            sum.update(line)
     return sum.hexdigest()
 
 
@@ -134,7 +134,7 @@ class DownloadRegression(TestCase):
     def check_download_regression(self, dataset, known_md5):
         """Check for regression for a particular dataset downloaded only"""
         os.system("retriever download {0} -p raw_data/{0}".format(dataset))
-        current_md5 = getmd5dir("raw_data/%s" % (dataset))
+        current_md5 = getmd5("raw_data/%s" % (dataset))
         assert current_md5 == known_md5
 
 

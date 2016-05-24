@@ -3,7 +3,7 @@ language: python
 python:
   - "2.7"
 addons:
-  postgresql: "9.1"
+  postgresql: "9.2"
 
 services:
   - postgresql
@@ -12,13 +12,13 @@ install:
   - python setup.py -q install
   - pip install codecov
   - pip install pytest-cov
-  - pip install pytest-xdist      
+  - pip install pytest-xdist
 
 
 # command to run tests
 
 script:
-  - py.test --cov=retriever 
+  - py.test --cov=retriever
 
 # database setup
 before_script:

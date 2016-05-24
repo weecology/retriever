@@ -19,8 +19,8 @@ class main(Script):
         self.name = "Forest Inventory and Analysis"
         self.shortname = "FIA"
         self.ref = "http://fia.fs.fed.us/"
-        self.urls = {"main": "http://apps.fs.fed.us/fiadb-downloads/",
-                     'species': 'http://apps.fs.fed.us/fiadb-downloads/REF_SPECIES.CSV'}
+        self.urls = {"main": "http://apps.fs.fed.us/fiadb-downloads/CSV/",
+                     'species': 'http://apps.fs.fed.us/fiadb-downloads/CSV/REF_SPECIES.csv'}
         self.tags = ["Taxon > Plants", "Spatial Scale > Continental",
                      "Data Type > Observational"]
         self.citation = "DATEOFDOWNLOAD. Forest Inventory and Analysis Database, St. Paul, MN: U.S. Department of Agriculture, Forest Service, Northern Research Station. [Available only on internet: http://apps.fs.fed.us/fiadb-downloads/datamart.html]"

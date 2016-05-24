@@ -17,6 +17,7 @@ Contents:
    macbuild.rst
    guidocs.rst
    Release.rst
+   developer.rst
    ecoretriever.rst
    datasets.rst
    modules.rst
