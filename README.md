@@ -14,6 +14,8 @@ Once the EcoData Retriever has loaded the data into the database it is easy to c
 Installing (binaries)
 ---------------------
 
+[![Join the chat at https://gitter.im/weecology/retriever](https://badges.gitter.im/weecology/retriever.svg)](https://gitter.im/weecology/retriever?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Precompiled binaries the most recent release are available for Windows, OS X,
 and Ubuntu/Debian at the [project website](http://ecodataretriever.org).
 
