@@ -69,7 +69,7 @@ Installing (binaries)
 ~~~~~~~~~~~~~~~~~~~~~
 
 
-Precompiled binaries the most recent release are available for Windows,
+Precompiled binaries of the most recent release are available for Windows,
 OS X, and Ubuntu/Debian at the `project website`_.
 
 
