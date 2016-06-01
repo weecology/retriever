@@ -80,7 +80,6 @@ Installing From Source
 To install the EcoData Retriever from source, you’ll need Python 2.6+
 with the following packages installed:
 
--  wxPython
 -  xlrd
 
 
@@ -111,16 +110,15 @@ and datasets run ``retriever --help``. The output will look like this:
 ::
 
     usage: retriever  [-h] [-v] [-q]
-                      {download,install,update,gui,new,ls,citation,reset,help}
+                      {download,install,update,new,ls,citation,reset,help}
                       ...
 
     positional arguments:
-        {download,install,update,gui,new,ls,citation,reset,help}
+        {download,install,update,new,ls,citation,reset,help}
                               sub-command help
           download            download raw data files for a dataset
           install             download and install dataset
           update              download updated versions of scripts
-          gui                 launch retriever in graphical mode
           new                 create a new sample retriever script
           ls                  display a list all available dataset scripts
           citation            view citation

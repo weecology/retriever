@@ -6,7 +6,6 @@ Subpackages
 
 .. toctree::
 
-    retriever.app
     retriever.engines
     retriever.lib
 

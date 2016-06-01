@@ -42,40 +42,11 @@ def more_recent(latest, current):
     return (len(current_parts) > (n + 1) and current_parts[n + 1] == "rc")
 
 
-def check_for_updates(graphical=False):
+def check_for_updates():
     """Check for updates to scripts and executable."""
-    if graphical:
-        import wx
-        app = wx.App(False)
-
-        from retriever.app.splash import Splash
-        splash = Splash()
-        # splash.Show()
-        splash.SetText("\tLoading...")
-
-        class update_progress:
-
-            def __init__(self, parent):
-                self.parent = parent
-
-            def write(self, s):
-                if s != "\n":
-                    try:
-                        self.parent.SetText('\t' + s)
-                    except:
-                        pass
-
-            def flush(self):
-                pass
-
-        sys.stdout = update_progress(splash)
-
     init = InitThread()
     init.run()
 
-    if graphical:
-        splash.Hide()
-        sys.stdout = sys.__stdout__
     print "\nThe retriever is up-to-date"
 
 
@@ -116,56 +87,6 @@ class InitThread(Thread):
             # NOTE: exe auto-update functionality has been temporarily disabled
             # since the binaries were moved to AWS.
 
-            if False:  # running_from[-4:] == ".exe":
-                if os.path.isfile('retriever_old.exe') and running_from != 'retriever_old.exe':
-                    try:
-                        os.remove('retriever_old.exe')
-                    except:
-                        pass
-
-                # Windows: open master branch version file to find out most
-                # recent executable version
-                try:
-                    version_file = urllib.urlopen(
-                        MASTER_BRANCH + "version.txt")
-                except IOError:
-                    print "Couldn't open version.txt from repository"
-                    return
-
-                latest = version_file.readline().strip('\n')
-
-                if more_recent(latest, VERSION):
-                    import wx
-
-                    msg = "You're running version " + VERSION + "."
-                    msg += '\n\n'
-                    msg += "Version " + latest + " is available. Do you want to upgrade?"
-                    choice = wx.MessageDialog(None, msg, "Update", wx.YES_NO)
-                    if choice.ShowModal() == wx.ID_YES:
-                        print "Updating to latest version. Please wait..."
-                        try:
-                            if "_old" not in running_from:
-                                os.rename(running_from,
-                                          '.'.join(
-                                              running_from.split('.')[:-1]) +
-                                          "_old." + running_from.split('.')[-1])
-                        except:
-                            pass
-
-                        download_from_repository("windows/" + executable_name + ".exe",
-                                                 executable_name + ".exe",
-                                                 repo=REPO_URL + latest + "/")
-
-                        sys.stdout = sys.__stdout__
-
-                        wx.MessageBox(
-                            "Update complete. The program will now restart.")
-
-                        os.execv(executable_name + ".exe", sys.argv)
-
-                        sys.exit()
-
-                version_file.close()
 
             # open version.txt for current release branch and get script
             # versions

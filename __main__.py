@@ -25,14 +25,9 @@ from retriever.lib.get_opts import parser
 
 def main():
     """This function launches the EcoData Retriever."""
-    if len(sys.argv) == 1 or (len(sys.argv) > 1 and sys.argv[1] == 'gui'):
-        # if no command line args are passed, launch GUI
-
-        check_for_updates(graphical=False if current_platform == 'darwin' else True)
-        lists = get_lists()
-
-        from retriever.app.main import launch_app
-        launch_app(lists)
+    if len(sys.argv) == 1:
+        # if no command line args are passed, show the help options
+        parser.parse_args(['-h'])
 
     else:
         # otherwise, parse them
@@ -50,7 +45,7 @@ def main():
             script_list = SCRIPT_LIST(force_compile=True)
 
         if args.command == 'update':
-            check_for_updates(graphical=False)
+            check_for_updates()
             script_list = SCRIPT_LIST()
             return
 
@@ -69,13 +64,6 @@ def main():
 
             return
 
-        elif args.command == 'gui':
-            lists = get_lists()
-
-            from retriever.app.main import launch_app
-            launch_app(lists)
-            return
-
         elif args.command == 'new':
             f = open(args.filename, 'w')
             f.write(sample_script)
@@ -92,7 +80,7 @@ def main():
             # If scripts have never been downloaded there is nothing to list
             if not script_list:
                 print "No scripts are currently available. Updating scripts now..."
-                check_for_updates(graphical=False)
+                check_for_updates()
                 print "\n\nScripts downloaded.\n"
                 script_list = SCRIPT_LIST()
 
