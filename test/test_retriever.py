@@ -111,7 +111,9 @@ def test_find_file_present():
 
     """
     test_engine.script.shortname = 'AvianBodySize'
-    os.chdir('./test/')
+    # os.chdir('test')
+    dir_path = os.path.dirname(os.path.abspath(__file__))
+    os.chdir(dir_path)
     assert test_engine.find_file('avian_ssd_jan07.txt') == os.path.normpath('raw_data/AvianBodySize/avian_ssd_jan07.txt')
     os.chdir('..')
 
@@ -153,4 +155,4 @@ def test_format_insert_value_string_complex():
 def test_getmd5():
     """Test md5 sum calculation"""
     lines = ['a,b,c\n', '1,2,3\n', '4,5,6\n']
-    assert getmd5(lines) == '0bec5bf6f93c547bc9c6774acaf85e1a'
+    assert getmd5(data=lines, data_type='lines') == '0bec5bf6f93c547bc9c6774acaf85e1a'

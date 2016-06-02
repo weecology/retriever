@@ -2,6 +2,7 @@
 inherit from the most specific class available."""
 
 import shutil
+
 from retriever import DATA_DIR
 from retriever.lib.models import *
 from retriever.lib.tools import choose_engine
@@ -12,7 +13,7 @@ class Script:
     from this class and execute their code in the download method."""
 
     def __init__(self, name="", description="", shortname="", urls=dict(),
-                 tables=dict(), ref="", public=True, addendum=None, citation="Not currently available",**kwargs):
+                 tables=dict(), ref="", public=True, addendum=None, citation="Not currently available", **kwargs):
         self.name = name
         self.shortname = shortname
         self.filename = __name__
@@ -22,7 +23,7 @@ class Script:
         self.ref = ref
         self.public = public
         self.addendum = addendum
-        self.citation= citation
+        self.citation = citation
         self.tags = []
         for key, item in kwargs.items():
             setattr(self, key, item[0] if isinstance(item, tuple) else item)
@@ -33,11 +34,13 @@ class Script:
             desc += "\n" + self.reference_url()
         return desc
 
-    def download(self, engine=None, debug=False):
+    def download(self, engine=None, debug=False, populate=False):
+        """when initializing the selected engine create_db=false will not overwrite the existing db"""
         self.engine = self.checkengine(engine)
         self.engine.debug = debug
         self.engine.db_name = self.shortname
-        self.engine.create_db()
+        if not populate:
+            self.engine.create_db()
 
     def reference_url(self):
         if self.ref:
@@ -83,8 +86,8 @@ class BasicTextTemplate(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
 
-    def download(self, engine=None, debug=False):
-        Script.download(self, engine, debug)
+    def download(self, engine=None, debug=False, populate=False):
+        Script.download(self, engine, debug, populate)
 
         for key in self.urls.keys():
             if key not in self.tables.keys():
@@ -92,9 +95,14 @@ class BasicTextTemplate(Script):
                                                               nulls=[-999]))
 
         for key, value in self.urls.items():
-            self.engine.auto_create_table(self.tables[key], url=value)
-            self.engine.insert_data_from_url(value)
-            self.tables[key].record_id = 0
+            self.engine.auto_create_table(self.tables[key], url=value, populate=populate)
+            if not populate:
+                self.engine.insert_data_from_url(value)
+                self.tables[key].record_id = 0
+            else:
+                self.engine.to_csv()
+                self.engine.final_cleanup()
+
         return self.engine
 
     def reference_url(self):
@@ -111,9 +119,12 @@ class DownloadOnlyTemplate(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
 
-    def download(self, engine=None, debug=False):
+    def download(self, engine=None, debug=False, populate=False):
         if engine.name != "Download Only":
-            raise Exception("This dataset contains only non-tabular data files, and can only be used with the 'download only' engine.\nTry 'retriever download datasetname instead.")
+            raise Exception(
+                "This dataset contains only non-tabular data files,"
+                " and can only be used with the 'download only' engine."
+                "\nTry 'retriever download [datasetname] instead.")
         Script.download(self, engine, debug)
         for filename, url in self.urls.items():
             self.engine.download_file(url, filename, clean_line_endings=False)
