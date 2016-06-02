@@ -25,14 +25,6 @@ elif current_platform == "windows":
 from __init__ import VERSION
 
 
-def is_wxpython_installed():
-    """Returns True if  wxpython is installed"""
-    try:
-        return __import__("wx")
-    except ImportError:
-        return False
-
-
 def clean_version(v):
     if v == 'master':
         return '1.0.0'
@@ -41,13 +33,11 @@ def clean_version(v):
 packages = [
     'retriever.lib',
     'retriever.engines',
-    'retriever.app',
     'retriever',
 ]
 
 includes = [
     'xlrd',
-    'wx',
     'pymysql',
     'psycopg2',
     'sqlite3',
@@ -68,17 +58,6 @@ excludes = [
     'pywin.dialogs', 'pywin.dialogs.list',
     'Tkconstants', 'Tkinter', 'tcl',
 ]
-
-
-wx_installed = is_wxpython_installed()
-
-if wx_installed is False:
-    warnings.warn("""wxpython is not installed.
-                  Retriever will not work in GUI mode.
-                  For retriever-gui install python-wxpython and
-                  run 'python setup.py install' again.""",
-                  UserWarning
-                  )
 
 setup(name='retriever',
       version=clean_version(VERSION),

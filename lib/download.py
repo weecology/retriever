@@ -3,7 +3,6 @@
 import sys
 from time import time
 from threading import Thread, Lock
-import wx
 from retriever.lib.tools import final_cleanup
 
 

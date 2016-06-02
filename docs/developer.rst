@@ -11,11 +11,8 @@ If you are installing from source you will need a Python 2.6+ installation and t
 
   setuptools
   xlrd
-  wxPython
   Sphinx
 
-
-In case you find errors with wxPython, try `installing the wheel`_ from a third party distributor
 
 Setting up servers
 ==================
