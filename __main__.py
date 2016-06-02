@@ -127,15 +127,22 @@ def main():
         scripts = name_matches(script_list, args.dataset)
         if scripts:
             for dataset in scripts:
-                print "=> Installing", dataset.name
-                try:
-                    dataset.download(engine, debug=debug)
-                    dataset.engine.final_cleanup()
-                except KeyboardInterrupt:
-                    pass
-                except Exception as e:
-                    print e
-                    if debug: raise
+                if args.command == 'export':
+                    for items in dataset.urls.keys():
+                        if hasattr(args, 'sorted') and args.sorted:
+                            engine.export_2csv(dataset.shortname, items, True)
+                        else:
+                            engine.export_2csv(dataset.shortname, items)
+                else:
+                    print "=> Installing", dataset.name
+                    try:
+                        dataset.download(engine, debug=debug)
+                        dataset.engine.final_cleanup()
+                    except KeyboardInterrupt:
+                        pass
+                    except Exception as e:
+                        print e
+                        if debug: raise
             print "Done!"
         else:
             print "The dataset {} isn't currently available in the Retriever".format(args.dataset)

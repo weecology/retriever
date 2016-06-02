@@ -1,7 +1,7 @@
 import os
-import platform
+import csv
 from retriever.lib.models import Engine, no_cleanup
-
+from retriever.lib.tools import sortcsv
 
 class engine(Engine):
     """Engine instance for MySQL."""
@@ -48,7 +48,7 @@ class engine(Engine):
 
         mysql_set_autocommit_off = """SET autocommit=0; SET UNIQUE_CHECKS=0; SET FOREIGN_KEY_CHECKS=0; SET sql_log_bin=0;"""
         mysql_set_autocommit_on = """SET GLOBAL innodb_flush_log_at_trx_commit=1; COMMIT; SET autocommit=1; SET unique_checks=1; SET foreign_key_checks=1;"""
-        
+
         self.get_cursor()
         ct = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
         if (self.table.cleanup.function == no_cleanup and
@@ -90,6 +90,33 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
             for schema, table in self.cursor:
                 self.existing_table_names.add((schema.lower(), table.lower()))
         return (dbname.lower(), tablename.lower()) in self.existing_table_names
+
+    def export_2csv(self, dbname, tablename, sortedcsv=False):
+        """Export table from MySQL to CSV
+
+        mysql returns a dictionary, instead of DictWriter we use the writer
+        check if the database "{db}"  is default or not:
+        if default use the dbname(dataset short name) else the db value from opts
+        """
+        self.get_cursor()
+        csvfile_output = os.path.normpath(tablename + '.csv')
+
+        if self.opts['database_name'] == "{db}":
+            sql_query = ("SELECT * FROM " + self.table_name(tablename, dbname) + ";")
+        else:
+            sql_query = ("SELECT * FROM " + self.table_name(tablename, self.opts['database_name']) + ";")
+
+        self.cursor.execute(sql_query)
+        data = self.cursor.fetchall()
+        colnames = [tuple_i[0] for tuple_i in self.cursor.description]
+        csv_out = open(csvfile_output, "wb")
+        csv_writer = csv.writer(csv_out, dialect='excel')
+        csv_writer.writerow(colnames)
+        for lines in data:
+            csv_writer.writerow([values for values in lines])
+        csv_out.close()
+        if sortedcsv:
+            sortcsv(csvfile_output)
 
     def get_connection(self):
         """Gets the db connection."""
