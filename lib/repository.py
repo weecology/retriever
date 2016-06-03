@@ -1,4 +1,5 @@
 """Checks the repository for updates."""
+from __future__ import print_function
 
 
 import os
@@ -47,7 +48,7 @@ def check_for_updates():
     init = InitThread()
     init.run()
 
-    print "\nThe retriever is up-to-date"
+    print("\nThe retriever is up-to-date")
 
 
 def update_progressbar(progress):
@@ -96,7 +97,7 @@ class InitThread(Thread):
             # read scripts from the repository and the checksums from the
             # version.txt
             scripts = []
-            print "Downloading scripts..."
+            print("Downloading scripts...")
             for line in version_file:
                 scripts.append(line.strip('\n').split(','))
 
@@ -136,11 +137,11 @@ class InitThread(Thread):
 
                 if need_to_download:
                     try:
-                        os.remove(os.path.normpath(os.path.join(HOME_DIR,"scripts", script_name)))
+                        os.remove(os.path.normpath(os.path.join(HOME_DIR, "scripts", script_name)))
                         download_from_repository("scripts/" + script_name,
                                                  os.path.normpath(os.path.join(SCRIPT_WRITE_PATH, script_name)))
                     except Exception as e:
-                        print e
+                        print(e)
                         pass
                 update_progressbar(float(index + 1)/float(total_script_count))
         except:

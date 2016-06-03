@@ -1,6 +1,7 @@
 #retriever
 
 """Retriever script for direct download of Bioclim data"""
+from builtins import range
 
 from retriever.lib.templates import Script
 

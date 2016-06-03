@@ -1,3 +1,4 @@
+from builtins import range
 import os
 import platform
 from retriever.lib.models import Engine, no_cleanup

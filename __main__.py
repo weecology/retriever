@@ -6,6 +6,8 @@ to choose from all scripts.
 The main() function can be used for bootstrapping.
 
 """
+from __future__ import print_function
+from builtins import str
 
 import os
 import platform
@@ -79,9 +81,9 @@ def main():
 
             # If scripts have never been downloaded there is nothing to list
             if not script_list:
-                print "No scripts are currently available. Updating scripts now..."
+                print("No scripts are currently available. Updating scripts now...")
                 check_for_updates()
-                print "\n\nScripts downloaded.\n"
+                print("\n\nScripts downloaded.\n")
                 script_list = SCRIPT_LIST()
 
             all_scripts = []
@@ -105,7 +107,7 @@ def main():
 
             all_scripts = sorted(all_scripts, key=lambda s: s.lower())
 
-            print "Available datasets : {}\n".format(len(all_scripts))
+            print("Available datasets : {}\n".format(len(all_scripts)))
 
             if args.l==None:
                 import lscolumns
@@ -127,19 +129,19 @@ def main():
         scripts = name_matches(script_list, args.dataset)
         if scripts:
             for dataset in scripts:
-                print "=> Installing", dataset.name
+                print("=> Installing", dataset.name)
                 try:
                     dataset.download(engine, debug=debug)
                     dataset.engine.final_cleanup()
                 except KeyboardInterrupt:
                     pass
                 except Exception as e:
-                    print e
+                    print(e)
                     if debug: raise
-            print "Done!"
+            print("Done!")
         else:
-            print "The dataset {} isn't currently available in the Retriever".format(args.dataset)
-            print "Run 'retriever ls to see a list of currently available datasets"
+            print("The dataset {} isn't currently available in the Retriever".format(args.dataset))
+            print("Run 'retriever ls to see a list of currently available datasets")
 
 if __name__ == "__main__":
     main()

@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os
 from unittest import TestCase
 from hashlib import md5
@@ -73,7 +74,7 @@ def unixfileformat(inputfile):
         infile.close()
         output.close()
     except IOError as e:
-        print "I/O error({0}): {1} ".format(e.errno, e.strerror)
+        print("I/O error({0}): {1} ".format(e.errno, e.strerror))
     return unix_outfilename
 
 

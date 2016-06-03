@@ -1,3 +1,4 @@
+from builtins import object
 def floatable(value):
     """Check if a value can be converted to a float"""
     try:
@@ -23,7 +24,7 @@ def no_cleanup(value, args):
     return value
 
 
-class Cleanup:
+class Cleanup(object):
     """This class represents a custom cleanup function and a dictionary of
     arguments to be passed to that function."""
 

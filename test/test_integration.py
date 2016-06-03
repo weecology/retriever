@@ -1,4 +1,5 @@
 """Integrations tests for EcoData Retriever"""
+from __future__ import print_function
 
 import imp
 import os
@@ -50,7 +51,7 @@ def test_csv_from_csv():
     simple_csv_module.SCRIPT.engine.disconnect()
     with open("simple_csv_simple_csv.txt", 'r') as obs_out_file:
         obs_out = obs_out_file.read()
-    print len(obs_out)
+    print(len(obs_out))
     assert obs_out == simple_csv['expect_out']
 
 def test_crosstab_from_csv():
@@ -59,5 +60,5 @@ def test_crosstab_from_csv():
     crosstab_module.SCRIPT.engine.disconnect()
     with open("crosstab_crosstab.txt", 'r') as obs_out_file:
         obs_out = obs_out_file.read()
-    print len(obs_out)
+    print(len(obs_out))
     assert obs_out == crosstab['expect_out']

@@ -1,4 +1,6 @@
 """A function to begin dataset downloads in a separate thread."""
+from __future__ import print_function
+from builtins import object
 
 import sys
 from time import time
@@ -41,7 +43,7 @@ class DownloadThread(Thread):
 
         start = time()
 
-        class download_stdout:
+        class download_stdout(object):
 
             def write(self, s):
                 if s and s != '\n':
@@ -51,24 +53,24 @@ class DownloadThread(Thread):
 
         sys.stdout = download_stdout()
 
-        print "Connecting to database..."
+        print("Connecting to database...")
 
         # Connect
         try:
             engine.get_cursor()
         except Exception as e:
-            print "<b><font color='red'>Error: There was an error with your database connection.<br />" + e.__str__() + "</font></b>"
+            print("<b><font color='red'>Error: There was an error with your database connection.<br />" + e.__str__() + "</font></b>")
             return
 
         # Download script
         error = False
 
-        print "<b><font color='blue'>Downloading. . .</font></b>"
+        print("<b><font color='blue'>Downloading. . .</font></b>")
         try:
             script.download(engine)
         except Exception as e:
             error = True
-            print "<b><font color='red'>Error: " + e.__str__() + "</font></b>"
+            print("<b><font color='red'>Error: " + e.__str__() + "</font></b>")
 
         if not error:
             finish = time()
@@ -89,4 +91,4 @@ class DownloadThread(Thread):
             if len(s.split('.')[0]) < 2:
                 s = "0" + s
 
-            print "<b>Done!</b> <i>Elapsed time: %02d:%02d:%s</i>" % (h, m, s)
+            print("<b>Done!</b> <i>Elapsed time: %02d:%02d:%s</i>" % (h, m, s))

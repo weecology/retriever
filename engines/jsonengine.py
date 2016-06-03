@@ -1,4 +1,7 @@
 """Engine for writing data to a JSON file"""
+from builtins import zip
+from builtins import object
+from builtins import range
 
 import os
 import json
@@ -7,7 +10,7 @@ from retriever.lib.models import Engine
 from retriever import DATA_DIR
 from collections import OrderedDict
 
-class DummyConnection:
+class DummyConnection(object):
     def cursor(self):
         pass
 

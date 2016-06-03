@@ -21,7 +21,7 @@ update_parser = subparsers.add_parser('update', help='download updated versions 
 new_parser = subparsers.add_parser('new', help='create a new sample retriever script')
 ls_parser = subparsers.add_parser('ls', help='display a list all available dataset scripts')
 citation_parser = subparsers.add_parser('citation', help='view citation')
-reset_parser = subparsers.add_parser('reset',help='reset retriever: removes configation settings, scripts, and cached data')
+reset_parser = subparsers.add_parser('reset', help='reset retriever: removes configation settings, scripts, and cached data')
 help_parser = subparsers.add_parser('help', help='')
 
 # ..............................................................

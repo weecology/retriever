@@ -4,6 +4,8 @@ This package contains a framework for creating and running scripts designed to
 download published ecological data, and store the data in a database.
 
 """
+from __future__ import print_function
+from builtins import str
 
 import os
 import sys
@@ -37,7 +39,7 @@ for dir in (HOME_DIR, os.path.join(HOME_DIR, 'raw_data'), os.path.join(HOME_DIR,
                 pw = pwd.getpwnam(os.getenv("SUDO_USER"))
                 os.chown(dir, pw.pw_uid, pw.pw_gid)
         except OSError:
-            print "The Retriever lacks permission to access the ~/.retriever/ directory."
+            print("The Retriever lacks permission to access the ~/.retriever/ directory.")
             raise
 SCRIPT_SEARCH_PATHS = [
     "./",

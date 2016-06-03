@@ -1,3 +1,4 @@
+from builtins import str
 from retriever import VERSION,COPYRIGHT
 from retriever.lib.repository import check_for_updates
 from retriever import SCRIPT_LIST

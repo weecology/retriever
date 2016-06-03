@@ -8,3 +8,4 @@ retriever.egg-info
 apidocs
 .DS_Store
 .cache/*
+*.bak
