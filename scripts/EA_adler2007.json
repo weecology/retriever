@@ -1,28 +1,163 @@
 {
     "citation": "Peter B. Adler, William R. Tyburczy, and William K. Lauenroth. 2007. Long-term mapped quadrats from Kansas prairie:demographic information for herbaceaous plants. Ecology 88:2673.",
     "description": "Demographic data for testing current theories in plant ecology and forecasting the effects of global change.",
-    "name": "Kansas plant quadrats (Ecological Archives 2007)",
-    "shortname": "Adler2007",
-    "tables": {
-        "monthly_ppt": {
-            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])",
-            "replace_columns": "[('jan', 'january'), ('feb', 'february'), ('mar', 'march'), ('apr', 'april'), ('jun', 'june'), ('jul', 'july'), ('aug', 'august'), ('sep', 'september'), ('oct', 'october'), ('nov', 'november'), ('dec', 'december')]"
-        },
-        "monthly_temp": {
-            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])",
-            "replace_columns": "[('jan', 'january'), ('feb', 'february'), ('mar', 'march'), ('apr', 'april'), ('jun', 'june'), ('jul', 'july'), ('aug', 'august'), ('sep', 'september'), ('oct', 'october'), ('nov', 'november'), ('dec', 'december')]"
-        },
-        "quadrat_inventory": {
-            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
-        }
-    },
-    "tags": [
+    "homepage": "http://esapubs.org/archive/ecol/E088/161/",
+    "keywords": [
         "Taxon > Plants",
         "Spatial Scale > Local",
         "Data Type > Time Series",
         "Data Type > Observational"
     ],
-    "url": "http://esapubs.org/archive/ecol/E088/161/",
+    "name": "Adler2007",
+    "resources": [
+        {
+            "dialect": {},
+            "mediatype": "text/csv",
+            "name": "main",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E088/161/allrecords.csv"
+        },
+        {
+            "dialect": {},
+            "mediatype": "text/csv",
+            "name": "quadrat_info",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E088/161/quadrat_info.csv"
+        },
+        {
+            "dialect": {
+                "nulls": [
+                    "NA"
+                ]
+            },
+            "mediatype": "text/csv",
+            "name": "quadrat_inventory",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E088/161/quadrat_inventory.csv"
+        },
+        {
+            "dialect": {},
+            "mediatype": "text/csv",
+            "name": "species",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E088/161/species_list.csv"
+        },
+        {
+            "dialect": {
+                "nulls": [
+                    "NA"
+                ],
+                "replace_columns": [
+                    [
+                        "jan",
+                        "january"
+                    ],
+                    [
+                        "feb",
+                        "february"
+                    ],
+                    [
+                        "mar",
+                        "march"
+                    ],
+                    [
+                        "apr",
+                        "april"
+                    ],
+                    [
+                        "jun",
+                        "june"
+                    ],
+                    [
+                        "jul",
+                        "july"
+                    ],
+                    [
+                        "aug",
+                        "august"
+                    ],
+                    [
+                        "sep",
+                        "september"
+                    ],
+                    [
+                        "oct",
+                        "october"
+                    ],
+                    [
+                        "nov",
+                        "november"
+                    ],
+                    [
+                        "dec",
+                        "december"
+                    ]
+                ]
+            },
+            "mediatype": "text/csv",
+            "name": "monthly_temp",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E088/161/monthly_temp.csv"
+        },
+        {
+            "dialect": {
+                "nulls": [
+                    "NA"
+                ],
+                "replace_columns": [
+                    [
+                        "jan",
+                        "january"
+                    ],
+                    [
+                        "feb",
+                        "february"
+                    ],
+                    [
+                        "mar",
+                        "march"
+                    ],
+                    [
+                        "apr",
+                        "april"
+                    ],
+                    [
+                        "jun",
+                        "june"
+                    ],
+                    [
+                        "jul",
+                        "july"
+                    ],
+                    [
+                        "aug",
+                        "august"
+                    ],
+                    [
+                        "sep",
+                        "september"
+                    ],
+                    [
+                        "oct",
+                        "october"
+                    ],
+                    [
+                        "nov",
+                        "november"
+                    ],
+                    [
+                        "dec",
+                        "december"
+                    ]
+                ]
+            },
+            "mediatype": "text/csv",
+            "name": "monthly_ppt",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E088/161/monthly_ppt.csv"
+        }
+    ],
+    "title": "Kansas plant quadrats (Ecological Archives 2007)",
     "urls": {
         "main": "http://esapubs.org/archive/ecol/E088/161/allrecords.csv",
         "monthly_ppt": "http://esapubs.org/archive/ecol/E088/161/monthly_ppt.csv",
