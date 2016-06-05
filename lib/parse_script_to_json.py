@@ -108,6 +108,7 @@ def parse_script_to_json(script_file):
                 values[key] = str(value)
 
     values["resources"] = tables
+    values["urls"] = urls
 
     if 'name' not in values:
         try:
