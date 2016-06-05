@@ -1,28 +1,61 @@
 {
     "citation": "Michael W. Palmer, Robert K. Peet, Rebecca A. Reed, Weimin Xi, and Peter S. White. 2007. A multiscale study of vascular plants in a North Carolina Piedmont forest. Ecology 88:2674.",
     "description": "A data set collected in 1989 of vascular plant occurrences in overlapping grids of nested plots in the Oosting Natural Area of the Duke Forest, Orange County, North Carolina, USA.",
-    "name": "North Carolina forest plants (Ecological Archives 2007)",
-    "ref": "http://esapubs.org/archive/ecol/E088/162/",
-    "shortname": "Palmer2007",
-    "tables": {
-        "env": {
-            "replace_columns": "[('check', 'checkrec')]"
-        },
-        "trees": {
-            "cleanup": "Cleanup(correct_invalid_value, nulls=['.', ''])",
-            "replace_columns": "[('check', 'checkrec')]"
-        }
-    },
-    "tags": [
+    "homepage": "http://esapubs.org/archive/ecol/E088/162/",
+    "keywords": [
         "Taxon > Plants",
         "Spatial Scale > Local",
         "Data Type > Time Series",
         "Data Type > Observational"
     ],
-    "urls": {
-        "env": "http://esapubs.org/archive/ecol/E088/162/Oosting_env.txt",
-        "pres": "http://esapubs.org/archive/ecol/E088/162/Oosting_pres2.txt",
-        "species": "http://esapubs.org/archive/ecol/E088/162/species_codes.txt",
-        "trees": "http://esapubs.org/archive/ecol/E088/162/Oosting_Trees_1998.txt"
-    }
+    "name": "Palmer2007",
+    "resources": [
+        {
+            "dialect": {},
+            "mediatype": "text/csv",
+            "name": "pres",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E088/162/Oosting_pres2.txt"
+        },
+        {
+            "dialect": {},
+            "mediatype": "text/csv",
+            "name": "species",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E088/162/species_codes.txt"
+        },
+        {
+            "dialect": {
+                "nulls": [
+                    ".",
+                    ""
+                ],
+                "replace_columns": [
+                    [
+                        "check",
+                        "checkrec"
+                    ]
+                ]
+            },
+            "mediatype": "text/csv",
+            "name": "trees",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E088/162/Oosting_Trees_1998.txt"
+        },
+        {
+            "dialect": {
+                "replace_columns": [
+                    [
+                        "check",
+                        "checkrec"
+                    ]
+                ]
+            },
+            "mediatype": "text/csv",
+            "name": "env",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E088/162/Oosting_env.txt"
+        }
+    ],
+    "title": "North Carolina forest plants (Ecological Archives 2007)"
 }
