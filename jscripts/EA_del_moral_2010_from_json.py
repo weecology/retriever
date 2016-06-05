@@ -1,0 +1,12 @@
+#retriever
+from retriever.lib.templates import BasicTextTemplate
+from retriever.lib.models import Table, Cleanup, correct_invalid_value
+
+SCRIPT = BasicTextTemplate(tables={'species_plot_year': Table('species_plot_year', ct_names=['Abilas', 'Abipro', 'Achmil', 'Achocc', 'Agoaur', 'Agrexa', 'Agrpal', 'Agrsca', 'Alnvir', 'Anamar', 'Antmic', 'Antros', 'Aqifor', 'Arcnev', 'Arnlat', 'Astled', 'Athdis', 'Blespi', 'Brocar', 'Brosit', 'Carmer', 'Carmic', 'Carpac', 'Carpay', 'Carpha', 'Carros', 'Carspe', 'Casmin', 'Chaang', 'Cirarv', 'Cisumb', 'Crycas', 'Danint', 'Descae', 'Elyely', 'Epiana', 'Eriova', 'Eripyr', 'Fesocc', 'Fravir', 'Gencal', 'Hiealb', 'Hiegra', 'Hyprad', 'Junmer', 'Junpar', 'Juncom', 'Leppun', 'Lommar', 'Luepec', 'Luihyp', 'Luplat', 'Luplep', 'Luzpar', 'Maiste', 'Pencar', 'Pencon', 'Penser', 'Phahas', 'Phlalp', 'Phldif', 'Phyemp', 'Pincon', 'Poasec', 'Poldav', 'Polmin', 'Pollon', 'Poljun', 'Popbal', 'Potarg', 'Psemen', 'Raccan', 'Rumace', 'Salsit', 'Saxfer', 'Senspp', 'Sibpro', 'Sorsit', 'Spiden', 'Trispi', 'Tsumer', 'Vacmem', 'Vervir', 'Vioadu', 'Xerten'],delimiter=',',columns=[('record_id', ('pk-auto',)), ('plot_id_year', ('char', '20')), ('plot_name', ('char', '4')), ('plot_number', ('int',)), ('year', ('int',)), ('count', ('ct-double',))],ct_column='species'),'species': Table('species', escape_single_quotes=True,do_not_bulk_insert=True)},
+                           description='Documenting vegetation recovery from volcanic disturbances using the most common species found in non-forested habitats on Mount St. Helens.',
+                           tags=['Taxon > Plants', 'Spatial Scale > Local', 'Data Type > Time Series', 'Data Type > Observational'],
+                           citation='Roger del Moral. 2010. Thirty years of permanent vegetation plots, Mount St. Helens, Washington. Ecology 91:2185.',
+                           urls={'plots': 'http://esapubs.org/archive/ecol/E091/152/MSH_PLOT_DESCRIPTORS.csv', 'species': 'http://esapubs.org/archive/ecol/E091/152/MSH_SPECIES_DESCRIPTORS.csv', 'structure_plot_year': 'http://esapubs.org/archive/ecol/E091/152/MSH_STRUCTURE_PLOT_YEAR.csv', 'species_plot_year': 'http://esapubs.org/archive/ecol/E091/152/MSH_SPECIES_PLOT_YEAR.csv'},
+                           shortname='DelMoral2010',
+                           ref='http://esapubs.org/archive/ecol/E091/152/',
+                           name='Vegetation plots - del Moral, 2010')

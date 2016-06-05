@@ -1,18 +1,26 @@
 {
     "citation": "Terje Lislevand, Jordi Figuerola, and Tamas Szekely. 2007. Avian body sizes in relation to fecundity, mating system, display behavior, and resource sharing. Ecology 88:1605.",
     "description": "A comprehensive compilation of data set on avian body sizes that would be useful for future comparative studies of avian biology.",
-    "name": "Avian Body Size Ecological Archives 2007",
-    "ref": "http://esapubs.org/archive/ecol/E088/096/",
-    "shortname": "AvianBodySize",
-    "tables": {
-        "species": {
-            "cleanup": "Cleanup(correct_invalid_value, nulls=[-999])"
-        }
-    },
-    "tags": [
+    "homepage": "http://esapubs.org/archive/ecol/E088/096/",
+    "keywords": [
         "Taxon > Birds",
         "Data Type > Compilation"
     ],
+    "name": "AvianBodySize",
+    "resources": [
+        {
+            "dialect": {
+                "nulls": [
+                    -999
+                ]
+            },
+            "mediatype": "text/csv",
+            "name": "species",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E088/096/avian_ssd_jan07.txt"
+        }
+    ],
+    "title": "Avian Body Size Ecological Archives 2007",
     "urls": {
         "species": "http://esapubs.org/archive/ecol/E088/096/avian_ssd_jan07.txt"
     }
