@@ -1,60 +1,52 @@
 {
     "description": "Plant taxonomy system available on the USDA plants site.",
-    "name": "USDA plants",
-    "shortname": "PlantTaxonomy",
-    "tables": {
-        "PlantTaxonomy": {
-            "columns": [
-                [
-                    "record_id",
-                    [
-                        "pk-auto"
-                    ]
-                ],
-                [
-                    "symbol",
-                    [
-                        "char",
-                        "7"
-                    ]
-                ],
-                [
-                    "synonym_symbol",
-                    [
-                        "char",
-                        "7"
-                    ]
-                ],
-                [
-                    "scientific_name",
-                    [
-                        "char"
-                    ]
-                ],
-                [
-                    "common_name",
-                    [
-                        "char",
-                        "50"
-                    ]
-                ],
-                [
-                    "family",
-                    [
-                        "char",
-                        "30"
-                    ]
-                ]
-            ],
-            "do_not_bulk_insert": "'True'"
-        }
-    },
-    "tags": [
+    "homepage": "http://plants.usda.gov",
+    "keywords": [
         "Taxon > Plants",
         "Data Type > Taxonomy"
     ],
-    "url": "http://plants.usda.gov",
-    "urls": {
-        "PlantTaxonomy": "http://plants.usda.gov/java/downloadData?fileName=plantlst.txt&static=true"
-    }
+    "name": "PlantTaxonomy",
+    "resources": [
+        {
+            "dialect": {
+                "do_not_bulk_insert": "'True'"
+            },
+            "mediatype": "text/csv",
+            "name": "PlantTaxonomy",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "record_id",
+                        "type": "pk-auto"
+                    },
+                    {
+                        "name": "symbol",
+                        "size": "7",
+                        "type": "char"
+                    },
+                    {
+                        "name": "synonym_symbol",
+                        "size": "7",
+                        "type": "char"
+                    },
+                    {
+                        "name": "scientific_name",
+                        "type": "char"
+                    },
+                    {
+                        "name": "common_name",
+                        "size": "50",
+                        "type": "char"
+                    },
+                    {
+                        "name": "family",
+                        "size": "30",
+                        "type": "char"
+                    }
+                ]
+            },
+            "url": "http://plants.usda.gov/java/downloadData?fileName=plantlst.txt&static=true"
+        }
+    ],
+    "title": "USDA plants"
 }

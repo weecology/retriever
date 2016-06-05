@@ -1,108 +1,122 @@
 import json
 import os
+from copy import copy
 
-
-SCRIPT_DIR = "../scripts/"
 JSON_DIR = "../scripts/"
-
+SCRIPT_DIR = "../scripts/"
 
 def parse_script_to_json(script_file):
+
     definition = open(SCRIPT_DIR + script_file + ".script", 'rb')
 
     values = {}
-    urls = {}
-    tables = {}
-    last_table = ""
+    tables = []
+    last_table = {}
     replace = []
     keys_to_ignore = ["template"]
+    urls = {}
+
 
     for line in [line.strip() for line in definition]:
+
         if line and ':' in line and not line[0] == '#':
+
             split_line = [a.strip() for a in line.split(":")]
             key = split_line[0].lower()
             value = ':'.join(split_line[1:])
-            if key == "table":
-                table_name = value.split(',')[0].strip()
-                last_table = table_name
-                table_url = ','.join(value.split(',')[1:]).strip()
-                urls[table_name] = table_url
-                if replace:
-                    try:
-                        tables[last_table]
-                    except:
-                        tables[table_name] = {'replace_columns': str(replace)}
-            elif key == "*nulls":
-                if last_table:
-                    nulls = [eval(v) for v in [v.strip()
-                                               for v in value.split(',')]]
-                    try:
-                        tables[last_table]
-                    except KeyError:
-                        if replace:
-                            tables[last_table] = {
-                                'replace_columns': str(replace)}
-                        else:
-                            tables[last_table] = {}
-                    tables[last_table]['cleanup'] = "Cleanup(correct_invalid_value, nulls=" + str(nulls) + ")"
-            elif key == "replace":
-                replace = [(v.split(',')[0].strip(), v.split(',')[1].strip())
-                           for v in [v.strip() for v in value.split(';')]]
+
+            if key == "name":
+                values["title"] = value
+
+            elif key == "shortname":
+                values["name"] = value
+
+            elif key == "description":
+                values["description"] = value
+
             elif key == "tags":
-                values["tags"] = [v.strip() for v in value.split(',')]
-            elif key == "*ct_names":
-                tables[last_table]["ct_names"] = [v.strip()
-                                                  for v in value.split(',')]
+                values["keywords"] = [v.strip() for v in value.split(",")]
+
+            elif key == "url" or key == "ref":
+                values["homepage"] = value
+
+            elif key == "citation":
+                values["citation"] = value
+
+            elif key == "replace":
+                # could be made a dict
+                replace = [( v.split(',')[0].strip(), v.split(',')[1].strip() )
+                            for v in [val for val in value.split(';')]]
+
+            elif key == "table":
+
+                last_table = {}
+                last_table["name"] = value.split(',')[0].strip()
+                last_table["url"] = ','.join(value.split(',')[1:]).strip()
+                last_table["mediatype"] = "text/csv"
+                last_table["schema"] ={}
+                last_table["dialect"] = {}
+
+                tables.append(last_table)
+
+                urls[last_table["name"]] = last_table["url"]
+
+                if replace:
+                    last_table["dialect"]["replace_columns"] = replace
+
             elif key == "*column":
                 if last_table:
                     vs = [v.strip() for v in value.split(',')]
-                    column = [
-                        (vs[0], (vs[1], vs[2]) if len(vs) > 2 else (vs[1],))]
-                    try:
-                        tables[last_table]
-                    except KeyError:
-                        tables[last_table] = {}
 
-                    try:
-                        tables[last_table]['columns'] += column
-                    except KeyError:
-                        tables[last_table]['columns'] = column
+                    if "fields" not in last_table["schema"]:
+                        last_table["schema"]["fields"] = []
+
+                    column = {}
+                    column['name'] = vs[0]
+                    column['type'] = vs[1]
+                    if len(vs)>2:
+                        column['size'] = vs[2]
+
+                    last_table["schema"]["fields"].append(copy(column))
+
+            elif key == "*nulls":
+                if last_table:
+                    nulls = [eval(v) for v in [val.strip() for val in value.split(',')]]
+                    last_table["dialect"]["nulls"] = nulls
+
+            elif key == "*ct_columns":
+                if last_table:
+                    last_table["schema"]["ct_column"] = value
+
+            elif key == "*ct_names":
+                if last_table:
+                    last_table["schema"]["ct_names"] = [v.strip() for v in
+                                                            value.split(',')]
+
             elif key[0] == "*":
                 # attribute that should be applied to the most recently
                 # declared table
-                if key[0] == "*":
-                    key = key[1:]
+                key = key[1:]
                 if last_table:
-                    try:
-                        tables[last_table]
-                    except KeyError:
-                        tables[last_table] = {}
-
                     try:
                         e = eval(value)
                     except:
                         e = str(value)
 
-                    tables[last_table][key] = "'" + str(e) + "'"
+                    last_table["dialect"][key] = "'" + str(e) + "'"
             else:
                 values[key] = str(value)
 
-    if 'shortname' not in values.keys():
+    values["resources"] = tables
+    values["urls"] = urls
+
+    if 'name' not in values:
         try:
-            values['shortname'] = values['name']
+            values['name'] = values['title']
         except:
             pass
-    values['urls'] =urls
-
-    table_desc = {}
-    for (key, value) in tables.items():
-        table_desc[key]={}
-        for v_key, v_value in value.items():
-            table_desc[key][v_key] = v_value
-    values['tables'] = table_desc
 
     for key, value in values.items():
-        if key == "url":
-            key = "ref"
         if key in keys_to_ignore:
             values.pop(key,None)
 
@@ -117,5 +131,4 @@ def parse_script_to_json(script_file):
 if __name__=="__main__":
     for file in os.listdir(SCRIPT_DIR):
         if file[-6:]=="script":
-            # print file
             parse_script_to_json(file[:-7])
