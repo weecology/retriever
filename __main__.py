@@ -52,15 +52,15 @@ def main():
         elif args.command == 'citation':
             if args.dataset is None:
                 citation_path = os.path.join(os.path.split(__file__)[0], '../CITATION')
-                print "\nCitation for retriever:\n"
+                print("\nCitation for retriever:\n")
                 with open(citation_path) as citation_file:
-                    print citation_file.read()
+                    print(citation_file.read())
             else:
                 scripts = name_matches(script_list, args.dataset)
                 for dataset in scripts:
-
-                    print ("\nCitation:   {}".format(dataset.citation))
-                    print ("Description:   {}\n".format(dataset.description))
+                    print("\nDataset:  {}".format(dataset.name))
+                    print("Citation:   {}".format(dataset.citation))
+                    print("Description:   {}\n".format(dataset.description))
 
             return
 
