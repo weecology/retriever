@@ -1,10 +1,12 @@
 from builtins import str
 from builtins import object
 from builtins import range
+
 import os
-import platform
+
 from retriever.lib.models import Engine, no_cleanup
 from retriever import DATA_DIR
+from retriever.lib.tools import sort_csv
 
 
 class DummyConnection(object):
@@ -99,6 +101,10 @@ class engine(Engine):
         """Check to see if the data file currently exists"""
         tablename = self.table_name(name=tablename, dbname=dbname)
         return os.path.exists(tablename)
+
+    def to_csv(self):
+        """Export sorted version of CSV file"""
+        return sort_csv(self.table_name())
 
     def get_connection(self):
         """Gets the db connection."""
