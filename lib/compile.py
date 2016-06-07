@@ -1,3 +1,4 @@
+from builtins import str
 script_templates = {
     "default": """#retriever
 from retriever.lib.templates import BasicTextTemplate
@@ -94,7 +95,7 @@ def compile_script(script_file):
                 # general script attributes
                 values[key] = '"' + value + '"'
 
-    if 'shortname' not in values.keys():
+    if 'shortname' not in list(values.keys()):
         try:
             values['shortname'] = values['name']
         except:
@@ -108,10 +109,10 @@ def compile_script(script_file):
             return ""
 
     table_desc = "{"
-    for (key, value) in tables.items():
+    for (key, value) in list(tables.items()):
         table_desc += "'" + key + "': Table('" + key + "', "
         table_desc += ','.join([key + "=" + str(value)
-                                for key, value, in value.items()])
+                                for key, value, in list(value.items())])
         table_desc += "),"
     if table_desc != '{':
         table_desc = table_desc[:-1]
@@ -120,14 +121,14 @@ def compile_script(script_file):
     values['tables'] = table_desc
 
     script_desc = []
-    for key, value in values.items():
+    for key, value in list(values.items()):
         if key == "url":
             key = "ref"
         if key not in keys_to_ignore:
             script_desc.append(key + "=" + str(value))
     script_desc = (',\n' + ' ' * 27).join(script_desc)
 
-    if 'template' in values.keys():
+    if 'template' in list(values.keys()):
         template = values["template"]
     else:
         template = "default"

@@ -1,6 +1,9 @@
 #retriever
 """Retriever script for National Phenology Network data
 """
+from future import standard_library
+standard_library.install_aliases()
+from builtins import range
 
 import os
 import urllib
@@ -51,7 +54,7 @@ class main(Script):
             engine.create_table()
 
             base_url = 'http://www.usanpn.org/getObs/observations/'
-            years = range(2009, 2013)
+            years = list(range(2009, 2013))
 
             for year in years:
                 if year == 2009 and tax == 'Animal': continue

@@ -7,6 +7,7 @@ all possible combinations of database platform and script and checks to
 see if there are any errors. It does not check the values in the database.
 
 """
+from __future__ import print_function
 
 import os
 import sys
@@ -27,7 +28,7 @@ IGNORE = ["AvianBodyMass", "FIA"]
 
 for engine in ENGINE_LIST:
     opts = {}
-    print "** %s **" % engine.name
+    print("** %s **" % engine.name)
     opts["engine"] = engine.abbreviation
 
     try:
@@ -40,15 +41,15 @@ for engine in ENGINE_LIST:
 
 errors = []
 for module in MODULE_LIST:
-    for (key, value) in TEST_ENGINES.items():
+    for (key, value) in list(TEST_ENGINES.items()):
         if value and module.SCRIPT.shortname not in IGNORE:
-            print "==>", module.__name__, value.name
+            print("==>", module.__name__, value.name)
             try:
                 module.SCRIPT.download(value)
             except KeyboardInterrupt:
                 pass
             except Exception as e:
-                print "ERROR."
+                print("ERROR.")
                 errors.append((key, module.__name__, e))
 
 print('')

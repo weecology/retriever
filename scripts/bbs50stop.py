@@ -2,6 +2,12 @@
 """Retriever script for Breeding Bird Survey 50 stop data
 
 """
+from __future__ import print_function
+from builtins import chr
+from builtins import str
+from future import standard_library
+standard_library.install_aliases()
+from builtins import range
 
 import os
 import urllib
@@ -67,7 +73,7 @@ class main(Script):
                                                    ["Weather.csv"])
                 read = open(engine.format_filename("Weather.csv"), "rb")
                 write = open(engine.format_filename("weather_new.csv"), "wb")
-                print "Cleaning weather data..."
+                print("Cleaning weather data...")
                 for line in read:
                     values = line.split(',')
                     newvalues = []
@@ -95,7 +101,7 @@ class main(Script):
             def regioncodes_cleanup(value, engine):
                 replace = {chr(225):"a", chr(233):"e", chr(237):"i", chr(243):"o"}
                 newvalue = str(value)
-                for key in replace.keys():
+                for key in list(replace.keys()):
                     if key in newvalue:
                         newvalue = newvalue.replace(key, replace[key])
                 return newvalue
@@ -177,14 +183,14 @@ class main(Script):
             for part in range(1,11):
                 part = str(part)
                 try:
-                    print "Inserting data from part " + part + "..."
+                    print("Inserting data from part " + part + "...")
                     try:
                         engine.table.cleanup = Cleanup()
                         engine.insert_data_from_archive(self.urls["counts"] +
                                                         "Fifty" + part + ".zip",
                                                         ["fifty" + part + ".csv"])
                     except:
-                        print "Failed bulk insert on " + part + ", inserting manually."
+                        print("Failed bulk insert on " + part + ", inserting manually.")
                         engine.connection.rollback()
                         engine.table.cleanup = Cleanup(correct_invalid_value,
                                                        nulls=['*'])
@@ -193,12 +199,12 @@ class main(Script):
                                                         ["fifty" + part + ".csv"])
 
                 except:
-                    print "There was an error in part " + part + "."
+                    print("There was an error in part " + part + ".")
                     raise
 
 
         except zipfile.BadZipfile:
-            print "There was an unexpected error in the Breeding Bird Survey archives."
+            print("There was an unexpected error in the Breeding Bird Survey archives.")
             raise
 
         return engine

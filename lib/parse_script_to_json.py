@@ -1,3 +1,4 @@
+from builtins import str
 import json
 import os
 
@@ -86,7 +87,7 @@ def parse_script_to_json(script_file):
             else:
                 values[key] = str(value)
 
-    if 'shortname' not in values.keys():
+    if 'shortname' not in list(values.keys()):
         try:
             values['shortname'] = values['name']
         except:
@@ -94,20 +95,20 @@ def parse_script_to_json(script_file):
     values['urls'] =urls
 
     table_desc = {}
-    for (key, value) in tables.items():
+    for (key, value) in list(tables.items()):
         table_desc[key]={}
-        for v_key, v_value in value.items():
+        for v_key, v_value in list(value.items()):
             table_desc[key][v_key] = v_value
     values['tables'] = table_desc
 
-    for key, value in values.items():
+    for key, value in list(values.items()):
         if key == "url":
             key = "ref"
         if key in keys_to_ignore:
-            values.pop(key,None)
+            values.pop(key, None)
 
     with open(JSON_DIR+script_file + '.json', 'w') as json_file:
-        json.dump(values,json_file,sort_keys=True, indent=4,
+        json.dump(values, json_file, sort_keys=True, indent=4,
             separators=(',', ': '))
         json_file.write('\n')
         json_file.close()

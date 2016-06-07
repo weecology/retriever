@@ -1,6 +1,7 @@
 #retriever
 
 """Retriever script for direct download of vertnet data"""
+from builtins import str
 from retriever.lib.models import Table
 from retriever.lib.templates import Script
 import os

@@ -1,3 +1,5 @@
+from __future__ import print_function
+from builtins import str
 import os
 from retriever.lib.models import Engine, no_cleanup
 from retriever import DATA_DIR, current_platform
@@ -89,7 +91,7 @@ class engine(Engine):
                     newfilename = filename + "_new"
 
                 if not os.path.isfile(newfilename):
-                    print "Adding index to " + os.path.abspath(newfilename) + "..."
+                    print("Adding index to " + os.path.abspath(newfilename) + "...")
                     read = open(filename, "rb")
                     write = open(newfilename, "wb")
                     to_write = ""
@@ -118,7 +120,7 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
             try:
                 self.execute(statement)
             except:
-                print "Couldn't bulk insert. Trying manual insert."
+                print("Couldn't bulk insert. Trying manual insert.")
                 self.connection.rollback()
 
                 self.table.record_id -= add_to_record_id

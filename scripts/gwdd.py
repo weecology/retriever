@@ -2,6 +2,8 @@
 """Retriever script for Zanne et al. Global wood density database.
 
 """
+from builtins import str
+from builtins import range
 
 import os
 import sys
