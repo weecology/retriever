@@ -9,7 +9,7 @@ import nose
 known_md5s = {
 
     'sqlite': {'AvianBodySize': '72256f681cdce96eba32d4ece270bcb2',
-               'DelMoral2010': '2f936afb990c8f818223b27e1e8d6212',
+               'DelMoral2010': 'fe0adb120f33479357f1b9673d5883c2',
                'MoM2003': 'd3bdce86e0fc5888449884dfb0ef4611'},
 
     'download': {'AvianBodySize': 'dce81ee0f040295cd14c857c18cc3f7e',
