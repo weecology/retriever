@@ -7,6 +7,7 @@ The main() function can be used for bootstrapping.
 
 """
 from __future__ import print_function
+from __future__ import absolute_import
 from builtins import str
 
 import os
@@ -110,7 +111,7 @@ def main():
             print("Available datasets : {}\n".format(len(all_scripts)))
 
             if args.l==None:
-                import lscolumns
+                from retriever import lscolumns
                 lscolumns.printls(sorted(all_scripts, key=lambda s: s.lower()))
             else:
                 count = 1
