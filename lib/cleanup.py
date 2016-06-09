@@ -1,4 +1,6 @@
 from builtins import object
+
+
 def floatable(value):
     """Check if a value can be converted to a float"""
     try:
@@ -6,6 +8,7 @@ def floatable(value):
         return True
     except ValueError:
         return False
+
 
 def correct_invalid_value(value, args):
     """This cleanup function replaces null indicators with None."""

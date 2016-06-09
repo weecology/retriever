@@ -12,8 +12,7 @@ import gzip
 import tarfile
 import urllib
 import csv
-import itertools
-from decimal import Decimal
+
 from retriever import DATA_SEARCH_PATHS, DATA_WRITE_PATH
 from retriever.lib.cleanup import no_cleanup
 from retriever.lib.warning import Warning
@@ -475,6 +474,24 @@ class Engine(object):
             key
             )
             for key in list(script.urls.keys()) if key])
+
+    def to_csv(self):
+        # due to Cyclic imports we can not move this import to the top
+        from retriever.lib.tools import sort_csv
+        csvfile_output = (self.table_name() + '.csv')
+        csv_out = open(csvfile_output, "wb")
+        csv_writer = csv.writer(csv_out, dialect='excel')
+        self.get_cursor()
+        self.cursor.execute("SELECT * FROM " + self.table_name() + ";")
+        row = self.cursor.fetchone()
+        colnames = [tuple_i[0] for tuple_i in self.cursor.description]
+        csv_writer.writerow(colnames)
+        while row is not None:
+            csv_writer.writerow(row)
+            row = self.cursor.fetchone()
+        csv_out.close()
+        self.disconnect()
+        return sort_csv(csvfile_output)
 
     def final_cleanup(self):
         """Close the database connection."""

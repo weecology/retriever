@@ -9,8 +9,13 @@ from retriever.lib.table import Table
 from retriever.lib.templates import BasicTextTemplate
 from retriever.lib.tools import getmd5
 from retriever.lib.cleanup import correct_invalid_value
-from retriever import DATA_WRITE_PATH
-from nose.tools import with_setup
+from retriever.lib.tools import xml2csv
+from retriever.lib.tools import json2csv
+from retriever.lib.tools import sort_file
+from retriever.lib.tools import sort_csv
+from retriever.lib.tools import create_file
+from retriever.lib.tools import file_2string
+
 
 # Create simple engine fixture
 test_engine = Engine()
@@ -19,6 +24,19 @@ test_engine.script = BasicTextTemplate(tables={'test': test_engine.table},
                                        shortname='test')
 test_engine.opts = {'database_name': '{db}_abc'}
 HOMEDIR = os.path.expanduser('~')
+test_dir = os.path.dirname(os.path.abspath(__file__))
+
+
+def setup_module():
+    """"change directory to test directory"""
+    dir_path = os.path.dirname(os.path.abspath(__file__))
+    os.chdir(dir_path)
+
+
+def teardown_method():
+    """Cleanup temporary output files after testing"""
+    os.system("rm -r output*")
+    os.chdir("..")
 
 
 def test_auto_get_columns():
@@ -53,15 +71,19 @@ def test_auto_get_delimiter_semicolon():
     test_engine.auto_get_delimiter("a;b;c;,d")
     assert test_engine.table.delimiter == ";"
 
+
 def test_correct_invalid_value_string():
     assert correct_invalid_value('NA', {'nulls': ['NA', '-999']}) == None
 
+
 def test_correct_invalid_value_number():
     assert correct_invalid_value(-999, {'nulls': ['NA', '-999']}) == None
-    
-def test_correct_invalid_value_exception(): 
+
+
+def test_correct_invalid_value_exception():
     assert correct_invalid_value(-999, {}) == -999
-    
+
+
 def test_create_db_statement():
     """Test creating the create database SQL statement"""
     assert test_engine.create_db_statement() == 'CREATE DATABASE test_abc'
@@ -113,23 +135,23 @@ def test_find_file_present():
 
     """
     test_engine.script.shortname = 'AvianBodySize'
-    os.chdir('./test/')
-    assert test_engine.find_file('avian_ssd_jan07.txt') == os.path.normpath('raw_data/AvianBodySize/avian_ssd_jan07.txt')
+    assert test_engine.find_file('avian_ssd_jan07.txt') == os.path.normpath(
+        'raw_data/AvianBodySize/avian_ssd_jan07.txt')
     os.chdir('..')
 
 
 def test_format_data_dir():
     "Test if directory for storing data is properly formated"
     test_engine.script.shortname = "TestName"
-    assert os.path.normpath(test_engine.format_data_dir()) == os.path.normpath(os.path.join(HOMEDIR,
-                                                                                            '.retriever/raw_data/TestName'))
+    assert os.path.normpath(test_engine.format_data_dir()) == os.path.normpath(
+        os.path.join(HOMEDIR, '.retriever/raw_data/TestName'))
 
 
 def test_format_filename():
     "Test if filenames for stored files are properly formated"
     test_engine.script.shortname = "TestName"
-    assert os.path.normpath(test_engine.format_filename('testfile.csv')) == os.path.normpath(os.path.join(HOMEDIR,
-                                                                        '.retriever/raw_data/TestName/testfile.csv'))
+    assert os.path.normpath(test_engine.format_filename('testfile.csv')) == os.path.normpath(
+        os.path.join(HOMEDIR, '.retriever/raw_data/TestName/testfile.csv'))
 
 
 def test_format_insert_value_int():
@@ -149,10 +171,59 @@ def test_format_insert_value_string_simple():
 
 def test_format_insert_value_string_complex():
     """Test formatting of values for insert statements"""
-    assert test_engine.format_insert_value('my notes: "have extra, stuff"', 'char') == '\'my notes: \\"have extra, stuff\\"\''
+    assert test_engine.format_insert_value('my notes: "have extra, stuff"',
+                                           'char') == '\'my notes: \\"have extra, stuff\\"\''
 
 
-def test_getmd5():
-    """Test md5 sum calculation"""
+def test_getmd5_lines():
+    """Test md5 sum calculation given a line"""
     lines = ['a,b,c\n', '1,2,3\n', '4,5,6\n']
-    assert getmd5(lines) == '0bec5bf6f93c547bc9c6774acaf85e1a'
+    assert getmd5(data=lines, data_type='lines') == '0bec5bf6f93c547bc9c6774acaf85e1a'
+
+
+def test_getmd5_path():
+    """Test md5 sum calculation given a path to data source"""
+    data_file = create_file('a,b,c\n1,2,3\n4,5,6\n')
+    assert getmd5(data=data_file, data_type='file',mode='rU') == '0bec5bf6f93c547bc9c6774acaf85e1a'
+
+
+def test_json2csv():
+    """Test json2csv function
+    creates a json file and tests the md5 sum calculation"""
+    json_file = create_file("""[ {"User": "Alex", "Country": "US", "Age": "25"} ]""", 'output.json')
+    output_json = json2csv(json_file, "test/output_json.csv", header_values=["User", "Country", "Age"])
+    obs_out = file_2string(output_json)
+    assert obs_out == 'User,Country,Age\nAlex,US,25'
+
+
+def test_xml2csv():
+    """Test xml2csv function
+    creates a xml file and tests the md5 sum calculation"""
+    xml_file = create_file("<root>\n<row>\n"
+                           "<User>Alex</User>\n"
+                           "<Country>US</Country>\n"
+                           "<Country>PT</Country>\n"
+                           "<Age>25</Age>\n</row>\n"
+                           "<row>\n<User>Ben</User>\n"
+                           "<Country>US</Country>S\n"
+                           "<Age>24</Age>\n"
+                           "</row>\n</root>", 'output.xml')
+    output_xml = xml2csv(xml_file, "test/output_xml.csv", header_values=["User", "Country", "Age"])
+    obs_out = file_2string(output_xml)
+    assert obs_out == "User,Country,Age\nAlex,US,25\nAlex,PT,25\nBen,US,24"
+
+
+def test_sort_file():
+    """Test md5 sum calculation"""
+    data_file = create_file("Ben,US,24\nAlex,US,25\nAlex,PT,25")
+    out_file = sort_file(data_file)
+    obs_out = file_2string(out_file)
+    assert obs_out == 'Alex,PT,25\nAlex,US,25\nBen,US,24\n'
+
+
+def test_sort_csv():
+    """Test md5 sum calculation"""
+    data_file = create_file("User,Country,Age\nBen,US,24\nAlex,US,25\nAlex,PT,25")
+    out_file = sort_csv(data_file)
+    obs_out = file_2string(out_file)
+    assert obs_out == "User,Country,Age\nAlex,PT,25\nAlex,US,25\nBen,US,24\n"

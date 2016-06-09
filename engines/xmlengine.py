@@ -5,7 +5,7 @@ import os
 
 from retriever.lib.models import Engine
 from retriever import DATA_DIR
-
+from retriever.lib.tools import xml2csv, sort_csv
 
 class DummyConnection(object):
 
@@ -122,6 +122,12 @@ class engine(Engine):
         """Check to see if the data file currently exists"""
         tablename = self.table_name(name=tablename, dbname=dbname)
         return os.path.exists(tablename)
+
+    def to_csv(self):
+        """Export table from xml engine to CSV file"""
+        keys = [columnname[0] for columnname in self.table.columns]
+        csv_outfile = xml2csv(self.table_name(), header_values=keys)
+        return sort_csv(csv_outfile)
 
     def get_connection(self):
         """Gets the db connection."""

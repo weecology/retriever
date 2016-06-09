@@ -39,7 +39,7 @@ The most basic scripts structure requires only some general metadata about the d
   table: 
 
 Example of a basic script, example.script
-------------------------------------------
+-----------------------------------------
 
 ::
 
