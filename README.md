@@ -2,6 +2,7 @@
 
 
 [![Build Status](https://travis-ci.org/weecology/retriever.png)](https://travis-ci.org/weecology/retriever)
+[![Build Status (windows)](https://ci.appveyor.com/api/projects/status/qetgo4jxa5769qtb/branch/master?svg=true)](https://ci.appveyor.com/project/ethanwhite/retriever/branch/master)
 [![Research software impact](http://depsy.org/api/package/pypi/retriever/badge.svg)](http://depsy.org/package/python/retriever)
 [![codecov.io](https://codecov.io/github/weecology/retriever/coverage.svg?branch=master)](https://codecov.io/github/weecology/retriever?branch=master)
 [![Documentation Status](https://readthedocs.org/projects/retriever/badge/?version=latest)](http://retriever.readthedocs.org/en/latest/?badge=latest) 
