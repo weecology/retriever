@@ -1,9 +1,10 @@
 from __future__ import print_function
 from __future__ import division
+from __future__ import absolute_import
 from builtins import zip
 from builtins import range
 import sys
-from term_size import get_terminal_size
+from retriever.term_size import get_terminal_size
 
 
 def get_columns(values, cols):
