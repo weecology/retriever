@@ -5,6 +5,7 @@ download published ecological data, and store the data in a database.
 
 """
 from __future__ import print_function
+from __future__ import absolute_import
 from builtins import str
 
 import os
@@ -13,7 +14,7 @@ from os.path import join, isfile, getmtime, exists
 import imp
 import platform
 
-from lib.compile import compile_script
+from retriever.lib.compile import compile_script
 
 current_platform = platform.system().lower()
 if current_platform != 'windows':

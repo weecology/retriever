@@ -1,4 +1,5 @@
 """Use the following command to install retriever: python setup.py install"""
+from __future__ import absolute_import
 
 from setuptools import setup
 import platform
@@ -22,7 +23,7 @@ elif current_platform == "windows":
     extra_includes = ['pyodbc', 'inspect']
     sys.path.append(
         "C:\\Windows\\winsxs\\x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_9.0.21022.8_none_bcb86ed6ac711f91")
-from __init__ import VERSION
+from retriever import VERSION
 
 
 def clean_version(v):
@@ -119,7 +120,7 @@ setup(name='retriever',
 
 
 try:
-    from compile import compile
+    from retriever.compile import compile
     compile()
 except:
     pass

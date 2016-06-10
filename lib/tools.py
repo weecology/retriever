@@ -7,6 +7,7 @@ scripts.
 from __future__ import print_function
 from builtins import str
 from builtins import input
+from builtins import next
 import difflib
 import os
 import sys
@@ -324,7 +325,7 @@ def sort_csv(filename):
     csv_reader_infile = csv.reader(input_file)
 
     # The first entry is the header line
-    infields = csv_reader_infile.next()
+    infields = next(csv_reader_infile)
 
     #  write the data to a temporary file and sort it
     file_temp = open(os.path.normpath("tempfile"), 'wb')

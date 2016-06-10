@@ -1,9 +1,12 @@
 from __future__ import print_function
-from builtins import object
 from future import standard_library
 standard_library.install_aliases()
+from builtins import object
 from builtins import range
 from builtins import input
+from builtins import zip
+from builtins import next
+from builtins import str
 import sys
 import os
 import getpass
