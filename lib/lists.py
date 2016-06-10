@@ -1,4 +1,5 @@
 """Contains code for getting dataset lists from available datasets/categories."""
+from builtins import object
 
 import os
 from operator import attrgetter
@@ -6,7 +7,7 @@ from retriever.lib.models import *
 from retriever.lib.templates import *
 
 
-class Category:
+class Category(object):
     """A categorical list of scripts."""
 
     def __init__(self, name, scripts, children=[]):

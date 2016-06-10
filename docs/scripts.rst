@@ -7,7 +7,7 @@ Script Writing
 --------------
 
 
-The EcoData Retriever uses a simple a simple format for developing new dataset scripts. This allows users with no programming experience to quickly add most standard datasets to the Retriever by specifying the names and locations of the tables along with additional information about the configuration of the data.  
+The EcoData Retriever uses a simple format for developing new dataset scripts. This allows users with no programming experience to quickly add most standard datasets to the Retriever by specifying the names and locations of the tables along with additional information about the configuration of the data.  
 
 The script uses a mapping syntax where we have the following entities
  
@@ -39,7 +39,7 @@ The most basic scripts structure requires only some general metadata about the d
   table: 
 
 Example of a basic script, example.script
-------------------------------------------
+-----------------------------------------
 
 ::
 
@@ -56,11 +56,11 @@ Example of a basic script, example.script
 
 - The first line of the script is the full name of the dataset
 
-- The second line gives a description of the dataset, in this case the full citation
+- The second line gives a short name for the database to be used in cases where a brief, typically single word description is required, such as for installing from the command line
 
-- The third line gives a short name for the database to be used in cases where a brief, typically single word description is required, such as for installing from the command line
+- The third line gives a description of the dataset, in this case the full citation
 
-- The forth line provides some optional tags to help with filtering the data
+- The fourth line provides some optional tags to help with filtering the data
 
 - The last line gives the name for each table (there is only one table in this case), and its URL 
 

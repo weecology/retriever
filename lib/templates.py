@@ -1,5 +1,7 @@
 """Class models for dataset scripts from various locations. Scripts should
 inherit from the most specific class available."""
+from __future__ import print_function
+from builtins import object
 
 import shutil
 from retriever import DATA_DIR
@@ -7,12 +9,12 @@ from retriever.lib.models import *
 from retriever.lib.tools import choose_engine
 
 
-class Script:
+class Script(object):
     """This class represents a database toolkit script. Scripts should inherit
     from this class and execute their code in the download method."""
 
     def __init__(self, name="", description="", shortname="", urls=dict(),
-                 tables=dict(), ref="", public=True, addendum=None, citation="Not currently available",**kwargs):
+                 tables=dict(), ref="", public=True, addendum=None, citation="Not currently available", **kwargs):
         self.name = name
         self.shortname = shortname
         self.filename = __name__
@@ -22,9 +24,9 @@ class Script:
         self.ref = ref
         self.public = public
         self.addendum = addendum
-        self.citation= citation
+        self.citation = citation
         self.tags = []
-        for key, item in kwargs.items():
+        for key, item in list(kwargs.items()):
             setattr(self, key, item[0] if isinstance(item, tuple) else item)
 
     def __str__(self):
@@ -44,12 +46,12 @@ class Script:
             return self.ref
         else:
             if len(self.urls) == 1:
-                return self.urls[self.urls.keys()[0]]
+                return self.urls[list(self.urls.keys())[0]]
             else:
                 return None
 
     def checkengine(self, engine=None):
-        if not engine:
+        if engine is None:
             opts = {}
             engine = choose_engine(opts)
         engine.get_input()
@@ -64,12 +66,13 @@ class Script:
 
     def matches_terms(self, terms):
         try:
-            for term in terms:
-                search_string = ' '.join([
+            search_string = ' '.join([
                     self.name,
                     self.description,
                     self.shortname
-                ] + self.tags).upper()
+                ] + self.tags).upper()      
+                      
+            for term in terms:
                 if not term.upper() in search_string:
                     return False
             return True
@@ -86,12 +89,12 @@ class BasicTextTemplate(Script):
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
 
-        for key in self.urls.keys():
-            if key not in self.tables.keys():
+        for key in list(self.urls.keys()):
+            if key not in list(self.tables.keys()):
                 self.tables[key] = Table(key, cleanup=Cleanup(correct_invalid_value,
                                                               nulls=[-999]))
 
-        for key, value in self.urls.items():
+        for key, value in list(self.urls.items()):
             self.engine.auto_create_table(self.tables[key], url=value)
             self.engine.insert_data_from_url(value)
             self.tables[key].record_id = 0
@@ -102,7 +105,7 @@ class BasicTextTemplate(Script):
             return self.ref
         else:
             if len(self.urls) == 1:
-                return '/'.join(self.urls[self.urls.keys()[0]].split('/')[0:-1]) + '/'
+                return '/'.join(self.urls[list(self.urls.keys())[0]].split('/')[0:-1]) + '/'
 
 
 class DownloadOnlyTemplate(Script):
@@ -115,7 +118,7 @@ class DownloadOnlyTemplate(Script):
         if engine.name != "Download Only":
             raise Exception("This dataset contains only non-tabular data files, and can only be used with the 'download only' engine.\nTry 'retriever download datasetname instead.")
         Script.download(self, engine, debug)
-        for filename, url in self.urls.items():
+        for filename, url in list(self.urls.items()):
             self.engine.download_file(url, filename, clean_line_endings=False)
             if os.path.exists(self.engine.format_filename(filename)):
                 shutil.copy(self.engine.format_filename(filename), DATA_DIR)

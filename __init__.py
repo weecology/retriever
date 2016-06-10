@@ -4,6 +4,8 @@ This package contains a framework for creating and running scripts designed to
 download published ecological data, and store the data in a database.
 
 """
+from __future__ import print_function
+from builtins import str
 
 import os
 import sys
@@ -37,7 +39,7 @@ for dir in (HOME_DIR, os.path.join(HOME_DIR, 'raw_data'), os.path.join(HOME_DIR,
                 pw = pwd.getpwnam(os.getenv("SUDO_USER"))
                 os.chown(dir, pw.pw_uid, pw.pw_gid)
         except OSError:
-            print "The Retriever lacks permission to access the ~/.retriever/ directory."
+            print("The Retriever lacks permission to access the ~/.retriever/ directory.")
             raise
 SCRIPT_SEARCH_PATHS = [
     "./",
@@ -54,14 +56,7 @@ DATA_SEARCH_PATHS = [
 DATA_WRITE_PATH = DATA_SEARCH_PATHS[-1]
 
 # Create default data directory
-isgui = len(sys.argv) == 1 or ((len(sys.argv) > 1 and sys.argv[1] == 'gui'))
-if current_platform == 'windows' and isgui:
-    # The run path for installer based GUI on Windows is a system path.
-    # Users won't expect the data to be stored there, so store it on the
-    # Desktop
-    DATA_DIR = os.path.join(os.path.expanduser('~'), 'Desktop')
-else:
-    DATA_DIR = '.'
+DATA_DIR = '.'
 
 
 def MODULE_LIST(force_compile=False):

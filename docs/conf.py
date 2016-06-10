@@ -1,3 +1,4 @@
+from builtins import str
 from retriever import VERSION,COPYRIGHT
 from retriever.lib.repository import check_for_updates
 from retriever import SCRIPT_LIST
@@ -11,7 +12,7 @@ Datasets Available
 
 
 """
-check_for_updates(graphical=False)
+check_for_updates()
 script_list = SCRIPT_LIST()
 
 # write the title of dataset rst file

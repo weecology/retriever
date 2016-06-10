@@ -15,7 +15,6 @@ Contents:
    scripts
    retriever
    macbuild.rst
-   guidocs.rst
    Release.rst
    developer.rst
    ecoretriever.rst

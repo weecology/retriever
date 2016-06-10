@@ -1,0 +1,55 @@
+{
+    "description": "Plant taxonomy system available on the USDA plants site.",
+    "homepage": "http://plants.usda.gov",
+    "keywords": [
+        "Taxon > Plants",
+        "Data Type > Taxonomy"
+    ],
+    "name": "PlantTaxonomy",
+    "resources": [
+        {
+            "dialect": {
+                "do_not_bulk_insert": "True"
+            },
+            "mediatype": "text/csv",
+            "name": "PlantTaxonomy",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "record_id",
+                        "type": "pk-auto"
+                    },
+                    {
+                        "name": "symbol",
+                        "size": "7",
+                        "type": "char"
+                    },
+                    {
+                        "name": "synonym_symbol",
+                        "size": "7",
+                        "type": "char"
+                    },
+                    {
+                        "name": "scientific_name",
+                        "type": "char"
+                    },
+                    {
+                        "name": "common_name",
+                        "size": "50",
+                        "type": "char"
+                    },
+                    {
+                        "name": "family",
+                        "size": "30",
+                        "type": "char"
+                    }
+                ]
+            },
+            "url": "http://plants.usda.gov/java/downloadData?fileName=plantlst.txt&static=true"
+        }
+    ],
+    "title": "USDA plants",
+    "urls": {
+        "PlantTaxonomy": "http://plants.usda.gov/java/downloadData?fileName=plantlst.txt&static=true"
+    }
+}

@@ -14,15 +14,14 @@ parser.add_argument('-q', '--quiet', help='suppress command-line output', action
 # retriever HELP
 subparsers = parser.add_subparsers(help='sub-command help', dest='command')
 
-# retriever download/install/gui/update/new help
+# retriever download/install/update/new help
 download_parser = subparsers.add_parser('download', help='download raw data files for a dataset')
 install_parser = subparsers.add_parser('install', help='download and install dataset')
 update_parser = subparsers.add_parser('update', help='download updated versions of scripts')
-gui_parser = subparsers.add_parser('gui', help='launch retriever in graphical mode')
 new_parser = subparsers.add_parser('new', help='create a new sample retriever script')
 ls_parser = subparsers.add_parser('ls', help='display a list all available dataset scripts')
 citation_parser = subparsers.add_parser('citation', help='view citation')
-reset_parser = subparsers.add_parser('reset',help='reset retriever: removes configation settings, scripts, and cached data')
+reset_parser = subparsers.add_parser('reset', help='reset retriever: removes configation settings, scripts, and cached data')
 help_parser = subparsers.add_parser('help', help='')
 
 # ..............................................................

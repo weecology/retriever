@@ -1,9 +1,12 @@
 #retriever
 
 """Retriever script for direct download of PRISM climate data"""
+from future import standard_library
+standard_library.install_aliases()
+from builtins import range
 
 from retriever.lib.templates import Script
-import urlparse
+import urllib
 
 class main(Script):
     def __init__(self, **kwargs):
@@ -13,7 +16,7 @@ class main(Script):
         self.ref = "http://prism.oregonstate.edu/"
         self.urls = {"climate": "http://services.nacse.org/prism/data/public/4km/"}
         self.description = "The PRISM data set represents climate observations from a wide range of monitoring networks, applies sophisticated quality control measures, and develops spatial climate datasets to reveal short- and long-term climate patterns. "
- 
+
     def get_file_names(self, clim_var, mval, year, month):
         """Create a list of all filenames in a given monthly data zip file """
 
@@ -34,14 +37,14 @@ class main(Script):
         Script.download(self, engine, debug)
 
         clim_vars = ['ppt', 'tmax', 'tmean', 'tmin']
-        years = range(1981, 2015)
-        months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+        years = list(range(1981, 2015))
+        months = ["{:02d}".format(i) for i in range(1,13)]
         for clim_var in clim_vars:
             mval = "M3" if clim_var == 'ppt' else "M2"
             for year in years:
                 for month in months:
                     file_names = self.get_file_names(clim_var, mval, year, month)
-                    file_url = urlparse.urljoin(self.urls["climate"], "{}/{}{}".format(clim_var, year, month))
+                    file_url = urllib.parse.urljoin(self.urls["climate"], "{}/{}{}".format(clim_var, year, month))
                     archivename = "PRISM_{}_stable_4km{}_{}{}_bil.zip".format(clim_var, mval, year, month)
                     self.engine.download_files_from_archive(file_url, file_names, archivename=archivename, keep_in_dir=True)
                     self.engine.register_files(file_names)

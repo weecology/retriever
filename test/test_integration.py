@@ -1,10 +1,14 @@
 """Integrations tests for EcoData Retriever"""
+from __future__ import print_function
 
 import imp
 import os
 import shutil
+
 from retriever.lib.compile import compile_script
 from retriever import HOME_DIR, ENGINE_LIST
+from retriever.lib.tools import file_2string
+
 
 simple_csv = {'name': 'simple_csv',
               'raw_data': "a,b,c\n1,2,3\n4,5,6\n",
@@ -18,6 +22,7 @@ crosstab = {'name': 'crosstab',
 
 tests = [simple_csv, crosstab]
 
+
 def setup_module():
     """Put raw data and scripts in appropriate .retriever directories"""
     for test in tests:
@@ -29,12 +34,14 @@ def setup_module():
             script_file.write(test['script'])
         compile_script(os.path.join(HOME_DIR, "scripts", test['name']))
 
+
 def teardown_module():
     """Remove test data and scripts from .retriever directories"""
     for test in tests:
         shutil.rmtree(os.path.join(HOME_DIR, "raw_data", test['name']))
         os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.script'))
         os.remove(test['name']+'_'+test['name']+'.txt')
+
 
 def get_script_module(script_name):
     """Load a script module"""
@@ -44,20 +51,18 @@ def get_script_module(script_name):
 mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, csv_engine, download_engine, json_engine, xml_engine = ENGINE_LIST()
 csv_engine.opts = {'engine': 'csv', 'table_name': './{db}_{table}.txt'}
 
+
 def test_csv_from_csv():
     simple_csv_module = get_script_module('simple_csv')
     simple_csv_module.SCRIPT.download(csv_engine)
     simple_csv_module.SCRIPT.engine.disconnect()
-    with open("simple_csv_simple_csv.txt", 'r') as obs_out_file:
-        obs_out = obs_out_file.read()
-    print len(obs_out)
+    obs_out = file_2string("simple_csv_simple_csv.txt")
     assert obs_out == simple_csv['expect_out']
+
 
 def test_crosstab_from_csv():
     crosstab_module = get_script_module('crosstab')
     crosstab_module.SCRIPT.download(csv_engine)
     crosstab_module.SCRIPT.engine.disconnect()
-    with open("crosstab_crosstab.txt", 'r') as obs_out_file:
-        obs_out = obs_out_file.read()
-    print len(obs_out)
+    obs_out = file_2string("crosstab_crosstab.txt")
     assert obs_out == crosstab['expect_out']

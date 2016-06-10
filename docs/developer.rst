@@ -11,11 +11,8 @@ If you are installing from source you will need a Python 2.6+ installation and t
 
   setuptools
   xlrd
-  wxPython
   Sphinx
 
-
-In case you find errors with wxPython, try `installing the wheel`_ from a third party distributor
 
 Setting up servers
 ==================
@@ -25,8 +22,8 @@ You need to install all the database infrastructures to enable local testing.
 ::
 
   SQLite
-  MySQL 5.6
-  PostgreSQL 9.2
+  MySQL
+  PostgreSQL
   MSAccess
 
 You will also need the following modules:
@@ -84,7 +81,7 @@ you can also install from Git.
   pip install git+git://github.com/myuser/myproject@my_branch # github repository Specific branch
 
 Running tests locally
-^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^
 
 To run tests we use pytest.
 From the source top level directory, run
@@ -103,7 +100,7 @@ In case we want to run tests on a specific test category, we add the path of the
 This will only run test_retriever.py
 
 Tests in the Cloud
-^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^
 
 Currently we support Travis, a cloud testing platform.
 

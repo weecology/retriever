@@ -1,3 +1,4 @@
+from builtins import range
 import os
 import platform
 from retriever.lib.models import Engine, no_cleanup
@@ -97,6 +98,10 @@ class engine(Engine):
             for line in self.cursor:
                 self.existing_table_names.add(line[0].lower())
         return self.table_name(name=tablename, dbname=dbname).lower() in self.existing_table_names
+
+    def to_csv(self):
+        self.connection.text_factory = str
+        Engine.to_csv(self)
 
     def get_connection(self):
         """Gets the db connection."""

@@ -5,7 +5,7 @@ engines = [
     "postgres",
     "sqlite",
     "msaccess",
-    "csv",
+    "csvengine",
     "download_only",
     "jsonengine",
     "xmlengine"

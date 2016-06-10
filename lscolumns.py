@@ -1,10 +1,14 @@
+from __future__ import print_function
+from __future__ import division
+from builtins import zip
+from builtins import range
 import sys
 from term_size import get_terminal_size
 
 
 def get_columns(values, cols):
     columns = []
-    col_size = len(values) / cols
+    col_size = len(values) // cols
     extra = len(values) % cols
     n = 0
     for i in range(cols):
@@ -25,7 +29,7 @@ def printls(values, max_width=None, spacing=2):
     if max_width:
         # if output to terminal or max_width is specified, use column output
 
-        for cols in [int(len(values) / float(i) + 0.5) for i in range(1, len(values) + 1)]:
+        for cols in [int((len(values) // float(i)) + 0.5) for i in range(1, len(values) + 1)]:
             columns = get_columns(values, cols)
             widths = [max([len(c) for c in column]) +
                       spacing for column in columns]
@@ -35,10 +39,10 @@ def printls(values, max_width=None, spacing=2):
         for pos in range(len(columns[0])):
             for column, width in zip(columns, widths):
                 if len(column) > pos:
-                    print column[pos].ljust(width - 1),
-            print
+                    print(column[pos].ljust(width - 1), end=' ')
+            print()
 
     else:
         # otherwise, just output each value, one per line
         for value in values:
-            print value
+            print(value)

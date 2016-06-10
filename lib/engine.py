@@ -1,3 +1,9 @@
+from __future__ import print_function
+from builtins import object
+from future import standard_library
+standard_library.install_aliases()
+from builtins import range
+from builtins import input
 import sys
 import os
 import getpass
@@ -6,14 +12,13 @@ import gzip
 import tarfile
 import urllib
 import csv
-import itertools
-from decimal import Decimal
+
 from retriever import DATA_SEARCH_PATHS, DATA_WRITE_PATH
 from retriever.lib.cleanup import no_cleanup
 from retriever.lib.warning import Warning
 
 
-class Engine():
+class Engine(object):
     """A generic database system. Specific database platforms will inherit
     from this class."""
     name = ""
@@ -108,11 +113,11 @@ class Engine():
                     insert_stmt = self.insert_statement(cleanvalues)
                 except:
                     if self.debug:
-                        print types
+                        print(types)
                     if self.debug:
-                        print linevalues
+                        print(linevalues)
                     if self.debug:
-                        print cleanvalues
+                        print(cleanvalues)
                     raise
 
                 try:
@@ -130,10 +135,9 @@ class Engine():
                 try:
                     self.execute(insert_stmt, commit=False)
                 except:
-                    print insert_stmt
+                    print(insert_stmt)
                     raise
 
-        print
         self.connection.commit()
 
     def auto_create_table(self, table, url=None, filename=None, pk=None):
@@ -153,7 +157,7 @@ class Engine():
                    (open, (file_path, "rb"))))
         lines = gen_from_source(source)
 
-        header = lines.next()
+        header = next(lines)
         lines.close()
 
         source = (skip_rows,
@@ -177,7 +181,7 @@ class Engine():
             self.auto_get_datatypes(pk, lines, columns, column_values)
 
         if self.table.columns[-1][1][0][:3] == "ct-" and hasattr(self.table, "ct_names") and not self.table.ct_column in [c[0] for c in self.table.columns]:
-            self.table.columns = self.table.columns[:-1] + [(self.table.ct_column, ("char", 20))] + [self.table.columns[-1]]
+            self.table.columns = self.table.columns[:-1] + [(self.table.ct_column, ("char", 50))] + [self.table.columns[-1]]
 
         self.create_table()
 
@@ -189,7 +193,7 @@ class Engine():
             lines_to_scan = []
             n = 0
             while n < lines:
-                lines_to_scan.append(source.next())
+                lines_to_scan.append(next(source))
                 n += 1
         else:
             lines_to_scan = source
@@ -224,7 +228,7 @@ class Engine():
                                     value = float(value)
                                     if "e" in str(value) or ("." in str(value) and
                                                              len(str(value).split(".")[1]) > 10):
-                                        column_types[i] = ["decimal","30,20"]
+                                        column_types[i] = ["decimal", "30,20"]
                                 except:
                                     column_types[i] = ['char', max_lengths[i]]
                             if column_types[i][0] == 'char':
@@ -266,7 +270,7 @@ class Engine():
         elif thistype[0:3] == "ct-":
             thistype = thistype[3:]
 
-        if thistype in self.datatypes.keys():
+        if thistype in list(self.datatypes.keys()):
             thistype = self.datatypes[thistype]
 
             if isinstance(thistype, tuple):
@@ -290,11 +294,11 @@ class Engine():
         engine.db"""
         db_name = self.database_name()
         if db_name:
-            print "Creating database " + db_name + "..."
+            print("Creating database " + db_name + "...")
             # Create the database
             create_stmt = self.create_db_statement()
             if self.debug:
-                print create_stmt
+                print(create_stmt)
             try:
                 self.execute(create_stmt)
             except Exception as e:
@@ -302,7 +306,7 @@ class Engine():
                     self.connection.rollback()
                 except:
                     pass
-                print "Couldn't create database (%s). Trying to continue anyway." % e
+                print("Couldn't create database (%s). Trying to continue anyway." % e)
 
     def create_db_statement(self):
         """Returns a SQL statement to create a database."""
@@ -319,7 +323,7 @@ class Engine():
     def create_table(self):
         """Creates a new database table based on settings supplied in Table
         object engine.table."""
-        print "Creating table " + self.table_name() + "..."
+        print("Creating table " + self.table_name() + "...")
 
         # Try to drop the table if it exists; this may cause an exception if it
         # doesn't exist, so ignore exceptions
@@ -330,7 +334,7 @@ class Engine():
 
         create_stmt = self.create_table_statement()
         if self.debug:
-            print create_stmt
+            print(create_stmt)
         try:
             self.execute(create_stmt)
         except Exception as e:
@@ -338,7 +342,7 @@ class Engine():
                 self.connection.rollback()
             except:
                 pass
-            print "Couldn't create table (%s). Trying to continue anyway." % e
+            print("Couldn't create table (%s). Trying to continue anyway." % e)
 
     def create_table_statement(self):
         """Returns a SQL statement to create a table."""
@@ -353,7 +357,7 @@ class Engine():
                     types.append(self.convert_data_type(column[1]))
 
         if self.debug:
-            print columns
+            print(columns)
 
         column_strings = []
         for c, t in zip(columns, types):
@@ -384,8 +388,8 @@ class Engine():
         if not self.find_file(filename):
             path = self.format_filename(filename)
             self.create_raw_data_dir()
-            print "Downloading " + filename + "..."
-            file = urllib.urlopen(url)
+            print("Downloading " + filename + "...")
+            file = urllib.request.urlopen(url)
             local_file = open(path, 'wb')
             if clean_line_endings and (filename.split('.')[-1].lower() not in ["exe", "zip", "xls"]):
                 local_file.write(file.read().replace("\r\n", "\n").replace("\r", "\n"))
@@ -469,13 +473,31 @@ class Engine():
             script.shortname,
             key
             )
-            for key in script.urls.keys() if key])
+            for key in list(script.urls.keys()) if key])
+
+    def to_csv(self):
+        # due to Cyclic imports we can not move this import to the top
+        from retriever.lib.tools import sort_csv
+        csvfile_output = (self.table_name() + '.csv')
+        csv_out = open(csvfile_output, "wb")
+        csv_writer = csv.writer(csv_out, dialect='excel')
+        self.get_cursor()
+        self.cursor.execute("SELECT * FROM " + self.table_name() + ";")
+        row = self.cursor.fetchone()
+        colnames = [tuple_i[0] for tuple_i in self.cursor.description]
+        csv_writer.writerow(colnames)
+        while row is not None:
+            csv_writer.writerow(row)
+            row = self.cursor.fetchone()
+        csv_out.close()
+        self.disconnect()
+        return sort_csv(csvfile_output)
 
     def final_cleanup(self):
         """Close the database connection."""
 
         if self.warnings:
-            print '\n'.join(str(w) for w in self.warnings)
+            print('\n'.join(str(w) for w in self.warnings))
 
         self.disconnect()
 
@@ -552,16 +574,16 @@ class Engine():
         """Manually get user input for connection information when script is
         run from terminal."""
         for opt in self.required_opts:
-            if not (opt[0] in self.opts.keys()):
+            if not (opt[0] in list(self.opts.keys())):
                 if opt[0] == "password":
-                    print opt[1]
+                    print(opt[1])
                     self.opts[opt[0]] = getpass.getpass(" ")
                 else:
                     prompt = opt[1]
                     if opt[2]:
                         prompt += " or press Enter for the default, %s" % opt[2]
                     prompt += ': '
-                    self.opts[opt[0]] = raw_input(prompt)
+                    self.opts[opt[0]] = input(prompt)
             if self.opts[opt[0]] in ["", "default"]:
                 self.opts[opt[0]] = opt[2]
 
@@ -596,7 +618,7 @@ class Engine():
         else:
             # Save a copy of the file locally, then load from that file
             self.create_raw_data_dir()
-            print "Saving a copy of " + filename + "..."
+            print("Saving a copy of " + filename + "...")
             self.download_file(url, filename)
             self.insert_data_from_file(self.find_file(filename))
 
@@ -618,7 +640,7 @@ class Engine():
             n += 1
         insert_stmt %= tuple([str(value) for value in values])
         if self.debug:
-            print insert_stmt
+            print(insert_stmt)
         return insert_stmt
 
     def table_exists(self, dbname, tablename):
@@ -645,7 +667,7 @@ def skip_rows(rows, source):
     """Skip over the header lines by reading them before processing."""
     lines = gen_from_source(source)
     for i in range(rows):
-        lines.next()
+        next(lines)
     return lines
 
 
