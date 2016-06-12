@@ -19,6 +19,7 @@ download_parser = subparsers.add_parser('download', help='download raw data file
 install_parser = subparsers.add_parser('install', help='download and install dataset')
 update_parser = subparsers.add_parser('update', help='download updated versions of scripts')
 new_parser = subparsers.add_parser('new', help='create a new sample retriever script')
+json_parser = subparsers.add_parser('new_json', help='CLI to create retriever datapackage.json script')
 ls_parser = subparsers.add_parser('ls', help='display a list all available dataset scripts')
 citation_parser = subparsers.add_parser('citation', help='view citation')
 reset_parser = subparsers.add_parser('reset', help='reset retriever: removes configation settings, scripts, and cached data')
