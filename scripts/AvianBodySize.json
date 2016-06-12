@@ -14,6 +14,7 @@
                     -999
                 ]
             },
+            "mediatype": "text/csv",
             "name": "species",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E088/096/avian_ssd_jan07.txt"

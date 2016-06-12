@@ -14,6 +14,7 @@
                     "NA"
                 ]
             },
+            "mediatype": "text/csv",
             "name": "diet",
             "schema": {
                 "fields": [

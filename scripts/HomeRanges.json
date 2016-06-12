@@ -13,6 +13,7 @@
                     "NA"
                 ]
             },
+            "mediatype": "text/csv",
             "name": "ranges",
             "schema": {},
             "url": "http://datadryad.org/bitstream/handle/10255/dryad.84768/Tamburelloetal_HomeRangeDatabase.csv"

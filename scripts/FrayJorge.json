@@ -5,12 +5,14 @@
     "resources": [
         {
             "dialect": {},
+            "mediatype": "text/csv",
             "name": "mammals",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Small_Mammals_198903-200512.txt"
         },
         {
             "dialect": {},
+            "mediatype": "text/csv",
             "name": "annuals",
             "schema": {
                 "ct_column": "year",
@@ -62,6 +64,7 @@
         },
         {
             "dialect": {},
+            "mediatype": "text/csv",
             "name": "perennials",
             "schema": {
                 "ct_column": "sampling_date",
@@ -163,6 +166,7 @@
         },
         {
             "dialect": {},
+            "mediatype": "text/csv",
             "name": "seed_89_02",
             "schema": {
                 "ct_column": "sampling_date",
@@ -238,6 +242,7 @@
                     "n/a"
                 ]
             },
+            "mediatype": "text/csv",
             "name": "precip",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Precipitation_1989-2005.csv"

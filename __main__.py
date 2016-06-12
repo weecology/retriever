@@ -24,7 +24,7 @@ from retriever.lib.repository import check_for_updates
 from retriever.lib.lists import Category, get_lists
 from retriever.lib.tools import choose_engine, name_matches, reset_retriever
 from retriever.lib.get_opts import parser
-
+from retriever.lib.create_json import create_datapackage_json
 
 def main():
     """This function launches the EcoData Retriever."""
@@ -79,8 +79,11 @@ def main():
             reset_retriever(args.scope)
             return
 
-        if args.command == 'ls':
+        elif args.command == 'new_json':
+            create_datapackage_json()
+            return
 
+        if args.command == 'ls':
             # If scripts have never been downloaded there is nothing to list
             if not script_list:
                 print("No scripts are currently available. Updating scripts now...")

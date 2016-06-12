@@ -12,6 +12,7 @@
             "dialect": {
                 "delimiter": "\t"
             },
+            "mediatype": "text/csv",
             "name": "macroplots",
             "schema": {
                 "ct_column": "Tree",
@@ -49,6 +50,7 @@
             "dialect": {
                 "delimiter": "\t"
             },
+            "mediatype": "text/csv",
             "name": "microplots",
             "schema": {
                 "ct_column": "PlotID",
@@ -170,6 +172,7 @@
         },
         {
             "dialect": {},
+            "mediatype": "text/csv",
             "name": "sites",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E091/216/Site_variables.txt"
@@ -180,6 +183,7 @@
                     "NA"
                 ]
             },
+            "mediatype": "text/csv",
             "name": "species",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E091/216/Species_list.txt"

@@ -15,6 +15,7 @@
                     -999
                 ]
             },
+            "mediatype": "text/csv",
             "name": "main",
             "schema": {
                 "ct_column": "trait",

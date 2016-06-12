@@ -11,6 +11,7 @@
             "dialect": {
                 "do_not_bulk_insert": "True"
             },
+            "mediatype": "text/csv",
             "name": "PlantTaxonomy",
             "schema": {
                 "fields": [

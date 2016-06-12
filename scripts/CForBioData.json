@@ -13,6 +13,7 @@
                     "NA"
                 ]
             },
+            "mediatype": "text/csv",
             "name": "biomass",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E095/177/CForBioData_v1.0.txt"

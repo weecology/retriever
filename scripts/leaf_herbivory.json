@@ -8,6 +8,7 @@
     "resources": [
         {
             "dialect": {},
+            "mediatype": "text/csv",
             "name": "Leaf_herbivory",
             "schema": {},
             "url": "http://www.esapubs.org/archive/ecol/E095/065/Leaf_herbivory.csv"

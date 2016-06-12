@@ -11,30 +11,35 @@
     "resources": [
         {
             "dialect": {},
+            "mediatype": "text/csv",
             "name": "communities",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E092/201/data/MCDB_communities.csv"
         },
         {
             "dialect": {},
+            "mediatype": "text/csv",
             "name": "references",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E092/201/data/MCDB_references.csv"
         },
         {
             "dialect": {},
+            "mediatype": "text/csv",
             "name": "sites",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E092/201/data/MCDB_sites.csv"
         },
         {
             "dialect": {},
+            "mediatype": "text/csv",
             "name": "species",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E092/201/data/MCDB_species.csv"
         },
         {
             "dialect": {},
+            "mediatype": "text/csv",
             "name": "trapping",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E092/201/data/MCDB_trapping.csv"

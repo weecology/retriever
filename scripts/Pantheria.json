@@ -10,6 +10,7 @@
     "resources": [
         {
             "dialect": {},
+            "mediatype": "text/csv",
             "name": "species",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt"
