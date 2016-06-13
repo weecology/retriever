@@ -154,7 +154,7 @@ class Engine(object):
 
         source = (skip_rows,
                   (self.table.column_names_row - 1,
-                   (open, (file_path, "rb"))))
+                   (open, (file_path, "rU"))))
         lines = gen_from_source(source)
 
         header = next(lines)
@@ -162,7 +162,7 @@ class Engine(object):
 
         source = (skip_rows,
                   (self.table.header_rows,
-                   (open, (file_path, "rb"))))
+                   (open, (file_path, "rU"))))
 
         if not self.table.delimiter:
             self.auto_get_delimiter(header)
@@ -383,20 +383,14 @@ class Engine(object):
 
         return db_name
 
-    def download_file(self, url, filename, clean_line_endings=True):
+    def download_file(self, url, filename):
         """Downloads a file to the raw data directory."""
         if not self.find_file(filename):
             path = self.format_filename(filename)
             self.create_raw_data_dir()
             print("Downloading " + filename + "...")
-            file = urllib.request.urlopen(url)
-            local_file = open(path, 'wb')
-            if clean_line_endings and (filename.split('.')[-1].lower() not in ["exe", "zip", "xls"]):
-                local_file.write(file.read().replace("\r\n", "\n").replace("\r", "\n"))
-            else:
-                local_file.write(file.read())
-            local_file.close()
-            file.close()
+            response = urllib.urlretrieve(url, path)
+            
 
     def download_files_from_archive(self, url, filenames, filetype="zip",
                                     keep_in_dir=False, archivename=None):
@@ -425,21 +419,22 @@ class Engine(object):
             else:
                 self.create_raw_data_dir()
                 if not downloaded:
-                    self.download_file(url, archivename, clean_line_endings=False)
+                    self.download_file(url, archivename)
                     downloaded = True
 
                 if filetype == 'zip':
                     archive = zipfile.ZipFile(archivename)
-                    open_archive_file = archive.open(filename)
+                    open_archive_file = archive.open(filename, 'r')
                 elif filetype == 'gz':
                     # gzip archives can only contain a single file
-                    open_archive_file = gzip.open(archivename)
+                    open_archive_file = gzip.open(archivename, 'r')
                 elif filetype == 'tar':
-                    archive = tarfile.open(filename)
+                    archive = tarfile.open(filename, 'r')
                     open_archive_file = archive.extractfile(filename)
 
                 fileloc = self.format_filename(os.path.join(archivebase,
                                                             os.path.basename(filename)))
+
                 unzipped_file = open(fileloc, 'wb')
                 for line in open_archive_file:
                     unzipped_file.write(line)
@@ -605,7 +600,7 @@ class Engine(object):
         for inserting bulk data from files can override this function."""
         data_source = (skip_rows,
                        (self.table.header_rows,
-                        (open, (filename, 'r'))))
+                        (open, (filename, 'rU'))))
         self.add_to_table(data_source)
 
     def insert_data_from_url(self, url):
@@ -684,7 +679,7 @@ def filename_from_url(url):
 def gen_from_source(source):
     """Returns a generator from a source tuple.
     Source tuples are of the form (callable, args) where callable(*args)
-    returns either a generator or another source tuple.
+    returns either a generator or another source tuple. 
     This allows indefinite regeneration of data sources.
     """
     while isinstance(source, tuple):
