@@ -6,7 +6,7 @@ import sys
 import warnings
 
 current_platform = platform.system().lower()
-extra_includes = []
+extra_includes = ['future']
 if current_platform == "darwin":
     try:
         import py2app
@@ -22,8 +22,12 @@ elif current_platform == "windows":
     extra_includes = ['pyodbc', 'inspect']
     sys.path.append(
         "C:\\Windows\\winsxs\\x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_9.0.21022.8_none_bcb86ed6ac711f91")
-from __init__ import VERSION
 
+
+VERSION = 'v1.9.0-dev'
+with open("__version__.py","wb") as version_file:
+    version_file.write("VERSION = " + "'" + VERSION + "'")
+    version_file.close()
 
 def clean_version(v):
     if v == 'master':
