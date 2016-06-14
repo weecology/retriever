@@ -1,4 +1,4 @@
-# retriever
+#retriever
 """EcoData Retriever script for the Vegetation plots del Moral"""
 import os
 
@@ -68,7 +68,7 @@ class main(Script):
 
         old_data = os.path.normpath(self.engine.find_file("original_MSH_SPECIES_DESCRIPTORS.csv"))
 
-        with open(old_data, 'rU') as infile, open(data_path, 'w', newline="\n")as new_data:
+        with open(old_data, 'rU') as infile, open(data_path, 'w')as new_data:
             for line in infile:
                 line = line.encode('utf-8')
                 new_data.write(line)
