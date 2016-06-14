@@ -14,12 +14,13 @@ import imp
 import platform
 
 from lib.compile import compile_script
+from __version__ import VERSION
 
 current_platform = platform.system().lower()
 if current_platform != 'windows':
     import pwd
 
-VERSION = 'v1.9.0-dev'
+
 MASTER = True
 COPYRIGHT = "Copyright (C) 2011-2016 Weecology University of Florida"
 REPO_URL = "https://raw.github.com/weecology/retriever/"
