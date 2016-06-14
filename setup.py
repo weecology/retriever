@@ -24,9 +24,9 @@ elif current_platform == "windows":
         "C:\\Windows\\winsxs\\x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_9.0.21022.8_none_bcb86ed6ac711f91")
 
 
-VERSION = 'v1.9.0-dev'
-with open("__version__.py","wb") as version_file:
-    version_file.write("VERSION = " + "'" + VERSION + "'")
+__version__ = 'v1.9.0-dev'
+with open("_version.py","wb") as version_file:
+    version_file.write("__version__ = " + "'" + __version__ + "'")
     version_file.close()
 
 def clean_version(v):
@@ -64,7 +64,7 @@ excludes = [
 ]
 
 setup(name='retriever',
-      version=clean_version(VERSION),
+      version=clean_version(__version__),
       description='EcoData Retriever',
       author='Ben Morris, Ethan White, Henry Senyondo',
       author_email='ethan@weecology.org',
