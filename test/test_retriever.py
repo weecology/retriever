@@ -35,9 +35,7 @@ def setup_module():
 
 def teardown_method():
     """Cleanup temporary output files after testing"""
-    os.system("rm -r output*")
     os.chdir("..")
-
 
 def test_auto_get_columns():
     """Basic test of getting column labels from header"""
@@ -137,6 +135,7 @@ def test_find_file_present():
     test_engine.script.shortname = 'AvianBodySize'
     assert test_engine.find_file('avian_ssd_jan07.txt') == os.path.normpath(
         'raw_data/AvianBodySize/avian_ssd_jan07.txt')
+    os.system("rm -r raw_data/avianbodysize")
     os.chdir('..')
 
 
@@ -193,6 +192,7 @@ def test_json2csv():
     json_file = create_file("""[ {"User": "Alex", "Country": "US", "Age": "25"} ]""", 'output.json')
     output_json = json2csv(json_file, "test/output_json.csv", header_values=["User", "Country", "Age"])
     obs_out = file_2string(output_json)
+    os.remove(output_json)
     assert obs_out == 'User,Country,Age\nAlex,US,25'
 
 
@@ -210,6 +210,7 @@ def test_xml2csv():
                            "</row>\n</root>", 'output.xml')
     output_xml = xml2csv(xml_file, "test/output_xml.csv", header_values=["User", "Country", "Age"])
     obs_out = file_2string(output_xml)
+    os.remove(output_xml)
     assert obs_out == "User,Country,Age\nAlex,US,25\nAlex,PT,25\nBen,US,24"
 
 
@@ -218,6 +219,7 @@ def test_sort_file():
     data_file = create_file("Ben,US,24\nAlex,US,25\nAlex,PT,25")
     out_file = sort_file(data_file)
     obs_out = file_2string(out_file)
+    os.remove(out_file)
     assert obs_out == 'Alex,PT,25\nAlex,US,25\nBen,US,24\n'
 
 
@@ -226,4 +228,5 @@ def test_sort_csv():
     data_file = create_file("User,Country,Age\nBen,US,24\nAlex,US,25\nAlex,PT,25")
     out_file = sort_csv(data_file)
     obs_out = file_2string(out_file)
+    os.remove(out_file)
     assert obs_out == "User,Country,Age\nAlex,PT,25\nAlex,US,25\nBen,US,24\n"
