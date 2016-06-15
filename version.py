@@ -1,4 +1,5 @@
 """Generates a configuration file containing the version number."""
+from __future__ import absolute_import
 import os
 from retriever import VERSION, MODULE_LIST, MASTER
 from hashlib import md5

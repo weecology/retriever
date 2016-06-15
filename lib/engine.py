@@ -1,16 +1,19 @@
 from __future__ import print_function
-from builtins import object
 from future import standard_library
 standard_library.install_aliases()
+from builtins import object
 from builtins import range
 from builtins import input
+from builtins import zip
+from builtins import next
+from builtins import str
 import sys
 import os
 import getpass
 import zipfile
 import gzip
 import tarfile
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import csv
 
 from retriever import DATA_SEARCH_PATHS, DATA_WRITE_PATH
@@ -389,7 +392,7 @@ class Engine(object):
             path = self.format_filename(filename)
             self.create_raw_data_dir()
             print("Downloading " + filename + "...")
-            response = urllib.urlretrieve(url, path)
+            response = urllib.request.urlretrieve(url, path)
             
 
     def download_files_from_archive(self, url, filenames, filetype="zip",
