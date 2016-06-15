@@ -8,7 +8,7 @@ see if there are any errors. It does not check the values in the database.
 
 """
 from __future__ import print_function
-
+from __future__ import absolute_import
 import os
 import sys
 from retriever.lib.tools import choose_engine

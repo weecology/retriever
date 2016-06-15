@@ -13,7 +13,7 @@ import getpass
 import zipfile
 import gzip
 import tarfile
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import csv
 
 from retriever import DATA_SEARCH_PATHS, DATA_WRITE_PATH
@@ -392,7 +392,7 @@ class Engine(object):
             path = self.format_filename(filename)
             self.create_raw_data_dir()
             print("Downloading " + filename + "...")
-            response = urllib.urlretrieve(url, path)
+            response = urllib.request.urlretrieve(url, path)
             
 
     def download_files_from_archive(self, url, filenames, filetype="zip",
