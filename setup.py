@@ -6,7 +6,7 @@ import sys
 import warnings
 
 current_platform = platform.system().lower()
-extra_includes = ['future']
+extra_includes = []
 if current_platform == "darwin":
     try:
         import py2app
@@ -42,6 +42,7 @@ packages = [
 
 includes = [
     'xlrd',
+    'future'
     'pymysql',
     'psycopg2',
     'sqlite3',
@@ -84,6 +85,7 @@ setup(name='retriever',
       },
       install_requires=[
           'xlrd',
+          'future'
       ],
 
       # py2exe flags
