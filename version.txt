@@ -42,7 +42,7 @@ EA_clark2006.py
 EA_mom2003.script
 bbs50stop.py
 fia.py
-EA_del_moral2010.py
+EA_del_moral_2010.script
 EA_avianbodysize2007.script
 Baldridge2012.script
 EA_ramesh2010.script
