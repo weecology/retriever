@@ -15,7 +15,7 @@ SCRIPT = HtmlTableTemplate(%s)""",
 
 
 def compile_script(script_file):
-    definition = open(script_file + ".script", 'rb')
+    definition = open(script_file + ".script", 'r')
 
     values = {}
     urls = {}
@@ -25,7 +25,7 @@ def compile_script(script_file):
     keys_to_ignore = ["template"]
 
     for line in [line.strip() for line in definition]:
-        if line and ':' in line and not line[0] == '#':
+        if line != "" and ':' in line and not line[0] == '#':
             split_line = [a.strip() for a in line.split(":")]
             key = split_line[0].lower()
             value = ':'.join(split_line[1:])
@@ -134,7 +134,7 @@ def compile_script(script_file):
         template = "default"
     script_contents = (script_templates[template] % script_desc)
 
-    new_script = open(script_file + '.py', 'wb')
+    new_script = open(script_file + '.py', 'w')
     new_script.write(script_contents)
     new_script.close()
 

@@ -7,7 +7,7 @@ from inspect import getsourcelines
 
 if os.path.isfile("version.txt"):
     os.remove("version.txt")
-version_file = open("version.txt", "wb")
+version_file = open("version.txt", "w")
 version_file.write(VERSION)
 modules = MODULE_LIST()
 scripts = []
