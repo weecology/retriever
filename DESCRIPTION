@@ -17,6 +17,6 @@ Depends:
     R (>= 3.0.0)
 Imports:
     utils
-SystemRequirements: EcoData Retriever (>= 1.6)
+SystemRequirements: EcoData Retriever (>= 1.8)
 License: MIT + file LICENSE
 LazyData: true
