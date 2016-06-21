@@ -5,7 +5,7 @@ Description: Provides an R interface to the EcoData Retriever
     command line interface. The EcoData Retriever automates the
     tasks of finding, downloading, and cleaning ecological datasets,
     and then stores them in a local database.
-Version: 0.2.2
+Version: 0.3.0
 Date: 2015-11-18
 Authors@R: c(person("Daniel", "McGlinn", role = c("aut", "cre"),
     email = "danmcglinn@gmail.com"),

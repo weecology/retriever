@@ -1,3 +1,17 @@
+ecoretriever 0.3.0
+==================
+
+MINOR IMPROVEMENTS
+
+* Improve documentation for using the connection file
+
+BUG FIXES
+
+* Fix issues with running on some Windows machines by using `shell()` instead of
+  `system()` on Windows
+* Fix new `--subdir` functionality (released in 0.2.2)
+
+
 ecoretriever 0.2
 ================
 
