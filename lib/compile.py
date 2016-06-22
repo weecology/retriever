@@ -25,7 +25,7 @@ def compile_script(script_file):
     keys_to_ignore = ["template"]
 
     for line in [line.strip() for line in definition]:
-        if line != "" and ':' in line and not line[0] == '#':
+        if line and ':' in line and not line[0] == '#':
             split_line = [a.strip() for a in line.split(":")]
             key = split_line[0].lower()
             value = ':'.join(split_line[1:])

@@ -281,7 +281,6 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
 def getmd5(data, data_type='lines', mode='rb'):
     """Get MD5 of a data source"""
     checksum = md5()
-    # mode = 'rb'
     if data_type == 'lines':
         for line in data:
             if type(line) == bytes:
