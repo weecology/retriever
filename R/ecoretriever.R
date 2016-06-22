@@ -66,7 +66,7 @@ install = function(dataset, connection, db_file=NULL, conn_file=NULL,
     log_file = file.path(log_dir, paste(dataset, '_download.log', sep=''))
     cmd = paste(cmd, '>', log_file, '2>&1')
   }
-  system(cmd)
+  run_cli(cmd)
 }
 
 #' Fetch a dataset via the EcoData Retriever
@@ -89,7 +89,7 @@ install = function(dataset, connection, db_file=NULL, conn_file=NULL,
 fetch = function(dataset, quiet=TRUE){
   temp_path = tempdir()
   if (quiet)
-    system(paste('retriever -q install csv --table_name',
+    run_cli(paste('retriever -q install csv --table_name',
                  file.path(temp_path, '{db}_{table}.csv'),
                  dataset))
   else
@@ -131,7 +131,7 @@ download = function(dataset, path='.', sub_dir=FALSE, log_dir=NULL) {
         log_file = file.path(log_dir, paste(dataset, '_download.log', sep=''))
         cmd = paste(cmd, '>', log_file, '2>&1')
     }
-    system(cmd)
+    run_cli(cmd)
 }
 
 #' Name all available dataset scripts.
@@ -145,7 +145,7 @@ download = function(dataset, path='.', sub_dir=FALSE, log_dir=NULL) {
 #' ecoretriever::datasets()
 #' }
 datasets = function(){
-  system('retriever ls', intern = TRUE) 
+  run_cli('retriever ls', intern = TRUE)
 }
 
 #' Update the retriever's dataset scripts to the most recent versions.
@@ -164,7 +164,7 @@ datasets = function(){
 #' }
 get_updates = function() {
     writeLines(strwrap('Please wait while the retriever updates its scripts, ...'))
-    update_log = system('retriever update', intern=TRUE, ignore.stdout=FALSE,
+    update_log = run_cli('retriever update', intern=TRUE, ignore.stdout=FALSE,
                         ignore.stderr=TRUE)
     writeLines(strwrap('The retriever scripts are up-to-date with the most recent official release!'))
     class(update_log) = "update_log"
@@ -212,4 +212,19 @@ check_for_retriever = function(...) {
         else 
             packageStartupMessage(paste(path_warn, download_instr))
     }    
+}
+
+#' Run command using command line interface
+#'
+#' system() calls to the retriever execute inconsistently on Windows so this
+#' function uses shell() on Windows and system() on other operating systems
+#'
+#' @param command string containing a command line call to the retriever
+run_cli = function(...) {
+    os = Sys.info()[['sysname']]
+    if (os == "Windows") {
+        shell(...)
+    } else {
+        system(...)
+    }
 }
