@@ -277,12 +277,12 @@ class Engine(object):
             thistype = self.datatypes[thistype]
 
             if isinstance(thistype, tuple):
-                if len(datatype) > 1 and datatype[1] > 0:
+                if len(datatype) > 1 and int(datatype[1]) > 0:
                     thistype = thistype[1] + "(" + str(datatype[1]) + ")"
                 else:
                     thistype = thistype[0]
             else:
-                if len(datatype) > 1 and datatype[1] > 0:
+                if len(datatype) > 1 and int(datatype[1]) > 0:
                     thistype += "(" + str(datatype[1]) + ")"
         else:
             thistype = ""
@@ -393,7 +393,7 @@ class Engine(object):
             self.create_raw_data_dir()
             print("Downloading " + filename + "...")
             response = urllib.request.urlretrieve(url, path)
-            
+
 
     def download_files_from_archive(self, url, filenames, filetype="zip",
                                     keep_in_dir=False, archivename=None):
@@ -438,7 +438,7 @@ class Engine(object):
                 fileloc = self.format_filename(os.path.join(archivebase,
                                                             os.path.basename(filename)))
 
-                unzipped_file = open(fileloc, 'wb')
+                unzipped_file = open(fileloc, 'w')
                 for line in open_archive_file:
                     unzipped_file.write(line)
                 open_archive_file.close()
@@ -477,8 +477,8 @@ class Engine(object):
         # due to Cyclic imports we can not move this import to the top
         from retriever.lib.tools import sort_csv
         csvfile_output = (self.table_name() + '.csv')
-        csv_out = open(csvfile_output, "wb")
-        csv_writer = csv.writer(csv_out, dialect='excel')
+        csv_out = open(csvfile_output, "w")
+        csv_writer = csv.writer(csv_out, dialect='excel', lineterminator='\n')
         self.get_cursor()
         self.cursor.execute("SELECT * FROM " + self.table_name() + ";")
         row = self.cursor.fetchone()
@@ -682,7 +682,7 @@ def filename_from_url(url):
 def gen_from_source(source):
     """Returns a generator from a source tuple.
     Source tuples are of the form (callable, args) where callable(*args)
-    returns either a generator or another source tuple. 
+    returns either a generator or another source tuple.
     This allows indefinite regeneration of data sources.
     """
     while isinstance(source, tuple):

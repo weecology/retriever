@@ -23,5 +23,5 @@ class Excel(object):
     def cell_value(cell):
         """Returns the string value of an excel spreadsheet cell"""
         if (cell.value).__class__.__name__ == 'unicode':
-            return (cell.value).encode('utf-8').strip()
+            return (cell.value).encode().strip()
         return str(cell.value).strip()

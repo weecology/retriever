@@ -101,7 +101,7 @@ class InitThread(Thread):
             scripts = []
             print("Downloading scripts...")
             for line in version_file:
-                scripts.append(line.strip('\n').split(','))
+                scripts.append(line.decode().strip('\n').split(','))
 
             total_script_count = len(scripts)
 
