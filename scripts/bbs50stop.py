@@ -70,8 +70,8 @@ class main(Script):
             # Weather table
             if not os.path.isfile(engine.format_filename("weather_new.csv")):
                 engine.download_files_from_archive(self.urls["weather"],
-                                                   ["Weather.csv"])
-                read = open(engine.format_filename("Weather.csv"), "rb")
+                                                   ["weather.csv"])
+                read = open(engine.format_filename("weather.csv"), "rb")
                 write = open(engine.format_filename("weather_new.csv"), "wb")
                 print("Cleaning weather data...")
                 for line in read:
