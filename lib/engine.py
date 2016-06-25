@@ -277,12 +277,12 @@ class Engine(object):
             thistype = self.datatypes[thistype]
 
             if isinstance(thistype, tuple):
-                if len(datatype) > 1 and int(datatype[1]) > 0:
+                if len(datatype) > 1:
                     thistype = thistype[1] + "(" + str(datatype[1]) + ")"
                 else:
                     thistype = thistype[0]
             else:
-                if len(datatype) > 1 and int(datatype[1]) > 0:
+                if len(datatype) > 1:
                     thistype += "(" + str(datatype[1]) + ")"
         else:
             thistype = ""
