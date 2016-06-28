@@ -1,11 +1,11 @@
-![Retriever logo](http://i.imgur.com/M5hhENV.png) 
+![Retriever logo](http://i.imgur.com/M5hhENV.png)
 
 
 [![Build Status](https://travis-ci.org/weecology/retriever.png)](https://travis-ci.org/weecology/retriever)
 [![Build Status (windows)](https://ci.appveyor.com/api/projects/status/qetgo4jxa5769qtb/branch/master?svg=true)](https://ci.appveyor.com/project/ethanwhite/retriever/branch/master)
 [![Research software impact](http://depsy.org/api/package/pypi/retriever/badge.svg)](http://depsy.org/package/python/retriever)
 [![codecov.io](https://codecov.io/github/weecology/retriever/coverage.svg?branch=master)](https://codecov.io/github/weecology/retriever?branch=master)
-[![Documentation Status](https://readthedocs.org/projects/retriever/badge/?version=latest)](http://retriever.readthedocs.org/en/latest/?badge=latest) 
+[![Documentation Status](https://readthedocs.org/projects/retriever/badge/?version=latest)](http://retriever.readthedocs.org/en/latest/?badge=latest)
 [![License](http://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/weecology/retriever/master/LICENSE)
 [![Join the chat at https://gitter.im/weecology/retriever](https://badges.gitter.im/weecology/retriever.svg)](https://gitter.im/weecology/retriever?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -23,7 +23,7 @@ and Ubuntu/Debian at the [project website](http://ecodataretriever.org).
 Installing From Source
 ----------------------
 
-To install the EcoData Retriever from source, you'll need Python 2.6+ with the following packages installed:
+To install the EcoData Retriever from source, you'll need Python 2.7+ or 3.3+ with the following packages installed:
 
 * xlrd
 
@@ -91,7 +91,7 @@ optional arguments:
 
 ###Examples
 ```
-These examples are using Breeding Bird Survey data (BBS) 
+These examples are using Breeding Bird Survey data (BBS)
 
 Using Install
 
@@ -114,7 +114,7 @@ Using download
 
 Using citation
   retriever citation   (citation of the retriever engine)
-  retriever citation BBS   (citation of BBS data) 
+  retriever citation BBS   (citation of BBS data)
   ```
 
 
