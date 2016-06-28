@@ -15,7 +15,7 @@ import gzip
 import tarfile
 import urllib.request, urllib.parse, urllib.error
 import csv
-
+import io
 from retriever import DATA_SEARCH_PATHS, DATA_WRITE_PATH
 from retriever.lib.cleanup import no_cleanup
 from retriever.lib.warning import Warning
@@ -157,7 +157,7 @@ class Engine(object):
 
         source = (skip_rows,
                   (self.table.column_names_row - 1,
-                   (open, (file_path, "rU"))))
+                   (io.open, (file_path, "rU", -1, 'utf-8', 'ignore'))))
         lines = gen_from_source(source)
 
         header = next(lines)
@@ -165,7 +165,7 @@ class Engine(object):
 
         source = (skip_rows,
                   (self.table.header_rows,
-                   (open, (file_path, "rU"))))
+                   (io.open, (file_path, "rU", -1, 'utf-8', 'ignore'))))
 
         if not self.table.delimiter:
             self.auto_get_delimiter(header)
@@ -603,7 +603,7 @@ class Engine(object):
         for inserting bulk data from files can override this function."""
         data_source = (skip_rows,
                        (self.table.header_rows,
-                        (open, (filename, 'rU'))))
+                        (io.open, (filename, 'rU', -1, 'utf-8', 'ignore'))))
         self.add_to_table(data_source)
 
     def insert_data_from_url(self, url):
