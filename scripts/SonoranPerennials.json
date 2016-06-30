@@ -1,0 +1,122 @@
+{
+    "citation": "Susana Rodriguez-Buritica, Helen Raichle, Robert H. Webb, Raymond M. Turner, and D. Lawrence Venable. 2013. One hundred and six years of population and community dynamics of Sonoran Desert Laboratory perennials. Ecology 94:976.",
+    "description": "The data set constitutes all information associated with the Spalding-Shreve permanent vegetation plots from 1906 through 2012, which is the longest-running plant monitoring program in the world.",
+    "keywords": [
+        "Taxon > Plants"
+    ],
+    "name": "SonoranPerennials",
+    "resources": [
+        {
+            "dialect": {
+                "nulls": [
+                    "NA"
+                ]
+            },
+            "mediatype": "text/csv",
+            "name": "Plots",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E094/083/Plots.csv"
+        },
+        {
+            "dialect": {
+                "nulls": [
+                    "NA"
+                ]
+            },
+            "mediatype": "text/csv",
+            "name": "Plot_corners",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E094/083/Plot_corners.csv"
+        },
+        {
+            "dialect": {
+                "nulls": [
+                    "NA"
+                ]
+            },
+            "mediatype": "text/csv",
+            "name": "Species",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E094/083/Species.csv"
+        },
+        {
+            "dialect": {
+                "nulls": [
+                    "NA"
+                ]
+            },
+            "mediatype": "text/csv",
+            "name": "Seedling_counts",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E094/083/Seedling_counts.csv"
+        },
+        {
+            "dialect": {
+                "nulls": [
+                    "NA"
+                ]
+            },
+            "mediatype": "text/csv",
+            "name": "Count1906",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E094/083/Count1906.csv"
+        },
+        {
+            "dialect": {
+                "nulls": [
+                    "NA"
+                ]
+            },
+            "mediatype": "text/csv",
+            "name": "SMCover",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E094/083/SMCover.csv"
+        },
+        {
+            "dialect": {
+                "nulls": [
+                    "NA"
+                ]
+            },
+            "mediatype": "text/csv",
+            "name": "SMDensity",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E094/083/SMDensity.csv"
+        },
+        {
+            "dialect": {
+                "nulls": [
+                    "NA",
+                    "nd"
+                ]
+            },
+            "mediatype": "text/csv",
+            "name": "Stake_info",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E094/083/Stake_info.csv"
+        },
+        {
+            "dialect": {
+                "nulls": [
+                    "NA"
+                ]
+            },
+            "mediatype": "text/csv",
+            "name": "Photo_info",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E094/083/Photo_info.csv"
+        }
+    ],
+    "title": "Sonoran Desert Perennials",
+    "urls": {
+        "Count1906": "http://esapubs.org/archive/ecol/E094/083/Count1906.csv",
+        "Photo_info": "http://esapubs.org/archive/ecol/E094/083/Photo_info.csv",
+        "Plot_corners": "http://esapubs.org/archive/ecol/E094/083/Plot_corners.csv",
+        "Plots": "http://esapubs.org/archive/ecol/E094/083/Plots.csv",
+        "SMCover": "http://esapubs.org/archive/ecol/E094/083/SMCover.csv",
+        "SMDensity": "http://esapubs.org/archive/ecol/E094/083/SMDensity.csv",
+        "Seedling_counts": "http://esapubs.org/archive/ecol/E094/083/Seedling_counts.csv",
+        "Species": "http://esapubs.org/archive/ecol/E094/083/Species.csv",
+        "Stake_info": "http://esapubs.org/archive/ecol/E094/083/Stake_info.csv"
+    }
+}
