@@ -38,14 +38,14 @@ def get_script_module(script_name):
     return imp.load_module(script_name, file, pathname, desc)
 
 
-def get_csv_md5(dataset, engines):
-    dump_dir()
+def get_csv_md5(dataset, engines, tmpdir):
+    workdir = tmpdir.mkdtemp()
+    workdir.chdir()
     script_module = get_script_module(dataset)
     script_module.SCRIPT.download(engines)
     script_module.SCRIPT.engine.final_cleanup()
     script_module.SCRIPT.engine.to_csv()
-    os.chdir("..")
-    current_md5 = getmd5(data='output_dumps', data_type='dir')
+    current_md5 = getmd5(data=str(workdir), data_type='dir')
     return current_md5
 
 
@@ -63,58 +63,51 @@ def teardown_module():
     os.chdir("..")
 
 
-def dump_dir():
-    if os.path.exists("output_dumps"):
-        os.system("rm -r output_dumps")
-    os.makedirs("output_dumps")
-    os.chdir("output_dumps")
-
-
 @pytest.mark.parametrize("dataset, expected", db_md5)
-def test_sqlite_regression(dataset, expected):
+def test_sqlite_regression(dataset, expected, tmpdir):
     """Check for sqlite regression"""
     dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb.sqlite'))
     sqlite_engine.opts = {'engine': 'sqlite', 'file': dbfile, 'table_name': '{db}_{table}'}
-    assert get_csv_md5(dataset, sqlite_engine) == expected
+    assert get_csv_md5(dataset, sqlite_engine, tmpdir) == expected
 
 
 @pytest.mark.parametrize("dataset, expected", db_md5)
-def test_postgres_regression(dataset, expected):
+def test_postgres_regression(dataset, expected, tmpdir):
     """Check for postgres regression"""
     os.system('psql -U postgres -d testdb -h localhost -c "DROP SCHEMA IF EXISTS testschema CASCADE"')
     postgres_engine.opts = {'engine': 'postgres', 'user': 'postgres', 'password': "", 'host': 'localhost', 'port': 5432,
                             'database': 'testdb', 'database_name': 'testschema', 'table_name': '{db}.{table}'}
-    assert get_csv_md5(dataset, postgres_engine) == expected
+    assert get_csv_md5(dataset, postgres_engine, tmpdir) == expected
 
 
 @pytest.mark.parametrize("dataset, expected", db_md5)
-def test_mysql_regression(dataset, expected):
+def test_mysql_regression(dataset, expected, tmpdir):
     """Check for mysql regression"""
     os.system('mysql -u travis -Bse "DROP DATABASE IF EXISTS testdb"')
     mysql_engine.opts = {'engine': 'mysql', 'user': 'travis', 'password': '', 'host': 'localhost', 'port': 3306,
                          'database_name': 'testdb', 'table_name': '{db}.{table}'}
-    assert get_csv_md5(dataset, mysql_engine) == expected
+    assert get_csv_md5(dataset, mysql_engine, tmpdir) == expected
 
 
 @pytest.mark.parametrize("dataset, expected", filedb_md5)
-def test_xmlenginee_regression(dataset, expected):
+def test_xmlenginee_regression(dataset, expected, tmpdir):
     """Check for xmlenginee regression"""
     xml_engine.opts = {'engine': 'xml', 'table_name': 'output_file_{table}.xml'}
-    assert get_csv_md5(dataset, xml_engine) == expected
+    assert get_csv_md5(dataset, xml_engine, tmpdir) == expected
 
 
 @pytest.mark.parametrize("dataset, expected", filedb_md5)
-def test_jsonenginee_regression(dataset, expected):
+def test_jsonenginee_regression(dataset, expected, tmpdir):
     """Check for jsonenginee regression"""
     json_engine.opts = {'engine': 'json', 'table_name': 'output_file_{table}.json'}
-    assert get_csv_md5(dataset, json_engine) == expected
+    assert get_csv_md5(dataset, json_engine, tmpdir) == expected
 
 
 @pytest.mark.parametrize("dataset, expected", filedb_md5)
-def test_csv_regression(dataset, expected):
+def test_csv_regression(dataset, expected, tmpdir):
     """Check csv regression"""
     csv_engine.opts = {'engine': 'csv', 'table_name': 'output_file_{table}.csv'}
-    assert get_csv_md5(dataset, csv_engine) == expected
+    assert get_csv_md5(dataset, csv_engine, tmpdir) == expected
 
 
 @pytest.mark.parametrize("dataset, expected", download_md5)
