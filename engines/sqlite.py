@@ -10,13 +10,13 @@ class engine(Engine):
     name = "SQLite"
     abbreviation = "sqlite"
     datatypes = {
-        "auto": "INTEGER",
+        "auto": ("INTEGER", "AUTOINCREMENT"),
         "int": "INTEGER",
         "bigint": "INTEGER",
         "double": "REAL",
         "decimal": "REAL",
         "char": "TEXT",
-        "bool": "INTEGER",
+        "bool": "REAL",
     }
     required_opts = [("file",
                       "Enter the filename of your SQLite database",

@@ -3,6 +3,11 @@ from future import standard_library
 standard_library.install_aliases()
 
 import os
+
+import sys
+reload(sys)
+if hasattr(sys, 'setdefaultencoding'):
+    sys.setdefaultencoding('latin-1')
 from io import StringIO
 from retriever.lib.engine import Engine
 from retriever.lib.table import Table

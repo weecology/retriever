@@ -1,7 +1,11 @@
 from __future__ import print_function
 import imp
 import os
+import sys
 
+reload(sys)
+if hasattr(sys, 'setdefaultencoding'):
+    sys.setdefaultencoding('latin-1')
 import pytest
 from retriever.lib.tools import getmd5
 from retriever import HOME_DIR, ENGINE_LIST
@@ -15,22 +19,16 @@ download_md5 = [
     ('mom2003', 'b54b80d0d1959bdea0bb8a59b70fa871')
 ]
 
-csv_md5 = [
-    # ('DelMoral2010', '0'),
-    ('EA_avianbodysize2007', '873597e93bb6163aedd88e285b246c34'),
-    ('EA_mom2003', '5fe8b4f182ba2b8be3bb0ddecdb4673c')
-]
-
 db_md5 = [
     # ('DelMoral2010', '0'),
-    ('EA_avianbodysize2007', '79680888f7768474479e70c87cd36c9d'),
-    ('EA_mom2003', '520b29f78dc96e8f2d48b5ef9264ff86')
+    ('EA_avianbodysize2007', '74a5421622ab73c1df2ff8afc9d67e03'),
+    ('EA_mom2003', '92bf63eb5b36b777c600d0a95229222c')
 ]
 
 filedb_md5 = [
     # ('DelMoral2010', '0'),
-    ('EA_avianbodysize2007', '91aa87a438ddf8fc6c9f9054fe4fda90'),
-    ('EA_mom2003', '8dc11ac8d3d3a33e938662dfe39e22c2')
+    ('EA_avianbodysize2007', 'ca8f7e670ff98b520371d3fabf9a8632'),
+    ('EA_mom2003', '92bf63eb5b36b777c600d0a95229222c')
 ]
 
 
@@ -112,7 +110,7 @@ def test_jsonenginee_regression(dataset, expected):
     assert get_csv_md5(dataset, json_engine) == expected
 
 
-@pytest.mark.parametrize("dataset, expected", csv_md5)
+@pytest.mark.parametrize("dataset, expected", filedb_md5)
 def test_csv_regression(dataset, expected):
     """Check csv regression"""
     csv_engine.opts = {'engine': 'csv', 'table_name': 'output_file_{table}.csv'}
