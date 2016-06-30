@@ -120,7 +120,7 @@ def parse_script_to_json(script_file):
         if key in keys_to_ignore:
             values.pop(key,None)
 
-    with open(JSON_DIR+script_file + '.json', 'w') as json_file:
+    with open(JSON_DIR + values['name'] + '.json', 'w') as json_file:
         json.dump(values,json_file,sort_keys=True, indent=4,
             separators=(',', ': '))
         json_file.write('\n')
