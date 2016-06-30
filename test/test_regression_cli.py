@@ -1,4 +1,5 @@
-from __future__ import print_function
+from __future__ import absolute_import
+from imp import reload
 import imp
 import os
 import sys
@@ -57,9 +58,10 @@ def setup_module():
 
 def teardown_module():
     """Cleanup temporary output files after testing and return to root directory"""
-    os.system("rm output*")
-    os.system("rm -r raw_data/MoM2003")
+    os.system("rm -r output*")
+    os.system("rm -r raw_data/mom2003")
     os.system("rm -r raw_data/EA*")
+    os.system("rm testdb.sqlite")
     os.chdir("..")
 
 

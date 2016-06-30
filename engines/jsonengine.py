@@ -116,7 +116,7 @@ class engine(Engine):
         keys = [columnname[0] for columnname in self.table.columns]
         tuples = (zip(keys, values))
         write_data = OrderedDict(tuples)
-        return json.dumps(write_data)
+        return json.dumps(write_data, ensure_ascii=False)
 
     def table_exists(self, dbname, tablename):
         """Check to see if the data file currently exists"""

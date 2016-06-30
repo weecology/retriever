@@ -1,4 +1,5 @@
 """Generates a configuration file containing the version number."""
+from __future__ import absolute_import
 import os
 from retriever import VERSION, MODULE_LIST, MASTER
 from hashlib import md5
@@ -6,7 +7,7 @@ from inspect import getsourcelines
 
 if os.path.isfile("version.txt"):
     os.remove("version.txt")
-version_file = open("version.txt", "wb")
+version_file = open("version.txt", "w")
 version_file.write(VERSION)
 modules = MODULE_LIST()
 scripts = []

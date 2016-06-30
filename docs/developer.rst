@@ -99,12 +99,15 @@ In case we want to run tests on a specific test category, we add the path of the
 
 This will only run test_retriever.py
 
-Tests in the Cloud
-^^^^^^^^^^^^^^^^^^
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
 
-Currently we support Travis, a cloud testing platform.
+The main GitHub repository runs test on both the Travis (Linux) and AppVeyor
+(Windows) continuous integration platforms.
 
-In case you make commits, Travis is automatically triggered and uses the ``travis.yml`` file.
+Pull requests submitted to the repository will automatically be tested using
+these systems and results reported in the `checks` section of the pull request
+page.
 
 Services Used
 -------------
@@ -114,11 +117,12 @@ Check the services' home pages in case you have to add the same capabilities to 
 ::
 
   Travis
+  AppVeyor
   readthedocs
   codecov
 
 
-links `Read The Docs`_, `codecov`_ and  `Travis`_
+links `Read The Docs`_, `codecov`_, `AppVeyor`_ and  `Travis`_
 
 After installing the servers we need to configure them by granting privileges to our testing user .
 
@@ -201,6 +205,7 @@ Use ``-f`` flag to force pushing changes to the branch. ``git push -f origin [br
 .. _Sphinx: http://www.sphinx-doc.org/en/stable/
 .. _Read The Docs: https://readthedocs.org//
 .. _Travis: https://travis-ci.org/
+.. _AppVeyor: https://www.appveyor.com/
 .. _documentation: https://pythonhosted.org/an_example_pypi_project/setuptools.html
 .. _installing: https://docs.python.org/2/install/
 .. _installing the wheel: http://www.lfd.uci.edu/~gohlke/pythonlibs/

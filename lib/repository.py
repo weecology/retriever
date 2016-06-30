@@ -1,10 +1,12 @@
 """Checks the repository for updates."""
 from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
 
 
 import os
 import sys
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import imp
 from hashlib import md5
 from inspect import getsourcelines
@@ -21,7 +23,7 @@ def download_from_repository(filepath, newpath, repo=REPOSITORY):
     """Downloads the latest version of a file from the repository."""
     try:
         filename = filepath.split('/')[-1]
-        urllib.urlretrieve(repo + filepath, newpath)
+        urllib.request.urlretrieve(repo + filepath, newpath)
     except:
         raise
         pass
@@ -91,7 +93,7 @@ class InitThread(Thread):
 
             # open version.txt for current release branch and get script
             # versions
-            version_file = urllib.urlopen(REPOSITORY + "version.txt")
+            version_file = urllib.request.urlopen(REPOSITORY + "version.txt")
             version_file.readline()
 
             # read scripts from the repository and the checksums from the
@@ -99,7 +101,7 @@ class InitThread(Thread):
             scripts = []
             print("Downloading scripts...")
             for line in version_file:
-                scripts.append(line.strip('\n').split(','))
+                scripts.append(line.decode().strip('\n').split(','))
 
             total_script_count = len(scripts)
 

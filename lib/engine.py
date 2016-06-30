@@ -1,19 +1,22 @@
 from __future__ import print_function
 from __future__ import division
-from builtins import object
 from future import standard_library
 standard_library.install_aliases()
+from builtins import object
 from builtins import range
 from builtins import input
+from builtins import zip
+from builtins import next
+from builtins import str
 import sys
 import os
 import getpass
 import zipfile
 import gzip
 import tarfile
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import csv
-
+import io
 from retriever import DATA_SEARCH_PATHS, DATA_WRITE_PATH
 from retriever.lib.cleanup import no_cleanup
 from retriever.lib.warning import Warning
@@ -152,7 +155,7 @@ class Engine(object):
 
         source = (skip_rows,
                   (self.table.column_names_row - 1,
-                   (open, (file_path, "rU"))))
+                   (io.open, (file_path, "rU", -1, 'utf-8', 'ignore'))))
         lines = gen_from_source(source)
 
         header = next(lines)
@@ -160,7 +163,7 @@ class Engine(object):
 
         source = (skip_rows,
                   (self.table.header_rows,
-                   (open, (file_path, "rU"))))
+                   (io.open, (file_path, "rU", -1, 'utf-8', 'ignore'))))
 
         if not self.table.delimiter:
             self.auto_get_delimiter(header)
@@ -269,13 +272,13 @@ class Engine(object):
             thistype = self.datatypes[thistype]
             if isinstance(thistype, tuple):
                 if datatype[0] == 'pk-auto':
-                    thistype =thistype
-                elif len(datatype) > 1 and datatype[1] > 0:
+                    pass
+                elif len(datatype) > 1:
                     thistype = thistype[1] + "(" + str(datatype[1]) + ")"
                 else:
                     thistype = thistype[0]
             else:
-                if len(datatype) > 1 and datatype[1] > 0:
+                if len(datatype) > 1:
                     thistype += "(" + str(datatype[1]) + ")"
         else:
             thistype = ""
@@ -343,9 +346,12 @@ class Engine(object):
             print("Couldn't create table (%s). Trying to continue anyway." % e)
 
     def create_table_statement(self):
-        """Returns a SQL statement to create a table."""
+        """Returns a SQL statement to create a table
+
+        use create=True to get insert columns including Auto field for creating table
+        default is false and used when returning only the colums for inserts 
+        """
         create_stmt = "CREATE TABLE " + self.table_name() + " ("
-        # get insert coloumns including Auto field for creating table
         columns = self.table.get_insert_columns(join=False, create=True)
         types = []
         for column in self.table.columns:
@@ -361,7 +367,7 @@ class Engine(object):
 
         create_stmt += ', '.join(column_strings)
         create_stmt += " );"
-        print (create_stmt)
+
         return create_stmt
 
     def database_name(self, name=None):
@@ -383,7 +389,8 @@ class Engine(object):
             path = self.format_filename(filename)
             self.create_raw_data_dir()
             print("Downloading " + filename + "...")
-            response = urllib.urlretrieve(url, path)
+            response = urllib.request.urlretrieve(url, path)
+
 
     def download_files_from_archive(self, url, filenames, filetype="zip",
                                     keep_in_dir=False, archivename=None):
@@ -426,7 +433,7 @@ class Engine(object):
                 fileloc = self.format_filename(os.path.join(archivebase,
                                                             os.path.basename(filename)))
 
-                unzipped_file = open(fileloc, 'wb')
+                unzipped_file = open(fileloc, 'w')
                 for line in open_archive_file:
                     unzipped_file.write(line)
                 open_archive_file.close()
@@ -465,8 +472,8 @@ class Engine(object):
         # due to Cyclic imports we can not move this import to the top
         from retriever.lib.tools import sort_csv
         csvfile_output = (self.table_name() + '.csv')
-        csv_out = open(csvfile_output, "wb")
-        csv_writer = csv.writer(csv_out, dialect='excel')
+        csv_out = open(csvfile_output, "w")
+        csv_writer = csv.writer(csv_out, dialect='excel', lineterminator='\n')
         self.get_cursor()
         self.cursor.execute("SELECT * FROM " + self.table_name() + ";")
         row = self.cursor.fetchone()
@@ -586,7 +593,7 @@ class Engine(object):
         for inserting bulk data from files can override this function."""
         data_source = (skip_rows,
                        (self.table.header_rows,
-                        (open, (filename, 'rU'))))
+                        (io.open, (filename, 'rU', -1, 'utf-8', 'ignore'))))
         self.add_to_table(data_source)
 
     def insert_data_from_url(self, url):
@@ -664,7 +671,7 @@ def filename_from_url(url):
 def gen_from_source(source):
     """Returns a generator from a source tuple.
     Source tuples are of the form (callable, args) where callable(*args)
-    returns either a generator or another source tuple. 
+    returns either a generator or another source tuple.
     This allows indefinite regeneration of data sources.
     """
     while isinstance(source, tuple):

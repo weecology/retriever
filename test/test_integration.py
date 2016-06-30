@@ -1,13 +1,11 @@
 """Integrations tests for EcoData Retriever"""
 from __future__ import print_function
+from imp import reload
 
 import imp
 import os
 import shutil
-import sys
-reload(sys)
-if hasattr(sys, 'setdefaultencoding'):
-    sys.setdefaultencoding('latin-1')
+
 from retriever.lib.compile import compile_script
 from retriever import HOME_DIR, ENGINE_LIST
 from retriever.lib.tools import file_2string

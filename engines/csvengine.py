@@ -39,7 +39,7 @@ class engine(Engine):
         "double": "REAL",
         "decimal": "REAL",
         "char": "TEXT",
-        "bool": "REAL",
+        "bool": "INTEGER",
     }
     required_opts = [
         ("table_name",
