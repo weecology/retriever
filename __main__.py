@@ -23,7 +23,7 @@ from retriever.lib.repository import check_for_updates
 from retriever.lib.lists import Category, get_lists
 from retriever.lib.tools import choose_engine, name_matches, reset_retriever
 from retriever.lib.get_opts import parser
-from retriever.lib.create_json import create_datapackage_json
+from retriever.lib.datapackage import create_json, edit_json
 
 def main():
     """This function launches the EcoData Retriever."""
@@ -78,8 +78,34 @@ def main():
             return
 
         elif args.command == 'new_json':
-            create_datapackage_json()
+            create_json()
             return
+
+        elif args.command == 'edit_json':
+            if args.dataset is None:
+                raise Exception("\nError: Filename not given.")
+            else:
+                if not script_list:
+                    print("No scripts are currently available. Updating scripts now...")
+                    check_for_updates()
+                    print("\n\nScripts downloaded.\n")
+                    script_list = SCRIPT_LIST()
+                scripts = name_matches(script_list, args.dataset)
+
+                s_no = 1
+
+                if len(scripts) > 1:
+                    print("Did you mean: ")
+                    for i in range(len(scripts)):
+                        print("{:d}. {}".format(i+1, scripts[i]))
+                    s_no = input("\n\nEnter the correct dataset number: ")
+
+                elif len(scripts) == 0:
+                    raise Exception("\nError: Unable to find script.")
+
+                script_name = scripts[s_no-1].shortname
+                edit_json(script_name)
+                return
 
         if args.command == 'ls' or args.dataset is None:
 
