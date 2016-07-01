@@ -14,15 +14,14 @@ parser.add_argument('-q', '--quiet', help='suppress command-line output', action
 # retriever HELP
 subparsers = parser.add_subparsers(help='sub-command help', dest='command')
 
-# retriever download/install/gui/update/new help
+# retriever download/install/update/new help
 download_parser = subparsers.add_parser('download', help='download raw data files for a dataset')
 install_parser = subparsers.add_parser('install', help='download and install dataset')
 update_parser = subparsers.add_parser('update', help='download updated versions of scripts')
-gui_parser = subparsers.add_parser('gui', help='launch retriever in graphical mode')
 new_parser = subparsers.add_parser('new', help='create a new sample retriever script')
 ls_parser = subparsers.add_parser('ls', help='display a list all available dataset scripts')
 citation_parser = subparsers.add_parser('citation', help='view citation')
-reset_parser = subparsers.add_parser('reset',help='reset retriever: removes configation settings, scripts, and cached data')
+reset_parser = subparsers.add_parser('reset', help='reset retriever: removes configation settings, scripts, and cached data')
 help_parser = subparsers.add_parser('help', help='')
 
 # ..............................................................
@@ -35,7 +34,7 @@ reset_parser.add_argument('scope', help='things to reset: all, scripts, data, or
 install_parser.add_argument('--compile', help='force re-compile of script before downloading', action='store_true')
 install_parser.add_argument('--debug', help='run in debug mode', action='store_true')
 download_parser.add_argument('dataset', help='dataset name', nargs='?', default=None)
-
+ls_parser.add_argument('-l', help='verbose list of datasets containing following keywords (lists all when no keywords are specified)', nargs='*')
 # retriever Install {Engine} ..
 # retriever download [options]
 install_subparsers = install_parser.add_subparsers(help='engine-specific help', dest='engine')
@@ -59,7 +58,8 @@ for engine in engine_list:
             abbreviation = '-%s' % arg_name
 
         if engine.name == "Download Only" or abbreviation == "download":
-            # add attributes to Download::  (download [-h] [--path [PATH]] [--subdir [SUBDIR]]
+            # add attributes to Download::  (download [-h] [--path [PATH]]
+            # [--subdir [SUBDIR]]
 
             # subdir doesn't take any arguments, if included takes True if excluded takes False
             if arg_name.lower()== "subdir":
@@ -68,7 +68,7 @@ for engine in engine_list:
             else:
                 # path must take arguments else it takes default "./"
                 download_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help_msg, nargs='?',
-                                         default=default)
+                                             default=default)
         else:
             engine_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help_msg, nargs='?',
                                        default=default)

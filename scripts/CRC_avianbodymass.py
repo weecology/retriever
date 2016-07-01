@@ -7,6 +7,8 @@ raw_data/AvianBodyMass and copy the contents of the CD there before running
 this script.
 
 """
+from __future__ import print_function
+from builtins import range
 
 import os
 import xlrd
@@ -42,6 +44,7 @@ class main(Script):
         self.tables = {"mass": Table("mass", delimiter="~")}
         self.urls = {"mass": ""}
         self.tags = ["Taxon > Birds", "Data Type > Compilation"]
+
 
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
@@ -92,7 +95,7 @@ class main(Script):
             book = xlrd.open_workbook(full_filename)
             sh = book.sheet_by_index(0)
 
-            print "Inserting data from " + filename + " . . ."
+            print("Inserting data from " + filename + " . . .")
             rows = sh.nrows
             cols = 11
             lines = []

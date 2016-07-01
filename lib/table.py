@@ -1,10 +1,19 @@
-from retriever.lib.cleanup import *
+from future import standard_library
+standard_library.install_aliases()
+from builtins import next
+from builtins import object
+from builtins import str
 import csv
-import StringIO
+import io
+import sys
+from functools import reduce
+
+from retriever.lib.cleanup import *
 
 
-class Table:
+class Table(object):
     """Information about a database table."""
+
     def __init__(self, name, **kwargs):
         self.name = name
         self.pk = True
@@ -17,9 +26,10 @@ class Table:
         self.record_id = 0
         self.columns = []
         self.replace_columns = []
-        self.escape_single_quotes=True
-        self.escape_double_quotes=True
-        for key, item in kwargs.items():
+        self.escape_single_quotes = True
+        self.escape_double_quotes = True
+        self.cleaned_columns = False
+        for key, item in list(kwargs.items()):
             setattr(self, key, item[0] if isinstance(item, tuple) else item)
 
     def auto_get_columns(self, header):
@@ -37,58 +47,83 @@ class Table:
             values = self.split_on_delimiter(header)
             column_names = [name.strip() for name in values]
 
-        columns = map(lambda x: self.clean_column_name(x), column_names)
-        column_values = {x:[] for x in columns if x}
-
+        columns = [self.clean_column_name(x) for x in column_names]
+        column_values = {x: [] for x in columns if x}
+        self.cleaned_columns = True
         return [[x, None] for x in columns if x], column_values
 
     def clean_column_name(self, column_name):
-        '''Makes sure a column name is formatted correctly by removing reserved
-        words, symbols, numbers, etc.'''
-        column_name = column_name.lower()
+        """Clean column names using the expected sql guidelines
+
+        remove leading whitespaces, replace sql key words, etc..
+        """
+        column_name = column_name.lower().strip()
         replace_columns = {old.lower(): new.lower()
                            for old, new in self.replace_columns}
-        column_name = replace_columns.get(column_name, column_name)
+        column_name = replace_columns.get(column_name, column_name).strip()
         replace = [
-                   ("%", "percent"),
-                   ("&", "and"),
-                   ("\xb0", "degrees"),
-                   ("group", "grp"),
-                   ("order", "sporder"),
-                   ("check", "checked"),
-                   ("references", "refs"),
-                   ("long", "lon"),
-                   ("date", "record_date"),
-                   ("?", ""),
-                   ]
+            ("%", "percent"),
+            ("&", "and"),
+            ("\xb0", "degrees"),
+            ("?", ""),
+            ("^", "_power_"),
+            ("<", "_lthn_"),
+            (">", "_gthn_"),
+        ]
         replace += [(x, '') for x in (")", "\n", "\r", '"', "'")]
-        replace += [(x, '_') for x in (" ", "(", "/", ".", "-")]
+        replace += [(x, '_') for x in (" ", "(", "/", ".", "-", "*", ":", "[", "]")]
+
         column_name = reduce(lambda x, y: x.replace(*y), replace, column_name)
 
         while "__" in column_name:
             column_name = column_name.replace("__", "_")
         column_name = column_name.lstrip("0123456789_").rstrip("_")
-
+        replace_dict = {
+            "group": "grp",
+            "order": "ordered",
+            "check": "checked",
+            "references": "refs",
+            "long": "lon",
+            "column": "columns",
+            "cursor": "cursors",
+            "delete": "deleted",
+            "insert": "inserted",
+            "join": "joins",
+            "select": "selects",
+            "table": "tables",
+            "update": "updates",
+            "date": "record_date"
+        }
+        for x in (")", "\n", "\r", '"', "'"):
+            replace_dict[x] = ''
+        for x in (" ", "(", "/", ".", "-"):
+            replace_dict[x] = '_'
+        if column_name in replace_dict:
+            column_name = replace_dict[column_name]
         return column_name
 
     def split_on_delimiter(self, line):
         dialect = csv.excel
         dialect.escapechar = "\\"
         r = csv.reader([line], dialect=dialect, delimiter=self.delimiter)
-        return r.next()
+        return next(r)
 
     def combine_on_delimiter(self, line_as_list):
         """Combine a list of values into a line of csv data"""
         dialect = csv.excel
         dialect.escapechar = "\\"
-        writer_file =  StringIO.StringIO()
+        if sys.version_info >= (3, 0):
+            writer_file =  io.StringIO()
+        else:
+            writer_file =  io.BytesIO()
+
         writer = csv.writer(writer_file, dialect=dialect, delimiter=self.delimiter)
         writer.writerow(line_as_list)
         return writer_file.getvalue()
 
     def values_from_line(self, line):
         linevalues = []
-        if (self.pk and self.contains_pk == False):
+        if (self.pk and self.contains_pk is False):
             column = 0
         else:
             column = -1
@@ -120,7 +155,7 @@ class Table:
             pos = 0
             values = []
             for width in self.fixed_width:
-                values.append(line[pos:pos+width].strip())
+                values.append(line[pos:pos + width].strip())
                 pos += width
             return values
         else:
@@ -129,10 +164,15 @@ class Table:
     def get_insert_columns(self, join=True):
         """Gets a set of column names for insert statements."""
         columns = ""
+        if not self.cleaned_columns:
+            column_names = list(self.columns)
+            self.columns[:] = []
+            self.columns = [(self.clean_column_name(name[0]), name[1]) for name in column_names]
+            self.cleaned_columns = True
         for item in self.columns:
             thistype = item[1][0]
-            if ((thistype != "skip") and (thistype !="combine") and
-                (self.contains_pk == True or thistype[0:3] != "pk-")):
+            if ((thistype != "skip") and (thistype != "combine") and
+                    (self.contains_pk is True or thistype[0:3] != "pk-")):
                 columns += item[0] + ", "
         columns = columns.rstrip(', ')
         if join:
@@ -148,4 +188,3 @@ class Table:
                 if item == column[0]:
                     columns.append(column[1][0])
         return columns
-

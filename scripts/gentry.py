@@ -2,6 +2,9 @@
 """Retriever script for Alwyn H. Gentry Forest Transect Dataset
 
 """
+from __future__ import print_function
+from builtins import str
+from builtins import range
 
 import os
 import sys
@@ -53,13 +56,13 @@ U.S.A. """
         # Currently all_Excel.zip is missing CURUYUQU.xls
         # Download it separately and add it to the file list
         if not self.engine.find_file('CURUYUQU.xls'):
-            self.engine.download_file("http://www.mobot.org/mobot/gentry/123/samerica/CURUYUQU.xls", "CURUYUQU.xls", clean_line_endings=False)
+            self.engine.download_file("http://www.mobot.org/mobot/gentry/123/samerica/CURUYUQU.xls", "CURUYUQU.xls")
             filelist.append('CURUYUQU.xls')
 
         lines = []
         tax = []
         for filename in filelist:
-            print "Extracting data from " + filename + "..."
+            print("Extracting data from " + filename + "...")
             book = xlrd.open_workbook(self.engine.format_filename(filename))
             sh = book.sheet_by_index(0)
             rows = sh.nrows
@@ -89,9 +92,9 @@ U.S.A. """
                         cn[cid] = n
                 n += 1
             # sometimes, a data file does not contain a liana or count column
-            if not "liana" in cn.keys():
+            if not "liana" in list(cn.keys()):
                 cn["liana"] = -1
-            if not "count" in cn.keys():
+            if not "count" in list(cn.keys()):
                 cn["count"] = -1
             for i in range(1, rows):
                 row = sh.row(i)
@@ -153,7 +156,7 @@ U.S.A. """
                 if tax_count % 10 == 0:
                     msg = "Generating taxonomic groups: " + str(tax_count) + " / " + str(TAX_GROUPS)
                     sys.stdout.write(msg + "\b" * len(msg))
-        print "Generating taxonomic groups: " + str(TAX_GROUPS) + " / " + str(TAX_GROUPS)
+        print("Generating taxonomic groups: " + str(TAX_GROUPS) + " / " + str(TAX_GROUPS))
 
 
         # Create species table

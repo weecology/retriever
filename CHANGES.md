@@ -1,3 +1,70 @@
+# v1.8.3
+
+* Fixed regression in GUI
+
+# v1.8.2
+
+* Improved cleaning of column names
+* Fixed thread bug causing Gentry dataset to hang when installed via GUI
+* Removed support for 32-bit only Macs in binaries
+* Removed unused code
+
+# v1.8.0
+
+* Added scripts for 21 new datasets: leaf herbivory, biomass allocation,
+  community dynamics of shortgrass steppe plants, mammal and bird foraging
+  attributes, tree demography in Indian, small mammal community dynamics in
+  Chile, community dynamics of Sonoran Desert perennials, biovolumes of
+  freshwater phytoplankton, plant dynamics in Montana, Antarctic Site Inventory
+  breeding bird survey, community abundance data compiled from the literature,
+  spatio-temporal population data for butterflies, fish parasite host ecological
+  characteristics, eBird, Global Wood Density Database, multiscale community
+  data on vascular plants in a North Carolina, vertebrate home range sizes,
+  PRISM climate data, Amniote life history database, woody plan Biomass And
+  Allometry Database, Vertnet data on amphibians, birds, fishes, mammals,
+  reptiles
+* Added `reset` command to allow resetting database configuration settings,
+  scripts, and cached raw data
+* Added Dockerfile for building docker containers of each version of the
+  software for reproducibility
+* Added support for wxPython 3.0
+* Added support for `tar` and `gz` archives
+* Added support for archive files whose contents don't fit in memory
+* Added checks for and use of system proxies
+* Added ability to download archives from web services
+* Added tests for regressions in download engine
+* Added `citation` command to provide information on citing datasets
+* Improved column name cleanup
+* Improved whitespace consistency
+* Improved handling of Excel files
+* Improved function documentation
+* Improved unit testing and added coverage analysis
+* Improved the sample script by adding a url field
+* Improved script loading behavior by only loading a script the first time it is
+  discovered
+* Improved operating system identification
+* Improved download engine by allowing ability to maintain archive and
+  subdirectory structure (particular relevant for spatial data)
+* Improved cross-platform directory and line ending handling
+* Improved testing across platforms
+* Improved checking for updated scripts so that scripts are only downloaded if
+  the current version isn't available
+* Improved metadata in setup.py
+* Fixed type issues in Portal dataset
+* Fixed GUI always downloading scripts instead of checking if it needed to
+* Fixed bug that sometimes resulted in `.retriever` directories not belonging to
+  the user who did the installation
+* Fixed issues with downloading files to specific paths
+* Fixed BBS50 script to match newer structure of the data
+* Fixed bug where csv files were not being closed after installation
+* Fixed errors when closing the GUI
+* Fixed issue where enclosing quotes in csv files were not being respected
+  during cross-tab restructuring
+* Fixed bug causing v1.6 to break when newer scripts were added to `version.txt`
+* Fixed Bioclim script to include `hdr` files
+* Fixed missing icon images on Windows
+* Removed unused code
+
 # v1.7.0
 
 * Added ability to download files directly for non-tabular data

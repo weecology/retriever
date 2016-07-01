@@ -1,0 +1,49 @@
+{
+    "citation": "Susana Rodriguez-Buritica, Helen Raichle, Robert H. Webb, Raymond M. Turner, and D. Lawrence Venable. 2013. One hundred and six years of population and community dynamics of Sonoran Desert Laboratory perennials. Ecology 94:976.",
+    "description": "The data set constitutes all information associated with the Spalding-Shreve permanent vegetation plots from 1906 through 2012, which is the longest-running plant monitoring program in the world.",
+    "name": "Sonoran Desert Perennials",
+    "shortname": "SonoranPerennials",
+    "tables": {
+        "Count1906": {
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
+        },
+        "Photo_info": {
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
+        },
+        "Plot_corners": {
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
+        },
+        "Plots": {
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
+        },
+        "SMCover": {
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
+        },
+        "SMDensity": {
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
+        },
+        "Seedling_counts": {
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
+        },
+        "Species": {
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA'])"
+        },
+        "Stake_info": {
+            "cleanup": "Cleanup(correct_invalid_value, nulls=['NA', 'nd'])"
+        }
+    },
+    "tags": [
+        "Taxon > Plants"
+    ],
+    "urls": {
+        "Count1906": "http://esapubs.org/archive/ecol/E094/083/Count1906.csv",
+        "Photo_info": "http://esapubs.org/archive/ecol/E094/083/Photo_info.csv",
+        "Plot_corners": "http://esapubs.org/archive/ecol/E094/083/Plot_corners.csv",
+        "Plots": "http://esapubs.org/archive/ecol/E094/083/Plots.csv",
+        "SMCover": "http://esapubs.org/archive/ecol/E094/083/SMCover.csv",
+        "SMDensity": "http://esapubs.org/archive/ecol/E094/083/SMDensity.csv",
+        "Seedling_counts": "http://esapubs.org/archive/ecol/E094/083/Seedling_counts.csv",
+        "Species": "http://esapubs.org/archive/ecol/E094/083/Species.csv",
+        "Stake_info": "http://esapubs.org/archive/ecol/E094/083/Stake_info.csv"
+    }
+}

@@ -1,9 +1,13 @@
-![Retriever logo](http://i.imgur.com/M5hhENV.png) 
+![Retriever logo](http://i.imgur.com/M5hhENV.png)
 
 
 [![Build Status](https://travis-ci.org/weecology/retriever.png)](https://travis-ci.org/weecology/retriever)
+[![Build Status (windows)](https://ci.appveyor.com/api/projects/status/qetgo4jxa5769qtb/branch/master?svg=true)](https://ci.appveyor.com/project/ethanwhite/retriever/branch/master)
 [![Research software impact](http://depsy.org/api/package/pypi/retriever/badge.svg)](http://depsy.org/package/python/retriever)
 [![codecov.io](https://codecov.io/github/weecology/retriever/coverage.svg?branch=master)](https://codecov.io/github/weecology/retriever?branch=master)
+[![Documentation Status](https://readthedocs.org/projects/retriever/badge/?version=latest)](http://retriever.readthedocs.org/en/latest/?badge=latest)
+[![License](http://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/weecology/retriever/master/LICENSE)
+[![Join the chat at https://gitter.im/weecology/retriever](https://badges.gitter.im/weecology/retriever.svg)](https://gitter.im/weecology/retriever?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Large quantities of ecological and environmental data are increasingly available thanks to initiatives sponsoring the collection of large-scale data and efforts to increase the publication of already collected datasets. As a result, progress in ecology is increasingly limited by the speed at which we can organize and analyze data. To help improve ecologists' ability to quickly access and analyze data we have been developing software that designs database structures for ecological datasets and then downloads the data, pre-processes it, and installs it into major database management systems (at the moment we support MySQL, PostgreSQL, SQLite, and Microsoft Access).
 
@@ -19,9 +23,8 @@ and Ubuntu/Debian at the [project website](http://ecodataretriever.org).
 Installing From Source
 ----------------------
 
-To install the EcoData Retriever from source, you'll need Python 2.6+ with the following packages installed:
+To install the EcoData Retriever from source, you'll need Python 2.7+ or 3.3+ with the following packages installed:
 
-* wxPython
 * xlrd
 
 ###The following packages are optional
@@ -34,7 +37,9 @@ To install the EcoData Retriever from source, you'll need Python 2.6+ with the f
 ###To install from source
 
 1. Clone the repository
-2. From the directory containing setup.py, run the following command: ``python setup.py install``
+2. From the directory containing setup.py, run the following command: ``python
+   setup.py install``. You may need to include `sudo` at the beginning of the
+   command depending on your system (i.e., `sudo python setup.py install`).
 3. After installing, type ``retriever`` from a command prompt to launch the
    EcoData Retriever
 
@@ -44,14 +49,13 @@ After installing, run `retriever update` to download all of the available datase
 To see the full list of command line options and datasets run `retriever --help`.
 The output will look like this:
 ```
-usage: retriever [-h] [-v] [-q] {install,update,gui,new,ls,citation,help} ...
+usage: retriever [-h] [-v] [-q] {install,update,new,ls,citation,help} ...
 
 positional arguments:
-  {install,update,gui,new,ls,citation,help}
+  {install,update,new,ls,citation,help}
                         sub-command help
     install             download and install dataset
     update              download updated versions of scripts
-    gui                 launch retriever in graphical mode
     new                 create a new sample retriever script
     ls                  display a list all available dataset scripts
     citation            view citation
@@ -87,30 +91,30 @@ optional arguments:
 
 ###Examples
 ```
-These examples are using Breeding Bird Survey data (BBS) 
+These examples are using Breeding Bird Survey data (BBS)
 
 Using Install
 
-  'retriever install -h   (gives install options)`
+  retriever install -h   (gives install options)
 
 Using specific database engine, retriever install {Engine}
 
-  `retriever install mysql -h     (gives install mysql options)`
-  `retriever install mysql --user myuser --password ******** --host localhost --port 8888 --database_name testdbase BBS'
+  retriever install mysql -h     (gives install mysql options)
+  retriever install mysql --user myuser --password ******** --host localhost --port 8888 --database_name testdbase BBS
 
 install data into an sqlite database named mydatabase.db you would use:
 
-  `retriever install sqlite BBS -f mydatabase.db`
+  retriever install sqlite BBS -f mydatabase.db
 
 Using download
 
-  `retriever download -h    (gives you help options)
-  `retriever download BBS"
-  `retriever download BBS --path C:\Users\Documents
+  retriever download -h    (gives you help options)
+  retriever download BBS"
+  retriever download BBS --path C:\Users\Documents
 
 Using citation
-  `retriever citation   (citation of the retriever engine)`
-  `retriever citation BBS   (citation of BBS data)` 
+  retriever citation   (citation of the retriever engine)
+  retriever citation BBS   (citation of BBS data)
   ```
 
 

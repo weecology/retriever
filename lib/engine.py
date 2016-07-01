@@ -1,19 +1,27 @@
+from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
+from builtins import range
+from builtins import input
+from builtins import zip
+from builtins import next
+from builtins import str
 import sys
 import os
 import getpass
 import zipfile
 import gzip
 import tarfile
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import csv
-import itertools
-from decimal import Decimal
+import io
 from retriever import DATA_SEARCH_PATHS, DATA_WRITE_PATH
 from retriever.lib.cleanup import no_cleanup
 from retriever.lib.warning import Warning
 
 
-class Engine():
+class Engine(object):
     """A generic database system. Specific database platforms will inherit
     from this class."""
     name = ""
@@ -30,7 +38,8 @@ class Engine():
     warnings = []
 
     def connect(self, force_reconnect=False):
-        if force_reconnect: self.disconnect()
+        if force_reconnect:
+            self.disconnect()
 
         if self._connection is None:
             self._connection = self.get_connection()
@@ -70,21 +79,24 @@ class Engine():
                         n += 1
                     else:
                         name = []
-                    real_lines.append(self.table.combine_on_delimiter(begin + name + [item]))
+                    real_lines.append(
+                        self.table.combine_on_delimiter(begin + name + [item]))
             real_line_length = len(real_lines)
         else:
             # this function returns a generator that iterates over the lines in
             # the source data
             def source_gen():
                 return (line for line in gen_from_source(data_source)
-                         if line.strip('\n\r\t '))
+                        if line.strip('\n\r\t '))
+
             # use one generator to compute the length of the input
             real_lines, len_source = source_gen(), source_gen()
             real_line_length = sum(1 for _ in len_source)
 
         total = self.table.record_id + real_line_length
         for line in real_lines:
-            if not self.table.fixed_width: line = line.strip()
+            if not self.table.fixed_width:
+                line = line.strip()
             if line:
                 self.table.record_id += 1
                 linevalues = self.table.values_from_line(line)
@@ -94,7 +106,7 @@ class Engine():
                 try:
                     cleanvalues = [self.format_insert_value(self.table.cleanup.function
                                                             (linevalues[n],
-                                                            self.table.cleanup.args),
+                                                             self.table.cleanup.args),
                                                             types[n])
                                    for n in range(len(linevalues))]
                 except Exception as e:
@@ -103,9 +115,12 @@ class Engine():
                 try:
                     insert_stmt = self.insert_statement(cleanvalues)
                 except:
-                    if self.debug: print types
-                    if self.debug: print linevalues
-                    if self.debug: print cleanvalues
+                    if self.debug:
+                        print(types)
+                    if self.debug:
+                        print(linevalues)
+                    if self.debug:
+                        print(cleanvalues)
                     raise
 
                 try:
@@ -113,9 +128,9 @@ class Engine():
                 except:
                     update_frequency = 100
 
-                if (self.table.record_id % update_frequency == 0
-                    or self.table.record_id == 1
-                    or self.table.record_id == total):
+                if (self.table.record_id % update_frequency == 0 or
+                        self.table.record_id == 1 or
+                        self.table.record_id == total):
                     prompt = "Inserting rows to " + self.table_name() + ": "
                     prompt += str(self.table.record_id) + " / " + str(total)
                     sys.stdout.write(prompt + "\b" * len(prompt))
@@ -123,10 +138,9 @@ class Engine():
                 try:
                     self.execute(insert_stmt, commit=False)
                 except:
-                    print insert_stmt
+                    print(insert_stmt)
                     raise
 
-        print
         self.connection.commit()
 
     def auto_create_table(self, table, url=None, filename=None, pk=None):
@@ -143,15 +157,15 @@ class Engine():
 
         source = (skip_rows,
                   (self.table.column_names_row - 1,
-                   (open, (file_path, "rb"))))
+                   (io.open, (file_path, "rU", -1, 'utf-8', 'ignore'))))
         lines = gen_from_source(source)
 
-        header = lines.next()
+        header = next(lines)
         lines.close()
 
         source = (skip_rows,
                   (self.table.header_rows,
-                   (open, (file_path, "rb"))))
+                   (io.open, (file_path, "rU", -1, 'utf-8', 'ignore'))))
 
         if not self.table.delimiter:
             self.auto_get_delimiter(header)
@@ -170,7 +184,7 @@ class Engine():
             self.auto_get_datatypes(pk, lines, columns, column_values)
 
         if self.table.columns[-1][1][0][:3] == "ct-" and hasattr(self.table, "ct_names") and not self.table.ct_column in [c[0] for c in self.table.columns]:
-            self.table.columns = self.table.columns[:-1] + [(self.table.ct_column, ("char", 20))] + [self.table.columns[-1]]
+            self.table.columns = self.table.columns[:-1] + [(self.table.ct_column, ("char", 50))] + [self.table.columns[-1]]
 
         self.create_table()
 
@@ -182,7 +196,7 @@ class Engine():
             lines_to_scan = []
             n = 0
             while n < lines:
-                lines_to_scan.append(source.next())
+                lines_to_scan.append(next(source))
                 n += 1
         else:
             lines_to_scan = source
@@ -201,7 +215,7 @@ class Engine():
                         if self.table.cleanup.function != no_cleanup:
                             value = self.table.cleanup.function(value, self.table.cleanup.args)
 
-                        if value != None and value != '':
+                        if value is not None and value is not '':
                             if len(str(value)) > max_lengths[i]:
                                 max_lengths[i] = len(str(value))
 
@@ -211,22 +225,21 @@ class Engine():
                                     if column_types[i][0] == 'int' and hasattr(self, 'max_int') and value > self.max_int:
                                         column_types[i] = ['bigint',]
                                 except:
-                                    column_types[i] = ['double',]
+                                    column_types[i] = ['double', ]
                             if column_types[i][0] == 'double':
                                 try:
                                     value = float(value)
                                     if "e" in str(value) or ("." in str(value) and
                                                              len(str(value).split(".")[1]) > 10):
-                                        column_types[i] = ["decimal","30,20"]
+                                        column_types[i] = ["decimal", "30,20"]
                                 except:
-                                    column_types[i] = ['char',max_lengths[i]]
+                                    column_types[i] = ['char', max_lengths[i]]
                             if column_types[i][0] == 'char':
                                 if len(str(value)) > column_types[i][1]:
                                     column_types[i][1] = max_lengths[i]
 
                     except IndexError:
                         pass
-
 
         for i in range(len(columns)):
             column = columns[i]
@@ -238,8 +251,12 @@ class Engine():
             self.table.columns.append((column[0], tuple(column[1])))
 
     def auto_get_delimiter(self, header):
-        # Determine the delimiter by finding out which of a set of common
-        # delimiters occurs most in the header line
+        """Determine the delimiter
+
+        Find out which of a set of common delimiters occurs most in the header
+        line and use this as the delimiter.
+
+        """
         self.table.delimiter = "\t"
         for other_delimiter in [",", ";"]:
             if header.count(other_delimiter) > header.count(self.table.delimiter):
@@ -256,16 +273,16 @@ class Engine():
         elif thistype[0:3] == "ct-":
             thistype = thistype[3:]
 
-        if thistype in self.datatypes.keys():
+        if thistype in list(self.datatypes.keys()):
             thistype = self.datatypes[thistype]
 
             if isinstance(thistype, tuple):
-                if len(datatype) > 1 and datatype[1] > 0:
+                if len(datatype) > 1:
                     thistype = thistype[1] + "(" + str(datatype[1]) + ")"
                 else:
                     thistype = thistype[0]
             else:
-                if len(datatype) > 1 and datatype[1] > 0:
+                if len(datatype) > 1:
                     thistype += "(" + str(datatype[1]) + ")"
         else:
             thistype = ""
@@ -280,16 +297,19 @@ class Engine():
         engine.db"""
         db_name = self.database_name()
         if db_name:
-            print "Creating database " + db_name + "..."
+            print("Creating database " + db_name + "...")
             # Create the database
             create_stmt = self.create_db_statement()
-            if self.debug: print create_stmt
+            if self.debug:
+                print(create_stmt)
             try:
                 self.execute(create_stmt)
             except Exception as e:
-                try: self.connection.rollback()
-                except: pass
-                print "Couldn't create database (%s). Trying to continue anyway." % e
+                try:
+                    self.connection.rollback()
+                except:
+                    pass
+                print("Couldn't create database (%s). Trying to continue anyway." % e)
 
     def create_db_statement(self):
         """Returns a SQL statement to create a database."""
@@ -306,7 +326,7 @@ class Engine():
     def create_table(self):
         """Creates a new database table based on settings supplied in Table
         object engine.table."""
-        print "Creating table " + self.table_name() + "..."
+        print("Creating table " + self.table_name() + "...")
 
         # Try to drop the table if it exists; this may cause an exception if it
         # doesn't exist, so ignore exceptions
@@ -316,13 +336,16 @@ class Engine():
             pass
 
         create_stmt = self.create_table_statement()
-        if self.debug: print create_stmt
+        if self.debug:
+            print(create_stmt)
         try:
             self.execute(create_stmt)
         except Exception as e:
-            try: self.connection.rollback()
-            except: pass
-            print "Couldn't create table (%s). Trying to continue anyway." % e
+            try:
+                self.connection.rollback()
+            except:
+                pass
+            print("Couldn't create table (%s). Trying to continue anyway." % e)
 
     def create_table_statement(self):
         """Returns a SQL statement to create a table."""
@@ -336,7 +359,8 @@ class Engine():
                 if column[0] == column_name:
                     types.append(self.convert_data_type(column[1]))
 
-        if self.debug: print columns
+        if self.debug:
+            print(columns)
 
         column_strings = []
         for c, t in zip(columns, types):
@@ -348,6 +372,7 @@ class Engine():
         return create_stmt
 
     def database_name(self, name=None):
+        """Returns the name of the database"""
         if not name:
             try:
                 name = self.script.shortname
@@ -361,20 +386,14 @@ class Engine():
 
         return db_name
 
-    def download_file(self, url, filename, clean_line_endings=True):
+    def download_file(self, url, filename):
         """Downloads a file to the raw data directory."""
         if not self.find_file(filename):
             path = self.format_filename(filename)
             self.create_raw_data_dir()
-            print "Downloading " + filename + "..."
-            file = urllib.urlopen(url)
-            local_file = open(path, 'wb')
-            if clean_line_endings and (filename.split('.')[-1].lower() not in ["exe", "zip", "xls"]):
-                local_file.write(file.read().replace("\r\n", "\n").replace("\r", "\n"))
-            else:
-                local_file.write(file.read())
-            local_file.close()
-            file.close()
+            print("Downloading " + filename + "...")
+            response = urllib.request.urlretrieve(url, path)
+
 
     def download_files_from_archive(self, url, filenames, filetype="zip",
                                     keep_in_dir=False, archivename=None):
@@ -403,27 +422,29 @@ class Engine():
             else:
                 self.create_raw_data_dir()
                 if not downloaded:
-                    self.download_file(url, archivename, clean_line_endings=False)
+                    self.download_file(url, archivename)
                     downloaded = True
 
                 if filetype == 'zip':
                     archive = zipfile.ZipFile(archivename)
-                    open_archive_file = archive.open(filename)
+                    open_archive_file = archive.open(filename, 'r')
                 elif filetype == 'gz':
-                    #gzip archives can only contain a single file
-                    open_archive_file = gzip.open(archivename)
+                    # gzip archives can only contain a single file
+                    open_archive_file = gzip.open(archivename, 'r')
                 elif filetype == 'tar':
-                    archive = tarfile.open(filename)
+                    archive = tarfile.open(filename, 'r')
                     open_archive_file = archive.extractfile(filename)
 
                 fileloc = self.format_filename(os.path.join(archivebase,
                                                             os.path.basename(filename)))
-                unzipped_file = open(fileloc, 'wb')
+
+                unzipped_file = open(fileloc, 'w')
                 for line in open_archive_file:
                     unzipped_file.write(line)
                 open_archive_file.close()
                 unzipped_file.close()
-                if 'archive' in locals(): archive.close()
+                if 'archive' in locals():
+                    archive.close()
 
     def drop_statement(self, objecttype, objectname):
         """Returns a drop table or database SQL statement."""
@@ -431,32 +452,55 @@ class Engine():
         return dropstatement
 
     def escape_single_quotes(self, value):
+        """Escapes single quotes in the value"""
         return value.replace("'", "\\'")
 
     def escape_double_quotes(self, value):
+        """Escapes double quotes in the value"""
         return value.replace('"', '\\"')
 
     def execute(self, statement, commit=True):
+        """Executes the given statement"""
         self.cursor.execute(statement)
         if commit:
             self.connection.commit()
 
     def exists(self, script):
+        """Checks to see if the given table exists"""
         return all([self.table_exists(
-                    script.shortname,
-                    key
-                    )
-                    for key in script.urls.keys() if key])
+            script.shortname,
+            key
+            )
+            for key in list(script.urls.keys()) if key])
+
+    def to_csv(self):
+        # due to Cyclic imports we can not move this import to the top
+        from retriever.lib.tools import sort_csv
+        csvfile_output = (self.table_name() + '.csv')
+        csv_out = open(csvfile_output, "w")
+        csv_writer = csv.writer(csv_out, dialect='excel', lineterminator='\n')
+        self.get_cursor()
+        self.cursor.execute("SELECT * FROM " + self.table_name() + ";")
+        row = self.cursor.fetchone()
+        colnames = [tuple_i[0] for tuple_i in self.cursor.description]
+        csv_writer.writerow(colnames)
+        while row is not None:
+            csv_writer.writerow(row)
+            row = self.cursor.fetchone()
+        csv_out.close()
+        self.disconnect()
+        return sort_csv(csvfile_output)
 
     def final_cleanup(self):
         """Close the database connection."""
 
         if self.warnings:
-            print '\n'.join(str(w) for w in self.warnings)
+            print('\n'.join(str(w) for w in self.warnings))
 
         self.disconnect()
 
     def find_file(self, filename):
+        """Checks for an existing datafile"""
         for search_path in DATA_SEARCH_PATHS:
             search_path = search_path.format(dataset=self.script.shortname)
             file_path = os.path.normpath(os.path.join(search_path, filename))
@@ -500,7 +544,7 @@ class Engine():
                 return strvalue
             else:
                 return "null"
-        elif datatype=="char":
+        elif datatype == "char":
             if strvalue.lower() in nulls:
                 return "null"
 
@@ -511,8 +555,8 @@ class Engine():
                 strvalue = self.escape_single_quotes(strvalue)
 
             return "'" + strvalue + "'"
-        #elif datatype=="bool":
-            #return "'true'" if value else "'false'"
+            # elif datatype=="bool":
+            # return "'true'" if value else "'false'"
         else:
             return "null"
 
@@ -528,16 +572,16 @@ class Engine():
         """Manually get user input for connection information when script is
         run from terminal."""
         for opt in self.required_opts:
-            if not (opt[0] in self.opts.keys()):
+            if not (opt[0] in list(self.opts.keys())):
                 if opt[0] == "password":
-                    print opt[1]
+                    print(opt[1])
                     self.opts[opt[0]] = getpass.getpass(" ")
                 else:
                     prompt = opt[1]
                     if opt[2]:
                         prompt += " or press Enter for the default, %s" % opt[2]
                     prompt += ': '
-                    self.opts[opt[0]] = raw_input(prompt)
+                    self.opts[opt[0]] = input(prompt)
             if self.opts[opt[0]] in ["", "default"]:
                 self.opts[opt[0]] = opt[2]
 
@@ -559,7 +603,7 @@ class Engine():
         for inserting bulk data from files can override this function."""
         data_source = (skip_rows,
                        (self.table.header_rows,
-                       (open, (filename, 'r'))))
+                        (io.open, (filename, 'rU', -1, 'utf-8', 'ignore'))))
         self.add_to_table(data_source)
 
     def insert_data_from_url(self, url):
@@ -572,7 +616,7 @@ class Engine():
         else:
             # Save a copy of the file locally, then load from that file
             self.create_raw_data_dir()
-            print "Saving a copy of " + filename + "..."
+            print("Saving a copy of " + filename + "...")
             self.download_file(url, filename)
             self.insert_data_from_file(self.find_file(filename))
 
@@ -593,7 +637,8 @@ class Engine():
                                                    types[n]))
             n += 1
         insert_stmt %= tuple([str(value) for value in values])
-        if self.debug: print insert_stmt
+        if self.debug:
+            print(insert_stmt)
         return insert_stmt
 
     def table_exists(self, dbname, tablename):
@@ -607,7 +652,8 @@ class Engine():
             name = self.table.name
         if not dbname:
             dbname = self.database_name()
-            if not dbname: dbname = ''
+            if not dbname:
+                dbname = ''
         return self.opts["table_name"].format(db=dbname, table=name)
 
     def warning(self, warning):
@@ -619,7 +665,7 @@ def skip_rows(rows, source):
     """Skip over the header lines by reading them before processing."""
     lines = gen_from_source(source)
     for i in range(rows):
-        lines.next()
+        next(lines)
     return lines
 
 
@@ -629,6 +675,7 @@ def file_exists(path):
 
 
 def filename_from_url(url):
+    """Extracts and returns the filename from the url"""
     return url.split('/')[-1].split('?')[0]
 
 
@@ -636,7 +683,8 @@ def gen_from_source(source):
     """Returns a generator from a source tuple.
     Source tuples are of the form (callable, args) where callable(*args)
     returns either a generator or another source tuple.
-    This allows indefinite regeneration of data sources."""
+    This allows indefinite regeneration of data sources.
+    """
     while isinstance(source, tuple):
         gen, args = source
         source = gen(*args)

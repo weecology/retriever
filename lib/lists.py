@@ -1,4 +1,5 @@
 """Contains code for getting dataset lists from available datasets/categories."""
+from builtins import object
 
 import os
 from operator import attrgetter
@@ -6,12 +7,14 @@ from retriever.lib.models import *
 from retriever.lib.templates import *
 
 
-class Category:
+class Category(object):
     """A categorical list of scripts."""
+
     def __init__(self, name, scripts, children=[]):
         self.name = name
         self.scripts = scripts
         self.children = children
+
     def add_child(self, child):
         self.children.append(child)
 
@@ -38,7 +41,7 @@ def children(node, scripts, tags, level):
             lists.append(Category(tag[0], valid_scripts,
                                   children=children(tag, valid_scripts,
                                                     [tag[1:] for tag in tags],
-                                                     level + 1)))
+                                                    level + 1)))
     return lists
 
 
@@ -61,9 +64,9 @@ def get_lists():
     lists = []
     for head in tag_heads:
         valid_scripts = [script for script in SCRIPT_LIST
-                                if len([tag for tag in script.tags
-                                            if len(tag_tree(tag)) > 0 and
-                                            tag_tree(tag)[0] == head]) > 0]
+                         if len([tag for tag in script.tags
+                                 if len(tag_tree(tag)) > 0 and
+                                 tag_tree(tag)[0] == head]) > 0]
         lists.append(Category(head, valid_scripts,
                               children=children(head, valid_scripts,
                                                 [tag_tree(tag)[1:]

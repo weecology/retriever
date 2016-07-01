@@ -1,6 +1,9 @@
+from __future__ import print_function
+from builtins import str
 import os
 from retriever.lib.models import Engine, no_cleanup
 from retriever import DATA_DIR, current_platform
+
 
 class engine(Engine):
     """Engine instance for Microsoft Access."""
@@ -8,14 +11,14 @@ class engine(Engine):
     instructions = """Create a database in Microsoft Access, close Access, then \nselect your database file using this dialog."""
     abbreviation = "msaccess"
     datatypes = {
-                 "auto": "AUTOINCREMENT",
-                 "int": "INTEGER",
-                 "bigint": "INTEGER",
-                 "double": "NUMERIC",
-                 "decimal": "NUMERIC",
-                 "char": "VARCHAR",
-                 "bool": "BIT",
-                 }
+        "auto": "AUTOINCREMENT",
+        "int": "INTEGER",
+        "bigint": "INTEGER",
+        "double": "NUMERIC",
+        "decimal": "NUMERIC",
+        "char": "VARCHAR",
+        "bool": "BIT",
+    }
     required_opts = [("file",
                       "Enter the filename of your Access database",
                       os.path.join(DATA_DIR, "access.mdb"),
@@ -23,7 +26,7 @@ class engine(Engine):
                      ("table_name",
                       "Format of table name",
                       "[{db} {table}]"),
-                      ]
+                     ]
 
     def convert_data_type(self, datatype):
         """MS Access can't handle complex Decimal types"""
@@ -49,6 +52,7 @@ class engine(Engine):
         return dropstatement
 
     def escape_single_quotes(self, value):
+        """Escapes the single quotes in the value"""
         return value.replace("'", "''")
 
     def insert_data_from_file(self, filename):
@@ -87,7 +91,7 @@ class engine(Engine):
                     newfilename = filename + "_new"
 
                 if not os.path.isfile(newfilename):
-                    print "Adding index to " + os.path.abspath(newfilename) + "..."
+                    print("Adding index to " + os.path.abspath(newfilename) + "...")
                     read = open(filename, "rb")
                     write = open(newfilename, "wb")
                     to_write = ""
@@ -116,7 +120,7 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
             try:
                 self.execute(statement)
             except:
-                print "Couldn't bulk insert. Trying manual insert."
+                print("Couldn't bulk insert. Trying manual insert.")
                 self.connection.rollback()
 
                 self.table.record_id -= add_to_record_id
@@ -136,11 +140,10 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
             for row in self.cursor.tables():
                 tableinfo = row[2]
                 if not tableinfo.startswith("MSys"):
-                    #ignore system tables
+                    # ignore system tables
                     database, table = tableinfo.split()
                     self.existing_table_names.add((database, table))
         return self.table_name(name=tablename, dbname=dbname).lower() in self.existing_table_names
-
 
     def get_connection(self):
         """Gets the db connection."""
@@ -150,6 +153,6 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
         self.get_input()
         if not os.path.exists(self.opts['file']) and self.opts['file'].endswith('.mdb'):
             dbapi.win_create_mdb(self.opts['file'])
-        connection_string = ("DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ="
-                             + os.path.abspath(self.opts["file"]).replace("/", "//") + ";")
-        return dbapi.connect(connection_string, autocommit = False)
+        connection_string = ("DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=" +
+                             os.path.abspath(self.opts["file"]).replace("/", "//") + ";")
+        return dbapi.connect(connection_string, autocommit=False)

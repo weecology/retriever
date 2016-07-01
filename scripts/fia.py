@@ -2,9 +2,12 @@
 """Retriever script for Forest Inventory and Analysis
 
 """
+from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
 
 import os
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import zipfile
 from decimal import Decimal
 from retriever.lib.templates import Script
@@ -19,10 +22,11 @@ class main(Script):
         self.name = "Forest Inventory and Analysis"
         self.shortname = "FIA"
         self.ref = "http://fia.fs.fed.us/"
-        self.urls = {"main": "http://apps.fs.fed.us/fiadb-downloads/",
-                     'species': 'http://apps.fs.fed.us/fiadb-downloads/REF_SPECIES.CSV'}
+        self.urls = {"main": "http://apps.fs.fed.us/fiadb-downloads/CSV/",
+                     'species': 'http://apps.fs.fed.us/fiadb-downloads/CSV/REF_SPECIES.csv'}
         self.tags = ["Taxon > Plants", "Spatial Scale > Continental",
                      "Data Type > Observational"]
+        self.citation = "DATEOFDOWNLOAD. Forest Inventory and Analysis Database, St. Paul, MN: U.S. Department of Agriculture, Forest Service, Northern Research Station. [Available only on internet: http://apps.fs.fed.us/fiadb-downloads/datamart.html]"
         self.description = """WARNING: This dataset requires downloading many large files and will probably take several hours to finish installing."""
         self.addendum = """This dataset requires downloading many large files - please be patient."""
 
@@ -55,13 +59,13 @@ class main(Script):
         for table in tablelist:
             for state, year in stateslist:
                 engine.download_files_from_archive(self.urls["main"] + state + "_" + table + ".ZIP",
-                                                   [state + "_" + table + ".CSV"])
+                                                   [state + "_" + table + ".csv"])
 
         for table in tablelist:
-            print "Scanning data for table %s..." % table
+            print("Scanning data for table %s..." % table)
             prep_file_name = "%s.csv" % table
             prep_file = open(engine.format_filename(prep_file_name), "wb")
-            this_file = open(engine.format_filename(stateslist[0][0] + "_" + table + ".CSV"), "rb")
+            this_file = open(engine.format_filename(stateslist[0][0] + "_" + table + ".csv"), "rb")
             col_names = this_file.readline()
             prep_file.write(col_names)
             column_names = [col.strip('"') for col in col_names.split(',')]
@@ -69,7 +73,7 @@ class main(Script):
             this_file.close()
 
             for state, year in stateslist:
-                this_file = open(engine.format_filename(state + "_" + table + ".CSV"), "rb")
+                this_file = open(engine.format_filename(state + "_" + table + ".csv"), "rb")
                 this_file.readline()
                 for line in this_file:
                     values = line.split(',')
