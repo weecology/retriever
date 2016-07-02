@@ -123,9 +123,11 @@ class Table(object):
 
     def values_from_line(self, line):
         linevalues = []
-        column = 0
-        if self.columns[column][1][0] == 'pk-auto':
+        if self.columns[0][1][0] == 'pk-auto':
             column = 1
+        else:
+            column = 0
+
         for value in self.extract_values(line):
             try:
                 this_column = self.columns[column][1][0]
@@ -172,7 +174,7 @@ class Table(object):
                 columns += item[0] + ", "
         columns = columns.rstrip(', ')
         if not create and self.columns[0][0] == 'record_id':
-            columns = columns.lstrip("record_id,").strip()
+            columns = columns.replace("record_id,", "", 1).strip()
         if join:
             return columns
         else:
@@ -180,7 +182,7 @@ class Table(object):
 
     def get_column_datatypes(self):
         """Gets a set of column names for insert statements."""
-        columns = []     
+        columns = []
         for item in self.get_insert_columns(False):
             for column in self.columns:
                 if item == column[0]:

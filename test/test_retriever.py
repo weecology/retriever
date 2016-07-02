@@ -8,7 +8,7 @@ import os
 import sys
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
-    sys.setdefaultencoding('latin-1')
+    sys.setdefaultencoding('utf-8')
 from io import StringIO
 from retriever.lib.engine import Engine
 from retriever.lib.table import Table

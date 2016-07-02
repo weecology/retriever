@@ -6,7 +6,7 @@ import sys
 
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
-    sys.setdefaultencoding('latin-1')
+    sys.setdefaultencoding('utf-8')
 import pytest
 from retriever.lib.tools import getmd5
 from retriever import HOME_DIR, ENGINE_LIST

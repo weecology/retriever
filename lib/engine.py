@@ -260,16 +260,21 @@ class Engine(object):
 
     def convert_data_type(self, datatype):
         """Converts Retriever generic data types to database platform specific
-        data types"""
-        thistype = datatype[0]
+        data types
+        """
+        # get the type from the dataset variables
+        key = datatype[0]
         thispk = False
-        if thistype[0:3] == "pk-":
-            thistype = thistype.lstrip("pk-")
+        if key[0:3] == "pk-":
+            key = key[3:]
             thispk = True
-        elif thistype[0:3] == "ct-":
-            thistype = thistype[3:]
-        if thistype in list(self.datatypes.keys()):
-            thistype = self.datatypes[thistype]
+        elif key[0:3] == "ct-":
+            key = key[3:]
+
+        # format the dataset type to match engine specific type
+        thistype = ""
+        if key in list(self.datatypes.keys()):
+            thistype = self.datatypes[key]
             if isinstance(thistype, tuple):
                 if datatype[0] == 'pk-auto':
                     pass
@@ -280,9 +285,8 @@ class Engine(object):
             else:
                 if len(datatype) > 1:
                     thistype += "(" + str(datatype[1]) + ")"
-        else:
-            thistype = ""
 
+        # set the PRIMARY KEY 
         if thispk:
             if isinstance(thistype, tuple):
                 thistype = self.pkformat % thistype
@@ -346,11 +350,7 @@ class Engine(object):
             print("Couldn't create table (%s). Trying to continue anyway." % e)
 
     def create_table_statement(self):
-        """Returns a SQL statement to create a table
-
-        use create=True to get insert columns including Auto field for creating table
-        default is false and used when returning only the colums for inserts 
-        """
+        """Returns a SQL statement to create a table"""
         create_stmt = "CREATE TABLE " + self.table_name() + " ("
         columns = self.table.get_insert_columns(join=False, create=True)
         types = []
@@ -534,7 +534,7 @@ class Engine(object):
                 return "null"
         elif datatype in ("double", "decimal"):
             if strvalue:
-                decimals = float(strvalue)/1.0
+                decimals = float(strvalue)
                 return str(decimals)
             else:
                 return "null"

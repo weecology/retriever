@@ -1,7 +1,5 @@
 """Integrations tests for EcoData Retriever"""
 from __future__ import print_function
-from imp import reload
-
 import imp
 import os
 import shutil
