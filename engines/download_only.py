@@ -66,7 +66,9 @@ class engine(Engine):
                 file_path, file_name_nopath = os.path.split(file_name)
                 subdir = os.path.split(file_path)[1] if self.opts['subdir'] else ''
                 dest_path = os.path.join(self.opts['path'], subdir)
-                if os.path.abspath(file_path) == os.path.abspath(os.path.join(DATA_DIR, subdir)):
+                if os.path.isfile(os.path.join(dest_path, file_name_nopath)):
+                    print ("File already exists at specified location")
+                elif os.path.abspath(file_path) == os.path.abspath(os.path.join(DATA_DIR, subdir)):
                     print ("%s is already in the working directory" %
                            file_name_nopath)
                     print("Keeping existing copy.")
