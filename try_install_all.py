@@ -24,7 +24,7 @@ if len(sys.argv) > 1:
     ]
 SCRIPT_LIST = SCRIPT_LIST()
 TEST_ENGINES = {}
-IGNORE = ["AvianBodyMass", "FIA"]
+IGNORE = ["AvianBodyMass", "FIA", "Bioclim", "PRISM", "vertnet"]
 
 for engine in ENGINE_LIST:
     opts = {}
@@ -42,7 +42,7 @@ for engine in ENGINE_LIST:
 errors = []
 for module in MODULE_LIST:
     for (key, value) in list(TEST_ENGINES.items()):
-        if value and module.SCRIPT.shortname not in IGNORE:
+        if value != None and (module.SCRIPT.shortname not in IGNORE):
             print("==>", module.__name__, value.name)
             try:
                 module.SCRIPT.download(value)
