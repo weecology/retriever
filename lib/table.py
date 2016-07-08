@@ -159,7 +159,7 @@ class Table(object):
             return self.split_on_delimiter(line)
 
     def get_insert_columns(self, join=True, create=False):
-        """Gets a set of column names for insert statements."""
+        """Gets a set of column names for insert statements"""
         columns = ""
         if not self.cleaned_columns:
             column_names = list(self.columns)
