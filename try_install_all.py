@@ -33,6 +33,7 @@ for engine in ENGINE_LIST:
 
     try:
         TEST_ENGINES[engine.abbreviation] = choose_engine(opts)
+        TEST_ENGINES[engine.abbreviation].get_input()
         TEST_ENGINES[engine.abbreviation].get_cursor()
     except:
         TEST_ENGINES[engine.abbreviation] = None
@@ -51,7 +52,8 @@ for module in MODULE_LIST:
             except Exception as e:
                 print("ERROR.")
                 errors.append((key, module.__name__, e))
-
+        elif (key, "No connection detected") not in errors:
+            errors.append((key, "No connection detected"))
 print('')
 if errors:
     print("Engine, Dataset, Error")
