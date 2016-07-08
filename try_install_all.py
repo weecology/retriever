@@ -24,7 +24,7 @@ if len(sys.argv) > 1:
     ]
 SCRIPT_LIST = SCRIPT_LIST()
 TEST_ENGINES = {}
-IGNORE = ["AvianBodyMass", "FIA"]
+IGNORE = ["AvianBodyMass", "FIA", "Bioclim", "PRISM", "vertnet"]
 
 for engine in ENGINE_LIST:
     opts = {}
@@ -33,6 +33,7 @@ for engine in ENGINE_LIST:
 
     try:
         TEST_ENGINES[engine.abbreviation] = choose_engine(opts)
+        TEST_ENGINES[engine.abbreviation].get_input()
         TEST_ENGINES[engine.abbreviation].get_cursor()
     except:
         TEST_ENGINES[engine.abbreviation] = None
@@ -42,7 +43,7 @@ for engine in ENGINE_LIST:
 errors = []
 for module in MODULE_LIST:
     for (key, value) in list(TEST_ENGINES.items()):
-        if value and module.SCRIPT.shortname not in IGNORE:
+        if value != None and (module.SCRIPT.shortname not in IGNORE):
             print("==>", module.__name__, value.name)
             try:
                 module.SCRIPT.download(value)
@@ -51,7 +52,8 @@ for module in MODULE_LIST:
             except Exception as e:
                 print("ERROR.")
                 errors.append((key, module.__name__, e))
-
+        elif (key, "No connection detected") not in errors:
+            errors.append((key, "No connection detected"))
 print('')
 if errors:
     print("Engine, Dataset, Error")
