@@ -53,6 +53,7 @@ class engine(Engine):
 
     def create_table(self):
         """Create the table by creating an empty csv file"""
+        self.auto_column_number = 1
         self.output_file = open(self.table_name(), "w")
         self.output_file.write(
             ','.join(['"%s"' % c[0] for c in self.table.columns]))

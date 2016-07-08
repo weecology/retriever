@@ -56,6 +56,7 @@ class engine(Engine):
         self.output_file.write('<?xml version="1.0"?>')
         self.output_file.write('\n<root>')
         self.table_names.append((self.output_file, self.table_name()))
+        self.auto_column_number = 1
 
     def disconnect(self):
         """Close out the xml files

@@ -10,7 +10,7 @@ class engine(Engine):
     name = "SQLite"
     abbreviation = "sqlite"
     datatypes = {
-        "auto": "INTEGER",
+        "auto": ("INTEGER", "AUTOINCREMENT"),
         "int": "INTEGER",
         "bigint": "INTEGER",
         "double": "REAL",

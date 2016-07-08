@@ -1,4 +1,5 @@
 from __future__ import print_function
+from __future__ import division
 from future import standard_library
 standard_library.install_aliases()
 from builtins import object
@@ -32,7 +33,7 @@ class Engine(object):
     _cursor = None
     datatypes = []
     required_opts = []
-    pkformat = "%s PRIMARY KEY"
+    pkformat = "%s PRIMARY KEY %s "
     script = None
     debug = False
     warnings = []
@@ -122,7 +123,6 @@ class Engine(object):
                     if self.debug:
                         print(cleanvalues)
                     raise
-
                 try:
                     update_frequency = int(self.update_frequency)
                 except:
@@ -134,13 +134,11 @@ class Engine(object):
                     prompt = "Inserting rows to " + self.table_name() + ": "
                     prompt += str(self.table.record_id) + " / " + str(total)
                     sys.stdout.write(prompt + "\b" * len(prompt))
-
                 try:
                     self.execute(insert_stmt, commit=False)
                 except:
                     print(insert_stmt)
                     raise
-
         self.connection.commit()
 
     def auto_create_table(self, table, url=None, filename=None, pk=None):
@@ -200,7 +198,6 @@ class Engine(object):
                 n += 1
         else:
             lines_to_scan = source
-
         column_types = [('int',) for i in range(len(columns))]
         max_lengths = [0 for i in range(len(columns))]
 
@@ -237,7 +234,6 @@ class Engine(object):
                             if column_types[i][0] == 'char':
                                 if len(str(value)) > column_types[i][1]:
                                     column_types[i][1] = max_lengths[i]
-
                     except IndexError:
                         pass
 
@@ -264,32 +260,38 @@ class Engine(object):
 
     def convert_data_type(self, datatype):
         """Converts Retriever generic data types to database platform specific
-        data types"""
-        thistype = datatype[0]
+        data types
+        """
+        # get the type from the dataset variables
+        key = datatype[0]
         thispk = False
-        if thistype[0:3] == "pk-":
-            thistype = thistype.lstrip("pk-")
+        if key[0:3] == "pk-":
+            key = key[3:]
             thispk = True
-        elif thistype[0:3] == "ct-":
-            thistype = thistype[3:]
+        elif key[0:3] == "ct-":
+            key = key[3:]
 
-        if thistype in list(self.datatypes.keys()):
-            thistype = self.datatypes[thistype]
-
+        # format the dataset type to match engine specific type
+        thistype = ""
+        if key in list(self.datatypes.keys()):
+            thistype = self.datatypes[key]
             if isinstance(thistype, tuple):
-                if len(datatype) > 1:
+                if datatype[0] == 'pk-auto':
+                    pass
+                elif len(datatype) > 1:
                     thistype = thistype[1] + "(" + str(datatype[1]) + ")"
                 else:
                     thistype = thistype[0]
             else:
                 if len(datatype) > 1:
                     thistype += "(" + str(datatype[1]) + ")"
-        else:
-            thistype = ""
 
+        # set the PRIMARY KEY 
         if thispk:
-            thistype = self.pkformat % thistype
-
+            if isinstance(thistype, tuple):
+                thistype = self.pkformat % thistype
+            else:
+                thistype = self.pkformat % (thistype, "")
         return thistype
 
     def create_db(self):
@@ -348,17 +350,14 @@ class Engine(object):
             print("Couldn't create table (%s). Trying to continue anyway." % e)
 
     def create_table_statement(self):
-        """Returns a SQL statement to create a table."""
+        """Returns a SQL statement to create a table"""
         create_stmt = "CREATE TABLE " + self.table_name() + " ("
-
-        columns = self.table.get_insert_columns(join=False)
-
+        columns = self.table.get_insert_columns(join=False, create=True)
         types = []
         for column in self.table.columns:
             for column_name in columns:
                 if column[0] == column_name:
                     types.append(self.convert_data_type(column[1]))
-
         if self.debug:
             print(columns)
 
@@ -378,12 +377,10 @@ class Engine(object):
                 name = self.script.shortname
             except AttributeError:
                 name = "{db}"
-
         try:
             db_name = self.opts["database_name"].format(db=name)
         except KeyError:
             db_name = name
-
         return db_name
 
     def download_file(self, url, filename):
@@ -398,7 +395,6 @@ class Engine(object):
     def download_files_from_archive(self, url, filenames, filetype="zip",
                                     keep_in_dir=False, archivename=None):
         """Downloads files from an archive into the raw data directory.
-
         """
         downloaded = False
         if archivename:
@@ -414,7 +410,6 @@ class Engine(object):
                 os.makedirs(archivedir)
         else:
             archivebase = ''
-
         for filename in filenames:
             if self.find_file(os.path.join(archivebase, filename)):
                 # Use local copy
@@ -493,7 +488,6 @@ class Engine(object):
 
     def final_cleanup(self):
         """Close the database connection."""
-
         if self.warnings:
             print('\n'.join(str(w) for w in self.warnings))
 
@@ -527,7 +521,6 @@ class Engine(object):
         if len(strvalue) > 1 and strvalue[0] == strvalue[-1] and strvalue[0] in quotes:
             strvalue = strvalue[1:-1]
         nulls = ("null", "none")
-
         if strvalue.lower() in nulls:
             return "null"
         elif datatype in ("int", "bigint", "bool"):
@@ -541,22 +534,19 @@ class Engine(object):
                 return "null"
         elif datatype in ("double", "decimal"):
             if strvalue:
-                return strvalue
+                decimals = float(strvalue)
+                return str(decimals)
             else:
                 return "null"
         elif datatype == "char":
             if strvalue.lower() in nulls:
                 return "null"
-
             # automatically escape quotes in string fields
             if hasattr(self.table, "escape_double_quotes") and self.table.escape_double_quotes:
                 strvalue = self.escape_double_quotes(strvalue)
             if hasattr(self.table, "escape_single_quotes") and self.table.escape_single_quotes:
                 strvalue = self.escape_single_quotes(strvalue)
-
             return "'" + strvalue + "'"
-            # elif datatype=="bool":
-            # return "'true'" if value else "'false'"
         else:
             return "null"
 
@@ -624,17 +614,16 @@ class Engine(object):
         """Returns a SQL statement to insert a set of values."""
         columns = self.table.get_insert_columns()
         types = self.table.get_column_datatypes()
-        columncount = len(self.table.get_insert_columns(False))
+        columncount = len(self.table.get_insert_columns(join=False, create=False))
         insert_stmt = "INSERT INTO " + self.table_name()
         insert_stmt += " (" + columns + ")"
-        insert_stmt += " VALUES ("
+        insert_stmt += "VALUES ("
         for i in range(0, columncount):
             insert_stmt += "%s, "
         insert_stmt = insert_stmt.rstrip(", ") + ");"
         n = 0
         while len(values) < insert_stmt.count("%s"):
-            values.append(self.format_insert_value(None,
-                                                   types[n]))
+            values.append(self.format_insert_value(None, types[n]))
             n += 1
         insert_stmt %= tuple([str(value) for value in values])
         if self.debug:
