@@ -1,8 +1,14 @@
 """Tests for the EcoData Retriever"""
 from future import standard_library
 standard_library.install_aliases()
+from imp import reload
 
 import os
+
+import sys
+reload(sys)
+if hasattr(sys, 'setdefaultencoding'):
+    sys.setdefaultencoding('latin-1')
 from io import StringIO
 from retriever.lib.engine import Engine
 from retriever.lib.table import Table

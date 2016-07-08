@@ -59,6 +59,7 @@ class engine(Engine):
         self.output_file = open(self.table_name(), "w")
         self.output_file.write("[")
         self.table_names.append((self.output_file, self.table_name()))
+        self.auto_column_number = 1
 
     def disconnect(self):
         """Close out the JSON with a ('\n]}') and close the file

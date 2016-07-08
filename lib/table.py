@@ -3,6 +3,7 @@ standard_library.install_aliases()
 from builtins import next
 from builtins import object
 from builtins import str
+
 import csv
 import io
 import sys
@@ -38,7 +39,6 @@ class Table(object):
         Identifies the column names from the header row.
         Replaces database keywords with alternatives.
         Replaces special characters and spaces.
-
         """
         if self.fixed_width:
             column_names = self.extract_values(header)
@@ -54,7 +54,6 @@ class Table(object):
 
     def clean_column_name(self, column_name):
         """Clean column names using the expected sql guidelines
-
         remove leading whitespaces, replace sql key words, etc..
         """
         column_name = column_name.lower().strip()
@@ -117,19 +116,17 @@ class Table(object):
         else:
             writer_file =  io.BytesIO()
 
+
         writer = csv.writer(writer_file, dialect=dialect, delimiter=self.delimiter)
         writer.writerow(line_as_list)
         return writer_file.getvalue()
 
     def values_from_line(self, line):
         linevalues = []
-        if (self.pk and self.contains_pk is False):
-            column = 0
-        else:
-            column = -1
-
+        column = 0
+        if self.columns[column][1][0] == 'pk-auto':
+            column = 1
         for value in self.extract_values(line):
-            column += 1
             try:
                 this_column = self.columns[column][1][0]
 
@@ -145,7 +142,7 @@ class Table(object):
             except:
                 # too many values for columns; ignore
                 pass
-
+            column += 1
         return linevalues
 
     def extract_values(self, line):
@@ -161,8 +158,8 @@ class Table(object):
         else:
             return self.split_on_delimiter(line)
 
-    def get_insert_columns(self, join=True):
-        """Gets a set of column names for insert statements."""
+    def get_insert_columns(self, join=True, create=False):
+        """Gets a set of column names for insert statements"""
         columns = ""
         if not self.cleaned_columns:
             column_names = list(self.columns)
@@ -171,10 +168,11 @@ class Table(object):
             self.cleaned_columns = True
         for item in self.columns:
             thistype = item[1][0]
-            if ((thistype != "skip") and (thistype != "combine") and
-                    (self.contains_pk is True or thistype[0:3] != "pk-")):
+            if (thistype != "skip") and (thistype != "combine"):
                 columns += item[0] + ", "
         columns = columns.rstrip(', ')
+        if not create and self.columns[0][0] == 'record_id':
+            columns = columns.lstrip("record_id,").strip()
         if join:
             return columns
         else:
@@ -182,9 +180,10 @@ class Table(object):
 
     def get_column_datatypes(self):
         """Gets a set of column names for insert statements."""
-        columns = []
+        columns = []     
         for item in self.get_insert_columns(False):
             for column in self.columns:
                 if item == column[0]:
                     columns.append(column[1][0])
+
         return columns
