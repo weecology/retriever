@@ -17,7 +17,7 @@ import sys
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     # set default encoding to utf-8 to decode source text
-    sys.setdefaultencoding('utf-8')
+    sys.setdefaultencoding('latin-1')
 from retriever import VERSION, MASTER, SCRIPT_LIST, sample_script, current_platform
 from retriever.engines import engine_list
 from retriever.lib.repository import check_for_updates
