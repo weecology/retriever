@@ -1,0 +1,8 @@
+# Codecov code coverage configuration file.
+# Overrides Codecov defaults
+
+# Turn on commenting on issues
+# Undocumented but described in:
+# https://github.com/codecov/support/issues/162#issuecomment-217634710
+
+comment: false
