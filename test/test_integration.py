@@ -12,7 +12,7 @@ from retriever.lib.tools import file_2string
 simple_csv = {'name': 'simple_csv',
               'raw_data': "a,b,c\n1,2,3\n4,5,6\n",
               'script': "shortname: simple_csv\ntable: simple_csv, http://example.com/simple_csv.txt",
-              'expect_out': '"record_id","a","b","c"\n1,1,2,3\n2,4,5,6'}
+              'expect_out': '"a","b","c"\n1,2,3\n4,5,6'}
 
 crosstab = {'name': 'crosstab',
             'raw_data': "a,b,c1,c2\n1,1,1.1,1.2\n1,2,2.1,2.2",
