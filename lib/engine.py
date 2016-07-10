@@ -155,7 +155,7 @@ class Engine(object):
 
         source = (skip_rows,
                   (self.table.column_names_row - 1,
-                   (io.open, (file_path, "rU", -1, 'utf-8', 'ignore'))))
+                   (io.open, (file_path, 'r', -1, 'latin-1'))))
         lines = gen_from_source(source)
 
         header = next(lines)
@@ -163,7 +163,7 @@ class Engine(object):
 
         source = (skip_rows,
                   (self.table.header_rows,
-                   (io.open, (file_path, "rU", -1, 'utf-8', 'ignore'))))
+                   (io.open, (file_path, 'r', -1, 'latin-1'))))
 
         if not self.table.delimiter:
             self.auto_get_delimiter(header)
@@ -286,7 +286,7 @@ class Engine(object):
                 if len(datatype) > 1:
                     thistype += "(" + str(datatype[1]) + ")"
 
-        # set the PRIMARY KEY 
+        # set the PRIMARY KEY
         if thispk:
             if isinstance(thistype, tuple):
                 thistype = self.pkformat % thistype
@@ -593,7 +593,7 @@ class Engine(object):
         for inserting bulk data from files can override this function."""
         data_source = (skip_rows,
                        (self.table.header_rows,
-                        (io.open, (filename, 'rU', -1, 'utf-8', 'ignore'))))
+                        (io.open, (filename, 'r', -1, 'latin-1'))))
         self.add_to_table(data_source)
 
     def insert_data_from_url(self, url):
