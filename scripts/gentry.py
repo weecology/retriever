@@ -30,7 +30,7 @@ class main(Script):
                      "counts": ""}
         self.tags = ["Taxon > Plants", "Spatial Scale > Global",
                      "Data Type > Observational"]
-        self.ref = "http://www.wlbcenter.org/gentry_data.htm"
+        self.ref = "http://www.mobot.org/mobot/research/gentry/welcome.shtml"
         self.addendum = """Researchers who make use of the data in publications are requested to acknowledge Alwyn H. Gentry, the Missouri Botanical Garden, and collectors who assisted Gentry or contributed data for specific sites. It is also requested that a reprint of any publication making use of the Gentry Forest Transect Data be sent to:
 
 Bruce E. Ponman
