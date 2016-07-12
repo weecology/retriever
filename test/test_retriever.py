@@ -30,13 +30,11 @@ test_engine.script = BasicTextTemplate(tables={'test': test_engine.table},
                                        shortname='test')
 test_engine.opts = {'database_name': '{db}_abc'}
 HOMEDIR = os.path.expanduser('~')
-test_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 def setup_module():
     """"change directory to test directory"""
-    dir_path = os.path.dirname(os.path.abspath(__file__))
-    os.chdir(dir_path)
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 
 def teardown_method():
@@ -141,8 +139,6 @@ def test_find_file_present():
     test_engine.script.shortname = 'AvianBodySize'
     assert test_engine.find_file('avian_ssd_jan07.txt') == os.path.normpath(
         'raw_data/AvianBodySize/avian_ssd_jan07.txt')
-    os.system("rm -r raw_data/avianbodysize")
-    os.chdir('..')
 
 
 def test_format_data_dir():
@@ -196,7 +192,7 @@ def test_json2csv():
     """Test json2csv function
     creates a json file and tests the md5 sum calculation"""
     json_file = create_file("""[ {"User": "Alex", "Country": "US", "Age": "25"} ]""", 'output.json')
-    output_json = json2csv(json_file, "test/output_json.csv", header_values=["User", "Country", "Age"])
+    output_json = json2csv(json_file, "output_json.csv", header_values=["User", "Country", "Age"])
     obs_out = file_2string(output_json)
     os.remove(output_json)
     assert obs_out == 'User,Country,Age\nAlex,US,25'
@@ -214,7 +210,7 @@ def test_xml2csv():
                            "<Country>US</Country>S\n"
                            "<Age>24</Age>\n"
                            "</row>\n</root>", 'output.xml')
-    output_xml = xml2csv(xml_file, "test/output_xml.csv", header_values=["User", "Country", "Age"])
+    output_xml = xml2csv(xml_file, "output_xml.csv", header_values=["User", "Country", "Age"])
     obs_out = file_2string(output_xml)
     os.remove(output_xml)
     assert obs_out == "User,Country,Age\nAlex,US,25\nAlex,PT,25\nBen,US,24"
