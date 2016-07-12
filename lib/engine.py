@@ -171,12 +171,6 @@ class Engine(object):
         if not self.table.columns:
             lines = gen_from_source(source)
 
-            if pk is None:
-                self.table.columns = [("record_id", ("pk-auto",))]
-            else:
-                self.table.columns = []
-                self.table.contains_pk = True
-
             columns, column_values = self.table.auto_get_columns(header)
 
             self.auto_get_datatypes(pk, lines, columns, column_values)
@@ -242,6 +236,11 @@ class Engine(object):
             column[1] = column_types[i]
             if pk == column[0]:
                 column[1][0] = "pk-" + column[1][0]
+        if pk is None and columns[0][1][0] == 'pk-auto':
+            self.table.columns = [("record_id", ("pk-auto",))]
+            self.table.contains_pk = True
+        else:
+            self.table.columns = []
 
         for column in columns:
             self.table.columns.append((column[0], tuple(column[1])))
@@ -510,9 +509,22 @@ class Engine(object):
         """Returns the full path of a file in the archive directory."""
         return os.path.join(self.format_data_dir(), filename)
 
-    def format_insert_value(self, value, datatype):
-        """Formats a value for an insert statement, for example by surrounding
-        it in single quotes."""
+    def format_insert_value(self, value, datatype, escape=True):
+        """Format a value for an insert statement based on data type
+
+        Different data types need to be formated differently to be properly
+        stored in database management systems. The correct formats are
+        obtained by:
+
+        1. Removing extra enclosing quotes
+        2. Harmonizing null indicators
+        3. Cleaning up badly formatted integers
+        4. Obtaining consistent float representations of decimals
+
+        The optional `escape` argument controls whether additional quotes in
+        strings are escaped, as needed for SQL database management systems
+        (escape=True), or not escaped, as needed for flat file based engines
+        (escape=False)."""
         datatype = datatype.split('-')[-1]
         strvalue = str(value).strip()
 
@@ -541,11 +553,12 @@ class Engine(object):
         elif datatype == "char":
             if strvalue.lower() in nulls:
                 return "null"
-            # automatically escape quotes in string fields
-            if hasattr(self.table, "escape_double_quotes") and self.table.escape_double_quotes:
-                strvalue = self.escape_double_quotes(strvalue)
-            if hasattr(self.table, "escape_single_quotes") and self.table.escape_single_quotes:
-                strvalue = self.escape_single_quotes(strvalue)
+            if escape:
+                # automatically escape quotes in string fields
+                if hasattr(self.table, "escape_double_quotes") and self.table.escape_double_quotes:
+                    strvalue = self.escape_double_quotes(strvalue)
+                if hasattr(self.table, "escape_single_quotes") and self.table.escape_single_quotes:
+                    strvalue = self.escape_single_quotes(strvalue)
             return "'" + strvalue + "'"
         else:
             return "null"

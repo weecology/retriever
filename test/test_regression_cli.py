@@ -22,13 +22,7 @@ download_md5 = [
 
 db_md5 = [
     # ('DelMoral2010', '0'),
-    ('EA_avianbodysize2007', '74a5421622ab73c1df2ff8afc9d67e03'),
-    ('EA_mom2003', '92bf63eb5b36b777c600d0a95229222c')
-]
-
-filedb_md5 = [
-    # ('DelMoral2010', '0'),
-    ('EA_avianbodysize2007', 'ca8f7e670ff98b520371d3fabf9a8632'),
+    ('EA_avianbodysize2007', '79680888f7768474479e70c87cd36c9d'),
     ('EA_mom2003', '92bf63eb5b36b777c600d0a95229222c')
 ]
 
@@ -91,21 +85,21 @@ def test_mysql_regression(dataset, expected, tmpdir):
     assert get_csv_md5(dataset, mysql_engine, tmpdir) == expected
 
 
-@pytest.mark.parametrize("dataset, expected", filedb_md5)
+@pytest.mark.parametrize("dataset, expected", db_md5)
 def test_xmlenginee_regression(dataset, expected, tmpdir):
     """Check for xmlenginee regression"""
     xml_engine.opts = {'engine': 'xml', 'table_name': 'output_file_{table}.xml'}
     assert get_csv_md5(dataset, xml_engine, tmpdir) == expected
 
 
-@pytest.mark.parametrize("dataset, expected", filedb_md5)
+@pytest.mark.parametrize("dataset, expected", db_md5)
 def test_jsonenginee_regression(dataset, expected, tmpdir):
     """Check for jsonenginee regression"""
     json_engine.opts = {'engine': 'json', 'table_name': 'output_file_{table}.json'}
     assert get_csv_md5(dataset, json_engine, tmpdir) == expected
 
 
-@pytest.mark.parametrize("dataset, expected", filedb_md5)
+@pytest.mark.parametrize("dataset, expected", db_md5)
 def test_csv_regression(dataset, expected, tmpdir):
     """Check csv regression"""
     csv_engine.opts = {'engine': 'csv', 'table_name': 'output_file_{table}.csv'}
