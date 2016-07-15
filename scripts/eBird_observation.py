@@ -1,6 +1,8 @@
 #retriever
 """EcoData Retriever script for the eBird Observation Dataset"""
 
+import sys
+
 from retriever.lib.templates import Script
 from retriever.lib.models import Table
 
@@ -14,6 +16,11 @@ class main(Script):
         self.description = "A collection of observations from birders through portals managed and maintained by local partner conservation organizations"
 
     def download(self, engine=None, debug=False):
+
+        ### eBird is currently unavailable
+        print("""eBird is not currently available via the Data Retriever because the eBird Observation dataset has been removed from DataOne and is no longer publicly available.""")
+        sys.exit()
+
         data_file_name = "eBird_Observation_Dataset_2013.csv"
         Script.download(self, engine, debug)
         self.engine.download_files_from_archive(self.urls["main"],

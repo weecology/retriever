@@ -6,6 +6,7 @@ standard_library.install_aliases()
 from builtins import range
 
 import os
+import sys
 import urllib.request, urllib.parse, urllib.error
 import zipfile
 from decimal import Decimal
@@ -25,6 +26,11 @@ class main(Script):
         self.description = "The data set was collected via Nature's Notebook phenology observation program (2009-present), and (2) Lilac and honeysuckle data (1955-present)"
         self.citation = "Schwartz, M. D., Ault, T. R., & J. L. Betancourt, 2012: Spring Onset Variations and Trends in the Continental USA: Past and Regional Assessment Using Temperature-Based Indices. International Journal of Climatology (published online, DOI: 10.1002/joc.3625)."
     def download(self, engine=None, debug=False):
+
+        ### NPN is currently unavailable due to an API upgrade
+        print("The NPN data is not currently available via the Data Retriever due to an API upgrade. Please check back soon.")
+        sys.exit()
+
         Script.download(self, engine, debug)
 
         engine = self.engine
