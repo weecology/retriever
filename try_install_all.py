@@ -14,6 +14,10 @@ import sys
 from retriever.lib.tools import choose_engine
 from retriever import MODULE_LIST, ENGINE_LIST, SCRIPT_LIST
 
+reload(sys)
+if hasattr(sys, 'setdefaultencoding'):
+    sys.setdefaultencoding('latin-1')
+
 MODULE_LIST = MODULE_LIST()
 ENGINE_LIST = ENGINE_LIST()
 if len(sys.argv) > 1:
