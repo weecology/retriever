@@ -46,12 +46,13 @@ def get_csv_md5(dataset, engines, tmpdir):
 
 def setup_module():
     """Update retriever scripts and cd to test directory to find data"""
-    os.chdir("./test/")
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
     os.system("retriever update")
 
 
 def teardown_module():
     """Cleanup temporary output files after testing and return to root directory"""
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
     os.system("rm -r output*")
     os.system("rm -r raw_data/mom2003")
     os.system("rm -r raw_data/EA*")

@@ -71,6 +71,9 @@ class Engine(object):
             for line in lines:
                 split_line = self.table.split_on_delimiter(line)
                 initial_cols = len(self.table.columns) - (3 if hasattr(self.table, "ct_names") else 2)
+                # add one if auto increment is not set to get the right initial columns
+                if not self.table.columns[0][1][0] == "pk-auto":
+                    initial_cols += 1
                 begin = split_line[:initial_cols]
                 rest = split_line[initial_cols:]
                 n = 0
