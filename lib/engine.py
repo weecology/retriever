@@ -393,7 +393,6 @@ class Engine(object):
             print("Downloading " + filename + "...")
             response = urllib.request.urlretrieve(url, path)
 
-
     def download_files_from_archive(self, url, filenames, filetype="zip",
                                     keep_in_dir=False, archivename=None):
         """Downloads files from an archive into the raw data directory.

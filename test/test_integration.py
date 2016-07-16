@@ -8,6 +8,7 @@ import pytest
 from retriever.lib.compile import compile_script
 from retriever import HOME_DIR, ENGINE_LIST
 from retriever.lib.tools import file_2string
+from retriever.lib.tools import create_file
 
 
 simple_csv = {'name': 'simple_csv',
@@ -32,7 +33,7 @@ autopk_crosstab = {'name': 'autopk_crosstab',
 
 tests = [simple_csv, autopk_csv, crosstab, autopk_crosstab]
 
-# create a tuple of all test scripts and expected values
+# Create a tuple of all test scripts and expected values
 # (simple_csv, '"a","b","c"\n1,2,3\n4,5,6')
 test_parameters = [(test, test['expect_out']) for test in tests]
 
@@ -42,10 +43,8 @@ def setup_module():
     for test in tests:
         if not os.path.exists(os.path.join(HOME_DIR, "raw_data", test['name'])):
             os.makedirs(os.path.join(HOME_DIR, "raw_data", test['name']))
-        with open(os.path.join(HOME_DIR, "raw_data", test['name'], test['name'] + '.txt'), 'w') as data_file:
-            data_file.write(test['raw_data'])
-        with open(os.path.join(HOME_DIR, "scripts", test['name'] + '.script'), 'w') as script_file:
-            script_file.write(test['script'])
+        create_file(test['raw_data'], os.path.join(HOME_DIR, "raw_data", test['name'], test['name'] + '.txt'))
+        create_file(test['script'], os.path.join(HOME_DIR, "scripts", test['name'] + '.script'))
         compile_script(os.path.join(HOME_DIR, "scripts", test['name']))
 
 
@@ -55,16 +54,26 @@ def teardown_module():
         shutil.rmtree(os.path.join(HOME_DIR, "raw_data", test['name']))
         os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.script'))
         os.system("rm -r *{}".format(test['name']))
+        os.system("rm testdb.sqlite")
 
-
-def get_csv_string(dataset, engines, tmpdir):
+def get_output_as_csv(dataset, engines, tmpdir, db):
+    """Install dataset and return the output as a string version of the csv
+    The string version of the csv output returned by this function can be compared
+    directly to the expect_out values in the dataset test dictionaries.
+    """
     workdir = tmpdir.mkdtemp()
     workdir.chdir()
     script_module = get_script_module(dataset["name"])
     script_module.SCRIPT.download(engines)
     script_module.SCRIPT.engine.final_cleanup()
     script_module.SCRIPT.engine.to_csv()
-    obs_out = file_2string(dataset["name"] + "_" + dataset["name"] + ".txt")
+    # get filename and append .csv
+    csv_file = engines.opts['table_name'].format(db=db, table=dataset["name"])
+    # csv engine already has the .csv extension
+    if engines.opts["engine"] != 'csv':
+        csv_file += '.csv'
+    obs_out = file_2string(csv_file)
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
     return obs_out
 
 
@@ -74,10 +83,49 @@ def get_script_module(script_name):
     return imp.load_module(script_name, file, pathname, desc)
 
 mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, csv_engine, download_engine, json_engine, xml_engine = ENGINE_LIST()
-csv_engine.opts = {'engine': 'csv', 'table_name': './{db}_{table}.txt'}
 
 
 @pytest.mark.parametrize("dataset, expected",test_parameters)
-def test_csv_engine(dataset, expected, tmpdir):
-    csv_engine.opts = {'engine': 'csv', 'table_name': './{db}_{table}.txt'}
-    assert get_csv_string(dataset, csv_engine, tmpdir) == expected
+def test_csv_integration(dataset, expected, tmpdir):
+    csv_engine.opts = {'engine': 'csv', 'table_name': '{db}_{table}'}
+    assert get_output_as_csv(dataset, csv_engine, tmpdir, db=dataset["name"]) == expected
+
+
+@pytest.mark.parametrize("dataset, expected",test_parameters)
+def test_sqlite_integration(dataset, expected, tmpdir):
+    dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb.sqlite'))
+    sqlite_engine.opts = {'engine': 'sqlite', 'file': dbfile, 'table_name': '{db}_{table}'}
+    os.system("rm testdb.sqlite")
+    assert get_output_as_csv(dataset, sqlite_engine, tmpdir, dataset["name"]) == expected
+
+
+@pytest.mark.parametrize("dataset, expected", test_parameters)
+def test_xmlengine_integration(dataset, expected, tmpdir):
+    """Check for xmlenginee regression"""
+    xml_engine.opts = {'engine': 'xml', 'table_name': '{db}_{table}'}
+    assert get_output_as_csv(dataset, xml_engine, tmpdir, db=dataset["name"]) == expected
+
+
+@pytest.mark.parametrize("dataset, expected", test_parameters)
+def test_jsonengine_integration(dataset, expected, tmpdir):
+    """Check for jsonenginee regression"""
+    json_engine.opts = {'engine': 'json', 'table_name': '{db}_{table}'}
+    assert get_output_as_csv(dataset, json_engine, tmpdir, db=dataset["name"]) == expected
+
+
+@pytest.mark.parametrize("dataset, expected", test_parameters)
+def test_postgres_integration(dataset, expected, tmpdir):
+    """Check for postgres regression"""
+    os.system('psql -U postgres -d testdb -h localhost -c "DROP SCHEMA IF EXISTS testschema CASCADE"')
+    postgres_engine.opts = {'engine': 'postgres', 'user': 'postgres', 'password': "", 'host': 'localhost', 'port': 5432,
+                            'database': 'testdb', 'database_name': 'testschema', 'table_name': '{db}.{table}'}
+    assert get_output_as_csv(dataset, postgres_engine, tmpdir, db=postgres_engine.opts['database_name']) == expected
+
+
+@pytest.mark.parametrize("dataset, expected", test_parameters)
+def test_mysql_integration(dataset, expected, tmpdir):
+    """Check for mysql regression"""
+    os.system('mysql -u travis -Bse "DROP DATABASE IF EXISTS testdb"')
+    mysql_engine.opts = {'engine': 'mysql', 'user': 'travis', 'password': '', 'host': 'localhost', 'port': 3306,
+                         'database_name': 'testdb', 'table_name': '{db}.{table}'}
+    assert get_output_as_csv(dataset, mysql_engine, tmpdir, db=mysql_engine.opts['database_name']) == expected

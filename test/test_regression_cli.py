@@ -87,14 +87,14 @@ def test_mysql_regression(dataset, expected, tmpdir):
 
 
 @pytest.mark.parametrize("dataset, expected", db_md5)
-def test_xmlenginee_regression(dataset, expected, tmpdir):
+def test_xmlengine_regression(dataset, expected, tmpdir):
     """Check for xmlenginee regression"""
     xml_engine.opts = {'engine': 'xml', 'table_name': 'output_file_{table}.xml'}
     assert get_csv_md5(dataset, xml_engine, tmpdir) == expected
 
 
 @pytest.mark.parametrize("dataset, expected", db_md5)
-def test_jsonenginee_regression(dataset, expected, tmpdir):
+def test_jsonengine_regression(dataset, expected, tmpdir):
     """Check for jsonenginee regression"""
     json_engine.opts = {'engine': 'json', 'table_name': 'output_file_{table}.json'}
     assert get_csv_md5(dataset, json_engine, tmpdir) == expected

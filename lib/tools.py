@@ -361,7 +361,7 @@ def sort_csv(filename):
     os.remove(os.path.normpath("tempfile"))
     return filename
 
-#     output_file = os.path.normpath(os.path.join(test_dir, output))
+
 def create_file(data, output='output_file'):
     """Writes a string to a file for use by tests"""
     output_file = os.path.normpath(output)
