@@ -25,7 +25,7 @@ class main(Script):
         self.name = "Alwyn H. Gentry Forest Transect Dataset"
         self.shortname = "Gentry"
         self.urls = {"stems": "http://www.mobot.org/mobot/gentry/123/all_Excel.zip",
-                     "sites": "http://www.ecologicaldata.org/sites/default/files/gentry_sites_data.txt",
+                     "sites": "https://ndownloader.figshare.com/files/5515373",
                      "species": "",
                      "counts": ""}
         self.tags = ["Taxon > Plants", "Spatial Scale > Global",
@@ -42,7 +42,7 @@ U.S.A. """
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
 
-        self.engine.auto_create_table(Table("sites"), url=self.urls["sites"])
+        self.engine.auto_create_table(Table("sites"), url=self.urls["sites"], filename='gentry_sites.csv')
         self.engine.insert_data_from_url(self.urls["sites"])
 
         self.engine.download_file(self.urls["stems"], "all_Excel.zip")
