@@ -19,7 +19,12 @@ crosstab = {'name': 'crosstab',
             'script': "shortname: crosstab\ntable: crosstab, http://example.com/crosstab.txt\n*column: record_id, pk-auto\n*column: a, int\n*column: b, int\n*ct_column: c\n*column: val, ct-double\n*ct_names: c1,c2",
             'expect_out': '"record_id","a","b","c","val"\n1,1,1,"c1",1.1\n2,1,1,"c2",1.2\n3,1,2,"c1",2.1\n4,1,2,"c2",2.2'}
 
-tests = [simple_csv, crosstab]
+extra_newline = {'name': 'extra_newline',
+              'raw_data': 'col1,col2,col3\n1,2\n,3\n',
+              'script': "shortname: extra_newline\ntable: extra_newline, http://example.com/extra_newline.txt",
+              'expect_out': '"col1","col2","col3"\n1,2,3'}
+
+tests = [simple_csv, crosstab, extra_newline]
 
 
 def setup_module():
@@ -65,3 +70,10 @@ def test_crosstab_from_csv():
     crosstab_module.SCRIPT.engine.disconnect()
     obs_out = file_2string("crosstab_crosstab.txt")
     assert obs_out == crosstab['expect_out']
+
+def test_extra_newline():
+    extra_newline_module = get_script_module('extra_newline')
+    extra_newline_module.SCRIPT.download(csv_engine)
+    extra_newline_module.SCRIPT.engine.disconnect()
+    obs_out = file_2string("extra_newline_extra_newline.txt")
+    assert obs_out == extra_newline['expect_out']

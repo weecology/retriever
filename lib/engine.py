@@ -95,11 +95,26 @@ class Engine(object):
             real_line_length = sum(1 for _ in len_source)
 
         total = self.table.record_id + real_line_length
+        pos = 0
         for line in real_lines:
             if not self.table.fixed_width:
                 line = line.strip()
             if line:
                 self.table.record_id += 1
+
+                # Check for single row distributed over multiple lines
+                val_list = self.table.split_on_delimiter(line)
+                while len(val_list) < len(self.table.get_column_datatypes()):
+                    line = line.rstrip('\n')
+                    if type(real_lines) != 'list':
+                        line += next(real_lines)
+                    else:
+                        line += real_lines[pos+1]
+                        real_lines.pop(pos+1)
+                    val_list = (self.table.split_on_delimiter(line))
+                pos += 1
+                assert(len(val_list) == len(self.table.get_column_datatypes()))
+
                 linevalues = self.table.values_from_line(line)
 
                 types = self.table.get_column_datatypes()
