@@ -46,12 +46,13 @@ def get_csv_md5(dataset, engines, tmpdir):
 
 def setup_module():
     """Update retriever scripts and cd to test directory to find data"""
-    os.chdir("./test/")
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
     os.system("retriever update")
 
 
 def teardown_module():
     """Cleanup temporary output files after testing and return to root directory"""
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
     os.system("rm -r output*")
     os.system("rm -r raw_data/mom2003")
     os.system("rm -r raw_data/EA*")
@@ -86,14 +87,14 @@ def test_mysql_regression(dataset, expected, tmpdir):
 
 
 @pytest.mark.parametrize("dataset, expected", db_md5)
-def test_xmlenginee_regression(dataset, expected, tmpdir):
+def test_xmlengine_regression(dataset, expected, tmpdir):
     """Check for xmlenginee regression"""
     xml_engine.opts = {'engine': 'xml', 'table_name': 'output_file_{table}.xml'}
     assert get_csv_md5(dataset, xml_engine, tmpdir) == expected
 
 
 @pytest.mark.parametrize("dataset, expected", db_md5)
-def test_jsonenginee_regression(dataset, expected, tmpdir):
+def test_jsonengine_regression(dataset, expected, tmpdir):
     """Check for jsonenginee regression"""
     json_engine.opts = {'engine': 'json', 'table_name': 'output_file_{table}.json'}
     assert get_csv_md5(dataset, json_engine, tmpdir) == expected
