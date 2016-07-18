@@ -22,8 +22,8 @@ download_md5 = [
 
 db_md5 = [
     # ('DelMoral2010', '0'),
-    ('EA_avianbodysize2007', '79680888f7768474479e70c87cd36c9d'),
-    ('EA_mom2003', '92bf63eb5b36b777c600d0a95229222c')
+    ('AvianBodySize', '79680888f7768474479e70c87cd36c9d'),
+    ('MoM2003', '92bf63eb5b36b777c600d0a95229222c')
 ]
 
 
@@ -59,14 +59,14 @@ def teardown_module():
     os.system("rm testdb.sqlite")
     os.chdir("..")
 
-#
-# @pytest.mark.parametrize("dataset, expected", db_md5)
-# def test_sqlite_regression(dataset, expected, tmpdir):
-#     """Check for sqlite regression"""
-#     dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb.sqlite'))
-#     sqlite_engine.opts = {'engine': 'sqlite', 'file': dbfile, 'table_name': '{db}_{table}'}
-#     assert get_csv_md5(dataset, sqlite_engine, tmpdir) == expected
-#
+
+@pytest.mark.parametrize("dataset, expected", db_md5)
+def test_sqlite_regression(dataset, expected, tmpdir):
+    """Check for sqlite regression"""
+    dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb.sqlite'))
+    sqlite_engine.opts = {'engine': 'sqlite', 'file': dbfile, 'table_name': '{db}_{table}'}
+    assert get_csv_md5(dataset, sqlite_engine, tmpdir) == expected
+
 
 # @pytest.mark.parametrize("dataset, expected", db_md5)
 # def test_postgres_regression(dataset, expected, tmpdir):
