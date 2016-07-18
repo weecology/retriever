@@ -146,8 +146,9 @@ def compile_script(script_file):
 
 
 def compile_json(json_file):
-    json_object = yaml.safe_load(open(JSON_DIR + json_file + ".json","r"))
+    json_object = yaml.safe_load(open(json_file + ".json","r"))
 
+    tables = {}
     values = {}
     keys_to_ignore = ["template"]
 
@@ -254,6 +255,6 @@ def compile_json(json_file):
         template = "default"
     script_contents = (script_templates[template] % script_desc)
 
-    new_script = open("../jscripts/"+json_file + '_from_json.py', 'wb')
+    new_script = open(json_file + '.py', 'wb')
     new_script.write(script_contents)
     new_script.close()
