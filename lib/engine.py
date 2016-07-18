@@ -119,7 +119,6 @@ class Engine(object):
                         real_lines.pop(pos+1)
                     val_list = (self.table.split_on_delimiter(line))
                 pos += 1
-                assert(len(val_list) == len(self.table.get_column_datatypes()))
 
                 linevalues = self.table.values_from_line(line)
 

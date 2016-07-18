@@ -31,8 +31,13 @@ autopk_crosstab = {'name': 'autopk_crosstab',
             'script': "shortname: autopk_crosstab\ntable: autopk_crosstab, http://example.com/autopk_crosstab.txt\n*column: record_id, pk-auto\n*column: a, int\n*column: b, int\n*ct_column: c\n*column: val, ct-double\n*ct_names: c1,c2",
             'expect_out': 'record_id,a,b,c,val\n1,1,1,c1,1.1\n2,1,1,c2,1.2\n3,1,2,c1,2.1\n4,1,2,c2,2.2\n'}
 
+skip_csv = {'name': 'skip_csv',
+              'raw_data': "a,b,c\n1,2,3\n4,5,6\n",
+              'script': "shortname: skip_csv\ntable: skip_csv, http://example.com/skip_csv.txt\n*do_not_bulk_insert: True\n*column: a, skip\n*column: b, int\n*column: c, int",
+              'expect_out': 'b,c\n2,3\n5,6\n'}
 
-tests = [simple_csv, autopk_csv, crosstab, autopk_crosstab]
+
+tests = [simple_csv, autopk_csv, crosstab, autopk_crosstab, skip_csv]
 
 # Create a tuple of all test scripts and expected values
 # (simple_csv, '"a","b","c"\n1,2,3\n4,5,6')

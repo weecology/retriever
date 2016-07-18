@@ -177,11 +177,7 @@ def json2csv(input_file, output_file=None, header_values=None):
     Alex,US,25
     Alex,PT,25
     """
-    try:
-        file_out = open(input_file, 'r')
-    except IOError as e:
-        print("I/O error({0}): {1}".format(e.errno, e.strerror))
-
+    file_out = open(input_file, 'r')
     # set output file name and write header
     if output_file is None:
         output_file = str(os.path.splitext(os.path.basename(input_file))[0]) + ".csv"
