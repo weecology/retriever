@@ -121,7 +121,7 @@ class engine(Engine):
 
     def to_csv(self):
         """Export table from json engine to CSV file"""
-        keys = [columnname[0] for columnname in self.table.columns]
+        keys = self.table.get_insert_columns(join=False, create=True)
         csv_outfile = json2csv(self.table_name(), header_values=keys)
         return sort_csv(csv_outfile)
 
