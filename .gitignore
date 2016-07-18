@@ -1,3 +1,4 @@
+!*.json
 *.pyc
 dist/
 build/
