@@ -1,9 +1,0 @@
-# Barnes et al. 2008, Ecological Archives, Retriever Script
-name: Marine Predator and Prey Body Sizes (Ecological Archives 2008)
-description: The data set contians relationships between predator and prey size which are needed to describe interactions of species and size classes in food webs.
-citation: C. Barnes, D. M. Bethea, R. D. Brodeur, J. Spitz, V. Ridoux, C. Pusineri, B. C. Chase, M. E. Hunsicker, F. Juanes, A. Kellermann, J. Lancaster, F. Menard, F.-X. Bard, P. Munk, J. K. Pinnegar, F. S. Scharf, R. A. Rountree, K. I. Stergiou, C. Sassa, A. Sabates, and S. Jennings. 2008. Predator and prey body sizes in marine food webs. Ecology 89:881.
-shortname: MarineSize
-tags: Taxon > Fish, Data Type > Compilation
-ref: http://www.esapubs.org/Archive/ecol/E089/051/
-table: main, http://www.esapubs.org/Archive/ecol/E089/051/Predator_and_prey_body_sizes_in_marine_food_webs_vsn3.txt
-*nulls: 'n/a', '0.0000E+00'
