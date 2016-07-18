@@ -168,46 +168,21 @@
             "mediatype": "text/csv",
             "name": "species",
             "schema": {},
-            "url": "http://wiki.ecologicaldata.org/sites/default/files/portal_species.txt"
+            "url": "https://ndownloader.figshare.com/files/3299483"
         },
         {
-            "dialect": {
-                "contains_pk": "True",
-                "delimiter": ",",
-                "header_rows": "0"
-            },
+            "dialect": {},
             "mediatype": "text/csv",
             "name": "plots",
-            "schema": {
-                "fields": [
-                    {
-                        "name": "PlotID",
-                        "type": "pk-int"
-                    },
-                    {
-                        "name": "PlotTypeAlphaCode",
-                        "size": "2",
-                        "type": "char"
-                    },
-                    {
-                        "name": "PlotTypeNumCode",
-                        "type": "int"
-                    },
-                    {
-                        "name": "PlotTypeDescript",
-                        "size": "30",
-                        "type": "char"
-                    }
-                ]
-            },
-            "url": "http://wiki.ecologicaldata.org/sites/default/files/portal_plots.txt"
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/3299474"
         }
     ],
     "scan_lines": "40000",
     "title": "Portal Project Mammals (Ecological Archives 2009)",
     "urls": {
         "main": "http://esapubs.org/archive/ecol/E090/118/Portal_rodents_19772002.csv",
-        "plots": "http://wiki.ecologicaldata.org/sites/default/files/portal_plots.txt",
-        "species": "http://wiki.ecologicaldata.org/sites/default/files/portal_species.txt"
+        "plots": "https://ndownloader.figshare.com/files/3299474",
+        "species": "https://ndownloader.figshare.com/files/3299483"
     }
 }
