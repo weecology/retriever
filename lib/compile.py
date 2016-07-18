@@ -146,27 +146,28 @@ def compile_script(script_file):
 
 
 def compile_json(json_file):
-    json_object = yaml.safe_load(open(JSON_DIR + json_file + ".json","r"))
+    json_object = yaml.safe_load(open(json_file + ".json","r"))
 
+    tables = {}
     values = {}
     keys_to_ignore = ["template"]
 
     for (key,value) in json_object.items():
 
         if key == "title":
-            values["name"] = "'"+value+"'"
+            values["name"] = "\""+value+"\""
 
         elif key == "name":
-            values["shortname"] = "'"+value+"'"
+            values["shortname"] = "\""+value+"\""
 
         elif key == "description":
-            values["description"] = "'"+value+"'"
+            values["description"] = "\""+value+"\""
 
         elif key == "homepage":
-            values["ref"] = "'"+value+"'"
+            values["ref"] = "\""+value+"\""
 
         elif key == "citation":
-            values["citation"] = "'"+value+"'"
+            values["citation"] = "\""+value+"\""
 
         elif key == "keywords":
             values["tags"] = value
@@ -254,6 +255,6 @@ def compile_json(json_file):
         template = "default"
     script_contents = (script_templates[template] % script_desc)
 
-    new_script = open("../jscripts/"+json_file + '_from_json.py', 'wb')
+    new_script = open(json_file + '.py', 'w')
     new_script.write(script_contents)
     new_script.close()
