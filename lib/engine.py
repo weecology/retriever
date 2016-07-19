@@ -565,10 +565,11 @@ class Engine(object):
                 return "null"
         elif datatype in ("double", "decimal"):
             if strvalue:
-                decimals = float(strvalue)
-                return str(decimals)
-            else:
-                return "null"
+                try:
+                    decimals = float(strvalue)
+                    return str(decimals)
+                except:
+                    return "null"
         elif datatype == "char":
             if strvalue.lower() in nulls:
                 return "null"
