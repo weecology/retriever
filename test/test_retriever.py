@@ -41,10 +41,18 @@ def teardown_method():
     """Cleanup temporary output files after testing"""
     os.chdir("..")
 
+
 def test_auto_get_columns():
     """Basic test of getting column labels from header"""
     test_engine.table.delimiter = ","
     columns, column_values = test_engine.table.auto_get_columns("a,b,c,d")
+    assert columns == [['a', None], ['b', None], ['c', None], ['d', None]]
+
+
+def test_auto_get_columns_extra_whitespace():
+    """Test getting column labels from header with extra whitespace"""
+    test_engine.table.delimiter = ","
+    columns, column_values = test_engine.table.auto_get_columns(" a ,b, c,d  ")
     assert columns == [['a', None], ['b', None], ['c', None], ['d', None]]
 
 
