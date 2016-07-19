@@ -36,8 +36,12 @@ skip_csv = {'name': 'skip_csv',
               'script': "shortname: skip_csv\ntable: skip_csv, http://example.com/skip_csv.txt\n*do_not_bulk_insert: True\n*column: a, skip\n*column: b, int\n*column: c, int",
               'expect_out': 'b,c\n2,3\n5,6\n'}
 
+extra_newline = {'name': 'extra_newline',
+                'raw_data': 'col1,col2,col3\n1,2\n,3\n',
+                'script': "shortname: extra_newline\ntable: extra_newline, http://example.com/extra_newline.txt",
+                'expect_out': 'col1,col2,col3\n1,2,3\n'}
 
-tests = [simple_csv, autopk_csv, crosstab, autopk_crosstab, skip_csv]
+tests = [simple_csv, autopk_csv, crosstab, autopk_crosstab, skip_csv, extra_newline]
 
 # Create a tuple of all test scripts and expected values
 # (simple_csv, '"a","b","c"\n1,2,3\n4,5,6')
