@@ -109,7 +109,7 @@ class Engine(object):
                 self.table.record_id += 1
 
                 # Check for single row distributed over multiple lines
-                val_list = self.table.split_on_delimiter(line)
+                val_list = self.table.extract_values(line)
                 while len(val_list) < len(self.table.get_column_datatypes()):
                     line = line.rstrip('\n')
                     if type(real_lines) != list:
@@ -117,7 +117,7 @@ class Engine(object):
                     else:
                         line += real_lines[pos+1]
                         real_lines.pop(pos+1)
-                    val_list = (self.table.split_on_delimiter(line))
+                    val_list = (self.table.extract_values(line))
                 pos += 1
 
                 linevalues = self.table.values_from_line(line)
