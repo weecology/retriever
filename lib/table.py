@@ -40,13 +40,7 @@ class Table(object):
         Replaces database keywords with alternatives.
         Replaces special characters and spaces.
         """
-        if self.fixed_width:
-            column_names = self.extract_values(header)
-        else:
-            # Get column names from header row
-            values = self.split_on_delimiter(header)
-            column_names = [name.strip() for name in values]
-
+        column_names = self.extract_values(header)
         columns = [self.clean_column_name(x) for x in column_names]
         column_values = {x: [] for x in columns if x}
         self.cleaned_columns = True
@@ -102,6 +96,14 @@ class Table(object):
         return column_name
 
     def split_on_delimiter(self, line):
+        """Splits a line using the table's delimiter
+
+        This function does not work with fixed-width data and is only a
+        helper function for `extract_values`. `extract_values` should be
+        used instead when there is a general need to split the values in
+        a line of data.
+
+        """
         dialect = csv.excel
         dialect.escapechar = "\\"
         r = csv.reader([line], dialect=dialect, delimiter=self.delimiter)
@@ -148,8 +150,12 @@ class Table(object):
         return linevalues
 
     def extract_values(self, line):
-        """Given a line of data, this function returns a list of the individual
-        data values."""
+        """Return list of data values from a line of data represented as a string
+
+        This function correctly handles both fixed-width and delimited data and
+        should be used instead of `split_on_delimiter` when splitting lines.
+
+        """
         if self.fixed_width:
             pos = 0
             values = []
