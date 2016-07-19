@@ -112,7 +112,7 @@ class Engine(object):
                 val_list = self.table.split_on_delimiter(line)
                 while len(val_list) < len(self.table.get_column_datatypes()):
                     line = line.rstrip('\n')
-                    if type(real_lines) != 'list':
+                    if type(real_lines) != list:
                         line += next(real_lines)
                     else:
                         line += real_lines[pos+1]
