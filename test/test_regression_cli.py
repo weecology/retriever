@@ -22,8 +22,8 @@ download_md5 = [
 
 db_md5 = [
     # ('DelMoral2010', '0'),
-    ('AvianBodySize', '79680888f7768474479e70c87cd36c9d'),
-    ('MoM2003', '92bf63eb5b36b777c600d0a95229222c')
+    ('EA_avianbodysize2007', '79680888f7768474479e70c87cd36c9d'),
+    ('EA_mom2003', '92bf63eb5b36b777c600d0a95229222c')
 ]
 
 
@@ -60,12 +60,12 @@ def teardown_module():
     os.chdir("..")
 
 
-@pytest.mark.parametrize("dataset, expected", db_md5)
-def test_sqlite_regression(dataset, expected, tmpdir):
-    """Check for sqlite regression"""
-    dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb.sqlite'))
-    sqlite_engine.opts = {'engine': 'sqlite', 'file': dbfile, 'table_name': '{db}_{table}'}
-    assert get_csv_md5(dataset, sqlite_engine, tmpdir) == expected
+# @pytest.mark.parametrize("dataset, expected", db_md5)
+# def test_sqlite_regression(dataset, expected, tmpdir):
+#     """Check for sqlite regression"""
+#     dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb.sqlite'))
+#     sqlite_engine.opts = {'engine': 'sqlite', 'file': dbfile, 'table_name': '{db}_{table}'}
+#     assert get_csv_md5(dataset, sqlite_engine, tmpdir) == expected
 
 
 # @pytest.mark.parametrize("dataset, expected", db_md5)
@@ -84,8 +84,8 @@ def test_sqlite_regression(dataset, expected, tmpdir):
 #     mysql_engine.opts = {'engine': 'mysql', 'user': 'travis', 'password': '', 'host': 'localhost', 'port': 3306,
 #                          'database_name': 'testdb', 'table_name': '{db}.{table}'}
 #     assert get_csv_md5(dataset, mysql_engine, tmpdir) == expected
-#
-#
+
+
 # @pytest.mark.parametrize("dataset, expected", db_md5)
 # def test_xmlengine_regression(dataset, expected, tmpdir):
 #     """Check for xmlenginee regression"""
@@ -107,9 +107,9 @@ def test_sqlite_regression(dataset, expected, tmpdir):
 #     assert get_csv_md5(dataset, csv_engine, tmpdir) == expected
 #
 #
-# @pytest.mark.parametrize("dataset, expected", download_md5)
-# def test_download_regression(dataset, expected):
-#     """Check for regression for a particular dataset downloaded only"""
-#     os.system("retriever download {0} -p raw_data/{0}".format(dataset))
-#     current_md5 = getmd5(data="raw_data/{0}".format(dataset), data_type='dir', mode="rU")
-#     assert current_md5 == expected
+@pytest.mark.parametrize("dataset, expected", download_md5)
+def test_download_regression(dataset, expected):
+    """Check for regression for a particular dataset downloaded only"""
+    os.system("retriever download {0} -p raw_data/{0}".format(dataset))
+    current_md5 = getmd5(data="raw_data/{0}".format(dataset), data_type='dir', mode="rU")
+    assert current_md5 == expected
