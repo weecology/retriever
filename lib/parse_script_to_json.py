@@ -7,7 +7,7 @@ SCRIPT_DIR = "../scripts/"
 
 def parse_script_to_json(script_file, location=SCRIPT_DIR):
 
-    definition = open(os.path.join(location, script_file) + ".script", 'rb')
+    definition = open(os.path.join(location, script_file) + ".script", 'r')
     values = {}
     tables = []
     last_table = {}
@@ -16,7 +16,7 @@ def parse_script_to_json(script_file, location=SCRIPT_DIR):
     urls = {}
 
 
-    for line in [line.strip() for line in definition]:
+    for line in [str(line).strip() for line in definition]:
         if line and ':' in line and not line[0] == '#':
 
             split_line = [a.strip() for a in line.split(":")]

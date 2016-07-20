@@ -15,8 +15,6 @@ from retriever.lib.models import Table, Cleanup, correct_invalid_value
 SCRIPT = HtmlTableTemplate(%s)""",
 }
 
-JSON_DIR = "../scripts/"
-
 
 def compile_script(script_file):
     definition = open(script_file + ".script", 'r')
