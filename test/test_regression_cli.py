@@ -98,14 +98,14 @@ def teardown_module():
 #     """Check for jsonenginee regression"""
 #     json_engine.opts = {'engine': 'json', 'table_name': 'output_file_{table}.json'}
 #     assert get_csv_md5(dataset, json_engine, tmpdir) == expected
-#
-#
-# @pytest.mark.parametrize("dataset, expected", db_md5)
-# def test_csv_regression(dataset, expected, tmpdir):
-#     """Check csv regression"""
-#     csv_engine.opts = {'engine': 'csv', 'table_name': 'output_file_{table}.csv'}
-#     assert get_csv_md5(dataset, csv_engine, tmpdir) == expected
-#
+
+
+@pytest.mark.parametrize("dataset, expected", db_md5)
+def test_csv_regression(dataset, expected, tmpdir):
+    """Check csv regression"""
+    csv_engine.opts = {'engine': 'csv', 'table_name': 'output_file_{table}.csv'}
+    assert get_csv_md5(dataset, csv_engine, tmpdir) == expected
+
 #
 @pytest.mark.parametrize("dataset, expected", download_md5)
 def test_download_regression(dataset, expected):
