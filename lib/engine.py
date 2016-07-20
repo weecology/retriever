@@ -104,6 +104,7 @@ class Engine(object):
         pos = 0
         for line in real_lines:
             if not self.table.fixed_width:
+                line = line.replace('\n', '')
                 line = line.strip()
             if line:
                 self.table.record_id += 1
@@ -132,6 +133,7 @@ class Engine(object):
                                    for n in range(len(linevalues))]
                 except Exception as e:
                     self.warning('Exception in line %s: %s' % (self.table.record_id, e))
+                    exit()
                     continue
                 try:
                     insert_stmt = self.insert_statement(cleanvalues)
