@@ -22,11 +22,12 @@ if current_platform != 'windows':
     import pwd
 
 VERSION = __version__
-MASTER = True
+MASTER = False
 COPYRIGHT = "Copyright (C) 2011-2016 Weecology University of Florida"
 REPO_URL = "https://raw.github.com/weecology/retriever/"
 MASTER_BRANCH = REPO_URL + "master/"
-REPOSITORY = MASTER_BRANCH if MASTER else REPO_URL + VERSION + "/"
+JSON_BRANCH = REPO_URL + "scripts-to-json/"
+REPOSITORY = JSON_BRANCH if not MASTER else REPO_URL + VERSION + "/"
 
 # create the necessary directory structure for storing scripts/raw_data
 # in the ~/.retriever directory
@@ -69,13 +70,15 @@ def MODULE_LIST(force_compile=False):
         to_compile = [
             file for file in os.listdir(search_path) if file[-5:] == ".json" and
             file[0] != "_" and (
-                (not isfile(join(search_path, file[:-7] + '.py'))) or (
-                    isfile(join(search_path, file[:-7] + '.py')) and (
-                        getmtime(join(search_path, file[:-7] + '.py')) < getmtime(
+                (not isfile(join(search_path, file[:-5] + '.py'))) or (
+                    isfile(join(search_path, file[:-5] + '.py')) and (
+                        getmtime(join(search_path, file[:-5] + '.py')) < getmtime(
                             join(search_path, file)))) or force_compile)]
         for script in to_compile:
             script_name = '.'.join(script.split('.')[:-1])
+            # raise Exception(join(search_path, script_name))
             compile_json(join(search_path, script_name))
+            print(join(search_path, script_name))
 
         files = [file for file in os.listdir(search_path)
                  if file[-3:] == ".py" and file[0] != "_" and
