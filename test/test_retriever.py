@@ -1,8 +1,14 @@
 """Tests for the EcoData Retriever"""
 from future import standard_library
 standard_library.install_aliases()
+from imp import reload
 
 import os
+
+import sys
+reload(sys)
+if hasattr(sys, 'setdefaultencoding'):
+    sys.setdefaultencoding('utf-8')
 from io import StringIO
 from retriever.lib.engine import Engine
 from retriever.lib.table import Table
@@ -24,18 +30,15 @@ test_engine.script = BasicTextTemplate(tables={'test': test_engine.table},
                                        shortname='test')
 test_engine.opts = {'database_name': '{db}_abc'}
 HOMEDIR = os.path.expanduser('~')
-test_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 def setup_module():
     """"change directory to test directory"""
-    dir_path = os.path.dirname(os.path.abspath(__file__))
-    os.chdir(dir_path)
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 
 def teardown_method():
     """Cleanup temporary output files after testing"""
-    os.system("rm -r output*")
     os.chdir("..")
 
 
@@ -43,6 +46,13 @@ def test_auto_get_columns():
     """Basic test of getting column labels from header"""
     test_engine.table.delimiter = ","
     columns, column_values = test_engine.table.auto_get_columns("a,b,c,d")
+    assert columns == [['a', None], ['b', None], ['c', None], ['d', None]]
+
+
+def test_auto_get_columns_extra_whitespace():
+    """Test getting column labels from header with extra whitespace"""
+    test_engine.table.delimiter = ","
+    columns, column_values = test_engine.table.auto_get_columns(" a ,b, c,d  ")
     assert columns == [['a', None], ['b', None], ['c', None], ['d', None]]
 
 
@@ -137,7 +147,6 @@ def test_find_file_present():
     test_engine.script.shortname = 'AvianBodySize'
     assert test_engine.find_file('avian_ssd_jan07.txt') == os.path.normpath(
         'raw_data/AvianBodySize/avian_ssd_jan07.txt')
-    os.chdir('..')
 
 
 def test_format_data_dir():
@@ -191,8 +200,9 @@ def test_json2csv():
     """Test json2csv function
     creates a json file and tests the md5 sum calculation"""
     json_file = create_file("""[ {"User": "Alex", "Country": "US", "Age": "25"} ]""", 'output.json')
-    output_json = json2csv(json_file, "test/output_json.csv", header_values=["User", "Country", "Age"])
+    output_json = json2csv(json_file, "output_json.csv", header_values=["User", "Country", "Age"])
     obs_out = file_2string(output_json)
+    os.remove(output_json)
     assert obs_out == 'User,Country,Age\nAlex,US,25'
 
 
@@ -208,8 +218,9 @@ def test_xml2csv():
                            "<Country>US</Country>S\n"
                            "<Age>24</Age>\n"
                            "</row>\n</root>", 'output.xml')
-    output_xml = xml2csv(xml_file, "test/output_xml.csv", header_values=["User", "Country", "Age"])
+    output_xml = xml2csv(xml_file, "output_xml.csv", header_values=["User", "Country", "Age"])
     obs_out = file_2string(output_xml)
+    os.remove(output_xml)
     assert obs_out == "User,Country,Age\nAlex,US,25\nAlex,PT,25\nBen,US,24"
 
 
@@ -218,6 +229,7 @@ def test_sort_file():
     data_file = create_file("Ben,US,24\nAlex,US,25\nAlex,PT,25")
     out_file = sort_file(data_file)
     obs_out = file_2string(out_file)
+    os.remove(out_file)
     assert obs_out == 'Alex,PT,25\nAlex,US,25\nBen,US,24\n'
 
 
@@ -226,4 +238,5 @@ def test_sort_csv():
     data_file = create_file("User,Country,Age\nBen,US,24\nAlex,US,25\nAlex,PT,25")
     out_file = sort_csv(data_file)
     obs_out = file_2string(out_file)
+    os.remove(out_file)
     assert obs_out == "User,Country,Age\nAlex,PT,25\nAlex,US,25\nBen,US,24\n"

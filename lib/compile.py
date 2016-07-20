@@ -19,7 +19,7 @@ JSON_DIR = "../scripts/"
 
 
 def compile_script(script_file):
-    definition = open(script_file + ".script", 'rb')
+    definition = open(script_file + ".script", 'r')
 
     values = {}
     urls = {}
@@ -138,7 +138,7 @@ def compile_script(script_file):
         template = "default"
     script_contents = (script_templates[template] % script_desc)
 
-    new_script = open(script_file + '.py', 'wb')
+    new_script = open(script_file + '.py', 'w')
     new_script.write(script_contents)
     new_script.close()
 

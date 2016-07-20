@@ -59,6 +59,7 @@ class engine(Engine):
         self.output_file = open(self.table_name(), "w")
         self.output_file.write("[")
         self.table_names.append((self.output_file, self.table_name()))
+        self.auto_column_number = 1
 
     def disconnect(self):
         """Close out the JSON with a ('\n]}') and close the file
@@ -90,7 +91,7 @@ class engine(Engine):
 
     def format_insert_value(self, value, datatype):
         """Formats a value for an insert statement"""
-        v = Engine.format_insert_value(self, value, datatype)
+        v = Engine.format_insert_value(self, value, datatype, escape=False)
         if v == 'null':
             return ""
         try:
@@ -103,19 +104,15 @@ class engine(Engine):
     def insert_statement(self, values):
         if not hasattr(self, 'auto_column_number'):
             self.auto_column_number = 1
-        offset = 0
-        for i in range(len(self.table.columns)):
-            column = self.table.columns[i]
-            if 'auto' in column[1][0]:
-                values = values[:i + offset] + \
-                         [self.auto_column_number] + values[i + offset:]
-                self.auto_column_number += 1
-                offset += 1
 
-        keys = [columnname[0] for columnname in self.table.columns]
+        if self.table.columns[0][1][0][3:] == 'auto':
+            values = [str(self.auto_column_number)] + values
+            self.auto_column_number += 1
+
+        keys = self.table.get_insert_columns(join=False, create=True)
         tuples = (zip(keys, values))
         write_data = OrderedDict(tuples)
-        return json.dumps(write_data)
+        return json.dumps(write_data, ensure_ascii=False)
 
     def table_exists(self, dbname, tablename):
         """Check to see if the data file currently exists"""
@@ -124,7 +121,7 @@ class engine(Engine):
 
     def to_csv(self):
         """Export table from json engine to CSV file"""
-        keys = [columnname[0] for columnname in self.table.columns]
+        keys = self.table.get_insert_columns(join=False, create=True)
         csv_outfile = json2csv(self.table_name(), header_values=keys)
         return sort_csv(csv_outfile)
 

@@ -7,15 +7,16 @@ The main() function can be used for bootstrapping.
 
 """
 from __future__ import print_function
+from __future__ import absolute_import
 from builtins import str
-
+from imp import reload
 import os
 import platform
 import sys
 # sys removes the setdefaultencoding method at startup; reload to get it back
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
-    # set default encoding to latin-1 to avoid ascii encoding issues
+    # set default encoding to latin-1 to decode source text
     sys.setdefaultencoding('latin-1')
 from retriever import VERSION, MASTER, SCRIPT_LIST, sample_script, current_platform
 from retriever.engines import engine_list
@@ -140,7 +141,7 @@ def main():
             print("Available datasets : {}\n".format(len(all_scripts)))
 
             if args.l==None:
-                import lscolumns
+                from retriever import lscolumns
                 lscolumns.printls(sorted(all_scripts, key=lambda s: s.lower()))
             else:
                 count = 1

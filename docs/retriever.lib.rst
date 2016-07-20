@@ -20,14 +20,6 @@ retriever.lib.compile module
     :undoc-members:
     :show-inheritance:
 
-retriever.lib.download module
------------------------------
-
-.. automodule:: retriever.lib.download
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 retriever.lib.engine module
 ---------------------------
 

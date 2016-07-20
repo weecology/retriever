@@ -2,8 +2,11 @@ from future import standard_library
 standard_library.install_aliases()
 from builtins import next
 from builtins import object
+from builtins import str
+
 import csv
 import io
+import sys
 from functools import reduce
 
 from retriever.lib.cleanup import *
@@ -36,15 +39,8 @@ class Table(object):
         Identifies the column names from the header row.
         Replaces database keywords with alternatives.
         Replaces special characters and spaces.
-
         """
-        if self.fixed_width:
-            column_names = self.extract_values(header)
-        else:
-            # Get column names from header row
-            values = self.split_on_delimiter(header)
-            column_names = [name.strip() for name in values]
-
+        column_names = self.extract_values(header)
         columns = [self.clean_column_name(x) for x in column_names]
         column_values = {x: [] for x in columns if x}
         self.cleaned_columns = True
@@ -52,7 +48,6 @@ class Table(object):
 
     def clean_column_name(self, column_name):
         """Clean column names using the expected sql guidelines
-
         remove leading whitespaces, replace sql key words, etc..
         """
         column_name = column_name.lower().strip()
@@ -101,6 +96,14 @@ class Table(object):
         return column_name
 
     def split_on_delimiter(self, line):
+        """Splits a line using the table's delimiter
+
+        This function does not work with fixed-width data and is only a
+        helper function for `extract_values`. `extract_values` should be
+        used instead when there is a general need to split the values in
+        a line of data.
+
+        """
         dialect = csv.excel
         dialect.escapechar = "\\"
         r = csv.reader([line], dialect=dialect, delimiter=self.delimiter)
@@ -110,20 +113,24 @@ class Table(object):
         """Combine a list of values into a line of csv data"""
         dialect = csv.excel
         dialect.escapechar = "\\"
-        writer_file =  io.BytesIO()
+        if sys.version_info >= (3, 0):
+            writer_file =  io.StringIO()
+        else:
+            writer_file =  io.BytesIO()
+
+
         writer = csv.writer(writer_file, dialect=dialect, delimiter=self.delimiter)
         writer.writerow(line_as_list)
         return writer_file.getvalue()
 
     def values_from_line(self, line):
         linevalues = []
-        if (self.pk and self.contains_pk is False):
-            column = 0
+        if self.columns[0][1][0] == 'pk-auto':
+            column = 1
         else:
-            column = -1
+            column = 0
 
         for value in self.extract_values(line):
-            column += 1
             try:
                 this_column = self.columns[column][1][0]
 
@@ -139,12 +146,16 @@ class Table(object):
             except:
                 # too many values for columns; ignore
                 pass
-
+            column += 1
         return linevalues
 
     def extract_values(self, line):
-        """Given a line of data, this function returns a list of the individual
-        data values."""
+        """Return list of data values from a line of data represented as a string
+
+        This function correctly handles both fixed-width and delimited data and
+        should be used instead of `split_on_delimiter` when splitting lines.
+
+        """
         if self.fixed_width:
             pos = 0
             values = []
@@ -155,7 +166,7 @@ class Table(object):
         else:
             return self.split_on_delimiter(line)
 
-    def get_insert_columns(self, join=True):
+    def get_insert_columns(self, join=True, create=False):
         """Gets a set of column names for insert statements."""
         columns = ""
         if not self.cleaned_columns:
@@ -165,10 +176,11 @@ class Table(object):
             self.cleaned_columns = True
         for item in self.columns:
             thistype = item[1][0]
-            if ((thistype != "skip") and (thistype != "combine") and
-                    (self.contains_pk is True or thistype[0:3] != "pk-")):
+            if (thistype != "skip") and (thistype != "combine"):
                 columns += item[0] + ", "
         columns = columns.rstrip(', ')
+        if not create and self.columns[0][0] == 'record_id':
+            columns = columns.replace("record_id,", "", 1).strip()
         if join:
             return columns
         else:
@@ -181,4 +193,5 @@ class Table(object):
             for column in self.columns:
                 if item == column[0]:
                     columns.append(column[1][0])
+
         return columns

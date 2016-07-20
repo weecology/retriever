@@ -7,6 +7,7 @@ scripts.
 from __future__ import print_function
 from builtins import str
 from builtins import input
+from builtins import next
 import difflib
 import os
 import sys
@@ -54,7 +55,7 @@ def get_saved_connection(engine_name):
     from connections.config."""
     parameters = {}
     if os.path.isfile(config_path):
-        config = open(config_path, "rb")
+        config = open(config_path, "r")
         for line in config:
             values = line.rstrip('\n').split(',')
             if values[0] == engine_name:
@@ -69,15 +70,15 @@ def save_connection(engine_name, values_dict):
     """Saves connection information for an engine in connections.config."""
     lines = []
     if os.path.isfile(config_path):
-        config = open(config_path, "rb")
+        config = open(config_path, "r")
         for line in config:
             if line.split(',')[0] != engine_name:
                 lines.append('\n' + line.rstrip('\n'))
         config.close()
         os.remove(config_path)
-        config = open(config_path, "wb")
+        config = open(config_path, "w")
     else:
-        config = open(config_path, "wb")
+        config = open(config_path, "w")
     if "file" in values_dict:
         values_dict["file"] = os.path.abspath(values_dict["file"])
     config.write(engine_name + "," + str(values_dict))
@@ -90,7 +91,7 @@ def get_default_connection():
     """Gets the first (most recently used) stored connection from
     connections.config."""
     if os.path.isfile(config_path):
-        config = open(config_path, "rb")
+        config = open(config_path, "r")
         default_connection = config.readline().split(",")[0]
         config.close()
         return default_connection
@@ -176,11 +177,7 @@ def json2csv(input_file, output_file=None, header_values=None):
     Alex,US,25
     Alex,PT,25
     """
-    try:
-        file_out = open(input_file, 'r')
-    except IOError as e:
-        print("I/O error({0}): {1}".format(e.errno, e.strerror))
-
+    file_out = open(input_file, 'r')
     # set output file name and write header
     if output_file is None:
         output_file = str(os.path.splitext(os.path.basename(input_file))[0]) + ".csv"
@@ -282,7 +279,10 @@ def getmd5(data, data_type='lines', mode='rb'):
     checksum = md5()
     if data_type == 'lines':
         for line in data:
-            checksum.update(line)
+            if type(line) == bytes:
+                checksum.update(line)
+            else:
+                checksum.update(str(line).encode())
         return checksum.hexdigest()
     files = []
     if data_type == 'file':
@@ -294,7 +294,10 @@ def getmd5(data, data_type='lines', mode='rb'):
     for file_path in files:
         lines = open(file_path, mode)
         for line in lines:
-            checksum.update(line)
+            if type(line) == bytes:
+                checksum.update(line)
+            else:
+                checksum.update(str(line).encode())
     return checksum.hexdigest()
 
 
@@ -324,12 +327,15 @@ def sort_csv(filename):
     csv_reader_infile = csv.reader(input_file)
 
     # The first entry is the header line
-    infields = csv_reader_infile.next()
+    infields = next(csv_reader_infile)
 
     #  write the data to a temporary file and sort it
-    file_temp = open(os.path.normpath("tempfile"), 'wb')
+    file_temp = open(os.path.normpath("tempfile"), 'w')
 
-    csv_writer = csv.writer(file_temp, dialect='excel', escapechar='\\')
+    if os.name == 'nt':
+        csv_writer = csv.writer(file_temp, dialect='excel', escapechar='\\', lineterminator='\n')
+    else:
+        csv_writer = csv.writer(file_temp, dialect='excel', escapechar='\\')
     for row in csv_reader_infile:
         csv_writer.writerow(row)
     file_temp.close()
@@ -341,14 +347,17 @@ def sort_csv(filename):
     # write sorted row content to csv filename with header "infields"
     tmp = open(sorted_txt, "rU")
     in_txt = csv.reader(tmp, delimiter=',')
-    out_csv = csv.writer(open(filename, 'wb'))
+    if os.name == 'nt':
+        out_csv = csv.writer(open(filename, 'w'), lineterminator='\n')
+    else:
+        out_csv = csv.writer(open(filename, 'w'))
     out_csv.writerow(infields)
     out_csv.writerows(in_txt)
     tmp.close()
     os.remove(os.path.normpath("tempfile"))
     return filename
 
-#     output_file = os.path.normpath(os.path.join(test_dir, output))
+
 def create_file(data, output='output_file'):
     """Writes a string to a file for use by tests"""
     output_file = os.path.normpath(output)
