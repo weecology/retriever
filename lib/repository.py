@@ -22,6 +22,7 @@ executable_name = "retriever"
 def download_from_repository(filepath, newpath, repo=REPOSITORY):
     """Downloads the latest version of a file from the repository."""
     try:
+        raise Exception(repo+ filepath, newpath)
         filename = filepath.split('/')[-1]
         urllib.request.urlretrieve(repo + filepath, newpath)
     except:
