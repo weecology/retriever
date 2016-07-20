@@ -16,7 +16,7 @@ import sys
 # sys removes the setdefaultencoding method at startup; reload to get it back
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
-    # set default encoding to utf-8 to decode source text
+    # set default encoding to latin-1 to decode source text
     sys.setdefaultencoding('latin-1')
 from retriever import VERSION, MASTER, SCRIPT_LIST, sample_script, current_platform
 from retriever.engines import engine_list
