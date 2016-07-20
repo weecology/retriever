@@ -155,19 +155,19 @@ def compile_json(json_file):
     for (key,value) in json_object.items():
 
         if key == "title":
-            values["name"] = "'"+value+"'"
+            values["name"] = "\""+value+"\""
 
         elif key == "name":
-            values["shortname"] = "'"+value+"'"
+            values["shortname"] = "\""+value+"\""
 
         elif key == "description":
-            values["description"] = "'"+value+"'"
+            values["description"] = "\""+value+"\""
 
         elif key == "homepage":
-            values["ref"] = "'"+value+"'"
+            values["ref"] = "\""+value+"\""
 
         elif key == "citation":
-            values["citation"] = "'"+value+"'"
+            values["citation"] = "\""+value+"\""
 
         elif key == "keywords":
             values["tags"] = value
@@ -255,6 +255,6 @@ def compile_json(json_file):
         template = "default"
     script_contents = (script_templates[template] % script_desc)
 
-    new_script = open(json_file + '.py', 'wb')
+    new_script = open(json_file + '.py', 'w')
     new_script.write(script_contents)
     new_script.close()
