@@ -8,11 +8,15 @@ see if there are any errors. It does not check the values in the database.
 
 """
 from __future__ import print_function
-
+from __future__ import absolute_import
 import os
 import sys
 from retriever.lib.tools import choose_engine
 from retriever import MODULE_LIST, ENGINE_LIST, SCRIPT_LIST
+
+reload(sys)
+if hasattr(sys, 'setdefaultencoding'):
+    sys.setdefaultencoding('latin-1')
 
 MODULE_LIST = MODULE_LIST()
 ENGINE_LIST = ENGINE_LIST()
@@ -24,7 +28,8 @@ if len(sys.argv) > 1:
     ]
 SCRIPT_LIST = SCRIPT_LIST()
 TEST_ENGINES = {}
-IGNORE = ["AvianBodyMass", "FIA"]
+IGNORE = ["AvianBodyMass", "FIA", "Bioclim", "PRISM", "vertnet","NPN", "mammsupertree", "eBirdOD"]
+IGNORE = [dataset.lower() for dataset in IGNORE]
 
 for engine in ENGINE_LIST:
     opts = {}
@@ -33,24 +38,27 @@ for engine in ENGINE_LIST:
 
     try:
         TEST_ENGINES[engine.abbreviation] = choose_engine(opts)
+        TEST_ENGINES[engine.abbreviation].get_input()
         TEST_ENGINES[engine.abbreviation].get_cursor()
     except:
         TEST_ENGINES[engine.abbreviation] = None
         pass
 
-
 errors = []
 for module in MODULE_LIST:
     for (key, value) in list(TEST_ENGINES.items()):
-        if value and module.SCRIPT.shortname not in IGNORE:
-            print("==>", module.__name__, value.name)
-            try:
-                module.SCRIPT.download(value)
-            except KeyboardInterrupt:
-                pass
-            except Exception as e:
-                print("ERROR.")
-                errors.append((key, module.__name__, e))
+        if module.SCRIPT.shortname.lower() not in IGNORE:
+            if value != None:
+                print("==>", module.__name__, value.name, "..........", module.SCRIPT.shortname)
+                try:
+                    module.SCRIPT.download(value)
+                except KeyboardInterrupt:
+                    pass
+                except Exception as e:
+                    print("ERROR.")
+                    errors.append((key, module.__name__, e))
+            else:
+                errors.append((key, "No connection detected......" + module.SCRIPT.shortname))
 
 print('')
 if errors:

@@ -25,12 +25,12 @@ class main(Script):
         self.name = "Alwyn H. Gentry Forest Transect Dataset"
         self.shortname = "Gentry"
         self.urls = {"stems": "http://www.mobot.org/mobot/gentry/123/all_Excel.zip",
-                     "sites": "http://www.ecologicaldata.org/sites/default/files/gentry_sites_data.txt",
+                     "sites": "https://ndownloader.figshare.com/files/5515373",
                      "species": "",
                      "counts": ""}
         self.tags = ["Taxon > Plants", "Spatial Scale > Global",
                      "Data Type > Observational"]
-        self.ref = "http://www.wlbcenter.org/gentry_data.htm"
+        self.ref = "http://www.mobot.org/mobot/research/gentry/welcome.shtml"
         self.addendum = """Researchers who make use of the data in publications are requested to acknowledge Alwyn H. Gentry, the Missouri Botanical Garden, and collectors who assisted Gentry or contributed data for specific sites. It is also requested that a reprint of any publication making use of the Gentry Forest Transect Data be sent to:
 
 Bruce E. Ponman
@@ -42,7 +42,7 @@ U.S.A. """
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
 
-        self.engine.auto_create_table(Table("sites"), url=self.urls["sites"])
+        self.engine.auto_create_table(Table("sites"), url=self.urls["sites"], filename='gentry_sites.csv')
         self.engine.insert_data_from_url(self.urls["sites"])
 
         self.engine.download_file(self.urls["stems"], "all_Excel.zip")
@@ -56,7 +56,7 @@ U.S.A. """
         # Currently all_Excel.zip is missing CURUYUQU.xls
         # Download it separately and add it to the file list
         if not self.engine.find_file('CURUYUQU.xls'):
-            self.engine.download_file("http://www.mobot.org/mobot/gentry/123/samerica/CURUYUQU.xls", "CURUYUQU.xls", clean_line_endings=False)
+            self.engine.download_file("http://www.mobot.org/mobot/gentry/123/samerica/CURUYUQU.xls", "CURUYUQU.xls")
             filelist.append('CURUYUQU.xls')
 
         lines = []

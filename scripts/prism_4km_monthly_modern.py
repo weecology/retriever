@@ -6,7 +6,7 @@ standard_library.install_aliases()
 from builtins import range
 
 from retriever.lib.templates import Script
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 class main(Script):
     def __init__(self, **kwargs):

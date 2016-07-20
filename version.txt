@@ -15,7 +15,6 @@ EA_Chuetal2013.script
 EA_Luo.script
 EA_Pelissier2011.script
 EA_Turcotte.script
-sev_small_mammals.py
 EA_ernest2003.script
 baad.py
 EA_Wilman_2014.script
@@ -28,7 +27,6 @@ EA_petraitis2008.py
 EA_Matter_2014.script
 EA_zachmann2010.script
 EA_lynch2013.script
-EA_Dell.py
 USDA_plants.script
 eBird_observation.py
 bioclim_2pt5.py

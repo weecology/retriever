@@ -1,18 +1,25 @@
 from __future__ import print_function
-from builtins import object
+from __future__ import division
 from future import standard_library
 standard_library.install_aliases()
+from builtins import object
 from builtins import range
 from builtins import input
+from builtins import zip
+from builtins import next
+from builtins import str
 import sys
 import os
 import getpass
 import zipfile
 import gzip
 import tarfile
-import urllib
 import csv
-
+import io
+if sys.version_info[0] >= 3:
+    from urllib.request import urlretrieve
+else:
+    from urllib import urlretrieve
 from retriever import DATA_SEARCH_PATHS, DATA_WRITE_PATH
 from retriever.lib.cleanup import no_cleanup
 from retriever.lib.warning import Warning
@@ -29,7 +36,7 @@ class Engine(object):
     _cursor = None
     datatypes = []
     required_opts = []
-    pkformat = "%s PRIMARY KEY"
+    pkformat = "%s PRIMARY KEY %s "
     script = None
     debug = False
     warnings = []
@@ -65,8 +72,11 @@ class Engine(object):
             lines = gen_from_source(data_source)
             real_lines = []
             for line in lines:
-                split_line = self.table.split_on_delimiter(line)
+                split_line = self.table.extract_values(line)
                 initial_cols = len(self.table.columns) - (3 if hasattr(self.table, "ct_names") else 2)
+                # add one if auto increment is not set to get the right initial columns
+                if not self.table.columns[0][1][0] == "pk-auto":
+                    initial_cols += 1
                 begin = split_line[:initial_cols]
                 rest = split_line[initial_cols:]
                 n = 0
@@ -91,11 +101,25 @@ class Engine(object):
             real_line_length = sum(1 for _ in len_source)
 
         total = self.table.record_id + real_line_length
+        pos = 0
         for line in real_lines:
             if not self.table.fixed_width:
                 line = line.strip()
             if line:
                 self.table.record_id += 1
+
+                # Check for single row distributed over multiple lines
+                val_list = self.table.extract_values(line)
+                while len(val_list) < len(self.table.get_column_datatypes()):
+                    line = line.rstrip('\n')
+                    if type(real_lines) != list:
+                        line += next(real_lines)
+                    else:
+                        line += real_lines[pos+1]
+                        real_lines.pop(pos+1)
+                    val_list = (self.table.extract_values(line))
+                pos += 1
+
                 linevalues = self.table.values_from_line(line)
 
                 types = self.table.get_column_datatypes()
@@ -119,7 +143,6 @@ class Engine(object):
                     if self.debug:
                         print(cleanvalues)
                     raise
-
                 try:
                     update_frequency = int(self.update_frequency)
                 except:
@@ -131,13 +154,11 @@ class Engine(object):
                     prompt = "Inserting rows to " + self.table_name() + ": "
                     prompt += str(self.table.record_id) + " / " + str(total)
                     sys.stdout.write(prompt + "\b" * len(prompt))
-
                 try:
                     self.execute(insert_stmt, commit=False)
                 except:
                     print(insert_stmt)
                     raise
-
         self.connection.commit()
 
     def auto_create_table(self, table, url=None, filename=None, pk=None):
@@ -154,7 +175,7 @@ class Engine(object):
 
         source = (skip_rows,
                   (self.table.column_names_row - 1,
-                   (open, (file_path, "rb"))))
+                   (io.open, (file_path, 'r', -1, 'latin-1'))))
         lines = gen_from_source(source)
 
         header = next(lines)
@@ -162,19 +183,13 @@ class Engine(object):
 
         source = (skip_rows,
                   (self.table.header_rows,
-                   (open, (file_path, "rb"))))
+                   (io.open, (file_path, 'r', -1, 'latin-1'))))
 
         if not self.table.delimiter:
             self.auto_get_delimiter(header)
 
         if not self.table.columns:
             lines = gen_from_source(source)
-
-            if pk is None:
-                self.table.columns = [("record_id", ("pk-auto",))]
-            else:
-                self.table.columns = []
-                self.table.contains_pk = True
 
             columns, column_values = self.table.auto_get_columns(header)
 
@@ -197,7 +212,6 @@ class Engine(object):
                 n += 1
         else:
             lines_to_scan = source
-
         column_types = [('int',) for i in range(len(columns))]
         max_lengths = [0 for i in range(len(columns))]
 
@@ -234,7 +248,6 @@ class Engine(object):
                             if column_types[i][0] == 'char':
                                 if len(str(value)) > column_types[i][1]:
                                     column_types[i][1] = max_lengths[i]
-
                     except IndexError:
                         pass
 
@@ -243,6 +256,11 @@ class Engine(object):
             column[1] = column_types[i]
             if pk == column[0]:
                 column[1][0] = "pk-" + column[1][0]
+        if pk is None and columns[0][1][0] == 'pk-auto':
+            self.table.columns = [("record_id", ("pk-auto",))]
+            self.table.contains_pk = True
+        else:
+            self.table.columns = []
 
         for column in columns:
             self.table.columns.append((column[0], tuple(column[1])))
@@ -261,32 +279,38 @@ class Engine(object):
 
     def convert_data_type(self, datatype):
         """Converts Retriever generic data types to database platform specific
-        data types"""
-        thistype = datatype[0]
+        data types
+        """
+        # get the type from the dataset variables
+        key = datatype[0]
         thispk = False
-        if thistype[0:3] == "pk-":
-            thistype = thistype.lstrip("pk-")
+        if key[0:3] == "pk-":
+            key = key[3:]
             thispk = True
-        elif thistype[0:3] == "ct-":
-            thistype = thistype[3:]
+        elif key[0:3] == "ct-":
+            key = key[3:]
 
-        if thistype in list(self.datatypes.keys()):
-            thistype = self.datatypes[thistype]
-
+        # format the dataset type to match engine specific type
+        thistype = ""
+        if key in list(self.datatypes.keys()):
+            thistype = self.datatypes[key]
             if isinstance(thistype, tuple):
-                if len(datatype) > 1 and datatype[1] > 0:
+                if datatype[0] == 'pk-auto':
+                    pass
+                elif len(datatype) > 1:
                     thistype = thistype[1] + "(" + str(datatype[1]) + ")"
                 else:
                     thistype = thistype[0]
             else:
-                if len(datatype) > 1 and datatype[1] > 0:
+                if len(datatype) > 1:
                     thistype += "(" + str(datatype[1]) + ")"
-        else:
-            thistype = ""
 
+        # set the PRIMARY KEY
         if thispk:
-            thistype = self.pkformat % thistype
-
+            if isinstance(thistype, tuple):
+                thistype = self.pkformat % thistype
+            else:
+                thistype = self.pkformat % (thistype, "")
         return thistype
 
     def create_db(self):
@@ -345,17 +369,14 @@ class Engine(object):
             print("Couldn't create table (%s). Trying to continue anyway." % e)
 
     def create_table_statement(self):
-        """Returns a SQL statement to create a table."""
+        """Returns a SQL statement to create a table"""
         create_stmt = "CREATE TABLE " + self.table_name() + " ("
-
-        columns = self.table.get_insert_columns(join=False)
-
+        columns = self.table.get_insert_columns(join=False, create=True)
         types = []
         for column in self.table.columns:
             for column_name in columns:
                 if column[0] == column_name:
                     types.append(self.convert_data_type(column[1]))
-
         if self.debug:
             print(columns)
 
@@ -375,33 +396,23 @@ class Engine(object):
                 name = self.script.shortname
             except AttributeError:
                 name = "{db}"
-
         try:
             db_name = self.opts["database_name"].format(db=name)
         except KeyError:
             db_name = name
-
         return db_name
 
-    def download_file(self, url, filename, clean_line_endings=True):
+    def download_file(self, url, filename):
         """Downloads a file to the raw data directory."""
         if not self.find_file(filename):
             path = self.format_filename(filename)
             self.create_raw_data_dir()
             print("Downloading " + filename + "...")
-            file = urllib.request.urlopen(url)
-            local_file = open(path, 'wb')
-            if clean_line_endings and (filename.split('.')[-1].lower() not in ["exe", "zip", "xls"]):
-                local_file.write(file.read().replace("\r\n", "\n").replace("\r", "\n"))
-            else:
-                local_file.write(file.read())
-            local_file.close()
-            file.close()
+            urlretrieve(url, path)
 
     def download_files_from_archive(self, url, filenames, filetype="zip",
                                     keep_in_dir=False, archivename=None):
         """Downloads files from an archive into the raw data directory.
-
         """
         downloaded = False
         if archivename:
@@ -417,7 +428,6 @@ class Engine(object):
                 os.makedirs(archivedir)
         else:
             archivebase = ''
-
         for filename in filenames:
             if self.find_file(os.path.join(archivebase, filename)):
                 # Use local copy
@@ -425,22 +435,23 @@ class Engine(object):
             else:
                 self.create_raw_data_dir()
                 if not downloaded:
-                    self.download_file(url, archivename, clean_line_endings=False)
+                    self.download_file(url, archivename)
                     downloaded = True
 
                 if filetype == 'zip':
                     archive = zipfile.ZipFile(archivename)
-                    open_archive_file = archive.open(filename)
+                    open_archive_file = archive.open(filename, 'r')
                 elif filetype == 'gz':
                     # gzip archives can only contain a single file
-                    open_archive_file = gzip.open(archivename)
+                    open_archive_file = gzip.open(archivename, 'r')
                 elif filetype == 'tar':
-                    archive = tarfile.open(filename)
+                    archive = tarfile.open(filename, 'r')
                     open_archive_file = archive.extractfile(filename)
 
                 fileloc = self.format_filename(os.path.join(archivebase,
                                                             os.path.basename(filename)))
-                unzipped_file = open(fileloc, 'wb')
+
+                unzipped_file = open(fileloc, 'w')
                 for line in open_archive_file:
                     unzipped_file.write(line)
                 open_archive_file.close()
@@ -479,8 +490,8 @@ class Engine(object):
         # due to Cyclic imports we can not move this import to the top
         from retriever.lib.tools import sort_csv
         csvfile_output = (self.table_name() + '.csv')
-        csv_out = open(csvfile_output, "wb")
-        csv_writer = csv.writer(csv_out, dialect='excel')
+        csv_out = open(csvfile_output, "w")
+        csv_writer = csv.writer(csv_out, dialect='excel', lineterminator='\n')
         self.get_cursor()
         self.cursor.execute("SELECT * FROM " + self.table_name() + ";")
         row = self.cursor.fetchone()
@@ -495,7 +506,6 @@ class Engine(object):
 
     def final_cleanup(self):
         """Close the database connection."""
-
         if self.warnings:
             print('\n'.join(str(w) for w in self.warnings))
 
@@ -518,9 +528,22 @@ class Engine(object):
         """Returns the full path of a file in the archive directory."""
         return os.path.join(self.format_data_dir(), filename)
 
-    def format_insert_value(self, value, datatype):
-        """Formats a value for an insert statement, for example by surrounding
-        it in single quotes."""
+    def format_insert_value(self, value, datatype, escape=True):
+        """Format a value for an insert statement based on data type
+
+        Different data types need to be formated differently to be properly
+        stored in database management systems. The correct formats are
+        obtained by:
+
+        1. Removing extra enclosing quotes
+        2. Harmonizing null indicators
+        3. Cleaning up badly formatted integers
+        4. Obtaining consistent float representations of decimals
+
+        The optional `escape` argument controls whether additional quotes in
+        strings are escaped, as needed for SQL database management systems
+        (escape=True), or not escaped, as needed for flat file based engines
+        (escape=False)."""
         datatype = datatype.split('-')[-1]
         strvalue = str(value).strip()
 
@@ -529,7 +552,6 @@ class Engine(object):
         if len(strvalue) > 1 and strvalue[0] == strvalue[-1] and strvalue[0] in quotes:
             strvalue = strvalue[1:-1]
         nulls = ("null", "none")
-
         if strvalue.lower() in nulls:
             return "null"
         elif datatype in ("int", "bigint", "bool"):
@@ -543,22 +565,21 @@ class Engine(object):
                 return "null"
         elif datatype in ("double", "decimal"):
             if strvalue:
-                return strvalue
-            else:
-                return "null"
+                try:
+                    decimals = float(strvalue)
+                    return str(decimals)
+                except:
+                    return "null"
         elif datatype == "char":
             if strvalue.lower() in nulls:
                 return "null"
-
-            # automatically escape quotes in string fields
-            if hasattr(self.table, "escape_double_quotes") and self.table.escape_double_quotes:
-                strvalue = self.escape_double_quotes(strvalue)
-            if hasattr(self.table, "escape_single_quotes") and self.table.escape_single_quotes:
-                strvalue = self.escape_single_quotes(strvalue)
-
+            if escape:
+                # automatically escape quotes in string fields
+                if hasattr(self.table, "escape_double_quotes") and self.table.escape_double_quotes:
+                    strvalue = self.escape_double_quotes(strvalue)
+                if hasattr(self.table, "escape_single_quotes") and self.table.escape_single_quotes:
+                    strvalue = self.escape_single_quotes(strvalue)
             return "'" + strvalue + "'"
-            # elif datatype=="bool":
-            # return "'true'" if value else "'false'"
         else:
             return "null"
 
@@ -605,7 +626,7 @@ class Engine(object):
         for inserting bulk data from files can override this function."""
         data_source = (skip_rows,
                        (self.table.header_rows,
-                        (open, (filename, 'r'))))
+                        (io.open, (filename, 'r', -1, 'latin-1'))))
         self.add_to_table(data_source)
 
     def insert_data_from_url(self, url):
@@ -626,17 +647,16 @@ class Engine(object):
         """Returns a SQL statement to insert a set of values."""
         columns = self.table.get_insert_columns()
         types = self.table.get_column_datatypes()
-        columncount = len(self.table.get_insert_columns(False))
+        columncount = len(self.table.get_insert_columns(join=False, create=False))
         insert_stmt = "INSERT INTO " + self.table_name()
         insert_stmt += " (" + columns + ")"
-        insert_stmt += " VALUES ("
+        insert_stmt += "VALUES ("
         for i in range(0, columncount):
             insert_stmt += "%s, "
         insert_stmt = insert_stmt.rstrip(", ") + ");"
         n = 0
         while len(values) < insert_stmt.count("%s"):
-            values.append(self.format_insert_value(None,
-                                                   types[n]))
+            values.append(self.format_insert_value(None, types[n]))
             n += 1
         insert_stmt %= tuple([str(value) for value in values])
         if self.debug:

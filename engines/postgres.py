@@ -1,5 +1,5 @@
 import os
-
+from builtins import str
 from retriever.lib.models import Engine, no_cleanup
 
 
@@ -96,7 +96,7 @@ CSV HEADER"""
     def insert_statement(self, values):
         """Returns a SQL statement to insert a set of values"""
         statement = Engine.insert_statement(self, values)
-        if isinstance(statement, basestring):
+        if isinstance(statement, bytes):
             statement = statement.decode("utf-8", "ignore")
         return statement
 

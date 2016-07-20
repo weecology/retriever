@@ -10,7 +10,7 @@ class engine(Engine):
     name = "SQLite"
     abbreviation = "sqlite"
     datatypes = {
-        "auto": "INTEGER",
+        "auto": ("INTEGER", "AUTOINCREMENT"),
         "int": "INTEGER",
         "bigint": "INTEGER",
         "double": "REAL",
@@ -74,8 +74,10 @@ class engine(Engine):
             filename = os.path.abspath(filename)
             try:
                 bulk_insert_statement = self.get_bulk_insert_statement()
+                line_endings = set(['\n', '\r', '\r\n'])
                 with open(filename, 'r') as data_file:
                     data_chunk = data_file.readlines(CHUNK_SIZE)
+                    data_chunk = [line.rstrip('\r\n') for line in data_chunk if line not in line_endings]
                     del(data_chunk[:self.table.header_rows])
                     while data_chunk:
                         data_chunk_split = [row.split(self.table.delimiter)

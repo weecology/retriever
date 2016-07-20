@@ -53,9 +53,10 @@ class engine(Engine):
 
     def create_table(self):
         """Create the table by creating an empty csv file"""
+        self.auto_column_number = 1
         self.output_file = open(self.table_name(), "w")
         self.output_file.write(
-            ','.join(['"%s"' % c[0] for c in self.table.columns]))
+            ','.join(['"%s"' % c for c in self.table.get_insert_columns(join=False,create=True)]))
 
     def disconnect(self):
         """Close the last file in the dataset"""
@@ -73,7 +74,7 @@ class engine(Engine):
 
     def format_insert_value(self, value, datatype):
         """Formats a value for an insert statement"""
-        v = Engine.format_insert_value(self, value, datatype)
+        v = Engine.format_insert_value(self, value, datatype, escape=False)
         if v == 'null':
             return ""
         try:
@@ -85,17 +86,14 @@ class engine(Engine):
 
     def insert_statement(self, values):
         """Returns a comma delimited row of values"""
+
         if not hasattr(self, 'auto_column_number'):
             self.auto_column_number = 1
-        offset = 0
-        for i in range(len(self.table.columns)):
-            column = self.table.columns[i]
-            if 'auto' in column[1][0]:
-                values = values[:i + offset] + \
-                    [self.auto_column_number] + values[i + offset:]
-                self.auto_column_number += 1
-                offset += 1
-        return ','.join([str(value) for value in values])
+        insert_stmt = ','.join([str(value) for value in values])
+        if self.table.columns[0][1][0][3:] == 'auto':
+            insert_stmt = str(self.auto_column_number) + "," + insert_stmt
+            self.auto_column_number += 1
+        return insert_stmt
 
     def table_exists(self, dbname, tablename):
         """Check to see if the data file currently exists"""
