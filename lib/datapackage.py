@@ -4,15 +4,25 @@ import os
 import json
 import yaml
 from time import sleep
+from retriever import SCRIPT_LIST
+
 JSON_SCRIPTS_DIR = "scripts/"
-NEW_JSON_SCRIPTS_DIR = "json_scripts/"
+short_names = [script.shortname.lower() for script in SCRIPT_LIST()]
 
 def create_json():
 
     contents = {}
 
+    script_exists = True
+    while script_exists:
+        contents['name'] = input("Shortname (unique identifier for script: ")
+        print(short_names)
+        print(contents['name'])
+        script_exists = contents['name'].lower() in short_names
+        if script_exists:
+            print("Dataset already available. Check the list or try a different shortname")
+
     contents['title'] = input("Title/Name: ")
-    contents['name'] = input("Shortname (unique identifier for script: ")
     contents['description'] = input("Description: ")
     contents['citation'] = input("Citation: ")
     contents['homepage'] = input("Site/Homepage of dataset: ")
@@ -295,10 +305,9 @@ def edit_json(json_file):
     edit_dict(contents, 1)
 
     file_name = contents['name'] + ".json"
-    with open(NEW_JSON_SCRIPTS_DIR + file_name, 'w') as output_file:
+    with open(JSON_SCRIPTS_DIR + file_name, 'w') as output_file:
         json.dump(contents, output_file, sort_keys=True, indent=4,
             separators=(',', ': '))
         output_file.write('\n')
         print("\nScript written to "+file_name)
         output_file.close()
-
