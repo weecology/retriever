@@ -67,7 +67,7 @@ def MODULE_LIST(force_compile=False):
 
     for search_path in [search_path for search_path in SCRIPT_SEARCH_PATHS if exists(search_path)]:
         to_compile = [
-            file for file in os.listdir(search_path) if file[-7:] == ".json" and
+            file for file in os.listdir(search_path) if file[-5:] == ".json" and
             file[0] != "_" and (
                 (not isfile(join(search_path, file[:-7] + '.py'))) or (
                     isfile(join(search_path, file[:-7] + '.py')) and (
