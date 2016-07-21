@@ -76,9 +76,7 @@ def MODULE_LIST(force_compile=False):
                             join(search_path, file)))) or force_compile)]
         for script in to_compile:
             script_name = '.'.join(script.split('.')[:-1])
-            # raise Exception(join(search_path, script_name))
             compile_json(join(search_path, script_name))
-            print(join(search_path, script_name))
 
         files = [file for file in os.listdir(search_path)
                  if file[-3:] == ".py" and file[0] != "_" and

@@ -15,8 +15,6 @@ from retriever.lib.models import Table, Cleanup, correct_invalid_value
 SCRIPT = HtmlTableTemplate(%s)""",
 }
 
-JSON_DIR = "../scripts/"
-
 
 def compile_script(script_file):
     definition = open(script_file + ".script", 'r')
@@ -255,6 +253,6 @@ def compile_json(json_file):
         template = "default"
     script_contents = (script_templates[template] % script_desc)
 
-    new_script = open(values['shortname'] + '.py', 'w')
+    new_script = open(json_file + '.py', 'w')
     new_script.write(script_contents)
     new_script.close()
