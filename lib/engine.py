@@ -104,7 +104,9 @@ class Engine(object):
         pos = 0
         for line in real_lines:
             if not self.table.fixed_width:
-                line = line.strip()
+                # This replaces end of line characters that exist in a single line
+                # eg. "one \nline has multiple end of lines\n"
+                line = line.replace('\n', '').strip()
             if line:
                 self.table.record_id += 1
 
@@ -564,12 +566,14 @@ class Engine(object):
             else:
                 return "null"
         elif datatype in ("double", "decimal"):
-            if strvalue:
+            if strvalue.strip():
                 try:
                     decimals = float(strvalue)
                     return str(decimals)
                 except:
                     return "null"
+            else:
+                return "null"
         elif datatype == "char":
             if strvalue.lower() in nulls:
                 return "null"
