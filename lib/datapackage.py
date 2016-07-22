@@ -5,7 +5,6 @@ import json
 import yaml
 from time import sleep
 JSON_SCRIPTS_DIR = "scripts/"
-NEW_JSON_SCRIPTS_DIR = "json_scripts/"
 
 def create_json():
 
@@ -295,10 +294,9 @@ def edit_json(json_file):
     edit_dict(contents, 1)
 
     file_name = contents['name'] + ".json"
-    with open(NEW_JSON_SCRIPTS_DIR + file_name, 'w') as output_file:
+    with open(JSON_SCRIPTS_DIR + file_name, 'w') as output_file:
         json.dump(contents, output_file, sort_keys=True, indent=4,
             separators=(',', ': '))
         output_file.write('\n')
         print("\nScript written to "+file_name)
         output_file.close()
-
