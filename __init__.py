@@ -24,9 +24,9 @@ if current_platform != 'windows':
 VERSION = __version__
 MASTER = False
 COPYRIGHT = "Copyright (C) 2011-2016 Weecology University of Florida"
-REPO_URL = "https://raw.github.com/goelakash/retriever/"
+REPO_URL = "https://raw.github.com/weecology/retriever/"
 MASTER_BRANCH = REPO_URL + "master/"
-JSON_BRANCH = REPO_URL + "datapackage.json-format/"
+JSON_BRANCH = REPO_URL + "scripts-to-json/"
 REPOSITORY = JSON_BRANCH if not MASTER else REPO_URL + VERSION + "/"
 
 # create the necessary directory structure for storing scripts/raw_data
