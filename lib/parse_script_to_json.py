@@ -72,7 +72,7 @@ def parse_script_to_json(script_file, location=SCRIPT_DIR):
                     column = {}
                     column['name'] = vs[0]
                     column['type'] = vs[1]
-                    if len(vs)>2:
+                    if len(vs) > 2:
                         column['size'] = vs[2]
 
                     last_table["schema"]["fields"].append(copy(column))

@@ -93,7 +93,8 @@ def MODULE_LIST(force_compile=False):
                     new_module.SCRIPT.download
                     modules.append(new_module)
             except Exception as e:
-                sys.stderr.write("Failed to load script: %s (%s)\nException: %s \n" % (script_name, search_path, str(e)) )
+                sys.stderr.write("Failed to load script: %s (%s)\nException: %s \n" % (
+                    script_name, search_path, str(e)))
 
     return modules
 
@@ -109,7 +110,8 @@ def ENGINE_LIST():
 
 def set_proxy():
     """Check for proxies and makes them available to urllib"""
-    proxies = ["https_proxy", "http_proxy", "ftp_proxy", "HTTP_PROXY", "HTTPS_PROXY", "FTP_PROXY"]
+    proxies = ["https_proxy", "http_proxy", "ftp_proxy",
+               "HTTP_PROXY", "HTTPS_PROXY", "FTP_PROXY"]
     for proxy in proxies:
         if os.getenv(proxy):
             if len(os.environ[proxy]) != 0:
