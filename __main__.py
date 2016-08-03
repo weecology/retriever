@@ -18,13 +18,15 @@ reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     # set default encoding to latin-1 to decode source text
     sys.setdefaultencoding('latin-1')
-from retriever import VERSION, MASTER, SCRIPT_LIST, sample_script, current_platform
+
+from retriever import VERSION, MASTER, SCRIPT_LIST, HOME_DIR, sample_script, current_platform
 from retriever.engines import engine_list
 from retriever.lib.repository import check_for_updates
 from retriever.lib.lists import Category, get_lists
 from retriever.lib.tools import choose_engine, name_matches, reset_retriever
 from retriever.lib.get_opts import parser
 from retriever.lib.datapackage import create_json, edit_json
+
 
 def main():
     """This function launches the EcoData Retriever."""
@@ -79,34 +81,18 @@ def main():
             return
 
         elif args.command == 'new_json':
+            # create new JSON script
             create_json()
             return
 
         elif args.command == 'edit_json':
-            if args.dataset is None:
-                raise Exception("\nError: Filename not given.")
-            else:
-                if not script_list:
-                    print("No scripts are currently available. Updating scripts now...")
-                    check_for_updates()
-                    print("\n\nScripts downloaded.\n")
-                    script_list = SCRIPT_LIST()
-                scripts = name_matches(script_list, args.dataset)
-
-                s_no = 1
-
-                if len(scripts) > 1:
-                    print("Did you mean: ")
-                    for i in range(len(scripts)):
-                        print("{:d}. {}".format(i+1, scripts[i]))
-                    s_no = input("\n\nEnter the correct dataset number: ")
-
-                elif len(scripts) == 0:
-                    raise Exception("\nError: Unable to find script.")
-
-                script_name = scripts[s_no-1].shortname
-                edit_json(script_name)
-                return
+            # edit existing JSON script
+            for json_file in [filename for filename in
+                    os.listdir(os.path.join(HOME_DIR, 'scripts')) if filename[-5:] == '.json']:
+                if json_file.lower().find(args.dataset.lower()) != -1:
+                    edit_json(json_file)
+                    return
+            raise FileNotFoundError
 
         if args.command == 'ls' or args.dataset is None:
 
@@ -121,10 +107,11 @@ def main():
 
             for script in script_list:
                 if script.name:
-                    if args.l!=None:
-                        script_name = script.name + "\nShortname: " + script.shortname+"\n"
+                    if args.l != None:
+                        script_name = script.name + "\nShortname: " + script.shortname + "\n"
                         if script.tags:
-                            script_name += "Tags: "+str([tag for tag in script.tags])+"\n"
+                            script_name += "Tags: " + \
+                                str([tag for tag in script.tags]) + "\n"
                         not_found = 0
                         for term in args.l:
                             if script_name.lower().find(term.lower()) == -1:
@@ -140,13 +127,13 @@ def main():
 
             print("Available datasets : {}\n".format(len(all_scripts)))
 
-            if args.l==None:
+            if args.l == None:
                 from retriever import lscolumns
                 lscolumns.printls(sorted(all_scripts, key=lambda s: s.lower()))
             else:
                 count = 1
                 for script in all_scripts:
-                    print ("%d. %s"%(count, script))
+                    print("%d. %s" % (count, script))
                     count += 1
             return
 
@@ -168,7 +155,8 @@ def main():
                     pass
                 except Exception as e:
                     print(e)
-                    if debug: raise
+                    if debug:
+                        raise
             print("Done!")
         else:
             print("The dataset {} isn't currently available in the Retriever".format(args.dataset))
