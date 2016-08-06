@@ -16,8 +16,8 @@ for module in modules:
         m = md5()
         m.update(''.join(getsourcelines(module)[0]))
 
-        module_name = module.__name__ + ('.script'
-                                         if os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.script')
+        module_name = module.__name__ + ('.json'
+                                         if os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.json')
                                          else '.py')
         if MASTER:
             scripts.append(module_name)
