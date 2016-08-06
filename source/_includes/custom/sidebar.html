@@ -1,0 +1,56 @@
+<!-- Logo -->
+<aside id="logo" class="clearfix">
+  <div class="clearfix">
+    <a href="{{ root_url}}/">{{ site.title }}</a>
+  </div>
+</aside>
+
+<ul id="menu">
+{% if site.title %}
+  <li class="title">
+    <h1 id="title"><a href="{{ root_url }}/">{{ site.title }}</a></h1>
+  </li>
+{% endif %}
+{% if site.subtitle %}
+  <li class="subtitle">
+    <h2 id="subtitle">{{ site.subtitle }}</h2>
+  </li>
+{% endif %}
+  <li class="link">
+    <a href="/about/">about</a>
+  </li>
+{% if site.twitter_user %}
+  <li class="link">
+    <a href="http://twitter.com/{{ site.twitter_user }}/">twitter</a>
+  </li>
+{% endif %}
+{% if site.github_user and site.github_show_profile_link %}
+  <li class="link">
+    <a href="http://github.com/{{ site.github_user }}/">github</a>
+  </li>
+{% endif %}
+  <li class="link rss">
+    <a href="/atom.xml">rss feed</a>
+  </li>
+</ul>
+
+{% if site.simple_search %}
+<form action="{{ site.simple_search }}" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:{{ site.url | shorthand_url }}" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+{% endif %}
+
+<!-- Octopress Love -->
+<aside id="octopress_linkback">
+  <a href="http://octopress.org/">
+    <span class="unicode_square">
+      <span class="unicode_circle">
+        &nbsp;
+      </span>
+    </span>
+    <span class="octopress">Powered by Octopress</span>
+  </a>
+</aside>
