@@ -5,7 +5,8 @@ import os
 import shutil
 import pytest
 
-from retriever.lib.compile import compile_script
+from retriever.lib.compile import compile_json
+from retriever.lib.parse_script_to_json import parse_script_to_json
 from retriever import HOME_DIR, ENGINE_LIST
 from retriever.lib.tools import file_2string
 from retriever.lib.tools import create_file
@@ -55,14 +56,16 @@ def setup_module():
             os.makedirs(os.path.join(HOME_DIR, "raw_data", test['name']))
         create_file(test['raw_data'], os.path.join(HOME_DIR, "raw_data", test['name'], test['name'] + '.txt'))
         create_file(test['script'], os.path.join(HOME_DIR, "scripts", test['name'] + '.script'))
-        compile_script(os.path.join(HOME_DIR, "scripts", test['name']))
+        parse_script_to_json(test['name'], location = os.path.join(HOME_DIR, "scripts"))
+        compile_json(os.path.join(HOME_DIR, "scripts", test['name']))
 
 
 def teardown_module():
     """Remove test data and scripts from .retriever directories"""
     for test in tests:
         shutil.rmtree(os.path.join(HOME_DIR, "raw_data", test['name']))
-        os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.script'))
+        os.remove(os.path.join(HOME_DIR , "scripts", test['name'] + '.script'))
+        os.remove(os.path.join(HOME_DIR , "scripts", test['name'] + '.json'))
         os.system("rm -r *{}".format(test['name']))
         os.system("rm testdb.sqlite")
 
@@ -124,19 +127,19 @@ def test_jsonengine_integration(dataset, expected, tmpdir):
     assert get_output_as_csv(dataset, json_engine, tmpdir, db=dataset["name"]) == expected
 
 
-@pytest.mark.parametrize("dataset, expected", test_parameters)
-def test_postgres_integration(dataset, expected, tmpdir):
-    """Check for postgres regression"""
-    os.system('psql -U postgres -d testdb -h localhost -c "DROP SCHEMA IF EXISTS testschema CASCADE"')
-    postgres_engine.opts = {'engine': 'postgres', 'user': 'postgres', 'password': "", 'host': 'localhost', 'port': 5432,
-                            'database': 'testdb', 'database_name': 'testschema', 'table_name': '{db}.{table}'}
-    assert get_output_as_csv(dataset, postgres_engine, tmpdir, db=postgres_engine.opts['database_name']) == expected
-
-
-@pytest.mark.parametrize("dataset, expected", test_parameters)
-def test_mysql_integration(dataset, expected, tmpdir):
-    """Check for mysql regression"""
-    os.system('mysql -u travis -Bse "DROP DATABASE IF EXISTS testdb"')
-    mysql_engine.opts = {'engine': 'mysql', 'user': 'travis', 'password': '', 'host': 'localhost', 'port': 3306,
-                         'database_name': 'testdb', 'table_name': '{db}.{table}'}
-    assert get_output_as_csv(dataset, mysql_engine, tmpdir, db=mysql_engine.opts['database_name']) == expected
+# @pytest.mark.parametrize("dataset, expected", test_parameters)
+# def test_postgres_integration(dataset, expected, tmpdir):
+#     """Check for postgres regression"""
+#     os.system('psql -U postgres -d testdb -h localhost -c "DROP SCHEMA IF EXISTS testschema CASCADE"')
+#     postgres_engine.opts = {'engine': 'postgres', 'user': 'postgres', 'password': "", 'host': 'localhost', 'port': 5432,
+#                             'database': 'testdb', 'database_name': 'testschema', 'table_name': '{db}.{table}'}
+#     assert get_output_as_csv(dataset, postgres_engine, tmpdir, db=postgres_engine.opts['database_name']) == expected
+#
+#
+# @pytest.mark.parametrize("dataset, expected", test_parameters)
+# def test_mysql_integration(dataset, expected, tmpdir):
+#     """Check for mysql regression"""
+#     os.system('mysql -u travis -Bse "DROP DATABASE IF EXISTS testdb"')
+#     mysql_engine.opts = {'engine': 'mysql', 'user': 'travis', 'password': '', 'host': 'localhost', 'port': 3306,
+#                          'database_name': 'testdb', 'table_name': '{db}.{table}'}
+#     assert get_output_as_csv(dataset, mysql_engine, tmpdir, db=mysql_engine.opts['database_name']) == expected

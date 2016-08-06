@@ -1,4 +1,6 @@
 from builtins import str
+import json
+import yaml
 script_templates = {
     "default": """#retriever
 from retriever.lib.templates import BasicTextTemplate
@@ -12,6 +14,8 @@ from retriever.lib.models import Table, Cleanup, correct_invalid_value
 
 SCRIPT = HtmlTableTemplate(%s)""",
 }
+
+JSON_DIR = "../scripts/"
 
 
 def compile_script(script_file):
@@ -139,3 +143,118 @@ def compile_script(script_file):
     new_script.close()
 
     definition.close()
+
+
+def compile_json(json_file):
+    json_object = yaml.safe_load(open(json_file + ".json","r"))
+
+    tables = {}
+    values = {}
+    keys_to_ignore = ["template"]
+
+    for (key,value) in json_object.items():
+
+        if key == "title":
+            values["name"] = "\""+value+"\""
+
+        elif key == "name":
+            values["shortname"] = "\""+value+"\""
+
+        elif key == "description":
+            values["description"] = "\""+value+"\""
+
+        elif key == "homepage":
+            values["ref"] = "\""+value+"\""
+
+        elif key == "citation":
+            values["citation"] = "\""+value+"\""
+
+        elif key == "keywords":
+            values["tags"] = value
+
+        elif key == "urls":
+            values["urls"] = value
+
+        elif key == "resources":
+            ''' Array of table objects '''
+            tables = {}
+
+            for table in value:
+                table_dict = {}     # Maintain a dict for table keys and values
+
+                if table["schema"] == {} and table["dialect"] == {}:
+                    continue
+
+                for (t_key, t_val) in table.items():
+
+                    if t_key == "dialect":
+                        for (d_key, d_val) in t_val.items():
+                            #dialect related key-value pairs
+                            #copied as is
+                            if d_key == "nulls":
+                                table_dict['cleanup'] = "Cleanup(correct_invalid_value, nulls=" + str(d_val) + ")"
+
+                            elif d_key == "delimiter":
+                                table_dict[d_key] = "'"+str(d_val)+"'"
+                            else:
+                                table_dict[d_key] = d_val
+
+                    elif t_key == "schema":
+                        for (s_key, s_val) in t_val.items():
+                            #schema related key-value pairs
+
+                            if s_key == "fields":
+                                #fields = columns of the table
+
+                                column_list = []        #list of column tuples
+                                for obj in s_val:
+                                    #fields is a collection of JSON objects
+                                    #(similar to a list of dicts in python)
+
+                                    if "size" in obj:
+                                        column_list.append((obj["name"],
+                                            (obj["type"], obj["size"])))
+                                    else:
+                                        column_list.append((obj["name"],
+                                            (obj["type"], )))
+
+                                table_dict["columns"] = column_list
+
+                            elif s_key == "ct_column":
+                                table_dict[s_key] = "'"+u""+s_val+"'"
+
+                            else:
+                                table_dict[s_key] = s_val
+
+                tables[table["name"]] = table_dict
+
+        else:
+            values[key] = value
+
+    table_desc = "{"
+    for (key, value) in tables.items():
+        table_desc += "'" + key + "': Table('" + key + "', "
+        table_desc += ','.join([key + "=" + str(value)
+                                for key, value, in value.items()])
+        table_desc += "),"
+    if table_desc != '{':
+        table_desc = table_desc[:-1]
+    table_desc += "}"
+
+    values["tables"] = table_desc
+
+    script_desc = []
+    for key, value in values.items():
+        if key not in keys_to_ignore:
+            script_desc.append(key + "=" + str(value))
+    script_desc = (',\n' + ' ' * 27).join(script_desc)
+
+    if 'template' in values.keys():
+        template = values["template"]
+    else:
+        template = "default"
+    script_contents = (script_templates[template] % script_desc)
+
+    new_script = open(json_file + '.py', 'w')
+    new_script.write(script_contents)
+    new_script.close()
