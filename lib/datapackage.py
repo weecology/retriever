@@ -31,7 +31,8 @@ def create_json():
     contents['description'] = input("Description: ")
     contents['citation'] = input("Citation: ")
     contents['homepage'] = input("Site/Homepage of dataset: ")
-    contents['keywords'] = input("Tags (separated by commas): ")
+    tags = input("Tags (separated by ';'): ").split(';')
+    contents['keywords'] = [tag.strip() for tag in tags if tag.strip() != ""]
     contents['resources'] = []
 
     # Add tables -
