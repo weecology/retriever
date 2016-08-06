@@ -14,7 +14,7 @@ from os.path import join, isfile, getmtime, exists
 import imp
 import platform
 
-from retriever.lib.compile import compile_script
+from retriever.lib.compile import compile_json
 from retriever._version import __version__
 
 current_platform = platform.system().lower()
@@ -67,7 +67,7 @@ def MODULE_LIST(force_compile=False):
 
     for search_path in [search_path for search_path in SCRIPT_SEARCH_PATHS if exists(search_path)]:
         to_compile = [
-            file for file in os.listdir(search_path) if file[-7:] == ".script" and
+            file for file in os.listdir(search_path) if file[-5:] == ".json" and
             file[0] != "_" and (
                 (not isfile(join(search_path, file[:-7] + '.py'))) or (
                     isfile(join(search_path, file[:-7] + '.py')) and (
@@ -75,7 +75,7 @@ def MODULE_LIST(force_compile=False):
                             join(search_path, file)))) or force_compile)]
         for script in to_compile:
             script_name = '.'.join(script.split('.')[:-1])
-            compile_script(join(search_path, script_name))
+            compile_json(join(search_path, script_name))
 
         files = [file for file in os.listdir(search_path)
                  if file[-3:] == ".py" and file[0] != "_" and
@@ -118,12 +118,23 @@ def set_proxy():
 
 set_proxy()
 
-sample_script = """# basic information about the script
-name: Mammal Life History Database - Ernest, et al., 2003
-shortname: MammalLH
-description: S. K. Morgan Ernest. 2003. Life history characteristics of placental non-volant mammals. Ecology 84:3402.
-tags: Taxon > Mammals, Data Type > Compilation
-url: http://esapubs.org/archive/ecol/E084/093/default.htm
-
-# tables
-table: species, http://esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"""
+sample_script = """
+{
+    "description": "S. K. Morgan Ernest. 2003. Life history characteristics of placental non-volant mammals. Ecology 84:3402.",
+    "homepage": "http://esapubs.org/archive/ecol/E084/093/default.htm",
+    "name": "MammalLH",
+    "resources": [
+        {
+            "dialect": {},
+            "mediatype": "text/csv",
+            "name": "species",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"
+        }
+    ],
+    "title": "Mammal Life History Database - Ernest, et al., 2003",
+    "urls": {
+        "species": "http://esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"
+    }
+}
+"""
