@@ -5,7 +5,8 @@ import os
 import shutil
 import pytest
 
-from retriever.lib.compile import compile_script
+from retriever.lib.compile import compile_json
+from retriever.lib.parse_script_to_json import parse_script_to_json
 from retriever import HOME_DIR, ENGINE_LIST
 from retriever.lib.tools import file_2string
 from retriever.lib.tools import create_file
@@ -55,14 +56,16 @@ def setup_module():
             os.makedirs(os.path.join(HOME_DIR, "raw_data", test['name']))
         create_file(test['raw_data'], os.path.join(HOME_DIR, "raw_data", test['name'], test['name'] + '.txt'))
         create_file(test['script'], os.path.join(HOME_DIR, "scripts", test['name'] + '.script'))
-        compile_script(os.path.join(HOME_DIR, "scripts", test['name']))
+        parse_script_to_json(test['name'], location = os.path.join(HOME_DIR, "scripts"))
+        compile_json(os.path.join(HOME_DIR, "scripts", test['name']))
 
 
 def teardown_module():
     """Remove test data and scripts from .retriever directories"""
     for test in tests:
         shutil.rmtree(os.path.join(HOME_DIR, "raw_data", test['name']))
-        os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.script'))
+        os.remove(os.path.join(HOME_DIR , "scripts", test['name'] + '.script'))
+        os.remove(os.path.join(HOME_DIR , "scripts", test['name'] + '.json'))
         os.system("rm -r *{}".format(test['name']))
         os.system("rm testdb.sqlite")
 

@@ -14,7 +14,7 @@ from os.path import join, isfile, getmtime, exists
 import imp
 import platform
 
-from retriever.lib.compile import compile_script
+from retriever.lib.compile import compile_json
 from retriever._version import __version__
 
 current_platform = platform.system().lower()
@@ -22,11 +22,12 @@ if current_platform != 'windows':
     import pwd
 
 VERSION = __version__
-MASTER = True
+MASTER = False
 COPYRIGHT = "Copyright (C) 2011-2016 Weecology University of Florida"
 REPO_URL = "https://raw.github.com/weecology/retriever/"
 MASTER_BRANCH = REPO_URL + "master/"
-REPOSITORY = MASTER_BRANCH if MASTER else REPO_URL + VERSION + "/"
+JSON_BRANCH = REPO_URL + "scripts-to-json/"
+REPOSITORY = JSON_BRANCH if not MASTER else REPO_URL + VERSION + "/"
 
 # create the necessary directory structure for storing scripts/raw_data
 # in the ~/.retriever directory
@@ -67,15 +68,15 @@ def MODULE_LIST(force_compile=False):
 
     for search_path in [search_path for search_path in SCRIPT_SEARCH_PATHS if exists(search_path)]:
         to_compile = [
-            file for file in os.listdir(search_path) if file[-7:] == ".script" and
+            file for file in os.listdir(search_path) if file[-5:] == ".json" and
             file[0] != "_" and (
-                (not isfile(join(search_path, file[:-7] + '.py'))) or (
-                    isfile(join(search_path, file[:-7] + '.py')) and (
-                        getmtime(join(search_path, file[:-7] + '.py')) < getmtime(
+                (not isfile(join(search_path, file[:-5] + '.py'))) or (
+                    isfile(join(search_path, file[:-5] + '.py')) and (
+                        getmtime(join(search_path, file[:-5] + '.py')) < getmtime(
                             join(search_path, file)))) or force_compile)]
         for script in to_compile:
             script_name = '.'.join(script.split('.')[:-1])
-            compile_script(join(search_path, script_name))
+            compile_json(join(search_path, script_name))
 
         files = [file for file in os.listdir(search_path)
                  if file[-3:] == ".py" and file[0] != "_" and
@@ -92,7 +93,8 @@ def MODULE_LIST(force_compile=False):
                     new_module.SCRIPT.download
                     modules.append(new_module)
             except Exception as e:
-                sys.stderr.write("Failed to load script: %s (%s)\nException: %s \n" % (script_name, search_path, str(e)) )
+                sys.stderr.write("Failed to load script: %s (%s)\nException: %s \n" % (
+                    script_name, search_path, str(e)))
 
     return modules
 
@@ -108,7 +110,8 @@ def ENGINE_LIST():
 
 def set_proxy():
     """Check for proxies and makes them available to urllib"""
-    proxies = ["https_proxy", "http_proxy", "ftp_proxy", "HTTP_PROXY", "HTTPS_PROXY", "FTP_PROXY"]
+    proxies = ["https_proxy", "http_proxy", "ftp_proxy",
+               "HTTP_PROXY", "HTTPS_PROXY", "FTP_PROXY"]
     for proxy in proxies:
         if os.getenv(proxy):
             if len(os.environ[proxy]) != 0:
@@ -118,12 +121,23 @@ def set_proxy():
 
 set_proxy()
 
-sample_script = """# basic information about the script
-name: Mammal Life History Database - Ernest, et al., 2003
-shortname: MammalLH
-description: S. K. Morgan Ernest. 2003. Life history characteristics of placental non-volant mammals. Ecology 84:3402.
-tags: Taxon > Mammals, Data Type > Compilation
-url: http://esapubs.org/archive/ecol/E084/093/default.htm
-
-# tables
-table: species, http://esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"""
+sample_script = """
+{
+    "description": "S. K. Morgan Ernest. 2003. Life history characteristics of placental non-volant mammals. Ecology 84:3402.",
+    "homepage": "http://esapubs.org/archive/ecol/E084/093/default.htm",
+    "name": "MammalLH",
+    "resources": [
+        {
+            "dialect": {},
+            "mediatype": "text/csv",
+            "name": "species",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"
+        }
+    ],
+    "title": "Mammal Life History Database - Ernest, et al., 2003",
+    "urls": {
+        "species": "http://esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"
+    }
+}
+"""

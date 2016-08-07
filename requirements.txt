@@ -5,3 +5,4 @@ psycopg2>=2.0
 numpydoc
 sphinx_py3doc_enhanced_theme
 sphinxcontrib-napoleon
+pyyaml

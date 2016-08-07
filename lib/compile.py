@@ -1,4 +1,6 @@
 from builtins import str
+import json
+import yaml
 script_templates = {
     "default": """#retriever
 from retriever.lib.templates import BasicTextTemplate
@@ -47,8 +49,7 @@ def compile_script(script_file):
                         tables[last_table]
                     except KeyError:
                         if replace:
-                            tables[last_table] = {
-                                'replace_columns': str(replace)}
+                            tables[last_table] = {'replace_columns': str(replace)}
                         else:
                             tables[last_table] = {}
                     tables[last_table]['cleanup'] = "Cleanup(correct_invalid_value, nulls=" + str(nulls) + ")"
@@ -63,8 +64,7 @@ def compile_script(script_file):
             elif key == "*column":
                 if last_table:
                     vs = [v.strip() for v in value.split(',')]
-                    column = [
-                        (vs[0], (vs[1], vs[2]) if len(vs) > 2 else (vs[1],))]
+                    column = [(vs[0], (vs[1], vs[2]) if len(vs) > 2 else (vs[1],))]
                     try:
                         tables[last_table]
                     except KeyError:
@@ -139,3 +139,151 @@ def compile_script(script_file):
     new_script.close()
 
     definition.close()
+
+
+def add_dialect(table_dict, table):
+    '''
+    Reads dialect key of JSON script and extracts key-value pairs to store them
+    in python script
+
+    Contains properties such 'nulls', delimiter', etc
+    '''
+    for (key, val) in table['dialect'].items():
+        # dialect related key-value pairs
+        # copied as is
+        if key == "nulls":
+            table_dict[
+                'cleanup'] = "Cleanup(correct_invalid_value, nulls=" + str(val) + ")"
+
+        elif key == "delimiter":
+            table_dict[key] = "'" + str(val) + "'"
+        else:
+            table_dict[key] = val
+
+
+def add_schema(table_dict, table):
+    '''
+    Reads schema key of JSON script and extracts values to store them in
+    python script
+
+    Contains properties related to table schema, such as 'fields' and cross-tab
+    column name ('ct_column').
+    '''
+    for (key, val) in table['schema'].items():
+        # schema related key-value pairs
+
+        if key == "fields":
+            # fields = columns of the table
+
+            # list of column tuples
+            column_list = []
+            for obj in val:
+                # fields is a collection of JSON objects
+                #(similar to a list of dicts in python)
+
+                if "size" in obj:
+                    column_list.append((obj["name"],
+                                        (obj["type"], obj["size"])))
+                else:
+                    column_list.append((obj["name"],
+                                        (obj["type"], )))
+
+            table_dict["columns"] = column_list
+
+        elif key == "ct_column":
+            table_dict[key] = "'" + val + "'"
+
+        else:
+            table_dict[key] = val
+
+
+def compile_json(json_file):
+    '''
+    Function to compile JSON script files to python scripts
+    The scripts are created with `retriever create_json <script_name` using
+    command line
+    '''
+    json_object = yaml.safe_load(open(json_file + ".json", "r"))
+
+    values = {}
+    values['urls'] = {}
+
+    keys_to_ignore = ["template"]
+
+    for (key, value) in json_object.items():
+
+        if key == "title":
+            values["name"] = "\"" + value + "\""
+
+        elif key == "name":
+            values["shortname"] = "\"" + value + "\""
+
+        elif key == "description":
+            values["description"] = "\"" + value + "\""
+
+        elif key == "homepage":
+            values["ref"] = "\"" + value + "\""
+
+        elif key == "citation":
+            values["citation"] = "\"" + value + "\""
+
+        elif key == "keywords":
+            values["tags"] = value
+
+        elif key == "resources":
+            ''' Array of table objects '''
+            tables = {}
+            for table in value:
+                 # Maintain a dict for table keys and values
+                table_dict = {}
+
+                try:
+                    values['urls'][table['name']] = table['url']
+                except Exception as e:
+                    print(e, "\nError in reading table: " + table)
+                    continue
+
+                if table["schema"] == {} and table["dialect"] == {}:
+                    continue
+
+                for (t_key, t_val) in table.items():
+
+                    if t_key == "dialect":
+                        add_dialect(table_dict, table)
+
+                    elif t_key == "schema":
+                        add_schema(table_dict, table)
+
+                tables[table["name"]] = table_dict
+
+        else:
+            values[key] = value
+
+    # Create a Table object string using the tables dict
+    table_desc = "{"
+    for (key, value) in tables.items():
+        table_desc += "'" + key + "': Table('" + key + "', "
+        table_desc += ','.join([key + "=" + str(value)
+                                for key, value, in value.items()])
+        table_desc += "),"
+    if table_desc != '{':
+        table_desc = table_desc[:-1]
+    table_desc += "}"
+
+    values["tables"] = table_desc
+
+    script_desc = []
+    for key, value in values.items():
+        if key not in keys_to_ignore:
+            script_desc.append(key + "=" + str(value))
+    script_desc = (',\n' + ' ' * 27).join(script_desc)
+
+    if 'template' in values.keys():
+        template = values["template"]
+    else:
+        template = "default"
+    script_contents = (script_templates[template] % script_desc)
+
+    new_script = open(json_file + '.py', 'w')
+    new_script.write(script_contents)
+    new_script.close()
