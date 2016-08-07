@@ -14,7 +14,6 @@
                     -9999
                 ]
             },
-            "mediatype": "text/csv",
             "name": "MammalMR2010",
             "schema": {},
             "url": "http://www.esapubs.org/archive/ecol/E091/198/data.txt"

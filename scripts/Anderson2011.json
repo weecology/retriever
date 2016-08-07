@@ -6,21 +6,18 @@
     "resources": [
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "allrecords_density",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E092/143/allrecords_density.csv"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "allrecords_cover",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E092/143/allrecords_cover.csv"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "species_list",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E092/143/species_list.csv"

@@ -27,30 +27,30 @@ def create_json():
         if script_exists:
             print("Dataset already available. Check the list or try a different shortname")
 
-    contents['title'] = input("Title/Name: ")
-    contents['description'] = input("Description: ")
-    contents['citation'] = input("Citation: ")
-    contents['homepage'] = input("Site/Homepage of dataset: ")
+    contents['title'] = input("Title/Name: ").strip()
+    contents['description'] = input("Description: ").strip()
+    contents['citation'] = input("Citation: ").strip()
+    contents['homepage'] = input("Site/Homepage of dataset: ").strip()
     tags = input("Tags (separated by ';'): ").split(';')
     contents['keywords'] = [tag.strip() for tag in tags if tag.strip() != ""]
     contents['resources'] = []
 
     # Add tables -
     while True:
-        addTable = input("\nAdd Table? (y/N): ")
-        if addTable.strip().lower() in ["n", "no"]:
+        addTable = input("\nAdd Table? (y/N): ").strip()
+        if addTable.lower() in ["n", "no"]:
             break
-        elif addTable.strip().lower() not in ["y", "yes"]:
+        elif addTable.lower() not in ["y", "yes"]:
             print("Not a valid option\n")
             continue
         else:
             table = {}
-            table['name'] = input("Table name: ")
-            table['url'] = input("Table URL: ")
+            table['name'] = input("Table name: ").strip()
+            table['url'] = input("Table URL: ").strip()
             table['dialect'] = {}
 
-            d_opts = ['nulls (separated by \';\')',  # list of str
-                      'replace_columns (separated by \';\')',  # list of tuples
+            d_opts = ['replace_columns (separated by \';\', with comma-separated values)',  # list of tuples
+                      'nulls (separated by \';\')',  # list of str
                       'delimiter',  # str
                       'do_not_bulk_insert (bool = True/False)',  # bool
                       'contains_pk (bool = True/False)',  # bool
@@ -60,13 +60,27 @@ def create_json():
                       'header_rows (int)']  # int
 
             for i in range(0, len(d_opts)):
-                val = input(d_opts[i] + ": ")
+                val = input(d_opts[i] + ": ").strip()
                 key = [k.strip() for k in d_opts[i].split(" ")][0]
 
-                if i < 3:
+                if i == 0:
+                    # loop to check for invalid input
+                    if val.strip() == "":  # User wants to skip
+                        continue
+
+                    values = [v for v in val.split(';')]
+                    table['dialect'][key] = []
+                    for v in values:
+                        try:
+                            pair = v.split(',')
+                            table['dialect'][key].append((pair[0].strip(), pair[1].strip()))
+                        except IndexError:
+                            continue
+
+                elif i < 3:
                     while True:
                         # loop to check for invalid input
-                        if val.strip() == "":  # User wants to skip
+                        if val == "":  # User wants to skip
                             break
 
                         values = [v.strip() for v in val.split(";")]
@@ -95,7 +109,7 @@ def create_json():
                     while True:
                         # loop to check for invalid input
                         try:
-                            if val.strip() == "":  # User wants to skip
+                            if val == "":  # User wants to skip
                                 break
                             elif type(eval(val)) == bool:
                                 table['dialect'][key] = val
@@ -110,18 +124,20 @@ def create_json():
                     while True:
                         # loop to check for invalid input
                         try:
-                            if val.strip() == "":  # User wants to skip
+                            if val == "":  # User wants to skip
                                 break
                             elif type(eval(val)) == int:
                                 table['dialect'][key] = val
                                 break
                             else:
+
                                 print("\nWrong type. Either leave blank or try again.\n")
                         except:
                             print("Exception occured. Try Again.\n")
                             val = input(d_opts[i] + ": ")
 
             table['schema'] = {}
+
             table['schema']["fields"] = []
             print("Enter columns [format = name, type, (optional) size]:\n")
             col = input()
@@ -139,25 +155,24 @@ def create_json():
                             raise
                         col_obj["size"] = col_list[2]
                     table["schema"]["fields"].append(col_obj)
-
                 except:
                     print("Exception occured. Check the input format again.\n")
                     pass
 
-                col = input()
+                col = input().strip()
 
-            isCT = input("Add crosstab columns? (y,N): ")
-            if isCT.strip().lower() in ["y", "yes"]:
-                ct_column = input("Crosstab column name: ")
-                while ct_column.strip() == "":
+            isCT = input("Add crosstab columns? (y,N): ").strip()
+            if isCT.lower() in ["y", "yes"]:
+                ct_column = input("Crosstab column name: ").strip()
+                while ct_column == "":
                     print("Empty column name. Try again.\n")
-                    ct_column = input("Crosstab column name: ")
+                    ct_column = input("Crosstab column name: ").strip()
                 ct_names = []
-                print("Enter names of crosstab column values (Press return after each name)")
-                name = input()
-                while name.strip() != "":
+                print("Enter names of crosstab column values (Press return after each name):\n")
+                name = input().strip()
+                while name != "":
                     ct_names.append(name)
-                    name = input()
+                    name = input().strip()
 
                 table['schema']['ct_column'] = ct_column
                 table['schema']['ct_names'] = ct_names
@@ -178,25 +193,26 @@ def edit_dict(obj, tabwidth=0):
     Recursive helper function for edit_json() to edit a datapackage.JSON script file.
     '''
     for (key, val) in obj.items():
-        print('\n' + "  "*tabwidth + "->" + key + " : \n")
+        print('\n' + "  "*tabwidth + "->" + key + " (", type(val), ") :\n")
         if type(val) == list:
             for v in val:
-                print("  "*tabwidth + str(v) + '\n')
+                print("  "*tabwidth + str(v) + '\n\n')
         elif type(val) == dict:
             for item in val.items():
-                print("  "*tabwidth + str(item) + '\n')
+                print("  "*tabwidth + str(item) + '\n\n')
         else:
-            print("  "*tabwidth + str(val) + '\n')
+            print("  "*tabwidth + str(val) + '\n\n')
 
         while True:
             try:
                 if isinstance(val, dict):
-                    print("\n\t'" + key + "' has the following keys:\n" +
-                          str(obj[key].keys()) + "\n")
-                    do_edit = input("Edit the values for these sub-keys of " + key + "? (y/N): ")
+                    if val != {}:
+                        print("    '" + key + "' has the following keys:\n" +
+                              str(obj[key].keys()) + "\n")
+                        do_edit = input("Edit the values for these sub-keys of " + key + "? (y/N): ").strip()
 
-                    if do_edit.strip().lower() in ['y', 'yes']:
-                        edit_dict(obj[key], tabwidth + 1)
+                        if do_edit.lower() in ['y', 'yes']:
+                            edit_dict(obj[key], tabwidth + 1)
 
                     print("Select one of the following for the key '" + key + "': \n")
                     print("1. Add an item")
@@ -205,23 +221,23 @@ def edit_dict(obj, tabwidth=0):
                     print("4. Remove from script")
                     print("5. Continue (no changes)\n")
 
-                    selection = input("\nYour choice: ")
+                    selection = input("\nYour choice: ").strip()
 
                     if selection == '1':
-                        add_key = input('Enter new key: ')
-                        add_val = input('Enter new value: ')
+                        add_key = input('Enter new key: ').strip()
+                        add_val = input('Enter new value: ').strip()
                         obj[key][add_key] = add_val
 
                     elif selection == '2':
-                        mod_key = input('Enter the key: ')
+                        mod_key = input('Enter the key: ').strip()
                         if mod_key not in val:
                             print("Invalid input! Key not found.")
                             continue
-                        mod_val = input('Enter new value: ')
+                        mod_val = input('Enter new value: ').strip()
                         obj[key][mod_key] = mod_val
 
                     elif selection == '3':
-                        del_key = input('Enter key to be deleted: ')
+                        del_key = input('Enter key to be deleted: ').strip()
                         if del_key not in val:
                             print("Invalid key: Not found")
                             continue
@@ -229,14 +245,15 @@ def edit_dict(obj, tabwidth=0):
                               " : " + str(obj[key].pop(del_key)))
 
                     elif selection == '4':
-                        do_remove = input("Are you sure (completely remove this entry)? (y/n): ")
-                        if do_remove.strip().lower() in ['y', 'yes']:
+                        do_remove = input("Are you sure (completely remove this entry)? (y/n): ").strip()
+
+                        if do_remove.lower() in ['y', 'yes']:
                             obj.pop(key)
                             print("Removed " + key + " from script.\n")
                         else:
                             print("Aborted.")
                             sleep(1)
-                    elif selection == '5' or selection.strip() == "":
+                    elif selection == '5' or selection == "":
                         pass
                     else:
                         raise RuntimeError("Invalid input!")
@@ -244,12 +261,11 @@ def edit_dict(obj, tabwidth=0):
                 elif isinstance(val, list):
 
                     for i in range(len(val)):
-                        print(str(val[i]))
+                        print(i+1, '. ', str(val[i]))
                         if isinstance(val[i], dict):
-                            print("\n\t'" + key + "' has the following dict:\n" + str(val[i]) + "\n")
-                            do_edit = input("Edit the dict in '" + key + "'? (y/N): ")
+                            do_edit = input("\nEdit this dict in '" + key + "'? (y/N): ").strip()
 
-                            if do_edit.strip().lower() in ['y', 'yes']:
+                            if do_edit.lower() in ['y', 'yes']:
                                 edit_dict(obj[key][i], tabwidth + 2)
 
                     print("Select one of the following for the key '" + key + "': \n")
@@ -258,7 +274,7 @@ def edit_dict(obj, tabwidth=0):
                     print("3. Remove from script")
                     print("4. Continue (no changes)\n")
 
-                    selection = input("\nYour choice: ")
+                    selection = input("\nYour choice: ").strip()
 
                     if selection == '1':
                         add_val = input('Enter new value: ')
@@ -266,6 +282,7 @@ def edit_dict(obj, tabwidth=0):
 
                     elif selection == '2':
                         del_val = input('Enter value to be deleted: ')
+
                         if del_val not in obj[key]:
                             print("Invalid value: Not found.")
                             continue
@@ -273,6 +290,7 @@ def edit_dict(obj, tabwidth=0):
 
                     elif selection == '3':
                         do_remove = input("Are you sure (completely remove this entry)? (y/n): ")
+
                         if do_remove.strip().lower() in ['y', 'yes']:
                             obj.pop(key)
                             print("Removed " + key + " from script.\n")
@@ -280,7 +298,7 @@ def edit_dict(obj, tabwidth=0):
                             print("Aborted.")
                             sleep(1)
 
-                    elif selection == '4' or selection.strip() == "":
+                    elif selection == '4' or selection == "":
                         pass
                     else:
                         raise RuntimeError("Invalid input!")
@@ -299,6 +317,7 @@ def edit_dict(obj, tabwidth=0):
 
                     elif selection == '2':
                         do_remove = input("Are you sure (completely remove this entry)? (y/n): ")
+
                         if do_remove.strip().lower() in ['y', 'yes']:
                             obj.pop(key)
                             print("Removed " + key + " from script.\n")

@@ -10,7 +10,6 @@
     "resources": [
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "species",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"

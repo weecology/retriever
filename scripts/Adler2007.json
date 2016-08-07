@@ -12,14 +12,12 @@
     "resources": [
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "main",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E088/161/allrecords.csv"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "quadrat_info",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E088/161/quadrat_info.csv"
@@ -30,14 +28,12 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "quadrat_inventory",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E088/161/quadrat_inventory.csv"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "species",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E088/161/species_list.csv"
@@ -94,7 +90,6 @@
                     ]
                 ]
             },
-            "mediatype": "text/csv",
             "name": "monthly_temp",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E088/161/monthly_temp.csv"
@@ -151,7 +146,6 @@
                     ]
                 ]
             },
-            "mediatype": "text/csv",
             "name": "monthly_ppt",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E088/161/monthly_ppt.csv"
