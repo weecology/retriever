@@ -12,7 +12,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "Plots",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E094/083/Plots.csv"
@@ -23,7 +22,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "Plot_corners",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E094/083/Plot_corners.csv"
@@ -34,7 +32,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "Species",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E094/083/Species.csv"
@@ -45,7 +42,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "Seedling_counts",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E094/083/Seedling_counts.csv"
@@ -56,7 +52,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "Count1906",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E094/083/Count1906.csv"
@@ -67,7 +62,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "SMCover",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E094/083/SMCover.csv"
@@ -78,7 +72,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "SMDensity",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E094/083/SMDensity.csv"
@@ -90,7 +83,6 @@
                     "nd"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "Stake_info",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E094/083/Stake_info.csv"
@@ -101,7 +93,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "Photo_info",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E094/083/Photo_info.csv"

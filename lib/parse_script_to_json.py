@@ -51,7 +51,6 @@ def parse_script_to_json(script_file, location=SCRIPT_DIR):
                 last_table = {}
                 last_table["name"] = value.split(',')[0].strip()
                 last_table["url"] = ','.join(value.split(',')[1:]).strip()
-                last_table["mediatype"] = "text/csv"
                 last_table["schema"] ={}
                 last_table["dialect"] = {}
 
@@ -118,7 +117,7 @@ def parse_script_to_json(script_file, location=SCRIPT_DIR):
         if key in keys_to_ignore:
             values.pop(key,None)
 
-    with open(os.path.join(location, script_file) + '.json', 'w') as json_file:
+    with open(os.path.join(location, values['name']) + '.json', 'w') as json_file:
         json.dump(values,json_file,sort_keys=True, indent=4,
             separators=(',', ': '))
         json_file.write('\n')

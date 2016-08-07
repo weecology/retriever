@@ -12,42 +12,36 @@
     "resources": [
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "pres",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E091/124/TGPP_pres.csv"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "cover",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E091/124/TGPP_cover.csv"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "richness",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E091/124/TGPP_rich.csv"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "species",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E091/124/TGPP_specodes.csv"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "environment",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E091/124/TGPP_env.csv"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "climate",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E091/124/TGPP_clim.csv"

@@ -19,7 +19,6 @@
                     null
                 ]
             },
-            "mediatype": "text/csv",
             "name": "main",
             "schema": {
                 "fields": [
@@ -165,14 +164,12 @@
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "species",
             "schema": {},
             "url": "https://ndownloader.figshare.com/files/3299483"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "plots",
             "schema": {},
             "url": "https://ndownloader.figshare.com/files/3299474"

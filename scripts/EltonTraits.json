@@ -10,28 +10,24 @@
     "resources": [
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "BirdFuncDat",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E095/178/BirdFuncDat.txt"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "MammFuncDat",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E095/178/MamFuncDat.txt"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "BirdCitations",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E095/178/BirdFuncDatSources.txt"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "MammCitations",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E095/178/MamFuncDatSources.txt"

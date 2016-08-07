@@ -14,7 +14,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "bvd_raw",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E095/257/bvd_raw_052814.csv"
@@ -25,7 +24,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "bvd_species_raw",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E095/257/bvd_species_raw_030614.csv"
@@ -36,7 +34,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "bvd_genus_raw",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E095/257/bvd_genus_raw_030614.csv"
@@ -47,7 +44,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "bvd_species_ag",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E095/257/bvd_species_ag_030614.csv"
@@ -58,7 +54,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "bvd_genus_ag",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E095/257/bvd_genus_ag_030614.csv"
@@ -69,7 +64,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "taxa_table",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E095/257/taxa_table_030614.csv"

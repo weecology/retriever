@@ -87,7 +87,6 @@
                     ]
                 ]
             },
-            "mediatype": "text/csv",
             "name": "host_characteristics",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E094/045/FPEDB.csv"

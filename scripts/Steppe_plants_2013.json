@@ -16,7 +16,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "allrecords_density",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E094/128/allrecords_density.csv"
@@ -27,7 +26,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "allrecords_cover",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E094/128/allrecords_cover.csv"
@@ -38,7 +36,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "quad_inventory",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E094/128/quad_inventory.csv"
@@ -49,7 +46,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "quad_info",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E094/128/quad_info.csv"
@@ -60,7 +56,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "quad_stocking_rate",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E094/128/quad_stocking_rate.csv"
@@ -71,7 +66,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "daily_climate",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E094/128/daily_climate_data.csv"
@@ -82,7 +76,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "species_list",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E094/128/species_list.csv"
@@ -93,7 +86,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "species_name_changes",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E094/128/species_name_changes.csv"
