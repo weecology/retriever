@@ -45,8 +45,6 @@ for dir in (HOME_DIR, os.path.join(HOME_DIR, 'raw_data'), os.path.join(HOME_DIR,
             print("The Retriever lacks permission to access the ~/.retriever/ directory.")
             raise
 SCRIPT_SEARCH_PATHS = [
-    "./",
-    "scripts",
     os.path.join(HOME_DIR, 'scripts/'),
 ]
 SCRIPT_WRITE_PATH = SCRIPT_SEARCH_PATHS[-1]
