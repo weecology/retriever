@@ -118,9 +118,9 @@ def parse_script_to_json(script_file, location=SCRIPT_DIR):
             values.pop(key,None)
 
     with open(os.path.join(location, values['name']) + '.json', 'w') as json_file:
-        json.dump(values,json_file,sort_keys=True, indent=4,
+        json_str = json.dumps(values,json_file,sort_keys=True, indent=4,
             separators=(',', ': '))
-        json_file.write('\n')
+        json_file.write(json_str+'\n')
         json_file.close()
 
     definition.close()
