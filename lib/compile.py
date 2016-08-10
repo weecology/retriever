@@ -1,6 +1,5 @@
 from builtins import str
 import json
-import yaml
 script_templates = {
     "default": """#retriever
 from retriever.lib.templates import BasicTextTemplate
@@ -203,7 +202,7 @@ def compile_json(json_file):
     The scripts are created with `retriever create_json <script_name` using
     command line
     '''
-    json_object = yaml.safe_load(open(json_file + ".json", "r"))
+    json_object = json.load(open(json_file + ".json", "r"))
 
     values = {}
     values['urls'] = {}

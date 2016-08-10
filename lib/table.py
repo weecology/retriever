@@ -2,7 +2,6 @@ from future import standard_library
 standard_library.install_aliases()
 from builtins import next
 from builtins import object
-from builtins import str
 
 import csv
 import io
@@ -53,7 +52,7 @@ class Table(object):
         column_name = column_name.lower().strip()
         replace_columns = {old.lower(): new.lower()
                            for old, new in self.replace_columns}
-        column_name = replace_columns.get(column_name, column_name).strip()
+        column_name = str(replace_columns.get(column_name, column_name).strip())
         replace = [
             ("%", "percent"),
             ("&", "and"),
