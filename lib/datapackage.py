@@ -10,10 +10,12 @@ short_names = [script.shortname.lower() for script in SCRIPT_LIST()]
 
 
 def is_empty(val):
+    """Check if a variable is an empty string or an empty list"""
     return val == "" or val == []
 
 
 def clean_input(prompt="", split_char='', ignore_empty=False, dtype=None):
+    """Clean the user-input from the CLI before adding it"""
     val = input(prompt).strip()
     # split to list type of split_char specified
     if split_char != "":
@@ -33,6 +35,7 @@ def clean_input(prompt="", split_char='', ignore_empty=False, dtype=None):
 
 
 def get_replace_columns(dialect):
+    """Get list of tuples with old and new names for the columns in the table"""
     val = clean_input("replace_columns (separated by ';', with comma-separated values) (press return to skip): ", split_char=';', ignore_empty=True)
     if val == "" or val == []:
     # return and dont add key to dialect dict if empty val
@@ -47,6 +50,7 @@ def get_replace_columns(dialect):
 
 
 def get_nulls(dialect):
+    """Get list of strings that denote null in the dataset"""
     val = clean_input("nulls (separated by ';') (press return to skip): ", split_char=';', ignore_empty=True)
     if val == "" or val == []:
     # return and dont add key to dialect dict if empty val
@@ -58,6 +62,7 @@ def get_nulls(dialect):
 
 
 def get_delimiter(dialect):
+    """Get the string delimiter for the dataset file(s)"""
     val = clean_input("delimiter (press return to skip): ", ignore_empty=True)
     if val == "" or val == []:
     # return and dont add key to dialect dict if empty val
@@ -66,6 +71,7 @@ def get_delimiter(dialect):
 
 
 def get_do_not_bulk_insert(dialect):
+    """Set do_not_bulk_insert property"""
     val = clean_input("do_not_bulk_insert (bool = True/False) (press return to skip): ", ignore_empty=True, dtype=bool)
     if val == "" or val == []:
     # return and dont add key to dialect dict if empty val
@@ -74,6 +80,7 @@ def get_do_not_bulk_insert(dialect):
 
 
 def get_contains_pk(dialect):
+    """Set contains_pk property"""
     val = clean_input("contains_pk (bool = True/False) (press return to skip): ", ignore_empty=True, dtype=bool)
     if val == "" or val == []:
     # return and dont add key to dialect dict if empty val
@@ -82,6 +89,7 @@ def get_contains_pk(dialect):
 
 
 def get_escape_single_quotes(dialect):
+    """Set escape_single_quotes property"""
     val = clean_input("escape_single_quotes (bool = True/False) (press return to skip): ", ignore_empty=True, dtype=bool)
     if val == "" or val == []:
     # return and dont add key to dialect dict if empty val
@@ -90,6 +98,7 @@ def get_escape_single_quotes(dialect):
 
 
 def get_escape_double_quotes(dialect):
+    """Set escape_double_quotes property"""
     val = clean_input("escape_double_quotes (bool = True/False) (press return to skip): ", ignore_empty=True, dtype=bool)
     if val == "" or val == []:
     # return and dont add key to dialect dict if empty val
@@ -98,6 +107,7 @@ def get_escape_double_quotes(dialect):
 
 
 def get_fixed_width(dialect):
+    """Set fixed_width property"""
     val = clean_input("fixed_width (bool = True/False) (press return to skip): ", ignore_empty=True, dtype=bool)
     if val == "" or val == []:
     # return and dont add key to dialect dict if empty val
@@ -106,6 +116,7 @@ def get_fixed_width(dialect):
 
 
 def get_header_rows(dialect):
+    """Get number of rows considered as the header"""
     val = clean_input("header_rows (int) (press return to skip): ", ignore_empty=True, dtype=int)
     if val == "" or val == []:
     # return and dont add key to dialect dict if empty val
