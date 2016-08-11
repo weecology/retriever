@@ -14,7 +14,6 @@
             "dialect": {
                 "delimiter": ","
             },
-            "mediatype": "text/csv",
             "name": "species_plot_year",
             "schema": {
                 "ct_column": "species",
@@ -138,7 +137,6 @@
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "structure_plot_year",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E091/152/MSH_STRUCTURE_PLOT_YEAR.csv"
@@ -148,14 +146,12 @@
                 "do_not_bulk_insert": "True",
                 "escape_single_quotes": "True"
             },
-            "mediatype": "text/csv",
             "name": "species",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E091/152/MSH_SPECIES_DESCRIPTORS.csv"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "plots",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E091/152/MSH_PLOT_DESCRIPTORS.csv"

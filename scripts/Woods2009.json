@@ -16,7 +16,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "all_plots_1935_1948",
             "schema": {},
             "url": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/all_plots_1935_1948.txt"
@@ -27,21 +26,18 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "all_plots_1974_1980",
             "schema": {},
             "url": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/all_plots_1974-1980.txt"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "swamp",
             "schema": {},
             "url": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/swamp_all_modern.txt"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "species_codes",
             "schema": {},
             "url": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/species_codes.txt"
@@ -53,7 +49,6 @@
                     ""
                 ]
             },
-            "mediatype": "text/csv",
             "name": "upland_plots_1989_2007",
             "schema": {},
             "url": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/upland_plots_89-07.txt"
@@ -64,7 +59,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "sampling_history",
             "schema": {
                 "fields": [

@@ -14,7 +14,6 @@
                     "n/a"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "PopulationAbunMark_Recap",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E095/258/PopulationAbunMark-Recap.csv"
@@ -25,7 +24,6 @@
                     "n/a"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "PopulationAbunTransect",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E095/258/PopulationAbunTransect.csv"
@@ -36,7 +34,6 @@
                     "n/a"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "Dispersal",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E095/258/Dispersal.csv"
@@ -47,7 +44,6 @@
                     "n/a"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "Landscape",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E095/258/Landscape.csv"

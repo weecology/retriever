@@ -14,7 +14,6 @@
                     -999
                 ]
             },
-            "mediatype": "text/csv",
             "name": "MOM",
             "schema": {
                 "fields": [

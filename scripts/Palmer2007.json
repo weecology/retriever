@@ -12,14 +12,12 @@
     "resources": [
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "pres",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E088/162/Oosting_pres2.txt"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "species",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E088/162/species_codes.txt"
@@ -37,7 +35,6 @@
                     ]
                 ]
             },
-            "mediatype": "text/csv",
             "name": "trees",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E088/162/Oosting_Trees_1998.txt"
@@ -51,7 +48,6 @@
                     ]
                 ]
             },
-            "mediatype": "text/csv",
             "name": "env",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E088/162/Oosting_env.txt"

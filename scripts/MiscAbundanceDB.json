@@ -5,21 +5,18 @@
     "resources": [
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "main",
             "schema": {},
             "url": "http://files.figshare.com/2023547/Species_abundances.csv"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "sites",
             "schema": {},
             "url": "http://files.figshare.com/2023504/Sites_table_abundances.csv"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "citations",
             "schema": {},
             "url": "http://files.figshare.com/2023506/Citations_table_abundances.csv"

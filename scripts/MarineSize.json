@@ -15,7 +15,6 @@
                     "0.0000E+00"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "main",
             "schema": {},
             "url": "http://www.esapubs.org/Archive/ecol/E089/051/Predator_and_prey_body_sizes_in_marine_food_webs_vsn3.txt"

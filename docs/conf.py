@@ -110,7 +110,7 @@ html_theme = 'classic'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
- 
+
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
@@ -154,7 +154,7 @@ html_theme = 'classic'
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
- 
+
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -172,7 +172,7 @@ latex_elements = {
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
- 
+
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
 #latex_logo = None
@@ -197,7 +197,7 @@ latex_elements = {
 # -- Options for manual page output --------------------------------------------
 
 # One entry per manual page. List of tuples
- 
+
 # If true, show URL addresses after external links.
 #man_show_urls = False
 
@@ -207,7 +207,7 @@ latex_elements = {
 # Grouping the document tree into Texinfo files. List of tuples
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
- 
+
 
 # Documents to append as an appendix to all manuals.
 #texinfo_appendices = []

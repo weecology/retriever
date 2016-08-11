@@ -12,56 +12,48 @@
     "resources": [
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "density",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E091/243/allrecords_density.csv"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "cover",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E091/243/allrecords_cover.csv"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "quad_info",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E091/243/quad_info.csv"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "grazing",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E091/243/grazing_info.csv"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "quad_inventory",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E091/243/quad_inventory.csv"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "species",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E091/243/species_list.csv"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "taxonomy",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E091/243/taxonomic_grouping.csv"
         },
         {
             "dialect": {},
-            "mediatype": "text/csv",
             "name": "counts",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E091/243/annuals_counts_v3.csv"
@@ -115,7 +107,6 @@
                     ]
                 ]
             },
-            "mediatype": "text/csv",
             "name": "monthly_mean_temp",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E091/243/monthly_mean_temp.csv"
@@ -169,7 +160,6 @@
                     ]
                 ]
             },
-            "mediatype": "text/csv",
             "name": "monthly_ppt",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E091/243/total_monthly_ppt.csv"
@@ -223,7 +213,6 @@
                     ]
                 ]
             },
-            "mediatype": "text/csv",
             "name": "monthly_sno",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E091/243/total_monthly_sno.csv"

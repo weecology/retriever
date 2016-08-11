@@ -14,7 +14,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "ind_loc_girth",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E092/115/UPSP_Demo_data.txt"
@@ -25,7 +24,6 @@
                     "NA"
                 ]
             },
-            "mediatype": "text/csv",
             "name": "sp_list",
             "schema": {},
             "url": "http://esapubs.org/archive/ecol/E092/115/UPSP_Species_list2.txt"
