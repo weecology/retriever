@@ -2,9 +2,10 @@
 from future import standard_library
 standard_library.install_aliases()
 from imp import reload
+from future.builtins import input
 
 import os
-
+import pytest
 import sys
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
@@ -13,15 +14,15 @@ from io import StringIO
 from retriever.lib.engine import Engine
 from retriever.lib.table import Table
 from retriever.lib.templates import BasicTextTemplate
-from retriever.lib.tools import getmd5
 from retriever.lib.cleanup import correct_invalid_value
+from retriever.lib.tools import getmd5
 from retriever.lib.tools import xml2csv
 from retriever.lib.tools import json2csv
 from retriever.lib.tools import sort_file
 from retriever.lib.tools import sort_csv
 from retriever.lib.tools import create_file
 from retriever.lib.tools import file_2string
-
+from retriever.lib.datapackage import clean_input, is_empty
 
 # Create simple engine fixture
 test_engine = Engine()
@@ -240,3 +241,102 @@ def test_sort_csv():
     obs_out = file_2string(out_file)
     os.remove(out_file)
     assert obs_out == "User,Country,Age\nAlex,PT,25\nAlex,US,25\nBen,US,24\n"
+
+
+def test_is_empty_null_string():
+    """Test for null string"""
+    assert(is_empty("") == True)
+
+
+def test_is_empty_empty_list():
+    """Test for empty list"""
+    assert(is_empty([]) == True)
+
+
+def test_is_empty_not_null_string():
+    """Test for non-null string"""
+    assert(is_empty("not empty") == False)
+
+
+def test_is_empty_not_empty_list():
+    """Test for not empty list"""
+    assert(is_empty(["not empty"]) == False)
+
+
+def test_clean_input_empty_input_ignore_empty(monkeypatch):
+    """Test with empty input ignored"""
+    def mock_input(prompt):
+        return ""
+    monkeypatch.setattr('retriever.lib.datapackage.input', mock_input)
+    assert(clean_input("", ignore_empty=True) == "")
+
+
+def test_clean_input_empty_input_not_ignore_empty(monkeypatch):
+    """Test with empty input not ignored"""
+    def mock_input(prompt):
+        mock_input.counter += 1
+        if mock_input.counter <= 1:
+            return ""
+        else:
+            return "not empty"
+    mock_input.counter = 0
+    monkeypatch.setattr('retriever.lib.datapackage.input', mock_input)
+    assert(clean_input("", ignore_empty=False) == "not empty")
+
+
+def test_clean_input_string_input(monkeypatch):
+    """Test with non-empty input"""
+    def mock_input(prompt):
+        return "not empty"
+    monkeypatch.setattr('retriever.lib.datapackage.input', mock_input)
+    assert(clean_input("") == "not empty")
+
+
+def test_clean_input_empty_list_ignore_empty(monkeypatch):
+    """Test with empty list ignored"""
+    def mock_input(prompt):
+        return ",  ,   ,"
+    monkeypatch.setattr('retriever.lib.datapackage.input', mock_input)
+    assert(clean_input("", ignore_empty=True, split_char=",") == [])
+
+
+def test_clean_input_empty_list_not_ignore_empty(monkeypatch):
+    """Test with empty list not ignored"""
+    def mock_input(prompt):
+        mock_input.counter += 1
+        if mock_input.counter <= 1:
+            return ",  ,   ,"
+        else:
+            return "1  ,    2,  3,"
+    mock_input.counter = 0
+    monkeypatch.setattr('retriever.lib.datapackage.input', mock_input)
+    assert(clean_input("", split_char=",") == ["1", "2", "3"])
+
+
+def test_clean_input_not_empty_list(monkeypatch):
+    """Test with list input"""
+    def mock_input(prompt):
+        return "1,    2,     3"
+    monkeypatch.setattr('retriever.lib.datapackage.input', mock_input)
+    assert(clean_input("", ignore_empty=True, split_char=',', dtype=None) == ["1", "2", "3"])
+
+
+def test_clean_input_bool(monkeypatch):
+    """Test with correct datatype input"""
+    def mock_input(prompt):
+        return "True "
+    monkeypatch.setattr('retriever.lib.datapackage.input', mock_input)
+    assert(clean_input("", dtype=bool) == "True")
+
+
+def test_clean_input_not_bool(monkeypatch):
+    """Test with incorrect datatype input"""
+    def mock_input(prompt):
+        mock_input.counter += 1
+        if mock_input.counter <= 1:
+            return "non bool input"
+        else:
+            return "True "
+    mock_input.counter = 0
+    monkeypatch.setattr('retriever.lib.datapackage.input', mock_input)
+    assert(clean_input("", dtype=bool) == "True")
