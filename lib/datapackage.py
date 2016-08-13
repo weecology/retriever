@@ -15,21 +15,25 @@ def is_empty(val):
 
 def clean_input(prompt="", split_char='', ignore_empty=False, dtype=None):
     """Clean the user-input from the CLI before adding it"""
-    val = input(prompt).strip()
-    # split to list type of split_char specified
-    if split_char != "":
-        val = [v.strip() for v in val.split(split_char) if v.strip() != ""]
-    # do not ignore empty input if specified
-    if not ignore_empty and is_empty(val):
-        print("\tError: empty input. Need one or more values.\n")
-        clean_input(prompt, split_char, ignore_empty, dtype)
-    # ensure correct input datatype if specified
-    if not is_empty(val) and dtype != None:
-        try:
-            type(eval(val)) != dtype
-        except:
-            print("\tError: illegal argument. The preferred input type is ", dtype)
-            clean_input(prompt, split_char, ignore_empty, dtype)
+    while True:
+        val = input(prompt).strip()
+        # split to list type if split_char specified
+        if split_char != "":
+            val = [v.strip() for v in val.split(split_char) if v.strip() != ""]
+        # do not ignore empty input if not allowed
+        if not ignore_empty and is_empty(val):
+            print("\tError: empty input. Need one or more values.\n")
+            continue
+        # ensure correct input datatype if specified
+        if not is_empty(val) and dtype != None:
+            try:
+                if not type(eval(val)) == dtype:
+                    print("\tError: input doesn't match required type ", dtype, "\n")
+                    continue
+            except:
+                print("\tError: illegal argument. The preferred input type is ", dtype, "\n")
+                continue
+        break
     return val
 
 
@@ -373,7 +377,7 @@ def edit_json(json_file):
     Note: Name of script is the dataset shortname.
     '''
     try:
-        contents = yaml.load(
+        contents = json.load(
             open(os.path.join(HOME_DIR, 'scripts', json_file), 'r'))
     except FileNotFoundError:
         print("Script not found.")
