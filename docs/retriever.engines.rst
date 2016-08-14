@@ -4,10 +4,10 @@ retriever.engines package
 Submodules
 ----------
 
-retriever.engines.csv module
-----------------------------
+retriever.engines.csvengine module
+----------------------------------
 
-.. automodule:: retriever.engines.csv
+.. automodule:: retriever.engines.csvengine
     :members:
     :undoc-members:
     :show-inheritance:
