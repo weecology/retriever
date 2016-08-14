@@ -60,6 +60,14 @@ retriever.engines.sqlite module
     :undoc-members:
     :show-inheritance:
 
+retriever.engines.xmlengine module
+----------------------------------
+
+.. automodule:: retriever.engines.xmlengine
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------
