@@ -8,6 +8,11 @@ Script Creation
 
 
 The EcoData Retriever uses a simple CLI for developing new dataset scripts. This allows users with no programming experience to quickly add most standard datasets to the Retriever by specifying the names and locations of the tables along with additional information about the configuration of the data.
+The script is saved as a JSON file, that follows the DataPackage_ standards.
+
+.. _DataPackage: http://specs.frictionlessdata.io/data-packages
+
+
 To create a new script, try ``retriever new_json``, which starts the CLI tool for new script creation.
 
 ``Required``
@@ -104,7 +109,7 @@ Explanation for the keys:
 - ``citation``: Citation for the dataset
 - ``description``: Description for the dataset
 - ``homepage``: Homepage or website where the data is hosted
-- ``keywords``: Keywords/tags to search the among scripts and classify
+- ``keywords``: Keywords/tags for the dataset (for searching and classification)
 - ``name``: Shortname for the dataset. Unique, URL-identifiable
 - ``resources``: List of tables within the dataset
 
@@ -785,4 +790,4 @@ For example, editing the ``MammalLH`` (Mammal Life History Database - Ernest, et
   Your choice: 3
 
 
-  Script written to /home/dev/.retriever/scripts/MammalLH.json
+  Script written to /home/username/.retriever/scripts/MammalLH.json
