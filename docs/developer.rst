@@ -159,6 +159,26 @@ Other documentation (not source code) files are added as new reStructuredText in
 
 In case you want to change the organization of the Documentation, please refer to `Sphinx`_
 
+**update Documentation**
+
+The documetation is automatically updated for changes with in modules.
+However, the documentation should be updated after addition of new modules in the engines or lib directory.
+Change to the docs directory and create a temporary directory, i.e. `source`.
+Run
+
+.. code-block:: bash
+
+  cd  docs
+  mkdir source
+  sphinx-apidoc -f  -o ./source /Users/../retriever/
+
+The `source` is the destination folder for the source rst files. `/Users/../retriever/` is the path to where
+the retriever source code is located.
+Copy the `.rst` files that you want to update to the docs direcotry, overwriting the old files.
+Make sure you check the changes and edit if necessary to ensure that only what is required is updated.
+Commit and push the new changes.
+Do not commit the temporary source directory.
+
 **Test Documentation locally**
 
 .. code-block:: bash
