@@ -66,6 +66,7 @@ def teardown_module():
         shutil.rmtree(os.path.join(HOME_DIR, "raw_data", test['name']))
         os.remove(os.path.join(HOME_DIR , "scripts", test['name'] + '.script'))
         os.remove(os.path.join(HOME_DIR , "scripts", test['name'] + '.json'))
+        os.remove(os.path.join(HOME_DIR , "scripts", test['name'] + '.py'))
         os.system("rm -r *{}".format(test['name']))
         os.system("rm testdb.sqlite")
 
