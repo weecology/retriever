@@ -707,8 +707,8 @@ def filename_from_url(url):
 
 def gen_from_source(source):
     """Returns a generator from a source tuple.
-    
-    Source tuples are of the form (callable, args) where callable(*args)
+
+    Source tuples are of the form (callable, args) where callable(\*args)
     returns either a generator or another source tuple.
     This allows indefinite regeneration of data sources.
     """
