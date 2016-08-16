@@ -23,6 +23,7 @@ from retriever.lib.tools import sort_csv
 from retriever.lib.tools import create_file
 from retriever.lib.tools import file_2string
 from retriever.lib.datapackage import clean_input, is_empty
+from retriever.lib.compile import add_dialect, add_schema
 
 # Create simple engine fixture
 test_engine = Engine()
@@ -340,3 +341,45 @@ def test_clean_input_not_bool(monkeypatch):
     mock_input.counter = 0
     monkeypatch.setattr('retriever.lib.datapackage.input', mock_input)
     assert(clean_input("", dtype=bool) == "True")
+
+
+def test_add_dialect():
+    """Test adding values from dialect key to python script"""
+    table = {}
+    table['dialect'] = {}
+    table_dict = {}
+    table['dialect']['nulls'] = '\0'
+    table['dialect']['delimiter'] = '\t'
+    table['dialect']['dummy_key'] = 'dummy_value'
+
+    result = {}
+    result['cleanup'] = 'Cleanup(correct_invalid_value, nulls=\x00)'
+    result['delimiter'] = "'\t'"
+    result['dummy_key'] = 'dummy_value'
+
+    add_dialect(table_dict, table)
+    assert(table_dict == result)
+
+
+def test_add_schema():
+    """Test adding values from schema key to python script"""
+    table = {}
+    table['schema'] = {}
+    table_dict = {}
+    table['schema']['fields'] = []
+    table['schema']['fields'].append({'name':'col1', 'type':'int'})
+    table['schema']['fields'].append({'name':'col2', 'type':'char', 'size':20})
+    table['schema']['ct_column'] = 'ct_column'
+    table['schema']['ct_names'] = ['ct1', 'ct2', 'ct3', 'ct4']
+    table['schema']['dummy_key'] = 'dummy_value'
+
+    result = {}
+    result['columns'] = []
+    result['columns'].append(('col1', ('int',) ))
+    result['columns'].append(('col2', ('char', 20)))
+    result['ct_column'] = "'ct_column'"
+    result['ct_names'] = ['ct1', 'ct2', 'ct3', 'ct4']
+    result['dummy_key'] = 'dummy_value'
+
+    add_schema(table_dict, table)
+    assert(table_dict == result)
