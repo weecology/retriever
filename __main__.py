@@ -9,6 +9,7 @@ The main() function can be used for bootstrapping.
 from __future__ import print_function
 from __future__ import absolute_import
 from builtins import str
+from builtins import input
 from imp import reload
 import os
 import platform
@@ -92,7 +93,24 @@ def main():
                 if json_file.lower().find(args.dataset.lower()) != -1:
                     edit_json(json_file)
                     return
-            raise FileNotFoundError
+            raise Exception("File not found")
+
+        elif args.command == 'delete_json':
+            # delete existing JSON script
+            for json_file in [filename for filename in
+                    os.listdir(os.path.join(HOME_DIR, 'scripts')) if filename[-5:] == '.json']:
+                if json_file.lower().find(args.dataset.lower()) != -1:
+                    confirm = input("Really remove " + json_file + " and all its contents? (y/N): ")
+                    if confirm.lower().strip() in ['y', 'yes']:
+                        # raise Exception(json_file)
+                        os.remove(os.path.join(HOME_DIR, 'scripts', json_file))
+                        try:
+                            os.remove(os.path.join(HOME_DIR, 'scripts', json_file[:-4] + 'py'))
+                        except:
+                            # Not compiled yet
+                            pass
+                    return
+            raise Exception("File not found")
 
         if args.command == 'ls' or args.dataset is None:
 
