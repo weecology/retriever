@@ -1,0 +1,31 @@
+{
+    "citation": "Baldridge, Elita, A Data-intensive Assessment of the Species Abundance Distribution(2013). All Graduate Theses and Dissertations. Paper 4276.",
+    "description": "Community abundance data for fish, reptiles, amphibians, beetles, spiders, and birds, compiled from the literature by Elita Baldridge.",
+    "name": "MiscAbundanceDB",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "main",
+            "schema": {},
+            "url": "http://files.figshare.com/2023547/Species_abundances.csv"
+        },
+        {
+            "dialect": {},
+            "name": "sites",
+            "schema": {},
+            "url": "http://files.figshare.com/2023504/Sites_table_abundances.csv"
+        },
+        {
+            "dialect": {},
+            "name": "citations",
+            "schema": {},
+            "url": "http://files.figshare.com/2023506/Citations_table_abundances.csv"
+        }
+    ],
+    "title": "Miscellaneous Abundance Database (figshare 2012)",
+    "urls": {
+        "citations": "http://files.figshare.com/2023506/Citations_table_abundances.csv",
+        "main": "http://files.figshare.com/2023547/Species_abundances.csv",
+        "sites": "http://files.figshare.com/2023504/Sites_table_abundances.csv"
+    }
+}

@@ -1,0 +1,254 @@
+{
+    "citation": "D. A. Kelt, P. L. Meserve, J. R. Gutierrez, W. Bryan Milstead, and M. A. Previtali. 2013. Long-term monitoring of mammals in the face of biotic and abiotic influences at a semiarid site in north-central Chile. Ecology 94:977. http://dx.doi.org/10.1890/12-1811.1.",
+    "description": "Long-term monitoring of small mammal and plant communities in the face of biotic and abiotic influences at a semiarid site in north-central Chile.",
+    "name": "FrayJorge",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "mammals",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Small_Mammals_198903-200512.txt"
+        },
+        {
+            "dialect": {},
+            "name": "annuals",
+            "schema": {
+                "ct_column": "year",
+                "ct_names": [
+                    "1989",
+                    "1990",
+                    "1991",
+                    "1992",
+                    "1993",
+                    "1994",
+                    "1995",
+                    "1996",
+                    "1997",
+                    "1998",
+                    "1999",
+                    "2000",
+                    "2001",
+                    "2002",
+                    "2003",
+                    "2004",
+                    "2005"
+                ],
+                "fields": [
+                    {
+                        "name": "record_id",
+                        "type": "pk-auto"
+                    },
+                    {
+                        "name": "species",
+                        "size": "4",
+                        "type": "char"
+                    },
+                    {
+                        "name": "treatment",
+                        "size": "20",
+                        "type": "char"
+                    },
+                    {
+                        "name": "grid",
+                        "type": "int"
+                    },
+                    {
+                        "name": "cover",
+                        "type": "ct-double"
+                    }
+                ]
+            },
+            "url": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Annuals_1989-2005.txt"
+        },
+        {
+            "dialect": {},
+            "name": "perennials",
+            "schema": {
+                "ct_column": "sampling_date",
+                "ct_names": [
+                    "Mar-89",
+                    "Jul-89",
+                    "Nov-89",
+                    "Mar-90",
+                    "Jun-90",
+                    "Sep-90",
+                    "Dec-90",
+                    "Mar-91",
+                    "Jun-91",
+                    "Sep-91",
+                    "Dec-91",
+                    "Mar-92",
+                    "Jun-92",
+                    "Sep-92",
+                    "Dec-92",
+                    "Mar-93",
+                    "Jun-93",
+                    "Sep-93",
+                    "Dec-93",
+                    "Mar-94",
+                    "Jun-94",
+                    "Sep-94",
+                    "Dec-94",
+                    "Mar-95",
+                    "Jun-95",
+                    "Sep-95",
+                    "Dec-95",
+                    "Mar-96",
+                    "Jun-96",
+                    "Sep-96",
+                    "Dec-96",
+                    "Mar-97",
+                    "Jun-97",
+                    "Sep-97",
+                    "Dec-97",
+                    "Mar-98",
+                    "Jun-98",
+                    "Sep-98",
+                    "Dec-98",
+                    "Mar-99",
+                    "Jun-99",
+                    "Sep-99",
+                    "Dec-99",
+                    "Mar-00",
+                    "Jun-00",
+                    "Sep-00",
+                    "Dec-00",
+                    "Mar-01",
+                    "Jun-01",
+                    "Sep-01",
+                    "Dec-01",
+                    "Mar-02",
+                    "Jun-02",
+                    "Sep-02",
+                    "Dec-02",
+                    "Mar-03",
+                    "Jun-03",
+                    "Sep-03",
+                    "Dec-03",
+                    "Mar-04",
+                    "Jun-04",
+                    "Sep-04",
+                    "Dec-04",
+                    "Mar-05",
+                    "Jun-05",
+                    "Sep-05",
+                    "Dec-05"
+                ],
+                "fields": [
+                    {
+                        "name": "record_id",
+                        "type": "pk-auto"
+                    },
+                    {
+                        "name": "species",
+                        "size": "4",
+                        "type": "char"
+                    },
+                    {
+                        "name": "treatment",
+                        "size": "20",
+                        "type": "char"
+                    },
+                    {
+                        "name": "grid",
+                        "type": "int"
+                    },
+                    {
+                        "name": "cover",
+                        "type": "ct-double"
+                    }
+                ]
+            },
+            "url": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Perennials_1989-2005.txt"
+        },
+        {
+            "dialect": {},
+            "name": "seed_89_02",
+            "schema": {
+                "ct_column": "sampling_date",
+                "ct_names": [
+                    "Apr-89",
+                    "Aug-89",
+                    "Dec-89",
+                    "Apr-90",
+                    "Aug-90",
+                    "Dec-90",
+                    "Apr-91",
+                    "Aug-91",
+                    "Dec-91",
+                    "Apr-92",
+                    "Aug-92",
+                    "Dec-92",
+                    "Apr-93",
+                    "Aug-93",
+                    "Dec-93",
+                    "Apr-94",
+                    "Aug-94",
+                    "Dec-94",
+                    "Apr-95",
+                    "Aug-95",
+                    "Dec-95",
+                    "Apr-96",
+                    "Aug-96",
+                    "Dec-96",
+                    "Dec-97",
+                    "Apr-98",
+                    "Aug-98",
+                    "Dec-98",
+                    "Apr-99",
+                    "Aug-99",
+                    "Dec-99",
+                    "2000",
+                    "2001",
+                    "Apr-02",
+                    "Aug-02",
+                    "Dec-02"
+                ],
+                "fields": [
+                    {
+                        "name": "record_id",
+                        "type": "pk-auto"
+                    },
+                    {
+                        "name": "species",
+                        "size": "4",
+                        "type": "char"
+                    },
+                    {
+                        "name": "treatment",
+                        "size": "20",
+                        "type": "char"
+                    },
+                    {
+                        "name": "grid",
+                        "type": "int"
+                    },
+                    {
+                        "name": "cover",
+                        "type": "ct-double"
+                    }
+                ]
+            },
+            "url": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Seeds_1989-2002.txt"
+        },
+        {
+            "dialect": {
+                "nulls": [
+                    ".",
+                    "n/a"
+                ]
+            },
+            "name": "precip",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Precipitation_1989-2005.csv"
+        }
+    ],
+    "title": "Fray Jorge community database",
+    "urls": {
+        "annuals": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Annuals_1989-2005.txt",
+        "mammals": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Small_Mammals_198903-200512.txt",
+        "perennials": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Perennials_1989-2005.txt",
+        "precip": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Precipitation_1989-2005.csv",
+        "seed_89_02": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Seeds_1989-2002.txt"
+    }
+}
