@@ -25,13 +25,13 @@ def clean_input(prompt="", split_char='', ignore_empty=False, dtype=None):
             print("\tError: empty input. Need one or more values.\n")
             continue
         # ensure correct input datatype if specified
-        if not is_empty(val) and dtype != None:
+        if not is_empty(val) and dtype is not None:
             try:
                 if not type(eval(val)) == dtype:
                     print("\tError: input doesn't match required type ", dtype, "\n")
                     continue
             except:
-                print("\tError: illegal argument. The preferred input type is ", dtype, "\n")
+                print("\tError: illegal argument. Input type should be ", dtype, "\n")
                 continue
         break
     return val
@@ -39,9 +39,10 @@ def clean_input(prompt="", split_char='', ignore_empty=False, dtype=None):
 
 def get_replace_columns(dialect):
     """Get list of tuples with old and new names for the columns in the table"""
-    val = clean_input("replace_columns (separated by ';', with comma-separated values) (press return to skip): ", split_char=';', ignore_empty=True)
+    val = clean_input("replace_columns (separated by ';', with comma-separated values) (press return to skip): ",
+                      split_char=';', ignore_empty=True)
     if val == "" or val == []:
-    # return and dont add key to dialect dict if empty val
+        # return and dont add key to dialect dict if empty val
         return
     dialect['replace_columns'] = []
     for v in val:
@@ -54,9 +55,10 @@ def get_replace_columns(dialect):
 
 def get_nulls(dialect):
     """Get list of strings that denote null in the dataset"""
-    val = clean_input("nulls (separated by ';') (press return to skip): ", split_char=';', ignore_empty=True)
+    val = clean_input("nulls (separated by ';') (press return to skip): ",
+                      split_char=';', ignore_empty=True)
     if val == "" or val == []:
-    # return and dont add key to dialect dict if empty val
+        # return and dont add key to dialect dict if empty val
         return
     dialect['nulls'] = val
     # change list to single value if size == 1
@@ -68,61 +70,67 @@ def get_delimiter(dialect):
     """Get the string delimiter for the dataset file(s)"""
     val = clean_input("delimiter (press return to skip): ", ignore_empty=True)
     if val == "" or val == []:
-    # return and dont add key to dialect dict if empty val
+        # return and dont add key to dialect dict if empty val
         return
     dialect['delimiter'] = val
 
 
 def get_do_not_bulk_insert(dialect):
     """Set do_not_bulk_insert property"""
-    val = clean_input("do_not_bulk_insert (bool = True/False) (press return to skip): ", ignore_empty=True, dtype=bool)
+    val = clean_input("do_not_bulk_insert (bool = True/False) (press return to skip): ",
+                      ignore_empty=True, dtype=bool)
     if val == "" or val == []:
-    # return and dont add key to dialect dict if empty val
+        # return and dont add key to dialect dict if empty val
         return
     dialect['do_not_bulk_insert'] = val
 
 
 def get_contains_pk(dialect):
     """Set contains_pk property"""
-    val = clean_input("contains_pk (bool = True/False) (press return to skip): ", ignore_empty=True, dtype=bool)
+    val = clean_input("contains_pk (bool = True/False) (press return to skip): ",
+                      ignore_empty=True, dtype=bool)
     if val == "" or val == []:
-    # return and dont add key to dialect dict if empty val
+        # return and dont add key to dialect dict if empty val
         return
     dialect['contains_pk'] = val
 
 
 def get_escape_single_quotes(dialect):
     """Set escape_single_quotes property"""
-    val = clean_input("escape_single_quotes (bool = True/False) (press return to skip): ", ignore_empty=True, dtype=bool)
+    val = clean_input("escape_single_quotes (bool = True/False) (press return to skip): ",
+                      ignore_empty=True, dtype=bool)
     if val == "" or val == []:
-    # return and dont add key to dialect dict if empty val
+        # return and dont add key to dialect dict if empty val
         return
     dialect['escape_single_quotes'] = val
 
 
 def get_escape_double_quotes(dialect):
     """Set escape_double_quotes property"""
-    val = clean_input("escape_double_quotes (bool = True/False) (press return to skip): ", ignore_empty=True, dtype=bool)
+    val = clean_input("escape_double_quotes (bool = True/False) (press return to skip): ",
+                      ignore_empty=True, dtype=bool)
     if val == "" or val == []:
-    # return and dont add key to dialect dict if empty val
+        # return and dont add key to dialect dict if empty val
         return
     dialect['escape_double_quotes'] = val
 
 
 def get_fixed_width(dialect):
     """Set fixed_width property"""
-    val = clean_input("fixed_width (bool = True/False) (press return to skip): ", ignore_empty=True, dtype=bool)
+    val = clean_input("fixed_width (bool = True/False) (press return to skip): ",
+                      ignore_empty=True, dtype=bool)
     if val == "" or val == []:
-    # return and dont add key to dialect dict if empty val
+        # return and dont add key to dialect dict if empty val
         return
     dialect['fixed_width'] = val
 
 
 def get_header_rows(dialect):
     """Get number of rows considered as the header"""
-    val = clean_input("header_rows (int) (press return to skip): ", ignore_empty=True, dtype=int)
+    val = clean_input("header_rows (int) (press return to skip): ",
+                      ignore_empty=True, dtype=int)
     if val == "" or val == []:
-    # return and dont add key to dialect dict if empty val
+        # return and dont add key to dialect dict if empty val
         return
     dialect['header_rows'] = val
 
@@ -148,7 +156,8 @@ def create_json():
     contents['description'] = clean_input("Description: ")
     contents['citation'] = clean_input("Citation: ")
     contents['homepage'] = clean_input("Site/Homepage of dataset: ")
-    contents['keywords'] = clean_input("Tags (separated by ';'): ", split_char=';', ignore_empty=True)
+    contents['keywords'] = clean_input("Tags (separated by ';'): ",
+                                        split_char=';', ignore_empty=True)
     contents['resources'] = []
 
     # Add tables -
@@ -181,7 +190,8 @@ def create_json():
             table['schema'] = {}
 
             table['schema']["fields"] = []
-            col = clean_input("Enter columns [format = name, type, (optional) size] (press return to skip):\n", ignore_empty=True)
+            col = clean_input(
+                "Enter columns [format = name, type, (optional) size] (press return to skip):\n", ignore_empty=True)
             if col != "" and col != []:
                 try:
                     col_list = [c.strip() for c in col.split(",")]
@@ -200,7 +210,8 @@ def create_json():
                     print("Exception occured. Check the input format again.\n")
                     pass
 
-            isCT = clean_input("Add crosstab columns? (y,N): ", ignore_empty=True)
+            isCT = clean_input(
+                "Add crosstab columns? (y,N): ", ignore_empty=True)
             if isCT.lower() in ["y", "yes"]:
                 ct_column = clean_input("Crosstab column name: ")
                 ct_names = []
@@ -218,7 +229,7 @@ def create_json():
     file_name = contents['name'] + ".json"
     with open(os.path.join(HOME_DIR, 'scripts', file_name), 'w') as output_file:
         json_str = json.dumps(contents, output_file, sort_keys=True, indent=4,
-                  separators=(',', ': '))
+                              separators=(',', ': '))
         output_file.write(json_str + '\n')
         print("\nScript written to " + file_name)
         output_file.close()
@@ -229,15 +240,15 @@ def edit_dict(obj, tabwidth=0):
     Recursive helper function for edit_json() to edit a datapackage.JSON script file.
     '''
     for (key, val) in obj.items():
-        print('\n' + "  "*tabwidth + "->" + key + " (", type(val), ") :\n")
+        print('\n' + "  " * tabwidth + "->" + key + " (", type(val), ") :\n")
         if type(val) == list:
             for v in val:
-                print("  "*tabwidth + str(v) + '\n\n')
+                print("  " * tabwidth + str(v) + '\n\n')
         elif type(val) == dict:
             for item in val.items():
-                print("  "*tabwidth + str(item) + '\n\n')
+                print("  " * tabwidth + str(item) + '\n\n')
         else:
-            print("  "*tabwidth + str(val) + '\n\n')
+            print("  " * tabwidth + str(val) + '\n\n')
 
         while True:
             try:
@@ -245,7 +256,8 @@ def edit_dict(obj, tabwidth=0):
                     if val != {}:
                         print("    '" + key + "' has the following keys:\n" +
                               str(obj[key].keys()) + "\n")
-                        do_edit = clean_input("Edit the values for these sub-keys of " + key + "? (y/N): ")
+                        do_edit = clean_input(
+                            "Edit the values for these sub-keys of " + key + "? (y/N): ")
 
                         if do_edit.lower() in ['y', 'yes']:
                             edit_dict(obj[key], tabwidth + 1)
@@ -281,7 +293,8 @@ def edit_dict(obj, tabwidth=0):
                               " : " + str(obj[key].pop(del_key)))
 
                     elif selection == '4':
-                        do_remove = clean_input("Are you sure (completely remove this entry)? (y/n): ")
+                        do_remove = clean_input(
+                            "Are you sure (completely remove this entry)? (y/n): ")
 
                         if do_remove.lower() in ['y', 'yes']:
                             obj.pop(key)
@@ -299,7 +312,8 @@ def edit_dict(obj, tabwidth=0):
                     for i in range(len(val)):
                         print(i + 1, '. ', str(val[i]))
                         if isinstance(val[i], dict):
-                            do_edit = clean_input("\nEdit this dict in '" + key + "'? (y/N): ")
+                            do_edit = clean_input(
+                                "\nEdit this dict in '" + key + "'? (y/N): ")
 
                             if do_edit.lower() in ['y', 'yes']:
                                 edit_dict(obj[key][i], tabwidth + 2)
@@ -325,7 +339,8 @@ def edit_dict(obj, tabwidth=0):
                         print("Removed " + str(obj[key].pop(del_key)))
 
                     elif selection == '3':
-                        do_remove = clean_input("Are you sure (completely remove this entry)? (y/n): ")
+                        do_remove = clean_input(
+                            "Are you sure (completely remove this entry)? (y/n): ")
 
                         if do_remove.lower() in ['y', 'yes']:
                             obj.pop(key)
@@ -352,7 +367,8 @@ def edit_dict(obj, tabwidth=0):
                         obj[key] = new_val
 
                     elif selection == '2':
-                        do_remove = clean_input("Are you sure (completely remove this entry)? (y/n): ")
+                        do_remove = clean_input(
+                            "Are you sure (completely remove this entry)? (y/n): ")
 
                         if do_remove.lower() in ['y', 'yes']:
                             obj.pop(key)
@@ -388,7 +404,8 @@ def edit_json(json_file):
     file_name = contents['name'] + ".json"
     with open(os.path.join(HOME_DIR, 'scripts', file_name), 'w') as output_file:
         json_str = json.dumps(contents, output_file, sort_keys=True, indent=4,
-                  separators=(',', ': '))
+                              separators=(',', ': '))
         output_file.write(json_str + '\n')
-        print("\nScript written to " + os.path.join(HOME_DIR, 'scripts', file_name))
+        print("\nScript written to " +
+              os.path.join(HOME_DIR, 'scripts', file_name))
         output_file.close()
