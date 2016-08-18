@@ -29,7 +29,6 @@ db_md5 = [
 
 def get_script_module(script_name):
     """Load a script module"""
-    # raise Exception(script_name, [os.path.join(HOME_DIR, "scripts")])
     file, pathname, desc = imp.find_module(script_name, [os.path.join(HOME_DIR, "scripts")])
     return imp.load_module(script_name, file, pathname, desc)
 

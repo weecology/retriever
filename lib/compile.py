@@ -230,7 +230,7 @@ def compile_json(json_file):
             values["tags"] = value
 
         elif key == "resources":
-            ''' Array of table objects '''
+            # Array of table objects
             tables = {}
             for table in value:
                  # Maintain a dict for table keys and values
