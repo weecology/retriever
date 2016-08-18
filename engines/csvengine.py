@@ -1,10 +1,9 @@
 from builtins import str
 from builtins import object
-from builtins import range
 
 import os
 
-from retriever.lib.models import Engine, no_cleanup
+from retriever.lib.models import Engine
 from retriever import DATA_DIR
 from retriever.lib.tools import sort_csv
 

@@ -10,11 +10,9 @@ from builtins import input
 from builtins import next
 import difflib
 import os
-import sys
 import warnings
 import unittest
 import shutil
-import os
 from decimal import Decimal
 from hashlib import md5
 
@@ -373,4 +371,3 @@ def file_2string(input_file):
     with open(input_file, 'rU') as obs_out_file:
         obs_out = obs_out_file.read()
     return obs_out
-

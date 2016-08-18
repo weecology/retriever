@@ -2,7 +2,7 @@
 inherit from the most specific class available."""
 from __future__ import print_function
 from builtins import object
-
+import os
 import shutil
 from retriever import DATA_DIR
 from retriever.lib.models import *
@@ -70,8 +70,8 @@ class Script(object):
                     self.name,
                     self.description,
                     self.shortname
-                ] + self.tags).upper()      
-                      
+                ] + self.tags).upper()
+
             for term in terms:
                 if not term.upper() in search_string:
                     return False
@@ -117,7 +117,7 @@ class DownloadOnlyTemplate(Script):
     def download(self, engine=None, debug=False):
         if engine.name != "Download Only":
             raise Exception("This dataset contains only non-tabular data files, and can only be used with the 'download only' engine.\nTry 'retriever download datasetname instead.")
-        Script.download(self, engine, debug) 
+        Script.download(self, engine, debug)
 
         for filename, url in self.urls.items():
             self.engine.download_file(url, filename)
