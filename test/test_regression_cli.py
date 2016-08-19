@@ -6,7 +6,7 @@ import sys
 
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
-    sys.setdefaultencoding('utf-8')
+    sys.setdefaultencoding('latin-1')
 import pytest
 from retriever.lib.tools import getmd5
 from retriever import HOME_DIR, ENGINE_LIST
@@ -22,8 +22,8 @@ download_md5 = [
 
 db_md5 = [
     # ('DelMoral2010', '0'),
-    ('EA_avianbodysize2007', '79680888f7768474479e70c87cd36c9d'),
-    ('EA_mom2003', '92bf63eb5b36b777c600d0a95229222c')
+    ('AvianBodySize', '79680888f7768474479e70c87cd36c9d'),
+    ('MoM2003', '92bf63eb5b36b777c600d0a95229222c')
 ]
 
 

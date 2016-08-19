@@ -3,9 +3,8 @@ dist/
 build/
 connections.config
 sqlite.db*
-scripts/
 retriever.egg-info
 apidocs
 .DS_Store
 .cache/*
-*.bak
+scripts/*.py

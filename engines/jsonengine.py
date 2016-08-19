@@ -62,10 +62,10 @@ class engine(Engine):
         self.auto_column_number = 1
 
     def disconnect(self):
-        """Close out the JSON with a ('\n]}') and close the file
+        """Close out the JSON with a `\\n]}` and close the file.
 
         Close all the file objects that have been created
-        Re-write the files stripping off the last comma and then close with a ('\n]}')
+        Re-write the files stripping off the last comma and then close with a `\\n]}`.
         """
         for output_file_i, file_name in self.table_names:
 
