@@ -1,0 +1,75 @@
+{
+    "citation": "Felisa A. Smith, S. Kathleen Lyons, S. K. Morgan Ernest, Kate E. Jones, Dawn M. Kaufman, Tamar Dayan, Pablo A. Marquet, James H. Brown, and John P. Haskell. 2003. Body mass of late Quaternary mammals. Ecology 84:3403.",
+    "description": "A data set of compiled body mass information for all mammals on Earth.",
+    "homepage": "http://www.esapubs.org/archive/ecol/E084/094/",
+    "keywords": [
+        "Taxon > Mammals",
+        "Data Type > Compilation"
+    ],
+    "name": "MoM2003",
+    "resources": [
+        {
+            "dialect": {
+                "nulls": [
+                    -999
+                ]
+            },
+            "name": "MOM",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "record_id",
+                        "type": "pk-auto"
+                    },
+                    {
+                        "name": "continent",
+                        "size": "20",
+                        "type": "char"
+                    },
+                    {
+                        "name": "status",
+                        "size": "20",
+                        "type": "char"
+                    },
+                    {
+                        "name": "sporder",
+                        "size": "20",
+                        "type": "char"
+                    },
+                    {
+                        "name": "family",
+                        "size": "20",
+                        "type": "char"
+                    },
+                    {
+                        "name": "genus",
+                        "size": "20",
+                        "type": "char"
+                    },
+                    {
+                        "name": "species",
+                        "size": "20",
+                        "type": "char"
+                    },
+                    {
+                        "name": "log_mass_g",
+                        "type": "double"
+                    },
+                    {
+                        "name": "comb_mass_g",
+                        "type": "double"
+                    },
+                    {
+                        "name": "reference",
+                        "type": "char"
+                    }
+                ]
+            },
+            "url": "http://www.esapubs.org/Archive/ecol/E084/094/MOMv3.3.txt"
+        }
+    ],
+    "title": "Masses of Mammals (Ecological Archives 2003)",
+    "urls": {
+        "MOM": "http://www.esapubs.org/Archive/ecol/E084/094/MOMv3.3.txt"
+    }
+}
