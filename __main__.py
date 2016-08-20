@@ -38,6 +38,7 @@ def main():
         script_list = SCRIPT_LIST()
 
         args = parser.parse_args()
+
         if args.quiet:
             sys.stdout = open(os.devnull, 'w')
 
@@ -78,7 +79,7 @@ def main():
             reset_retriever(args.scope)
             return
 
-        if args.command == 'ls' or args.dataset is None:
+        if args.command == 'ls':
 
             # If scripts have never been downloaded there is nothing to list
             if not script_list:
@@ -91,7 +92,7 @@ def main():
 
             for script in script_list:
                 if script.name:
-                    if args.l!=None:
+                    if args.l is not None:
                         script_name = script.name + "\nShortname: " + script.shortname+"\n"
                         if script.tags:
                             script_name += "Tags: "+str([tag for tag in script.tags])+"\n"
@@ -110,7 +111,7 @@ def main():
 
             print("Available datasets : {}\n".format(len(all_scripts)))
 
-            if args.l==None:
+            if args.l is None:
                 from retriever import lscolumns
                 lscolumns.printls(sorted(all_scripts, key=lambda s: s.lower()))
             else:
@@ -126,8 +127,12 @@ def main():
             debug = True
         else:
             debug = False
+            sys.tracebacklimit = 0
 
-        scripts = name_matches(script_list, args.dataset)
+        if args.dataset is not None:
+            scripts = name_matches(script_list, args.dataset)
+        else:
+            raise Exception("no dataset specified.")
         if scripts:
             for dataset in scripts:
                 print("=> Installing", dataset.name)
