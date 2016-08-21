@@ -9,6 +9,7 @@ The main() function can be used for bootstrapping.
 from __future__ import print_function
 from __future__ import absolute_import
 from builtins import str
+from builtins import input
 from imp import reload
 import os
 import platform
@@ -18,12 +19,14 @@ reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     # set default encoding to latin-1 to decode source text
     sys.setdefaultencoding('latin-1')
-from retriever import VERSION, MASTER, SCRIPT_LIST, sample_script, current_platform
+
+from retriever import VERSION, MASTER, SCRIPT_LIST, HOME_DIR, sample_script, current_platform
 from retriever.engines import engine_list
 from retriever.lib.repository import check_for_updates
 from retriever.lib.lists import Category, get_lists
 from retriever.lib.tools import choose_engine, name_matches, reset_retriever
 from retriever.lib.get_opts import parser
+from retriever.lib.datapackage import create_json, edit_json
 
 
 def main():
@@ -79,8 +82,40 @@ def main():
             reset_retriever(args.scope)
             return
 
-        if args.command == 'ls':
+        elif args.command == 'new_json':
+            # create new JSON script
+            create_json()
+            return
 
+        elif args.command == 'edit_json':
+            # edit existing JSON script
+            for json_file in [filename for filename in
+                              os.listdir(os.path.join(HOME_DIR, 'scripts')) if filename[-5:] == '.json']:
+                if json_file.lower().find(args.dataset.lower()) != -1:
+                    edit_json(json_file)
+                    return
+            raise Exception("File not found")
+
+        elif args.command == 'delete_json':
+            # delete existing JSON script
+            for json_file in [filename for filename in
+                              os.listdir(os.path.join(HOME_DIR, 'scripts')) if filename[-5:] == '.json']:
+                if json_file.lower().find(args.dataset.lower()) != -1:
+                    confirm = input("Really remove " + json_file +
+                                    " and all its contents? (y/N): ")
+                    if confirm.lower().strip() in ['y', 'yes']:
+                        # raise Exception(json_file)
+                        os.remove(os.path.join(HOME_DIR, 'scripts', json_file))
+                        try:
+                            os.remove(os.path.join(
+                                HOME_DIR, 'scripts', json_file[:-4] + 'py'))
+                        except:
+                            # Not compiled yet
+                            pass
+                    return
+            raise Exception("File not found")
+
+        if args.command == 'ls':
             # If scripts have never been downloaded there is nothing to list
             if not script_list:
                 print("No scripts are currently available. Updating scripts now...")
@@ -93,9 +128,10 @@ def main():
             for script in script_list:
                 if script.name:
                     if args.l is not None:
-                        script_name = script.name + "\nShortname: " + script.shortname+"\n"
+                        script_name = script.name + "\nShortname: " + script.shortname + "\n"
                         if script.tags:
-                            script_name += "Tags: "+str([tag for tag in script.tags])+"\n"
+                            script_name += "Tags: " + \
+                                str([tag for tag in script.tags]) + "\n"
                         not_found = 0
                         for term in args.l:
                             if script_name.lower().find(term.lower()) == -1:
@@ -117,7 +153,7 @@ def main():
             else:
                 count = 1
                 for script in all_scripts:
-                    print ("%d. %s"%(count, script))
+                    print("%d. %s" % (count, script))
                     count += 1
             return
 
@@ -143,10 +179,12 @@ def main():
                     pass
                 except Exception as e:
                     print(e)
-                    if debug: raise
+                    if debug:
+                        raise
             print("Done!")
         else:
-            print("The dataset {} isn't currently available in the Retriever".format(args.dataset))
+            print("The dataset {} isn't currently available in the Retriever".format(
+                args.dataset))
             print("Run 'retriever ls to see a list of currently available datasets")
 
 if __name__ == "__main__":
