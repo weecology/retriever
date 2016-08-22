@@ -23,7 +23,7 @@ for script_num, script in enumerate(script_list, start=1):
     if script.ref.strip():
         reference_link = script.ref
     elif bool(script.urls.values()):
-        reference_link = script.urls.values()[0].rpartition('/')[0]
+        reference_link = list(script.urls.values())[0].rpartition('/')[0]
     else:
         reference_link = ""
     datasetfile.write("| " + str(script_num) + ". **{}** \n| shortname: {}\n| reference: {}\n\n".format(script.name, script.shortname, reference_link))
