@@ -1,5 +1,5 @@
 ==========================================
-Creating scripts for the EcoData Retriever
+Creating scripts for the Data Retriever
 ==========================================
 
 
@@ -7,7 +7,7 @@ Script Creation
 ---------------
 
 
-The EcoData Retriever uses a simple CLI for developing new dataset scripts. This allows users with no programming experience to quickly add most standard datasets to the Retriever by specifying the names and locations of the tables along with additional information about the configuration of the data.
+The Data Retriever uses a simple CLI for developing new dataset scripts. This allows users with no programming experience to quickly add most standard datasets to the Retriever by specifying the names and locations of the tables along with additional information about the configuration of the data.
 The script is saved as a JSON file, that follows the DataPackage_ standards.
 
 .. _DataPackage: http://specs.frictionlessdata.io/data-packages

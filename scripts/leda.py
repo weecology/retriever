@@ -1,5 +1,5 @@
 #retriever
-"""EcoData Retriever script LEDA dataset"""
+"""Data Retriever script LEDA dataset"""
 from builtins import str
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 from retriever.lib.templates import Script

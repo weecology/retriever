@@ -1,4 +1,4 @@
-# Docker file for EcoData Retriever
+# Docker file for Data Retriever
 
 FROM python:2.7
 MAINTAINER Ethan White <ethan@weecology.org>

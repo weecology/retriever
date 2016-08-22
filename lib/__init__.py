@@ -1,2 +1,2 @@
 
-"""retriever.lib contains the core EcoData Retriever modules."""
+"""retriever.lib contains the core Data Retriever modules."""

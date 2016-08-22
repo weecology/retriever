@@ -66,7 +66,7 @@ excludes = [
 
 setup(name='retriever',
       version=clean_version(__version__),
-      description='EcoData Retriever',
+      description='Data Retriever',
       author='Ben Morris, Ethan White, Henry Senyondo',
       author_email='ethan@weecology.org',
       url='https://github.com/weecology/retriever',

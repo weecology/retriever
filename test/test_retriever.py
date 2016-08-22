@@ -1,4 +1,4 @@
-"""Tests for the EcoData Retriever"""
+"""Tests for the Data Retriever"""
 from future import standard_library
 standard_library.install_aliases()
 from imp import reload

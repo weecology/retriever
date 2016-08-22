@@ -47,7 +47,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'EcoData Retriever'
+project = u'Data Retriever'
 copyright = COPYRIGHT
 
 version = release = VERSION

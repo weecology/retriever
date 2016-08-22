@@ -1,4 +1,4 @@
-"""Integrations tests for EcoData Retriever"""
+"""Integrations tests for Data Retriever"""
 from __future__ import print_function
 import imp
 import os

@@ -1,4 +1,4 @@
-"""EcoData Retriever Wizard
+"""Data Retriever Wizard
 
 Running this module directly will launch the download wizard, allowing the user
 to choose from all scripts.
@@ -30,7 +30,7 @@ from retriever.lib.datapackage import create_json, edit_json
 
 
 def main():
-    """This function launches the EcoData Retriever."""
+    """This function launches the Data Retriever."""
     if len(sys.argv) == 1:
         # if no command line args are passed, show the help options
         parser.parse_args(['-h'])

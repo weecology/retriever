@@ -6,14 +6,14 @@
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{0467A404-8C83-42A2-8C25-0903FBD14D9C}
-AppName=EcoData Retriever
+AppName=Data Retriever
 AppVersion=1.9.0-dev
 AppPublisher=Weecology
 AppPublisherURL=http://ecodataretriever.org
 AppSupportURL=http://ecodataretriever.org
 AppUpdatesURL=http://ecodataretriever.org
-DefaultDirName={pf}\EcoDataRetriever
-DefaultGroupName=EcoData Retriever
+DefaultDirName={pf}\DataRetriever
+DefaultGroupName=Data Retriever
 OutputBaseFilename=RetrieverSetup
 SetupIconFile=icon.ico
 Compression=lzma
@@ -33,9 +33,9 @@ Source: "dist\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createal
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{group}\EcoData Retriever"; Filename: "{app}\retriever.exe"
-Name: "{group}\{cm:UninstallProgram,EcoData Retriever}"; Filename: "{uninstallexe}"
-Name: "{commondesktop}\EcoData Retriever"; Filename: "{app}\retriever.exe"; Tasks: desktopicon
+Name: "{group}\Data Retriever"; Filename: "{app}\retriever.exe"
+Name: "{group}\{cm:UninstallProgram, Data Retriever}"; Filename: "{uninstallexe}"
+Name: "{commondesktop}\Data Retriever"; Filename: "{app}\retriever.exe"; Tasks: desktopicon
 
 [Code]
 const
@@ -50,4 +50,4 @@ end;
 #include "modpath.iss"
 
 [Run]
-Filename: "{app}\retriever.exe"; Description: "{cm:LaunchProgram,EcoData Retriever}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\retriever.exe"; Description: "{cm:LaunchProgram, Data Retriever}"; Flags: nowait postinstall skipifsilent

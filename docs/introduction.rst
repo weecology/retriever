@@ -17,9 +17,9 @@ datasets and then downloads the data, pre-processes it, and installs it
 into major database management systems (at the moment we support MySQL,
 PostgreSQL, SQLite, and Microsoft Access).
 
-Once the EcoData Retriever has loaded the data into the database it is
+Once the Data Retriever has loaded the data into the database it is
 easy to connect to the database using standard tools (e.g., MS Access,
-Filemaker, etc.).The EcoData Retriever can download and install small
+Filemaker, etc.).The Data Retriever can download and install small
 datasets in seconds and large datasets in minutes. The program also
 cleans up known issues with the datasets and automatically restructures
 them into a format appropriate for standard database management systems.
@@ -30,7 +30,7 @@ large datasets up and running by hours, and in some cases days.
 What data tasks does the Retriever handle
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The EcoData Retriever handles a number of common tasks including: 1) creating
+The Data Retriever handles a number of common tasks including: 1) creating
 the underlying database structures, including automatically determining the data
 types; 2) downloading the data; 3) transforming data into appropriately
 normalized forms for database management systems (e.g., "wide" data into "long"
@@ -45,7 +45,7 @@ Survey of North America (BBS) and the Alwyn Gentry Tree Transect data:
 - BBS data consists of multiple tables. The main table is divided into one file
   per region in 70 individual compressed files. Supplemental tables required to
   work with the data are posted in a variety of locations and formats. The
-  EcoData Retriever automates: downloading all data files, extracting data from
+  Data Retriever automates: downloading all data files, extracting data from
   region-specific raw data files into single tables, correcting typographic
   errors, replacing non-standard null values, and adding a Species table that
   links numeric identifiers to actual species names.
@@ -77,7 +77,7 @@ Installing From Source
 ~~~~~~~~~~~~~~~~~~~~~~
 
 
-To install the EcoData Retriever from source, you’ll need Python 2.6+
+To install the Data Retriever from source, you’ll need Python 2.6+
 with the following packages installed:
 
 -  xlrd
@@ -98,7 +98,7 @@ To install from source
 2. From the directory containing setup.py, run the following command:
    ``python setup.py install``
 3. After installing, type ``retriever`` from a command prompt to launch
-   the EcoData Retriever
+   the Data Retriever
 
 Using the Command Line
 ~~~~~~~~~~~~~~~~~~~~~~
