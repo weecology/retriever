@@ -188,16 +188,19 @@ def create_json():
 
             # set table schema
             table['schema'] = {}
-
             table['schema']["fields"] = []
-            col = clean_input(
-                "Enter columns [format = name, type, (optional) size] (press return to skip):\n", ignore_empty=True)
-            if col != "" and col != []:
+            print("Enter columns [format = name, type, (optional) size] (press return to skip):\n\n")
+            while True:
+                # get column list (optional)
                 try:
-                    col_list = [c.strip() for c in col.split(",")]
-                    col_list = [v for v in col_list if v.strip() != ""]
+                    col_list = clean_input("", split_char = ',', ignore_empty = True)
+                    if col_list == []:
+                        break
+                    elif type(col_list) != list:
+                        raise Exception
 
-                    col_obj = {}
+                    col_list = [c.strip() for c in col_list]
+                    col_obj = {}    # dict to store column data
                     col_obj["name"] = col_list[0]
                     col_obj["type"] = col_list[1]
 
