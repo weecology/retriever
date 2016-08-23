@@ -1,5 +1,5 @@
 #retriever
-"""EcoData Retriever script for the eBird Observation Dataset"""
+"""Data Retriever script for the eBird Observation Dataset"""
 
 from retriever.lib.templates import Script
 from retriever.lib.models import Table

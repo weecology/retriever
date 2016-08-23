@@ -1,4 +1,4 @@
-"""EcoData Retriever Tools
+"""Data Retriever Tools
 
 This module contains miscellaneous classes and functions used in Retriever
 scripts.

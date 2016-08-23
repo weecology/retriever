@@ -1,11 +1,11 @@
 ==================================
-Using the EcoData Retriever from R
+Using the Data Retriever from R
 ==================================
 
 Ecoretriever
 ~~~~~~~~~~~~
 
-The `EcoData Retriever`_ provides an R interface to the EcoData Retriever so
+The `Data Retriever`_ provides an R interface to the Data Retriever so
 that the Retriever's data handling can easily be integrated into R workflows.
 
 Installation
@@ -24,7 +24,7 @@ To install the development version, use ``devtools``
   library(devtools)
   install_github("ropensci/ecoretriever")
 
-Note: The R package takes advantage of the EcoData Retriever's command line
+Note: The R package takes advantage of the Data Retriever's command line
 interface, which must be available in the path. This should occur automatically
 when following the installation instructions for the Retriever.
 
@@ -55,4 +55,4 @@ Examples
 To get citation information for the ``ecoretriever`` in R use ``citation(package = 'ecoretriever')``:
 
 
-.. _EcoData Retriever: http://ecodataretriever.org
+.. _Data Retriever: http://ecodataretriever.org

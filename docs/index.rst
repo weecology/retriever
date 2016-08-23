@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to EcoData retriever's documentation!
+Welcome to Data retriever's documentation!
 =============================================
 
 Contents:
@@ -13,7 +13,6 @@ Contents:
 
    introduction
    scripts
-   retriever
    macbuild.rst
    Release.rst
    developer.rst

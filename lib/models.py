@@ -1,4 +1,4 @@
-"""EcoData Retriever Data Model
+"""Data Retriever Data Model
 
 This module contains basic class definitions for the Retriever platform.
 
