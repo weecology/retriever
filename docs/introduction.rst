@@ -1,4 +1,4 @@
-============ 
+============
 Introduction
 ============
 
@@ -62,7 +62,7 @@ Survey of North America (BBS) and the Alwyn Gentry Tree Transect data:
   originated from in the Counts table and placing a single stem on each row in
   the Stems table.
 
-*Adapted from* `Morris & White 2013`_. 
+*Adapted from* `Morris & White 2013`_.
 
 
 Installing (binaries)
@@ -77,7 +77,7 @@ Installing From Source
 ~~~~~~~~~~~~~~~~~~~~~~
 
 
-To install the Data Retriever from source, you’ll need Python 2.6+
+To install the Data Retriever from source, you’ll need Python 2.6+ or Python 3.3+
 with the following packages installed:
 
 -  xlrd
@@ -125,7 +125,7 @@ and datasets run ``retriever --help``. The output will look like this:
           reset               reset retriever: removes configation settings,
                               scripts, and cached data
           help
-      
+
       optional arguments:
         -h, --help            show this help message and exit
         -v, --version         show program's version number and exit
@@ -133,7 +133,7 @@ and datasets run ``retriever --help``. The output will look like this:
 
 
 To install datasets, use ``retriever install``::
- 
+
     usage: retriever install [-h] [--compile] [--debug]
                              {mysql,postgres,sqlite,msaccess,csv} ...
 
@@ -160,32 +160,32 @@ Examples
 These examples are using Breeding Bird Survey data (BBS)
 
 Using Install::
-   
+
    retriever install -h (gives install options)
-         
+
 Using a specific database engine. The retriever has support for various engines; mysql, postgres, sqlite, msaccess, csv, download_only::
-          
+
    retriever install {Engine}
-   
+
    retriever install mysql -h     ..(gives install mysql options)::
-   
+
    retriever install mysql –user myuser –password ***** –host localhost –port 8888 –database_name testdbase BBS
-         
+
 install data into an sqlite database named mydatabase.db you would use::
-         
+
    retriever install sqlite BBS -f mydatabase.db
-         
+
 Using download::
-   
-   retriever download -h    (gives you help options) 
-   retriever download BBS 
-   retriever download BBS –path  C:\Users\Documents   
-         
+
+   retriever download -h    (gives you help options)
+   retriever download BBS
+   retriever download BBS –path  C:\Users\Documents
+
 Using citation::
 
    retriever citation   (citation of the retriever engine)
    retriever citation BBS   (citation of BBS data)
-      
+
 
 Acknowledgments
 ~~~~~~~~~~~~~~~
