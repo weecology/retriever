@@ -15,6 +15,7 @@ def parse_script_to_json(script_file, location=SCRIPT_DIR):
     replace = []
     keys_to_ignore = ["template"]
     urls = {}
+    values["retriever"] = "True"
 
     for line in [str(line).strip() for line in definition]:
         if line and ':' in line and not line[0] == '#':

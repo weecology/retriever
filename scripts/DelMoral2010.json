@@ -157,6 +157,7 @@
             "url": "http://esapubs.org/archive/ecol/E091/152/MSH_PLOT_DESCRIPTORS.csv"
         }
     ],
+    "retriever": "True",
     "title": "Vegetation plots - del Moral, 2010",
     "urls": {
         "plots": "http://esapubs.org/archive/ecol/E091/152/MSH_PLOT_DESCRIPTORS.csv",

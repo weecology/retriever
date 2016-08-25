@@ -22,6 +22,7 @@
             "url": "http://files.figshare.com/2023506/Citations_table_abundances.csv"
         }
     ],
+    "retriever": "True",
     "title": "Miscellaneous Abundance Database (figshare 2012)",
     "urls": {
         "citations": "http://files.figshare.com/2023506/Citations_table_abundances.csv",
