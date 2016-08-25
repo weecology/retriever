@@ -9,10 +9,13 @@ if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding('latin-1')
 import pytest
 from retriever.lib.tools import getmd5
-from retriever import HOME_DIR, ENGINE_LIST
+from retriever import SCRIPT_SEARCH_PATHS, ENGINE_LIST
 
 mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, csv_engine, download_engine, json_engine, xml_engine = ENGINE_LIST()
 dir_path = os.path.dirname(os.path.abspath(__file__))
+site_root = os.path.dirname(os.path.realpath(__file__))
+parent = os.path.abspath(os.path.join(site_root, os.pardir))
+HOMEDIR = os.path.expanduser('~')
 
 download_md5 = [
     # ('DelMoral2010', '0'),
@@ -28,8 +31,13 @@ db_md5 = [
 
 
 def get_script_module(script_name):
-    """Load a script module"""
-    file, pathname, desc = imp.find_module(script_name, [os.path.join(HOME_DIR, "scripts")])
+    """Load a script module from the downloaded scripts directory in the retriever
+
+    This ensures that tests are performed on the retriever source downloaded
+    Since this module is run in the test directory, we get the parent directory
+    using the module's location
+    """
+    file, pathname, desc = imp.find_module(script_name, [os.path.join(parent, "scripts")])
     return imp.load_module(script_name, file, pathname, desc)
 
 
@@ -47,7 +55,6 @@ def get_csv_md5(dataset, engines, tmpdir):
 def setup_module():
     """Update retriever scripts and cd to test directory to find data"""
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
-    os.system("retriever update")
 
 
 def teardown_module():
@@ -109,7 +116,11 @@ def test_csv_regression(dataset, expected, tmpdir):
 
 @pytest.mark.parametrize("dataset, expected", download_md5)
 def test_download_regression(dataset, expected):
-    """Check for regression for a particular dataset downloaded only"""
+    """Check for regression for a particular dataset downloaded only
+
+    "Move the dataset script to the .retriever directory before download."
+    """
+    os.system('cp -r {0} {1}'.format(os.path.join(parent, "scripts"), os.path.join(HOMEDIR, '.retriever')))
     os.system("retriever download {0} -p raw_data/{0}".format(dataset))
     current_md5 = getmd5(data="raw_data/{0}".format(dataset), data_type='dir', mode="rU")
     assert current_md5 == expected
