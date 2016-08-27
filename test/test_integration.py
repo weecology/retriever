@@ -46,6 +46,8 @@ tests = [simple_csv, autopk_csv, crosstab, autopk_crosstab, skip_csv, extra_newl
 # Create a tuple of all test scripts and expected values
 # (simple_csv, '"a","b","c"\n1,2,3\n4,5,6')
 test_parameters = [(test, test['expect_out']) for test in tests]
+file_location = os.path.dirname(os.path.realpath(__file__))
+retriever_root_dir = os.path.abspath(os.path.join(file_location, os.pardir))
 
 
 def setup_module():
@@ -88,7 +90,7 @@ def get_output_as_csv(dataset, engines, tmpdir, db):
     if engines.opts["engine"] != 'csv':
         csv_file += '.csv'
     obs_out = file_2string(csv_file)
-    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    os.chdir(retriever_root_dir)
     return obs_out
 
 

@@ -30,16 +30,19 @@ test_engine.script = BasicTextTemplate(tables={'test': test_engine.table},
                                        shortname='test')
 test_engine.opts = {'database_name': '{db}_abc'}
 HOMEDIR = os.path.expanduser('~')
+file_location = os.path.dirname(os.path.realpath(__file__))
+retriever_root_dir = os.path.abspath(os.path.join(file_location, os.pardir))
 
 
 def setup_module():
-    """"change directory to test directory"""
-    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    """"Make sure you are in the main local retriever directory"""
+    os.chdir(retriever_root_dir)
+    os.system('cp -r {0} {1}'.format(os.path.join(retriever_root_dir, "test/raw_data"), retriever_root_dir))
 
 
 def teardown_method():
-    """Cleanup temporary output files after testing"""
-    os.chdir("..")
+    """Make sure you are in the main local retriever directory after these tests"""
+    os.chdir(retriever_root_dir)
 
 
 def test_auto_get_columns():
@@ -139,10 +142,9 @@ def test_find_file_absent():
 def test_find_file_present():
     """Test if existing datafile is found
 
-    Using the AvianBodySize dataset which is included for regression testing
-    Because all testing code and data is located in ./test/ it is necessary to
-    move into this directory for DATA_SEARCH_PATHS to work properly.
-
+    Using the AvianBodySize dataset which is included for regression testing.
+    We copy the raw_data directory to retriever_root_dir which is the current working directory.
+    This enables the data to be in the DATA_SEARCH_PATHS.
     """
     test_engine.script.shortname = 'AvianBodySize'
     assert test_engine.find_file('avian_ssd_jan07.txt') == os.path.normpath(
