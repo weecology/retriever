@@ -98,6 +98,7 @@
             "url": "http://esapubs.org/archive/ecol/E096/269/Data_Files/Amniote_Database_Aug_2015.csv"
         }
     ],
+    "retriever": "True",
     "title": "Amniote life History database",
     "urls": {
         "main": "http://esapubs.org/archive/ecol/E096/269/Data_Files/Amniote_Database_Aug_2015.csv"

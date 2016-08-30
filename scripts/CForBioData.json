@@ -18,6 +18,7 @@
             "url": "http://esapubs.org/archive/ecol/E095/177/CForBioData_v1.0.txt"
         }
     ],
+    "retriever": "True",
     "title": "Biomass and Its Allocation in Chinese Forest Ecosystems - Luo, et al., 2014",
     "urls": {
         "biomass": "http://esapubs.org/archive/ecol/E095/177/CForBioData_v1.0.txt"

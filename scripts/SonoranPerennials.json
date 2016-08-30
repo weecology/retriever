@@ -98,6 +98,7 @@
             "url": "http://esapubs.org/archive/ecol/E094/083/Photo_info.csv"
         }
     ],
+    "retriever": "True",
     "title": "Sonoran Desert Perennials",
     "urls": {
         "Count1906": "http://esapubs.org/archive/ecol/E094/083/Count1906.csv",

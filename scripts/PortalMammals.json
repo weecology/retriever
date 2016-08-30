@@ -175,6 +175,7 @@
             "url": "https://ndownloader.figshare.com/files/3299474"
         }
     ],
+    "retriever": "True",
     "scan_lines": "40000",
     "title": "Portal Project Mammals (Ecological Archives 2009)",
     "urls": {

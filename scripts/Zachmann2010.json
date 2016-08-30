@@ -218,6 +218,7 @@
             "url": "http://esapubs.org/archive/ecol/E091/243/total_monthly_sno.csv"
         }
     ],
+    "retriever": "True",
     "title": "Sagebrush steppe quadrats (Ecological Archives 2010)",
     "urls": {
         "counts": "http://esapubs.org/archive/ecol/E091/243/annuals_counts_v3.csv",

@@ -243,6 +243,7 @@
             "url": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Precipitation_1989-2005.csv"
         }
     ],
+    "retriever": "True",
     "title": "Fray Jorge community database",
     "urls": {
         "annuals": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Annuals_1989-2005.txt",

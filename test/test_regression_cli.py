@@ -9,10 +9,13 @@ if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding('latin-1')
 import pytest
 from retriever.lib.tools import getmd5
-from retriever import HOME_DIR, ENGINE_LIST
+from retriever import ENGINE_LIST
 
 mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, csv_engine, download_engine, json_engine, xml_engine = ENGINE_LIST()
-dir_path = os.path.dirname(os.path.abspath(__file__))
+file_location = os.path.dirname(os.path.realpath(__file__))
+retriever_root_dir = os.path.abspath(os.path.join(file_location, os.pardir))
+working_script_dir = os.path.abspath(os.path.join(retriever_root_dir, "scripts"))
+HOMEDIR = os.path.expanduser('~')
 
 download_md5 = [
     # ('DelMoral2010', '0'),
@@ -28,8 +31,8 @@ db_md5 = [
 
 
 def get_script_module(script_name):
-    """Load a script module"""
-    file, pathname, desc = imp.find_module(script_name, [os.path.join(HOME_DIR, "scripts")])
+    """Load a script module from the downloaded scripts directory in the retriever"""
+    file, pathname, desc = imp.find_module(script_name, [working_script_dir])
     return imp.load_module(script_name, file, pathname, desc)
 
 
@@ -46,18 +49,17 @@ def get_csv_md5(dataset, engines, tmpdir):
 
 def setup_module():
     """Update retriever scripts and cd to test directory to find data"""
-    os.chdir(os.path.dirname(os.path.abspath(__file__)))
-    os.system("retriever update")
+    os.chdir(retriever_root_dir)
+    os.system('cp -r {0} {1}'.format(os.path.join(retriever_root_dir, "test/raw_data"), retriever_root_dir))
 
 
 def teardown_module():
     """Cleanup temporary output files after testing and return to root directory"""
-    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    os.chdir(retriever_root_dir)
     os.system("rm -r output*")
     os.system("rm -r raw_data/mom2003")
     os.system("rm -r raw_data/EA*")
     os.system("rm testdb.sqlite")
-    os.chdir("..")
 
 
 @pytest.mark.parametrize("dataset, expected", db_md5)
@@ -110,6 +112,7 @@ def test_csv_regression(dataset, expected, tmpdir):
 @pytest.mark.parametrize("dataset, expected", download_md5)
 def test_download_regression(dataset, expected):
     """Check for regression for a particular dataset downloaded only"""
+    os.chdir(retriever_root_dir)
     os.system("retriever download {0} -p raw_data/{0}".format(dataset))
     current_md5 = getmd5(data="raw_data/{0}".format(dataset), data_type='dir', mode="rU")
     assert current_md5 == expected

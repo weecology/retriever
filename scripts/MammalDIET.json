@@ -142,6 +142,7 @@
             "url": "http://datadryad.org/bitstream/handle/10255/dryad.64565/MammalDIET_v1.0.txt"
         }
     ],
+    "retriever": "True",
     "title": "MammalDIET",
     "urls": {
         "diet": "http://datadryad.org/bitstream/handle/10255/dryad.64565/MammalDIET_v1.0.txt"

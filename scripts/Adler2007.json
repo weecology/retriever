@@ -151,6 +151,7 @@
             "url": "http://esapubs.org/archive/ecol/E088/161/monthly_ppt.csv"
         }
     ],
+    "retriever": "True",
     "title": "Kansas plant quadrats (Ecological Archives 2007)",
     "urls": {
         "main": "http://esapubs.org/archive/ecol/E088/161/allrecords.csv",

@@ -91,6 +91,7 @@
             "url": "http://esapubs.org/archive/ecol/E094/128/species_name_changes.csv"
         }
     ],
+    "retriever": "True",
     "title": "Shortgrass steppe plants.",
     "urls": {
         "allrecords_cover": "http://esapubs.org/archive/ecol/E094/128/allrecords_cover.csv",

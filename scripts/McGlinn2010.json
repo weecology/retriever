@@ -47,6 +47,7 @@
             "url": "http://esapubs.org/archive/ecol/E091/124/TGPP_clim.csv"
         }
     ],
+    "retriever": "True",
     "title": "Vascular plant composition - McGlinn, et al., 2010",
     "urls": {
         "climate": "http://esapubs.org/archive/ecol/E091/124/TGPP_clim.csv",

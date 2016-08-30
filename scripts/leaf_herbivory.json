@@ -13,6 +13,7 @@
             "url": "http://www.esapubs.org/archive/ecol/E095/065/Leaf_herbivory.csv"
         }
     ],
+    "retriever": "True",
     "title": "Leaf herbivory dataset",
     "urls": {
         "Leaf_herbivory": "http://www.esapubs.org/archive/ecol/E095/065/Leaf_herbivory.csv"

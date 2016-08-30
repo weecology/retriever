@@ -3,14 +3,13 @@ from __future__ import print_function
 import imp
 import os
 import shutil
-import pytest
 
+import pytest
 from retriever.lib.compile import compile_json
 from retriever.lib.parse_script_to_json import parse_script_to_json
 from retriever import HOME_DIR, ENGINE_LIST
 from retriever.lib.tools import file_2string
 from retriever.lib.tools import create_file
-
 
 simple_csv = {'name': 'simple_csv',
               'raw_data': "a,b,c\n1,2,3\n4,5,6\n",
@@ -28,25 +27,27 @@ crosstab = {'name': 'crosstab',
             'expect_out': 'a,b,c,val\n1,1,c1,1.1\n1,1,c2,1.2\n1,2,c1,2.1\n1,2,c2,2.2\n'}
 
 autopk_crosstab = {'name': 'autopk_crosstab',
-            'raw_data': "a,b,c1,c2\n1,1,1.1,1.2\n1,2,2.1,2.2\n",
-            'script': "shortname: autopk_crosstab\ntable: autopk_crosstab, http://example.com/autopk_crosstab.txt\n*column: record_id, pk-auto\n*column: a, int\n*column: b, int\n*ct_column: c\n*column: val, ct-double\n*ct_names: c1,c2",
-            'expect_out': 'record_id,a,b,c,val\n1,1,1,c1,1.1\n2,1,1,c2,1.2\n3,1,2,c1,2.1\n4,1,2,c2,2.2\n'}
+                   'raw_data': "a,b,c1,c2\n1,1,1.1,1.2\n1,2,2.1,2.2\n",
+                   'script': "shortname: autopk_crosstab\ntable: autopk_crosstab, http://example.com/autopk_crosstab.txt\n*column: record_id, pk-auto\n*column: a, int\n*column: b, int\n*ct_column: c\n*column: val, ct-double\n*ct_names: c1,c2",
+                   'expect_out': 'record_id,a,b,c,val\n1,1,1,c1,1.1\n2,1,1,c2,1.2\n3,1,2,c1,2.1\n4,1,2,c2,2.2\n'}
 
 skip_csv = {'name': 'skip_csv',
-              'raw_data': "a,b,c\n1,2,3\n4,5,6\n",
-              'script': "shortname: skip_csv\ntable: skip_csv, http://example.com/skip_csv.txt\n*do_not_bulk_insert: True\n*column: a, skip\n*column: b, int\n*column: c, int",
-              'expect_out': 'b,c\n2,3\n5,6\n'}
+            'raw_data': "a,b,c\n1,2,3\n4,5,6\n",
+            'script': "shortname: skip_csv\ntable: skip_csv, http://example.com/skip_csv.txt\n*do_not_bulk_insert: True\n*column: a, skip\n*column: b, int\n*column: c, int",
+            'expect_out': 'b,c\n2,3\n5,6\n'}
 
 extra_newline = {'name': 'extra_newline',
-                'raw_data': 'col1,col2,col3\n1,2\n,3\n',
-                'script': "shortname: extra_newline\ntable: extra_newline, http://example.com/extra_newline.txt",
-                'expect_out': 'col1,col2,col3\n1,2,3\n'}
+                 'raw_data': 'col1,col2,col3\n1,2\n,3\n',
+                 'script': "shortname: extra_newline\ntable: extra_newline, http://example.com/extra_newline.txt",
+                 'expect_out': 'col1,col2,col3\n1,2,3\n'}
 
 tests = [simple_csv, autopk_csv, crosstab, autopk_crosstab, skip_csv, extra_newline]
 
 # Create a tuple of all test scripts and expected values
 # (simple_csv, '"a","b","c"\n1,2,3\n4,5,6')
 test_parameters = [(test, test['expect_out']) for test in tests]
+file_location = os.path.dirname(os.path.realpath(__file__))
+retriever_root_dir = os.path.abspath(os.path.join(file_location, os.pardir))
 
 
 def setup_module():
@@ -56,7 +57,7 @@ def setup_module():
             os.makedirs(os.path.join(HOME_DIR, "raw_data", test['name']))
         create_file(test['raw_data'], os.path.join(HOME_DIR, "raw_data", test['name'], test['name'] + '.txt'))
         create_file(test['script'], os.path.join(HOME_DIR, "scripts", test['name'] + '.script'))
-        parse_script_to_json(test['name'], location = os.path.join(HOME_DIR, "scripts"))
+        parse_script_to_json(test['name'], location=os.path.join(HOME_DIR, "scripts"))
         compile_json(os.path.join(HOME_DIR, "scripts", test['name']))
 
 
@@ -64,11 +65,12 @@ def teardown_module():
     """Remove test data and scripts from .retriever directories"""
     for test in tests:
         shutil.rmtree(os.path.join(HOME_DIR, "raw_data", test['name']))
-        os.remove(os.path.join(HOME_DIR , "scripts", test['name'] + '.script'))
-        os.remove(os.path.join(HOME_DIR , "scripts", test['name'] + '.json'))
-        os.remove(os.path.join(HOME_DIR , "scripts", test['name'] + '.py'))
+        os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.script'))
+        os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.json'))
+        os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.py'))
         os.system("rm -r *{}".format(test['name']))
         os.system("rm testdb.sqlite")
+
 
 def get_output_as_csv(dataset, engines, tmpdir, db):
     """Install dataset and return the output as a string version of the csv
@@ -88,7 +90,7 @@ def get_output_as_csv(dataset, engines, tmpdir, db):
     if engines.opts["engine"] != 'csv':
         csv_file += '.csv'
     obs_out = file_2string(csv_file)
-    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    os.chdir(retriever_root_dir)
     return obs_out
 
 
@@ -97,16 +99,17 @@ def get_script_module(script_name):
     file, pathname, desc = imp.find_module(script_name, [os.path.join(HOME_DIR, "scripts")])
     return imp.load_module(script_name, file, pathname, desc)
 
+
 mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, csv_engine, download_engine, json_engine, xml_engine = ENGINE_LIST()
 
 
-@pytest.mark.parametrize("dataset, expected",test_parameters)
+@pytest.mark.parametrize("dataset, expected", test_parameters)
 def test_csv_integration(dataset, expected, tmpdir):
     csv_engine.opts = {'engine': 'csv', 'table_name': '{db}_{table}'}
     assert get_output_as_csv(dataset, csv_engine, tmpdir, db=dataset["name"]) == expected
 
 
-@pytest.mark.parametrize("dataset, expected",test_parameters)
+@pytest.mark.parametrize("dataset, expected", test_parameters)
 def test_sqlite_integration(dataset, expected, tmpdir):
     dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb.sqlite'))
     sqlite_engine.opts = {'engine': 'sqlite', 'file': dbfile, 'table_name': '{db}_{table}'}
