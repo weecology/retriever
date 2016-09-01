@@ -68,6 +68,7 @@
             "url": "http://www.esapubs.org/Archive/ecol/E084/094/MOMv3.3.txt"
         }
     ],
+    "retriever": "True",
     "title": "Masses of Mammals (Ecological Archives 2003)",
     "urls": {
         "MOM": "http://www.esapubs.org/Archive/ecol/E084/094/MOMv3.3.txt"

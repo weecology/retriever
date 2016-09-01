@@ -1,16 +1,14 @@
 """Tests for the Data Retriever"""
 from future import standard_library
-standard_library.install_aliases()
-from imp import reload
-from future.builtins import input
 
+standard_library.install_aliases()
 import os
-import pytest
 import sys
+from imp import reload
+
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding('utf-8')
-from io import StringIO
 from retriever.lib.engine import Engine
 from retriever.lib.table import Table
 from retriever.lib.templates import BasicTextTemplate
@@ -32,16 +30,19 @@ test_engine.script = BasicTextTemplate(tables={'test': test_engine.table},
                                        shortname='test')
 test_engine.opts = {'database_name': '{db}_abc'}
 HOMEDIR = os.path.expanduser('~')
+file_location = os.path.dirname(os.path.realpath(__file__))
+retriever_root_dir = os.path.abspath(os.path.join(file_location, os.pardir))
 
 
 def setup_module():
-    """"change directory to test directory"""
-    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    """"Make sure you are in the main local retriever directory"""
+    os.chdir(retriever_root_dir)
+    os.system('cp -r {0} {1}'.format(os.path.join(retriever_root_dir, "test/raw_data"), retriever_root_dir))
 
 
 def teardown_method():
-    """Cleanup temporary output files after testing"""
-    os.chdir("..")
+    """Make sure you are in the main local retriever directory after these tests"""
+    os.chdir(retriever_root_dir)
 
 
 def test_auto_get_columns():
@@ -141,10 +142,9 @@ def test_find_file_absent():
 def test_find_file_present():
     """Test if existing datafile is found
 
-    Using the AvianBodySize dataset which is included for regression testing
-    Because all testing code and data is located in ./test/ it is necessary to
-    move into this directory for DATA_SEARCH_PATHS to work properly.
-
+    Using the AvianBodySize dataset which is included for regression testing.
+    We copy the raw_data directory to retriever_root_dir which is the current working directory.
+    This enables the data to be in the DATA_SEARCH_PATHS.
     """
     test_engine.script.shortname = 'AvianBodySize'
     assert test_engine.find_file('avian_ssd_jan07.txt') == os.path.normpath(
@@ -195,7 +195,7 @@ def test_getmd5_lines():
 def test_getmd5_path():
     """Test md5 sum calculation given a path to data source"""
     data_file = create_file('a,b,c\n1,2,3\n4,5,6\n')
-    assert getmd5(data=data_file, data_type='file',mode='rU') == '0bec5bf6f93c547bc9c6774acaf85e1a'
+    assert getmd5(data=data_file, data_type='file', mode='rU') == '0bec5bf6f93c547bc9c6774acaf85e1a'
 
 
 def test_json2csv():
@@ -246,101 +246,117 @@ def test_sort_csv():
 
 def test_is_empty_null_string():
     """Test for null string"""
-    assert(is_empty("") == True)
+    assert is_empty("") == True
 
 
 def test_is_empty_empty_list():
     """Test for empty list"""
-    assert(is_empty([]) == True)
+    assert is_empty([]) == True
 
 
 def test_is_empty_not_null_string():
     """Test for non-null string"""
-    assert(is_empty("not empty") == False)
+    assert is_empty("not empty") == False
 
 
 def test_is_empty_not_empty_list():
     """Test for not empty list"""
-    assert(is_empty(["not empty"]) == False)
+    assert is_empty(["not empty"]) == False
 
 
 def test_clean_input_empty_input_ignore_empty(monkeypatch):
     """Test with empty input ignored"""
+
     def mock_input(prompt):
         return ""
+
     monkeypatch.setattr('retriever.lib.datapackage.input', mock_input)
-    assert(clean_input("", ignore_empty=True) == "")
+    assert clean_input("", ignore_empty=True) == ""
 
 
 def test_clean_input_empty_input_not_ignore_empty(monkeypatch):
     """Test with empty input not ignored"""
+
     def mock_input(prompt):
         mock_input.counter += 1
         if mock_input.counter <= 1:
             return ""
         else:
             return "not empty"
+
     mock_input.counter = 0
     monkeypatch.setattr('retriever.lib.datapackage.input', mock_input)
-    assert(clean_input("", ignore_empty=False) == "not empty")
+    assert clean_input("", ignore_empty=False) == "not empty"
 
 
 def test_clean_input_string_input(monkeypatch):
     """Test with non-empty input"""
+
     def mock_input(prompt):
         return "not empty"
+
     monkeypatch.setattr('retriever.lib.datapackage.input', mock_input)
-    assert(clean_input("") == "not empty")
+    assert clean_input("") == "not empty"
 
 
 def test_clean_input_empty_list_ignore_empty(monkeypatch):
     """Test with empty list ignored"""
+
     def mock_input(prompt):
         return ",  ,   ,"
+
     monkeypatch.setattr('retriever.lib.datapackage.input', mock_input)
-    assert(clean_input("", ignore_empty=True, split_char=",") == [])
+    assert clean_input("", ignore_empty=True, split_char=",") == []
 
 
 def test_clean_input_empty_list_not_ignore_empty(monkeypatch):
     """Test with empty list not ignored"""
+
     def mock_input(prompt):
         mock_input.counter += 1
         if mock_input.counter <= 1:
             return ",  ,   ,"
         else:
             return "1  ,    2,  3,"
+
     mock_input.counter = 0
     monkeypatch.setattr('retriever.lib.datapackage.input', mock_input)
-    assert(clean_input("", split_char=",") == ["1", "2", "3"])
+    assert clean_input("", split_char=",") == ["1", "2", "3"]
 
 
 def test_clean_input_not_empty_list(monkeypatch):
     """Test with list input"""
+
     def mock_input(prompt):
         return "1,    2,     3"
+
     monkeypatch.setattr('retriever.lib.datapackage.input', mock_input)
-    assert(clean_input("", ignore_empty=True, split_char=',', dtype=None) == ["1", "2", "3"])
+    assert clean_input("", ignore_empty=True, split_char=',', dtype=None) == ["1", "2", "3"]
 
 
 def test_clean_input_bool(monkeypatch):
     """Test with correct datatype input"""
+
     def mock_input(prompt):
         return "True "
+
     monkeypatch.setattr('retriever.lib.datapackage.input', mock_input)
-    assert(clean_input("", dtype=bool) == "True")
+    assert clean_input("", dtype=bool) == "True"
 
 
 def test_clean_input_not_bool(monkeypatch):
     """Test with incorrect datatype input"""
+
     def mock_input(prompt):
         mock_input.counter += 1
         if mock_input.counter <= 1:
             return "non bool input"
         else:
             return "True "
+
     mock_input.counter = 0
     monkeypatch.setattr('retriever.lib.datapackage.input', mock_input)
-    assert(clean_input("", dtype=bool) == "True")
+    assert clean_input("", dtype=bool) == "True"
 
 
 def test_add_dialect():

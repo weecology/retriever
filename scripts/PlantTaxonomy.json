@@ -47,6 +47,7 @@
             "url": "http://plants.usda.gov/java/downloadData?fileName=plantlst.txt&static=true"
         }
     ],
+    "retriever": "True",
     "title": "USDA plants",
     "urls": {
         "PlantTaxonomy": "http://plants.usda.gov/java/downloadData?fileName=plantlst.txt&static=true"

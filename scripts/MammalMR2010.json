@@ -19,6 +19,7 @@
             "url": "http://www.esapubs.org/archive/ecol/E091/198/data.txt"
         }
     ],
+    "retriever": "True",
     "title": "Phylogeny and metabolic rates in mammals (Ecological Archives 2010)",
     "urls": {
         "MammalMR2010": "http://www.esapubs.org/archive/ecol/E091/198/data.txt"

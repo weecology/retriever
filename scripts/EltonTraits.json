@@ -33,6 +33,7 @@
             "url": "http://esapubs.org/archive/ecol/E095/178/MamFuncDatSources.txt"
         }
     ],
+    "retriever": "True",
     "title": "Mammal and Bird foraging attributes -- Wilman, et al., 2014",
     "urls": {
         "BirdCitations": "http://esapubs.org/archive/ecol/E095/178/BirdFuncDatSources.txt",

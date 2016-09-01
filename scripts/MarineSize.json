@@ -20,6 +20,7 @@
             "url": "http://www.esapubs.org/Archive/ecol/E089/051/Predator_and_prey_body_sizes_in_marine_food_webs_vsn3.txt"
         }
     ],
+    "retriever": "True",
     "title": "Marine Predator and Prey Body Sizes (Ecological Archives 2008)",
     "urls": {
         "main": "http://www.esapubs.org/Archive/ecol/E089/051/Predator_and_prey_body_sizes_in_marine_food_webs_vsn3.txt"

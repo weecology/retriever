@@ -151,6 +151,7 @@
             "url": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/sampling_history.txt"
         }
     ],
+    "retriever": "True",
     "title": "Michigan canopy dynamics (Ecological Archives 2009)",
     "urls": {
         "all_plots_1935_1948": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/all_plots_1935_1948.txt",

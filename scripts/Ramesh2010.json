@@ -185,6 +185,7 @@
             "url": "http://esapubs.org/archive/ecol/E091/216/Species_list.txt"
         }
     ],
+    "retriever": "True",
     "title": "Indian Forest Stand Structure (Ecological Archives 2010)",
     "urls": {
         "macroplots": "http://esapubs.org/archive/ecol/E091/216/Macroplot_data.txt",

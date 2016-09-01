@@ -23,6 +23,7 @@
             "url": "http://esapubs.org/archive/ecol/E092/143/species_list.csv"
         }
     ],
+    "retriever": "True",
     "title": "Northern mixed prairie maps - Anderson et al. 2011",
     "urls": {
         "allrecords_cover": "http://esapubs.org/archive/ecol/E092/143/allrecords_cover.csv",

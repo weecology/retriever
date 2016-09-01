@@ -29,6 +29,7 @@
             "url": "http://esapubs.org/archive/ecol/E092/115/UPSP_Species_list2.txt"
         }
     ],
+    "retriever": "True",
     "title": "Twenty years tree demography in Western Ghats of India - Pelissier, et al., 2011",
     "urls": {
         "ind_loc_girth": "http://esapubs.org/archive/ecol/E092/115/UPSP_Demo_data.txt",
