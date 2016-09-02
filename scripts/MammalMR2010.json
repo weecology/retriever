@@ -20,6 +20,8 @@
         }
     ],
     "retriever": "True",
+    "retriever_minimum_version": 2.0,
+    "script_version": 1.0,
     "title": "Phylogeny and metabolic rates in mammals (Ecological Archives 2010)",
     "urls": {
         "MammalMR2010": "http://www.esapubs.org/archive/ecol/E091/198/data.txt"

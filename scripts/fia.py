@@ -21,6 +21,8 @@ class main(Script):
         Script.__init__(self, **kwargs)
         self.name = "Forest Inventory and Analysis"
         self.shortname = "FIA"
+        self.retriever_minimum_version = '2.0'
+        self.script_version = '1.0'
         self.ref = "http://fia.fs.fed.us/"
         self.urls = {"main": "http://apps.fs.fed.us/fiadb-downloads/CSV/",
                      'species': 'http://apps.fs.fed.us/fiadb-downloads/CSV/REF_SPECIES.csv'}

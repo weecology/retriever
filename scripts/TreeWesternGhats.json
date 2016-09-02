@@ -30,6 +30,8 @@
         }
     ],
     "retriever": "True",
+    "retriever_minimum_version": 2.0,
+    "script_version": 1.0,
     "title": "Twenty years tree demography in Western Ghats of India - Pelissier, et al., 2011",
     "urls": {
         "ind_loc_girth": "http://esapubs.org/archive/ecol/E092/115/UPSP_Demo_data.txt",

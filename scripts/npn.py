@@ -20,6 +20,8 @@ class main(Script):
         Script.__init__(self, **kwargs)
         self.name = "USA National Phenology Network"
         self.shortname = "NPN"
+        self.retriever_minimum_version = '2.0'
+        self.script_version = '1.0'
         self.ref = "http://www.usanpn.org/results/data"
         self.tags = ["Data Type > Phenology", "Spatial Scale > Continental"]
         self.description = "The data set was collected via Nature's Notebook phenology observation program (2009-present), and (2) Lilac and honeysuckle data (1955-present)"

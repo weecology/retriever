@@ -176,7 +176,9 @@
         }
     ],
     "retriever": "True",
+    "retriever_minimum_version": 2.0,
     "scan_lines": "40000",
+    "script_version": 1.0,
     "title": "Portal Project Mammals (Ecological Archives 2009)",
     "urls": {
         "main": "http://esapubs.org/archive/ecol/E090/118/Portal_rodents_19772002.csv",
