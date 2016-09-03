@@ -4,6 +4,7 @@ from future import standard_library
 standard_library.install_aliases()
 import os
 import sys
+import shutil
 from imp import reload
 
 reload(sys)
@@ -40,9 +41,10 @@ def setup_module():
     os.system('cp -r {0} {1}'.format(os.path.join(retriever_root_dir, "test/raw_data"), retriever_root_dir))
 
 
-def teardown_method():
+def teardown_module():
     """Make sure you are in the main local retriever directory after these tests"""
     os.chdir(retriever_root_dir)
+    shutil.rmtree(os.path.join(retriever_root_dir, "raw_data"))
 
 
 def test_auto_get_columns():
