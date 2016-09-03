@@ -91,7 +91,7 @@ def main():
             # edit existing JSON script
             for json_file in [filename for filename in
                               os.listdir(os.path.join(HOME_DIR, 'scripts')) if filename[-5:] == '.json']:
-                if json_file.lower().find(args.dataset.lower()) != -1:
+                if json_file.lower().find(args.filename.lower()) != -1:
                     edit_json(json_file)
                     return
             raise Exception("File not found")
