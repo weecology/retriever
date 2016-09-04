@@ -3,6 +3,7 @@ from imp import reload
 import imp
 import os
 import sys
+import shutil
 
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
@@ -57,8 +58,7 @@ def teardown_module():
     """Cleanup temporary output files after testing and return to root directory"""
     os.chdir(retriever_root_dir)
     os.system("rm -r output*")
-    os.system("rm -r raw_data/mom2003")
-    os.system("rm -r raw_data/EA*")
+    shutil.rmtree(os.path.join(retriever_root_dir, "raw_data"))
     os.system("rm testdb.sqlite")
 
 
