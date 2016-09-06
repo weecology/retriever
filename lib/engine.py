@@ -102,11 +102,16 @@ class Engine(object):
 
         total = self.table.record_id + real_line_length
         pos = 0
+        count_iter = 1
+        insert_limit = 200
+        current = 0
+        types = self.table.get_column_datatypes()
+        multiple_values = []
         for line in real_lines:
             if not self.table.fixed_width:
                 # This replaces end of line characters that exist in a single line
                 # eg. "one \nline has multiple end of lines\n"
-                line = line.replace('\n', '').strip()
+                line.replace('\n', '').strip()
             if line:
                 self.table.record_id += 1
 
@@ -119,12 +124,12 @@ class Engine(object):
                     else:
                         line += real_lines[pos+1]
                         real_lines.pop(pos+1)
+                    real_line_length -= 1
                     val_list = (self.table.extract_values(line))
                 pos += 1
 
                 linevalues = self.table.values_from_line(line)
 
-                types = self.table.get_column_datatypes()
                 # Build insert statement with the correct # of values
                 try:
                     cleanvalues = [self.format_insert_value(self.table.cleanup.function
@@ -135,32 +140,34 @@ class Engine(object):
                 except Exception as e:
                     self.warning('Exception in line %s: %s' % (self.table.record_id, e))
                     continue
-                try:
-                    insert_stmt = self.insert_statement(cleanvalues)
-                except:
-                    if self.debug:
-                        print(types)
-                    if self.debug:
-                        print(linevalues)
-                    if self.debug:
-                        print(cleanvalues)
-                    raise
-                try:
-                    update_frequency = int(self.update_frequency)
-                except:
-                    update_frequency = 100
 
-                if (self.table.record_id % update_frequency == 0 or
-                        self.table.record_id == 1 or
-                        self.table.record_id == total):
-                    prompt = "Inserting rows to " + self.table_name() + ": "
-                    prompt += str(self.table.record_id) + " / " + str(total)
-                    sys.stdout.write(prompt + "\b" * len(prompt))
-                try:
-                    self.execute(insert_stmt, commit=False)
-                except:
-                    print(insert_stmt)
-                    raise
+                if count_iter % insert_limit == 0 or count_iter == real_line_length:
+                    multiple_values.append(cleanvalues)
+                    try:
+                        insert_stmt = self.insert_statement(multiple_values)
+                    except:
+                        if self.debug:
+                            print(types)
+                        if self.debug:
+                            print(linevalues)
+                        if self.debug:
+                            print(cleanvalues)
+                        raise
+                    multiple_values = []
+
+                    try:
+                        self.execute(insert_stmt, commit=False)
+                        current += insert_limit
+                        if current > real_line_length:
+                            print(str(real_line_length) + " rows inserted into " + self.table_name() + ": ")
+                        else:
+                            print(str(current) + " rows inserted into " + self.table_name() + ": ")
+                    except:
+                        print(insert_stmt)
+                        raise
+                else:
+                    multiple_values.append(cleanvalues)
+                count_iter += 1
         self.connection.commit()
 
     def auto_create_table(self, table, url=None, filename=None, pk=None):
@@ -530,7 +537,7 @@ class Engine(object):
         """Returns the full path of a file in the archive directory."""
         return os.path.join(self.format_data_dir(), filename)
 
-    def format_insert_value(self, value, datatype, escape=True):
+    def format_insert_value(self, value, datatype, escape=True, processed=False):
         """Format a value for an insert statement based on data type
 
         Different data types need to be formated differently to be properly
@@ -545,7 +552,10 @@ class Engine(object):
         The optional `escape` argument controls whether additional quotes in
         strings are escaped, as needed for SQL database management systems
         (escape=True), or not escaped, as needed for flat file based engines
-        (escape=False)."""
+        (escape=False).
+
+        The optional processed argument indicates that the engine has it's own
+        escaping mechanism. i.e the csv engine which uses its own dialect"""
         datatype = datatype.split('-')[-1]
         strvalue = str(value).strip()
 
@@ -583,7 +593,11 @@ class Engine(object):
                     strvalue = self.escape_double_quotes(strvalue)
                 if hasattr(self.table, "escape_single_quotes") and self.table.escape_single_quotes:
                     strvalue = self.escape_single_quotes(strvalue)
-            return "'" + strvalue + "'"
+                return "'" + strvalue + "'"
+            if processed:
+                return strvalue
+            else:
+                return "'" + strvalue + "'"
         else:
             return "null"
 
@@ -652,17 +666,20 @@ class Engine(object):
         columns = self.table.get_insert_columns()
         types = self.table.get_column_datatypes()
         columncount = len(self.table.get_insert_columns(join=False, create=False))
-        insert_stmt = "INSERT INTO " + self.table_name()
-        insert_stmt += " (" + columns + ")"
-        insert_stmt += "VALUES ("
-        for i in range(0, columncount):
-            insert_stmt += "%s, "
-        insert_stmt = insert_stmt.rstrip(", ") + ");"
-        n = 0
-        while len(values) < insert_stmt.count("%s"):
-            values.append(self.format_insert_value(None, types[n]))
-            n += 1
-        insert_stmt %= tuple([str(value) for value in values])
+        insert_stmt = "INSERT INTO {} ({}) VALUES ".format(self.table_name(), columns)
+        for rows in values:
+            vals = rows
+            insert_stmt2 = " ("
+            for i in range(0, columncount):
+                insert_stmt2 += "%s, "
+            insert_stmt2 = insert_stmt2.rstrip(", ") + "),"
+            n = 0
+            while len(vals) < insert_stmt.count("%s"):
+                vals.append(self.format_insert_value(None, types[n]))
+                n += 1
+            insert_stmt2 %= tuple([str(value) for value in vals])
+            insert_stmt += insert_stmt2
+        insert_stmt = insert_stmt.rstrip(", ") + ";"
         if self.debug:
             print(insert_stmt)
         return insert_stmt
