@@ -1,5 +1,5 @@
 import argparse
-from retriever import VERSION, MASTER, SCRIPT_LIST, sample_script
+from retriever import VERSION
 from retriever.engines import engine_list
 
 

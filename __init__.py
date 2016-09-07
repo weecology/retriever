@@ -22,11 +22,10 @@ if current_platform != 'windows':
     import pwd
 
 VERSION = __version__
-MASTER = True
 COPYRIGHT = "Copyright (C) 2011-2016 Weecology University of Florida"
 REPO_URL = "https://raw.github.com/weecology/retriever/"
 MASTER_BRANCH = REPO_URL + "master/"
-REPOSITORY = MASTER_BRANCH if MASTER else REPO_URL + VERSION + "/"
+REPOSITORY = MASTER_BRANCH
 
 # create the necessary directory structure for storing scripts/raw_data
 # in the ~/.retriever directory

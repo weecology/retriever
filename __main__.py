@@ -20,7 +20,7 @@ if hasattr(sys, 'setdefaultencoding'):
     # set default encoding to latin-1 to decode source text
     sys.setdefaultencoding('latin-1')
 
-from retriever import VERSION, MASTER, SCRIPT_LIST, HOME_DIR, sample_script, current_platform
+from retriever import VERSION, SCRIPT_LIST, HOME_DIR, sample_script, current_platform
 from retriever.engines import engine_list
 from retriever.lib.repository import check_for_updates
 from retriever.lib.lists import Category, get_lists

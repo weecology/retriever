@@ -15,6 +15,8 @@ class main(Script):
         self.urls = {"climate": "http://biogeo.ucdavis.edu/data/climate/worldclim/1_4/grid/cur/bio_2-5m_bil.zip"}
         self.description = "Bioclimatic variables that are derived from the monthly temperature and rainfall values in order to generate more biologically meaningful variables."
         self.citation = "Hijmans, R.J., S.E. Cameron, J.L. Parra, P.G. Jones and A. Jarvis, 2005. Very high resolution interpolated climate surfaces for global land areas. International Journal of Climatology 25: 1965-1978."
+        self.retriever_minimum_version = '2.0'
+        self.script_version = '1.0'
         self.tags = ["Data Type > Compilation"]
         
     def download(self, engine=None, debug=False):

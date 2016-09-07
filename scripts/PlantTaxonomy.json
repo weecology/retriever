@@ -48,6 +48,8 @@
         }
     ],
     "retriever": "True",
+    "retriever_minimum_version": 2.0,
+    "script_version": 1.0,
     "title": "USDA plants",
     "urls": {
         "PlantTaxonomy": "http://plants.usda.gov/java/downloadData?fileName=plantlst.txt&static=true"
