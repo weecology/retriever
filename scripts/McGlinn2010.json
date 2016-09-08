@@ -48,6 +48,8 @@
         }
     ],
     "retriever": "True",
+    "retriever_minimum_version": 2.0,
+    "script_version": 1.0,
     "title": "Vascular plant composition - McGlinn, et al., 2010",
     "urls": {
         "climate": "http://esapubs.org/archive/ecol/E091/124/TGPP_clim.csv",

@@ -20,7 +20,7 @@ if hasattr(sys, 'setdefaultencoding'):
     # set default encoding to latin-1 to decode source text
     sys.setdefaultencoding('latin-1')
 
-from retriever import VERSION, MASTER, SCRIPT_LIST, HOME_DIR, sample_script, current_platform
+from retriever import VERSION, SCRIPT_LIST, HOME_DIR, sample_script, current_platform
 from retriever.engines import engine_list
 from retriever.lib.repository import check_for_updates
 from retriever.lib.lists import Category, get_lists
@@ -91,7 +91,7 @@ def main():
             # edit existing JSON script
             for json_file in [filename for filename in
                               os.listdir(os.path.join(HOME_DIR, 'scripts')) if filename[-5:] == '.json']:
-                if json_file.lower().find(args.dataset.lower()) != -1:
+                if json_file.lower().find(args.filename.lower()) != -1:
                     edit_json(json_file)
                     return
             raise Exception("File not found")

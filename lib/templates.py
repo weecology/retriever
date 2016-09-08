@@ -14,7 +14,8 @@ class Script(object):
     from this class and execute their code in the download method."""
 
     def __init__(self, name="", description="", shortname="", urls=dict(),
-                 tables=dict(), ref="", public=True, addendum=None, citation="Not currently available", **kwargs):
+                 tables=dict(), ref="", public=True, addendum=None, citation="Not currently available",
+                 retriever_minimum_version="", script_version="", **kwargs):
         self.name = name
         self.shortname = shortname
         self.filename = __name__
@@ -26,6 +27,8 @@ class Script(object):
         self.addendum = addendum
         self.citation = citation
         self.tags = []
+        self.retriever_minimum_version = retriever_minimum_version
+        self.script_version = script_version
         for key, item in list(kwargs.items()):
             setattr(self, key, item[0] if isinstance(item, tuple) else item)
 

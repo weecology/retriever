@@ -26,6 +26,8 @@ class main(Script):
         self.citation = "Pardieck, K.L., D.J. Ziolkowski Jr., M.-A.R. Hudson. 2015. North American Breeding Bird Survey Dataset 1966 - 2014, version 2014.0. U.S. Geological Survey, Patuxent Wildlife Research Center"
         self.ref = "http://www.pwrc.usgs.gov/BBS/"
         self.tags = ["Taxon > Birds", "Spatial Scale > Continental"]
+        self.retriever_minimum_version = '2.0'
+        self.script_version = '1.0'
         self.urls = {
                      "counts": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/",
                      "routes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/Routes.zip",
@@ -39,7 +41,6 @@ class main(Script):
             Script.download(self, engine, debug)
 
             engine = self.engine
-
 
             # Species table
             table = Table("species", cleanup=Cleanup(), contains_pk=True,
@@ -61,13 +62,11 @@ class main(Script):
             engine.create_table()
             engine.insert_data_from_url(self.urls["species"])
 
-
             # Routes table
             engine.download_files_from_archive(self.urls["routes"], ["routes.csv"])
             engine.auto_create_table(Table("routes", cleanup=Cleanup()),
                                      filename="routes.csv")
             engine.insert_data_from_file(engine.format_filename("routes.csv"))
-
 
             # Weather table
             if not os.path.isfile(engine.format_filename("weather_new.csv")):
@@ -96,10 +95,10 @@ class main(Script):
                                      filename="weather_new.csv")
             engine.insert_data_from_file(engine.format_filename("weather_new.csv"))
 
-
             # Region_codes table
             table = Table("region_codes", pk=False, header_rows=11,
                           fixed_width=[11, 11, 30])
+
             def regioncodes_cleanup(value, engine):
                 replace = {chr(225):"a", chr(233):"e", chr(237):"i", chr(243):"o"}
                 newvalue = str(value)
@@ -117,7 +116,6 @@ class main(Script):
             engine.create_table()
 
             engine.insert_data_from_url(self.urls["region_codes"])
-
 
             # Counts table
             table = Table("counts", delimiter=',')

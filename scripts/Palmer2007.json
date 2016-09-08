@@ -54,6 +54,8 @@
         }
     ],
     "retriever": "True",
+    "retriever_minimum_version": 2.0,
+    "script_version": 1.0,
     "title": "North Carolina forest plants (Ecological Archives 2007)",
     "urls": {
         "env": "http://esapubs.org/archive/ecol/E088/162/Oosting_env.txt",
