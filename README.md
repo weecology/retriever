@@ -43,6 +43,8 @@ To install the Data Retriever from source, you'll need Python 2.7+ or 3.3+ with 
 3. After installing, type ``retriever`` from a command prompt to launch the
    Data Retriever
 
+More extensive documentation for those that are interested in developing can be found [here](http://retriever.readthedocs.io/en/latest/?badge=latest)
+
 Using the Command Line
 ----------------------
 After installing, run `retriever update` to download all of the available dataset scripts.
