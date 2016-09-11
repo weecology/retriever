@@ -78,7 +78,7 @@ def MODULE_LIST(force_compile=False):
 
         files = [file for file in os.listdir(search_path)
                  if file[-3:] == ".py" and file[0] != "_" and
-                 '#retriever' in open(join(search_path, file), 'r').readline().lower()]
+                 '#retriever' in ' '.join(open(join(search_path, file), 'r').readlines()[:2]).lower()]
 
         for script in files:
             script_name = '.'.join(script.split('.')[:-1])
