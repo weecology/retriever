@@ -1,0 +1,24 @@
+{
+    "citation": "S. Paula, M. Arianoutsou, D. Kazanis, \u00c7. Tavsanoglu, F. Lloret, C. Buhk, F. Ojeda, B. Luna, J. M. Moreno, A. Rodrigo, J. M. Espelta, S. Palacio, B. Fern\u00e1ndez-Santos, P. M. Fernandes, and J. G. Pausas. 2009. Fire-related traits for plant species of the Mediterranean Basin. Ecology 90:1420.",
+    "description": "This data set compiles the most updated and comprehensive information on fire-related traits for vascular plant species of the Mediterranean Basin",
+    "homepage": "http://esapubs.org/archive/ecol/E090/094/",
+    "keywords": [
+        "Taxon > Plants"
+    ],
+    "name": "PaulaPlantTraits2009",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "species",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E090/094/BROT_2008.11.txt"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.0-dev",
+    "script_version": 1.0,
+    "title": "Fire-related traits for plant species of the Mediterranean Basin. Ecology 90:1420",
+    "urls": {
+        "species": "http://esapubs.org/archive/ecol/E090/094/BROT_2008.11.txt"
+    }
+}

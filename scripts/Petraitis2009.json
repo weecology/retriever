@@ -1,0 +1,24 @@
+{
+    "citation": "Peter S. Petraitis, Harrison Liu, and Erika C. Rhile. 2009. Barnacle, fucoid, and mussel recruitment in the Gulf of Maine, USA, from 1997 to 2007. Ecology 90:571.",
+    "description": "This data set provides access to recruitment data collected in the experimental plots from 1997 to 2007",
+    "homepage": "http://esapubs.org/archive/ecol/E090/039/",
+    "keywords": [
+        "Taxon > plants"
+    ],
+    "name": "Petraitis2009",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "plot_data",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E090/039/Recruitment_data_97-07.txt"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.0-dev",
+    "script_version": 1.0,
+    "title": "Barnacle, fucoid, and mussel recruitment in the Gulf of Maine, USA, from 1997 to 2007",
+    "urls": {
+        "plot_data": "http://esapubs.org/archive/ecol/E090/039/Recruitment_data_97-07.txt"
+    }
+}

@@ -1,0 +1,49 @@
+{
+    "citation": "Alain Paquette, Etienne Lalibert\u00e9, Andr\u00e9 Bouchard, Sylvie de Blois, Pierre Legendre, and Jacques Brisson. 2007. Lac Croche understory vegetation data set (1998\u20132006). Ecology 88:3209.",
+    "description": "The Lac Croche data set covers a nine-year period (1998\u20132006) of detailed understory vegetation sampling of a temperate North American forest located in the Station de Biologie des Laurentides (SBL), Qu\u00e9bec, Canada.",
+    "homepage": "http://esapubs.org/archive/ecol/E088/197/",
+    "keywords": [
+        "Taxon > plants"
+    ],
+    "name": "paquette2007",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "croche_vegCover",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E088/197/Croche_VegCover.txt"
+        },
+        {
+            "dialect": {},
+            "name": "croche_seedDens",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E088/197/Croche_SeedDens.txt"
+        },
+        {
+            "dialect": {},
+            "name": "croche_env",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E088/197/Croche_Env.txt"
+        },
+        {
+            "dialect": {
+                "nulls": [
+                    "-999"
+                ]
+            },
+            "name": "croche_ba",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E088/197/Croche_BA.txt"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.0-dev",
+    "script_version": 1.0,
+    "title": "Croche understory vegetation data set",
+    "urls": {
+        "croche_ba": "http://esapubs.org/archive/ecol/E088/197/Croche_BA.txt",
+        "croche_env": "http://esapubs.org/archive/ecol/E088/197/Croche_Env.txt",
+        "croche_seedDens": "http://esapubs.org/archive/ecol/E088/197/Croche_SeedDens.txt",
+        "croche_vegCover": "http://esapubs.org/archive/ecol/E088/197/Croche_VegCover.txt"
+    }
+}
