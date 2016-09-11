@@ -1,0 +1,21 @@
+{
+    "citation": "Ulrich Brose, Lara Cushing, Eric L. Berlow, Tomas Jonsson, Carolin Banasek-Richter, Louis-Felix Bersier, Julia L. Blanchard, Thomas Brey, Stephen R. Carpenter, Marie-France Cattin Blandenier, Joel E. Cohen, Hassan Ali Dawah, Tony Dell, Francois Edwards, Sarah Harper-Smith, Ute Jacob, Roland A. Knapp, Mark E. Ledger, Jane Memmott, Katja Mintenbeck, John K. Pinnegar, Bjorn C. Rall, Tom Rayner, Liliane Ruess, Werner Ulrich, Philip Warren, Rich J. Williams, Guy Woodward, Peter Yodzis, and Neo D. Martinez10. 2005. Body sizes of consumers and their resources. Ecology 86:2545.",
+    "description": "Body size ratios between predators and their prey,",
+    "homepage": "http://esapubs.org/archive/ecol/E086/135/",
+    "name": "UlrichBodySizes",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "bodysizes",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E086/135/bodysizes_2008.txt"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.0-dev",
+    "script_version": 1.0,
+    "title": "Body sizes of consumers and their resources",
+    "urls": {
+        "bodysizes": "http://esapubs.org/archive/ecol/E086/135/bodysizes_2008.txt"
+    }
+}

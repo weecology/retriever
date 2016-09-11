@@ -1,0 +1,25 @@
+{
+    "citation": "Peter S. Petraitis, Harrison Liu, and Erika C. Rhile. 2008. Densities and cover data for intertidal organisms in the Gulf of Maine, USA, from 2003 to 2007. Ecology 89:588.",
+    "description": "The data set densities and percent cover in the 60 experimental plots from 2003 to 2007 and to update data from 1996 to 2002 that are already published in Ecological Archives.",
+    "homepage": "http://esapubs.org/archive/ecol/E089/032/",
+    "name": "PeterMacroalgal2008",
+    "resources": [
+        {
+            "dialect": {
+                "nulls": [
+                    "-999.9"
+                ]
+            },
+            "name": "species",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E089/032/Succession_sampling_03-07_data.txt"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.0-dev",
+    "script_version": 1.0,
+    "title": "Densities and cover data for intertidal organisms in the Gulf of Maine",
+    "urls": {
+        "species": "http://esapubs.org/archive/ecol/E089/032/Succession_sampling_03-07_data.txt"
+    }
+}
