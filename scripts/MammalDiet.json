@@ -1,0 +1,152 @@
+{
+    "citation": "Kissling WD, Dalby L, Flojgaard C, Lenoir J, Sandel B, Sandom C, Trojelsgaard K, Svenning J-C (2014) Establishing macroecological trait datasets:digitalization, extrapolation, and validation of diet preferences in terrestrial mammals worldwide. Ecology and Evolution, online in advance of print. doi:10.1002/ece3.1136",
+    "description": "MammalDIET provides a comprehensive, unique and freely available dataset on diet preferences for all terrestrial mammals worldwide.",
+    "keywords": [
+        "Taxon > Mammals",
+        "Data Type > Compilation"
+    ],
+    "name": "MammalDiet",
+    "resources": [
+        {
+            "dialect": {
+                "contains_pk": "True",
+                "nulls": [
+                    "NA"
+                ]
+            },
+            "name": "diet",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "TaxonID",
+                        "type": "pk-int"
+                    },
+                    {
+                        "name": "TaxonOrder",
+                        "type": "char"
+                    },
+                    {
+                        "name": "Family",
+                        "type": "char"
+                    },
+                    {
+                        "name": "Genus",
+                        "type": "char"
+                    },
+                    {
+                        "name": "Species",
+                        "type": "char"
+                    },
+                    {
+                        "name": "Animal",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Vertebrate",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Mammal",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Bird",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Herptile",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Fish",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Invertebrate",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Plant",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Seed",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Fruit",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Nectar",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Root",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Leaf",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Woody",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Herbaceous",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Other",
+                        "type": "int"
+                    },
+                    {
+                        "name": "TaxonomicNote",
+                        "type": "char"
+                    },
+                    {
+                        "name": "FillCode",
+                        "type": "double"
+                    },
+                    {
+                        "name": "TrophicLevel",
+                        "type": "char"
+                    },
+                    {
+                        "name": "MammalEater",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Insectivore",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Frugivore",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Granivore",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Folivore",
+                        "type": "int"
+                    },
+                    {
+                        "name": "DataSource",
+                        "type": "char"
+                    }
+                ]
+            },
+            "url": "http://datadryad.org/bitstream/handle/10255/dryad.64565/MammalDIET_v1.0.txt"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": 2.0,
+    "script_version": 1.0,
+    "title": "MammalDIET",
+    "urls": {
+        "diet": "http://datadryad.org/bitstream/handle/10255/dryad.64565/MammalDIET_v1.0.txt"
+    }
+}
