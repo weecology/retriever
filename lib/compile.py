@@ -1,5 +1,9 @@
 from builtins import str
 import json
+import sys
+if sys.version_info[0] < 3:
+    from codecs import open
+
 script_templates = {
     "default": """#retriever
 from retriever.lib.templates import BasicTextTemplate
@@ -287,6 +291,7 @@ def compile_json(json_file):
         template = "default"
     script_contents = (script_templates[template] % script_desc)
 
-    new_script = open(json_file + '.py', 'w')
+    new_script = open(json_file + '.py', 'w', encoding='utf-8')
+    new_script.write('# -*- coding: latin-1 -*-\n')
     new_script.write(script_contents)
     new_script.close()
