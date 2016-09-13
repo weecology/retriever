@@ -5,6 +5,11 @@ python:
   - "3.5"
 addons:
   postgresql: "9.4"
+  apt:
+    sources:
+      - travis-ci/sqlite3
+    packages:
+      - sqlite3
 
 services:
   - postgresql
@@ -23,6 +28,7 @@ script:
 
 # database setup
 before_script:
+  - sqlite3 --version
   - mysql -e 'create database myapp_test;'
   - psql -c 'create database testdb;' -U postgres
 

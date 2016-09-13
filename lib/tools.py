@@ -323,10 +323,6 @@ def sort_csv(filename):
     filename = os.path.normpath(filename)
     input_file = open(filename, 'rU')
     csv_reader_infile = csv.reader(input_file)
-
-    # The first entry is the header line
-    infields = next(csv_reader_infile)
-
     #  write the data to a temporary file and sort it
     file_temp = open(os.path.normpath("tempfile"), 'w')
 
@@ -334,8 +330,14 @@ def sort_csv(filename):
         csv_writer = csv.writer(file_temp, dialect='excel', escapechar='\\', lineterminator='\n')
     else:
         csv_writer = csv.writer(file_temp, dialect='excel', escapechar='\\')
+    i = 0
     for row in csv_reader_infile:
-        csv_writer.writerow(row)
+        if i == 0:
+            # The first entry is the header line
+            infields = row
+            i += 1
+        else:
+            csv_writer.writerow(row)
     file_temp.close()
     input_file.close()
 
@@ -371,3 +373,4 @@ def file_2string(input_file):
     with open(input_file, 'rU') as obs_out_file:
         obs_out = obs_out_file.read()
     return obs_out
+

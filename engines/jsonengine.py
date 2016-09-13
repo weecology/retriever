@@ -74,7 +74,7 @@ class engine(Engine):
                 current_input_file = open(file_name, "r")
                 file_contents = current_input_file.readlines()
                 current_input_file.close()
-                file_contents[-1] = file_contents[-1].strip(',')
+                file_contents[-1] = file_contents[-1].strip(',\n')
                 current_output_file = open(file_name, "w")
                 current_output_file.writelines(file_contents)
                 current_output_file.write('\n]')
@@ -87,7 +87,7 @@ class engine(Engine):
 
     def execute(self, statement, commit=True):
         """Write a line to the output file"""
-        self.output_file.write('\n' + statement + ',')
+        self.output_file.writelines('\n'.join(statement))
 
     def format_insert_value(self, value, datatype):
         """Formats a value for an insert statement"""
@@ -105,12 +105,24 @@ class engine(Engine):
         if not hasattr(self, 'auto_column_number'):
             self.auto_column_number = 1
 
-        if self.table.columns[0][1][0][3:] == 'auto':
-            values = [str(self.auto_column_number)] + values
-            self.auto_column_number += 1
-
         keys = self.table.get_insert_columns(join=False, create=True)
-        tuples = (zip(keys, values))
+        if self.table.columns[0][1][0][3:] == 'auto':
+            newrows = []
+            for rows in values:
+                insert_stmt = [self.auto_column_number] + rows
+                newrows.append(insert_stmt)
+                self.auto_column_number += 1
+        else: 
+            newrows = values
+        json_dumps = []
+        for line_data in newrows:
+            tuples = (zip(keys, line_data))
+            write_data = OrderedDict(tuples)
+            json_dumps.append(json.dumps(write_data, ensure_ascii=False) + ",")
+        return json_dumps
+
+ 
+        tuples = (zip(keys, [value for value in values]))
         write_data = OrderedDict(tuples)
         return json.dumps(write_data, ensure_ascii=False)
 

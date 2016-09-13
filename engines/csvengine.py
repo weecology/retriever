@@ -2,6 +2,7 @@ from builtins import str
 from builtins import object
 
 import os
+import csv
 
 from retriever.lib.models import Engine
 from retriever import DATA_DIR
@@ -45,6 +46,7 @@ class engine(Engine):
          "Format of table name",
          os.path.join(DATA_DIR, "{db}_{table}.csv")),
     ]
+    table_names = []
 
     def create_db(self):
         """Override create_db since there is no database just a CSV file"""
@@ -53,27 +55,23 @@ class engine(Engine):
     def create_table(self):
         """Create the table by creating an empty csv file"""
         self.auto_column_number = 1
-        self.output_file = open(self.table_name(), "w")
-        self.output_file.write(
-            ','.join(['"%s"' % c for c in self.table.get_insert_columns(join=False,create=True)]))
+        self.file = open(self.table_name(), 'w')
+        self.output_file = csv.writer(self.file, dialect='excel', lineterminator='\n', quoting=csv.QUOTE_MINIMAL)
+        self.output_file.writerow(self.table.get_insert_columns(join=False,create=True))
+        self.table_names.append((self.file, self.table_name()))
 
     def disconnect(self):
         """Close the last file in the dataset"""
-        try:
-            self.output_file.close()
-        except:
-            # when disconnect is called by app.connect_wizard.ConfirmPage to
-            # confirm the connection, output_file doesn't exist yet, this is
-            # fine so just pass
-            pass
+        for output_tuple in self.table_names:
+            output_tuple[0].close()
 
     def execute(self, statement, commit=True):
         """Write a line to the output file"""
-        self.output_file.write('\n' + statement)
+        self.output_file.writerows(statement)
 
     def format_insert_value(self, value, datatype):
         """Formats a value for an insert statement"""
-        v = Engine.format_insert_value(self, value, datatype, escape=False)
+        v = Engine.format_insert_value(self, value, datatype, escape=False, processed=True)
         if v == 'null':
             return ""
         try:
@@ -85,14 +83,18 @@ class engine(Engine):
 
     def insert_statement(self, values):
         """Returns a comma delimited row of values"""
-
         if not hasattr(self, 'auto_column_number'):
             self.auto_column_number = 1
-        insert_stmt = ','.join([str(value) for value in values])
+
         if self.table.columns[0][1][0][3:] == 'auto':
-            insert_stmt = str(self.auto_column_number) + "," + insert_stmt
-            self.auto_column_number += 1
-        return insert_stmt
+            newrows = []
+            for rows in values:
+                insert_stmt = [self.auto_column_number] + rows
+                newrows.append(insert_stmt)
+                self.auto_column_number += 1
+            return newrows
+        else:
+            return values
 
     def table_exists(self, dbname, tablename):
         """Check to see if the data file currently exists"""

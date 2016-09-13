@@ -1,11 +1,12 @@
+import os
+
 from builtins import str
 from builtins import object
 from builtins import range
-import os
-
 from retriever.lib.models import Engine
 from retriever import DATA_DIR
 from retriever.lib.tools import xml2csv, sort_csv
+
 
 class DummyConnection(object):
 
@@ -83,13 +84,11 @@ class engine(Engine):
                 # fine so just pass
                 pass
 
-
     def execute(self, statement, commit=True):
         """Write a line to the output file"""
-        self.output_file.write('\n' + statement)
+        self.output_file.writelines(statement)
 
     def format_insert_value(self, value, datatype):
-
         """Formats a value for an insert statement"""
         v = Engine.format_insert_value(self, value, datatype, escape=False)
         if v == 'null':
@@ -105,17 +104,25 @@ class engine(Engine):
         if not hasattr(self, 'auto_column_number'):
             self.auto_column_number = 1
 
-        if self.table.columns[0][1][0][3:] == 'auto':
-            values = [str(self.auto_column_number)] + values
-            self.auto_column_number += 1
-
-        open_tag = '<row>\n'
         keys = self.table.get_insert_columns(join=False, create=True)
-        write_data = ""
-        for i in range(len(keys)):
-            write_data += '    ' + '<' + str(keys[i]) + '>' + str(values[i]) + '</' + str(keys[i]) + '>' + "\n"
+        if self.table.columns[0][1][0][3:] == 'auto':
+            newrows = []
+            for rows in values:
+                insert_stmt = [self.auto_column_number] + rows
+                newrows.append(insert_stmt)
+                self.auto_column_number += 1
+        else:
+            newrows = values
+
+        open_tag = '\n<row>\n'
         end_tag = '</row>'
-        return open_tag + write_data + end_tag
+        xml_lines = []
+        for line_data in newrows:
+            write_data = ""
+            for i in range(len(keys)):
+                write_data += '    ' + '<' + str(keys[i]) + '>' + str(line_data[i]) + '</' + str(keys[i]) + '>' + "\n"
+            xml_lines.append(open_tag + write_data + end_tag)
+        return xml_lines
 
     def table_exists(self, dbname, tablename):
         """Check to see if the data file currently exists"""
