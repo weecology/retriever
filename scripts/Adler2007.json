@@ -152,7 +152,7 @@
         }
     ],
     "retriever": "True",
-    "retriever_minimum_version": 2.0,
+    "retriever_minimum_version": "2.0.0-dev",
     "script_version": 1.0,
     "title": "Kansas plant quadrats (Ecological Archives 2007)",
     "urls": {

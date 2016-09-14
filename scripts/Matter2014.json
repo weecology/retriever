@@ -50,7 +50,7 @@
         }
     ],
     "retriever": "True",
-    "retriever_minimum_version": 2.0,
+    "retriever_minimum_version": "2.0.0-dev",
     "script_version": 1.0,
     "title": "Spatial Population Data Alpine Butterfly -- Matter et al 2014",
     "urls": {

@@ -24,7 +24,7 @@ elif current_platform == "windows":
     sys.path.append(
         "C:\\Windows\\winsxs\\x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_9.0.21022.8_none_bcb86ed6ac711f91")
 
-__version__ = 'v1.9.0-dev'
+__version__ = 'v2.0.0-dev'
 with open("_version.py","w") as version_file:
     version_file.write("__version__ = " + "'" + __version__ + "'\n")
     version_file.close()
