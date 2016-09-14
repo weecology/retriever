@@ -49,7 +49,7 @@ Mac
 3. Run ``bash build_mac``. This creates a folder called “mac” with two
    files; retriever.app and retriever.zip
 4. Install the retriever for verification. Reference
-   http://www.ecodataretriever.org/download.html
+   http://www.data-retriever.org/download.html
 
 Pypi
 ----

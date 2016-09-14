@@ -6,25 +6,14 @@ Introduction
 We handle the data so you can focus on the science
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Large quantities of ecological and environmental data are increasingly
-available thanks to initiatives sponsoring the collection of large-scale
-data and efforts to increase the publication of already collected
-datasets. As a result, progress in ecology is increasingly limited by
-the speed at which we can organize and analyze data. To help improve
-ecologists’ ability to quickly access and analyze data we have been
-developing software that designs database structures for ecological
-datasets and then downloads the data, pre-processes it, and installs it
-into major database management systems (at the moment we support MySQL,
-PostgreSQL, SQLite, and Microsoft Access).
-
-Once the Data Retriever has loaded the data into the database it is
-easy to connect to the database using standard tools (e.g., MS Access,
-Filemaker, etc.).The Data Retriever can download and install small
-datasets in seconds and large datasets in minutes. The program also
-cleans up known issues with the datasets and automatically restructures
-them into a format appropriate for standard database management systems.
-The automation of this process reduces the time for a user to get most
-large datasets up and running by hours, and in some cases days.
+Finding data is one thing. Getting it ready for analysis is another. Acquiring,
+cleaning, standardizing and importing publicly available data is time consuming
+because many datasets lack machine readable metadata and do not conform to
+established data structures and formats. The Data Retriever automates the first
+steps in the data analysis pipeline by downloading, cleaning, and standardizing
+datasets, and importing them into relational databases, flat files, or
+programming languages. The automation of this process reduces the time for a
+user to get most large datasets up and running by hours, and in some cases days.
 
 
 What data tasks does the Retriever handle
@@ -200,5 +189,5 @@ of a `CAREER award to Ethan White`_.
 .. _Grant GBMF4563: http://www.moore.org/grants/list/GBMF4563
 .. _National Science Foundation: http://nsf.gov/
 .. _CAREER award to Ethan White: http://nsf.gov/awardsearch/showAward.do?AwardNumber=0953694
-.. _project website: http://ecodataretriever.org
+.. _project website: http://data-retriever.org
 .. _Morris & White 2013: https://dx.doi.org/10.1371/journal.pone.0065848

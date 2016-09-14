@@ -55,4 +55,4 @@ Examples
 To get citation information for the ``ecoretriever`` in R use ``citation(package = 'ecoretriever')``:
 
 
-.. _Data Retriever: http://ecodataretriever.org
+.. _Data Retriever: http://data-retriever.org
