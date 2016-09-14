@@ -221,7 +221,7 @@ Use ``-f`` flag to force pushing changes to the branch. ``git push -f origin [br
 
 
 .. _codecov: https://codecov.io/
-.. _project website: http://ecodataretriever.org
+.. _project website: http://data-retriever.org
 .. _Sphinx: http://www.sphinx-doc.org/en/stable/
 .. _Read The Docs: https://readthedocs.org//
 .. _Travis: https://travis-ci.org/

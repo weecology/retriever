@@ -1,11 +1,13 @@
-# Contributing to the EcoData Retriever
+# Contributing to the Data Retriever
 
 We welcome contributions of all kinds including improvements to the core code,
 addition of new dataset scripts to add new datasets to the Retriever,
 improvements to the documentation, bug reports, or anything else you can think
 of. We strive to be supportive of anyone who wants to contribute, so don't be
-shy, give it a go, and we'll do our best to help.  One way to ease into contributing is to [add datasets](http://www.ecodataretriever.org/scripting.html) to the Retriever.
-
+shy, give it a go, and we'll do our best to help.  One way to ease into
+contributing is to
+[add datasets](https://retriever.readthedocs.io/en/latest/scripts.html) to the
+Retriever.
 
 ## Process for contributing changes
 
