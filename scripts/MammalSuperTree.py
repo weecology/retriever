@@ -11,7 +11,7 @@ if (VERSION == 'v1.6') or (VERSION == 'v1.6.0'):
             Script.__init__(self,
                             name="Mammal Super Tree",
                             shortname='mammsupertree',
-                            retriever_minimum_version='2.0',
+                            retriever_minimum_version='2.0.0-dev',
                             script_version='1.0')
     SCRIPT = main()
 else:

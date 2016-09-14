@@ -44,7 +44,7 @@ class main(Script):
         self.tables = {"mass": Table("mass", delimiter="~")}
         self.urls = {"mass": ""}
         self.tags = ["Taxon > Birds", "Data Type > Compilation"]
-        self.retriever_minimum_version = 2.0
+        self.retriever_minimum_version = "2.0.0-dev"
         self.script_version = 1.0
 
     def download(self, engine=None, debug=False):

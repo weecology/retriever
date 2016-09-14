@@ -11,6 +11,7 @@ from builtins import str
 import os
 import sys
 from os.path import join, isfile, getmtime, exists
+from pkg_resources import parse_version
 import imp
 import platform
 
@@ -86,6 +87,15 @@ def MODULE_LIST(force_compile=False):
             try:
                 new_module = imp.load_module(script_name, file, pathname, desc)
                 if new_module not in modules:
+                    if hasattr(new_module.SCRIPT, "retriever_minimum_version"):
+                        # a script with retriever_minimum_version should be loaded
+                        # only if its compliant with the version of the retriever
+                        if not parse_version(VERSION) >=  parse_version("{}".format(
+                                new_module.SCRIPT.retriever_minimum_version)):
+                            print("{} is supported by Retriever version {}".format(script_name,
+                                                                                   new_module.SCRIPT.retriever_minimum_version))
+                            print("Current version is {}".format(VERSION))
+                            continue
                     # if the script wasn't found in an early search path
                     # make sure it works and then add it
                     new_module.SCRIPT.download
