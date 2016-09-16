@@ -36,59 +36,6 @@ You will also need the following modules:
   py2app (Mac)
   py2exe (Windows)
 
-Continuous Integration
-^^^^^^^^^^^^^^^^^^^^^^
-
-The main GitHub repository runs test on both the Travis (Linux) and AppVeyor
-(Windows) continuous integration platforms.
-
-Pull requests submitted to the repository will automatically be tested using
-these systems and results reported in the `checks` section of the pull request
-page.
-
-Services Used
--------------
-
-Check the services' home pages in case you have to add the same capabilities to your master branch.
-
-::
-
-  Travis
-  AppVeyor
-  readthedocs
-  codecov
-
-
-links `Read The Docs`_, `codecov`_, `AppVeyor`_ and  `Travis`_
-
-After installing the servers we need to configure them by granting privileges to our testing user.
-
-For MySQL specifically, you need to create a new user called travis, and also a new database called testdb. This new user should be separate from the default MySQL user of root. After this is fulfilled, we can run the following commands to grant privileges. 
-
-::
-
-  MySQL
-  -----
-  GRANT ALL PRIVILEGES ON testdb.* TO 'travis'@'localhost';
-  GRANT FILE ON *.* TO 'travis'@'localhost';
-  ​
-  Install MySQL on Mac
-  --------------------
-  ​
-     brew install mysql
-  ​
-  Follow instructions for starting/autostarting
-  ​
-  PostgreSQL
-  ----------
-  psql -c "CREATE USER postgres WITH PASSWORD 'testpass'"
-  psql -c 'CREATE DATABASE testdb'
-  psql -c 'GRANT ALL PRIVILEGES ON DATABASE testdb to postgres'
-  ​
-  Create .pgpass in your home directory:
-  localhost:*:testdb:postgres:testpass
-
-
 Style Guide for Python Code
 ===========================
 
@@ -136,6 +83,40 @@ you can also install from Git.
 Running tests locally
 ^^^^^^^^^^^^^^^^^^^^^
 
+Services Used
+-------------
+
+Check the services' home pages in case you have to add the same capabilities to your master branch.
+
+::
+
+  Travis
+  AppVeyor
+  readthedocs
+  codecov
+
+
+links `Read The Docs`_, `codecov`_, `AppVeyor`_ and  `Travis`_
+
+After installing the servers we need to configure them by granting privileges to our testing user .
+
+::
+
+  MySQL
+  -----
+  mysql -e "CREATE USER 'travis'@'localhost';" -uroot
+  mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'travis'@'localhost';" -uroot
+  mysql -e "GRANT FILE ON *.* TO 'travis'@'localhost';" -uroot
+  ​
+  PostgreSQL
+  ----------
+  psql -c "CREATE USER postgres WITH PASSWORD 'testpass'"
+  psql -c 'CREATE DATABASE testdb'
+  psql -c 'GRANT ALL PRIVILEGES ON DATABASE testdb to postgres'
+  ​
+  Create .pgpass in your home directory:
+  localhost:*:testdb:postgres:testpass
+
 To run tests we use pytest.
 From the source top level directory, run
 
@@ -151,6 +132,17 @@ In case we want to run tests on a specific test category, we add the path of the
   $   py.test ./test/test_retriever.py
 
 This will only run test_retriever.py
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+The main GitHub repository runs test on both the Travis (Linux) and AppVeyor
+(Windows) continuous integration platforms.
+
+Pull requests submitted to the repository will automatically be tested using
+these systems and results reported in the `checks` section of the pull request
+page.
+
 
 Documentation
 =============
@@ -233,3 +225,4 @@ Use ``-f`` flag to force pushing changes to the branch. ``git push -f origin [br
 .. _installing: https://docs.python.org/2/install/
 .. _installing the wheel: http://www.lfd.uci.edu/~gohlke/pythonlibs/
 .. _setup tools: https://pythonhosted.org/an_example_pypi_project/setuptools.html
+
