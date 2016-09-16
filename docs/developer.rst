@@ -98,7 +98,7 @@ Check the services' home pages in case you have to add the same capabilities to 
 
 links `Read The Docs`_, `codecov`_, `AppVeyor`_ and  `Travis`_
 
-After installing the servers we need to configure them by granting privileges to our testing user .
+To run the test you will need to have all of the relevant database management systems and associated modules installed (see Setting up servers). You will then need to create the appropriate permissions for the tests to access the databases. You can do this by running the following commands in MySQL and PostgreSQL and creating the .pgpass file as described below:
 
 ::
 
@@ -125,7 +125,7 @@ From the source top level directory, run
   $   py.test
 
 
-In case we want to run tests on a specific test category, we add the path of the test module, py.test [path]
+To run tests on a specific test category add the path of the test module to the end of the py.test command: 
 
 .. code-block:: sh
 
