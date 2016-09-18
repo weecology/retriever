@@ -58,6 +58,7 @@ class Table(object):
             ("&", "and"),
             ("\xb0", "degrees"),
             ("?", ""),
+            ("#", ""),
             ("^", "_power_"),
             ("<", "_lthn_"),
             (">", "_gthn_"),
