@@ -159,16 +159,18 @@ class Engine(object):
                         self.execute(insert_stmt, commit=False)
                         current += insert_limit
                         if current > real_line_length:
-                            prompt = str(real_line_length) + " / " + str(total) + " rows inserted into " + self.table_name() + ": "
+                            prompt = "Progress: " + str(real_line_length) + " / " + str(total) + " rows inserted into " + self.table_name() + ": "
                         else:
-                            prompt = str(current) + " / " + str(total) + " rows inserted into " + self.table_name() + ": "
+                            prompt = "Progress: " + str(current) + " / " + str(total) + " rows inserted into " + self.table_name() + ": "
                         sys.stdout.write(prompt + "\b" * len(prompt))
+                        sys.stdout.flush()
                     except:
                         print(insert_stmt)
                         raise
                 else:
                     multiple_values.append(cleanvalues)
                 count_iter += 1
+        print ("\n")
         self.connection.commit()
 
     def auto_create_table(self, table, url=None, filename=None, pk=None):
