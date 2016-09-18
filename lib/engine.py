@@ -159,9 +159,10 @@ class Engine(object):
                         self.execute(insert_stmt, commit=False)
                         current += insert_limit
                         if current > real_line_length:
-                            print(str(real_line_length) + " rows inserted into " + self.table_name() + ": ")
+                            prompt = str(real_line_length) + " / " + str(total) + " rows inserted into " + self.table_name() + ": "
                         else:
-                            print(str(current) + " rows inserted into " + self.table_name() + ": ")
+                            prompt = str(current) + " / " + str(total) + " rows inserted into " + self.table_name() + ": "
+                        sys.stdout.write(prompt + "\b" * len(prompt))
                     except:
                         print(insert_stmt)
                         raise
