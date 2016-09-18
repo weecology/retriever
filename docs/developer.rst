@@ -83,6 +83,40 @@ you can also install from Git.
 Running tests locally
 ^^^^^^^^^^^^^^^^^^^^^
 
+Services Used
+-------------
+
+Check the services' home pages in case you have to add the same capabilities to your master branch.
+
+::
+
+  Travis
+  AppVeyor
+  readthedocs
+  codecov
+
+
+links `Read The Docs`_, `codecov`_, `AppVeyor`_ and  `Travis`_
+
+To run the test you will need to have all of the relevant database management systems and associated modules installed (see Setting up servers). You will then need to create the appropriate permissions for the tests to access the databases. You can do this by running the following commands in MySQL and PostgreSQL and creating the .pgpass file as described below:
+
+::
+
+  MySQL
+  -----
+  mysql -e "CREATE USER 'travis'@'localhost';" -uroot
+  mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'travis'@'localhost';" -uroot
+  mysql -e "GRANT FILE ON *.* TO 'travis'@'localhost';" -uroot
+  ​
+  PostgreSQL
+  ----------
+  psql -c "CREATE USER postgres WITH PASSWORD 'testpass'"
+  psql -c 'CREATE DATABASE testdb'
+  psql -c 'GRANT ALL PRIVILEGES ON DATABASE testdb to postgres'
+  ​
+  Create .pgpass in your home directory:
+  localhost:*:testdb:postgres:testpass
+
 To run tests we use pytest.
 From the source top level directory, run
 
@@ -91,7 +125,7 @@ From the source top level directory, run
   $   py.test
 
 
-In case we want to run tests on a specific test category, we add the path of the test module, py.test [path]
+To run tests on a specific test category add the path of the test module to the end of the py.test command: 
 
 .. code-block:: sh
 
@@ -109,45 +143,6 @@ Pull requests submitted to the repository will automatically be tested using
 these systems and results reported in the `checks` section of the pull request
 page.
 
-Services Used
--------------
-
-Check the services' home pages in case you have to add the same capabilities to your master branch.
-
-::
-
-  Travis
-  AppVeyor
-  readthedocs
-  codecov
-
-
-links `Read The Docs`_, `codecov`_, `AppVeyor`_ and  `Travis`_
-
-After installing the servers we need to configure them by granting privileges to our testing user .
-
-::
-
-  MySQL
-  -----
-  GRANT ALL PRIVILEGES ON testdb.* TO 'travis'@'localhost';
-  GRANT FILE ON *.* TO 'travis'@'localhost';
-  ​
-  Install MySQL on Mac
-  --------------------
-  ​
-     brew install mysql
-  ​
-  Follow instructions for starting/autostarting
-  ​
-  PostgreSQL
-  ----------
-  psql -c "CREATE USER postgres WITH PASSWORD 'testpass'"
-  psql -c 'CREATE DATABASE testdb'
-  psql -c 'GRANT ALL PRIVILEGES ON DATABASE testdb to postgres'
-  ​
-  Create .pgpass in your home directory:
-  localhost:*:testdb:postgres:testpass
 
 Documentation
 =============
@@ -230,3 +225,4 @@ Use ``-f`` flag to force pushing changes to the branch. ``git push -f origin [br
 .. _installing: https://docs.python.org/2/install/
 .. _installing the wheel: http://www.lfd.uci.edu/~gohlke/pythonlibs/
 .. _setup tools: https://pythonhosted.org/an_example_pypi_project/setuptools.html
+
