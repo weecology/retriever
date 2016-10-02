@@ -96,7 +96,7 @@ def compile_script(script_file):
                     tables[last_table][key] = "'" + str(e) + "'"
             else:
                 # general script attributes
-                values[key] = '"' + value + '"'
+                values[key] = '"' + str(value) + '"'
 
     if 'shortname' not in list(values.keys()):
         try:
@@ -220,19 +220,19 @@ def compile_json(json_file):
     for (key, value) in json_object.items():
 
         if key == "title":
-            values["name"] = "\"" + value + "\""
+            values["name"] = "\"" + str(value) + "\""
 
         elif key == "name":
-            values["shortname"] = "\"" + value + "\""
+            values["shortname"] = "\"" + str(value) + "\""
 
         elif key == "description":
-            values["description"] = "\"" + value + "\""
+            values["description"] = "\"" + str(value) + "\""
 
         elif key == "homepage":
-            values["ref"] = "\"" + value + "\""
+            values["ref"] = "\"" + str(value) + "\""
 
         elif key == "citation":
-            values["citation"] = "\"" + value + "\""
+            values["citation"] = "\"" + str(value) + "\""
 
         elif key == "keywords":
             values["tags"] = value
