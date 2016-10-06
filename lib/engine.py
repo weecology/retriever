@@ -670,18 +670,13 @@ class Engine(object):
         types = self.table.get_column_datatypes()
         columncount = len(self.table.get_insert_columns(join=False, create=False))
         insert_stmt = "INSERT INTO {} ({}) VALUES ".format(self.table_name(), columns)
-        for rows in values:
-            vals = rows
-            insert_stmt2 = " ("
-            for i in range(0, columncount):
-                insert_stmt2 += "%s, "
-            insert_stmt2 = insert_stmt2.rstrip(", ") + "),"
-            n = 0
-            while len(vals) < insert_stmt.count("%s"):
-                vals.append(self.format_insert_value(None, types[n]))
-                n += 1
-            insert_stmt2 %= tuple([str(value) for value in vals])
-            insert_stmt += insert_stmt2
+        for row in values:
+            row_length = len(row)
+            # Add None with appropriate value type for empty cells
+            for i in range(columncount - row_length):
+                row.append(self.format_insert_value(None, types[row_length + i]))
+
+            insert_stmt += " (" + ", ".join([str(val) for val in row]) +"), "
         insert_stmt = insert_stmt.rstrip(", ") + ";"
         if self.debug:
             print(insert_stmt)
