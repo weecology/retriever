@@ -238,7 +238,7 @@ def compile_json(json_file):
             values["tags"] = value
 
         elif key == "retriever_minimum_version":
-            values["retriever_minimum_version"] = "\"" + value + "\""
+            values["retriever_minimum_version"] = "\"" + str(value) + "\""
 
         elif key == "resources":
             # Array of table objects
