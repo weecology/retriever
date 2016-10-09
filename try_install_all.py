@@ -11,6 +11,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 import os
 import sys
+from importlib import reload
 from retriever.lib.tools import choose_engine
 from retriever import MODULE_LIST, ENGINE_LIST, SCRIPT_LIST
 
