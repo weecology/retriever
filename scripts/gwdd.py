@@ -117,7 +117,8 @@ class main(Script):
         self.engine.table = table
         self.engine.create_table()
         self.engine.add_to_table(data)
-        
+        self.engine.find_file("GlobalWoodDensityDatabase.xls")
+
         return self.engine
 
 SCRIPT = main()
