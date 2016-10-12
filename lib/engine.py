@@ -463,7 +463,7 @@ class Engine(object):
                 fileloc = self.format_filename(os.path.join(archivebase,
                                                             os.path.basename(filename)))
 
-                unzipped_file = open(fileloc, 'w')
+                unzipped_file = open(fileloc, 'wb')
                 for line in open_archive_file:
                     unzipped_file.write(line)
                 open_archive_file.close()
