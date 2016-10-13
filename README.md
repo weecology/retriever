@@ -125,6 +125,11 @@ Using citation
   retriever citation BBS   (citation of BBS data)
   ```
 
+Website
+-------
+
+For more information see the
+[Data Retriever website](http://www.data-retriever.org/).
 
 Acknowledgments
 ---------------
