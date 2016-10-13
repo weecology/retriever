@@ -159,12 +159,12 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.0-dev",
-    "script_version": 1.0,
     "title": "Vegetation plots - del Moral, 2010",
     "urls": {
         "plots": "http://esapubs.org/archive/ecol/E091/152/MSH_PLOT_DESCRIPTORS.csv",
         "species": "http://esapubs.org/archive/ecol/E091/152/MSH_SPECIES_DESCRIPTORS.csv",
         "species_plot_year": "http://esapubs.org/archive/ecol/E091/152/MSH_SPECIES_PLOT_YEAR.csv",
         "structure_plot_year": "http://esapubs.org/archive/ecol/E091/152/MSH_STRUCTURE_PLOT_YEAR.csv"
-    }
+    },
+    "version": 1.0
 }

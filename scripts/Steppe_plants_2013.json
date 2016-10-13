@@ -93,7 +93,6 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.0-dev",
-    "script_version": 1.0,
     "title": "Shortgrass steppe plants.",
     "urls": {
         "allrecords_cover": "http://esapubs.org/archive/ecol/E094/128/allrecords_cover.csv",
@@ -104,5 +103,6 @@
         "quad_stocking_rate": "http://esapubs.org/archive/ecol/E094/128/quad_stocking_rate.csv",
         "species_list": "http://esapubs.org/archive/ecol/E094/128/species_list.csv",
         "species_name_changes": "http://esapubs.org/archive/ecol/E094/128/species_name_changes.csv"
-    }
+    },
+    "version": 1.0
 }

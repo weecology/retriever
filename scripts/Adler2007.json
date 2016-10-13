@@ -153,7 +153,6 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.0-dev",
-    "script_version": 1.0,
     "title": "Kansas plant quadrats (Ecological Archives 2007)",
     "urls": {
         "main": "http://esapubs.org/archive/ecol/E088/161/allrecords.csv",
@@ -162,5 +161,6 @@
         "quadrat_info": "http://esapubs.org/archive/ecol/E088/161/quadrat_info.csv",
         "quadrat_inventory": "http://esapubs.org/archive/ecol/E088/161/quadrat_inventory.csv",
         "species": "http://esapubs.org/archive/ecol/E088/161/species_list.csv"
-    }
+    },
+    "version": 1.0
 }

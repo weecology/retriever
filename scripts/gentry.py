@@ -25,7 +25,7 @@ class main(Script):
         self.name = "Alwyn H. Gentry Forest Transect Dataset"
         self.shortname = "Gentry"
         self.retriever_minimum_version = '2.0.0-dev'
-        self.script_version = '1.0'
+        self.version = '1.0'
         self.urls = {"stems": "http://www.mobot.org/mobot/gentry/123/all_Excel.zip",
                      "sites": "https://ndownloader.figshare.com/files/5515373",
                      "species": "",

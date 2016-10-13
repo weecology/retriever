@@ -25,11 +25,11 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.0-dev",
-    "script_version": 1.0,
     "title": "Northern mixed prairie maps - Anderson et al. 2011",
     "urls": {
         "allrecords_cover": "http://esapubs.org/archive/ecol/E092/143/allrecords_cover.csv",
         "allrecords_density": "http://esapubs.org/archive/ecol/E092/143/allrecords_density.csv",
         "species_list": "http://esapubs.org/archive/ecol/E092/143/species_list.csv"
-    }
+    },
+    "version": 1.0
 }
