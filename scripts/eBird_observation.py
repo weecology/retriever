@@ -13,7 +13,7 @@ class main(Script):
         self.ref = "http://ebird.org/content/ebird/news/gbif/"
         self.urls = {"main": "https://dataone.ornith.cornell.edu/metacat/d1/mn/v1/object/CLOEODDATA.05192014.1"}
         self.retriever_minimum_version = '2.0.0-dev'
-        self.script_version = '1.0'
+        self.version = '1.0'
         self.description = "A collection of observations from birders through portals managed and maintained by local partner conservation organizations"
 
     def download(self, engine=None, debug=False):

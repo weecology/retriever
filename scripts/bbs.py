@@ -27,7 +27,7 @@ class main(Script):
         self.ref = "http://www.pwrc.usgs.gov/BBS/"
         self.tags = ["Taxon > Birds", "Spatial Scale > Continental"]
         self.retriever_minimum_version = '2.0.0-dev'
-        self.script_version = '1.0'
+        self.version = '1.0'
         self.urls = {
                      "counts": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/",
                      "routes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/Routes.zip",

@@ -12,9 +12,9 @@ modules = MODULE_LIST()
 scripts = []
 for module in modules:
     if module.SCRIPT.public:
-        if os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.json') and module.SCRIPT.script_version:
+        if os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.json') and module.SCRIPT.version:
             module_name = module.__name__ + '.json'
-            scripts.append(','.join([module_name, str(module.SCRIPT.script_version)]))
+            scripts.append(','.join([module_name, str(module.SCRIPT.version)]))
         elif os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.script'):
             module_name = module.__name__ + '.script'
             scripts.append(','.join([module_name, str(1.0)]))
@@ -22,7 +22,7 @@ for module in modules:
                 not os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.script') and \
                 not os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.json'):
             module_name = module.__name__ + '.py'
-            scripts.append(','.join([module_name, str(module.SCRIPT.script_version)]))
+            scripts.append(','.join([module_name, str(module.SCRIPT.version)]))
 
 for script in scripts:
     version_file.write('\n' + script)

@@ -20,9 +20,9 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.0-dev",
-    "script_version": 1.0,
     "title": "Database of Vertebrate Home Range Sizes- Tamburello , et al., 2015",
     "urls": {
         "ranges": "http://datadryad.org/bitstream/handle/10255/dryad.84768/Tamburelloetal_HomeRangeDatabase.csv"
-    }
+    },
+    "version": 1.0
 }

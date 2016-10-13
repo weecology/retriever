@@ -21,9 +21,9 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.0-dev",
-    "script_version": 1.0,
     "title": "Avian Body Size Ecological Archives 2007",
     "urls": {
         "species": "http://esapubs.org/archive/ecol/E088/096/avian_ssd_jan07.txt"
-    }
+    },
+    "version": 1.0
 }

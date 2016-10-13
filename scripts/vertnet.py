@@ -13,7 +13,7 @@ class main(Script):
         self.name = "vertnet:"
         self.shortname = "vertnet"
         self.retriever_minimum_version = '2.0.0-dev'
-        self.script_version = '1.0'
+        self.version = '1.0'
         self.ref = "http://vertnet.org/resources/datatoolscode.html"
         self.urls = {
                     'amphibians': 'https://knb.ecoinformatics.org/knb/d1/mn/v1/object/urn:uuid:afc58110-b9c1-4cf7-b46c-837bdc930a21',

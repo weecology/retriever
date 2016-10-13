@@ -100,7 +100,6 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.0-dev",
-    "script_version": 1.0,
     "title": "Sonoran Desert Perennials",
     "urls": {
         "Count1906": "http://esapubs.org/archive/ecol/E094/083/Count1906.csv",
@@ -112,5 +111,6 @@
         "Seedling_counts": "http://esapubs.org/archive/ecol/E094/083/Seedling_counts.csv",
         "Species": "http://esapubs.org/archive/ecol/E094/083/Species.csv",
         "Stake_info": "http://esapubs.org/archive/ecol/E094/083/Stake_info.csv"
-    }
+    },
+    "version": 1.0
 }

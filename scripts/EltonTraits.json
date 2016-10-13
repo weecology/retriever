@@ -35,12 +35,12 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.0-dev",
-    "script_version": 1.0,
     "title": "Mammal and Bird foraging attributes -- Wilman, et al., 2014",
     "urls": {
         "BirdCitations": "http://esapubs.org/archive/ecol/E095/178/BirdFuncDatSources.txt",
         "BirdFuncDat": "http://esapubs.org/archive/ecol/E095/178/BirdFuncDat.txt",
         "MammCitations": "http://esapubs.org/archive/ecol/E095/178/MamFuncDatSources.txt",
         "MammFuncDat": "http://esapubs.org/archive/ecol/E095/178/MamFuncDat.txt"
-    }
+    },
+    "version": 1.0
 }

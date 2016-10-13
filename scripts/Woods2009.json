@@ -153,7 +153,6 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.0-dev",
-    "script_version": 1.0,
     "title": "Michigan canopy dynamics (Ecological Archives 2009)",
     "urls": {
         "all_plots_1935_1948": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/all_plots_1935_1948.txt",
@@ -162,5 +161,6 @@
         "species_codes": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/species_codes.txt",
         "swamp": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/swamp_all_modern.txt",
         "upland_plots_1989_2007": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/upland_plots_89-07.txt"
-    }
+    },
+    "version": 1.0
 }

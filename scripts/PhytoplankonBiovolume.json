@@ -71,7 +71,6 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.0-dev",
-    "script_version": 1.0,
     "title": "Biovolumes for freshwater phytoplankton - Colin et al. 2014",
     "urls": {
         "bvd_genus_ag": "http://esapubs.org/archive/ecol/E095/257/bvd_genus_ag_030614.csv",
@@ -80,5 +79,6 @@
         "bvd_species_ag": "http://esapubs.org/archive/ecol/E095/257/bvd_species_ag_030614.csv",
         "bvd_species_raw": "http://esapubs.org/archive/ecol/E095/257/bvd_species_raw_030614.csv",
         "taxa_table": "http://esapubs.org/archive/ecol/E095/257/taxa_table_030614.csv"
-    }
+    },
+    "version": 1.0
 }

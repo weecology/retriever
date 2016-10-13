@@ -42,7 +42,6 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.0-dev",
-    "script_version": 1.0,
     "title": "Mammal Community DataBase (Ecological Archives 2011)",
     "urls": {
         "communities": "http://esapubs.org/archive/ecol/E092/201/data/MCDB_communities.csv",
@@ -50,5 +49,6 @@
         "sites": "http://esapubs.org/archive/ecol/E092/201/data/MCDB_sites.csv",
         "species": "http://esapubs.org/archive/ecol/E092/201/data/MCDB_species.csv",
         "trapping": "http://esapubs.org/archive/ecol/E092/201/data/MCDB_trapping.csv"
-    }
+    },
+    "version": 1.0
 }

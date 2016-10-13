@@ -245,7 +245,6 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.0-dev",
-    "script_version": 1.0,
     "title": "Fray Jorge community database",
     "urls": {
         "annuals": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Annuals_1989-2005.txt",
@@ -253,5 +252,6 @@
         "perennials": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Perennials_1989-2005.txt",
         "precip": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Precipitation_1989-2005.csv",
         "seed_89_02": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Seeds_1989-2002.txt"
-    }
+    },
+    "version": 1.0
 }

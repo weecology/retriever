@@ -45,7 +45,7 @@ class main(Script):
         self.urls = {"mass": ""}
         self.tags = ["Taxon > Birds", "Data Type > Compilation"]
         self.retriever_minimum_version = "2.0.0-dev"
-        self.script_version = 1.0
+        self.version = 1.0
 
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
