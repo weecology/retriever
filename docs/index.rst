@@ -16,6 +16,7 @@ Contents:
    macbuild.rst
    Release.rst
    developer.rst
+   code_of_conduct.rst
    ecoretriever.rst
    datasets.rst
    modules.rst

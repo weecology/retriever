@@ -1,3 +1,13 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from imp import reload
+import sys
+# sys removes the setdefaultencoding method at startup; reload to get it back
+reload(sys)
+if hasattr(sys, 'setdefaultencoding'):
+    # set default encoding to latin-1 to decode source text
+    sys.setdefaultencoding('latin-1')
+
 from builtins import str
 from retriever import VERSION,COPYRIGHT
 from retriever.lib.repository import check_for_updates
