@@ -2,9 +2,9 @@
 from __future__ import absolute_import
 
 from setuptools import setup
+from pkg_resources import parse_version
 import platform
-import sys
-import warnings
+
 
 current_platform = platform.system().lower()
 extra_includes = []
@@ -25,14 +25,13 @@ elif current_platform == "windows":
         "C:\\Windows\\winsxs\\x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_9.0.21022.8_none_bcb86ed6ac711f91")
 
 __version__ = 'v2.0.dev'
-with open("_version.py","w") as version_file:
+with open("_version.py", "w") as version_file:
     version_file.write("__version__ = " + "'" + __version__ + "'\n")
     version_file.close()
 
+
 def clean_version(v):
-    if v == 'master':
-        return '1.0.0'
-    return v.replace('v', '').replace('.rc', '').replace('.beta', '')
+    return parse_version(v).__repr__().lstrip("<Version('").rstrip("')>")
 
 packages = [
     'retriever.lib',
@@ -73,7 +72,7 @@ setup(name='retriever',
       classifiers=['Intended Audience :: Science/Research',
                    'License :: OSI Approved :: MIT License',
                    'Programming Language :: Python',
-                   'Programming Language :: Python :: 2',],
+                   'Programming Language :: Python :: 2', ],
       packages=packages,
       package_dir={
           'retriever': ''
@@ -126,6 +125,8 @@ setup(name='retriever',
 
 try:
     from retriever.compile import compile
+    from retriever.lib.repository import check_for_updates
     compile()
+    check_for_updates()
 except:
     pass
