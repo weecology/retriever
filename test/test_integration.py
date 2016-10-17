@@ -6,39 +6,219 @@ import shutil
 
 import pytest
 from retriever.lib.compile import compile_json
-from retriever.lib.parse_script_to_json import parse_script_to_json
 from retriever import HOME_DIR, ENGINE_LIST
 from retriever.lib.tools import file_2string
 from retriever.lib.tools import create_file
 
 simple_csv = {'name': 'simple_csv',
               'raw_data': "a,b,c\n1,2,3\n4,5,6\n",
-              'script': "shortname: simple_csv\ntable: simple_csv, http://example.com/simple_csv.txt",
+              'script': """{\n
+                        "name": "simple_csv",\n
+                        "resources": [\n
+                            {\n
+                                "dialect": {},\n
+                                "name": "simple_csv",\n
+                                "schema": {},\n
+                                "url": "http://example.com/simple_csv.txt"\n
+                            }\n
+                        ],\n
+                        "retriever": "True",\n
+                        "retriever_minimum_version": "2.0.0-dev",\n
+                        "version": 1.0,\n
+                        "urls": {\n
+                            "simple_csv": "http://example.com/simple_csv.txt"\n
+                        }\n
+                    }\n""",
               'expect_out': 'a,b,c\n1,2,3\n4,5,6\n'}
 
 autopk_csv = {'name': 'autopk_csv',
               'raw_data': "a,b,c\n1,2,3\n4,5,6\n",
-              'script': "shortname: autopk_csv\ntable: autopk_csv, http://example.com/autopk_csv.txt\n*column: record_id, pk-auto\n*column: a, int\n*column: b, int\n*column: c, int",
+              'script': """{\n
+                        "name": "autopk_csv",\n
+                        "resources": [\n
+                            {\n
+                                "dialect": {},\n
+                                "name": "autopk_csv",\n
+                                "schema": {\n
+                                    "fields": [\n
+                                        {\n
+                                            "name": "record_id",\n
+                                            "type": "pk-auto"\n
+                                        },\n
+                                        {\n
+                                            "name": "a",\n
+                                            "type": "int"\n
+                                        },\n
+                                        {\n
+                                            "name": "b",\n
+                                            "type": "int"\n
+                                        },\n
+                                        {\n
+                                            "name": "c",\n
+                                            "type": "int"\n
+                                        }\n
+                                    ]\n
+                                },\n
+                                "url": "http://example.com/autopk_csv.txt"\n
+                            }\n
+                        ],\n
+                        "retriever": "True",\n
+                        "retriever_minimum_version": "2.0.0-dev",\n
+                        "version": 1.0,\n
+                        "urls": {\n
+                            "autopk_csv": "http://example.com/autopk_csv.txt"\n
+                        }\n
+                    }\n
+                    """,
               'expect_out': 'record_id,a,b,c\n1,1,2,3\n2,4,5,6\n'}
 
 crosstab = {'name': 'crosstab',
             'raw_data': "a,b,c1,c2\n1,1,1.1,1.2\n1,2,2.1,2.2\n",
-            'script': "shortname: crosstab\ntable: crosstab, http://example.com/crosstab.txt\n*column: a, int\n*column: b, int\n*ct_column: c\n*column: val, ct-double\n*ct_names: c1,c2",
+            'script': """{\n
+                    "name": "crosstab",\n
+                    "resources": [\n
+                        {\n
+                            "dialect": {},\n
+                            "name": "crosstab",\n
+                            "schema": {\n
+                                "ct_column": "c",\n
+                                "ct_names": [\n
+                                    "c1",\n
+                                    "c2"\n
+                                ],\n
+                                "fields": [\n
+                                    {\n
+                                        "name": "a",\n
+                                        "type": "int"\n
+                                    },\n
+                                    {\n
+                                        "name": "b",\n
+                                        "type": "int"\n
+                                    },\n
+                                    {\n
+                                        "name": "val",\n
+                                        "type": "ct-double"\n
+                                    }\n
+                                ]\n
+                            },\n
+                            "url": "http://example.com/crosstab.txt"\n
+                        }\n
+                    ],\n
+                    "retriever": "True",\n
+                    "retriever_minimum_version": "2.0.0-dev",\n
+                    "version": 1.0,\n
+                    "urls": {\n
+                        "crosstab": "http://example.com/crosstab.txt"\n
+                    }\n
+                }\n
+                """,
             'expect_out': 'a,b,c,val\n1,1,c1,1.1\n1,1,c2,1.2\n1,2,c1,2.1\n1,2,c2,2.2\n'}
 
 autopk_crosstab = {'name': 'autopk_crosstab',
                    'raw_data': "a,b,c1,c2\n1,1,1.1,1.2\n1,2,2.1,2.2\n",
-                   'script': "shortname: autopk_crosstab\ntable: autopk_crosstab, http://example.com/autopk_crosstab.txt\n*column: record_id, pk-auto\n*column: a, int\n*column: b, int\n*ct_column: c\n*column: val, ct-double\n*ct_names: c1,c2",
+                   'script': """{\n
+                            "name": "autopk_crosstab",\n
+                            "resources": [\n
+                                {\n
+                                    "dialect": {},\n
+                                    "name": "autopk_crosstab",\n
+                                    "schema": {\n
+                                        "ct_column": "c",\n
+                                        "ct_names": [\n
+                                            "c1",\n
+                                            "c2"\n
+                                        ],\n
+                                        "fields": [\n
+                                            {\n
+                                                "name": "record_id",\n
+                                                "type": "pk-auto"\n
+                                            },\n
+                                            {\n
+                                                "name": "a",\n
+                                                "type": "int"\n
+                                            },\n
+                                            {\n
+                                                "name": "b",\n
+                                                "type": "int"\n
+                                            },\n
+                                            {\n
+                                                "name": "val",\n
+                                                "type": "ct-double"\n
+                                            }\n
+                                        ]\n
+                                    },\n
+                                    "url": "http://example.com/autopk_crosstab.txt"\n
+                                }\n
+                            ],\n
+                            "retriever": "True",\n
+                            "retriever_minimum_version": "2.0.0-dev",\n
+                            "version": 1.0,\n
+                            "urls": {\n
+                                "autopk_crosstab": "http://example.com/autopk_crosstab.txt"\n
+                            }\n
+                        }\n
+                        """,
                    'expect_out': 'record_id,a,b,c,val\n1,1,1,c1,1.1\n2,1,1,c2,1.2\n3,1,2,c1,2.1\n4,1,2,c2,2.2\n'}
 
 skip_csv = {'name': 'skip_csv',
             'raw_data': "a,b,c\n1,2,3\n4,5,6\n",
-            'script': "shortname: skip_csv\ntable: skip_csv, http://example.com/skip_csv.txt\n*do_not_bulk_insert: True\n*column: a, skip\n*column: b, int\n*column: c, int",
+            'script': """{\n
+                    "name": "skip_csv",\n
+                    "resources": [\n
+                        {\n
+                            "dialect": {\n
+                                "do_not_bulk_insert": "True"\n
+                            },\n
+                            "name": "skip_csv",\n
+                            "schema": {\n
+                                "fields": [\n
+                                    {\n
+                                        "name": "a",\n
+                                        "type": "skip"\n
+                                    },\n
+                                    {\n
+                                        "name": "b",\n
+                                        "type": "int"\n
+                                    },\n
+                                    {\n
+                                        "name": "c",\n
+                                        "type": "int"\n
+                                    }\n
+                                ]\n
+                            },\n
+                            "url": "http://example.com/skip_csv.txt"\n
+                        }\n
+                    ],\n
+                    "retriever": "True",\n
+                    "retriever_minimum_version": "2.0.0-dev",\n
+                    "version": 1.0,\n
+                    "urls": {\n
+                        "skip_csv": "http://example.com/skip_csv.txt"\n
+                    }\n
+                }\n
+                """,
             'expect_out': 'b,c\n2,3\n5,6\n'}
 
 extra_newline = {'name': 'extra_newline',
                  'raw_data': 'col1,col2,col3\n1,2\n,3\n',
-                 'script': "shortname: extra_newline\ntable: extra_newline, http://example.com/extra_newline.txt",
+                 'script': """{\n
+                        "name": "extra_newline",\n
+                        "resources": [\n
+                            {\n
+                                "dialect": {},\n
+                                "name": "extra_newline",\n
+                                "schema": {},\n
+                                "url": "http://example.com/extra_newline.txt"\n
+                            }\n
+                        ],\n
+                        "retriever": "True",\n
+                        "retriever_minimum_version": "2.0.0-dev",\n
+                        "version": 1.0,\n
+                        "urls": {\n
+                            "extra_newline": "http://example.com/extra_newline.txt"\n
+                        }\n
+                    }\n
+                    """,
                  'expect_out': 'col1,col2,col3\n1,2,3\n'}
 
 tests = [simple_csv, autopk_csv, crosstab, autopk_crosstab, skip_csv, extra_newline]
@@ -56,8 +236,7 @@ def setup_module():
         if not os.path.exists(os.path.join(HOME_DIR, "raw_data", test['name'])):
             os.makedirs(os.path.join(HOME_DIR, "raw_data", test['name']))
         create_file(test['raw_data'], os.path.join(HOME_DIR, "raw_data", test['name'], test['name'] + '.txt'))
-        create_file(test['script'], os.path.join(HOME_DIR, "scripts", test['name'] + '.script'))
-        parse_script_to_json(test['name'], location=os.path.join(HOME_DIR, "scripts"))
+        create_file(test['script'], os.path.join(HOME_DIR, "scripts", test['name'] + '.json'))
         compile_json(os.path.join(HOME_DIR, "scripts", test['name']))
 
 
@@ -65,7 +244,6 @@ def teardown_module():
     """Remove test data and scripts from .retriever directories"""
     for test in tests:
         shutil.rmtree(os.path.join(HOME_DIR, "raw_data", test['name']))
-        os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.script'))
         os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.json'))
         os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.py'))
         os.system("rm -r *{}".format(test['name']))

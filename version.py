@@ -15,11 +15,7 @@ for module in modules:
         if os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.json') and module.SCRIPT.version:
             module_name = module.__name__ + '.json'
             scripts.append(','.join([module_name, str(module.SCRIPT.version)]))
-        elif os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.script'):
-            module_name = module.__name__ + '.script'
-            scripts.append(','.join([module_name, str(1.0)]))
         elif os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.py') and \
-                not os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.script') and \
                 not os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.json'):
             module_name = module.__name__ + '.py'
             scripts.append(','.join([module_name, str(module.SCRIPT.version)]))
