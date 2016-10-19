@@ -81,7 +81,11 @@ def compile_json(json_file):
     The scripts are created with `retriever create_json <script_name` using
     command line
     """
-    json_object = json.load(open(json_file + ".json", "r"))
+    json_object = {}
+    try:
+        json_object = json.load(open(json_file + ".json", "r"))
+    except ValueError as e:
+        pass
 
     if "retriever" not in json_object.keys():
         # Compile only files that have retriever key
