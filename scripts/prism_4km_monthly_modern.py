@@ -13,7 +13,7 @@ class main(Script):
         Script.__init__(self, **kwargs)
         self.name = "PRISM Climate Data"
         self.shortname = "PRISM"
-        self.retriever_minimum_version = '2.0.0-dev'
+        self.retriever_minimum_version = '2.0.dev'
         self.version = '1.0'
         self.ref = "http://prism.oregonstate.edu/"
         self.urls = {"climate": "http://services.nacse.org/prism/data/public/4km/"}

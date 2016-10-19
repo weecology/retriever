@@ -26,7 +26,7 @@ class main(Script):
         self.citation = "Pardieck, K.L., D.J. Ziolkowski Jr., M.-A.R. Hudson. 2015. North American Breeding Bird Survey Dataset 1966 - 2014, version 2014.0. U.S. Geological Survey, Patuxent Wildlife Research Center"
         self.ref = "http://www.pwrc.usgs.gov/BBS/"
         self.tags = ["Taxon > Birds", "Spatial Scale > Continental"]
-        self.retriever_minimum_version = '2.0.0-dev'
+        self.retriever_minimum_version = '2.0.dev'
         self.version = '1.0'
         self.urls = {
                      "counts": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/",

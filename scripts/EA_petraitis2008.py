@@ -10,7 +10,7 @@ class main(Script):
                         shortname="Petraitis2008",
                         ref="http://www.esapubs.org/archive/ecol/E089/032/",
                         description="The data set provides access to data on densities and percent cover in the 60 experimental plots from 2003 to 2007 and to update data from 1996 to 2002 that are already published in Ecological Archives.It includes densities of mussels, an herbivorous limpet, herbivorous snails, a predatory snail, a barnacle , and fucoid algae and percent cover by mussels, barnacles, fucoids, and other sessile organisms.",
-                        retriever_minimum_version='2.0.0-dev',
+                        retriever_minimum_version='2.0.dev',
                         version='1.0',
                         urls={
                                 "main": "http://www.esapubs.org/archive/ecol/E089/032/Succession_sampling_03-07_data.txt",
