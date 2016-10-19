@@ -15,7 +15,7 @@
         }
     ],
     "retriever": "True",
-    "retriever_minimum_version": "2.0.0-dev",
+    "retriever_minimum_version": "2.0.dev",
     "title": "Antarctic Site Inventory breeding bird survey data, 1994-2013",
     "urls": {
         "species": "http://esapubs.org/archive/ecol/E094/243/Antarctic_Site_Inventory_census_data_1994_2012.csv"

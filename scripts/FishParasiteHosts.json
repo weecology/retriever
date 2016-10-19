@@ -93,7 +93,7 @@
         }
     ],
     "retriever": "True",
-    "retriever_minimum_version": "2.0.0-dev",
+    "retriever_minimum_version": "2.0.dev",
     "title": "Fish parasite host ecological characteristics - Strona, et al., 2013",
     "urls": {
         "host_characteristics": "http://esapubs.org/archive/ecol/E094/045/FPEDB.csv"

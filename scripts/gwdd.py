@@ -19,7 +19,7 @@ class main(Script):
         Script.__init__(self, **kwargs)
         self.name = "Zanne et al. Global wood density database."
         self.shortname = "GWDD"
-        self.retriever_minimum_version = '2.0.0-dev'
+        self.retriever_minimum_version = '2.0.dev'
         self.version = '1.0'
         self.urls = {"GWDD": "http://datadryad.org/bitstream/handle/10255/dryad.235/GlobalWoodDensityDatabase.xls?sequence=1"}
         self.tags = ["Taxon > Plants", "Spatial Scale > Global",

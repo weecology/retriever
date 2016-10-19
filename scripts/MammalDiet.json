@@ -143,7 +143,7 @@
         }
     ],
     "retriever": "True",
-    "retriever_minimum_version": "2.0.0-dev",
+    "retriever_minimum_version": "2.0.dev",
     "title": "MammalDIET",
     "urls": {
         "diet": "http://datadryad.org/bitstream/handle/10255/dryad.64565/MammalDIET_v1.0.txt"

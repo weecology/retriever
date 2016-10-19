@@ -23,7 +23,7 @@ simple_csv = {'name': 'simple_csv',
                             }\n
                         ],\n
                         "retriever": "True",\n
-                        "retriever_minimum_version": "2.0.0-dev",\n
+                        "retriever_minimum_version": "2.0.dev",\n
                         "version": 1.0,\n
                         "urls": {\n
                             "simple_csv": "http://example.com/simple_csv.txt"\n
@@ -63,7 +63,7 @@ autopk_csv = {'name': 'autopk_csv',
                             }\n
                         ],\n
                         "retriever": "True",\n
-                        "retriever_minimum_version": "2.0.0-dev",\n
+                        "retriever_minimum_version": "2.0.dev",\n
                         "version": 1.0,\n
                         "urls": {\n
                             "autopk_csv": "http://example.com/autopk_csv.txt"\n
@@ -105,7 +105,7 @@ crosstab = {'name': 'crosstab',
                         }\n
                     ],\n
                     "retriever": "True",\n
-                    "retriever_minimum_version": "2.0.0-dev",\n
+                    "retriever_minimum_version": "2.0.dev",\n
                     "version": 1.0,\n
                     "urls": {\n
                         "crosstab": "http://example.com/crosstab.txt"\n
@@ -151,7 +151,7 @@ autopk_crosstab = {'name': 'autopk_crosstab',
                                 }\n
                             ],\n
                             "retriever": "True",\n
-                            "retriever_minimum_version": "2.0.0-dev",\n
+                            "retriever_minimum_version": "2.0.dev",\n
                             "version": 1.0,\n
                             "urls": {\n
                                 "autopk_crosstab": "http://example.com/autopk_crosstab.txt"\n
@@ -190,7 +190,7 @@ skip_csv = {'name': 'skip_csv',
                         }\n
                     ],\n
                     "retriever": "True",\n
-                    "retriever_minimum_version": "2.0.0-dev",\n
+                    "retriever_minimum_version": "2.0.dev",\n
                     "version": 1.0,\n
                     "urls": {\n
                         "skip_csv": "http://example.com/skip_csv.txt"\n
@@ -212,7 +212,7 @@ extra_newline = {'name': 'extra_newline',
                             }\n
                         ],\n
                         "retriever": "True",\n
-                        "retriever_minimum_version": "2.0.0-dev",\n
+                        "retriever_minimum_version": "2.0.dev",\n
                         "version": 1.0,\n
                         "urls": {\n
                             "extra_newline": "http://example.com/extra_newline.txt"\n

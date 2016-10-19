@@ -244,7 +244,7 @@
         }
     ],
     "retriever": "True",
-    "retriever_minimum_version": "2.0.0-dev",
+    "retriever_minimum_version": "2.0.dev",
     "title": "Fray Jorge community database",
     "urls": {
         "annuals": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Annuals_1989-2005.txt",

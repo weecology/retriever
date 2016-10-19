@@ -12,7 +12,7 @@ class main(Script):
         Script.__init__(self, **kwargs)
         self.name = "vertnet:"
         self.shortname = "vertnet"
-        self.retriever_minimum_version = '2.0.0-dev'
+        self.retriever_minimum_version = '2.0.dev'
         self.version = '1.0'
         self.ref = "http://vertnet.org/resources/datatoolscode.html"
         self.urls = {

@@ -10,7 +10,7 @@ class main(Script):
         Script.__init__(self, **kwargs)
         self.name = "A database on the life history traits of the Northwest European flora" 
         self.shortname = "leda"
-        self.retriever_minimum_version = '2.0.0-dev'
+        self.retriever_minimum_version = '2.0.dev'
         self.version = '1.0'
         self.ref = "http://www.uni-oldenburg.de/en/biology/landeco/research/projects/leda/"
         self.urls = {

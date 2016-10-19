@@ -69,7 +69,7 @@
         }
     ],
     "retriever": "True",
-    "retriever_minimum_version": "2.0.0-dev",
+    "retriever_minimum_version": "2.0.dev",
     "title": "Masses of Mammals (Ecological Archives 2003)",
     "urls": {
         "MOM": "http://www.esapubs.org/Archive/ecol/E084/094/MOMv3.3.txt"

@@ -16,7 +16,7 @@
         }
     ],
     "retriever": "True",
-    "retriever_minimum_version": "2.0.0-dev",
+    "retriever_minimum_version": "2.0.dev",
     "title": "Mammal Life History Database - Ernest, et al., 2003",
     "urls": {
         "species": "http://esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"

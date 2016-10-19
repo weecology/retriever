@@ -1,4 +1,4 @@
-v2.0.0-dev
+v2.0.dev
 Adler2007.json,1.0
 AmnioteDB.json,1.0
 Anderson2011.json,1.0
