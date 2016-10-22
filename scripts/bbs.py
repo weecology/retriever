@@ -76,7 +76,7 @@ class main(Script):
                 write = open(engine.format_filename("weather_new.csv"), "wb")
                 print("Cleaning weather data...")
                 for line in read:
-                    values = line.split(',')
+                    values = line.split(b',')
                     newvalues = []
                     for value in values:
 

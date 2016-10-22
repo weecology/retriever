@@ -58,7 +58,7 @@ class main(Script):
                 data = False
                 for lines in file_block.readlines():
                     # meta data contins line with no ";" and may have "(;;;;)+" or empty lines
-                    if not data and (";" not in lines or ";;;;" in lines):
+                    if not data and (b";" not in lines or b";;;;" in lines):
                         pass
                     else:
                         data = True

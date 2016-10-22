@@ -32,7 +32,7 @@ class main(Script):
 
         line1 = old_data.readline()
         line2 = old_data.readline()
-        newline = line1.replace("\n", "\t") + line2
+        newline = line1.replace(b"\n", b"\t") + line2
         new_data.write(newline)
 
         for line in old_data:
