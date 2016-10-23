@@ -4,14 +4,14 @@ AmnioteDB.json,1.0
 Anderson2011.json,1.0
 ArcticBreedBird.json,1.0
 AvianBodySize.json,1.0
-baad.py,1.0
-bbs.py,1.0
-bbs50stop.py,1.0
+baad.py,1.1
+bbs.py,1.1
+bbs50stop.py,1.1
 bioclim_2pt5.py,1.0
 CForBioData.json,1.0
 DelMoral2010.json,1.0
 EA_clark2006.py,1.0
-EA_petraitis2008.py,1.0
+EA_petraitis2008.py,1.1
 eBird_observation.py,1.0
 EltonTraits.json,1.0
 fia.py,1.0
@@ -21,7 +21,7 @@ gentry.py,1.0
 gwdd.py,1.0
 HomeRanges.json,1.0
 leaf_herbivory.json,1.0
-leda.py,1.0
+leda.py,1.1
 MammalDiet.json,1.0
 MammalLH.json,1.0
 MammalMR2010.json,1.0
