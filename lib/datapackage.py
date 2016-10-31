@@ -152,13 +152,14 @@ def create_json():
         if script_exists:
             print("Dataset already available. Check the list or try a different shortname")
 
-    contents['title'] = clean_input("Title/Name: ")
-    contents['description'] = clean_input("Description: ")
-    contents['citation'] = clean_input("Citation: ")
-    contents['homepage'] = clean_input("Site/Homepage of dataset: ")
+    contents['title'] = clean_input("Title/Name: ", ignore_empty=True)
+    contents['description'] = clean_input("Description: ", ignore_empty=True)
+    contents['citation'] = clean_input("Citation: ", ignore_empty=True)
+    contents['homepage'] = clean_input("Site/Homepage of dataset: ", ignore_empty=True)
     contents['keywords'] = clean_input("Tags (separated by ';'): ",
                                         split_char=';', ignore_empty=True)
     contents['resources'] = []
+    contents['retriever'] = "True"
 
     # Add tables -
     while True:
@@ -227,8 +228,7 @@ def create_json():
                 table['schema']['ct_column'] = ct_column
                 table['schema']['ct_names'] = ct_names
 
-            contents['resources'].append(table)
-
+            contents['resources'].append(table)  
     file_name = contents['name'] + ".json"
     with open(os.path.join(HOME_DIR, 'scripts', file_name), 'w') as output_file:
         json_str = json.dumps(contents, output_file, sort_keys=True, indent=4,

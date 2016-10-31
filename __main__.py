@@ -126,7 +126,7 @@ def main():
             all_scripts = []
 
             for script in script_list:
-                if script.name:
+                if script.shortname:
                     if args.l is not None:
                         script_name = script.name + "\nShortname: " + script.shortname + "\n"
                         if script.tags:
