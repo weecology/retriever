@@ -146,8 +146,7 @@ def compile_json(json_file):
                 tables[table["name"]] = table_dict
 
         else:
-            values[key] = value
-
+            values[key] = value 
     # Create a Table object string using the tables dict
     table_desc = "{"
     for (key, value) in tables.items():
