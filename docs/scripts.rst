@@ -572,6 +572,7 @@ The `del Moral script`_. takes advantage of this functionality.
 
 Script Editing
 --------------
+**Note:** Any time a script gets updated, the minor version number must be incremented from within the script. 
 
 The JSON scripts created using the retriever CLI can also be edited using the CLI.
 
