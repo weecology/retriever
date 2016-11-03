@@ -29,7 +29,7 @@ if len(sys.argv) > 1:
     ]
 SCRIPT_LIST = SCRIPT_LIST()
 TEST_ENGINES = {}
-IGNORE = ["AvianBodyMass", "FIA", "Bioclim", "PRISM", "vertnet","NPN", "mammsupertree", "eBirdOD"]
+IGNORE = ["AvianBodyMass", "FIA", "Bioclim", "PRISM", "vertnet","NPN", "mammsupertree"]
 IGNORE = [dataset.lower() for dataset in IGNORE]
 
 for engine in ENGINE_LIST:
