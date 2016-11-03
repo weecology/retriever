@@ -12,7 +12,6 @@ CForBioData.json,1.0
 DelMoral2010.json,1.0
 EA_clark2006.py,1.0
 EA_petraitis2008.py,1.1
-eBird_observation.py,1.0
 EltonTraits.json,1.0
 fia.py,1.0
 FishParasiteHosts.json,1.0
