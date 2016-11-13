@@ -20,7 +20,7 @@ MammalDiet.json,1.0
 leaf_herbivory.json,1.0
 MammalSuperTree.py,1.0
 Zachmann2010.json,1.0
-gwdd.py,1.0
+gwdd.py,1.1
 SonoranPerennials.json,1.0
 vertnet.py,1.1
 EltonTraits.json,1.0

@@ -20,7 +20,7 @@ class main(Script):
         self.name = "Zanne et al. Global wood density database."
         self.shortname = "GWDD"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.0'
+        self.version = '1.1'
         self.urls = {"GWDD": "http://datadryad.org/bitstream/handle/10255/dryad.235/GlobalWoodDensityDatabase.xls?sequence=1"}
         self.tags = ["Taxon > Plants", "Spatial Scale > Global",
                      "Data Type > Observational"]
@@ -81,10 +81,9 @@ class main(Script):
                          line["Reference_Number"]]
             gwdd.append(gwdd_data)
 
-        data = ['\t'.join(gwdd_line) for gwdd_line in gwdd]
         self.engine.table = table
         self.engine.create_table()
-        self.engine.add_to_table(data)
+        self.engine.add_to_table(gwdd)
 
         #Creating reference table
         lines = []
@@ -113,10 +112,9 @@ class main(Script):
                         line["Reference"]]
             gwdd.append(gwdd_ref)
 
-        data = ['\t'.join(gwdd_line) for gwdd_line in gwdd]
         self.engine.table = table
         self.engine.create_table()
-        self.engine.add_to_table(data)
+        self.engine.add_to_table(gwdd)
         self.engine.find_file("GlobalWoodDensityDatabase.xls")
 
         return self.engine

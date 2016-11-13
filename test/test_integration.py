@@ -200,12 +200,15 @@ skip_csv = {'name': 'skip_csv',
             'expect_out': 'b,c\n2,3\n5,6\n'}
 
 extra_newline = {'name': 'extra_newline',
-                 'raw_data': 'col1,col2,col3\n1,2\n,3\n',
+                 'raw_data': """col1,col2,col3\nab,"e\nf",cd""",
+
                  'script': """{\n
                         "name": "extra_newline",\n
                         "resources": [\n
                             {\n
-                                "dialect": {},\n
+                            "dialect": {\n
+                                "do_not_bulk_insert": "True"\n
+                            },\n
                                 "name": "extra_newline",\n
                                 "schema": {},\n
                                 "url": "http://example.com/extra_newline.txt"\n
@@ -219,7 +222,7 @@ extra_newline = {'name': 'extra_newline',
                         }\n
                     }\n
                     """,
-                 'expect_out': 'col1,col2,col3\n1,2,3\n'}
+                 'expect_out': "col1,col2,col3\nab,e f,cd\n"}
 
 tests = [simple_csv, autopk_csv, crosstab, autopk_crosstab, skip_csv, extra_newline]
 

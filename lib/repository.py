@@ -1,6 +1,7 @@
 """Checks the repository for updates."""
 from __future__ import print_function
 from future import standard_library
+standard_library.install_aliases()
 import os
 import sys
 import urllib.request
@@ -10,7 +11,6 @@ import imp
 from pkg_resources import parse_version
 from retriever import REPOSITORY, SCRIPT_WRITE_PATH, HOME_DIR
 from retriever.lib.models import file_exists
-standard_library.install_aliases()
 
 global abort, executable_name
 abort = False
