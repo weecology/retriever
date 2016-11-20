@@ -6,11 +6,8 @@ Start
 -----
 
 1. **Run the tests**. Seriously, do it now.
-2. In ``__init__.py`` in master
-
-   1. Update the version number (if it hasn’t already been bumped)
-   2. Change ``MASTER = True`` to ``MASTER = False``
-
+2. In the `master` branch update the version number in ``setup.py`` (if it
+   hasn’t already been bumped)
 3. Run ``python version.py`` (this will update ``version.txt``)
 4. Update the version number in ``retriever_installer.iss`` (if it
    hasn’t already been bumped)
