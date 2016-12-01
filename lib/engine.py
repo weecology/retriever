@@ -16,6 +16,7 @@ import gzip
 import tarfile
 import csv
 import io
+import time
 from urllib.request import urlretrieve
 from retriever import DATA_SEARCH_PATHS, DATA_WRITE_PATH
 from retriever.lib.cleanup import no_cleanup
@@ -417,7 +418,7 @@ class Engine(object):
             path = self.format_filename(filename)
             self.create_raw_data_dir()
             print("Downloading " + filename + "...")
-            urlretrieve(url, path)
+            urlretrieve(url, path, reporthook=reporthook)
 
     def download_files_from_archive(self, url, filenames, filetype="zip",
                                     keep_in_dir=False, archivename=None):
@@ -728,3 +729,34 @@ def gen_from_source(source):
         gen, args = source
         source = gen(*args)
     return source
+
+
+def reporthook(count, block_size, total_size):
+    """Generated the progress bar
+
+    Uses file size to calculate the percentage of file size downloaded.
+    If the total_size of the file being downloaded is not in the header,
+    provide progress as size of bytes downloaded in either KB, MB and GB.
+    """
+    progress_size = int(count * block_size)
+    if total_size != -1:
+        global start_time
+        if count == 0:
+            start_time = time.time()
+            return
+        duration = time.time() - start_time
+        if duration !=0:
+            speed = int(progress_size / (1024 * duration))
+            percent = min(int(count*block_size*100/total_size),100)
+            sys.stdout.write("\r%2d%%  %d seconds " % (percent, duration))
+            sys.stdout.flush()
+    else:
+        if 1000 >= progress_size / 1000:
+            sys.stdout.write("\r%d  KB" % (progress_size / 1000))
+            sys.stdout.flush()
+        elif 1000000 >= progress_size / 1000000:
+            sys.stdout.write("\r%d  MB" % (progress_size / 1000000))
+            sys.stdout.flush()
+        elif 1000000000 >= progress_size / 1000000000:
+            sys.stdout.write("\r%d  GB" % (progress_size / 1000000000))
+            sys.stdout.flush()
