@@ -141,20 +141,20 @@ def reset_retriever(scope):
         'data': "\nThis will remove raw data cached by the Retriever. \nSpecifically it will remove the raw_data folder in {}. \nDo you want to proceed? (y/N)\n",
         'connections': "\nThis will remove stored information on database connections. \nSpecifically it will remove the connections.config file in {}. \nDo you want to proceed? (y/N)\n"
     }
-
-    warn_msg = warning_messages[scope].format(HOME_DIR)
+    path = os.path.normpath(HOME_DIR)
+    warn_msg = warning_messages[scope].format(path)
     confirm = input(warn_msg)
     while not (confirm.lower() in ['y', 'n', '']):
         print("Please enter either y or n.")
         confirm = input()
     if confirm.lower() == 'y':
         if scope in ['data', 'all']:
-            shutil.rmtree(os.path.join(HOME_DIR, 'raw_data'))
+            shutil.rmtree(os.path.join(path, 'raw_data'))
         if scope in ['scripts', 'all']:
-            shutil.rmtree(os.path.join(HOME_DIR, 'scripts'))
+            shutil.rmtree(os.path.join(path, 'scripts'))
         if scope in ['connections', 'all']:
             try:
-                os.remove(os.path.join(HOME_DIR, 'connections.config'))
+                os.remove(os.path.join(path, 'connections.config'))
             except:
                 pass
 

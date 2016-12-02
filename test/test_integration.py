@@ -1,9 +1,15 @@
-"""Integrations tests for Data Retriever"""
+# -*- coding: latin-1  -*-
+# """Integrations tests for Data Retriever"""
 from __future__ import print_function
 import imp
 import os
+import sys
 import shutil
+from imp import reload
 
+reload(sys)
+if hasattr(sys, 'setdefaultencoding'):
+    sys.setdefaultencoding('latin-1')
 import pytest
 from retriever.lib.compile import compile_json
 from retriever import HOME_DIR, ENGINE_LIST
@@ -30,6 +36,32 @@ simple_csv = {'name': 'simple_csv',
                         }\n
                     }\n""",
               'expect_out': 'a,b,c\n1,2,3\n4,5,6\n'}
+
+
+x= u'{}'.format('a,b,c\n1,2,4Löve\n4,5,6\n')
+def test_x():
+    assert type(x) == "strd"
+simple_csv2 = {'name': 'simple_csv2',
+              'raw_data': x,
+              'script': """{\n
+              "name": "simple_csv2",\n
+              "resources": [\n
+                  {\n
+                      "dialect": {},\n
+                      "name": "simple_csv2",\n
+                      "schema": {},\n
+                      "url": "http://example.com/simple_csv2.txt"\n
+                  }\n
+              ],\n
+              "retriever": "True",\n
+              "retriever_minimum_version": "2.0.dev",\n
+              "version": 1.0,\n
+              "urls": {\n
+                  "simple_csv2": "http://example.com/simple_csv2.txt"\n
+              }\n
+          }\n""",
+              'expect_out': u'a,b,c\n1,2,4Löve\n4,5,6\n'}
+
 
 autopk_csv = {'name': 'autopk_csv',
               'raw_data': "a,b,c\n1,2,3\n4,5,6\n",
@@ -224,7 +256,8 @@ extra_newline = {'name': 'extra_newline',
                     """,
                  'expect_out': "col1,col2,col3\nab,e f,cd\n"}
 
-tests = [simple_csv, autopk_csv, crosstab, autopk_crosstab, skip_csv, extra_newline]
+tests = [simple_csv, simple_csv2]
+# tests = [simple_csv, autopk_csv, crosstab, autopk_crosstab, skip_csv, extra_newline]
 
 # Create a tuple of all test scripts and expected values
 # (simple_csv, '"a","b","c"\n1,2,3\n4,5,6')
