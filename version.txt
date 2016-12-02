@@ -17,7 +17,7 @@ fia.py,1.0
 FishParasiteHosts.json,1.0
 FrayJorge.json,1.1
 gentry.py,1.0
-gwdd.py,1.0
+gwdd.py,1.1
 HomeRanges.json,1.0
 Iris.json, 1.1
 leaf_herbivory.json,1.0
