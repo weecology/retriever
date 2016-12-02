@@ -107,6 +107,9 @@ def compile_json(json_file):
         elif key == "description":
             values["description"] = "\"" + str(value) + "\""
 
+        elif key == "addendum":
+            values["addendum"] = "\"" + str(value) + "\""
+
         elif key == "homepage":
             values["ref"] = "\"" + str(value) + "\""
 
