@@ -20,6 +20,8 @@ for module in modules:
             module_name = module.__name__ + '.py'
             scripts.append(','.join([module_name, str(module.SCRIPT.version)]))
 
+scripts = sorted(scripts, key = str.casefold)
+
 for script in scripts:
     version_file.write('\n' + script)
 version_file.close()
