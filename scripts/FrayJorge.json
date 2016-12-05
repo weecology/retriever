@@ -40,7 +40,7 @@
                     },
                     {
                         "name": "species",
-                        "size": "4",
+                        "size": "10",
                         "type": "char"
                     },
                     {
@@ -141,7 +141,7 @@
                     },
                     {
                         "name": "species",
-                        "size": "4",
+                        "size": "10",
                         "type": "char"
                     },
                     {
@@ -211,7 +211,7 @@
                     },
                     {
                         "name": "species",
-                        "size": "4",
+                        "size": "10",
                         "type": "char"
                     },
                     {
@@ -253,5 +253,5 @@
         "precip": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Precipitation_1989-2005.csv",
         "seed_89_02": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Seeds_1989-2002.txt"
     },
-    "version": 1.0
+    "version": 1.1
 }
