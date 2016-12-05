@@ -15,7 +15,7 @@ EA_petraitis2008.py,1.1
 EltonTraits.json,1.0
 fia.py,1.0
 FishParasiteHosts.json,1.0
-FrayJorge.json,1.0
+FrayJorge.json,1.1
 gentry.py,1.0
 gwdd.py,1.0
 HomeRanges.json,1.0
