@@ -252,7 +252,7 @@ class Engine(object):
                                     value = float(value)
                                     if "e" in str(value) or ("." in str(value) and
                                                              len(str(value).split(".")[1]) > 10):
-                                        column_types[i] = ["decimal", "30,20"]
+                                        column_types[i] = ["decimal", "50,30"]
                                 except:
                                     column_types[i] = ['char', max_lengths[i]]
                             if column_types[i][0] == 'char':
