@@ -54,7 +54,7 @@ class engine(Engine):
     def create_table(self):
         """Create the table by creating an empty XML file"""
         self.output_file = open(self.table_name(), "w")
-        self.output_file.write('<?xml version="1.0"?>')
+        self.output_file.write('<?xml version="1.0" encoding="ISO-8859-1"?>')
         self.output_file.write('\n<root>')
         self.table_names.append((self.output_file, self.table_name()))
         self.auto_column_number = 1

@@ -122,6 +122,23 @@ def dtest_sqlite_integration(dataset, expected, tmpdir):
     os.system("rm testdb.sqlite")
     dget_output_as_csv(dataset, sqlite_engine, tmpdir, dataset["name"])
 
+
+def dtest_mysql_integration(dataset, expected, tmpdir):
+    """Check for mysql regression"""
+    os.system('mysql -u travis -Bse "DROP DATABASE IF EXISTS testdb"')
+    mysql_engine.opts = {'engine': 'mysql', 'user': 'travis', 'password': '', 'host': 'localhost', 'port': 3306,
+                         'database_name': 'testdb', 'table_name': '{db}.{table}'}
+    dget_output_as_csv(dataset, mysql_engine, tmpdir, db=mysql_engine.opts['database_name'])
+
+def dtest_postgres_integration(dataset, expected, tmpdir):
+    """Check for postgres regression"""
+    os.system('psql -U postgres -d testdb -h localhost -c "DROP SCHEMA IF EXISTS testschema CASCADE"')
+    postgres_engine.opts = {'engine': 'postgres', 'user': 'postgres', 'password': "", 'host': 'localhost', 'port': 5432,
+                            'database': 'testdb', 'database_name': 'testschema', 'table_name': '{db}.{table}'}
+    dget_output_as_csv(dataset, postgres_engine, tmpdir, db=postgres_engine.opts['database_name'])
+
+
+
 def dtest_xmlengine_integration(dataset, expected, tmpdir):
     """Check for xmlenginee regression"""
     xml_engine.opts = {'engine': 'xml', 'table_name': '{db}_{table}'}
@@ -135,4 +152,9 @@ dsetup_module()
 # test_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoire ")
 # dtest_xmlengine_integration(simple_csv2, simple_csv2.get('expect_out'), "rékk")
 # dtest_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoire ")
-dtest_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoire ")
+# dtest_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoire ")
+# dtest_xmlengine_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoire ")
+# dtest_postgres_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoire ")
+
+
+dtest_mysql_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoire ")

@@ -1,7 +1,7 @@
 from __future__ import print_function
 from builtins import str
 import os
-import platform
+import sys
 from retriever.lib.models import Engine, no_cleanup
 
 
@@ -52,6 +52,7 @@ class engine(Engine):
         mysql_set_autocommit_on = """SET GLOBAL innodb_flush_log_at_trx_commit=1; COMMIT; SET autocommit=1; SET unique_checks=1; SET foreign_key_checks=1;"""
         
         self.get_cursor()
+        self.set_engine_encoding()
         ct = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
         if (self.table.cleanup.function == no_cleanup and
                 not self.table.fixed_width and
@@ -92,6 +93,9 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
             for schema, table in self.cursor:
                 self.existing_table_names.add((schema.lower(), table.lower()))
         return (dbname.lower(), tablename.lower()) in self.existing_table_names
+
+    def set_engine_encoding(self):
+        self.execute("SET NAMES '{0}';".format('latin1'))
 
     def get_connection(self):
         """Gets the db connection."""

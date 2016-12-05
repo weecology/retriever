@@ -1,3 +1,4 @@
+# -*- coding: latin-1  -*-
 """Data Retriever Tools
 
 This module contains miscellaneous classes and functions used in Retriever
@@ -10,6 +11,8 @@ from builtins import input
 from builtins import next
 import difflib
 import os
+import io
+from io import StringIO as newfile
 import warnings
 import unittest
 import shutil
@@ -175,12 +178,12 @@ def json2csv(input_file, output_file=None, header_values=None):
     Alex,US,25
     Alex,PT,25
     """
-    file_out = open(input_file, 'r')
+    file_out = io.open(input_file, encoding='latin-1')
     # set output file name and write header
     if output_file is None:
-        output_file = str(os.path.splitext(os.path.basename(input_file))[0]) + ".csv"
-    outfile = open(output_file, 'w')
-    outfile.write(",".join(header_values))
+        output_file = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
+    outfile = io.open(output_file, 'w')
+    outfile.write(u",".join(header_values))
 
     raw_data = json.loads(file_out.read())
 
@@ -219,57 +222,75 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
     """Convert xml to csv
     function is used for only testing and can handle the file of the size
     """
-    file_output = open(input_file, 'r')
-    tree = ET.parse(file_output)
-    root = tree.getroot()
+    # from xml.etree.ElementTree import parse
+    from xml.etree.ElementTree import ParseError
+    # try:
+
+    file_output = io.open(input_file, encoding='latin-1')
+    tree = ET.parse(newfile(file_output.read()))
 
     # set output file name and write header
     if outputfile is None:
-        outputfile = str(os.path.splitext(os.path.basename(input_file))[0]) + ".csv"
+        outputfile = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
     outfile = open(outputfile, 'w')
-    outfile.write(",".join(header_values))
+    outfile.write(u",".join(header_values))
+    root = tree.getroot()
+    print (root)
+    for column_name in header_values:
+        print (column_name)
+        print (type(column_name))
 
-    # lines in xml
     for rows in root.findall(row_tag):
-        previous_lists = [""]
-        if header_values:
-            # for each line, extract values for corresponding to column name
-            for column_name in header_values:
-                new_list = []
-                # check if multiple values exist
-                if len(rows.findall(column_name)) > 1:
-                    for child_item in rows.findall(column_name):
-                        # create new list with previous values and new cross-tab values added
-                        for old_lines in previous_lists:
-                            value_x = ""
+        for column_name in header_values:
+            print (rows.find(column_name).text)
+            print (type(rows.find(column_name).text))
+    exit()
 
-                            if child_item.text is None:
-                                pass
-                            else:
-                                value_x = str(child_item.text)
-                            temp = str(str(old_lines) + value_x + ",")
-                            new_list.append(temp)
-                    previous_lists = new_list
-                else:
-                    # no multiple values, just add available child
-                    for p_strings in previous_lists:
-
-                        value_x = ""
-                        if rows.find(column_name).text is None:
-                            pass
-                        else:
-                            value_x = str(rows.find(column_name).text)
-                        new_list.append("".join(str(p_strings) + value_x + ","))
-                        previous_lists = new_list
-        else:
-            print ("no header provided")
-            exit()
-        for lines in previous_lists:
-            outfile.write("\n" + str(lines[0:-1]))
-    outfile.close()
-    file_output.close()
-    os.system("rm -r {}".format(input_file))
-    return outputfile
+    # # lines in xml
+    # for rows in root.findall(row_tag):
+    #     previous_lists = [""]
+    #     if header_values:
+    #         # for each line, extract values for corresponding to column name
+    #         for column_name in header_values:
+    #             new_list = []
+    #             # check if multiple values exist
+    #
+    #             if len(rows.findall(column_name)) > 1:
+    #                 for child_item in rows.findall(column_name):
+    #                     # create new list with previous values and new cross-tab values added
+    #                     # child_item = child_item.encode('latin-1')
+    #                     for old_lines in previous_lists:
+    #                         value_x = ""
+    #
+    #                         if child_item.text.encode('latin-1') is None:
+    #                             pass
+    #                         else:
+    #                             value_x = child_item.text.encode('latin-1')
+    #                         temp = ((old_lines.encode('latin-1')) + value_x + ",").encode('latin-1')
+    #                         new_list.append(temp)
+    #                 previous_lists = new_list
+    #             else:
+    #                 # no multiple values, just add available child
+    #                 for p_strings in previous_lists:
+    #
+    #                     value_x = ""
+    #                     if rows.find(column_name).text is None:
+    #                         pass
+    #                     else:
+    #                         value_x = rows.find(column_name).text.encode('latin-1')
+    #                     new_list.append("".join( p_strings.encode('latin-1') + value_x + ","))
+    #                     previous_lists = new_list
+    #     else:
+    #         print ("no header provided")
+    #         exit()
+    #     for lines in previous_lists:
+    #         outfile.write("\n" + (lines[0:-1]).encode('latin-1'))
+    # # except ParseError:
+    # #     pass
+    # outfile.close()
+    # file_output.close()
+    # os.system("rm -r {}".format(input_file))
+    # return outputfile
 
 
 def getmd5(data, data_type='lines', mode='rb'):
