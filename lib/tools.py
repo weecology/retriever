@@ -26,6 +26,17 @@ import json
 import xml.etree.ElementTree as ET
 warnings.filterwarnings("ignore")
 
+from imp import reload
+import os
+import sys
+import shutil
+
+reload(sys)
+if hasattr(sys, 'setdefaultencoding'):
+    sys.setdefaultencoding('latin-1')
+
+
+
 TEST_ENGINES = dict()
 
 
@@ -225,8 +236,8 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
     # from xml.etree.ElementTree import parse
     from xml.etree.ElementTree import ParseError
     # try:
-
-    file_output = io.open(input_file, encoding='latin-1')
+    print ("henry encoding xml tools", sys.getdefaultencoding())
+    file_output = io.open(input_file,"r", encoding="latin-1")
     tree = ET.parse(newfile(file_output.read()))
 
     # set output file name and write header
@@ -239,12 +250,16 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
     for column_name in header_values:
         print (column_name)
         print (type(column_name))
+    print ("done with headers values")
 
     for rows in root.findall(row_tag):
+        row = {}
         for column_name in header_values:
-            print (rows.find(column_name).text)
-            print (type(rows.find(column_name).text))
-    exit()
+
+            x = rows
+            print (rows.find(column_name).text,"===============")
+            # print (repr(rows.find(column_name)))
+    # exit()
 
     # # lines in xml
     # for rows in root.findall(row_tag):

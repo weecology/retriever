@@ -52,7 +52,7 @@ class engine(Engine):
         mysql_set_autocommit_on = """SET GLOBAL innodb_flush_log_at_trx_commit=1; COMMIT; SET autocommit=1; SET unique_checks=1; SET foreign_key_checks=1;"""
         
         self.get_cursor()
-        self.set_engine_encoding()
+
         ct = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
         if (self.table.cleanup.function == no_cleanup and
                 not self.table.fixed_width and

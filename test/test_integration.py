@@ -322,12 +322,14 @@ def test_csv_integration(dataset, expected, tmpdir):
     csv_engine.opts = {'engine': 'csv', 'table_name': '{db}_{table}'}
     assert get_output_as_csv(dataset, csv_engine, tmpdir, db=dataset["name"]) == expected
 
-# @pytest.mark.parametrize("dataset, expected", test_parameters)
-# def test_sqlite_integration(dataset, expected, tmpdir):
-#     dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb.sqlite'))
-#     sqlite_engine.opts = {'engine': 'sqlite', 'file': dbfile, 'table_name': '{db}_{table}'}
-#     os.system("rm testdb.sqlite")
-#     assert get_output_as_csv(dataset, sqlite_engine, tmpdir, dataset["name"]) == expected
+
+@pytest.mark.parametrize("dataset, expected", test_parameters)
+def test_sqlite_integration(dataset, expected, tmpdir):
+    dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb.sqlite'))
+    sqlite_engine.opts = {'engine': 'sqlite', 'file': dbfile, 'table_name': '{db}_{table}'}
+    os.system("rm testdb.sqlite")
+    assert get_output_as_csv(dataset, sqlite_engine, tmpdir, dataset["name"]) == expected
+
 
 # @pytest.mark.parametrize("dataset, expected", test_parameters)
 # def test_xmlengine_integration(dataset, expected, tmpdir):
@@ -341,18 +343,16 @@ def test_jsonengine_integration(dataset, expected, tmpdir):
     """Check for jsonenginee regression"""
     json_engine.opts = {'engine': 'json', 'table_name': '{db}_{table}'}
     assert get_output_as_csv(dataset, json_engine, tmpdir, db=dataset["name"]) == expected
-# #
-#
-#
-#
-#
+
+
 @pytest.mark.parametrize("dataset, expected", test_parameters)
 def test_postgres_integration(dataset, expected, tmpdir):
     """Check for postgres regression"""
     os.system('psql -U postgres -d testdb -h localhost -c "DROP SCHEMA IF EXISTS testschema CASCADE"')
     postgres_engine.opts = {'engine': 'postgres', 'user': 'postgres', 'password': "", 'host': 'localhost', 'port': 5432,
                             'database': 'testdb', 'database_name': 'testschema', 'table_name': '{db}.{table}'}
-    assert get_output_as_csv(dataset, postgres_engine, tmpdir, db=postgres_engine.opts['database_name']) == expected
+    assert get_output_as_csv(dataset, postgres_engine, tmpdir, db=postgres_engine.opts['database_name'])  ==  expected
+
 
 
 @pytest.mark.parametrize("dataset, expected", test_parameters)

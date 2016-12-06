@@ -1,6 +1,6 @@
+from builtins import str
 import os
 import sys
-from builtins import str
 from retriever.lib.models import Engine, no_cleanup
 
 
@@ -48,6 +48,7 @@ class engine(Engine):
     def create_db(self):
         """Creates the database"""
         try:
+            self.set_engine_encoding()
             Engine.create_db(self)
         except:
             self.connection.rollback()
@@ -71,7 +72,6 @@ class engine(Engine):
     def insert_data_from_file(self, filename):
         """Use PostgreSQL's "COPY FROM" statement to perform a bulk insert."""
         self.get_cursor()
-        self.set_engine_encoding()
         ct = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
         if (([self.table.cleanup.function, self.table.delimiter,
               self.table.header_rows] == [no_cleanup, ",", 1])
@@ -125,15 +125,16 @@ CSV HEADER;"""
         return Engine.format_insert_value(self, value, datatype)
 
     def set_engine_encoding(self):
-        self.execute("SET CLIENT_ENCODING TO '{0}';".format(
-            sys.getdefaultencoding()))
+        pass
 
     def get_connection(self):
         """Gets the db connection."""
         import psycopg2 as dbapi
         self.get_input()
-        return dbapi.connect(host=self.opts["host"],
+        conn = dbapi.connect(host=self.opts["host"],
                              port=int(self.opts["port"]),
                              user=self.opts["user"],
                              password=self.opts["password"],
                              database=self.opts["database"])
+        conn.set_client_encoding('Latin1')
+        return conn

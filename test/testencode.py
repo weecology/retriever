@@ -130,13 +130,13 @@ def dtest_mysql_integration(dataset, expected, tmpdir):
                          'database_name': 'testdb', 'table_name': '{db}.{table}'}
     dget_output_as_csv(dataset, mysql_engine, tmpdir, db=mysql_engine.opts['database_name'])
 
+
 def dtest_postgres_integration(dataset, expected, tmpdir):
     """Check for postgres regression"""
     os.system('psql -U postgres -d testdb -h localhost -c "DROP SCHEMA IF EXISTS testschema CASCADE"')
     postgres_engine.opts = {'engine': 'postgres', 'user': 'postgres', 'password': "", 'host': 'localhost', 'port': 5432,
                             'database': 'testdb', 'database_name': 'testschema', 'table_name': '{db}.{table}'}
     dget_output_as_csv(dataset, postgres_engine, tmpdir, db=postgres_engine.opts['database_name'])
-
 
 
 def dtest_xmlengine_integration(dataset, expected, tmpdir):
@@ -153,8 +153,25 @@ dsetup_module()
 # dtest_xmlengine_integration(simple_csv2, simple_csv2.get('expect_out'), "rékk")
 # dtest_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoire ")
 # dtest_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoire ")
-# dtest_xmlengine_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoire ")
-# dtest_postgres_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoire ")
+dtest_xmlengine_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoirexml ")
+# dtest_postgres_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoirepost ")
 
 
-dtest_mysql_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoire ")
+# dtest_mysql_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoiremysql ")
+# dtest_sqlite_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoiresqli ")
+
+
+
+
+"<root>"
+"<row>\n"
+"<User>Alex</User>"
+"<Country>US</Country>"
+"<Country>PT</Country>\n"
+"<Age>25</Age>" \
+"" \
+"\n</row>\n"
+"<row>\n<User>Ben</User>\n"
+"<Country>US</Country>S\n"
+"<Age>24</Age>\n"
+"</row>\n</root>"
