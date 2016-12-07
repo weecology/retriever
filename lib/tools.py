@@ -182,7 +182,11 @@ def json2csv(input_file, output_file=None, header_values=None):
     Alex,PT,25
     
     """
-    file_out = io.open(input_file, encoding='latin-1')
+    if sys.version_info >= (3, 0, 0):
+        file_out = io.open(input_file)
+    else:
+        file_out = io.open(input_file, encoding='latin-1')
+
     # set output file name and write header
     if output_file is None:
         output_file = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
@@ -219,7 +223,6 @@ def json2csv(input_file, output_file=None, header_values=None):
                             temp = old_lines + [child_item]
                             new_list.append(temp)
                     previous_list = new_list
-
                 else:
                     for p_strings in previous_list:
                         new_list.append(p_strings + [item[column_name]])

@@ -515,8 +515,8 @@ class Engine(object):
             row = self.cursor.fetchone()
         csv_out.close()
         self.disconnect()
-        return sort_csv(csvfile_output)
-        # return  csvfile_output
+        # return sort_csv(csvfile_output)
+        return  csvfile_output
 
     def final_cleanup(self):
         """Close the database connection."""
