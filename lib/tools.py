@@ -180,6 +180,7 @@ def json2csv(input_file, output_file=None, header_values=None):
     User,Country,Age
     Alex,US,25
     Alex,PT,25
+    
     """
     file_out = io.open(input_file)
     # set output file name and write header
