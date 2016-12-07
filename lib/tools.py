@@ -1,4 +1,4 @@
-# -*- coding: latin-1  -*-
+# -*- coding: latin-1 -*-
 """Data Retriever Tools
 
 This module contains miscellaneous classes and functions used in Retriever
@@ -26,14 +26,6 @@ import csv
 import json
 import xml.etree.ElementTree as ET
 warnings.filterwarnings("ignore")
-
-from imp import reload
-import os
-import sys
-import shutil
-
-
-
 
 TEST_ENGINES = dict()
 
@@ -234,16 +226,12 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
     # from xml.etree.ElementTree import parse
     from xml.etree.ElementTree import ParseError
     # try:
-    print ("henry encoding xml tools", sys.getdefaultencoding())
+    from io import StringIO as newfile
     file_output = io.open(input_file)
     v= file_output.read().encode("latin-1")
-    print(v)
-    print(type(v))
-    print("==========")
-    exit()
-    tree = ET.parse(file_output)
-    # file_output = io.open(input_file)
-    #
+    tree = ET.parse(newfile(v))
+    # # file_output = io.open(input_file)
+    # #
     # tree = ET.parse(newfile(file_output.read()))
 
     # set output file name and write header
@@ -252,69 +240,51 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
     outfile = open(outputfile, 'w')
     outfile.write(u",".join(header_values))
     root = tree.getroot()
-    print (root.tag)
 
-    print(root)
-    for column_name in header_values:
-        print (column_name)
-        print (type(column_name))
-    print ("done with headers values", sys.getdefaultencoding())
-
+    # lines in xml
     for rows in root.findall(row_tag):
-        for column_name in header_values:
-            print(rows.find(column_name).text.encode(), "kkkkkk")
-            # print(type(rows.findall(column_name)),"hhhhhh")
-            # print((rows.find(column_name).text), "hhhhhhh")
-            # print((rows.find(column_name).text ),"hhhhhhh")
-            # print (b''(rows.find(column_name).text.encode("latin-1")),"lllllll")
-            # print (rows.find(column_name),"===============")
-            # print (repr(rows.find(column_name)))
-    exit()
+        previous_lists = [""]
+        if header_values:
+            # for each line, extract values for corresponding to column name
+            for column_name in header_values:
+                new_list = []
+                # check if multiple values exist
 
-    # # lines in xml
-    # for rows in root.findall(row_tag):
-    #     previous_lists = [""]
-    #     if header_values:
-    #         # for each line, extract values for corresponding to column name
-    #         for column_name in header_values:
-    #             new_list = []
-    #             # check if multiple values exist
-    #
-    #             if len(rows.findall(column_name)) > 1:
-    #                 for child_item in rows.findall(column_name):
-    #                     # create new list with previous values and new cross-tab values added
-    #                     # child_item = child_item.encode('latin-1')
-    #                     for old_lines in previous_lists:
-    #                         value_x = ""
-    #
-    #                         if child_item.text.encode('latin-1') is None:
-    #                             pass
-    #                         else:
-    #                             value_x = child_item.text.encode('latin-1')
-    #                         temp = ((old_lines.encode('latin-1')) + value_x + ",").encode('latin-1')
-    #                         new_list.append(temp)
-    #                 previous_lists = new_list
-    #             else:
-    #                 # no multiple values, just add available child
-    #                 for p_strings in previous_lists:
-    #
-    #                     value_x = ""
-    #                     if rows.find(column_name).text is None:
-    #                         pass
-    #                     else:
-    #                         value_x = rows.find(column_name).text.encode('latin-1')
-    #                     new_list.append("".join( p_strings.encode('latin-1') + value_x + ","))
-    #                     previous_lists = new_list
-    #     else:
-    #         print ("no header provided")
-    #         exit()
-    #     for lines in previous_lists:
-    #         outfile.write("\n" + (lines[0:-1]).encode('latin-1'))
-    # # except ParseError:
-    # #     pass
-    # outfile.close()
-    # file_output.close()
-    # os.system("rm -r {}".format(input_file))
+                if len(rows.findall(column_name)) > 1:
+                    for child_item in rows.findall(column_name):
+                        # create new list with previous values and new cross-tab values added
+                        # child_item = child_item.encode('latin-1')
+                        for old_lines in previous_lists:
+                            value_x = ""
+
+                            if child_item.text.encode('latin-1') is None:
+                                pass
+                            else:
+                                value_x = child_item.text.encode('latin-1')
+                            temp = ((old_lines.encode('latin-1')) + value_x + ",").encode('latin-1')
+                            new_list.append(temp)
+                    previous_lists = new_list
+                else:
+                    # no multiple values, just add available child
+                    for p_strings in previous_lists:
+
+                        value_x = ""
+                        if rows.find(column_name).text is None:
+                            pass
+                        else:
+                            value_x = rows.find(column_name).text.encode('latin-1')
+                        new_list.append("".join( p_strings.encode('latin-1') + value_x + ","))
+                        previous_lists = new_list
+        else:
+            print ("no header provided")
+            exit()
+        for lines in previous_lists:
+            outfile.write("\n" + (lines[0:-1]).encode('latin-1'))
+    # except ParseError:
+    #     pass
+    outfile.close()
+    file_output.close()
+    os.system("rm -r {}".format(input_file))
     return outputfile
 
 

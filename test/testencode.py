@@ -147,30 +147,15 @@ def dtest_xmlengine_integration(dataset, expected, tmpdir):
 # print(test_parameters)
 # print (simple_csv2.get("script"))
 dsetup_module()
-# test_csv_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoire ")
-# test_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoire ")
+# test_csv_integration(simple_csv2, simple_csv2.get('expect_out'), "rép ")
+# test_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "rép")
 # dtest_xmlengine_integration(simple_csv2, simple_csv2.get('expect_out'), "rékk")
-# dtest_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoire ")
-# dtest_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoire ")
+# dtest_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "rép")
+# dtest_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "rép")
 dtest_xmlengine_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoirexml ")
-# dtest_postgres_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoirepost ")
+# dtest_postgres_integration(simple_csv2, simple_csv2.get('expect_out'), "répst ")
 
 
-# dtest_mysql_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoiremysql ")
-# dtest_sqlite_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoiresqli ")
+# dtest_mysql_integration(simple_csv2, simple_csv2.get('expect_out'), "répmysql ")
+# dtest_sqlite_integration(simple_csv2, simple_csv2.get('expect_out'), "répsqli ")
 
-
-
-
-"<root>"
-"<row>\n"
-"<User>Alex</User>"
-"<Country>US</Country>"
-"<Country>PT</Country>\n"
-"<Age>25</Age>" \
-"" \
-"\n</row>\n"
-"<row>\n<User>Ben</User>\n"
-"<Country>US</Country>S\n"
-"<Age>24</Age>\n"
-"</row>\n</root>"

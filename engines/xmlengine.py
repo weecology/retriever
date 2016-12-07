@@ -101,7 +101,6 @@ class engine(Engine):
         return v
 
     def insert_statement(self, values):
-        print (values, values[0][2])
 
         if not hasattr(self, 'auto_column_number'):
             self.auto_column_number = 1
