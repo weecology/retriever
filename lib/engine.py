@@ -515,8 +515,8 @@ class Engine(object):
             row = self.cursor.fetchone()
         csv_out.close()
         self.disconnect()
-        # return sort_csv(csvfile_output)
-        return  csvfile_output
+        return sort_csv(csvfile_output)
+        # return  csvfile_output
 
     def final_cleanup(self):
         """Close the database connection."""
@@ -715,14 +715,21 @@ class Engine(object):
         if not self.table.delimiter:
             with io.open(filename, newline='', encoding='latin-1') as dataset_file:
                 self.auto_get_delimiter(dataset_file.readline())
-        with io.open(filename, encoding='latin-1') as dataset_file:
-            if self.table.fixed_width:
-                for row in dataset_file:
-                    yield self.extract_fixed_width(row)
-            else:
-                for row in csv.reader(dataset_file, delimiter=self.table.delimiter, escapechar="\\"):
-                    print(row, "load engine 720")
-                    yield [reg.sub(" ", values) for values in row]
+
+        if sys.version_info >= (3, 0, 0):
+            dataset_file = io.open(filename)
+        else:
+            dataset_file = io.open(filename, encoding='latin-1')
+
+        if self.table.fixed_width:
+            for row in dataset_file:
+                yield self.extract_fixed_width(row)
+        else:
+            for row in csv.reader(dataset_file, delimiter=self.table.delimiter, escapechar="\\"):
+                print(row, "load engine 720")
+                yield [reg.sub(" ", values) for values in row]
+
+        dataset_file.close()
 
     def extract_fixed_width(self, line):
         """Splits a line based on the fixed width and returns a list of the values"""
