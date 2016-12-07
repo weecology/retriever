@@ -6,6 +6,8 @@ scripts.
 
 """
 from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
 
 from builtins import str
 from builtins import input
@@ -179,7 +181,7 @@ def json2csv(input_file, output_file=None, header_values=None):
     Alex,US,25
     Alex,PT,25
     """
-    file_out = io.open(input_file, encoding='latin-1')
+    file_out = io.open(input_file)
     # set output file name and write header
     if output_file is None:
         output_file = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
@@ -190,6 +192,7 @@ def json2csv(input_file, output_file=None, header_values=None):
 
     # lines in json file
     for item in raw_data:
+        print(item)
         previous_list = [""]
         if header_values:
             # for each line, get values corresponding to the column name values
@@ -202,16 +205,17 @@ def json2csv(input_file, output_file=None, header_values=None):
 
                         # Create new list with previous values and new cross-tab values added
                         for old_lines in previous_list:
-                            temp = str(str(old_lines) + str(child_item) + ",")
+                            temp = "{}{},".format(old_lines, child_item)
                             new_list.append(temp)
                     previous_list = new_list
 
                 else:
                     for p_strings in previous_list:
-                        new_list.append("".join(str(p_strings) + str(item[column_name]) + ","))
+                        new_list.append("{}{},".format(p_strings, item[column_name]))
                     previous_list = new_list
 
         for lines in previous_list:
+            print(str(lines[0:-1]))
             outfile.write("\n" + str(lines[0:-1]))
     outfile.close()
     file_out.close()

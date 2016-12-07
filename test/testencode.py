@@ -150,9 +150,9 @@ dsetup_module()
 # test_csv_integration(simple_csv2, simple_csv2.get('expect_out'), "rép ")
 # test_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "rép")
 # dtest_xmlengine_integration(simple_csv2, simple_csv2.get('expect_out'), "rékk")
+dtest_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "rép")
 # dtest_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "rép")
-# dtest_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "rép")
-dtest_xmlengine_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoirexml ")
+# dtest_xmlengine_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoirexml ")
 # dtest_postgres_integration(simple_csv2, simple_csv2.get('expect_out'), "répst ")
 
 

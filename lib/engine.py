@@ -489,6 +489,7 @@ class Engine(object):
     #     self.disconnect()
     #     return sort_csv(csvfile_output)
 
+    
     def to_csv(self):
         # due to Cyclic imports we can not move this import to the top
         from retriever.lib.tools import sort_csv
@@ -498,7 +499,10 @@ class Engine(object):
         else:
             csv_out = io.open(csvfile_output, 'wb')
 
-        csv_writer = csv.writer(csv_out, dialect='excel', escapechar='\\', lineterminator='\n')
+        if os.name == 'nt':
+            csv_writer = csv.writer(csv_out, dialect='excel', escapechar='\\', lineterminator='\n')
+        else:
+            csv_writer = csv.writer(csv_out, dialect='excel', escapechar='\\')
 
         self.get_cursor()
         self.set_engine_encoding()
@@ -511,8 +515,8 @@ class Engine(object):
             row = self.cursor.fetchone()
         csv_out.close()
         self.disconnect()
-        return sort_csv(csvfile_output)
-        # return  csvfile_output
+        # return sort_csv(csvfile_output)
+        return  csvfile_output
 
     def final_cleanup(self):
         """Close the database connection."""
