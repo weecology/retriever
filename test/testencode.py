@@ -147,15 +147,15 @@ def dtest_xmlengine_integration(dataset, expected, tmpdir):
 # print(test_parameters)
 # print (simple_csv2.get("script"))
 dsetup_module()
-# test_csv_integration(simple_csv2, simple_csv2.get('expect_out'), "rép ")
-# test_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "rép")
+# dtest_csv_integration(simple_csv2, simple_csv2.get('expect_out'), "anothertest")
+dtest_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "jsonout")
 # dtest_xmlengine_integration(simple_csv2, simple_csv2.get('expect_out'), "rékk")
-dtest_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "rép")
+#dtest_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "rep")
 # dtest_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "rép")
 # dtest_xmlengine_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoirexml ")
 # dtest_postgres_integration(simple_csv2, simple_csv2.get('expect_out'), "répst ")
 
 
 # dtest_mysql_integration(simple_csv2, simple_csv2.get('expect_out'), "répmysql ")
-# dtest_sqlite_integration(simple_csv2, simple_csv2.get('expect_out'), "répsqli ")
+#dtest_sqlite_integration(simple_csv2, simple_csv2.get('expect_out'), "mydb")
 

@@ -715,7 +715,7 @@ class Engine(object):
         if not self.table.delimiter:
             with io.open(filename, newline='', encoding='latin-1') as dataset_file:
                 self.auto_get_delimiter(dataset_file.readline())
-        with io.open(filename) as dataset_file:
+        with io.open(filename, encoding='latin-1') as dataset_file:
             if self.table.fixed_width:
                 for row in dataset_file:
                     yield self.extract_fixed_width(row)

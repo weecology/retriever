@@ -182,19 +182,29 @@ def json2csv(input_file, output_file=None, header_values=None):
     Alex,PT,25
     
     """
-    file_out = io.open(input_file)
+    file_out = io.open(input_file, encoding='latin-1')
     # set output file name and write header
     if output_file is None:
         output_file = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
-    outfile = io.open(output_file, 'w')
-    outfile.write(u",".join(header_values))
+
+    if sys.version_info >= (3, 0, 0):
+        csv_out = io.open(output_file, 'w', newline = '')
+    else:
+        csv_out = io.open(output_file, 'wb')
+
+    if os.name == 'nt':
+        outfile = csv.writer(csv_out, dialect='excel', escapechar="\\", lineterminator='\n')
+    else:
+        outfile = csv.writer(csv_out, dialect='excel', escapechar="\\")
+
+    outfile.writerow(header_values)
 
     raw_data = json.loads(file_out.read())
 
     # lines in json file
     for item in raw_data:
         print(item)
-        previous_list = [""]
+        previous_list = [[]]
         if header_values:
             # for each line, get values corresponding to the column name values
             for column_name in header_values:
@@ -206,21 +216,18 @@ def json2csv(input_file, output_file=None, header_values=None):
 
                         # Create new list with previous values and new cross-tab values added
                         for old_lines in previous_list:
-                            temp = "{}{},".format(old_lines, child_item)
+                            temp = old_lines + [child_item]
                             new_list.append(temp)
                     previous_list = new_list
 
                 else:
                     for p_strings in previous_list:
-                        new_list.append("{}{},".format(p_strings, item[column_name]))
+                        new_list.append(p_strings + [item[column_name]])
                     previous_list = new_list
-
-        for lines in previous_list:
-            print(str(lines[0:-1]))
-            outfile.write("\n" + str(lines[0:-1]))
-    outfile.close()
+        print("PREVIOUSLIST:::::", previous_list)
+        outfile.writerows(previous_list)
     file_out.close()
-    os.system("rm -r {}".format(input_file))
+#    os.system("rm -r {}".format(input_file))
     return output_file
 
 
