@@ -16,7 +16,6 @@ from retriever import HOME_DIR, ENGINE_LIST
 from retriever.lib.tools import file_2string
 from retriever.lib.tools import create_file
 
-
 x= u'{}'.format('a,b,c\n1,2,4Löve\n4,5,6\n')
 def test_x():
     assert type(x) == "strd"

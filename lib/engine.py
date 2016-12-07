@@ -204,6 +204,7 @@ class Engine(object):
         # Check the values for each column to determine data type
         for values in lines_to_scan:
             if values:
+                print (values)
                 for i in range(len(columns)):
                     try:
                         val = u"{}".format(values[i])
@@ -711,12 +712,13 @@ class Engine(object):
         if not self.table.delimiter:
             with io.open(filename, newline='', encoding='latin-1') as dataset_file:
                 self.auto_get_delimiter(dataset_file.readline())
-        with io.open(filename, newline='', encoding='latin-1') as dataset_file:
+        with io.open(filename) as dataset_file:
             if self.table.fixed_width:
                 for row in dataset_file:
                     yield self.extract_fixed_width(row)
             else:
                 for row in csv.reader(dataset_file, delimiter=self.table.delimiter, escapechar="\\"):
+                    print(row, "load engine 720")
                     yield [reg.sub(" ", values) for values in row]
 
     def extract_fixed_width(self, line):

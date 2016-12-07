@@ -1,5 +1,5 @@
 import os
-
+import io
 from builtins import str
 from builtins import object
 from builtins import range
@@ -53,8 +53,8 @@ class engine(Engine):
 
     def create_table(self):
         """Create the table by creating an empty XML file"""
-        self.output_file = open(self.table_name(), "w")
-        self.output_file.write('<?xml version="1.0" encoding="ISO-8859-1"?>')
+        self.output_file = io.open(self.table_name(), "w")
+        self.output_file.write('<?xml version="1.0" ?>')
         self.output_file.write('\n<root>')
         self.table_names.append((self.output_file, self.table_name()))
         self.auto_column_number = 1
@@ -101,6 +101,8 @@ class engine(Engine):
         return v
 
     def insert_statement(self, values):
+        print (values, values[0][2])
+
         if not hasattr(self, 'auto_column_number'):
             self.auto_column_number = 1
 

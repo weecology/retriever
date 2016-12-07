@@ -6,6 +6,7 @@ scripts.
 
 """
 from __future__ import print_function
+
 from builtins import str
 from builtins import input
 from builtins import next
@@ -31,9 +32,6 @@ import os
 import sys
 import shutil
 
-reload(sys)
-if hasattr(sys, 'setdefaultencoding'):
-    sys.setdefaultencoding('latin-1')
 
 
 
@@ -237,8 +235,16 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
     from xml.etree.ElementTree import ParseError
     # try:
     print ("henry encoding xml tools", sys.getdefaultencoding())
-    file_output = io.open(input_file,"r", encoding="latin-1")
-    tree = ET.parse(newfile(file_output.read()))
+    file_output = io.open(input_file)
+    v= file_output.read().encode("latin-1")
+    print(v)
+    print(type(v))
+    print("==========")
+    exit()
+    tree = ET.parse(file_output)
+    # file_output = io.open(input_file)
+    #
+    # tree = ET.parse(newfile(file_output.read()))
 
     # set output file name and write header
     if outputfile is None:
@@ -246,20 +252,24 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
     outfile = open(outputfile, 'w')
     outfile.write(u",".join(header_values))
     root = tree.getroot()
-    print (root)
+    print (root.tag)
+
+    print(root)
     for column_name in header_values:
         print (column_name)
         print (type(column_name))
-    print ("done with headers values")
+    print ("done with headers values", sys.getdefaultencoding())
 
     for rows in root.findall(row_tag):
-        row = {}
         for column_name in header_values:
-
-            x = rows
-            print (rows.find(column_name).text,"===============")
+            print(rows.find(column_name).text.encode(), "kkkkkk")
+            # print(type(rows.findall(column_name)),"hhhhhh")
+            # print((rows.find(column_name).text), "hhhhhhh")
+            # print((rows.find(column_name).text ),"hhhhhhh")
+            # print (b''(rows.find(column_name).text.encode("latin-1")),"lllllll")
+            # print (rows.find(column_name),"===============")
             # print (repr(rows.find(column_name)))
-    # exit()
+    exit()
 
     # # lines in xml
     # for rows in root.findall(row_tag):
@@ -305,7 +315,7 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
     # outfile.close()
     # file_output.close()
     # os.system("rm -r {}".format(input_file))
-    # return outputfile
+    return outputfile
 
 
 def getmd5(data, data_type='lines', mode='rb'):
