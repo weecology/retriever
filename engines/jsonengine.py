@@ -91,7 +91,7 @@ class engine(Engine):
 
     def format_insert_value(self, value, datatype):
         """Formats a value for an insert statement"""
-        v = Engine.format_insert_value(self, value, datatype, escape=False)
+        v = Engine.format_insert_value(self, value, datatype, escape=False, processed=True)
         if v == 'null':
             return ""
         try:

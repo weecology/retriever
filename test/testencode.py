@@ -83,6 +83,7 @@ def dget_output_as_csv(dataset, engines, tmpdir, db):
     script_module = dget_script_module(dataset["name"])
     script_module.SCRIPT.download(engines)
     script_module.SCRIPT.engine.final_cleanup()
+    exit()
     script_module.SCRIPT.engine.to_csv()
     # get filename and append .csv
     csv_file = engines.opts['table_name'].format(db=db, table=dataset["name"])
