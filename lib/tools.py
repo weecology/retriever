@@ -207,7 +207,6 @@ def json2csv(input_file, output_file=None, header_values=None):
 
     # lines in json file
     for item in raw_data:
-        print(item)
         previous_list = [[]]
         if header_values:
             # for each line, get values corresponding to the column name values
@@ -227,7 +226,6 @@ def json2csv(input_file, output_file=None, header_values=None):
                     for p_strings in previous_list:
                         new_list.append(p_strings + [item[column_name]])
                     previous_list = new_list
-        print("PREVIOUSLIST:::::", previous_list)
         outfile.writerows(previous_list)
     file_out.close()
 #    os.system("rm -r {}".format(input_file))

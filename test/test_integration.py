@@ -256,8 +256,7 @@ extra_newline = {'name': 'extra_newline',
                     """,
                  'expect_out': "col1,col2,col3\nab,e f,cd\n"}
 
-tests = [simple_csv, simple_csv2]
-# tests = [simple_csv, autopk_csv, crosstab, autopk_crosstab, skip_csv, extra_newline]
+tests = [simple_csv, simple_csv2, autopk_csv, crosstab, autopk_crosstab, skip_csv, extra_newline]
 
 # Create a tuple of all test scripts and expected values
 # (simple_csv, '"a","b","c"\n1,2,3\n4,5,6')
@@ -316,7 +315,7 @@ def get_script_module(script_name):
 
 mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, csv_engine, download_engine, json_engine, xml_engine = ENGINE_LIST()
 
-# passing
+
 @pytest.mark.parametrize("dataset, expected", test_parameters)
 def test_csv_integration(dataset, expected, tmpdir):
     csv_engine.opts = {'engine': 'csv', 'table_name': '{db}_{table}'}
