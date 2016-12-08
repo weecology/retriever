@@ -207,7 +207,6 @@ def json2csv(input_file, output_file=None, header_values=None):
 
     # lines in json file
     for item in raw_data:
-        print(item)
         previous_list = [[]]
         if header_values:
             # for each line, get values corresponding to the column name values
@@ -227,7 +226,7 @@ def json2csv(input_file, output_file=None, header_values=None):
                     for p_strings in previous_list:
                         new_list.append(p_strings + [item[column_name]])
                     previous_list = new_list
-        print("PREVIOUSLIST:::::", previous_list)
+        # print("PREVIOUSLIST:::::", previous_list)
         outfile.writerows(previous_list)
     file_out.close()
 #    os.system("rm -r {}".format(input_file))
@@ -243,7 +242,13 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
     # try:
     from io import StringIO as newfile
     file_output = io.open(input_file)
-    v= file_output.read().encode("latin-1")
+
+    if sys.version_info >= (3, 0, 0):
+        file_output = io.open(input_file)
+    else:
+        file_output = io.open(input_file, encoding='latin-1')
+
+    v= file_output.read()
     tree = ET.parse(newfile(v))
     # # file_output = io.open(input_file)
     # #
@@ -264,19 +269,17 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
             for column_name in header_values:
                 new_list = []
                 # check if multiple values exist
-
                 if len(rows.findall(column_name)) > 1:
                     for child_item in rows.findall(column_name):
                         # create new list with previous values and new cross-tab values added
-                        # child_item = child_item.encode('latin-1')
                         for old_lines in previous_lists:
                             value_x = ""
 
-                            if child_item.text.encode('latin-1') is None:
+                            if child_item.text is None:
                                 pass
                             else:
-                                value_x = child_item.text.encode('latin-1')
-                            temp = ((old_lines.encode('latin-1')) + value_x + ",").encode('latin-1')
+                                value_x = str(child_item.text)
+                            temp = str(str(old_lines) + value_x + ",")
                             new_list.append(temp)
                     previous_lists = new_list
                 else:
@@ -287,16 +290,14 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
                         if rows.find(column_name).text is None:
                             pass
                         else:
-                            value_x = rows.find(column_name).text.encode('latin-1')
-                        new_list.append("".join( p_strings.encode('latin-1') + value_x + ","))
+                            value_x = str(rows.find(column_name).text)
+                        new_list.append("".join(str(p_strings) + value_x + ","))
                         previous_lists = new_list
         else:
             print ("no header provided")
             exit()
         for lines in previous_lists:
-            outfile.write("\n" + (lines[0:-1]).encode('latin-1'))
-    # except ParseError:
-    #     pass
+            outfile.write("\n" + str(lines[0:-1]))
     outfile.close()
     file_output.close()
     os.system("rm -r {}".format(input_file))
