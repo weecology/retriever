@@ -330,11 +330,11 @@ def test_sqlite_integration(dataset, expected, tmpdir):
     assert get_output_as_csv(dataset, sqlite_engine, tmpdir, dataset["name"]) == expected
 
 
-# @pytest.mark.parametrize("dataset, expected", test_parameters)
-# def test_xmlengine_integration(dataset, expected, tmpdir):
-#     """Check for xmlenginee regression"""
-#     xml_engine.opts = {'engine': 'xml', 'table_name': '{db}_{table}'}
-#     assert get_output_as_csv(dataset, xml_engine, tmpdir, db=dataset["name"]) == expected
+@pytest.mark.parametrize("dataset, expected", test_parameters)
+def test_xmlengine_integration(dataset, expected, tmpdir):
+    """Check for xmlenginee regression"""
+    xml_engine.opts = {'engine': 'xml', 'table_name': '{db}_{table}'}
+    assert get_output_as_csv(dataset, xml_engine, tmpdir, db=dataset["name"]) == expected
 
 
 @pytest.mark.parametrize("dataset, expected", test_parameters)
