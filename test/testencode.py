@@ -40,8 +40,50 @@ simple_csv2 = {'name': 'simple_csv2',
           }\n""",
               'expect_out': u'a,b,c\n1,2,4Löve\n4,5,6\n'}
 
-
+crosstab = {'name': 'crosstab',
+            'raw_data': "a,b,c1,c2\n1,1,1.1,1.2\n1,2,2.1,2.2\n",
+            'script': """{\n
+                    "name": "crosstab",\n
+                    "resources": [\n
+                        {\n
+                            "dialect": {},\n
+                            "name": "crosstab",\n
+                            "schema": {\n
+                                "ct_column": "c",\n
+                                "ct_names": [\n
+                                    "c1",\n
+                                    "c2"\n
+                                ],\n
+                                "fields": [\n
+                                    {\n
+                                        "name": "a",\n
+                                        "type": "int"\n
+                                    },\n
+                                    {\n
+                                        "name": "b",\n
+                                        "type": "int"\n
+                                    },\n
+                                    {\n
+                                        "name": "val",\n
+                                        "type": "ct-double"\n
+                                    }\n
+                                ]\n
+                            },\n
+                            "url": "http://example.com/crosstab.txt"\n
+                        }\n
+                    ],\n
+                    "retriever": "True",\n
+                    "retriever_minimum_version": "2.0.dev",\n
+                    "version": 1.0,\n
+                    "urls": {\n
+                        "crosstab": "http://example.com/crosstab.txt"\n
+                    }\n
+                }\n
+                """,
+            'expect_out': 'a,b,c,val\n1,1,c1,1.1\n1,1,c2,1.2\n1,2,c1,2.1\n1,2,c2,2.2\n'}
+#
 tests = [simple_csv2]
+# tests = [crosstab]
 
 # Create a tuple of all test scripts and expected values
 # (simple_csv, '"a","b","c"\n1,2,3\n4,5,6')
@@ -148,11 +190,11 @@ def dtest_xmlengine_integration(dataset, expected, tmpdir):
 # print (simple_csv2.get("script"))
 dsetup_module()
 # dtest_csv_integration(simple_csv2, simple_csv2.get('expect_out'), "anothertest")
-dtest_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "jsonout")
+# dtest_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "jsonout")
 # dtest_xmlengine_integration(simple_csv2, simple_csv2.get('expect_out'), "rékk")
 #dtest_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "rep")
-# dtest_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "rép")
-# dtest_xmlengine_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoirexml ")
+# dtest_jsonengine_integration(crosstab, crosstab.get('expect_out'), "rép")
+dtest_xmlengine_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoirexml ")
 # dtest_postgres_integration(simple_csv2, simple_csv2.get('expect_out'), "répst ")
 
 
