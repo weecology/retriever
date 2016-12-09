@@ -82,8 +82,8 @@ crosstab = {'name': 'crosstab',
                 """,
             'expect_out': 'a,b,c,val\n1,1,c1,1.1\n1,1,c2,1.2\n1,2,c1,2.1\n1,2,c2,2.2\n'}
 #
-tests = [simple_csv2]
-# tests = [crosstab]
+# tests = [simple_csv2]
+tests = [crosstab]
 
 # Create a tuple of all test scripts and expected values
 # (simple_csv, '"a","b","c"\n1,2,3\n4,5,6')
@@ -192,9 +192,9 @@ dsetup_module()
 # dtest_csv_integration(simple_csv2, simple_csv2.get('expect_out'), "anothertest")
 # dtest_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "jsonout")
 # dtest_xmlengine_integration(simple_csv2, simple_csv2.get('expect_out'), "rékk")
-#dtest_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "rep")
+# dtest_jsonengine_integration(simple_csv2, simple_csv2.get('expect_out'), "rep")
 # dtest_jsonengine_integration(crosstab, crosstab.get('expect_out'), "rép")
-dtest_xmlengine_integration(simple_csv2, simple_csv2.get('expect_out'), "répertoirexml ")
+dtest_xmlengine_integration(crosstab, crosstab.get('expect_out'), "r4p")
 # dtest_postgres_integration(simple_csv2, simple_csv2.get('expect_out'), "répst ")
 
 

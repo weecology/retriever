@@ -54,8 +54,8 @@ class engine(Engine):
     def create_table(self):
         """Create the table by creating an empty XML file"""
         self.output_file = io.open(self.table_name(), "w")
-        self.output_file.write('<?xml version="1.0" ?>')
-        self.output_file.write('\n<root>')
+        self.output_file.write(u'<?xml version="1.0" ?>')
+        self.output_file.write(u'\n<root>')
         self.table_names.append((self.output_file, self.table_name()))
         self.auto_column_number = 1
 
@@ -75,7 +75,7 @@ class engine(Engine):
                 file_contents[-1] = file_contents[-1].strip(',')
                 current_output_file = open(file_name, "w")
                 current_output_file.writelines(file_contents)
-                current_output_file.write('\n</root>')
+                current_output_file.write(u'\n</root>')
                 current_output_file.close()
 
             except:
