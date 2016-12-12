@@ -144,6 +144,7 @@ def create_json():
     Usage: retriever create_json
     '''
     contents = {}
+    tableUrls = {}
 
     script_exists = True
     while script_exists:
@@ -160,6 +161,8 @@ def create_json():
                                         split_char=';', ignore_empty=True)
     contents['resources'] = []
     contents['retriever'] = "True"
+    contents['retriever_minimum_version'] = "2.0.dev"
+    contents['version'] = 1.0;
 
     # Add tables -
     while True:
@@ -174,6 +177,7 @@ def create_json():
             table['name'] = clean_input("Table name: ")
             table['url'] = clean_input("Table URL: ")
             table['dialect'] = {}
+            tableUrls[table['name']] = table['url']
 
             # get table properties (dialect)
             # refer retriever.lib.table.Table
@@ -229,6 +233,7 @@ def create_json():
                 table['schema']['ct_names'] = ct_names
 
             contents['resources'].append(table)  
+    contents['urls'] = tableUrls
     file_name = contents['name'] + ".json"
     with open(os.path.join(HOME_DIR, 'scripts', file_name), 'w') as output_file:
         json_str = json.dumps(contents, output_file, sort_keys=True, indent=4,
