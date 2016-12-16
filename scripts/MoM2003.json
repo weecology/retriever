@@ -12,7 +12,8 @@
             "dialect": {
                 "nulls": [
                     -999
-                ]
+                ], 
+                "header_rows": 0
             },
             "name": "MOM",
             "schema": {
@@ -74,5 +75,5 @@
     "urls": {
         "MOM": "http://www.esapubs.org/Archive/ecol/E084/094/MOMv3.3.txt"
     },
-    "version": 1.0
+    "version": 1.1
 }
