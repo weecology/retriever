@@ -19,7 +19,7 @@ FrayJorge.json,1.1
 gentry.py,1.0
 gwdd.py,1.0
 HomeRanges.json,1.0
-Iris.json, 1.1
+Iris.json,1.1
 leaf_herbivory.json,1.0
 leda.py,1.1
 MammalDiet.json,1.0
@@ -31,7 +31,7 @@ Matter2014.json,1.0
 MCDB.json,1.0
 McGlinn2010.json,1.0
 MiscAbundanceDB.json,1.0
-MoM2003.json,1.0
+MoM2003.json,1.1
 npn.py,1.0
 Palmer2007.json,1.0
 Pantheria.json,1.0
