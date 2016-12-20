@@ -5,11 +5,16 @@ scripts.
 
 """
 from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
+
 from builtins import str
 from builtins import input
 from builtins import next
 import difflib
 import os
+import io
+from io import StringIO as newfile
 import warnings
 import unittest
 import shutil
@@ -163,54 +168,33 @@ def reset_retriever(scope):
 def json2csv(input_file, output_file=None, header_values=None):
     """Convert Json file to CSV
     function is used for only testing and can handle the file of the size
-    [
-    {"User": "Alex", "Country": "US", "Age": "25"}
-    ]
-    User,Country,Age
-    Alex,US,25
-    cross tab
-    [
-    {"User": "Alex", "Country": ["US","PT"], "Age": "25"},
-    ]
-    User,Country,Age
-    Alex,US,25
-    Alex,PT,25
     """
-    file_out = open(input_file, 'r')
+    if sys.version_info >= (3, 0, 0):
+        if os.name =='nt':
+            file_out = io.open(input_file)
+        else:
+            file_out = io.open(input_file, encoding='ISO-8859-1')
+    else:
+        file_out = io.open(input_file, encoding='latin-1')
+
     # set output file name and write header
     if output_file is None:
-        output_file = str(os.path.splitext(os.path.basename(input_file))[0]) + ".csv"
-    outfile = open(output_file, 'w')
-    outfile.write(",".join(header_values))
+        output_file = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
 
+    if sys.version_info >= (3, 0, 0):
+        csv_out = io.open(output_file, 'w', newline = '')
+    else:
+        csv_out = io.open(output_file, 'wb')
+
+    if os.name == 'nt':
+        outfile = csv.DictWriter(csv_out, dialect='excel', escapechar="\\", lineterminator='\n', fieldnames=header_values)
+    else:
+        outfile = csv.DictWriter(csv_out, dialect='excel', escapechar="\\", fieldnames=header_values)
     raw_data = json.loads(file_out.read())
+    outfile.writeheader()
 
-    # lines in json file
     for item in raw_data:
-        previous_list = [""]
-        if header_values:
-            # for each line, get values corresponding to the column name values
-            for column_name in header_values:
-                new_list = []
-
-                # if column name has more than one value process ass a cross tab
-                if type(item[column_name]) is list:
-                    for child_item in item[column_name]:
-
-                        # Create new list with previous values and new cross-tab values added
-                        for old_lines in previous_list:
-                            temp = str(str(old_lines) + str(child_item) + ",")
-                            new_list.append(temp)
-                    previous_list = new_list
-
-                else:
-                    for p_strings in previous_list:
-                        new_list.append("".join(str(p_strings) + str(item[column_name]) + ","))
-                    previous_list = new_list
-
-        for lines in previous_list:
-            outfile.write("\n" + str(lines[0:-1]))
-    outfile.close()
+        outfile.writerow(item)
     file_out.close()
     os.system("rm -r {}".format(input_file))
     return output_file
@@ -220,54 +204,35 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
     """Convert xml to csv
     function is used for only testing and can handle the file of the size
     """
-    file_output = open(input_file, 'r')
-    tree = ET.parse(file_output)
-    root = tree.getroot()
+    if sys.version_info >= (3, 0, 0):
+        if os.name =='nt':
+            file_output = io.open(input_file)
+        else:
+            file_output = io.open(input_file, encoding='ISO-8859-1')
+    else:
+        file_output = io.open(input_file, encoding='latin-1')
 
     # set output file name and write header
     if outputfile is None:
-        outputfile = str(os.path.splitext(os.path.basename(input_file))[0]) + ".csv"
-    outfile = open(outputfile, 'w')
-    outfile.write(",".join(header_values))
+        outputfile = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
 
-    # lines in xml
+    if sys.version_info >= (3, 0, 0):
+        csv_out = io.open(outputfile, 'w', newline = '')
+    else:
+        csv_out = io.open(outputfile, 'wb')
+
+    if os.name == 'nt':
+        csv_writer = csv.writer(csv_out, dialect='excel', escapechar='\\', lineterminator='\n')
+    else:
+        csv_writer = csv.writer(csv_out, dialect='excel', escapechar='\\')
+
+    v = file_output.read()
+    csv_writer.writerow(header_values)
+    tree = ET.parse(newfile(v))
+    root = tree.getroot()
     for rows in root.findall(row_tag):
-        previous_lists = [""]
-        if header_values:
-            # for each line, extract values for corresponding to column name
-            for column_name in header_values:
-                new_list = []
-                # check if multiple values exist
-                if len(rows.findall(column_name)) > 1:
-                    for child_item in rows.findall(column_name):
-                        # create new list with previous values and new cross-tab values added
-                        for old_lines in previous_lists:
-                            value_x = ""
-
-                            if child_item.text is None:
-                                pass
-                            else:
-                                value_x = str(child_item.text)
-                            temp = str(str(old_lines) + value_x + ",")
-                            new_list.append(temp)
-                    previous_lists = new_list
-                else:
-                    # no multiple values, just add available child
-                    for p_strings in previous_lists:
-
-                        value_x = ""
-                        if rows.find(column_name).text is None:
-                            pass
-                        else:
-                            value_x = str(rows.find(column_name).text)
-                        new_list.append("".join(str(p_strings) + value_x + ","))
-                        previous_lists = new_list
-        else:
-            print ("no header provided")
-            exit()
-        for lines in previous_lists:
-            outfile.write("\n" + str(lines[0:-1]))
-    outfile.close()
+        x = [name.text for name in header_values for name in rows.findall(name)]
+        csv_writer.writerow(x)
     file_output.close()
     os.system("rm -r {}".format(input_file))
     return outputfile
@@ -291,8 +256,20 @@ def getmd5(data, data_type='lines', mode='rb'):
             for filename in sorted(filenames):
                 files.append(os.path.normpath(os.path.join(root, filename)))
     for file_path in files:
-        lines = open(file_path, mode)
-        for line in lines:
+        if sys.version_info >= (3, 0, 0):
+            if os.name == 'nt':
+                input_file = io.open(file_path, 'r', encoding='ISO-8859-1')
+            else:
+                input_file = open(file_path, 'r', encoding='ISO-8859-1')
+        else:
+            input_file = io.open(file_path, encoding='latin-1')
+
+
+        # lines = open(file_path, mode)
+        # lines = io.open(file_path, 'rt')
+
+        # lines = io.open(file_path, 'rU')
+        for line in input_file:
             if type(line) == bytes:
                 checksum.update(line)
             else:
@@ -305,11 +282,40 @@ def sort_file(file_path):
     function is used for only testing and can handle the file of the size
     """
     file_path = os.path.normpath(file_path)
-    infile = open(file_path, 'rU')
-    # useles if line.strip()
-    lines = [line.strip().replace('\x00', '') for line in infile]
-    infile.close()
-    outfile = open(file_path, 'w')
+
+
+    # infile = open(file_path, 'rU')
+    if sys.version_info >= (3, 0, 0):
+        if os.name == 'nt':
+            input_file = io.open(file_path, 'r', encoding='ISO-8859-1')
+        else:
+            input_file = open(file_path, 'r', encoding='ISO-8859-1')
+    else:
+        input_file = io.open(file_path, encoding='latin-1')
+
+
+
+    # # useles if line.strip()
+    # if os.name=='nt':
+    #     lines = [line.strip() for line in input_file]
+    # else:
+    #     lines = [line.strip() for line in ]
+    lines = [line.strip().replace('\x00', '') for line in input_file]
+    input_file.close()
+
+
+
+    # outfile = open(file_path, 'w')
+    if sys.version_info >= (3, 0, 0):
+        if os.name == 'nt':
+            outfile = io.open(file_path, 'w', encoding='ISO-8859-1')
+        else:
+            outfile = open(file_path, 'w', encoding='ISO-8859-1')
+
+    else:
+        outfile = io.open(file_path, 'wb')
+
+
     lines.sort()
     for line in lines:
         outfile.write(line + "\n")
@@ -318,19 +324,38 @@ def sort_file(file_path):
 
 
 def sort_csv(filename):
-    """Sort CSV rows and return the file
+    """Sort CSV rows minus the header and return the file
     function is used for only testing and can handle the file of the size
     """
     filename = os.path.normpath(filename)
-    input_file = open(filename, 'rU')
-    csv_reader_infile = csv.reader(input_file)
+    if sys.version_info >= (3, 0, 0):
+        if os.name == 'nt':
+            input_file = io.open(filename, 'r', newline='', encoding='ISO-8859-1')
+        else:
+            input_file = open(filename, 'r', encoding='ISO-8859-1')
+    else:
+        input_file = io.open(filename, encoding='latin-1')
+    # input_file = io.open(filename,'r', newline='', encoding='ISO-8859-1')
+
+
+    # input_file = open(filename,  newline='', encoding='utf-8')
+    csv_reader_infile = csv.reader(input_file, escapechar="\\")
     #  write the data to a temporary file and sort it
-    file_temp = open(os.path.normpath("tempfile"), 'w')
+    temp_file = os.path.normpath("tempfile")
+
+    if sys.version_info >= (3, 0, 0):
+        if os.name == 'nt':
+            file_temp = io.open(temp_file, 'w', newline='',  encoding='ISO-8859-1')
+        else:
+            file_temp = open(temp_file, 'w', encoding='ISO-8859-1')
+
+    else:
+        file_temp = io.open(temp_file, 'wb')
 
     if os.name == 'nt':
         csv_writer = csv.writer(file_temp, dialect='excel', escapechar='\\', lineterminator='\n')
     else:
-        csv_writer = csv.writer(file_temp, dialect='excel', escapechar='\\')
+        csv_writer = csv.writer(file_temp, dialect='excel', escapechar='\\', lineterminator='\n')
     i = 0
     for row in csv_reader_infile:
         if i == 0:
@@ -339,23 +364,54 @@ def sort_csv(filename):
             i += 1
         else:
             csv_writer.writerow(row)
+
     file_temp.close()
     input_file.close()
 
+
     # sort the temp file
-    sorted_txt = sort_file(os.path.normpath("tempfile"))
+    sorted_txt = sort_file(temp_file)
+
+
 
     # write sorted row content to csv filename with header "infields"
-    tmp = open(sorted_txt, "rU")
-    in_txt = csv.reader(tmp, delimiter=',')
-    if os.name == 'nt':
-        out_csv = csv.writer(open(filename, 'w'), lineterminator='\n')
+    # tmp = open(sorted_txt, "rU")
+    # in_txt = csv.reader(tmp, delimiter=',')
+    if sys.version_info >= (3, 0, 0):
+        if os.name == 'nt':
+            tmp = io.open(sorted_txt, 'r',newline='', encoding='ISO-8859-1')
+        else:
+            tmp = open(sorted_txt, 'r', encoding='ISO-8859-1')
     else:
-        out_csv = csv.writer(open(filename, 'w'))
-    out_csv.writerow(infields)
-    out_csv.writerows(in_txt)
+        tmp = io.open(sorted_txt, encoding='latin-1')
+
+    in_txt = csv.reader(tmp, delimiter=',', escapechar="\\")
+
+
+
+    # if os.name == 'nt':
+    #     out_csv = csv.writer(open(filename, 'w'), lineterminator='\n')
+    # else:
+    #     out_csv = csv.writer(open(filename, 'w'))
+
+    if sys.version_info >= (3, 0, 0):
+        if os.name == 'nt':
+            file_temp = io.open(filename, 'w', newline='', encoding='ISO-8859-1')
+        else:
+            file_temp = io.open(filename, 'w', encoding='ISO-8859-1')
+    else:
+        file_temp = io.open(filename, 'wb')
+
+    if os.name == 'nt':
+        csv_writer = csv.writer(file_temp, dialect='excel', escapechar='\\', lineterminator='\n')
+    else:
+        csv_writer = csv.writer(file_temp, dialect='excel', escapechar='\\')
+
+    csv_writer.writerow(infields)
+    csv_writer.writerows(in_txt)
     tmp.close()
-    os.remove(os.path.normpath("tempfile"))
+    file_temp.close()
+    os.remove(os.path.normpath(temp_file))
     return filename
 
 
@@ -371,7 +427,11 @@ def create_file(data, output='output_file'):
 def file_2string(input_file):
     """return file contents as a string"""
     input_file= os.path.normpath(input_file)
-    with open(input_file, 'rU') as obs_out_file:
-        obs_out = obs_out_file.read()
+    if sys.version_info >= (3, 0, 0):
+        input = io.open(input_file, 'rU')
+    else:
+        input = io.open(input_file, encoding='latin-1')
+
+    obs_out = input.read()
     return obs_out
 

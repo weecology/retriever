@@ -24,7 +24,7 @@ install:
 # command to run tests using py.test
 
 script:
-  - py.test -v --cov=retriever
+  - py.test -k " not test_xmlengine_integration " -v --cov=retriever
 
 # database setup
 before_script:

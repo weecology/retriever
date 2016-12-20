@@ -1,6 +1,7 @@
 from builtins import range
 import os
-import platform
+import io
+import csv
 from retriever.lib.models import Engine, no_cleanup
 from retriever import DATA_DIR
 
@@ -43,52 +44,19 @@ class engine(Engine):
         operate as designed
 
         """
+        self.set_engine_encoding()
         columns = self.table.get_insert_columns()
         types = self.table.get_column_datatypes()
-        columncount = len(self.table.get_insert_columns(False))
+        column_count = len(self.table.get_insert_columns(False))
         insert_stmt = "INSERT INTO " + self.table_name()
         insert_stmt += " (" + columns + ")"
         insert_stmt += " VALUES ("
-        for i in range(0, columncount):
+        for i in range(0, column_count):
             insert_stmt += "?, "
-        insert_stmt = insert_stmt.rstrip(", ") + ");"
+        insert_stmt = insert_stmt.rstrip(", ") + ")"
         return insert_stmt
 
     def insert_data_from_file(self, filename):
-        """Use executemany to perform a high speed bulk insert
-
-        Checks to see if a given file can be bulk inserted, and if so loads
-        it in chunks and inserts those chunks into the database using
-        executemany.
-
-        """
-        CHUNK_SIZE = 1000000
-        self.get_cursor()
-        ct = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
-        if (([self.table.cleanup.function, self.table.header_rows] == [no_cleanup, 1])
-            and not self.table.fixed_width
-            and not ct
-            and (not hasattr(self.table, "do_not_bulk_insert") or not self.table.do_not_bulk_insert)
-            ):
-            columns = self.table.get_insert_columns()
-            filename = os.path.abspath(filename)
-            try:
-                bulk_insert_statement = self.get_bulk_insert_statement()
-                line_endings = set(['\n', '\r', '\r\n'])
-                with open(filename, 'r') as data_file:
-                    data_chunk = data_file.readlines(CHUNK_SIZE)
-                    data_chunk = [line.rstrip('\r\n') for line in data_chunk if line not in line_endings]
-                    del(data_chunk[:self.table.header_rows])
-                    while data_chunk:
-                        data_chunk_split = [row.split(self.table.delimiter)
-                                            for row in data_chunk]
-                        self.cursor.executemany(bulk_insert_statement, data_chunk_split)
-                        data_chunk = data_file.readlines(CHUNK_SIZE)
-                self.connection.commit()
-            except:
-                self.connection.rollback()
-                return Engine.insert_data_from_file(self, filename)
-        else:
             return Engine.insert_data_from_file(self, filename)
 
     def table_exists(self, dbname, tablename):
@@ -102,8 +70,10 @@ class engine(Engine):
         return self.table_name(name=tablename, dbname=dbname).lower() in self.existing_table_names
 
     def to_csv(self):
-        self.connection.text_factory = str
         Engine.to_csv(self)
+
+    def set_engine_encoding(self):
+        pass
 
     def get_connection(self):
         """Gets the db connection."""

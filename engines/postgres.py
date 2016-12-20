@@ -1,5 +1,6 @@
-import os
 from builtins import str
+import os
+import sys
 from retriever.lib.models import Engine, no_cleanup
 
 
@@ -82,7 +83,7 @@ class engine(Engine):
 COPY """ + self.table_name() + " (" + columns + """)
 FROM '""" + filename.replace("\\", "\\\\") + """'
 WITH DELIMITER ','
-CSV HEADER"""
+CSV HEADER;"""
             try:
                 self.execute("BEGIN")
                 self.execute(statement)
@@ -122,12 +123,17 @@ CSV HEADER"""
                 pass
         return Engine.format_insert_value(self, value, datatype)
 
+    def set_engine_encoding(self):
+        pass
+
     def get_connection(self):
         """Gets the db connection."""
         import psycopg2 as dbapi
         self.get_input()
-        return dbapi.connect(host=self.opts["host"],
+        conn = dbapi.connect(host=self.opts["host"],
                              port=int(self.opts["port"]),
                              user=self.opts["user"],
                              password=self.opts["password"],
                              database=self.opts["database"])
+        conn.set_client_encoding('Latin1')
+        return conn

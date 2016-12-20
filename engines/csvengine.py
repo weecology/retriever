@@ -2,6 +2,8 @@ from builtins import str
 from builtins import object
 
 import os
+import io
+import sys
 import csv
 
 from retriever.lib.models import Engine
@@ -55,9 +57,22 @@ class engine(Engine):
     def create_table(self):
         """Create the table by creating an empty csv file"""
         self.auto_column_number = 1
-        self.file = open(self.table_name(), 'w')
-        self.output_file = csv.writer(self.file, dialect='excel', lineterminator='\n', quoting=csv.QUOTE_MINIMAL)
-        self.output_file.writerow(self.table.get_insert_columns(join=False,create=True))
+
+        if sys.version_info >= (3, 0, 0):
+            if os.name == 'nt':
+                self.file = io.open(self.table_name(), 'w', newline='', encoding='ISO-8859-1')
+            else:
+                self.file = open(self.table_name(), 'w', encoding='ISO-8859-1')
+
+        else:
+            self.file = io.open(self.table_name(), 'wb')
+
+        if os.name == 'nt':
+            self.output_file = csv.writer(self.file, dialect='excel', escapechar='\\', lineterminator='\n', quoting=csv.QUOTE_MINIMAL)
+        else:
+            self.output_file = csv.writer(self.file, dialect='excel', escapechar='\\')
+
+        self.output_file.writerow([u'{}'.format(val) for val in self.table.get_insert_columns(join=False,create=True)])
         self.table_names.append((self.file, self.table_name()))
 
     def disconnect(self):
@@ -96,14 +111,16 @@ class engine(Engine):
         else:
             return values
 
-    def table_exists(self, dbname, tablename):
+    def table_exists(self, db_name, table_name):
         """Check to see if the data file currently exists"""
-        tablename = self.table_name(name=tablename, dbname=dbname)
-        return os.path.exists(tablename)
+        table_name = self.table_name(name=table_name, dbname=db_name)
+        return os.path.exists(table_name)
 
     def to_csv(self):
         """Export sorted version of CSV file"""
-        return sort_csv(self.table_name())
+        for keys in self.script.tables:
+            table_name = self.opts['table_name'].format(db=self.db_name, table=keys)
+            sort_csv(table_name)
 
     def get_connection(self):
         """Gets the db connection."""

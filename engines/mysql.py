@@ -1,7 +1,7 @@
 from __future__ import print_function
 from builtins import str
 import os
-import platform
+import sys
 from retriever.lib.models import Engine, no_cleanup
 
 
@@ -92,6 +92,9 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
             for schema, table in self.cursor:
                 self.existing_table_names.add((schema.lower(), table.lower()))
         return (dbname.lower(), tablename.lower()) in self.existing_table_names
+
+    def set_engine_encoding(self):
+        self.execute("SET NAMES '{0}';".format('latin1'))
 
     def get_connection(self):
         """Gets the db connection."""

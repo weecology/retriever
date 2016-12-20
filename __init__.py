@@ -8,8 +8,10 @@ from __future__ import print_function
 from __future__ import absolute_import
 from builtins import str
 
+import io
 import os
 import sys
+import csv
 from os.path import join, isfile, getmtime, exists
 from pkg_resources import parse_version
 import imp
@@ -59,6 +61,40 @@ DATA_WRITE_PATH = DATA_SEARCH_PATHS[-1]
 
 # Create default data directory
 DATA_DIR = '.'
+
+
+def open_fr(file_name, mode='r', use=False):
+    if sys.version_info >= (3, 0, 0):
+        if os.name == 'nt':
+            file_obj = io.open(file_name, 'r', newline='', encoding='ISO-8859-1')
+        else:
+            file_obj = open(file_name, "r")
+    else:
+        file_obj = io.open(file_name, encoding='latin-1')
+    return file_obj
+
+
+def open_fw(file_name, mode='w', use=False):
+    "not sure yet"
+    # file_obj = io.open(file_name, 'w',)
+    if sys.version_info >= (3, 0, 0):
+        file_obj = io.open(file_name, 'w', newline='', encoding='ISO-8859-1')
+    else:
+        file_obj = io.open(file_name, 'wb',)
+    return file_obj
+
+
+def open_csvw(file_name, mode='w', use=False):
+    if sys.version_info >= (3, 0, 0):
+        csv_out = io.open(file_name, 'w', newline='', encoding='ISO-8859-1')
+    else:
+        csv_out = io.open(file_name, 'wb')
+
+    if os.name == 'nt':
+        csv_writer = csv.writer(csv_out, dialect='excel', escapechar='\\', lineterminator='\n')
+    else:
+        csv_writer = csv.writer(csv_out, dialect='excel', escapechar='\\')
+    return csv_writer
 
 
 def MODULE_LIST(force_compile=False):
