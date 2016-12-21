@@ -1,7 +1,6 @@
 from __future__ import print_function
 from builtins import str
 import os
-import platform
 from retriever.lib.models import Engine, no_cleanup
 
 

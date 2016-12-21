@@ -1,5 +1,4 @@
 import os
-from builtins import str
 from retriever.lib.models import Engine, no_cleanup
 
 
