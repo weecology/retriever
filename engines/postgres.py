@@ -126,8 +126,10 @@ CSV HEADER"""
         """Gets the db connection."""
         import psycopg2 as dbapi
         self.get_input()
-        return dbapi.connect(host=self.opts["host"],
+        conn = dbapi.connect(host=self.opts["host"],
                              port=int(self.opts["port"]),
                              user=self.opts["user"],
                              password=self.opts["password"],
                              database=self.opts["database"])
+        conn.set_client_encoding('Latin1')
+        return conn

@@ -63,7 +63,6 @@ class engine(Engine):
         return self.table_name(name=tablename, dbname=dbname).lower() in self.existing_table_names
 
     def to_csv(self):
-        self.connection.text_factory = str
         Engine.to_csv(self)
 
     def get_connection(self):

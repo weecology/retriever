@@ -93,6 +93,16 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
                 self.existing_table_names.add((schema.lower(), table.lower()))
         return (dbname.lower(), tablename.lower()) in self.existing_table_names
 
+    def set_engine_encoding(self, encoding='ISO-8859-1'):
+        """Set MySQL database encoding to match data encoding
+
+        Defaults to latin1 and falls back to it if an unknown encoding is provided
+
+        """
+        encoding_lookup = {'ISO-8859-1': 'latin1'}
+        db_encoding = encoding_lookup.get(encoding, 'latin1')
+        self.execute("SET NAMES '{0}';".format(db_encoding))
+
     def get_connection(self):
         """Gets the db connection."""
         args = {'host': self.opts['host'],

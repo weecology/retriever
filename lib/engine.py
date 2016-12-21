@@ -680,6 +680,8 @@ class Engine(object):
             print(insert_stmt)
         return insert_stmt
 
+    def set_engine_encoding(self):
+        pass
     def table_exists(self, dbname, tablename):
         """This can be overridden to return True if a table exists. It
         returns False by default."""
