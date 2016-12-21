@@ -1,6 +1,5 @@
 from builtins import range
 import os
-import platform
 from retriever.lib.models import Engine, no_cleanup
 from retriever import DATA_DIR
 
@@ -41,15 +40,14 @@ class engine(Engine):
 
         This places ?'s instead of the actual values so that executemany() can
         operate as designed
-
         """
         columns = self.table.get_insert_columns()
         types = self.table.get_column_datatypes()
-        columncount = len(self.table.get_insert_columns(False))
+        column_count = len(self.table.get_insert_columns(False))
         insert_stmt = "INSERT INTO " + self.table_name()
         insert_stmt += " (" + columns + ")"
         insert_stmt += " VALUES ("
-        for i in range(0, columncount):
+        for i in range(0, column_count):
             insert_stmt += "?, "
         insert_stmt = insert_stmt.rstrip(", ") + ");"
         return insert_stmt
