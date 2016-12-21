@@ -19,7 +19,7 @@ working_script_dir = os.path.abspath(os.path.join(retriever_root_dir, "scripts")
 HOMEDIR = os.path.expanduser('~')
 
 download_md5 = [
-    # ('DelMoral2010', '0'),
+    ('delmoral', '9f81bbccfd6a99938e5455a489fdb7b5'),
     ('avianbodysize', 'dce81ee0f040295cd14c857c18cc3f7e'),
     ('mom2003', 'b54b80d0d1959bdea0bb8a59b70fa871')
 ]
