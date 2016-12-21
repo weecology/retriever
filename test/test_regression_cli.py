@@ -26,8 +26,8 @@ download_md5 = [
 
 db_md5 = [
     # ('DelMoral2010', '0'),
-    ('AvianBodySize', '79680888f7768474479e70c87cd36c9d'),
-    ('MoM2003', 'a560a038475ec3fa525aedbb138be1be')
+    ('AvianBodySize', '98dcfdca19d729c90ee1c6db5221b775'),
+    ('MoM2003', '6fec0fc63007a4040d9bbc5cfcd9953e')
 ]
 
 
@@ -114,5 +114,5 @@ def test_download_regression(dataset, expected):
     """Check for regression for a particular dataset downloaded only"""
     os.chdir(retriever_root_dir)
     os.system("retriever download {0} -p raw_data/{0}".format(dataset))
-    current_md5 = getmd5(data="raw_data/{0}".format(dataset), data_type='dir', mode="rU")
+    current_md5 = getmd5(data="raw_data/{0}".format(dataset), data_type='dir')
     assert current_md5 == expected

@@ -214,7 +214,7 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
     return outputfile
 
 
-def getmd5(data, data_type='lines', mode='rb'):
+def getmd5(data, data_type='lines'):
     """Get MD5 of a data source"""
     checksum = md5()
     if data_type == 'lines':
@@ -232,8 +232,16 @@ def getmd5(data, data_type='lines', mode='rb'):
             for filename in sorted(filenames):
                 files.append(os.path.normpath(os.path.join(root, filename)))
     for file_path in files:
-        lines = open(file_path, mode)
-        for line in lines:
+        # don't use open_fr to keep line endings consistent across OSs
+        if sys.version_info >= (3, 0, 0):
+            if os.name == 'nt':
+                input_file = io.open(file_path, 'r', encoding='ISO-8859-1')
+            else:
+                input_file = open(file_path, 'r', encoding='ISO-8859-1')
+        else:
+            input_file = io.open(file_path, encoding='latin-1')
+
+        for line in input_file:
             if type(line) == bytes:
                 checksum.update(line)
             else:
