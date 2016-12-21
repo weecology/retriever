@@ -8,8 +8,10 @@ from __future__ import print_function
 from __future__ import absolute_import
 from builtins import str
 
+import io
 import os
 import sys
+import csv
 from os.path import join, isfile, getmtime, exists
 from pkg_resources import parse_version
 import imp
@@ -59,6 +61,56 @@ DATA_WRITE_PATH = DATA_SEARCH_PATHS[-1]
 
 # Create default data directory
 DATA_DIR = '.'
+
+
+def open_fr(file_name, encoding='ISO-8859-1', encode=True):
+    """Open file for reading respecting Python version and OS differences
+
+    Sets newline to Linux line endings on Windows + Python 3
+    When encode=False does not set encoding on *nix + Python 3 to keep as bytes
+
+    """
+    if sys.version_info >= (3, 0, 0):
+        if os.name == 'nt':
+            file_obj = io.open(file_name, 'r', newline='', encoding=encoding)
+        else:
+            if encode:
+                file_obj = io.open(file_name, "r", encoding=encoding)
+            else:
+                file_obj = io.open(file_name, "r")
+    else:
+        file_obj = io.open(file_name, "r", encoding=encoding)
+    return file_obj
+
+
+def open_fw(file_name, encoding='ISO-8859-1', encode=True):
+    """Open file for writing respecting Python version and OS differences
+
+    Sets newline to Linux line endings on Python 3
+    When encode=False does not set encoding on *nix + Python 3 to keep as bytes
+
+    """
+    if sys.version_info >= (3, 0, 0):
+        if encode:
+            file_obj = io.open(file_name, 'w', newline='', encoding=encoding)
+        else:
+            file_obj = io.open(file_name, 'w', newline='')
+    else:
+        file_obj = io.open(file_name, 'wb',)
+    return file_obj
+
+
+def open_csvw(csv_file, encode=True):
+    """Open a csv writer forcing the use of Linux line endings on Windows
+
+    Also sets dialect to 'excel' and escape characters to '\\'
+
+    """
+    if os.name == 'nt':
+        csv_writer = csv.writer(csv_file, dialect='excel', escapechar='\\', lineterminator='\n')
+    else:
+        csv_writer = csv.writer(csv_file, dialect='excel', escapechar='\\')
+    return csv_writer
 
 
 def MODULE_LIST(force_compile=False):

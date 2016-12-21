@@ -7,7 +7,7 @@ import os
 import json
 
 from retriever.lib.models import Engine
-from retriever import DATA_DIR
+from retriever import DATA_DIR, open_fw, open_fr
 from collections import OrderedDict
 from retriever.lib.tools import json2csv, sort_csv
 
@@ -56,7 +56,7 @@ class engine(Engine):
 
     def create_table(self):
         """Create the table by creating an empty json file"""
-        self.output_file = open(self.table_name(), "w")
+        self.output_file = open_fw(self.table_name())
         self.output_file.write("[")
         self.table_names.append((self.output_file, self.table_name()))
         self.auto_column_number = 1
@@ -71,11 +71,11 @@ class engine(Engine):
 
             try:
                 output_file_i.close()
-                current_input_file = open(file_name, "r")
+                current_input_file = open_fr(file_name, encode=False)
                 file_contents = current_input_file.readlines()
                 current_input_file.close()
                 file_contents[-1] = file_contents[-1].strip(',\n')
-                current_output_file = open(file_name, "w")
+                current_output_file = open_fw(file_name)
                 current_output_file.writelines(file_contents)
                 current_output_file.write('\n]')
                 current_output_file.close()

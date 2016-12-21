@@ -4,7 +4,7 @@ from builtins import str
 from builtins import object
 from builtins import range
 from retriever.lib.models import Engine
-from retriever import DATA_DIR
+from retriever import DATA_DIR, open_fr, open_fw
 from retriever.lib.tools import xml2csv, sort_csv
 
 
@@ -69,11 +69,11 @@ class engine(Engine):
 
             try:
                 output_file_i.close()
-                current_input_file = open(file_name, "r")
+                current_input_file = open_fr(file_name, encode=False)
                 file_contents = current_input_file.readlines()
                 current_input_file.close()
                 file_contents[-1] = file_contents[-1].strip(',')
-                current_output_file = open(file_name, "w")
+                current_output_file = open_fw(file_name)
                 current_output_file.writelines(file_contents)
                 current_output_file.write('\n</root>')
                 current_output_file.close()

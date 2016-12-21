@@ -16,7 +16,7 @@ import shutil
 from decimal import Decimal
 from hashlib import md5
 
-from retriever import HOME_DIR
+from retriever import HOME_DIR, open_fr, open_fw, open_csvw
 from retriever.lib.models import *
 import csv
 import json
@@ -176,7 +176,7 @@ def json2csv(input_file, output_file=None, header_values=None):
     Alex,US,25
     Alex,PT,25
     """
-    file_out = open(input_file, 'r')
+    file_out = open_fr(input_file)
     # set output file name and write header
     if output_file is None:
         output_file = str(os.path.splitext(os.path.basename(input_file))[0]) + ".csv"
@@ -305,11 +305,10 @@ def sort_file(file_path):
     function is used for only testing and can handle the file of the size
     """
     file_path = os.path.normpath(file_path)
-    infile = open(file_path, 'rU')
-    # useles if line.strip()
-    lines = [line.strip().replace('\x00', '') for line in infile]
-    infile.close()
-    outfile = open(file_path, 'w')
+    input_file = open_fr(file_path)
+    lines = [line.strip().replace('\x00', '') for line in input_file]
+    input_file.close()
+    outfile = open_fw(file_path)
     lines.sort()
     for line in lines:
         outfile.write(line + "\n")
@@ -318,19 +317,17 @@ def sort_file(file_path):
 
 
 def sort_csv(filename):
-    """Sort CSV rows and return the file
+    """Sort CSV rows minus the header and return the file
     function is used for only testing and can handle the file of the size
     """
     filename = os.path.normpath(filename)
-    input_file = open(filename, 'rU')
-    csv_reader_infile = csv.reader(input_file)
+    input_file = open_fr(filename)
+    csv_reader_infile = csv.reader(input_file, escapechar="\\")
     #  write the data to a temporary file and sort it
-    file_temp = open(os.path.normpath("tempfile"), 'w')
+    temp_path = os.path.normpath("tempfile")
+    temp_file = open_fw(temp_path)
 
-    if os.name == 'nt':
-        csv_writer = csv.writer(file_temp, dialect='excel', escapechar='\\', lineterminator='\n')
-    else:
-        csv_writer = csv.writer(file_temp, dialect='excel', escapechar='\\')
+    csv_writer = open_csvw(temp_file)
     i = 0
     for row in csv_reader_infile:
         if i == 0:
@@ -339,23 +336,20 @@ def sort_csv(filename):
             i += 1
         else:
             csv_writer.writerow(row)
-    file_temp.close()
     input_file.close()
+    temp_file.close()
 
     # sort the temp file
-    sorted_txt = sort_file(os.path.normpath("tempfile"))
-
-    # write sorted row content to csv filename with header "infields"
-    tmp = open(sorted_txt, "rU")
-    in_txt = csv.reader(tmp, delimiter=',')
-    if os.name == 'nt':
-        out_csv = csv.writer(open(filename, 'w'), lineterminator='\n')
-    else:
-        out_csv = csv.writer(open(filename, 'w'))
-    out_csv.writerow(infields)
-    out_csv.writerows(in_txt)
+    sorted_txt = sort_file(temp_path)
+    tmp = open_fr(sorted_txt)
+    in_txt = csv.reader(tmp, delimiter=',', escapechar="\\")
+    csv_file = open_fw(filename)
+    csv_writer = open_csvw(csv_file)
+    csv_writer.writerow(infields)
+    csv_writer.writerows(in_txt)
     tmp.close()
-    os.remove(os.path.normpath("tempfile"))
+    csv_file.close()
+    os.remove(os.path.normpath(temp_path))
     return filename
 
 
@@ -371,7 +365,11 @@ def create_file(data, output='output_file'):
 def file_2string(input_file):
     """return file contents as a string"""
     input_file= os.path.normpath(input_file)
-    with open(input_file, 'rU') as obs_out_file:
-        obs_out = obs_out_file.read()
+    if sys.version_info >= (3, 0, 0):
+        input = io.open(input_file, 'rU')
+    else:
+        input = io.open(input_file, encoding='latin-1')
+
+    obs_out = input.read()
     return obs_out
 
