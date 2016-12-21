@@ -191,7 +191,7 @@ def test_getmd5_lines():
 def test_getmd5_path():
     """Test md5 sum calculation given a path to data source"""
     data_file = create_file('a,b,c\n1,2,3\n4,5,6\n')
-    assert getmd5(data=data_file, data_type='file', mode='rU') == '0bec5bf6f93c547bc9c6774acaf85e1a'
+    assert getmd5(data=data_file, data_type='file') == '0bec5bf6f93c547bc9c6774acaf85e1a'
 
 
 def test_json2csv():
