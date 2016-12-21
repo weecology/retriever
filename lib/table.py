@@ -48,7 +48,7 @@ class Table(object):
         """Clean column names using the expected sql guidelines
         remove leading whitespaces, replace sql key words, etc..
         """
-        column_name = column_name.lower().strip()
+        column_name = column_name.lower().strip().replace("\n", "")
         replace_columns = {old.lower(): new.lower()
                            for old, new in self.replace_columns}
         column_name = str(replace_columns.get(column_name, column_name).strip())

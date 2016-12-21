@@ -64,8 +64,8 @@ def test_auto_get_columns_extra_whitespace():
 def test_auto_get_columns_cleanup():
     """Test of automatically cleaning up column labels from header"""
     test_engine.table.delimiter = ","
-    columns, column_values = test_engine.table.auto_get_columns(['a)', 'b.b','c/c','d___d','group'])
-    assert columns == [['a', None], ['b_b', None], ['c_c', None], ['d_d', None],
+    columns, column_values = test_engine.table.auto_get_columns(['a)','a\nd','b.b','c/c','d___d','group'])
+    assert columns == [['a', None], ['ad', None],  ['b_b', None], ['c_c', None], ['d_d', None],
                        ['grp', None]]
 
 
