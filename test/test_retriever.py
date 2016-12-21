@@ -9,7 +9,7 @@ from imp import reload
 
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
-    sys.setdefaultencoding('utf-8')
+    sys.setdefaultencoding('latin-1')
 from retriever.lib.engine import Engine
 from retriever.lib.table import Table
 from retriever.lib.templates import BasicTextTemplate
