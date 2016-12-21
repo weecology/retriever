@@ -81,7 +81,7 @@ class engine(Engine):
 COPY """ + self.table_name() + " (" + columns + """)
 FROM '""" + filename.replace("\\", "\\\\") + """'
 WITH DELIMITER ','
-CSV HEADER"""
+CSV HEADER;"""
             try:
                 self.execute("BEGIN")
                 self.execute(statement)
