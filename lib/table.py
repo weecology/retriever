@@ -39,8 +39,7 @@ class Table(object):
         Replaces database keywords with alternatives.
         Replaces special characters and spaces.
         """
-        column_names = self.extract_values(header)
-        columns = [self.clean_column_name(x) for x in column_names]
+        columns = [self.clean_column_name(x) for x in header]
         column_values = {x: [] for x in columns if x}
         self.cleaned_columns = True
         return [[x, None] for x in columns if x], column_values
@@ -93,20 +92,6 @@ class Table(object):
             column_name = replace_dict[column_name]
         return column_name
 
-    def split_on_delimiter(self, line):
-        """Splits a line using the table's delimiter
-
-        This function does not work with fixed-width data and is only a
-        helper function for `extract_values`. `extract_values` should be
-        used instead when there is a general need to split the values in
-        a line of data.
-
-        """
-        dialect = csv.excel
-        dialect.escapechar = "\\"
-        r = csv.reader([line], dialect=dialect, delimiter=self.delimiter)
-        return next(r)
-
     def combine_on_delimiter(self, line_as_list):
         """Combine a list of values into a line of csv data"""
         dialect = csv.excel
@@ -128,7 +113,7 @@ class Table(object):
         else:
             column = 0
 
-        for value in self.extract_values(line):
+        for value in line:
             try:
                 this_column = self.columns[column][1][0]
 
@@ -146,23 +131,6 @@ class Table(object):
                 pass
             column += 1
         return linevalues
-
-    def extract_values(self, line):
-        """Return list of data values from a line of data represented as a string
-
-        This function correctly handles both fixed-width and delimited data and
-        should be used instead of `split_on_delimiter` when splitting lines.
-
-        """
-        if self.fixed_width:
-            pos = 0
-            values = []
-            for width in self.fixed_width:
-                values.append(line[pos:pos + width].strip())
-                pos += width
-            return values
-        else:
-            return self.split_on_delimiter(line)
 
     def get_insert_columns(self, join=True, create=False):
         """Gets a set of column names for insert statements."""

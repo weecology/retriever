@@ -90,7 +90,7 @@ class engine(Engine):
 
     def format_insert_value(self, value, datatype):
         """Formats a value for an insert statement"""
-        v = Engine.format_insert_value(self, value, datatype, escape=False)
+        v = Engine.format_insert_value(self, value, datatype, escape=False, processed=True)
         if v == 'null':
             return ""
         try:
@@ -131,9 +131,11 @@ class engine(Engine):
 
     def to_csv(self):
         """Export table from xml engine to CSV file"""
-        keys = self.table.get_insert_columns(join=False, create=True)
-        csv_outfile = xml2csv(self.table_name(), header_values=keys)
-        return sort_csv(csv_outfile)
+        for keys in list(self.script.tables):
+            table_name = self.opts['table_name'].format(db=self.db_name, table=keys)
+            header = self.script.tables[keys].get_insert_columns(join=False, create=True)
+            csv_outfile = xml2csv(table_name, header_values=header)
+            sort_csv(csv_outfile)
 
     def get_connection(self):
         """Gets the db connection."""

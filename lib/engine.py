@@ -15,6 +15,7 @@ import zipfile
 import gzip
 import tarfile
 import csv
+import re
 import io
 import time
 from urllib.request import urlretrieve
@@ -65,37 +66,12 @@ class Engine(object):
         """This function adds data to a table from one or more lines specified
         in engine.table.source."""
         if self.table.columns[-1][1][0][:3] == "ct-":
-            # cross-tab data
-
             lines = gen_from_source(data_source)
-            real_lines = []
-            for line in lines:
-                split_line = self.table.extract_values(line)
-                initial_cols = len(self.table.columns) - (3 if hasattr(self.table, "ct_names") else 2)
-                # add one if auto increment is not set to get the right initial columns
-                if not self.table.columns[0][1][0] == "pk-auto":
-                    initial_cols += 1
-                begin = split_line[:initial_cols]
-                rest = split_line[initial_cols:]
-                n = 0
-                for item in rest:
-                    if hasattr(self.table, "ct_names"):
-                        name = [self.table.ct_names[n]]
-                        n += 1
-                    else:
-                        name = []
-                    real_lines.append(
-                        self.table.combine_on_delimiter(begin + name + [item]))
-            real_line_length = len(real_lines)
+            # cross-tab data
+            real_line_length, real_lines = self.get_ct_data(lines)
         else:
-            # this function returns a generator that iterates over the lines in
-            # the source data
-            def source_gen():
-                return (line for line in gen_from_source(data_source)
-                        if line.strip('\n\r\t '))
-
-            # use one generator to compute the length of the input
-            real_lines, len_source = source_gen(), source_gen()
+            real_lines = gen_from_source(data_source)
+            len_source = gen_from_source(data_source)
             real_line_length = sum(1 for _ in len_source)
 
         total = self.table.record_id + real_line_length
@@ -106,29 +82,10 @@ class Engine(object):
         types = self.table.get_column_datatypes()
         multiple_values = []
         for line in real_lines:
-            if not self.table.fixed_width:
-                # This replaces end of line characters that exist in a single line
-                # eg. "one \nline has multiple end of lines\n"
-                line.replace('\n', '').strip()
             if line:
                 self.table.record_id += 1
-
-                # Check for single row distributed over multiple lines
-                val_list = self.table.extract_values(line)
-                while len(val_list) < len(self.table.get_column_datatypes()):
-                    line = line.rstrip('\n')
-                    if type(real_lines) != list:
-                        line += next(real_lines)
-                    else:
-                        line += real_lines[pos+1]
-                        real_lines.pop(pos+1)
-                    real_line_length -= 1
-                    val_list = (self.table.extract_values(line))
-                pos += 1
-
                 linevalues = self.table.values_from_line(line)
-
-                # Build insert statement with the correct # of values
+                # Build insert statement with the correct number of values
                 try:
                     cleanvalues = [self.format_insert_value(self.table.cleanup.function
                                                             (linevalues[n],
@@ -171,6 +128,28 @@ class Engine(object):
         print ("\n")
         self.connection.commit()
 
+    def get_ct_data(self, lines):
+        """Creates cross tab data"""
+        real_lines = []
+        for values in lines:
+            initial_cols = len(self.table.columns) - \
+                (3 if hasattr(self.table, "ct_names") else 2)
+            # add one if auto increment is not set to get the right initial columns
+            if not self.table.columns[0][1][0] == "pk-auto":
+                initial_cols += 1
+            begin = values[:initial_cols]
+            rest = values[initial_cols:]
+            n = 0
+            for item in rest:
+                if hasattr(self.table, "ct_names"):
+                    name = [self.table.ct_names[n]]
+                    n += 1
+                else:
+                    name = []
+                real_lines.append(begin + name + [item])
+        real_line_length = len(real_lines)
+        return real_line_length, real_lines
+
     def auto_create_table(self, table, url=None, filename=None, pk=None):
         """Creates a table automatically by analyzing a data source and
         predicting column names, data types, delimiter, etc."""
@@ -183,20 +162,18 @@ class Engine(object):
             self.download_file(url, filename)
         file_path = self.find_file(filename)
 
-        source = (skip_rows,
-                  (self.table.column_names_row - 1,
-                   (io.open, (file_path, 'r', -1, 'latin-1'))))
-        lines = gen_from_source(source)
+        if not self.table.delimiter:
+            self.set_table_delimiter(file_path)
 
+        source = (skip_rows,
+                       (self.table.header_rows-1, self.load_data(file_path)))
+
+        lines = gen_from_source(source)
         header = next(lines)
         lines.close()
 
         source = (skip_rows,
-                  (self.table.header_rows,
-                   (io.open, (file_path, 'r', -1, 'latin-1'))))
-
-        if not self.table.delimiter:
-            self.auto_get_delimiter(header)
+                  (self.table.header_rows, self.load_data(file_path)))
 
         if not self.table.columns:
             lines = gen_from_source(source)
@@ -211,52 +188,50 @@ class Engine(object):
         self.create_table()
 
     def auto_get_datatypes(self, pk, source, columns, column_values):
-        """Determines data types for each column."""
+        """Determines data types for each column.
+
+        For string columns adds an additional 100 characters to the maximum
+        observed value to provide extra space for cases where special characters
+        are counted differently by different engines.
+
+        """
         # Get all values for each column
-        if hasattr(self, 'scan_lines'):
-            lines = int(self.scan_lines)
-            lines_to_scan = []
-            n = 0
-            while n < lines:
-                lines_to_scan.append(next(source))
-                n += 1
-        else:
-            lines_to_scan = source
-        column_types = [('int',) for i in range(len(columns))]
-        max_lengths = [0 for i in range(len(columns))]
+        lines_to_scan = source
+        # set default column data types as int
+        column_types = [('int',)] * len(columns)
+        max_lengths = [0] * len(columns)
 
         # Check the values for each column to determine data type
-        for line in lines_to_scan:
-            if line.replace("\t", "").strip():
-                values = self.table.extract_values(line.strip("\n"))
+        for values in lines_to_scan:
+            if values:
                 for i in range(len(columns)):
                     try:
-                        value = values[i]
+                        val = u"{}".format(values[i])
 
                         if self.table.cleanup.function != no_cleanup:
-                            value = self.table.cleanup.function(value, self.table.cleanup.args)
+                            val = self.table.cleanup.function(
+                                val, self.table.cleanup.args)
 
-                        if value is not None and value is not '':
-                            if len(str(value)) > max_lengths[i]:
-                                max_lengths[i] = len(str(value))
+                        if val is not None and val.strip() is not '':
+                            if len(str(val)) > max_lengths[i]:
+                                max_lengths[i] = len(str(val)) + 100
 
                             if column_types[i][0] in ('int', 'bigint'):
                                 try:
-                                    value = int(value)
-                                    if column_types[i][0] == 'int' and hasattr(self, 'max_int') and value > self.max_int:
-                                        column_types[i] = ['bigint',]
+                                    val = int(val)
+                                    if column_types[i][0] == 'int' and hasattr(self, 'max_int') and val > self.max_int:
+                                        column_types[i] = ['bigint', ]
                                 except:
                                     column_types[i] = ['double', ]
                             if column_types[i][0] == 'double':
                                 try:
-                                    value = float(value)
-                                    if "e" in str(value) or ("." in str(value) and
-                                                             len(str(value).split(".")[1]) > 10):
-                                        column_types[i] = ["decimal", "50,30"]
+                                    val = float(val)
+                                    if "e" in str(val) or ("." in str(val) and len(str(val).split(".")[1]) > 10):
+                                        column_types[i] = ["decimal", "30,20"]
                                 except:
                                     column_types[i] = ['char', max_lengths[i]]
                             if column_types[i][0] == 'char':
-                                if len(str(value)) > column_types[i][1]:
+                                if len(str(val)) > column_types[i][1]:
                                     column_types[i][1] = max_lengths[i]
                     except IndexError:
                         pass
@@ -493,26 +468,8 @@ class Engine(object):
         return all([self.table_exists(
             script.shortname,
             key
-            )
+        )
             for key in list(script.urls.keys()) if key])
-
-    def to_csv(self):
-        # due to Cyclic imports we can not move this import to the top
-        from retriever.lib.tools import sort_csv
-        csvfile_output = (self.table_name() + '.csv')
-        csv_out = open(csvfile_output, "w")
-        csv_writer = csv.writer(csv_out, dialect='excel', lineterminator='\n')
-        self.get_cursor()
-        self.cursor.execute("SELECT * FROM " + self.table_name() + ";")
-        row = self.cursor.fetchone()
-        colnames = [tuple_i[0] for tuple_i in self.cursor.description]
-        csv_writer.writerow(colnames)
-        while row is not None:
-            csv_writer.writerow(row)
-            row = self.cursor.fetchone()
-        csv_out.close()
-        self.disconnect()
-        return sort_csv(csvfile_output)
 
     def final_cleanup(self):
         """Close the database connection."""
@@ -645,7 +602,7 @@ class Engine(object):
         for inserting bulk data from files can override this function."""
         data_source = (skip_rows,
                        (self.table.header_rows,
-                        (io.open, (filename, 'r', -1, 'latin-1'))))
+                        (self.load_data, (filename, ))))
         self.add_to_table(data_source)
 
     def insert_data_from_url(self, url):
@@ -674,7 +631,7 @@ class Engine(object):
             for i in range(columncount - row_length):
                 row.append(self.format_insert_value(None, types[row_length + i]))
 
-            insert_stmt += " (" + ", ".join([str(val) for val in row]) +"), "
+            insert_stmt += " (" + ", ".join([str(val) for val in row]) + "), "
         insert_stmt = insert_stmt.rstrip(", ") + ";"
         if self.debug:
             print(insert_stmt)
@@ -682,6 +639,12 @@ class Engine(object):
 
     def set_engine_encoding(self):
         pass
+
+    def set_table_delimiter(self, file_path):
+        dataset_file = open_fr(file_path)
+        self.auto_get_delimiter(dataset_file.readline())
+        dataset_file.close()
+
     def table_exists(self, dbname, tablename):
         """This can be overridden to return True if a table exists. It
         returns False by default."""
@@ -697,9 +660,61 @@ class Engine(object):
                 dbname = ''
         return self.opts["table_name"].format(db=dbname, table=name)
 
+    def to_csv(self):
+        # due to Cyclic imports we can not move this import to the top
+        from retriever.lib.tools import sort_csv
+        for item in list(self.script.urls.keys()):
+            table_name = self.table_name()
+            csv_file_output = os.path.normpath(table_name + '.csv')
+            csv_file = open_fw(csv_file_output)
+            csv_writer = open_csvw(csv_file)
+            self.get_cursor()
+            self.set_engine_encoding()
+            self.cursor.execute("SELECT * FROM  {};".format(table_name))
+            row = self.cursor.fetchone()
+            colnames = [u'{}'.format(tuple_i[0]) for tuple_i in self.cursor.description]
+            csv_writer.writerow(colnames)
+            while row is not None:
+                csv_writer.writerow(row)
+                row = self.cursor.fetchone()
+            csv_file.close()
+            sort_csv(csv_file_output)
+        self.disconnect()
+
     def warning(self, warning):
         new_warning = Warning('%s:%s' % (self.script.shortname, self.table.name), warning)
         self.warnings.append(new_warning)
+
+    def load_data(self, filename):
+        """Generator returning lists of values from lines in a data file
+
+        1. Works on both delimited (csv module) fixed width data (extract_fixed_width)
+        2. Identifies the delimiter if not known
+        3. Removes extra line endings
+
+        """
+        if not self.table.delimiter:
+            self.set_table_delimiter(filename)
+
+        reg = re.compile("\\r\\n|\n|\r")
+        dataset_file = open_fr(filename)
+
+        if self.table.fixed_width:
+            for row in dataset_file:
+                yield self.extract_fixed_width(row)
+        else:
+            for row in csv.reader(dataset_file, delimiter=self.table.delimiter):
+                yield [reg.sub(" ", values) for values in row]
+
+
+    def extract_fixed_width(self, line):
+        """Splits a line based on the fixed width and returns a list of the values"""
+        pos = 0
+        values = []
+        for width in self.table.fixed_width:
+            values.append(line[pos:pos + width].strip())
+            pos += width
+        return values
 
 
 def skip_rows(rows, source):
@@ -712,7 +727,7 @@ def skip_rows(rows, source):
 
 def file_exists(path):
     """Returns true if a file exists and its size is greater than 0."""
-    return (os.path.isfile(path) and os.path.getsize(path) > 0)
+    return os.path.isfile(path) and os.path.getsize(path) > 0
 
 
 def filename_from_url(url):
