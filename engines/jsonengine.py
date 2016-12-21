@@ -67,9 +67,8 @@ class engine(Engine):
         Close all the file objects that have been created
         Re-write the files stripping off the last comma and then close with a `\\n]}`.
         """
-        for output_file_i, file_name in self.table_names:
-
-            try:
+        if self.table_names:
+            for output_file_i, file_name in self.table_names:
                 output_file_i.close()
                 current_input_file = open_fr(file_name, encode=False)
                 file_contents = current_input_file.readlines()
@@ -77,13 +76,9 @@ class engine(Engine):
                 file_contents[-1] = file_contents[-1].strip(',\n')
                 current_output_file = open_fw(file_name)
                 current_output_file.writelines(file_contents)
-                current_output_file.write('\n]')
+                current_output_file.writelines(['\n]'])
                 current_output_file.close()
-            except:
-                # when disconnect is called by app.connect_wizard.ConfirmPage to
-                # confirm the connection, output_file doesn't exist yet, this is
-                # fine so just pass
-                pass
+            self.table_names = []
 
     def execute(self, statement, commit=True):
         """Write a line to the output file"""

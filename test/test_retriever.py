@@ -201,7 +201,7 @@ def test_json2csv():
     output_json = json2csv(json_file, "output_json.csv", header_values=["User", "Country", "Age"])
     obs_out = file_2string(output_json)
     os.remove(output_json)
-    assert obs_out == 'User,Country,Age\nAlex,US,25'
+    assert obs_out == 'User,Country,Age\nAlex,US,25\n'
 
 
 def test_xml2csv():
@@ -210,7 +210,6 @@ def test_xml2csv():
     xml_file = create_file("<root>\n<row>\n"
                            "<User>Alex</User>\n"
                            "<Country>US</Country>\n"
-                           "<Country>PT</Country>\n"
                            "<Age>25</Age>\n</row>\n"
                            "<row>\n<User>Ben</User>\n"
                            "<Country>US</Country>S\n"
@@ -219,7 +218,7 @@ def test_xml2csv():
     output_xml = xml2csv(xml_file, "output_xml.csv", header_values=["User", "Country", "Age"])
     obs_out = file_2string(output_xml)
     os.remove(output_xml)
-    assert obs_out == "User,Country,Age\nAlex,US,25\nAlex,PT,25\nBen,US,24"
+    assert obs_out == "User,Country,Age\nAlex,US,25\nBen,US,24\n"
 
 
 def test_sort_file():

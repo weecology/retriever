@@ -5,11 +5,16 @@ scripts.
 
 """
 from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
+
 from builtins import str
 from builtins import input
 from builtins import next
 import difflib
 import os
+import io
+from io import StringIO as newfile
 import warnings
 import unittest
 import shutil
@@ -163,54 +168,21 @@ def reset_retriever(scope):
 def json2csv(input_file, output_file=None, header_values=None):
     """Convert Json file to CSV
     function is used for only testing and can handle the file of the size
-    [
-    {"User": "Alex", "Country": "US", "Age": "25"}
-    ]
-    User,Country,Age
-    Alex,US,25
-    cross tab
-    [
-    {"User": "Alex", "Country": ["US","PT"], "Age": "25"},
-    ]
-    User,Country,Age
-    Alex,US,25
-    Alex,PT,25
     """
     file_out = open_fr(input_file)
     # set output file name and write header
     if output_file is None:
-        output_file = str(os.path.splitext(os.path.basename(input_file))[0]) + ".csv"
-    outfile = open(output_file, 'w')
-    outfile.write(",".join(header_values))
-
+        output_file = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
+    csv_out = open_fw(output_file, encode=False)
+    if os.name == 'nt':
+        outfile = csv.DictWriter(csv_out, dialect='excel', escapechar="\\", lineterminator='\n', fieldnames=header_values)
+    else:
+        outfile = csv.DictWriter(csv_out, dialect='excel', escapechar="\\", fieldnames=header_values)
     raw_data = json.loads(file_out.read())
+    outfile.writeheader()
 
-    # lines in json file
     for item in raw_data:
-        previous_list = [""]
-        if header_values:
-            # for each line, get values corresponding to the column name values
-            for column_name in header_values:
-                new_list = []
-
-                # if column name has more than one value process ass a cross tab
-                if type(item[column_name]) is list:
-                    for child_item in item[column_name]:
-
-                        # Create new list with previous values and new cross-tab values added
-                        for old_lines in previous_list:
-                            temp = str(str(old_lines) + str(child_item) + ",")
-                            new_list.append(temp)
-                    previous_list = new_list
-
-                else:
-                    for p_strings in previous_list:
-                        new_list.append("".join(str(p_strings) + str(item[column_name]) + ","))
-                    previous_list = new_list
-
-        for lines in previous_list:
-            outfile.write("\n" + str(lines[0:-1]))
-    outfile.close()
+        outfile.writerow(item)
     file_out.close()
     os.system("rm -r {}".format(input_file))
     return output_file
@@ -220,54 +192,23 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
     """Convert xml to csv
     function is used for only testing and can handle the file of the size
     """
-    file_output = open(input_file, 'r')
-    tree = ET.parse(file_output)
-    root = tree.getroot()
-
+    file_output = open_fr(input_file, encode=False)
     # set output file name and write header
     if outputfile is None:
-        outputfile = str(os.path.splitext(os.path.basename(input_file))[0]) + ".csv"
-    outfile = open(outputfile, 'w')
-    outfile.write(",".join(header_values))
+        outputfile = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
+    csv_out = open_fw(outputfile)
+    if os.name == 'nt':
+        csv_writer = csv.writer(csv_out, dialect='excel', escapechar='\\', lineterminator='\n')
+    else:
+        csv_writer = csv.writer(csv_out, dialect='excel', escapechar='\\')
 
-    # lines in xml
+    v = file_output.read()
+    csv_writer.writerow(header_values)
+    tree = ET.parse(newfile(v))
+    root = tree.getroot()
     for rows in root.findall(row_tag):
-        previous_lists = [""]
-        if header_values:
-            # for each line, extract values for corresponding to column name
-            for column_name in header_values:
-                new_list = []
-                # check if multiple values exist
-                if len(rows.findall(column_name)) > 1:
-                    for child_item in rows.findall(column_name):
-                        # create new list with previous values and new cross-tab values added
-                        for old_lines in previous_lists:
-                            value_x = ""
-
-                            if child_item.text is None:
-                                pass
-                            else:
-                                value_x = str(child_item.text)
-                            temp = str(str(old_lines) + value_x + ",")
-                            new_list.append(temp)
-                    previous_lists = new_list
-                else:
-                    # no multiple values, just add available child
-                    for p_strings in previous_lists:
-
-                        value_x = ""
-                        if rows.find(column_name).text is None:
-                            pass
-                        else:
-                            value_x = str(rows.find(column_name).text)
-                        new_list.append("".join(str(p_strings) + value_x + ","))
-                        previous_lists = new_list
-        else:
-            print ("no header provided")
-            exit()
-        for lines in previous_lists:
-            outfile.write("\n" + str(lines[0:-1]))
-    outfile.close()
+        x = [name.text for name in header_values for name in rows.findall(name)]
+        csv_writer.writerow(x)
     file_output.close()
     os.system("rm -r {}".format(input_file))
     return outputfile
