@@ -49,7 +49,7 @@ class engine(Engine):
         insert_stmt += " VALUES ("
         for i in range(0, column_count):
             insert_stmt += "?, "
-        insert_stmt = insert_stmt.rstrip(", ") + ");"
+        insert_stmt = insert_stmt.rstrip(", ") + ")"
         return insert_stmt
 
     def table_exists(self, dbname, tablename):
