@@ -579,7 +579,7 @@ class Engine(object):
         elif datatype in ("double", "decimal"):
             if strvalue.strip():
                 try:
-                    decimals = float(strvalue)
+                    decimals = float(str(strvalue))
                     return str(decimals)
                 except:
                     return "null"
