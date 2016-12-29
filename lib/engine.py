@@ -165,17 +165,18 @@ class Engine(object):
         if not self.table.delimiter:
             self.set_table_delimiter(file_path)
 
-        source = (skip_rows,
-                       (self.table.header_rows-1, self.load_data(file_path)))
+        if self.table.header_rows > 0 and not self.table.columns:
+            source = (skip_rows,
+                           (self.table.header_rows-1, self.load_data(file_path)))
 
-        lines = gen_from_source(source)
-        header = next(lines)
-        lines.close()
+            lines = gen_from_source(source)
+            header = next(lines)
+            lines.close()
 
-        source = (skip_rows,
-                  (self.table.header_rows, self.load_data(file_path)))
+            source = (skip_rows,
+                      (self.table.header_rows, self.load_data(file_path)))
 
-        if not self.table.columns:
+
             lines = gen_from_source(source)
 
             columns, column_values = self.table.auto_get_columns(header)
