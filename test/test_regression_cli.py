@@ -12,6 +12,11 @@ import pytest
 from retriever.lib.tools import getmd5
 from retriever import ENGINE_LIST
 
+if os.name == "nt":
+    os_password = "Password12!"
+else:
+    os_password = ""
+
 mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, csv_engine, download_engine, json_engine, xml_engine = ENGINE_LIST()
 file_location = os.path.dirname(os.path.realpath(__file__))
 retriever_root_dir = os.path.abspath(os.path.join(file_location, os.pardir))
@@ -77,7 +82,7 @@ def test_postgres_regression(dataset, expected, tmpdir):
         'psql -U postgres -d testdb -h localhost -c "DROP SCHEMA IF EXISTS testschema CASCADE"')
     postgres_engine.opts = {'engine': 'postgres',
                             'user': 'postgres',
-                            'password': "",
+                            'password': os_password,
                             'host': 'localhost',
                             'port': 5432,
                             'database': 'testdb',

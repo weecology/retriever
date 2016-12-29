@@ -66,5 +66,4 @@ build_script:
   - cd C:\projects\retriever
 
 test_script:
-  - py.test -k "not (test_postgres_regression or test_postgres_integration)" -v
-#  - py.test -v  currently, we run pytest excluding postgres
+  - py.test -v

@@ -16,6 +16,11 @@ from retriever import HOME_DIR, ENGINE_LIST
 from retriever.lib.tools import file_2string
 from retriever.lib.tools import create_file
 
+if os.name == "nt":
+    os_password = "Password12!"
+else:
+    os_password = ""
+
 simple_csv = {'name': 'simple_csv',
               'raw_data': "a,b,c\n1,2,3\n4,5,6\n",
               'script': """{\n
@@ -39,26 +44,66 @@ simple_csv = {'name': 'simple_csv',
                     }\n""",
               'expect_out': 'a,b,c\n1,2,3\n4,5,6\n'}
 
+data_no_header = {'name': 'data_no_header',
+              'raw_data': "1,2,3\n4,5,6\n",
+              'script': """{\n
+                        "name": "data_no_header",\n
+                        "resources": [\n
+                            {\n
+                                "dialect": {\n
+                                "do_not_bulk_insert": "True",\n
+                                "header_rows": 0\n
+                            },\n
+                            "name": "data_no_header",\n
+                                "schema": {\n
+                                "fields": [\n
+                                            {\n
+                                                "name": "a",\n
+                                                "type": "char"\n
+                                            },\n
+                                            {\n
+                                                "name": "b",\n
+                                                "size": "20",\n
+                                                "type": "char"\n
+                                            },\n
+                                            {\n
+                                                "name": "c",\n
+                                                "size": "20",\n
+                                                "type": "char"\n
+                                            }\n
+                                ]\n
+                                },\n
+                                "url": "http://example.com/data_no_header.txt"\n
+                            }\n
+                        ],\n
+                        "retriever": "True",\n
+                        "retriever_minimum_version": "2.0.dev",\n
+                        "version": 1.0,\n
+                        "urls": {\n
+                            "data_no_header": "http://example.com/data_no_header.txt"\n
+                        }\n
+                    }\n""",
+              'expect_out': 'a,b,c\n1,2,3\n4,5,6\n'}
 
-csv_latin1_encoding = {'name': 'simple_csv2',
+csv_latin1_encoding = {'name': 'csv_latin1_encoding',
               'raw_data': 'a,b,c\n1,2,4Löve\n4,5,6\n',
               'script': """{\n
-              "name": "simple_csv2",\n
+              "name": "csv_latin1_encoding",\n
               "resources": [\n
                             {\n
                                 "dialect": {\n
                                 "do_not_bulk_insert": "True"\n
                             },\n
-                            "name": "simple_csv2",\n
+                            "name": "csv_latin1_encoding",\n
                                 "schema": {},\n
-                                "url": "http://example.com/simple_csv2.txt"\n
+                                "url": "http://example.com/csv_latin1_encoding.txt"\n
                   }\n
               ],\n
               "retriever": "True",\n
               "retriever_minimum_version": "2.0.dev",\n
               "version": 1.0,\n
               "urls": {\n
-                  "simple_csv2": "http://example.com/simple_csv2.txt"\n
+                  "csv_latin1_encoding": "http://example.com/csv_latin1_encoding.txt"\n
               }\n
           }\n""",
               'expect_out': u'a,b,c\n1,2,4Löve\n4,5,6\n'}
@@ -257,7 +302,48 @@ extra_newline = {'name': 'extra_newline',
                     """,
                  'expect_out': "col1,col2,col3\nab,e f,cd\n"}
 
-tests = [simple_csv, csv_latin1_encoding, autopk_csv, crosstab, autopk_crosstab, skip_csv, extra_newline]
+change_header_values = {'name': 'change_header_values',
+              'raw_data': "a,b,c\n1,2,3\n4,5,6\n",
+              'script': """{\n
+                        "name": "change_header_values",\n
+                        "resources": [\n
+                            {\n
+                                "dialect": {\n
+                                "do_not_bulk_insert": "True",\n
+                                "header_rows": 1\n
+                            },\n
+                            "name": "change_header_values",\n
+                                "schema": {\n
+                                "fields": [\n
+                                            {\n
+                                                "name": "aa",\n
+                                                "type": "char"\n
+                                            },\n
+                                            {\n
+                                                "name": "bb",\n
+                                                "size": "20",\n
+                                                "type": "char"\n
+                                            },\n
+                                            {\n
+                                                "name": "c c",\n
+                                                "size": "20",\n
+                                                "type": "char"\n
+                                            }\n
+                                ]\n
+                                },\n
+                                "url": "http://example.com/change_header_values.txt"\n
+                            }\n
+                        ],\n
+                        "retriever": "True",\n
+                        "retriever_minimum_version": "2.0.dev",\n
+                        "version": 1.0,\n
+                        "urls": {\n
+                            "change_header_values": "http://example.com/change_header_values.txt"\n
+                        }\n
+                    }\n""",
+              'expect_out': 'aa,bb,c_c\n1,2,3\n4,5,6\n'}
+
+tests = [simple_csv, data_no_header, csv_latin1_encoding, autopk_csv, crosstab, autopk_crosstab, skip_csv, extra_newline, change_header_values]
 
 # Create a tuple of all test scripts and expected values
 # (simple_csv, '"a","b","c"\n1,2,3\n4,5,6')
@@ -356,7 +442,7 @@ def test_jsonengine_integration(dataset, expected, tmpdir):
 def test_postgres_integration(dataset, expected, tmpdir):
     """Check for postgres regression"""
     os.system('psql -U postgres -d testdb -h localhost -c "DROP SCHEMA IF EXISTS testschema CASCADE"')
-    postgres_engine.opts = {'engine': 'postgres', 'user': 'postgres', 'password': "", 'host': 'localhost', 'port': 5432,
+    postgres_engine.opts = {'engine': 'postgres', 'user': 'postgres', 'password': os_password, 'host': 'localhost', 'port': 5432,
                             'database': 'testdb', 'database_name': 'testschema', 'table_name': '{db}.{table}'}
     assert get_output_as_csv(dataset, postgres_engine, tmpdir, db=postgres_engine.opts['database_name']) == expected
 
