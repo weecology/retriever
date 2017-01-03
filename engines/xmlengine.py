@@ -4,7 +4,7 @@ from builtins import str
 from builtins import object
 from builtins import range
 from retriever.lib.models import Engine
-from retriever import DATA_DIR
+from retriever import DATA_DIR, open_fr, open_fw
 from retriever.lib.tools import xml2csv, sort_csv
 
 
@@ -53,9 +53,9 @@ class engine(Engine):
 
     def create_table(self):
         """Create the table by creating an empty XML file"""
-        self.output_file = open(self.table_name(), "w")
-        self.output_file.write('<?xml version="1.0"?>')
-        self.output_file.write('\n<root>')
+        self.output_file = open_fw(self.table_name())
+        self.output_file.write(u'<?xml version="1.0" encoding="UTF-8"?>')
+        self.output_file.write(u'\n<root>')
         self.table_names.append((self.output_file, self.table_name()))
         self.auto_column_number = 1
 
@@ -65,24 +65,18 @@ class engine(Engine):
         Close all the file objects that have been created
         Re-write the files stripping off the last comma and then close with a closing tag)
         """
-        for output_file_i, file_name in self.table_names:
-
-            try:
+        if self.table_names:
+            for output_file_i, file_name in self.table_names:
                 output_file_i.close()
-                current_input_file = open(file_name, "r")
+                current_input_file = open_fr(file_name, encode=False)
                 file_contents = current_input_file.readlines()
                 current_input_file.close()
                 file_contents[-1] = file_contents[-1].strip(',')
-                current_output_file = open(file_name, "w")
+                current_output_file = open_fw(file_name)
                 current_output_file.writelines(file_contents)
-                current_output_file.write('\n</root>')
+                current_output_file.write(u'\n</root>')
                 current_output_file.close()
-
-            except:
-                # when disconnect is called by app.connect_wizard.ConfirmPage to
-                # confirm the connection, output_file doesn't exist yet, this is
-                # fine so just pass
-                pass
+            self.table_names = []
 
     def execute(self, statement, commit=True):
         """Write a line to the output file"""
@@ -90,7 +84,7 @@ class engine(Engine):
 
     def format_insert_value(self, value, datatype):
         """Formats a value for an insert statement"""
-        v = Engine.format_insert_value(self, value, datatype, escape=False)
+        v = Engine.format_insert_value(self, value, datatype, escape=False, processed=True)
         if v == 'null':
             return ""
         try:
@@ -131,9 +125,11 @@ class engine(Engine):
 
     def to_csv(self):
         """Export table from xml engine to CSV file"""
-        keys = self.table.get_insert_columns(join=False, create=True)
-        csv_outfile = xml2csv(self.table_name(), header_values=keys)
-        return sort_csv(csv_outfile)
+        for keys in list(self.script.tables):
+            table_name = self.opts['table_name'].format(db=self.db_name, table=keys)
+            header = self.script.tables[keys].get_insert_columns(join=False, create=True)
+            csv_outfile = xml2csv(table_name, header_values=header)
+            sort_csv(csv_outfile)
 
     def get_connection(self):
         """Gets the db connection."""

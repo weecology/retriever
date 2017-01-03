@@ -12,6 +12,13 @@ import pytest
 from retriever.lib.tools import getmd5
 from retriever import ENGINE_LIST
 
+# Set postgres password, Appveyor service needs the password given
+# The Travis service obtains the password from the config file.
+if os.name == "nt":
+    os_password = "Password12!"
+else:
+    os_password = ""
+
 mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, csv_engine, download_engine, json_engine, xml_engine = ENGINE_LIST()
 file_location = os.path.dirname(os.path.realpath(__file__))
 retriever_root_dir = os.path.abspath(os.path.join(file_location, os.pardir))
@@ -19,15 +26,15 @@ working_script_dir = os.path.abspath(os.path.join(retriever_root_dir, "scripts")
 HOMEDIR = os.path.expanduser('~')
 
 download_md5 = [
-    # ('DelMoral2010', '0'),
+    ('delmoral', '9f81bbccfd6a99938e5455a489fdb7b5'),
     ('avianbodysize', 'dce81ee0f040295cd14c857c18cc3f7e'),
     ('mom2003', 'b54b80d0d1959bdea0bb8a59b70fa871')
 ]
 
 db_md5 = [
     # ('DelMoral2010', '0'),
-    ('AvianBodySize', '79680888f7768474479e70c87cd36c9d'),
-    ('MoM2003', 'a560a038475ec3fa525aedbb138be1be')
+    ('AvianBodySize', '98dcfdca19d729c90ee1c6db5221b775'),
+    ('MoM2003', '6fec0fc63007a4040d9bbc5cfcd9953e')
 ]
 
 
@@ -73,9 +80,16 @@ def test_sqlite_regression(dataset, expected, tmpdir):
 @pytest.mark.parametrize("dataset, expected", db_md5)
 def test_postgres_regression(dataset, expected, tmpdir):
     """Check for postgres regression"""
-    os.system('psql -U postgres -d testdb -h localhost -c "DROP SCHEMA IF EXISTS testschema CASCADE"')
-    postgres_engine.opts = {'engine': 'postgres', 'user': 'postgres', 'password': "", 'host': 'localhost', 'port': 5432,
-                            'database': 'testdb', 'database_name': 'testschema', 'table_name': '{db}.{table}'}
+    os.system(
+        'psql -U postgres -d testdb -h localhost -c "DROP SCHEMA IF EXISTS testschema CASCADE"')
+    postgres_engine.opts = {'engine': 'postgres',
+                            'user': 'postgres',
+                            'password': os_password,
+                            'host': 'localhost',
+                            'port': 5432,
+                            'database': 'testdb',
+                            'database_name': 'testschema',
+                            'table_name': '{db}.{table}'}
     assert get_csv_md5(dataset, postgres_engine, tmpdir) == expected
 
 
@@ -83,29 +97,37 @@ def test_postgres_regression(dataset, expected, tmpdir):
 def test_mysql_regression(dataset, expected, tmpdir):
     """Check for mysql regression"""
     os.system('mysql -u travis -Bse "DROP DATABASE IF EXISTS testdb"')
-    mysql_engine.opts = {'engine': 'mysql', 'user': 'travis', 'password': '', 'host': 'localhost', 'port': 3306,
-                         'database_name': 'testdb', 'table_name': '{db}.{table}'}
+    mysql_engine.opts = {'engine': 'mysql',
+                         'user': 'travis',
+                         'password': '',
+                         'host': 'localhost',
+                         'port': 3306,
+                         'database_name': 'testdb',
+                         'table_name': '{db}.{table}'}
     assert get_csv_md5(dataset, mysql_engine, tmpdir) == expected
 
 
 @pytest.mark.parametrize("dataset, expected", db_md5)
 def test_xmlengine_regression(dataset, expected, tmpdir):
     """Check for xmlenginee regression"""
-    xml_engine.opts = {'engine': 'xml', 'table_name': 'output_file_{table}.xml'}
+    xml_engine.opts = {'engine': 'xml',
+                       'table_name': 'output_file_{table}.xml'}
     assert get_csv_md5(dataset, xml_engine, tmpdir) == expected
 
 
 @pytest.mark.parametrize("dataset, expected", db_md5)
 def test_jsonengine_regression(dataset, expected, tmpdir):
     """Check for jsonenginee regression"""
-    json_engine.opts = {'engine': 'json', 'table_name': 'output_file_{table}.json'}
+    json_engine.opts = {'engine': 'json',
+                        'table_name': 'output_file_{table}.json'}
     assert get_csv_md5(dataset, json_engine, tmpdir) == expected
 
 
 @pytest.mark.parametrize("dataset, expected", db_md5)
 def test_csv_regression(dataset, expected, tmpdir):
     """Check csv regression"""
-    csv_engine.opts = {'engine': 'csv', 'table_name': 'output_file_{table}.csv'}
+    csv_engine.opts = {'engine': 'csv',
+                       'table_name': 'output_file_{table}.csv'}
     assert get_csv_md5(dataset, csv_engine, tmpdir) == expected
 
 
@@ -114,5 +136,5 @@ def test_download_regression(dataset, expected):
     """Check for regression for a particular dataset downloaded only"""
     os.chdir(retriever_root_dir)
     os.system("retriever download {0} -p raw_data/{0}".format(dataset))
-    current_md5 = getmd5(data="raw_data/{0}".format(dataset), data_type='dir', mode="rU")
+    current_md5 = getmd5(data="raw_data/{0}".format(dataset), data_type='dir')
     assert current_md5 == expected

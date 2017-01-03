@@ -9,7 +9,7 @@ from imp import reload
 
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
-    sys.setdefaultencoding('utf-8')
+    sys.setdefaultencoding('latin-1')
 from retriever.lib.engine import Engine
 from retriever.lib.table import Table
 from retriever.lib.templates import BasicTextTemplate
@@ -50,22 +50,22 @@ def teardown_module():
 def test_auto_get_columns():
     """Basic test of getting column labels from header"""
     test_engine.table.delimiter = ","
-    columns, column_values = test_engine.table.auto_get_columns("a,b,c,d")
+    columns, column_values = test_engine.table.auto_get_columns(['a','b','c','d'])
     assert columns == [['a', None], ['b', None], ['c', None], ['d', None]]
 
 
 def test_auto_get_columns_extra_whitespace():
     """Test getting column labels from header with extra whitespace"""
     test_engine.table.delimiter = ","
-    columns, column_values = test_engine.table.auto_get_columns(" a ,b, c,d  ")
+    columns, column_values = test_engine.table.auto_get_columns([ 'a' ,'b', 'c','d  '])
     assert columns == [['a', None], ['b', None], ['c', None], ['d', None]]
 
 
 def test_auto_get_columns_cleanup():
     """Test of automatically cleaning up column labels from header"""
     test_engine.table.delimiter = ","
-    columns, column_values = test_engine.table.auto_get_columns("a),b.b,c/c,d___d,group")
-    assert columns == [['a', None], ['b_b', None], ['c_c', None], ['d_d', None],
+    columns, column_values = test_engine.table.auto_get_columns(['a)','a\nd','b.b','c/c','d___d','group'])
+    assert columns == [['a', None], ['ad', None],  ['b_b', None], ['c_c', None], ['d_d', None],
                        ['grp', None]]
 
 
@@ -124,16 +124,10 @@ def test_escape_double_quotes():
     assert test_engine.escape_double_quotes('"a",1,2,3') == '\\"a\\",1,2,3'
 
 
-def test_extract_values():
-    """Test extraction of values from line of data with already know delimiter"""
-    test_engine.table.delimiter = ","
-    assert test_engine.table.extract_values('abcd,1,2,3.3') == ['abcd', '1', '2', '3.3']
-
-
 def test_extract_values_fixed_width():
     """Test extraction of values from line of fixed width data"""
     test_engine.table.fixed_width = [5, 2, 2, 3, 4]
-    assert test_engine.table.extract_values('abc  1 2 3  def ') == ['abc', '1', '2', '3', 'def']
+    assert test_engine.extract_fixed_width('abc  1 2 3  def ') == ['abc', '1', '2', '3', 'def']
 
 
 def test_find_file_absent():
@@ -197,7 +191,7 @@ def test_getmd5_lines():
 def test_getmd5_path():
     """Test md5 sum calculation given a path to data source"""
     data_file = create_file('a,b,c\n1,2,3\n4,5,6\n')
-    assert getmd5(data=data_file, data_type='file', mode='rU') == '0bec5bf6f93c547bc9c6774acaf85e1a'
+    assert getmd5(data=data_file, data_type='file') == '0bec5bf6f93c547bc9c6774acaf85e1a'
 
 
 def test_json2csv():
@@ -207,7 +201,7 @@ def test_json2csv():
     output_json = json2csv(json_file, "output_json.csv", header_values=["User", "Country", "Age"])
     obs_out = file_2string(output_json)
     os.remove(output_json)
-    assert obs_out == 'User,Country,Age\nAlex,US,25'
+    assert obs_out == 'User,Country,Age\nAlex,US,25\n'
 
 
 def test_xml2csv():
@@ -216,7 +210,6 @@ def test_xml2csv():
     xml_file = create_file("<root>\n<row>\n"
                            "<User>Alex</User>\n"
                            "<Country>US</Country>\n"
-                           "<Country>PT</Country>\n"
                            "<Age>25</Age>\n</row>\n"
                            "<row>\n<User>Ben</User>\n"
                            "<Country>US</Country>S\n"
@@ -225,7 +218,7 @@ def test_xml2csv():
     output_xml = xml2csv(xml_file, "output_xml.csv", header_values=["User", "Country", "Age"])
     obs_out = file_2string(output_xml)
     os.remove(output_xml)
-    assert obs_out == "User,Country,Age\nAlex,US,25\nAlex,PT,25\nBen,US,24"
+    assert obs_out == "User,Country,Age\nAlex,US,25\nBen,US,24\n"
 
 
 def test_sort_file():

@@ -110,12 +110,12 @@ To run the test you will need to have all of the relevant database management sy
   ​
   PostgreSQL
   ----------
-  psql -c "CREATE USER postgres WITH PASSWORD 'testpass'"
+  psql -c "CREATE USER postgres WITH PASSWORD 'Password12!'"
   psql -c 'CREATE DATABASE testdb'
   psql -c 'GRANT ALL PRIVILEGES ON DATABASE testdb to postgres'
   ​
   Create .pgpass in your home directory:
-  localhost:*:testdb:postgres:testpass
+  localhost:*:testdb:postgres:Password12!
 
 To run tests we use pytest.
 From the source top level directory, run
