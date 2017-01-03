@@ -239,7 +239,7 @@ def getmd5(data, data_type='lines'):
             else:
                 input_file = open(file_path, 'r', encoding='ISO-8859-1')
         else:
-            input_file = io.open(file_path, encoding='latin-1')
+            input_file = io.open(file_path, encoding='ISO-8859-1')
 
         for line in input_file:
             if type(line) == bytes:
@@ -313,11 +313,11 @@ def create_file(data, output='output_file'):
 
 def file_2string(input_file):
     """return file contents as a string"""
-    input_file= os.path.normpath(input_file)
+    input_file = os.path.normpath(input_file)
     if sys.version_info >= (3, 0, 0):
         input = io.open(input_file, 'rU')
     else:
-        input = io.open(input_file, encoding='latin-1')
+        input = io.open(input_file, encoding='ISO-8859-1')
 
     obs_out = input.read()
     return obs_out

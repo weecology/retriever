@@ -12,6 +12,8 @@ import pytest
 from retriever.lib.tools import getmd5
 from retriever import ENGINE_LIST
 
+# Set postgres password, Appveyor service needs the password given
+# The Travis service obtains the password from the config file.
 if os.name == "nt":
     os_password = "Password12!"
 else:

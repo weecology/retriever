@@ -228,7 +228,7 @@ class Engine(object):
                                 try:
                                     val = float(val)
                                     if "e" in str(val) or ("." in str(val) and len(str(val).split(".")[1]) > 10):
-                                        column_types[i] = ["decimal", "30,20"]
+                                        column_types[i] = ["decimal", "50,30"]
                                 except:
                                     column_types[i] = ['char', max_lengths[i]]
                             if column_types[i][0] == 'char':
@@ -689,7 +689,7 @@ class Engine(object):
     def load_data(self, filename):
         """Generator returning lists of values from lines in a data file
 
-        1. Works on both delimited (csv module) fixed width data (extract_fixed_width)
+        1. Works on both delimited (csv module) and fixed width data (extract_fixed_width)
         2. Identifies the delimiter if not known
         3. Removes extra line endings
 
@@ -697,13 +697,13 @@ class Engine(object):
         if not self.table.delimiter:
             self.set_table_delimiter(filename)
 
-        reg = re.compile("\\r\\n|\n|\r")
         dataset_file = open_fr(filename)
 
         if self.table.fixed_width:
             for row in dataset_file:
                 yield self.extract_fixed_width(row)
         else:
+            reg = re.compile("\\r\\n|\n|\r")
             for row in csv.reader(dataset_file, delimiter=self.table.delimiter):
                 yield [reg.sub(" ", values) for values in row]
 

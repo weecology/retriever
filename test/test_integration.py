@@ -16,6 +16,8 @@ from retriever import HOME_DIR, ENGINE_LIST
 from retriever.lib.tools import file_2string
 from retriever.lib.tools import create_file
 
+# Set postgres password, Appveyor service needs the password given
+# The Travis service obtains the password from the config file.
 if os.name == "nt":
     os_password = "Password12!"
 else:
@@ -278,7 +280,7 @@ skip_csv = {'name': 'skip_csv',
             'expect_out': 'b,c\n2,3\n5,6\n'}
 
 extra_newline = {'name': 'extra_newline',
-                 'raw_data': """col1,col2,col3\nab,"e\nf",cd""",
+                 'raw_data': 'col1,col2,col3\nab,"e\nf",cd',
 
                  'script': """{\n
                         "name": "extra_newline",\n
