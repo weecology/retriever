@@ -14,7 +14,7 @@ class main(Script):
         self.name = "vertnet:"
         self.shortname = "vertnet"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.1'
+        self.version = '1.2'
         self.ref = "http://vertnet.org/resources/datatoolscode.html"
         self.urls = {
                     'amphibians': 'https://de.iplantcollaborative.org/anon-files//iplant/home/shared/commons_repo/curated/Vertnet_Amphibia_Sep2016/VertNet_Amphibia_Sept2016.zip',
@@ -236,11 +236,11 @@ class main(Script):
                                 ("massunitsinferred", ("char",)),
                                 ("underivedlifestage", ("char",)),
                                 ("underivedsex", ("char",))]
-                 
+
             engine.table = table
+            if not os.path.isfile(engine.format_filename(filename)):
+                engine.download_files_from_archive(self.urls[tablename], [filename], filetype="zip", archivename="vertnet_latest_" + str(tablename))
             engine.create_table()
-            if not os.path.isfile(engine.format_filename(filename)):                
-                engine.download_files_from_archive(self.urls[tablename], [filename], filetype="zip", archivename="vertnet_latest_" + str(tablename)) 
-            engine.insert_data_from_file(engine.format_filename(str(filename)))  
+            engine.insert_data_from_file(engine.format_filename(str(filename)))
 
 SCRIPT = main()

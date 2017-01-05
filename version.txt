@@ -43,6 +43,6 @@ Ramesh2010.json,1.0
 SonoranPerennials.json,1.0
 Steppe_plants_2013.json,1.0
 TreeWesternGhats.json,1.0
-vertnet.py,1.1
+vertnet.py,1.2
 Woods2009.json,1.0
 Zachmann2010.json,1.0
