@@ -167,7 +167,7 @@ U.S.A. """
                        ("genus"                 ,   ("char", )    ),
                        ("species"               ,   ("char", )    ),
                        ("id_level"              ,   ("char", 10)    ),
-                       ("full_id"               ,   ("bool",)       )]
+                       ("full_id"               ,   ("int",)       )]
 
         data = [[str(tax_dict[group[:3]])] + ['"%s"' % g for g in group]
                 for group in unique_tax]
