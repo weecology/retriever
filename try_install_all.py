@@ -18,6 +18,10 @@ from retriever import MODULE_LIST, ENGINE_LIST, SCRIPT_LIST
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding('latin-1')
+if os.name == "nt":
+    os_password = "Password12!"
+else:
+    os_password = ""
 
 MODULE_LIST = MODULE_LIST()
 ENGINE_LIST = ENGINE_LIST()
@@ -27,23 +31,58 @@ if len(sys.argv) > 1:
                     if e.name in sys.argv[1:] or
                     e.abbreviation in sys.argv[1:]
     ]
+
+if os.path.exists("test_all"):
+    os.system("rm -r test_all")
+os.makedirs("test_all")
+os.chdir("test_all")
+
+dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb.sqlite'))
+
+engine_test = {
+    "postgres": {'engine': 'postgres',
+                 'user': 'postgres',
+                 'password': os_password,
+                 'host': 'localhost',
+                 'port': 5432,
+                 'database': 'postgres',
+                 'database_name': 'testschema',
+                 'table_name': '{db}.{table}'},
+
+    "mysql": {'engine': 'mysql',
+              'user': 'travis',
+              'password': '',
+              'host': 'localhost',
+              'port': 3306,
+              'database_name': 'testdb',
+              'table_name': '{db}.{table}'},
+
+    "xml": {'engine': 'xml',
+            'table_name': 'output_file_{table}.xml'},
+
+    "json": {'engine': 'json',
+             'table_name': 'output_file_{table}.json'},
+
+    "csv": {'engine': 'csv',
+            'table_name': 'output_file_{table}.csv'},
+
+    "sqlite": {'engine': 'sqlite',
+               'file': dbfile, 'table_name': '{db}_{table}'}
+}
+
 SCRIPT_LIST = SCRIPT_LIST()
 TEST_ENGINES = {}
 IGNORE = ["AvianBodyMass", "FIA", "Bioclim", "PRISM", "vertnet","NPN", "mammsupertree"]
 IGNORE = [dataset.lower() for dataset in IGNORE]
 
 for engine in ENGINE_LIST:
-    opts = {}
-    print("** %s **" % engine.name)
-    opts["engine"] = engine.abbreviation
-
-    try:
-        TEST_ENGINES[engine.abbreviation] = choose_engine(opts)
-        TEST_ENGINES[engine.abbreviation].get_input()
-        TEST_ENGINES[engine.abbreviation].get_cursor()
-    except:
-        TEST_ENGINES[engine.abbreviation] = None
-        pass
+    if engine.abbreviation in engine_test:
+        try:
+            opts = engine_test[engine.abbreviation]
+            TEST_ENGINES[engine.abbreviation] = choose_engine(opts)
+        except:
+            TEST_ENGINES[engine.abbreviation] = None
+            pass
 
 errors = []
 for module in MODULE_LIST:
@@ -60,7 +99,6 @@ for module in MODULE_LIST:
                     errors.append((key, module.__name__, e))
             else:
                 errors.append((key, "No connection detected......" + module.SCRIPT.shortname))
-
 print('')
 if errors:
     print("Engine, Dataset, Error")
