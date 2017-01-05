@@ -12,8 +12,7 @@ import zipfile
 from decimal import Decimal
 from retriever.lib.templates import Script
 from retriever.lib.models import Table, Cleanup, no_cleanup
-
-VERSION = '0.5'
+from retriever import HOME_DIR, open_fr, open_fw
 
 
 class main(Script):
@@ -22,7 +21,7 @@ class main(Script):
         self.name = "Forest Inventory and Analysis"
         self.shortname = "FIA"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.0'
+        self.version = '1.1'
         self.ref = "http://fia.fs.fed.us/"
         self.urls = {"main": "http://apps.fs.fed.us/fiadb-downloads/CSV/",
                      'species': 'http://apps.fs.fed.us/fiadb-downloads/CSV/REF_SPECIES.csv'}
@@ -66,8 +65,8 @@ class main(Script):
         for table in tablelist:
             print("Scanning data for table %s..." % table)
             prep_file_name = "%s.csv" % table
-            prep_file = open(engine.format_filename(prep_file_name), "wb")
-            this_file = open(engine.format_filename(stateslist[0][0] + "_" + table + ".csv"), "rb")
+            prep_file = open_fw(engine.format_filename(prep_file_name))
+            this_file = open_fr(engine.format_filename(stateslist[0][0] + "_" + table + ".csv"))
             col_names = this_file.readline()
             prep_file.write(col_names)
             column_names = [col.strip('"') for col in col_names.split(',')]
@@ -75,7 +74,7 @@ class main(Script):
             this_file.close()
 
             for state, year in stateslist:
-                this_file = open(engine.format_filename(state + "_" + table + ".csv"), "rb")
+                this_file = open_fr(engine.format_filename(state + "_" + table + ".csv"))
                 this_file.readline()
                 for line in this_file:
                     values = line.split(',')

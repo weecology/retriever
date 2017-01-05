@@ -3,6 +3,7 @@
 from builtins import str
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 from retriever.lib.templates import Script
+from retriever import HOME_DIR, open_fr, open_fw
 
 
 class main(Script):
@@ -11,7 +12,7 @@ class main(Script):
         self.name = "A database on the life history traits of the Northwest European flora" 
         self.shortname = "leda"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.1'
+        self.version = '1.2'
         self.ref = "http://www.uni-oldenburg.de/en/biology/landeco/research/projects/leda/"
         self.urls = {
             "Age_of_first_flowering": "http://www.uni-oldenburg.de/fileadmin/user_upload/biologie/ag/landeco/download/LEDA/Data_files/age_of_first_flowering.txt",
@@ -50,15 +51,15 @@ class main(Script):
         for key in self.urls:
             self.engine.download_file(self.urls[key], self.urls[key].rpartition('/')[-1])
             new_file_path = self.engine.format_filename("new" + key)
-            old_data = open(self.engine.find_file(self.urls[key].rpartition('/')[-1]), "rb")
-            new_data = open(new_file_path, 'wb')
+            old_data = open_fr(self.engine.find_file(self.urls[key].rpartition('/')[-1]))
+            new_data = open_fw(new_file_path)
             with old_data as file_block:
 
                 # after the metadata lines, set data to True
                 data = False
                 for lines in file_block.readlines():
                     # meta data contins line with no ";" and may have "(;;;;)+" or empty lines
-                    if not data and (b";" not in lines or b";;;;" in lines):
+                    if not data and (";" not in lines or ";;;;" in lines):
                         pass
                     else:
                         data = True
