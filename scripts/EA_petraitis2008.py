@@ -1,6 +1,7 @@
 #retriever
 from retriever.lib.templates import Script
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
+from retriever import open_fr, open_fw
 
 class main(Script):
     def __init__(self):
@@ -19,9 +20,23 @@ class main(Script):
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
 
-        self.engine.download_file(self.urls["main"], "Succession_sampling_03-07_data.txt")
+        self.engine.download_file(self.urls["main"], "Succession_sampling_03-07_data_original.txt")
         data_path = self.engine.format_filename("Succession_sampling_03-07_data.txt")
-        self.engine.auto_create_table(self.tables["main"], filename="Succession_sampling_03-07_data.txt")
+        old_data = open_fr(self.engine.find_file("Succession_sampling_03-07_data_original.txt"))
+        new_data = open_fw(data_path)
+        # original file's header contains an end of line charactor in the middle hence creating two lines
+        # Read in the two lines and create the full header
+        line1 = old_data.readline().strip()
+        line2 = old_data.readline()
+        newline = line1 + "\t" + line2
+        new_data.write(newline)
+        for line in old_data:
+            new_data.write(line)
+        new_data.close()
+        old_data.close()
+
+        self.engine.auto_create_table(self.tables["main"],
+                                      filename="Succession_sampling_03-07_data.txt")
         self.engine.insert_data_from_file(data_path)
 
 SCRIPT = main()

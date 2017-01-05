@@ -167,7 +167,7 @@ U.S.A. """
                        ("genus"                 ,   ("char", )    ),
                        ("species"               ,   ("char", )    ),
                        ("id_level"              ,   ("char", 10)    ),
-                       ("full_id"               ,   ("char",)       )]
+                       ("full_id"               ,   ("bool",)       )]
 
         data = [[str(tax_dict[group[:3]])] + ['"%s"' % g for g in group]
                 for group in unique_tax]
@@ -181,8 +181,8 @@ U.S.A. """
         # Create stems table
         table = Table("stems", delimiter=",")
         table.columns=[("stem_id"               ,   ("pk-auto",)    ),
-                       ("line"                  ,   ("double",)        ),
-                       ("species_id"            ,   ("double",)        ),
+                       ("line"                  ,   ("int",)        ),
+                       ("species_id"            ,   ("int",)        ),
                        ("site_code"             ,   ("char", 12)    ),
                        ("liana"                 ,   ("char", 10)    ),
                        ("stem"                  ,   ("double",)     )]
@@ -213,20 +213,11 @@ U.S.A. """
         self.engine.create_table()
         self.engine.add_to_table(stems)
 
-        # Ask Ethan about the data (int double) here before cleaning up code
-
-        # test using the commented out code
-        # file_path = self.engine.format_filename("stem_data.csv")
-        # ref_file = open_fw(file_path)
-        # csv_writer = open_csvw(ref_file)
-        # for stem_row in stems:
-        #     csv_writer.writerow(stem_row)
-
         # Create counts table
         table = Table("counts", delimiter=",", contains_pk=False)
-        table.columns=[("counts_id"              ,   ("pk-auto",)    ),
-                       ("line"                  ,   ("double",)        ),
-                       ("species_id"            ,   ("double",)        ),
+        table.columns=[("count_id"              ,   ("pk-auto",)    ),
+                       ("line"                  ,   ("int",)        ),
+                       ("species_id"            ,   ("int",)        ),
                        ("site_code"             ,   ("char", 12)    ),
                        ("liana"                 ,   ("char", 10)    ),
                        ("count"                 ,   ("double",)     )]
