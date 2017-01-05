@@ -78,7 +78,7 @@ IGNORE = [dataset.lower() for dataset in IGNORE]
 for engine in ENGINE_LIST:
     if engine.abbreviation in engine_test:
         try:
-            opts = engine_test[engine.abbreviation]
+            opts= engine_test[engine.abbreviation]
             TEST_ENGINES[engine.abbreviation] = choose_engine(opts)
         except:
             TEST_ENGINES[engine.abbreviation] = None

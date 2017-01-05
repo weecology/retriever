@@ -2,17 +2,17 @@
 """Retriever script for Zanne et al. Global wood density database.
 
 """
-from builtins import str
 from builtins import range
 
-import os
 import sys
+import os
 import xlrd
+from imp import reload
+
 from retriever.lib.templates import Script
 from retriever.lib.models import Table
 from retriever.lib.excel import Excel
-
-
+from retriever import HOME_DIR, open_fr, open_fw, open_csvw, to_str
 
 class main(Script):
     def __init__(self, **kwargs):
@@ -20,7 +20,7 @@ class main(Script):
         self.name = "Zanne et al. Global wood density database."
         self.shortname = "GWDD"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.0'
+        self.version = '1.1'
         self.urls = {"GWDD": "http://datadryad.org/bitstream/handle/10255/dryad.235/GlobalWoodDensityDatabase.xls?sequence=1"}
         self.tags = ["Taxon > Plants", "Spatial Scale > Global",
                      "Data Type > Observational"]
@@ -30,8 +30,8 @@ class main(Script):
         self.addendum = """ *Correspondence for updates to the database: G.Lopez-Gonzalez@leeds.ac.uk
         For descriptions of the database, see Chave et al. 2009. Towards a worldwide wood economics spectrum. Ecology Letters. Identifier: http://hdl.handle.net/10255/dryad.234
 
-        Below we list the rules of use for the Global wood density database. 
-        These are developed based on the rules of use for the Glopnet dataset (www.nature.com/nature/journal/v428/n6985/full/nature02403.html) and Cedar Creek LTER and Related Data (http://www.lter.umn.edu/cgi-bin/register). 
+        Below we list the rules of use for the Global wood density database.
+        These are developed based on the rules of use for the Glopnet dataset (www.nature.com/nature/journal/v428/n6985/full/nature02403.html) and Cedar Creek LTER and Related Data (http://www.lter.umn.edu/cgi-bin/register).
         If you would like to use the Global wood density database, we request that you:
         1. Notify the main address of correspondence (Gaby Lopez-Gonzalo) if you plan to use the database in a publication.
         2. Provide recognition of the efforts of this group in the assembly of the data by using the citation for the database above.
@@ -39,87 +39,65 @@ class main(Script):
 
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
+        reload(sys)
+        if hasattr(sys, 'setdefaultencoding'):
+            sys.setdefaultencoding("utf-8")
 
         self.engine.download_file(self.urls["GWDD"], "GlobalWoodDensityDatabase.xls")
         filename = os.path.basename("GlobalWoodDensityDatabase.xls")
-
         book = xlrd.open_workbook(self.engine.format_filename(filename))
         sh = book.sheet_by_index(1)
         rows = sh.nrows
 
-        #Creating data table
-        lines = []
-        for i in range(1, rows):
-            row = sh.row(i)
-            if not all(Excel.empty_cell(cell) for cell in row):
-                this_line = {}
-                def format_value(s):
-                    s = Excel.cell_value(s)
-                    return str(s).title().replace("\\", "/").replace('"', '')
-                for num, label in enumerate(["Number", "Family", "Binomial", "Wood_Density",
-                            "Region", "Reference_Number"]):
-                    this_line[label] = format_value(row[num])
-                lines.append(this_line)
+        # Creating data files
+        file_path = self.engine.format_filename("gwdd_data.csv")
+        gwdd_data = open_fw(file_path)
+        csv_writer = open_csvw(gwdd_data)
+        csv_writer.writerow(["Number", "Family", "Binomial", "Wood_Density", "Region", "Reference_Number"])
 
-        table = Table("data", delimiter="\t")
-        table.columns=[("Number"                ,   ("pk-int",) ),
-                       ("Family"                ,   ("char",)   ),
-                       ("Binomial"              ,   ("char",)   ),
-                       ("Wood_Density"          ,   ("double",) ),
-                       ("Region"                ,   ("char",)   ),
-                       ("Reference_Number"      ,   ("int",)    )]
+        for index in range(1, rows):
+            row = sh.row(index)
+            # get each row and format the sell value.
+            row_as_list = [to_str(column_value.value) for column_value in row]
+            csv_writer.writerow(row_as_list)
+        gwdd_data.close()
+
+        table = Table("data", delimiter=",")
+        table.columns = [("Number", ("pk-int",)),
+                         ("Family", ("char",)),
+                         ("Binomial", ("char",)),
+                         ("Wood_Density", ("double",)),
+                         ("Region", ("char",)),
+                         ("Reference_Number", ("int",))]
         table.pk = 'Number'
         table.contains_pk = True
 
-        gwdd = []
-        for line in lines:
-            gwdd_data = [line["Number"],
-                         line["Family"],
-                         line["Binomial"],
-                         line["Wood_Density"],
-                         line["Region"],
-                         line["Reference_Number"]]
-            gwdd.append(gwdd_data)
-
-        data = ['\t'.join(gwdd_line) for gwdd_line in gwdd]
         self.engine.table = table
         self.engine.create_table()
-        self.engine.add_to_table(data)
+        self.engine.insert_data_from_file(engine.format_filename(file_path))
 
-        #Creating reference table
-        lines = []
+        # Creating reference tale file
+        file_path = self.engine.format_filename("gwdd_ref.csv")
+        ref_file = open_fw(file_path)
+        csv_writerd = open_csvw(ref_file)
+        csv_writerd.writerow(["Reference_Number", "Reference"])
         sh = book.sheet_by_index(2)
         rows = sh.nrows
-        for i in range(1, rows):
-            row = sh.row(i)
-            if not all(Excel.empty_cell(cell) for cell in row):
-                this_line = {}
-                def format_value(s):
-                    s = Excel.cell_value(s)
-                    return str(s).title().replace("\\", "/").replace('"', '')
-                for num, label in enumerate(["Reference_Number", "Reference"]):
-                    this_line[label] = format_value(row[num])
-                lines.append(this_line)
+        for index in range(1, rows):
+            row = sh.row(index)
+            # get each row and format the sell value.
+            row_as_list = [to_str(column_value.value, object_encoding=sys.stdout) for column_value in row]
+            csv_writerd.writerow(row_as_list)
+        ref_file.close()
 
-        table = Table("reference", delimiter="\t")
-        table.columns=[("Reference_Number"  ,   ("pk-int",) ),
-                       ("Reference"         ,   ("char",)   )]
+        table = Table("reference", delimiter=",")
+        table.columns = [("Reference_Number", ("pk-int",)), ("Reference", ("char",))]
         table.pk = 'Reference_Number'
         table.contains_pk = True
-
-        gwdd = []
-        for line in lines:
-            gwdd_ref = [line["Reference_Number"],
-                        line["Reference"]]
-            gwdd.append(gwdd_ref)
-
-        data = ['\t'.join(gwdd_line) for gwdd_line in gwdd]
         self.engine.table = table
         self.engine.create_table()
-        self.engine.add_to_table(data)
-        self.engine.find_file("GlobalWoodDensityDatabase.xls")
+        self.engine.insert_data_from_file(engine.format_filename(file_path))
 
         return self.engine
 
 SCRIPT = main()
-
