@@ -113,6 +113,14 @@ def open_csvw(csv_file, encode=True):
     return csv_writer
 
 
+def to_str(object, object_encoding=sys.stdout):
+    if sys.version_info >= (3, 0, 0):
+        enc = object_encoding.encoding
+        return str(object).encode(enc, errors='backslashreplace').decode("latin-1")
+    else:
+        return object
+
+
 def MODULE_LIST(force_compile=False):
     """Load scripts from scripts directory and return list of modules."""
     modules = []
