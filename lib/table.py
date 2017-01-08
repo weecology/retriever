@@ -131,10 +131,12 @@ class Table(object):
         return linevalues
 
     def get_insert_columns(self, join=True, create=False):
-        """Gets column names for insert statements.
+        """Gets column names for insert statements
 
-        when creating a table(create=True), include 'pk_auto' column
-        otherwise don't include this column when generating insert statements
+        `create` should be set to `True` if the returned values are going to be used
+        for creating a new table. It includes the `pk_auto` column if present. This
+        column is not included by default because it is not used when generating
+        insert statements for database management systems.
         """
         columns = []
         if not self.cleaned_columns:
