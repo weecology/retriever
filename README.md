@@ -18,12 +18,26 @@ datasets, and importing them into relational databases, flat files, or
 programming languages. The automation of this process reduces the time for a
 user to get most large datasets up and running by hours, and in some cases days.
 
-Installing (binaries)
----------------------
+## Installing the Current Release
 
-Precompiled binaries the most recent release are available for Windows, OS X,
-and Ubuntu/Debian on the
-[releases page](https://github.com/weecology/retriever/releases).
+If you have Python installed you can install the current release using `pip`:
+
+```
+pip install retriever
+```
+
+Depending on your system configuration this may require `sudo`:
+
+```
+sudo pip install retriever
+```
+
+Precompiled binary installers are also available for Windows, OS X, and
+Ubuntu/Debian on
+the [releases page](https://github.com/weecology/retriever/releases). These do
+not require a Python installation. Download the installer for your operating
+system and follow the instructions at on
+the [download page](http://www.data-retriever.org/download.html).
 
 
 Installing From Source
@@ -33,21 +47,28 @@ To install the Data Retriever from source, you'll need Python 2.7+ or 3.3+ with 
 
 * xlrd
 
-###The following packages are optional
+The following packages are optionally needed to interact with associated
+database management systems:
 
 * PyMySQL (for MySQL)
 * sqlite3 (for SQLite)
 * psycopg2 (for PostgreSQL)
 * pyodbc (for MS Access - this option is only available on Windows)
 
-###To install from source
+### To install from source
+
+Either use pip to install directly from GitHub:
+
+```
+pip install git+ssh://git@github.com/weecology/retriever.git
+```
+
+or:
 
 1. Clone the repository
-2. From the directory containing setup.py, run the following command: ``python
-   setup.py install``. You may need to include `sudo` at the beginning of the
-   command depending on your system (i.e., `sudo python setup.py install`).
-3. After installing, type ``retriever`` from a command prompt to launch the
-   Data Retriever
+2. From the directory containing setup.py, run the following command: `pip
+   install .`. You may need to include `sudo` at the beginning of the
+   command depending on your system (i.e., `sudo pip install .`).
 
 More extensive documentation for those that are interested in developing can be found [here](http://retriever.readthedocs.io/en/latest/?badge=latest)
 
