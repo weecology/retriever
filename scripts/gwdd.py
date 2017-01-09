@@ -1,3 +1,4 @@
+# -*- coding: latin-1 -*-
 #retriever
 """Retriever script for Zanne et al. Global wood density database.
 
@@ -5,13 +6,15 @@
 from builtins import str
 from builtins import range
 
-import os
 import sys
+import io
+import csv
+import os
 import xlrd
+
 from retriever.lib.templates import Script
 from retriever.lib.models import Table
 from retriever.lib.excel import Excel
-
 
 
 class main(Script):
@@ -20,7 +23,7 @@ class main(Script):
         self.name = "Zanne et al. Global wood density database."
         self.shortname = "GWDD"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.0'
+        self.version = '1.1'
         self.urls = {"GWDD": "http://datadryad.org/bitstream/handle/10255/dryad.235/GlobalWoodDensityDatabase.xls?sequence=1"}
         self.tags = ["Taxon > Plants", "Spatial Scale > Global",
                      "Data Type > Observational"]
@@ -47,79 +50,80 @@ class main(Script):
         sh = book.sheet_by_index(1)
         rows = sh.nrows
 
-        #Creating data table
-        lines = []
+        # Creating data files
+        file_path = self.engine.format_filename("gwdd_data.csv")
+        if sys.version_info >= (3, 0, 0):
+            gwdd_data = io.open(file_path, 'w', newline='')
+        else:
+            gwdd_data = io.open(file_path, 'wb')
+
+        csv_writer = csv.writer(gwdd_data, dialect='excel', escapechar='\\', lineterminator='\n')
+        csv_writer.writerow(["Number", "Family", "Binomial", "Wood_Density", "Region", "Reference_Number"])
+
         for i in range(1, rows):
             row = sh.row(i)
             if not all(Excel.empty_cell(cell) for cell in row):
                 this_line = {}
+
                 def format_value(s):
                     s = Excel.cell_value(s)
-                    return str(s).title().replace("\\", "/").replace('"', '')
-                for num, label in enumerate(["Number", "Family", "Binomial", "Wood_Density",
-                            "Region", "Reference_Number"]):
-                    this_line[label] = format_value(row[num])
-                lines.append(this_line)
+                    return s.title()
 
-        table = Table("data", delimiter="\t")
-        table.columns=[("Number"                ,   ("pk-int",) ),
-                       ("Family"                ,   ("char",)   ),
-                       ("Binomial"              ,   ("char",)   ),
-                       ("Wood_Density"          ,   ("double",) ),
-                       ("Region"                ,   ("char",)   ),
-                       ("Reference_Number"      ,   ("int",)    )]
+                for num, label in enumerate(["Number", "Family", "Binomial", "Wood_Density", "Region", "Reference_Number"]):
+                    this_line[label] = format_value(row[num])
+
+                data = [this_line["Number"], this_line["Family"], this_line["Binomial"], this_line["Wood_Density"],
+                        this_line["Region"], this_line["Reference_Number"]]
+                csv_writer.writerow(data)
+
+        table = Table("data", delimiter=",")
+        table.columns = [("Number", ("pk-int",)),
+                         ("Family", ("char",)),
+                         ("Binomial", ("char",)),
+                         ("Wood_Density", ("double",)),
+                         ("Region", ("char",)),
+                         ("Reference_Number", ("int",))]
         table.pk = 'Number'
         table.contains_pk = True
 
-        gwdd = []
-        for line in lines:
-            gwdd_data = [line["Number"],
-                         line["Family"],
-                         line["Binomial"],
-                         line["Wood_Density"],
-                         line["Region"],
-                         line["Reference_Number"]]
-            gwdd.append(gwdd_data)
-
-        data = ['\t'.join(gwdd_line) for gwdd_line in gwdd]
         self.engine.table = table
         self.engine.create_table()
-        self.engine.add_to_table(data)
+        self.engine.insert_data_from_file(engine.format_filename(file_path))
 
-        #Creating reference table
-        lines = []
+        # Creating reference tale file
+        file_path = self.engine.format_filename("gwdd_ref.csv")
+        if sys.version_info >= (3, 0, 0):
+            ref_file = io.open(file_path, 'w', newline = '')
+        else:
+            ref_file = io.open(file_path, 'wb')
+
+        csv_writer = csv.writer(ref_file, dialect='excel', escapechar='\\', lineterminator='\n')
+        csv_writer.writerow(["Reference_Number", "Reference"])
         sh = book.sheet_by_index(2)
         rows = sh.nrows
         for i in range(1, rows):
             row = sh.row(i)
             if not all(Excel.empty_cell(cell) for cell in row):
                 this_line = {}
+
                 def format_value(s):
                     s = Excel.cell_value(s)
-                    return str(s).title().replace("\\", "/").replace('"', '')
+                    return s.title()
+
                 for num, label in enumerate(["Reference_Number", "Reference"]):
                     this_line[label] = format_value(row[num])
-                lines.append(this_line)
+                gwdd_ref = [this_line["Reference_Number"], this_line["Reference"]]
+                csv_writer.writerow(gwdd_ref)
+        ref_file.close()
 
-        table = Table("reference", delimiter="\t")
-        table.columns=[("Reference_Number"  ,   ("pk-int",) ),
-                       ("Reference"         ,   ("char",)   )]
+        table = Table("reference", delimiter=",")
+        table.columns = [("Reference_Number", ("pk-int",)), ("Reference", ("char",))]
         table.pk = 'Reference_Number'
         table.contains_pk = True
 
-        gwdd = []
-        for line in lines:
-            gwdd_ref = [line["Reference_Number"],
-                        line["Reference"]]
-            gwdd.append(gwdd_ref)
-
-        data = ['\t'.join(gwdd_line) for gwdd_line in gwdd]
         self.engine.table = table
         self.engine.create_table()
-        self.engine.add_to_table(data)
-        self.engine.find_file("GlobalWoodDensityDatabase.xls")
-
+        self.engine.insert_data_from_file(engine.format_filename(file_path))
         return self.engine
 
 SCRIPT = main()
-
