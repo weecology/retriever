@@ -25,7 +25,7 @@ class main(Script):
         self.name = "Alwyn H. Gentry Forest Transect Dataset"
         self.shortname = "Gentry"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.1'
+        self.version = '1.2'
         self.urls = {"stems": "http://www.mobot.org/mobot/gentry/123/all_Excel.zip",
                      "sites": "https://ndownloader.figshare.com/files/5515373",
                      "species": "",
@@ -121,6 +121,13 @@ U.S.A. """
                                               for c in cn["stems"]
                                               if not Excel.empty_cell(row[c])]
                         this_line["site"] = filename[0:-4]
+
+                        # Manually correct CEDRAL data, which has a single line
+                        # that is shifted by one to the left starting at Liana
+                        if this_line["site"] == "CEDRAL" and type(this_line["liana"]) == float:
+                            this_line["liana"] = ""
+                            this_line["count"] = 3
+                            this_line["stems"] = [2.5, 2.5, 30, 18, 25]
 
                         lines.append(this_line)
 
