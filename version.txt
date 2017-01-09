@@ -10,8 +10,8 @@ bbs50stop.py,1.1
 bioclim_2pt5.py,1.0
 CForBioData.json,1.0
 DelMoral2010.json,1.0
-EA_clark2006.py,1.0
-EA_petraitis2008.py,1.1
+EA_clark2006.py,1.1
+EA_petraitis2008.py,1.2
 EltonTraits.json,1.0
 fia.py,1.0
 FishParasiteHosts.json,1.0
@@ -43,6 +43,6 @@ Ramesh2010.json,1.0
 SonoranPerennials.json,1.0
 Steppe_plants_2013.json,1.0
 TreeWesternGhats.json,1.0
-vertnet.py,1.1
+vertnet.py,1.2
 Woods2009.json,1.0
 Zachmann2010.json,1.0

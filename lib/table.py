@@ -100,8 +100,6 @@ class Table(object):
             writer_file =  io.StringIO()
         else:
             writer_file =  io.BytesIO()
-
-
         writer = csv.writer(writer_file, dialect=dialect, delimiter=self.delimiter)
         writer.writerow(line_as_list)
         return writer_file.getvalue()
@@ -133,24 +131,30 @@ class Table(object):
         return linevalues
 
     def get_insert_columns(self, join=True, create=False):
-        """Gets a set of column names for insert statements."""
-        columns = ""
+        """Gets column names for insert statements
+
+        `create` should be set to `True` if the returned values are going to be used
+        for creating a new table. It includes the `pk_auto` column if present. This
+        column is not included by default because it is not used when generating
+        insert statements for database management systems.
+        """
+        columns = []
         if not self.cleaned_columns:
             column_names = list(self.columns)
             self.columns[:] = []
             self.columns = [(self.clean_column_name(name[0]), name[1]) for name in column_names]
             self.cleaned_columns = True
         for item in self.columns:
+            if not create and item[1][0] == 'pk-auto':
+                # don't include this columns if create=False
+                continue
             thistype = item[1][0]
             if (thistype != "skip") and (thistype != "combine"):
-                columns += item[0] + ", "
-        columns = columns.rstrip(', ')
-        if not create and self.columns[0][0] == 'record_id':
-            columns = columns.replace("record_id,", "", 1).strip()
+                columns.append(item[0])
         if join:
-            return columns
+            return ", ".join(columns)
         else:
-            return columns.lstrip("(").rstrip(")").split(", ")
+            return columns
 
     def get_column_datatypes(self):
         """Gets a set of column names for insert statements."""
