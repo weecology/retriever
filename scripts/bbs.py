@@ -14,8 +14,8 @@ import zipfile
 from decimal import Decimal
 from retriever.lib.templates import Script
 from retriever.lib.models import Table, Cleanup, no_cleanup, correct_invalid_value
+from retriever import HOME_DIR, open_fr, open_fw
 
-VERSION = '0.5'
 
 class main(Script):
     def __init__(self, **kwargs):
@@ -27,7 +27,7 @@ class main(Script):
         self.ref = "http://www.pwrc.usgs.gov/BBS/"
         self.tags = ["Taxon > Birds", "Spatial Scale > Continental"]
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.1'
+        self.version = '1.2'
         self.urls = {
                      "counts": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/",
                      "routes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/Routes.zip",
@@ -72,11 +72,11 @@ class main(Script):
             if not os.path.isfile(engine.format_filename("weather_new.csv")):
                 engine.download_files_from_archive(self.urls["weather"],
                                                    ["weather.csv"])
-                read = open(engine.format_filename("weather.csv"), "rb")
-                write = open(engine.format_filename("weather_new.csv"), "wb")
+                read = open_fr(engine.format_filename("weather.csv"))
+                write = open_fw(engine.format_filename("weather_new.csv"))
                 print("Cleaning weather data...")
                 for line in read:
-                    values = line.split(b',')
+                    values = line.split(',')
                     newvalues = []
                     for value in values:
 
