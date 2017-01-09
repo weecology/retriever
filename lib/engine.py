@@ -400,6 +400,7 @@ class Engine(object):
                                     keep_in_dir=False, archivename=None):
         """Downloads files from an archive into the raw data directory.
         """
+        print()
         downloaded = False
         if archivename:
             archivename = self.format_filename(archivename)
@@ -425,8 +426,19 @@ class Engine(object):
                     downloaded = True
 
                 if filetype == 'zip':
-                    archive = zipfile.ZipFile(archivename)
-                    open_archive_file = archive.open(filename, 'r')
+                    try:
+                        archive = zipfile.ZipFile(archivename)
+                        if archive.testzip():
+                            # This fixes an issue with the zip files that was causing errors on
+                            # Python 3. testzip() returns the names of any files with issues so if
+                            # it exists there is a problem. For details of the issue and the fix see:
+                            # see """https://stackoverflow.com/questions/41492984/
+                            # zipfile-testzip-returning-different-results-on-python-2-and-python-3"""
+                            archive.getinfo(filename).file_size += (2 ** 64) - 1
+                        open_archive_file = archive.open(filename, 'r')
+                    except zipfile.BadZipFile as e:
+                        print("\n{0} can't be extracted, may be corrupt \n{1}".format(filename, e))
+
                 elif filetype == 'gz':
                     # gzip archives can only contain a single file
                     open_archive_file = gzip.open(archivename, 'r')
