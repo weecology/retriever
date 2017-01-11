@@ -11,8 +11,8 @@
         {
             "dialect": {
                 "delimiter": ",",
-                "header_rows": "0", 
-                "nulls": "?"
+                "header_rows": 0,
+                "nulls": ["?"]
             },
             "name": "data",
             "schema": {
@@ -93,8 +93,8 @@
         {
             "dialect": {
                 "delimiter": ",",
-                "header_rows": "1", 
-                "nulls": "?"
+                "header_rows": 1,
+                "nulls": ["?"]
             },
             "name": "test",
             "schema": {
@@ -179,5 +179,5 @@
         "data": "http://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data",
         "test": "http://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.test"
     },
-    "version": 1.0
+    "version": 1.1
 }

@@ -7,7 +7,7 @@
     "resources": [
         {
             "dialect": {
-                "header_rows": "1"
+                "header_rows": 1
             },
             "name": "red",
             "schema": {
@@ -66,7 +66,7 @@
         },
         {
             "dialect": {
-                "header_rows": "1"
+                "header_rows": 1
             },
             "name": "white",
             "schema": {
