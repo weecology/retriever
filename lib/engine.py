@@ -394,7 +394,14 @@ class Engine(object):
             path = self.format_filename(filename)
             self.create_raw_data_dir()
             print("Downloading " + filename + "...")
-            urlretrieve(url, path, reporthook=reporthook)
+            try:
+                urlretrieve(url, path, reporthook=reporthook)
+            except:
+                # For some urls lacking filenames urlretrieve from the future
+                # package seems to fail. This issue occurred in the PlantTaxonomy
+                # script. If this happens, fall back to the standard Python 2 version.
+                from urllib import urlretrieve as py2urlretrieve
+                py2urlretrieve(url, path, reporthook=reporthook)
 
     def download_files_from_archive(self, url, filenames, filetype="zip",
                                     keep_in_dir=False, archivename=None):
