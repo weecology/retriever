@@ -1,5 +1,7 @@
 v2.0.dev
+Abalone.json,1.0
 Adler2007.json,1.0
+Adult.json,1.0
 AmnioteDB.json,1.0
 Anderson2011.json,1.0
 ArcticBreedBird.json,1.0
@@ -8,6 +10,8 @@ baad.py,1.1
 bbs.py,1.2
 bbs50stop.py,1.2
 bioclim_2pt5.py,1.0
+BreastCancer.json,1.0
+Car.json,1.0
 CForBioData.json,1.0
 DelMoral2010.json,1.0
 EA_clark2006.py,1.1
@@ -15,6 +19,7 @@ EA_petraitis2008.py,1.2
 EltonTraits.json,1.0
 fia.py,1.1
 FishParasiteHosts.json,1.0
+ForestFires.json,1.0
 FrayJorge.json,1.1
 gentry.py,1.1
 gwdd.py,1.1
@@ -37,6 +42,7 @@ Palmer2007.json,1.0
 Pantheria.json,1.0
 PhytoplankonBiovolume.json,1.0
 PlantTaxonomy.json,1.0
+PokerHands.json,1.0
 PortalMammals.json,1.0
 prism_4km_monthly_modern.py,1.0
 Ramesh2010.json,1.0
@@ -44,5 +50,7 @@ SonoranPerennials.json,1.0
 Steppe_plants_2013.json,1.0
 TreeWesternGhats.json,1.0
 vertnet.py,1.2
+Wine.json,1.0
+WineQ.json,1.0
 Woods2009.json,1.0
 Zachmann2010.json,1.0

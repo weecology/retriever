@@ -1,0 +1,55 @@
+{
+    "citation": "Lichman, M. (2013). UCI Machine Learning Repository [http://archive.ics.uci.edu/ml]. Irvine, CA: University of California, School of Information and Computer Science.",
+    "description": "A database useful for testing constructive induction and structure discovery methods.",
+    "homepage": "http://archive.ics.uci.edu/ml/datasets/Car+Evaluation",
+    "keywords": [
+        "Categorical",
+        "Multivariate"
+    ],
+    "name": "Car",
+    "resources": [
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": "0"
+            },
+            "name": "data",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "buying",
+                        "type": "char"
+                    },
+                    {
+                        "name": "maint",
+                        "type": "char"
+                    },
+                    {
+                        "name": "doors",
+                        "type": "char"
+                    },
+                    {
+                        "name": "persons",
+                        "type": "char"
+                    },
+                    {
+                        "name": "lug_boot",
+                        "type": "char"
+                    },
+                    {
+                        "name": "safety",
+                        "type": "char"
+                    }
+                ]
+            },
+            "url": "http://archive.ics.uci.edu/ml/machine-learning-databases/car/car.data"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.dev",
+    "title": "Car Evaluation",
+    "urls": {
+        "data": "http://archive.ics.uci.edu/ml/machine-learning-databases/car/car.data"
+    },
+    "version": 1.0
+}
