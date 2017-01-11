@@ -129,7 +129,7 @@
     "title": "Wine Quality",
     "urls": {
         "red": "http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv",
-        "white": "http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/"
+        "white": "http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv"
     },
     "version": 1.0
 }
