@@ -11,7 +11,7 @@
         {
             "dialect": {
                 "delimiter": ",",
-                "header_rows": "0"
+                "header_rows": 0
             },
             "name": "data",
             "schema": {

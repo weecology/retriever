@@ -8,7 +8,7 @@
         {
             "dialect": {
                 "delimiter": ",",
-                "header_rows": "0"
+                "header_rows": 0
             },
             "name": "breastCancerWisconsin",
             "schema": {
@@ -64,7 +64,7 @@
         {
             "dialect": {
                 "delimiter": ",",
-                "header_rows": "0"
+                "header_rows": 0
             },
             "name": "wdbc",
             "schema": {
@@ -124,7 +124,7 @@
         {
             "dialect": {
                 "delimiter": ",",
-                "header_rows": "0"
+                "header_rows": 0
             },
             "name": "wpbc",
             "schema": {

@@ -7,7 +7,7 @@
     "resources": [
         {
             "dialect": {
-                "header_rows": "0"
+                "header_rows": 0
             },
             "name": "testing",
             "schema": {
@@ -62,7 +62,7 @@
         },
         {
             "dialect": {
-                "header_rows": "0"
+                "header_rows": 0
             },
             "name": "training",
             "schema": {
@@ -123,5 +123,5 @@
         "testing": "http://archive.ics.uci.edu/ml/machine-learning-databases/poker/poker-hand-testing.data",
         "training": "http://archive.ics.uci.edu/ml/machine-learning-databases/poker/poker-hand-training-true.data"
     },
-    "version": 1.0
+    "version": 1.1
 }
