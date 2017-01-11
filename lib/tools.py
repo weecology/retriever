@@ -169,7 +169,7 @@ def json2csv(input_file, output_file=None, header_values=None):
     """Convert Json file to CSV
     function is used for only testing and can handle the file of the size
     """
-    file_out = open_fr(input_file)
+    file_out = open_fr(input_file, encode = False)
     # set output file name and write header
     if output_file is None:
         output_file = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
