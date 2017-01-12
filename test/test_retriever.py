@@ -1,3 +1,4 @@
+# -*- coding: latin-1  -*-
 """Tests for the Data Retriever"""
 from future import standard_library
 
@@ -52,6 +53,15 @@ def test_auto_get_columns():
     test_engine.table.delimiter = ","
     columns, column_values = test_engine.table.auto_get_columns(['a','b','c','d'])
     assert columns == [['a', None], ['b', None], ['c', None], ['d', None]]
+
+
+def test_auto_get_datatypes():
+    """Test the length detected by auto_get_datatype
+    The function adds 100 to the auto detected length of column
+    """
+    test_engine.auto_get_datatypes(None, [["ö",'bb','Löve']], [['a', None], ['b', None], ['c', None]], {'a': [], 'c': [], 'b': []})
+    length = test_engine.table.columns
+    assert [length[0][1][1], length[1][1][1], length[2][1][1]] == [101, 102, 104]
 
 
 def test_auto_get_columns_extra_whitespace():
