@@ -10,7 +10,7 @@
     "resources": [
         {
             "dialect": {
-                "nulls": [
+                "missingValues": [
                     "n/a"
                 ]
             },
@@ -20,7 +20,7 @@
         },
         {
             "dialect": {
-                "nulls": [
+                "missingValues": [
                     "n/a"
                 ]
             },
@@ -30,7 +30,7 @@
         },
         {
             "dialect": {
-                "nulls": [
+                "missingValues": [
                     "n/a"
                 ]
             },
@@ -40,7 +40,7 @@
         },
         {
             "dialect": {
-                "nulls": [
+                "missingValues": [
                     "n/a"
                 ]
             },

@@ -233,7 +233,7 @@
         },
         {
             "dialect": {
-                "nulls": [
+                "missingValues": [
                     ".",
                     "n/a"
                 ]

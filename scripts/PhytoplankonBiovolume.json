@@ -10,7 +10,7 @@
     "resources": [
         {
             "dialect": {
-                "nulls": [
+                "missingValues": [
                     "NA"
                 ]
             },
@@ -20,7 +20,7 @@
         },
         {
             "dialect": {
-                "nulls": [
+                "missingValues": [
                     "NA"
                 ]
             },
@@ -30,7 +30,7 @@
         },
         {
             "dialect": {
-                "nulls": [
+                "missingValues": [
                     "NA"
                 ]
             },
@@ -40,7 +40,7 @@
         },
         {
             "dialect": {
-                "nulls": [
+                "missingValues": [
                     "NA"
                 ]
             },
@@ -50,7 +50,7 @@
         },
         {
             "dialect": {
-                "nulls": [
+                "missingValues": [
                     "NA"
                 ]
             },
@@ -60,7 +60,7 @@
         },
         {
             "dialect": {
-                "nulls": [
+                "missingValues": [
                     "NA"
                 ]
             },

@@ -10,7 +10,7 @@
     "resources": [
         {
             "dialect": {
-                "nulls": [
+                "missingValues": [
                     -9999
                 ]
             },

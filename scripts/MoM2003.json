@@ -10,7 +10,7 @@
     "resources": [
         {
             "dialect": {
-                "nulls": [
+                "missingValues": [
                     -999
                 ], 
                 "header_rows": 0

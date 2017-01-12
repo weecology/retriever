@@ -369,7 +369,7 @@ def test_add_dialect():
     table = {}
     table['dialect'] = {}
     table_dict = {}
-    table['dialect']['nulls'] = '\0'
+    table['dialect']['missingValues'] = '\0'
     table['dialect']['delimiter'] = '\t'
     table['dialect']['dummy_key'] = 'dummy_value'
 

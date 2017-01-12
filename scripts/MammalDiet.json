@@ -10,7 +10,7 @@
         {
             "dialect": {
                 "contains_pk": "True",
-                "nulls": [
+                "missingValues": [
                     "NA"
                 ]
             },

@@ -5,7 +5,7 @@
     "resources": [
         {
             "dialect": {
-                "nulls": [
+                "missingValues": [
                     "na"
                 ],
                 "replace_columns": [

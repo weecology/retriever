@@ -14,7 +14,7 @@
             "dialect": {
                 "contains_pk": "True",
                 "delimiter": ",",
-                "nulls": [
+                "missingValues": [
                     "",
                     null
                 ]

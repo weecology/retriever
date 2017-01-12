@@ -24,7 +24,7 @@
         },
         {
             "dialect": {
-                "nulls": [
+                "missingValues": [
                     "NA"
                 ]
             },
@@ -40,7 +40,7 @@
         },
         {
             "dialect": {
-                "nulls": [
+                "missingValues": [
                     "NA"
                 ],
                 "replace_columns": [
@@ -96,7 +96,7 @@
         },
         {
             "dialect": {
-                "nulls": [
+                "missingValues": [
                     "NA"
                 ],
                 "replace_columns": [
