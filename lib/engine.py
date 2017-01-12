@@ -214,7 +214,7 @@ class Engine(object):
                                 val, self.table.cleanup.args)
 
                         if val is not None and val.strip() is not '':
-                            if len(str(val)) > max_lengths[i]:
+                            if len(str(val)) + 100 > max_lengths[i]:
                                 max_lengths[i] = len(str(val)) + 100
 
                             if column_types[i][0] in ('int', 'bigint'):
@@ -232,8 +232,8 @@ class Engine(object):
                                 except:
                                     column_types[i] = ['char', max_lengths[i]]
                             if column_types[i][0] == 'char':
-                                if len(str(val)) > column_types[i][1]:
-                                    column_types[i][1] = max_lengths[i]
+                                if len(str(val)) + 100 > column_types[i][1]:
+                                    column_types[i][1] = max_lengths[i] + 100
                     except IndexError:
                         pass
 
