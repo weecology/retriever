@@ -233,7 +233,7 @@ class Engine(object):
                                     column_types[i] = ['char', max_lengths[i]]
                             if column_types[i][0] == 'char':
                                 if len(str(val)) + 100 > column_types[i][1]:
-                                    column_types[i][1] = max_lengths[i] + 100
+                                    column_types[i][1] = max_lengths[i]
                     except IndexError:
                         pass
 
