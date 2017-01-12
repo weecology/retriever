@@ -1,7 +1,6 @@
 v2.0.dev
 Abalone.json,1.1
 Adler2007.json,1.0
-Adult.json,1.1
 AmnioteDB.json,1.0
 Anderson2011.json,1.0
 ArcticBreedBird.json,1.0
