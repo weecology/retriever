@@ -75,57 +75,51 @@ class Engine(object):
             real_line_length = sum(1 for _ in len_source)
 
         total = self.table.record_id + real_line_length
-        pos = 0
         count_iter = 1
         insert_limit = 400
-        current = 0
         types = self.table.get_column_datatypes()
         multiple_values = []
         for line in real_lines:
-            if line:
-                self.table.record_id += 1
-                linevalues = self.table.values_from_line(line)
-                # Build insert statement with the correct number of values
+            self.table.record_id += 1
+            linevalues = self.table.values_from_line(line)
+            # Build insert statement with the correct number of values
+            try:
+                cleanvalues = [self.format_insert_value(self.table.cleanup.function
+                                                        (linevalues[n],
+                                                         self.table.cleanup.args),
+                                                        types[n])
+                               for n in range(len(linevalues))]
+            except Exception as e:
+                self.warning('Exception in line %s: %s' % (self.table.record_id, e))
+                continue
+            count_iter += 1
+            if count_iter % insert_limit == 0 or count_iter == real_line_length:
+                # Add values to the list multiple_values
+                # if multiple_values list is full or we reached the last value in real_line_length
+                # execute the values in multiple_values
+                multiple_values.append(cleanvalues)
                 try:
-                    cleanvalues = [self.format_insert_value(self.table.cleanup.function
-                                                            (linevalues[n],
-                                                             self.table.cleanup.args),
-                                                            types[n])
-                                   for n in range(len(linevalues))]
-                except Exception as e:
-                    self.warning('Exception in line %s: %s' % (self.table.record_id, e))
-                    continue
-
-                if count_iter % insert_limit == 0 or count_iter == real_line_length:
-                    multiple_values.append(cleanvalues)
-                    try:
-                        insert_stmt = self.insert_statement(multiple_values)
-                    except:
-                        if self.debug:
-                            print(types)
-                        if self.debug:
-                            print(linevalues)
-                        if self.debug:
-                            print(cleanvalues)
-                        raise
-                    multiple_values = []
-
-                    try:
-                        self.execute(insert_stmt, commit=False)
-                        current += insert_limit
-                        if current > real_line_length:
-                            prompt = "Progress: " + str(real_line_length) + " / " + str(total) + " rows inserted into " + self.table_name() + ": "
-                        else:
-                            prompt = "Progress: " + str(current) + " / " + str(total) + " rows inserted into " + self.table_name() + ": "
-                        sys.stdout.write(prompt + "\b" * len(prompt))
-                        sys.stdout.flush()
-                    except:
-                        print(insert_stmt)
-                        raise
-                else:
-                    multiple_values.append(cleanvalues)
-                count_iter += 1
-        print ("\n")
+                    insert_stmt = self.insert_statement(multiple_values)
+                except:
+                    if self.debug:
+                        print(types)
+                    if self.debug:
+                        print(linevalues)
+                    if self.debug:
+                        print(cleanvalues)
+                    raise
+                multiple_values = []
+                try:
+                    self.execute(insert_stmt, commit=False)
+                    prompt = "Progress: " + str(count_iter) + " / " + str(real_line_length) + " rows inserted into " + self.table_name() + " totaling " + str(total) + ":"
+                    sys.stdout.write(prompt + "\b" * len(prompt))
+                    sys.stdout.flush()
+                except:
+                    print(insert_stmt)
+                    raise
+            else:
+                multiple_values.append(cleanvalues)
+        print("\n")
         self.connection.commit()
 
     def get_ct_data(self, lines):
@@ -304,7 +298,7 @@ class Engine(object):
         engine.db"""
         db_name = self.database_name()
         if db_name:
-            print("Creating database " + db_name + "...")
+            print("Creating database " + db_name + "...\n")
             # Create the database
             create_stmt = self.create_db_statement()
             if self.debug:
@@ -393,7 +387,7 @@ class Engine(object):
         if not self.find_file(filename):
             path = self.format_filename(filename)
             self.create_raw_data_dir()
-            print("Downloading " + filename + "...")
+            print("\nDownloading " + filename + "...")
             try:
                 urlretrieve(url, path, reporthook=reporthook)
             except:
@@ -635,7 +629,7 @@ class Engine(object):
         else:
             # Save a copy of the file locally, then load from that file
             self.create_raw_data_dir()
-            print("Saving a copy of " + filename + "...")
+            print("\nSaving a copy of " + filename + "...")
             self.download_file(url, filename)
             self.insert_data_from_file(self.find_file(filename))
 
