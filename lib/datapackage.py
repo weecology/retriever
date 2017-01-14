@@ -162,7 +162,7 @@ def create_json():
     contents['resources'] = []
     contents['retriever'] = "True"
     contents['retriever_minimum_version'] = "2.0.dev"
-    contents['version'] = 1.0;
+    contents['version'] = "1.0.0";
 
     # Add tables -
     while True:

@@ -384,7 +384,7 @@ class Engine(object):
             db_name = self.opts["database_name"].format(db=name)
         except KeyError:
             db_name = name
-        return db_name
+        return db_name.replace('-', '_')
 
     def download_file(self, url, filename):
         """Downloads a file to the raw data directory."""
