@@ -8,7 +8,7 @@
         "time-series",
         "observational"
     ],
-    "name": "McGlinn2010",
+    "name": "plant-comp-ok",
     "resources": [
         {
             "dialect": {},

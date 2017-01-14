@@ -6,7 +6,7 @@
         "time-series",
         "observational"
     ],
-    "name": "tree-demog-westghats",
+    "name": "tree-demog-wghats",
     "resources": [
         {
             "dialect": {
