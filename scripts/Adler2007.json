@@ -3,12 +3,12 @@
     "description": "Demographic data for testing current theories in plant ecology and forecasting the effects of global change.",
     "homepage": "http://esapubs.org/archive/ecol/E088/161/",
     "keywords": [
-        "Taxon > Plants",
-        "Spatial Scale > Local",
-        "Data Type > Time Series",
-        "Data Type > Observational"
+        "plants",
+        "local-scale",
+        "time-series",
+        "observational"
     ],
-    "name": "Adler2007",
+    "name": "mapped-plant-quads-ks",
     "resources": [
         {
             "dialect": {},
@@ -153,7 +153,7 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
-    "title": "Kansas plant quadrats (Ecological Archives 2007)",
+    "title": "Mapped plant quadrat time-series from Kansas (Adler et al. 2007)",
     "urls": {
         "main": "http://esapubs.org/archive/ecol/E088/161/allrecords.csv",
         "monthly_ppt": "http://esapubs.org/archive/ecol/E088/161/monthly_ppt.csv",
@@ -162,5 +162,5 @@
         "quadrat_inventory": "http://esapubs.org/archive/ecol/E088/161/quadrat_inventory.csv",
         "species": "http://esapubs.org/archive/ecol/E088/161/species_list.csv"
     },
-    "version": 1.0
+    "version": "1.1.0"
 }

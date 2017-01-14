@@ -1,7 +1,7 @@
 {
     "citation": "Baldridge, Elita, A Data-intensive Assessment of the Species Abundance Distribution(2013). All Graduate Theses and Dissertations. Paper 4276.",
     "description": "Community abundance data for fish, reptiles, amphibians, beetles, spiders, and birds, compiled from the literature by Elita Baldridge.",
-    "name": "MiscAbundanceDB",
+    "name": "community-abundance-misc",
     "resources": [
         {
             "dialect": {},

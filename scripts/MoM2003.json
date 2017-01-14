@@ -3,10 +3,11 @@
     "description": "A data set of compiled body mass information for all mammals on Earth.",
     "homepage": "http://www.esapubs.org/archive/ecol/E084/094/",
     "keywords": [
-        "Taxon > Mammals",
-        "Data Type > Compilation"
+        "mammals",
+        "literature-compilation",
+        "size"
     ],
-    "name": "MoM2003",
+    "name": "mammal-masses",
     "resources": [
         {
             "dialect": {
@@ -15,7 +16,7 @@
                 ], 
                 "header_rows": 0
             },
-            "name": "MOM",
+            "name": "MammalMasses",
             "schema": {
                 "fields": [
                     {
@@ -71,9 +72,9 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
-    "title": "Masses of Mammals (Ecological Archives 2003)",
+    "title": "Masses of Mammals (Smith et al. 2003)",
     "urls": {
-        "MOM": "http://www.esapubs.org/Archive/ecol/E084/094/MOMv3.3.txt"
+        "MammalMasses": "http://www.esapubs.org/Archive/ecol/E084/094/MOMv3.3.txt"
     },
-    "version": 1.1
+    "version": "1.2.0"
 }

@@ -3,10 +3,10 @@
     "description": "Compilation of life history traits for birds, mammals, and reptiles.",
     "homepage": "http://esapubs.org/archive/ecol/E096/269",
     "keywords": [
-        "Taxon > Mammals",
-        "Data Type > Compilation"
+        "mammals",
+        "literature-compilation"
     ],
-    "name": "AmnioteDB",
+    "name": "amniote-life-history",
     "resources": [
         {
             "dialect": {
@@ -104,5 +104,5 @@
     "urls": {
         "main": "http://esapubs.org/archive/ecol/E096/269/Data_Files/Amniote_Database_Aug_2015.csv"
     },
-    "version": 1.0
+    "version": "1.1.0"
 }

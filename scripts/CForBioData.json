@@ -3,9 +3,12 @@
     "description": "Forest biomass data set of China which includes tree overstory components (stems, branches, leaves, and roots, among all other plant material), the understory vegetation (saplings, shrubs, herbs, and mosses), woody liana vegetation, and the necromass components of dead organic matter (litterfall, suspended branches, and dead trees).",
     "homepage": "http://esapubs.org/archive/ecol/E095/177/",
     "keywords": [
-        "allocation > biomass > China > climate > forest type > necromass > stand structure"
+	"biomass",
+	"China",
+	"climate",
+	"forest"
     ],
-    "name": "CForBioData",
+    "name": "forest-biomass-china",
     "resources": [
         {
             "dialect": {
@@ -20,9 +23,9 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
-    "title": "Biomass and Its Allocation in Chinese Forest Ecosystems - Luo, et al., 2014",
+    "title": "Biomass and Its Allocation in Chinese Forest Ecosystems (Luo, et al., 2014)",
     "urls": {
         "biomass": "http://esapubs.org/archive/ecol/E095/177/CForBioData_v1.0.txt"
     },
-    "version": 1.0
+    "version": "1.1.0"
 }

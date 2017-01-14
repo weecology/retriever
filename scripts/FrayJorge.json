@@ -1,7 +1,14 @@
 {
     "citation": "D. A. Kelt, P. L. Meserve, J. R. Gutierrez, W. Bryan Milstead, and M. A. Previtali. 2013. Long-term monitoring of mammals in the face of biotic and abiotic influences at a semiarid site in north-central Chile. Ecology 94:977. http://dx.doi.org/10.1890/12-1811.1.",
     "description": "Long-term monitoring of small mammal and plant communities in the face of biotic and abiotic influences at a semiarid site in north-central Chile.",
-    "name": "FrayJorge",
+    "keywords": [
+        "plants",
+        "local-scale",
+        "time-series",
+        "mammals"
+    ],
+
+    "name": "fray-jorge-ecology",
     "resources": [
         {
             "dialect": {},
@@ -245,13 +252,13 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
-    "title": "Fray Jorge community database",
+    "title": "Fray Jorge community ecology database (Kelt et al. 2013)",
     "urls": {
         "annuals": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Annuals_1989-2005.txt",
         "mammals": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Small_Mammals_198903-200512.txt",
         "perennials": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Perennials_1989-2005.txt",
         "precip": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Precipitation_1989-2005.csv",
-        "seed_89_02": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Seeds_1989-2002.txt"
+        "seeds": "http://esapubs.org/archive/ecol/E094/084/data/Fray_Jorge_Seeds_1989-2002.txt"
     },
-    "version": 1.1
+    "version": "1.2.0"
 }

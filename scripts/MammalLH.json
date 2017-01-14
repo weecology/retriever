@@ -3,10 +3,11 @@
     "description": "The purpose of this data set was to compile general life history characteristics for a variety of mammalian species to perform comparative life history analyses among different taxa and different body size groups.",
     "homepage": "http://esapubs.org/archive/ecol/E084/093/",
     "keywords": [
-        "Taxon > Mammals",
-        "Data Type > Compilation"
+        "mammals",
+        "literature-compilation",
+        "life-history"
     ],
-    "name": "MammalLH",
+    "name": "mammal-life-history",
     "resources": [
         {
             "dialect": {},
@@ -21,5 +22,5 @@
     "urls": {
         "species": "http://esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"
     },
-    "version": 1.0
+    "version": "1.1.0"
 }

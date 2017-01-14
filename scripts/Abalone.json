@@ -3,7 +3,7 @@
     "description": "Database to aid in the prediction of the age of an Abalone given physical measurements",
     "homepage": "http://archive.ics.uci.edu/ml/datasets/Abalone",
     "keywords": [],
-    "name": "Abalone",
+    "name": "abalone-age",
     "resources": [
         {
             "dialect": {
@@ -55,9 +55,9 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
-    "title": "Abalone Data",
+    "title": "Abalone Age and Size Data",
     "urls": {
         "data": "http://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data"
     },
-    "version": 1.1
+    "version": "1.2.0"
 }

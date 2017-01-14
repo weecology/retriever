@@ -3,7 +3,7 @@
     "description": "A database for regression analysis with the aim of predicting burned areas of forestry using meteorological and other data.",
     "homepage": "http://archive.ics.uci.edu/ml/datasets/Forest+Fires",
     "keywords": [],
-    "name": "ForestFires",
+    "name": "forest-fires-portugal",
     "resources": [
         {
             "dialect": {
@@ -67,9 +67,9 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
-    "title": "ForestFires",
+    "title": "Forest fire data for Montesinho natural park in Portugal",
     "urls": {
         "data": "http://archive.ics.uci.edu/ml/machine-learning-databases/forest-fires/forestfires.csv"
     },
-    "version": 1.0
+    "version": "1.1.0"
 }

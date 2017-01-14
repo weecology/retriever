@@ -3,12 +3,12 @@
     "description": "This data set consists of 26 permanent 1-m2 quadrats located on sagebrush steppe in eastern Idaho, USA.",
     "homepage": "http://esapubs.org/archive/ecol/E091/243/",
     "keywords": [
-        "Taxon > Plants",
-        "Spatial Scale > Local",
-        "Data Type > Time Series",
-        "Data Type > Observational"
+        "plants",
+        "local-scale",
+        "time-series",
+        "observational"
     ],
-    "name": "Zachmann2010",
+    "name": "mapped-plant-quads-id",
     "resources": [
         {
             "dialect": {},
@@ -220,7 +220,7 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
-    "title": "Sagebrush steppe quadrats (Ecological Archives 2010)",
+    "title": "Sagebrush steppe mapped plant quadrats (Zachmann et al. 2010)",
     "urls": {
         "counts": "http://esapubs.org/archive/ecol/E091/243/annuals_counts_v3.csv",
         "cover": "http://esapubs.org/archive/ecol/E091/243/allrecords_cover.csv",
@@ -234,5 +234,5 @@
         "species": "http://esapubs.org/archive/ecol/E091/243/species_list.csv",
         "taxonomy": "http://esapubs.org/archive/ecol/E091/243/taxonomic_grouping.csv"
     },
-    "version": 1.0
+    "version": "1.1.0"
 }

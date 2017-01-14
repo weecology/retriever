@@ -3,10 +3,11 @@
     "description": "Famous dataset from R. A. Fisher. This dataset has been corrected. Information Source: Asuncion, A. & Newman, D.J. (2007). UCI Machine Learning Repository [http://www.ics.uci.edu/~mlearn/MLRepository.html]. Irvine, CA: University of California, School of Information and Computer Science.",
     "homepage": "http://mlr.cs.umass.edu/ml/datasets/Iris",
     "keywords": [
-        "Taxon > Plants",
-        "Data Type > Compilation"
+        "plants",
+        "literature-compilation",
+        "categorical"
     ],
-    "name": "Iris",
+    "name": "iris",
     "resources": [
         {
             "dialect": {
@@ -48,5 +49,5 @@
     "urls": {
         "Iris": "http://mlr.cs.umass.edu/ml/machine-learning-databases/iris/bezdekIris.data"
     },
-    "version": 1.1
+    "version": "1.2.0"
 }

@@ -1,14 +1,15 @@
 {
     "citation": "S. K. Morgan Ernest, Thomas J. Valone, and James H. Brown. 2009. Long-term monitoring and experimental manipulation of a Chihuahuan Desert ecosystem near Portal, Arizona, USA. Ecology 90:1708.",
-    "description": "The data set represents a Desert ecosystems using the composition and abundances of ants, plants, and rodents has occurred continuously on 24 plots.",
+    "description": "The data set represents a Desert ecosystems using the composition and abundances of ants, plants, and rodents has occurred continuously on 24 plots. Currently includes only mammal data.",
     "homepage": "http://esapubs.org/archive/ecol/E090/118/",
     "keywords": [
-        "Taxon > Mammals",
-        "Biome > Desert",
-        "Data Type > Time Series",
-        "Data Type > Experimental"
+        "mammals",
+        "desert",
+        "time-series",
+        "experimental",
+        "observational"
     ],
-    "name": "PortalMammals",
+    "name": "portal",
     "resources": [
         {
             "dialect": {
@@ -178,11 +179,11 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "scan_lines": "40000",
-    "title": "Portal Project Mammals (Ecological Archives 2009)",
+    "title": "Portal Project Data (Ernest et al. 2009)",
     "urls": {
         "main": "http://esapubs.org/archive/ecol/E090/118/Portal_rodents_19772002.csv",
         "plots": "https://ndownloader.figshare.com/files/3299474",
         "species": "https://ndownloader.figshare.com/files/3299483"
     },
-    "version": 1.0
+    "version": "1.1.0"
 }

@@ -3,10 +3,10 @@
     "description": "A database useful for testing constructive induction and structure discovery methods.",
     "homepage": "http://archive.ics.uci.edu/ml/datasets/Car+Evaluation",
     "keywords": [
-        "Categorical",
-        "Multivariate"
+        "categorical",
+        "multivariate"
     ],
-    "name": "Car",
+    "name": "car-eval",
     "resources": [
         {
             "dialect": {
@@ -51,5 +51,5 @@
     "urls": {
         "data": "http://archive.ics.uci.edu/ml/machine-learning-databases/car/car.data"
     },
-    "version": 1.0
+    "version": "1.1.0"
 }

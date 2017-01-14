@@ -3,12 +3,12 @@
     "description": "The data set provides stem infomation from a regular grid of 256 permanent plots includes about 20% of a 100-ha old-growth forest at the Dukes Research Natural Area in northern Michigan, USA.",
     "homepage": "http://www.esapubs.org/archive/ecol/E090/251/",
     "keywords": [
-        "Taxon > Plants",
-        "Spatial Scale > Local",
-        "Data Type > Time Series",
-        "Data Type > Observational"
+        "plants",
+        "local-scale",
+        "time-series",
+        "observational"
     ],
-    "name": "Woods2009",
+    "name": "forest-plots-michigan",
     "resources": [
         {
             "dialect": {
@@ -153,7 +153,7 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
-    "title": "Michigan canopy dynamics (Ecological Archives 2009)",
+    "title": "Michigan forest canopy dynamics plots - Woods et al. 2009",
     "urls": {
         "all_plots_1935_1948": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/all_plots_1935_1948.txt",
         "all_plots_1974_1980": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/all_plots_1974-1980.txt",
@@ -162,5 +162,5 @@
         "swamp": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/swamp_all_modern.txt",
         "upland_plots_1989_2007": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/upland_plots_89-07.txt"
     },
-    "version": 1.0
+    "version": "1.1.0"
 }

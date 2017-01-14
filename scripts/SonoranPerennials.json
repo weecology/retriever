@@ -2,9 +2,9 @@
     "citation": "Susana Rodriguez-Buritica, Helen Raichle, Robert H. Webb, Raymond M. Turner, and D. Lawrence Venable. 2013. One hundred and six years of population and community dynamics of Sonoran Desert Laboratory perennials. Ecology 94:976.",
     "description": "The data set constitutes all information associated with the Spalding-Shreve permanent vegetation plots from 1906 through 2012, which is the longest-running plant monitoring program in the world.",
     "keywords": [
-        "Taxon > Plants"
+        "plants"
     ],
-    "name": "SonoranPerennials",
+    "name": "veg-plots-sdl",
     "resources": [
         {
             "dialect": {
@@ -100,7 +100,7 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
-    "title": "Sonoran Desert Perennials",
+    "title": "Sonoran Desert Lab perennials vegetation plots",
     "urls": {
         "Count1906": "http://esapubs.org/archive/ecol/E094/083/Count1906.csv",
         "Photo_info": "http://esapubs.org/archive/ecol/E094/083/Photo_info.csv",
@@ -112,5 +112,5 @@
         "Species": "http://esapubs.org/archive/ecol/E094/083/Species.csv",
         "Stake_info": "http://esapubs.org/archive/ecol/E094/083/Stake_info.csv"
     },
-    "version": 1.0
+    "version": "1.1.0"
 }

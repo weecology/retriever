@@ -2,8 +2,12 @@
     "citation": "Lichman, M. (2013). UCI Machine Learning Repository [http://archive.ics.uci.edu/ml]. Irvine, CA: University of California, School of Information and Computer Science.",
     "description": "Database containing information on Wisconsin Breast Cancer Diagnostics",
     "homepage": "http://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+%28Diagnostic%29",
-    "keywords": [],
-    "name": "BreastCancer",
+    "keywords": [
+	"cancer",
+	"health",
+	"disease",
+	"medicine"],
+    "name": "breast-cancer-wi",
     "resources": [
         {
             "dialect": {
@@ -194,5 +198,5 @@
         "wdbc": "http://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/wdbc.data",
         "wpbc": "http://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/wpbc.data"
     },
-    "version": 1.0
+    "version": "1.1.0"
 }

@@ -3,10 +3,11 @@
     "description": "Data on basal metabolic rate (BMR) with experimental animal body mass, field metabolic rate (FMR) with wild animal body mass, and sources of the data. Ecological Archives E091-198-S1.",
     "homepage": "http://www.esapubs.org/archive/ecol/E091/198/",
     "keywords": [
-        "Taxon > Mammals",
-        "Data Type > Compilation"
+        "mammals",
+        "literature-compilation",
+        "physiology"
     ],
-    "name": "MammalMR2010",
+    "name": "mammal-metabolic-rate",
     "resources": [
         {
             "dialect": {
@@ -23,7 +24,7 @@
     "retriever_minimum_version": "2.0.dev",
     "title": "Phylogeny and metabolic rates in mammals (Ecological Archives 2010)",
     "urls": {
-        "MammalMR2010": "http://www.esapubs.org/archive/ecol/E091/198/data.txt"
+        "MetabolicRate": "http://www.esapubs.org/archive/ecol/E091/198/data.txt"
     },
-    "version": 1.0
+    "version": "1.1.0"
 }

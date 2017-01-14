@@ -3,10 +3,11 @@
     "description": "Sampling phytoplankton communities basing on cell size.",
     "homepage": "http://www.esapubs.org/archive/ecol/E095/257/",
     "keywords": [
-        "Taxon > Phytoplankton",
-        "Data Type > Compilation"
+        "phytoplankton",
+        "literature-compilation",
+        "size"
     ],
-    "name": "PhytoplankonBiovolume",
+    "name": "phytoplankton-size",
     "resources": [
         {
             "dialect": {
@@ -80,5 +81,5 @@
         "bvd_species_raw": "http://esapubs.org/archive/ecol/E095/257/bvd_species_raw_030614.csv",
         "taxa_table": "http://esapubs.org/archive/ecol/E095/257/taxa_table_030614.csv"
     },
-    "version": 1.0
+    "version": "1.1.0"
 }

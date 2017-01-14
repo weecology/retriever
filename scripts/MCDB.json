@@ -3,11 +3,12 @@
     "description": "This data set includes species lists for 1000 mammal communities, excluding bats, with species-level abundances available for 940 of these communities.",
     "homepage": "http://esapubs.org/archive/ecol/E092/201/",
     "keywords": [
-        "Taxon > Mammals",
-        "Spatial Scale > Global",
-        "Data Type > Observational"
+        "mammals",
+        "global-scale",
+        "observational",
+        "literature-compilation"
     ],
-    "name": "MCDB",
+    "name": "mammal-community-db",
     "resources": [
         {
             "dialect": {},
@@ -42,7 +43,7 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
-    "title": "Mammal Community DataBase (Ecological Archives 2011)",
+    "title": "Mammal Community DataBase (Thibault et al. 2011)",
     "urls": {
         "communities": "http://esapubs.org/archive/ecol/E092/201/data/MCDB_communities.csv",
         "references": "http://esapubs.org/archive/ecol/E092/201/data/MCDB_references.csv",
@@ -50,5 +51,5 @@
         "species": "http://esapubs.org/archive/ecol/E092/201/data/MCDB_species.csv",
         "trapping": "http://esapubs.org/archive/ecol/E092/201/data/MCDB_trapping.csv"
     },
-    "version": 1.0
+    "version": "1.1.0"
 }

@@ -3,10 +3,11 @@
     "description": "PanTHERIA is a data set of multispecies trait data from diverse literature sources and also includes spatial databases of mammalian geographic ranges and global climatic and anthropogenic variables.",
     "homepage": "http://esapubs.org/archive/ecol/E090/184/",
     "keywords": [
-        "Taxon > Mammals",
-        "Data Type > Compilation"
+        "mammals",
+        "literature-compilation",
+        "life-history"
     ],
-    "name": "Pantheria",
+    "name": "pantheria",
     "resources": [
         {
             "dialect": {},
@@ -17,9 +18,9 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
-    "title": "Pantheria (Ecological Archives 2009 - WR05)",
+    "title": "Pantheria (Jones et al. 2009)",
     "urls": {
         "species": "http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR05_Aug2008.txt"
     },
-    "version": 1.0
+    "version": "1.1.0"
 }

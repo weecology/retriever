@@ -1,8 +1,8 @@
 {
-    "citation": "Chengjin Chu, John Norman, Robert Flynn, Nicole Kaplan, William K. Lauenroth, and Peter B. Adler. 2013. Cover, density, and demographics of shortgrass steppe plants mapped 1997-2010 in permanent grazed and ungrazed quadrats. Ecology 94:1435.",
-    "description": "long term plant quadrats of northern mixed prairie in Montana.",
-    "homepage": "http://dx.doi.org/10.1890/13-0121.1",
-    "name": "Anderson2011",
+    "citation": "Jed Anderson, Lance Vermeire, and Peter B. Adler. 2011. Fourteen years of mapped, permanent quadrats in a northern mixed prairie, USA. Ecology 92:1703.",
+    "description": "Long term plant quadrats of northern mixed prairie in Montana.",
+    "homepage": "https://doi.org/10.1890/11-0193.1",
+    "name": "mapped-plant-quads-mt",
     "resources": [
         {
             "dialect": {},
@@ -25,11 +25,11 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
-    "title": "Northern mixed prairie maps - Anderson et al. 2011",
+    "title": "Mapped plant quadrat time-series from Montana (Anderson et al. 2011)",
     "urls": {
         "allrecords_cover": "http://esapubs.org/archive/ecol/E092/143/allrecords_cover.csv",
         "allrecords_density": "http://esapubs.org/archive/ecol/E092/143/allrecords_density.csv",
         "species_list": "http://esapubs.org/archive/ecol/E092/143/species_list.csv"
     },
-    "version": 1.0
+    "version": "1.1.0"
 }

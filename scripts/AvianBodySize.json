@@ -3,10 +3,10 @@
     "description": "A comprehensive compilation of data set on avian body sizes that would be useful for future comparative studies of avian biology.",
     "homepage": "http://esapubs.org/archive/ecol/E088/096/",
     "keywords": [
-        "Taxon > Birds",
-        "Data Type > Compilation"
+        "birds",
+        "literature-compilation"
     ],
-    "name": "AvianBodySize",
+    "name": "bird-body-size",
     "resources": [
         {
             "dialect": {
@@ -21,9 +21,9 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
-    "title": "Avian Body Size Ecological Archives 2007",
+    "title": "Bird Body Size and Life History (Lislevand et al. 2007)",
     "urls": {
         "species": "http://esapubs.org/archive/ecol/E088/096/avian_ssd_jan07.txt"
     },
-    "version": 1.0
+    "version": "1.1.0"
 }

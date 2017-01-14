@@ -3,10 +3,10 @@
     "description": "The data is part of a monitoring project on vascular plant composition at the Tallgrass Prairie Preserve in Osage County, Oklahoma, USA.",
     "homepage": "http://esapubs.org/archive/ecol/E091/124/",
     "keywords": [
-        "Taxon > Plants",
-        "Spatial Scale > Local",
-        "Data Type > Time Series",
-        "Data Type > Observational"
+        "plants",
+        "local-scale",
+        "time-series",
+        "observational"
     ],
     "name": "McGlinn2010",
     "resources": [
@@ -58,5 +58,5 @@
         "richness": "http://esapubs.org/archive/ecol/E091/124/TGPP_rich.csv",
         "species": "http://esapubs.org/archive/ecol/E091/124/TGPP_specodes.csv"
     },
-    "version": 1.0
+    "version": "1.1.0"
 }
