@@ -148,13 +148,13 @@ def test_find_file_absent():
 def test_find_file_present():
     """Test if existing datafile is found
 
-    Using the AvianBodySize dataset which is included for regression testing.
+    Using the bird-size dataset which is included for regression testing.
     We copy the raw_data directory to retriever_root_dir which is the current working directory.
     This enables the data to be in the DATA_SEARCH_PATHS.
     """
-    test_engine.script.shortname = 'AvianBodySize'
+    test_engine.script.shortname = 'bird-size'
     assert test_engine.find_file('avian_ssd_jan07.txt') == os.path.normpath(
-        'raw_data/AvianBodySize/avian_ssd_jan07.txt')
+        'raw_data/bird-size/avian_ssd_jan07.txt')
 
 
 def test_format_data_dir():
