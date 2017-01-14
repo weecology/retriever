@@ -8,13 +8,13 @@ class main(Script):
         Script.__init__(self,
                         tables={'trees': Table('trees', cleanup=Cleanup(correct_invalid_value, nulls=[-999]))},
                         name="Tree growth, mortality, physical condition - Clark, 2006",
-                        tags=['Taxon > Plants'],
+                        tags=['plants', 'time-series'],
                         urls={'trees': 'http://esapubs.org/archive/ecol/E087/132/LS_trees_1983_2000.txt'},
-                        shortname="Clark2006",
+                        shortname="la-selva-trees",
                         description="The data set helps to examine the post-establishment ecology of 10 species of tropical wet forest trees selected to span a range of predicted life history patterns at the La Selva Biological Station in Costa Rica.",
                         ref="http://esapubs.org/archive/ecol/E087/132/",
                         retriever_minimum_version= "2.0.dev",
-                        version='1.1',
+                        version='1.2.0',
                         citation="David B. Clark and Deborah A. Clark. 2006. Tree growth, mortality, physical condition, and microsite in an old-growth lowland tropical rain forest. Ecology 87:2132.")
 
     def download(self, engine=None, debug=False):

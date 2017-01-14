@@ -22,13 +22,13 @@ class main(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
         self.name = "USGS North American Breeding Bird Survey 50 stop"
-        self.shortname = "BBS50"
+        self.shortname = "breed-bird-survey-50stop"
         self.description = "A Cooperative effort between the U.S. Geological Survey's Patuxent Wildlife Research Center and Environment Canada's Canadian Wildlife Service to monitor the status and trends of North American bird populations."
         self.citation = "Pardieck, K.L., D.J. Ziolkowski Jr., M.-A.R. Hudson. 2015. North American Breeding Bird Survey Dataset 1966 - 2014, version 2014.0. U.S. Geological Survey, Patuxent Wildlife Research Center."
         self.ref = "http://www.pwrc.usgs.gov/BBS/"
-        self.tags = ["Taxon > Birds", "Spatial Scale > Continental"]
+        self.tags = ["birds", "continental-scale"]
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.2'
+        self.version = '1.3.0'
         self.urls = {
                      "counts": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/50-StopData/1997ToPresent_SurveyWide/",
                      "routes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/Routes.zip",

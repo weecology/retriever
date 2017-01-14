@@ -19,14 +19,13 @@ class main(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
         self.name = "Forest Inventory and Analysis"
-        self.shortname = "FIA"
+        self.shortname = "forest-inventory-analysis"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.1'
+        self.version = '1.2.0'
         self.ref = "http://fia.fs.fed.us/"
         self.urls = {"main": "http://apps.fs.fed.us/fiadb-downloads/CSV/",
                      'species': 'http://apps.fs.fed.us/fiadb-downloads/CSV/REF_SPECIES.csv'}
-        self.tags = ["Taxon > Plants", "Spatial Scale > Continental",
-                     "Data Type > Observational"]
+        self.tags = ["plants", "continental-scale", "observational"]
         self.citation = "DATEOFDOWNLOAD. Forest Inventory and Analysis Database, St. Paul, MN: U.S. Department of Agriculture, Forest Service, Northern Research Station. [Available only on internet: http://apps.fs.fed.us/fiadb-downloads/datamart.html]"
         self.description = """WARNING: This dataset requires downloading many large files and will probably take several hours to finish installing."""
         self.addendum = """This dataset requires downloading many large files - please be patient."""
