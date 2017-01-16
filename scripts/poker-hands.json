@@ -1,0 +1,130 @@
+{
+    "citation": "Lichman, M. (2013). UCI Machine Learning Repository [http://archive.ics.uci.edu/ml]. Irvine, CA: University of California, School of Information and Computer Science.",
+    "description": "A dataset used to predict poker hands",
+    "homepage": "http://archive.ics.uci.edu/ml/datasets/Poker+Hand",
+    "keywords": [
+	"games",
+	"poker"
+    ],
+    "name": "poker-hands",
+    "resources": [
+        {
+            "dialect": {
+                "header_rows": 0
+            },
+            "name": "testing",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "S1",
+                        "type": "int"
+                    },
+                    {
+                        "name": "C1",
+                        "type": "int"
+                    },
+                    {
+                        "name": "S2",
+                        "type": "int"
+                    },
+                    {
+                        "name": "C2",
+                        "type": "int"
+                    },
+                    {
+                        "name": "S3",
+                        "type": "int"
+                    },
+                    {
+                        "name": "C3",
+                        "type": "int"
+                    },
+                    {
+                        "name": "S4",
+                        "type": "int"
+                    },
+                    {
+                        "name": "C4",
+                        "type": "int"
+                    },
+                    {
+                        "name": "S5",
+                        "type": "int"
+                    },
+                    {
+                        "name": "C5",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Class",
+                        "type": "int"
+                    }
+                ]
+            },
+            "url": "http://archive.ics.uci.edu/ml/machine-learning-databases/poker/poker-hand-testing.data"
+        },
+        {
+            "dialect": {
+                "header_rows": 0
+            },
+            "name": "training",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "S1",
+                        "type": "int"
+                    },
+                    {
+                        "name": "C1",
+                        "type": "int"
+                    },
+                    {
+                        "name": "S2",
+                        "type": "int"
+                    },
+                    {
+                        "name": "C2",
+                        "type": "int"
+                    },
+                    {
+                        "name": "S3",
+                        "type": "int"
+                    },
+                    {
+                        "name": "C3",
+                        "type": "int"
+                    },
+                    {
+                        "name": "S4",
+                        "type": "int"
+                    },
+                    {
+                        "name": "C4",
+                        "type": "int"
+                    },
+                    {
+                        "name": "S5",
+                        "type": "int"
+                    },
+                    {
+                        "name": "C5",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Class",
+                        "type": "int"
+                    }
+                ]
+            },
+            "url": "http://archive.ics.uci.edu/ml/machine-learning-databases/poker/poker-hand-training-true.data"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.dev",
+    "title": "Poker Hand dataset",
+    "urls": {
+        "testing": "http://archive.ics.uci.edu/ml/machine-learning-databases/poker/poker-hand-testing.data",
+        "training": "http://archive.ics.uci.edu/ml/machine-learning-databases/poker/poker-hand-training-true.data"
+    },
+    "version": "1.2.0"
+}

@@ -72,7 +72,7 @@ engine_test = {
 
 SCRIPT_LIST = SCRIPT_LIST()
 TEST_ENGINES = {}
-IGNORE = ["AvianBodyMass", "FIA", "Bioclim", "PRISM", "vertnet","NPN", "mammsupertree"]
+IGNORE = ["forest-inventory-analysis", "bioclim", "prism-climate", "vertnet", "NPN", "mammal-super-tree"]
 IGNORE = [dataset.lower() for dataset in IGNORE]
 
 for engine in ENGINE_LIST:

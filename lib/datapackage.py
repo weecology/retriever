@@ -148,21 +148,21 @@ def create_json():
 
     script_exists = True
     while script_exists:
-        contents['name'] = clean_input("Shortname (Give a unique identifier for script): ")
+        contents['name'] = clean_input("name (a short unique identifier; only lowercase letters and - allowed): ")
         script_exists = contents['name'].lower() in short_names
         if script_exists:
             print("Dataset already available. Check the list or try a different shortname")
 
-    contents['title'] = clean_input("Title/Name: ", ignore_empty=True)
-    contents['description'] = clean_input("Description: ", ignore_empty=True)
-    contents['citation'] = clean_input("Citation: ", ignore_empty=True)
-    contents['homepage'] = clean_input("Site/Homepage of dataset: ", ignore_empty=True)
-    contents['keywords'] = clean_input("Tags (separated by ';'): ",
+    contents['title'] = clean_input("title: ", ignore_empty=True)
+    contents['description'] = clean_input("description: ", ignore_empty=True)
+    contents['citation'] = clean_input("citation: ", ignore_empty=True)
+    contents['homepage'] = clean_input("homepage (for the entire dataset): ", ignore_empty=True)
+    contents['keywords'] = clean_input("keywords (separated by ';'): ",
                                         split_char=';', ignore_empty=True)
     contents['resources'] = []
     contents['retriever'] = "True"
     contents['retriever_minimum_version'] = "2.0.dev"
-    contents['version'] = 1.0;
+    contents['version'] = "1.0.0";
 
     # Add tables -
     while True:
@@ -174,8 +174,8 @@ def create_json():
             continue
         else:
             table = {}
-            table['name'] = clean_input("Table name: ")
-            table['url'] = clean_input("Table URL: ")
+            table['name'] = clean_input("table-name: ")
+            table['url'] = clean_input("table-url: ")
             table['dialect'] = {}
             tableUrls[table['name']] = table['url']
 

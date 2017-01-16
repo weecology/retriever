@@ -1,0 +1,166 @@
+{
+    "citation": "Peter B. Adler, William R. Tyburczy, and William K. Lauenroth. 2007. Long-term mapped quadrats from Kansas prairie:demographic information for herbaceaous plants. Ecology 88:2673.",
+    "description": "Demographic data for testing current theories in plant ecology and forecasting the effects of global change.",
+    "homepage": "http://esapubs.org/archive/ecol/E088/161/",
+    "keywords": [
+        "plants",
+        "local-scale",
+        "time-series",
+        "observational"
+    ],
+    "name": "mapped-plant-quads-ks",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "main",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E088/161/allrecords.csv"
+        },
+        {
+            "dialect": {},
+            "name": "quadrat_info",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E088/161/quadrat_info.csv"
+        },
+        {
+            "dialect": {
+                "missingValues": [
+                    "NA"
+                ]
+            },
+            "name": "quadrat_inventory",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E088/161/quadrat_inventory.csv"
+        },
+        {
+            "dialect": {},
+            "name": "species",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E088/161/species_list.csv"
+        },
+        {
+            "dialect": {
+                "missingValues": [
+                    "NA"
+                ],
+                "replace_columns": [
+                    [
+                        "jan",
+                        "january"
+                    ],
+                    [
+                        "feb",
+                        "february"
+                    ],
+                    [
+                        "mar",
+                        "march"
+                    ],
+                    [
+                        "apr",
+                        "april"
+                    ],
+                    [
+                        "jun",
+                        "june"
+                    ],
+                    [
+                        "jul",
+                        "july"
+                    ],
+                    [
+                        "aug",
+                        "august"
+                    ],
+                    [
+                        "sep",
+                        "september"
+                    ],
+                    [
+                        "oct",
+                        "october"
+                    ],
+                    [
+                        "nov",
+                        "november"
+                    ],
+                    [
+                        "dec",
+                        "december"
+                    ]
+                ]
+            },
+            "name": "monthly_temp",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E088/161/monthly_temp.csv"
+        },
+        {
+            "dialect": {
+                "missingValues": [
+                    "NA"
+                ],
+                "replace_columns": [
+                    [
+                        "jan",
+                        "january"
+                    ],
+                    [
+                        "feb",
+                        "february"
+                    ],
+                    [
+                        "mar",
+                        "march"
+                    ],
+                    [
+                        "apr",
+                        "april"
+                    ],
+                    [
+                        "jun",
+                        "june"
+                    ],
+                    [
+                        "jul",
+                        "july"
+                    ],
+                    [
+                        "aug",
+                        "august"
+                    ],
+                    [
+                        "sep",
+                        "september"
+                    ],
+                    [
+                        "oct",
+                        "october"
+                    ],
+                    [
+                        "nov",
+                        "november"
+                    ],
+                    [
+                        "dec",
+                        "december"
+                    ]
+                ]
+            },
+            "name": "monthly_ppt",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E088/161/monthly_ppt.csv"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.dev",
+    "title": "Mapped plant quadrat time-series from Kansas (Adler et al. 2007)",
+    "urls": {
+        "main": "http://esapubs.org/archive/ecol/E088/161/allrecords.csv",
+        "monthly_ppt": "http://esapubs.org/archive/ecol/E088/161/monthly_ppt.csv",
+        "monthly_temp": "http://esapubs.org/archive/ecol/E088/161/monthly_temp.csv",
+        "quadrat_info": "http://esapubs.org/archive/ecol/E088/161/quadrat_info.csv",
+        "quadrat_inventory": "http://esapubs.org/archive/ecol/E088/161/quadrat_inventory.csv",
+        "species": "http://esapubs.org/archive/ecol/E088/161/species_list.csv"
+    },
+    "version": "1.1.0"
+}

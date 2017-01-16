@@ -39,7 +39,7 @@ simple_csv = {'name': 'simple_csv',
                         ],\n
                         "retriever": "True",\n
                         "retriever_minimum_version": "2.0.dev",\n
-                        "version": 1.0,\n
+                        "version": "1.0.0",\n
                         "urls": {\n
                             "simple_csv": "http://example.com/simple_csv.txt"\n
                         }\n
@@ -80,7 +80,7 @@ data_no_header = {'name': 'data_no_header',
                         ],\n
                         "retriever": "True",\n
                         "retriever_minimum_version": "2.0.dev",\n
-                        "version": 1.0,\n
+                        "version": "1.0.0",\n
                         "urls": {\n
                             "data_no_header": "http://example.com/data_no_header.txt"\n
                         }\n
@@ -103,7 +103,7 @@ csv_latin1_encoding = {'name': 'csv_latin1_encoding',
               ],\n
               "retriever": "True",\n
               "retriever_minimum_version": "2.0.dev",\n
-              "version": 1.0,\n
+              "version": "1.0.0",\n
               "urls": {\n
                   "csv_latin1_encoding": "http://example.com/csv_latin1_encoding.txt"\n
               }\n
@@ -144,7 +144,7 @@ autopk_csv = {'name': 'autopk_csv',
                         ],\n
                         "retriever": "True",\n
                         "retriever_minimum_version": "2.0.dev",\n
-                        "version": 1.0,\n
+                        "version": "1.0.0",\n
                         "urls": {\n
                             "autopk_csv": "http://example.com/autopk_csv.txt"\n
                         }\n
@@ -186,7 +186,7 @@ crosstab = {'name': 'crosstab',
                     ],\n
                     "retriever": "True",\n
                     "retriever_minimum_version": "2.0.dev",\n
-                    "version": 1.0,\n
+                    "version": "1.0.0",\n
                     "urls": {\n
                         "crosstab": "http://example.com/crosstab.txt"\n
                     }\n
@@ -232,7 +232,7 @@ autopk_crosstab = {'name': 'autopk_crosstab',
                             ],\n
                             "retriever": "True",\n
                             "retriever_minimum_version": "2.0.dev",\n
-                            "version": 1.0,\n
+                            "version": "1.0.0",\n
                             "urls": {\n
                                 "autopk_crosstab": "http://example.com/autopk_crosstab.txt"\n
                             }\n
@@ -271,7 +271,7 @@ skip_csv = {'name': 'skip_csv',
                     ],\n
                     "retriever": "True",\n
                     "retriever_minimum_version": "2.0.dev",\n
-                    "version": 1.0,\n
+                    "version": "1.0.0",\n
                     "urls": {\n
                         "skip_csv": "http://example.com/skip_csv.txt"\n
                     }\n
@@ -296,7 +296,7 @@ extra_newline = {'name': 'extra_newline',
                         ],\n
                         "retriever": "True",\n
                         "retriever_minimum_version": "2.0.dev",\n
-                        "version": 1.0,\n
+                        "version": "1.0.0",\n
                         "urls": {\n
                             "extra_newline": "http://example.com/extra_newline.txt"\n
                         }\n
@@ -338,7 +338,7 @@ change_header_values = {'name': 'change_header_values',
                         ],\n
                         "retriever": "True",\n
                         "retriever_minimum_version": "2.0.dev",\n
-                        "version": 1.0,\n
+                        "version": "1.0.0",\n
                         "urls": {\n
                             "change_header_values": "http://example.com/change_header_values.txt"\n
                         }\n

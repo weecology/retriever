@@ -1,0 +1,46 @@
+{
+    "citation": "Hamish Wilman, Jonathan Belmaker, Jennifer Simpson, Carolina de la Rosa, Marcelo M. Rivadeneira, and Walter Jetz. 2014. EltonTraits 1.0: Species-level foraging attributes of the world's birds and mammals. Ecology 95:2027.",
+    "description": "Characterization of species by physiological, behavioral, and ecological attributes that are subjected to varying evolutionary and ecological constraints and jointly determine their role and function in ecosystems.",
+    "keywords": [
+        "mammals",
+        "birds",
+        "literature-compilation"
+    ],
+    "name": "elton-traits",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "BirdFuncDat",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E095/178/BirdFuncDat.txt"
+        },
+        {
+            "dialect": {},
+            "name": "MammFuncDat",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E095/178/MamFuncDat.txt"
+        },
+        {
+            "dialect": {},
+            "name": "BirdCitations",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E095/178/BirdFuncDatSources.txt"
+        },
+        {
+            "dialect": {},
+            "name": "MammCitations",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E095/178/MamFuncDatSources.txt"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.dev",
+    "title": "Foraging attributes for birds and mammals (Wilman, et al., 2014)",
+    "urls": {
+        "BirdCitations": "http://esapubs.org/archive/ecol/E095/178/BirdFuncDatSources.txt",
+        "BirdFuncDat": "http://esapubs.org/archive/ecol/E095/178/BirdFuncDat.txt",
+        "MammCitations": "http://esapubs.org/archive/ecol/E095/178/MamFuncDatSources.txt",
+        "MammFuncDat": "http://esapubs.org/archive/ecol/E095/178/MamFuncDat.txt"
+    },
+    "version": "1.1.0"
+}

@@ -17,52 +17,46 @@ To create a new script, try ``retriever new_json``, which starts the CLI tool fo
 
 ``Required``
 
-#. **Shortname:** A one word name for the dataset
+#. **name:** A one word name for the dataset
 
 ``Strongly recommended``
 
-#. **Name/Title:** Give the name of the dataset
-#. **Description:** A brief description of the dataset of ~25 words.
-#. **Citation:** Give a citation if available
-#. **Homepage:** A reference to the data or the home page
-#. **Tags:** Helps in classifying the type of data (i.e using Taxon, Data Type, Spatial Scale, etc.)
+#. **title:** Give the name of the dataset
+#. **description:** A brief description of the dataset of ~25 words.
+#. **citation:** Give a citation if available
+#. **homepage:** A reference to the data or the home page
+#. **keywords:** Helps in classifying the type of data (i.e using Taxon, Data Type, Spatial Scale, etc.)
 
 ``optional``
 
-#. **Table Name:** Name of the table, URL to the table
-#. **Table URL:** Name of the table, URL to the table
+#. **table-name:** Name of the table, URL to the table
+#. **table-url:** Name of the table, URL to the table
 
 .. - TODO: Add license and comments option
 
 Basic Scripts
 -------------
 
-The most basic scripts structure requires only some general metadata about the dataset,i.e., the shortname of the database and table, and the location of the table as below.
+The most basic scripts structure requires only some general metadata about the
+dataset,i.e., the shortname of the database and table, and the location of the
+table.
 
-::
-
-  Shortname:
-  Table Name:
-  Table URL:
-
-Example of a basic script, example.script
------------------------------------------
-
+### Example of a basic script, example.script
 
 ``Creating script from the CLI``
 ::
 
-  Shortname (Give a unique identifier for script): exMammal
-  Title/Name: Mammal Life History Database - Ernest, et al., 2003
-  Description:
-  Citation: S. K. Morgan Ernest. 2003. Life history characteristics of placental non-volant mammals. Ecology 84:3402.
-  Site/Homepage of dataset:
-  Tags (separated by ';'): Mammals ; Compilation
+  name (a short unique identifier; only lowercase letters and - allowed): example-mammal
+  title: Mammal Life History Database - Ernest, et al., 2003
+  description:
+  citation: S. K. Morgan Ernest. 2003. Life history characteristics of placental non-volant mammals. Ecology 84:3402.
+  homepage (for the entire dataset):
+  keywords (separated by ';'): mammals ; compilation
 
   Add Table? (y/N): y
-  Table name: species
-  Table URL: http://esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt
-  nulls (separated by ';'):
+  table-name: species
+  table-url: http://esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt
+  missingValues (separated by ';'):
   replace_columns (separated by ';'):
   delimiter:
   do_not_bulk_insert (bool = True/False):

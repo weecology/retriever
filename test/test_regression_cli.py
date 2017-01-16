@@ -26,15 +26,15 @@ working_script_dir = os.path.abspath(os.path.join(retriever_root_dir, "scripts")
 HOMEDIR = os.path.expanduser('~')
 
 download_md5 = [
-    ('delmoral', '9f81bbccfd6a99938e5455a489fdb7b5'),
-    ('avianbodysize', 'dce81ee0f040295cd14c857c18cc3f7e'),
-    ('mom2003', 'b54b80d0d1959bdea0bb8a59b70fa871')
+    ('mt-st-helens-veg', '9f81bbccfd6a99938e5455a489fdb7b5'),
+    ('bird-size', 'dce81ee0f040295cd14c857c18cc3f7e'),
+    ('mammal-masses', 'b54b80d0d1959bdea0bb8a59b70fa871')
 ]
 
 db_md5 = [
     # ('DelMoral2010', '0'),
-    ('AvianBodySize', '98dcfdca19d729c90ee1c6db5221b775'),
-    ('MoM2003', '6fec0fc63007a4040d9bbc5cfcd9953e')
+    ('bird-size', '98dcfdca19d729c90ee1c6db5221b775'),
+    ('mammal-masses', '6fec0fc63007a4040d9bbc5cfcd9953e')
 ]
 
 

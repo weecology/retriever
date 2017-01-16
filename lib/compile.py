@@ -29,7 +29,7 @@ def add_dialect(table_dict, table):
     for (key, val) in table['dialect'].items():
         # dialect related key-value pairs
         # copied as is
-        if key == "nulls":
+        if key == "missingValues":
             table_dict[
                 'cleanup'] = "Cleanup(correct_invalid_value, nulls=" + str(val) + ")"
 
@@ -119,6 +119,9 @@ def compile_json(json_file):
 
         elif key == "keywords":
             values["tags"] = value
+
+        elif key == "version":
+            values["version"] = "\"" + str(value) + "\""
 
         elif key == "retriever_minimum_version":
             values["retriever_minimum_version"] = "\"" + str(value) + "\""

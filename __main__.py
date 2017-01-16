@@ -23,7 +23,6 @@ if hasattr(sys, 'setdefaultencoding'):
 from retriever import VERSION, SCRIPT_LIST, HOME_DIR, sample_script, current_platform
 from retriever.engines import engine_list
 from retriever.lib.repository import check_for_updates
-from retriever.lib.lists import Category, get_lists
 from retriever.lib.tools import choose_engine, name_matches, reset_retriever
 from retriever.lib.get_opts import parser
 from retriever.lib.datapackage import create_json, edit_json

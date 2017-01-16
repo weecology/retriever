@@ -1,0 +1,102 @@
+{
+    "citation": "Giovanni Strona, Maria Lourdes D. Palomares, Nicolas Bailly, Paolo Galli, and Kevin D. Lafferty. 2013. Host range, host ecology, and distribution of more than 11800 fish parasite species. Ecology 94:544.",
+    "description": "The data set includes 38008 fish parasite records (for Acanthocephala, Cestoda, Monogenea, Nematoda, Trematoda) compiled from scientific literature.",
+    "name": "fish-parasite-hosts",
+    "resources": [
+        {
+            "dialect": {
+                "missingValues": [
+                    "na"
+                ],
+                "replace_columns": [
+                    [
+                        "P_T",
+                        "parasite_taxonomic_group"
+                    ],
+                    [
+                        "P_F",
+                        "parasite_family"
+                    ],
+                    [
+                        "P_SP",
+                        "parasite_species"
+                    ],
+                    [
+                        "H_C",
+                        "host_class"
+                    ],
+                    [
+                        "H_O",
+                        "host_order"
+                    ],
+                    [
+                        "H_F",
+                        "host_family"
+                    ],
+                    [
+                        "H_SP",
+                        "host_species"
+                    ],
+                    [
+                        "GEO",
+                        "biogeographical_region"
+                    ],
+                    [
+                        "MaxL",
+                        "maximum_host_bodylength"
+                    ],
+                    [
+                        "K",
+                        "host_growth_rate"
+                    ],
+                    [
+                        "Y",
+                        "host_life_span"
+                    ],
+                    [
+                        "Ym",
+                        "host_age_first_maturity"
+                    ],
+                    [
+                        "T",
+                        "host_trophic_level"
+                    ],
+                    [
+                        "F",
+                        "freshwater"
+                    ],
+                    [
+                        "B",
+                        "brackish"
+                    ],
+                    [
+                        "M",
+                        "marine"
+                    ],
+                    [
+                        "AOO",
+                        "area_of_occupancy"
+                    ],
+                    [
+                        "LAT",
+                        "latitudinal_range"
+                    ],
+                    [
+                        "LON",
+                        "longitudinal range"
+                    ]
+                ]
+            },
+            "name": "host_characteristics",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E094/045/FPEDB.csv"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.dev",
+    "title": "Fish parasite host ecological characteristics (Strona, et al., 2013)",
+    "urls": {
+        "host_characteristics": "http://esapubs.org/archive/ecol/E094/045/FPEDB.csv"
+    },
+    "version": "1.1.0"
+}

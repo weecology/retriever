@@ -1,0 +1,202 @@
+{
+    "citation": "Lichman, M. (2013). UCI Machine Learning Repository [http://archive.ics.uci.edu/ml]. Irvine, CA: University of California, School of Information and Computer Science.",
+    "description": "Database containing information on Wisconsin Breast Cancer Diagnostics",
+    "homepage": "http://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+%28Diagnostic%29",
+    "keywords": [
+	"cancer",
+	"health",
+	"disease",
+	"medicine"],
+    "name": "breast-cancer-wi",
+    "resources": [
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 0
+            },
+            "name": "breastCancerWisconsin",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "Sample_Code_Number",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Clump_Thickness",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Uniformity_of_Cell_Size",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Uniformity_of_Cell_Shape",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Marginal_Adhesion",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Single_Epithelial_Cell_Size",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Bare_Nuclei",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Bland_Chromatin",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Normal_Nucleoli",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Mitoses",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Class",
+                        "type": "int"
+                    }
+                ]
+            },
+            "url": "http://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/breast-cancer-wisconsin.data"
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 0
+            },
+            "name": "wdbc",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "ID",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Diagnosis",
+                        "type": "char"
+                    },
+                    {
+                        "name": "radius",
+                        "type": "double"
+                    },
+                    {
+                        "name": "texture",
+                        "type": "double"
+                    },
+                    {
+                        "name": "perimeter",
+                        "type": "double"
+                    },
+                    {
+                        "name": "area",
+                        "type": "double"
+                    },
+                    {
+                        "name": "smoothness",
+                        "type": "double"
+                    },
+                    {
+                        "name": "compactness",
+                        "type": "double"
+                    },
+                    {
+                        "name": "concavity",
+                        "type": "double"
+                    },
+                    {
+                        "name": "concave_points",
+                        "type": "double"
+                    },
+                    {
+                        "name": "symmetry",
+                        "type": "double"
+                    },
+                    {
+                        "name": "fractal_dimension",
+                        "type": "double"
+                    }
+                ]
+            },
+            "url": "http://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/wdbc.data"
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 0
+            },
+            "name": "wpbc",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "ID",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Outcome",
+                        "type": "char"
+                    },
+                    {
+                        "name": "Time",
+                        "type": "int"
+                    },
+                    {
+                        "name": "radius",
+                        "type": "double"
+                    },
+                    {
+                        "name": "texture",
+                        "type": "double"
+                    },
+                    {
+                        "name": "perimeter",
+                        "type": "double"
+                    },
+                    {
+                        "name": "area",
+                        "type": "double"
+                    },
+                    {
+                        "name": "smoothness",
+                        "type": "double"
+                    },
+                    {
+                        "name": "compactness",
+                        "type": "double"
+                    },
+                    {
+                        "name": "concavity",
+                        "type": "double"
+                    },
+                    {
+                        "name": "concave_points",
+                        "type": "double"
+                    },
+                    {
+                        "name": "symmetry",
+                        "type": "double"
+                    },
+                    {
+                        "name": "fractal_dimension",
+                        "type": "double"
+                    }
+                ]
+            },
+            "url": "http://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/wpbc.data"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.dev",
+    "title": "Wisconsin Breast Cancer Database",
+    "urls": {
+        "breastCancerWisconsin": "http://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/breast-cancer-wisconsin.data",
+        "wdbc": "http://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/wdbc.data",
+        "wpbc": "http://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/wpbc.data"
+    },
+    "version": "1.1.0"
+}
