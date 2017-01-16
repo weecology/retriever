@@ -36,7 +36,7 @@ mapped-plant-quads-id.json,1.1.0
 mapped-plant-quads-ks.json,1.1.0
 mapped-plant-quads-mt.json,1.1.0
 mt-st-helens-veg.json,1.1.0
-npn.py,1.0
+npn.py,2.0.0
 pantheria.json,1.1.0
 phytoplankton-size.json,1.1.0
 plant-comp-ok.json,1.1.0
