@@ -14,7 +14,7 @@
         {
             "dialect": {
                 "missingValues": [
-                    "NA"
+                    "NA", "\\"
                 ]
             },
             "name": "ranges",
