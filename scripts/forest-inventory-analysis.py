@@ -7,12 +7,10 @@ from future import standard_library
 standard_library.install_aliases()
 
 import os
-import urllib.request, urllib.parse, urllib.error
-import zipfile
-from decimal import Decimal
+
 from retriever.lib.templates import Script
-from retriever.lib.models import Table, Cleanup, no_cleanup
-from retriever import HOME_DIR, open_fr, open_fw
+from retriever.lib.models import Table
+from retriever import open_fr, open_fw
 
 
 class main(Script):
@@ -21,10 +19,10 @@ class main(Script):
         self.name = "Forest Inventory and Analysis"
         self.shortname = "forest-inventory-analysis"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.2.0'
+        self.version = '1.3.0'
         self.ref = "http://fia.fs.fed.us/"
-        self.urls = {"main": "http://apps.fs.fed.us/fiadb-downloads/CSV/",
-                     'species': 'http://apps.fs.fed.us/fiadb-downloads/CSV/REF_SPECIES.csv'}
+        self.urls = {"main": "https://apps.fs.usda.gov/fiadb-downloads/CSV/",
+                     'species': 'https://apps.fs.usda.gov/fiadb-downloads/CSV/REF_SPECIES.csv'}
         self.tags = ["plants", "continental-scale", "observational"]
         self.citation = "DATEOFDOWNLOAD. Forest Inventory and Analysis Database, St. Paul, MN: U.S. Department of Agriculture, Forest Service, Northern Research Station. [Available only on internet: http://apps.fs.fed.us/fiadb-downloads/datamart.html]"
         self.description = """WARNING: This dataset requires downloading many large files and will probably take several hours to finish installing."""
