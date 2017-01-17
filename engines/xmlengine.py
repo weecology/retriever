@@ -108,15 +108,11 @@ class engine(Engine):
         else:
             newrows = values
 
-        open_tag = '\n<row>\n'
-        end_tag = '</row>'
-        xml_lines = []
-        for line_data in newrows:
-            write_data = ""
-            for i in range(len(keys)):
-                write_data += '    ' + '<' + str(keys[i]) + '>' + str(line_data[i]) + '</' + str(keys[i]) + '>' + "\n"
-            xml_lines.append(open_tag + write_data + end_tag)
+        xml_lines = ['\n<row>\n{}</row>'.format(self._format_single_row(keys, line_data)) for line_data in newrows]
         return xml_lines
+
+    def _format_single_row(self, keys, line_data):
+        return ''.join('    <{key}>{value}</{key}>\n'.format(key=key, value=value) for key, value in zip(keys, line_data))
 
     def table_exists(self, dbname, tablename):
         """Check to see if the data file currently exists"""
