@@ -128,6 +128,12 @@ class Table(object):
                 # too many values for columns; ignore
                 pass
             column += 1
+
+        # make sure we have enough values by padding with None
+        keys = self.get_insert_columns(join=False, create=False)
+        if len(linevalues) < len(keys):
+            linevalues.extend([None for _ in range(len(keys) - len(linevalues))])
+
         return linevalues
 
     def get_insert_columns(self, join=True, create=False):
