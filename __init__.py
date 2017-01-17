@@ -124,6 +124,7 @@ def to_str(object, object_encoding=sys.stdout):
 def MODULE_LIST(force_compile=False):
     """Load scripts from scripts directory and return list of modules."""
     modules = []
+    loaded_scripts = []
 
     for search_path in [search_path for search_path in SCRIPT_SEARCH_PATHS if exists(search_path)]:
         to_compile = [
@@ -143,10 +144,11 @@ def MODULE_LIST(force_compile=False):
 
         for script in files:
             script_name = '.'.join(script.split('.')[:-1])
-            file, pathname, desc = imp.find_module(script_name, [search_path])
-            try:
-                new_module = imp.load_module(script_name, file, pathname, desc)
-                if new_module not in modules:
+            if script_name not in loaded_scripts:
+                loaded_scripts.append(script_name)
+                file, pathname, desc = imp.find_module(script_name, [search_path])
+                try:
+                    new_module = imp.load_module(script_name, file, pathname, desc)
                     if hasattr(new_module.SCRIPT, "retriever_minimum_version"):
                         # a script with retriever_minimum_version should be loaded
                         # only if its compliant with the version of the retriever
@@ -160,10 +162,9 @@ def MODULE_LIST(force_compile=False):
                     # make sure it works and then add it
                     new_module.SCRIPT.download
                     modules.append(new_module)
-            except Exception as e:
-                sys.stderr.write("Failed to load script: %s (%s)\nException: %s \n" % (
-                    script_name, search_path, str(e)))
-
+                except Exception as e:
+                    sys.stderr.write("Failed to load script: %s (%s)\nException: %s \n" % (
+                        script_name, search_path, str(e)))
     return modules
 
 
