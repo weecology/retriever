@@ -202,6 +202,23 @@ print.update_log = function(x, ...) {
 
 check_for_retriever = function(...) {
     retriever_path = Sys.which('retriever')
+    
+    #Rstudio will not import any paths configured for anaconda python installs, so add default anaconda paths
+    #manually. See http://stackoverflow.com/questions/31121645/rstudio-shows-a-different-path-variable
+    if (retriever_path == '') {
+      os = Sys.info()[['sysname']]
+      if (os == 'Windows') {
+        #Need windows default path
+      } else {
+        home_dir = Sys.getenv('HOME')
+        for (possible_path in c('/anaconda3/bin','/anaconda2/bin','/miniconda3/bin','/miniconda2/bin')) {
+          Sys.setenv(PATH = paste0(Sys.getenv('PATH'),':',home_dir,possible_path))
+        }
+      }
+    } 
+    
+    retriever_path = Sys.which('retriever')
+    
     if (retriever_path == '') {
         path_warn = 'The retriever is not on your path and may not be installed.'
         mac_instr = 'Follow the instructions for installing and manually adding the EcoData Retriever to your path at http://ecodataretriever.org/download.html'
