@@ -60,7 +60,7 @@ database management systems:
 Either use pip to install directly from GitHub:
 
 ```
-pip install git+ssh://git@github.com/weecology/retriever.git
+pip install git+https://git@github.com/weecology/retriever.git
 ```
 
 or:
