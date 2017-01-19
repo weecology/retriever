@@ -208,7 +208,10 @@ check_for_retriever = function(...) {
     if (retriever_path == '') {
       os = Sys.info()[['sysname']]
       if (os == 'Windows') {
-        #Need windows default path
+        home_dir = dirname(Sys.getenv('HOME'))
+        for (possible_path in c('\Anaconda3\Scripts','\Anaconda2\Scripts','\Miniconda3\Scripts','\Miniconda2\Scripts')) {
+          Sys.setenv(PATH = paste0(Sys.getenv('PATH'),':',home_dir,possible_path))
+        }      
       } else {
         home_dir = Sys.getenv('HOME')
         for (possible_path in c('/anaconda3/bin','/anaconda2/bin','/miniconda3/bin','/miniconda2/bin')) {
