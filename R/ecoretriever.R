@@ -206,20 +206,27 @@ check_for_retriever = function(...) {
     #Rstudio will not import any paths configured for anaconda python installs, so add default anaconda paths
     #manually. See http://stackoverflow.com/questions/31121645/rstudio-shows-a-different-path-variable
     if (retriever_path == '') {
-      os = Sys.info()[['sysname']]
-      if (os == 'Windows') {
-        home_dir = dirname(Sys.getenv('HOME'))
-        for (possible_path in c('\Anaconda3\Scripts','\Anaconda2\Scripts','\Miniconda3\Scripts','\Miniconda2\Scripts')) {
-          Sys.setenv(PATH = paste0(Sys.getenv('PATH'),':',home_dir,possible_path))
-        }      
-      } else {
-        home_dir = Sys.getenv('HOME')
-        for (possible_path in c('/anaconda3/bin','/anaconda2/bin','/miniconda3/bin','/miniconda2/bin')) {
-          Sys.setenv(PATH = paste0(Sys.getenv('PATH'),':',home_dir,possible_path))
+        os = Sys.info()[['sysname']]
+        if (os == 'Windows') {
+            home_dir = dirname(Sys.getenv('HOME'))
+        } else {
+            home_dir = Sys.getenv('HOME')
         }
-      }
-    } 
-    
+        possible_pathes = c('/Anaconda3/Scripts',
+                            '/Anaconda2/Scripts',
+                            '/Anaconda/Scripts',
+                            '/Miniconda3/Scripts',
+                            '/Miniconda2/Scripts',
+                            '/anaconda3/bin',
+                            '/anaconda2/bin',
+                            '/anaconda/bin',
+                            '/miniconda3/bin',
+                            '/miniconda2/bin')
+        for (i in possible_pathes) {
+            Sys.setenv(PATH = paste(Sys.getenv('PATH'), ':', home_dir, i, sep = ''))
+        }
+    }
+
     retriever_path = Sys.which('retriever')
     
     if (retriever_path == '') {
