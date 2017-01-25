@@ -76,7 +76,7 @@ The following packages are optional
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 -  PyMySQL (for MySQL)
--  sqlite3 (for SQLite)
+-  sqlite3 (for SQLite, v3.8 or higher required)
 -  psycopg2 (for PostgreSQL)
 -  pyodbc (for MS Access - this option is only available on Windows)
 
