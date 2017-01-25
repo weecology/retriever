@@ -20,7 +20,7 @@ forest-plots-michigan.json,1.1.0
 forest-plots-wghats.json,1.1.0
 fray-jorge-ecology.json,1.2.0
 gentry-forest-transects.py,1.3.0
-home-ranges.json,1.2.0
+home-ranges.json,1.1.0
 intertidal-abund-me.py,1.3.0
 iris.json,1.2.0
 la-selva-trees.py,1.2.0
