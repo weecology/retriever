@@ -41,6 +41,9 @@ def main():
 
         args = parser.parse_args()
 
+        if args.command == "install" and not args.engine:
+            parser.parse_args(['install','-h'])
+
         if args.quiet:
             sys.stdout = open(os.devnull, 'w')
 

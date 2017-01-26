@@ -49,7 +49,7 @@ for engine in engine_list:
         pass
     else:
         engine_parser = install_subparsers.add_parser(engine.abbreviation, help=engine.name)
-        engine_parser.add_argument('dataset', help='dataset name', nargs='?', default=None)
+        engine_parser.add_argument('dataset', help='dataset name')
 
     abbreviations = set('h')
 
