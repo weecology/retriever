@@ -20,7 +20,7 @@ if hasattr(sys, 'setdefaultencoding'):
     # set default encoding to latin-1 to decode source text
     sys.setdefaultencoding('latin-1')
 
-from retriever import VERSION, SCRIPT_LIST, HOME_DIR, sample_script, current_platform
+from retriever import VERSION, SCRIPT_LIST, HOME_DIR, sample_script, CITATION
 from retriever.engines import engine_list
 from retriever.lib.repository import check_for_updates
 from retriever.lib.tools import choose_engine, name_matches, reset_retriever
@@ -57,10 +57,8 @@ def main():
 
         elif args.command == 'citation':
             if args.dataset is None:
-                citation_path = os.path.join(os.path.split(__file__)[0], '../CITATION')
                 print("\nCitation for retriever:\n")
-                with open(citation_path) as citation_file:
-                    print(citation_file.read())
+                print(CITATION)
             else:
                 scripts = name_matches(script_list, args.dataset)
                 for dataset in scripts:
