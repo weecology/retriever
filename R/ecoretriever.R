@@ -95,7 +95,8 @@ fetch = function(dataset, quiet=TRUE){
   else
     install(dataset, connection='csv', data_dir=temp_path)
   files = dir(temp_path)
-  files = files[grep(dataset, files)]
+  dataset_underscores = gsub("-", "_", dataset) #retriever converts - in dataset name to _ in filename
+  files = files[grep(dataset_underscores, files)]
   out = vector('list', length(files))
   list_names = sub('.csv', '', files)
   list_names = sub(paste(dataset, '_', sep=''), '', list_names)
