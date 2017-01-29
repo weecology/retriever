@@ -166,10 +166,8 @@ datasets = function(){
 get_updates = function() {
     writeLines(strwrap('Please wait while the retriever updates its scripts, ...'))
     update_log = run_cli('retriever update', intern=TRUE, ignore.stdout=FALSE,
-                        ignore.stderr=TRUE)
-    writeLines(strwrap('The retriever scripts are up-to-date with the most recent official release!'))
-    class(update_log) = "update_log"
-    return(update_log)
+                         ignore.stderr=TRUE)
+    writeLines(strwrap(update_log[3]))
 }
 
 #' @export
