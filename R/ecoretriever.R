@@ -30,7 +30,7 @@
 install = function(dataset, connection, db_file=NULL, conn_file=NULL,
                    data_dir='.', log_dir=NULL){ 
   if (missing(connection)) {
-    stop("The argument 'connection' must be set to one of the following options: 'mysql', 'postgres', 'sqlite', 'msaccess', or 'csv'")
+    stop("The argument 'connection' must be set to one of the following options: 'mysql', 'postgres', 'sqlite', 'msaccess', 'csv', 'json' or 'xml'")
   }
   else if (connection == 'mysql' | connection == 'postgres') {
     if (is.null(conn_file)) {
@@ -56,12 +56,12 @@ install = function(dataset, connection, db_file=NULL, conn_file=NULL,
     else
       cmd = paste('retriever install', connection, dataset, '--file', db_file)
   }
-  else if (connection == 'csv') {
-    cmd = paste('retriever install csv --table_name',
+  else if (connection %in% c('csv', 'json', 'xml')) {
+    cmd = paste('retriever install', connection, '--table_name',
                   file.path(data_dir, '{db}_{table}.csv'), dataset)
   }
   else
-    stop("The argument 'connection' must be set to one of the following options: 'mysql', 'postgres', 'sqlite', 'msaccess', or 'csv'")
+    stop("The argument 'connection' must be set to one of the following options: 'mysql', 'postgres', 'sqlite', 'msaccess', 'csv', 'json' or 'xml'")
   if (!is.null(log_dir)) {
     log_file = file.path(log_dir, paste(dataset, '_download.log', sep=''))
     cmd = paste(cmd, '>', log_file, '2>&1')
