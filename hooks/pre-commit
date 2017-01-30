@@ -1,0 +1,58 @@
+#!/usr/bin/env python
+from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
+
+import commands
+import os
+import sys
+import urllib.request, urllib.parse, urllib.error
+
+import re
+pattern = re.compile(r'script_version["\s:=]+(\d+\.\d+)')
+version_dict = {}
+versionfile = urllib.request.urlopen(
+    "https://raw.githubusercontent.com/henrykironde/retriever/1f18008838cecf7f8ac208d57cd2a578e50e1c2c/version.txt")
+versionfile.readline()
+
+for lines in versionfile:
+    key_values = lines.split(",")
+    version_dict[key_values[0]] = key_values[1]
+
+
+def get_script_version(file_name):
+    file_name = os.path.split(file_name)[1]
+    return float(version_dict[file_name])
+
+
+# check if script directory changes
+status, output = commands.getstatusoutput("git diff --name-only origin/script2 scripts")
+
+# get list of changed scripts
+scripts_changed = output.split("\n")
+
+# get_version_text_files_from_master:
+# discus if we need the version files in master of in last commit
+# this is tricky
+version_files = ['scripts/Adler2007.json', 'scripts/AmnioteDB.json']
+
+versions_not_changed =[]  # if script changes we expect to change the version
+versions_updated = True
+for files in scripts_changed:
+    if files in version_files:
+        status, output = commands.getstatusoutput('git show :{}'.format(files))
+        match = re.search(pattern, output)
+        script_previous_version = float(match.group(1))
+        if not script_previous_version > get_script_version(files):
+            versions_not_changed.append(files)
+            versions_updated = False
+
+if len(versions_not_changed) > 0:
+    if not versions_updated:
+        print("These scripts have changed, update the version numbers before commit")
+        for items in versions_not_changed:
+            print (items)
+        exit(1)
+    else:
+        os.system('python version.py')
+        os.system('git add version.py')

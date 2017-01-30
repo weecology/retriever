@@ -4,17 +4,27 @@ from __future__ import absolute_import
 from setuptools import setup
 from pkg_resources import parse_version
 import platform
+import sys
+import warnings
+import os
 
 
 current_platform = platform.system().lower()
 extra_includes = []
 if current_platform == "darwin":
+    os.system("pwd")
+    os.system("chmod +x hooks/pre-commit")
+    os.system("cp -p hooks/pre-commit .git/hooks/pre-commit")
+    # os.system("chmod +x hooks/pre-commit")
+    # os.system("ln -s hooks/pre-commit .git/hooks/pre-commit")
     try:
         import py2app
     except ImportError:
         pass
     extra_includes = []
 elif current_platform == "windows":
+    os.system("chmod +x hooks/pre-commit")
+    os.system("mklink hooks/pre-commit .git/hooks/pre-commit")
     try:
         import py2exe
     except ImportError:
