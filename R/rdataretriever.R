@@ -149,13 +149,52 @@ datasets = function(){
   run_cli('retriever ls', intern = TRUE)
 }
 
+#' Reset ecoretriever.
+#'
+#' Reset the components of ecoretriever using scope [ all, scripts, data, connection]
+#'
+#' @export
+#' @examples
+#' \donttest{
+#' ecoretriever::reset('all')
+#' }
+reset = function(scope) {
+  os = Sys.info()[['sysname']]
+  if (os == 'Windows') {
+    home_dir = dirname(Sys.getenv('HOME'))
+  } else {
+    home_dir = Sys.getenv('HOME')
+  }
+  print(paste("This will delete", toupper(scope), "cached infomation"))
+  choice.name <- readline(prompt = "Do you want to proceed? (y/N)")
+  if (tolower(scope) == "all" & tolower(choice.name) == "y") {
+    if (file.exists(file.path(home_dir, ".retriever"))) {
+      unlink(file.path(home_dir, ".retriever"), recursive = TRUE)
+    }
+  } else if (tolower(scope) == "scripts" &
+             tolower(choice.name) == "y") {
+    if (file.exists(file.path(home_dir, ".retriever", "scripts"))) {
+      unlink(file.path(home_dir, ".retriever", "scripts"), recursive = TRUE)
+    }
+  }else if (tolower(scope) == "data" & tolower(choice.name) == "y") {
+    if (file.exists(file.path(home_dir, ".retriever", "raw_data"))) {
+      unlink(file.path(home_dir, ".retriever", "raw_data"), recursive = TRUE)
+    }
+  }else if (tolower(scope) == "connections" &
+            tolower(choice.name) == "y") {
+    if (file.exists(file.path(home_dir, ".retriever", "connections"))) {
+      unlink(file.path(home_dir, ".retriever", "connections"), recursive = TRUE)
+    }
+  }
+}
+
 #' Update the retriever's dataset scripts to the most recent versions.
 #' 
 #' This function will check if the version of the retriever's scripts in your local
 #' directory \file{~/.retriever/scripts/} is up-to-date with the most recent official
 #' retriever release. Note it is possible that even more updated scripts exist
 #' at the retriever repository \url{https://github.com/weecology/retriever/tree/master/scripts}
-#' that have not yet been incorperated into an official release, and you should 
+#' that have not yet been incorperated into an official release, and you should
 #' consider checking that page if you have any concerns. 
 #' @keywords utilities
 #' @export
