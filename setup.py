@@ -41,7 +41,7 @@ packages = [
 
 includes = [
     'xlrd',
-    'future'
+    'future',
     'pymysql',
     'psycopg2',
     'sqlite3',
