@@ -2,7 +2,7 @@
 % Please edit documentation in R/ecoretriever.R
 \name{install}
 \alias{install}
-\title{Install datasets via the EcoData Retriever.}
+\title{Install datasets via the Data Retriever.}
 \usage{
 install(dataset, connection, db_file = NULL, conn_file = NULL,
   data_dir = ".", log_dir = NULL)
@@ -39,7 +39,7 @@ systems: MySQL, PostgreSQL, SQLite, or Microsoft Access.
 }
 \examples{
 \donttest{
-ecoretriever::install('MCDB', 'csv')
+rdataretriever::install('MCDB', 'csv')
 }
 }
 

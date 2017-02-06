@@ -1,24 +1,25 @@
-Package: ecoretriever
-Title: R Interface to the EcoData Retriever
-Description: Provides an R interface to the EcoData Retriever
-    (http://ecodataretriever.org/) via the EcoData Retriever's
-    command line interface. The EcoData Retriever automates the
-    tasks of finding, downloading, and cleaning ecological datasets,
+Package: rdataretriever
+Title: R Interface to the Data Retriever
+Description: Provides an R interface to the Data Retriever
+    (http://data-retriever.org/) via the Data Retriever's
+    command line interface. The Data Retriever automates the
+    tasks of finding, downloading, and cleaning public datasets,
     and then stores them in a local database.
 Version: 0.3.0
-Date: 2015-11-18
+Date: 2017-02-06
 Authors@R: c(person("Daniel", "McGlinn", role = c("aut", "cre"),
     email = "danmcglinn@gmail.com"),
     person("Shawn", "Taylor", role = "aut",
     email = "shawntaylor@weecology.org"),
     person("Ethan", "White", role = "aut",
     email = "ethan@weecology.org"))
-BugReports: https://github.com/ropensci/ecoretriever/issues
-URL: https://github.com/ropensci/ecoretriever/
+BugReports: https://github.com/ropensci/rdataretriever/issues
+URL: https://github.com/ropensci/rdataretriever/
 Depends:
     R (>= 3.0.0)
 Imports:
     utils
-SystemRequirements: EcoData Retriever (>= 1.8)
+SystemRequirements: Data Retriever (>= 1.8)
 License: MIT + file LICENSE
 LazyData: true
+RoxygenNote: 5.0.1
