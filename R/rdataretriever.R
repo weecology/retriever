@@ -1,4 +1,4 @@
-#' Install datasets via the EcoData Retriever.
+#' Install datasets via the Data Retriever.
 #'
 #' Data is stored in either CSV files or one of the following database management
 #' systems: MySQL, PostgreSQL, SQLite, or Microsoft Access.
@@ -25,7 +25,7 @@
 #' @export
 #' @examples
 #' \donttest{
-#' ecoretriever::install('MCDB', 'csv')
+#' rdataretriever::install('MCDB', 'csv')
 #' }
 install = function(dataset, connection, db_file=NULL, conn_file=NULL,
                    data_dir='.', log_dir=NULL){ 
@@ -69,7 +69,7 @@ install = function(dataset, connection, db_file=NULL, conn_file=NULL,
   run_cli(cmd)
 }
 
-#' Fetch a dataset via the EcoData Retriever
+#' Fetch a dataset via the Data Retriever
 #'
 #' Each datafile in a given dataset is downloaded to a temporary directory and
 #' then imported as a data.frame as a member of a named list.
@@ -80,7 +80,7 @@ install = function(dataset, connection, db_file=NULL, conn_file=NULL,
 #' @examples
 #' \donttest{
 #' ## fetch the Mammal Community Database (MCDB)
-#' MCDB = ecoretriever::fetch('MCDB')
+#' MCDB = rdataretriever::fetch('MCDB')
 #' class(MCDB)
 #' names(MCDB)
 #' ## preview the data in the MCDB communities datafile
@@ -106,7 +106,7 @@ fetch = function(dataset, quiet=TRUE){
   return(out)
 }
 
-#' Download datasets via the EcoData Retriever.
+#' Download datasets via the Data Retriever.
 #'
 #' Directly downloads data files with no processing, allowing downloading of
 #' non-tabular data.
@@ -119,7 +119,7 @@ fetch = function(dataset, quiet=TRUE){
 #' @export
 #' @examples 
 #' \donttest{
-#' ecoretriever::download('MCDB')
+#' rdataretriever::download('MCDB')
 #' ## list files downloaded
 #' dir('.', pattern='MCDB')
 #' }
@@ -137,13 +137,13 @@ download = function(dataset, path='.', sub_dir=FALSE, log_dir=NULL) {
 
 #' Name all available dataset scripts.
 #'
-#' Additional information on the available datasets can be found at http://ecodataretriever.org/available-data.html
+#' Additional information on the available datasets can be found at http://data-retriever.org/available-data.html
 #' 
 #' @return returns a character vector with the available datasets for download
 #' @export
 #' @examples 
 #' \donttest{
-#' ecoretriever::datasets()
+#' rdataretriever::datasets()
 #' }
 datasets = function(){
   run_cli('retriever ls', intern = TRUE)
@@ -161,7 +161,7 @@ datasets = function(){
 #' @export
 #' @examples
 #' \donttest{
-#' ecoretriever::get_updates()
+#' rdataretriever::get_updates()
 #' }
 get_updates = function() {
     writeLines(strwrap('Please wait while the retriever updates its scripts, ...'))
@@ -189,9 +189,9 @@ print.update_log = function(x, ...) {
     packageStartupMessage(
         "\n  Use get_updates() to download the most recent release of download scripts
      
-    New to ecoretriever? Examples at
-      https://github.com/ropensci/ecoretriever/
-      Use citation(package='ecoretriever') for the package citation
+    New to rdataretriever? Examples at
+      https://github.com/ropensci/rdataretriever/
+      Use citation(package='rdataretriever') for the package citation
     \nUse suppressPackageStartupMessages() to suppress these messages in the future")
 }
 
@@ -230,8 +230,8 @@ check_for_retriever = function(...) {
     
     if (retriever_path == '') {
         path_warn = 'The retriever is not on your path and may not be installed.'
-        mac_instr = 'Follow the instructions for installing and manually adding the EcoData Retriever to your path at http://ecodataretriever.org/download.html'
-        download_instr = 'Please upgrade to the most recent version of the EcoData Retriever, which will automatically add itself to the path http://ecodataretriever.org/download.html'
+        mac_instr = 'Follow the instructions for installing and manually adding the Data Retriever to your path at http://data-retriever.org/download.html'
+        download_instr = 'Please upgrade to the most recent version of the Data Retriever, which will automatically add itself to the path http://data-retriever.org/download.html'
         os = Sys.info()[['sysname']]
         if (os == 'Darwin')
             packageStartupMessage(paste(path_warn, mac_instr))
