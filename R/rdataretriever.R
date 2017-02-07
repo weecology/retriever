@@ -160,11 +160,7 @@ datasets = function(){
 #' }
 reset = function(scope) {
   os = Sys.info()[['sysname']]
-  if (os == 'Windows') {
-    home_dir = dirname(Sys.getenv('HOME'))
-  } else {
-    home_dir = Sys.getenv('HOME')
-  }
+  home_dir = Sys.getenv('HOME')
   print(paste("This will delete", toupper(scope), "cached infomation"))
   choice.name <- readline(prompt = "Do you want to proceed? (y/N)")
   if (tolower(scope) == "all" & tolower(choice.name) == "y") {
@@ -238,18 +234,24 @@ print.update_log = function(x, ...) {
     check_for_retriever()
 }
 
+#' Determine and set a consistent HOME across systems
+#'
+#' On Windows RStudio produces different results for Sys.getenv('HOME') than
+#' running R in other ways. This also influences CLIs for other programs wrapped
+#' in R.  This function checks to see if an extra "Documents" has been appended
+#' to the home path and sets the environmental variable correctly.
+set_home = function(...) {
+    Sys.setenv(HOME = gsub("/Documents", "", Sys.getenv('HOME')))
+}
+
 check_for_retriever = function(...) {
     retriever_path = Sys.which('retriever')
-    
+    set_home()
+    home_dir = Sys.getenv('HOME')
     #Rstudio will not import any paths configured for anaconda python installs, so add default anaconda paths
     #manually. See http://stackoverflow.com/questions/31121645/rstudio-shows-a-different-path-variable
     if (retriever_path == '') {
         os = Sys.info()[['sysname']]
-        if (os == 'Windows') {
-            home_dir = dirname(Sys.getenv('HOME'))
-        } else {
-            home_dir = Sys.getenv('HOME')
-        }
         possible_pathes = c('/Anaconda3/Scripts',
                             '/Anaconda2/Scripts',
                             '/Anaconda/Scripts',
