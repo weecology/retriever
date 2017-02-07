@@ -9,6 +9,8 @@ Version: 0.3.0
 Date: 2015-11-18
 Authors@R: c(person("Daniel", "McGlinn", role = c("aut", "cre"),
     email = "danmcglinn@gmail.com"),
+    person("Henry", "Senyondo", role = "aut",
+    email = ("henrykironde@gmail.com"),
     person("Shawn", "Taylor", role = "aut",
     email = "shawntaylor@weecology.org"),
     person("Ethan", "White", role = "aut",
