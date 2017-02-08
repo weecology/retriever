@@ -10,7 +10,7 @@ Date: 2017-02-06
 Authors@R: c(person("Daniel", "McGlinn", role = c("aut", "cre"),
     email = "danmcglinn@gmail.com"),
     person("Henry", "Senyondo", role = "aut",
-    email = ("henrykironde@gmail.com"),
+    email = "henrykironde@gmail.com"),
     person("Shawn", "Taylor", role = "aut",
     email = "shawntaylor@weecology.org"),
     person("Ethan", "White", role = "aut",
@@ -24,4 +24,4 @@ Imports:
 SystemRequirements: Data Retriever (>= 1.8)
 License: MIT + file LICENSE
 LazyData: true
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
