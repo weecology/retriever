@@ -243,7 +243,7 @@ print.update_log = function(x, ...) {
 #' running R in other ways. This also influences CLIs for other programs wrapped
 #' in R.  This function checks to see if an extra "Documents" has been appended
 #' to the home path and sets the environmental variable correctly.
-set_home = function(...) {
+set_home = function() {
     Sys.setenv(HOME = gsub("/Documents", "", Sys.getenv('HOME')))
 }
 
