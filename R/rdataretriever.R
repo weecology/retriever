@@ -149,16 +149,19 @@ datasets = function(){
   run_cli('retriever ls', intern = TRUE)
 }
 
-#' Reset ecoretriever.
+#' Reset rdataretriever.
 #'
-#' Reset the components of ecoretriever using scope [ all, scripts, data, connection]
+#' Reset the components of rdataretriever using scope [ all, scripts, data, connection]
 #'
+#' @param scope what components to reset. Options include: 'scripts', 'data', 
+#' 'connection' and 'all', where 'all' is the default setting that 
+#'  resets all components.
 #' @export
 #' @examples
 #' \donttest{
-#' ecoretriever::reset('all')
+#' rdataretriever::reset()
 #' }
-reset = function(scope) {
+reset = function(scope='all') {
   os = Sys.info()[['sysname']]
   home_dir = Sys.getenv('HOME')
   print(paste("This will delete", toupper(scope), "cached infomation"))
@@ -240,7 +243,7 @@ print.update_log = function(x, ...) {
 #' running R in other ways. This also influences CLIs for other programs wrapped
 #' in R.  This function checks to see if an extra "Documents" has been appended
 #' to the home path and sets the environmental variable correctly.
-set_home = function(...) {
+set_home = function() {
     Sys.setenv(HOME = gsub("/Documents", "", Sys.getenv('HOME')))
 }
 

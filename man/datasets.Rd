@@ -17,4 +17,3 @@ Additional information on the available datasets can be found at http://data-ret
 rdataretriever::datasets()
 }
 }
-

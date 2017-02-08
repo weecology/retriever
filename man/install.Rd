@@ -42,4 +42,3 @@ systems: MySQL, PostgreSQL, SQLite, or Microsoft Access.
 rdataretriever::install('MCDB', 'csv')
 }
 }
-

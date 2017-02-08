@@ -25,4 +25,3 @@ names(MCDB)
 head(MCDB$communities)
 }
 }
-
