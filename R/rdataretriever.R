@@ -149,13 +149,48 @@ datasets = function(){
   run_cli('retriever ls', intern = TRUE)
 }
 
+#' Reset ecoretriever.
+#'
+#' Reset the components of ecoretriever using scope [ all, scripts, data, connection]
+#'
+#' @export
+#' @examples
+#' \donttest{
+#' ecoretriever::reset('all')
+#' }
+reset = function(scope) {
+  os = Sys.info()[['sysname']]
+  home_dir = Sys.getenv('HOME')
+  print(paste("This will delete", toupper(scope), "cached infomation"))
+  choice.name <- readline(prompt = "Do you want to proceed? (y/N)")
+  if (tolower(scope) == "all" & tolower(choice.name) == "y") {
+    if (file.exists(file.path(home_dir, ".retriever"))) {
+      unlink(file.path(home_dir, ".retriever"), recursive = TRUE)
+    }
+  } else if (tolower(scope) == "scripts" &
+             tolower(choice.name) == "y") {
+    if (file.exists(file.path(home_dir, ".retriever", "scripts"))) {
+      unlink(file.path(home_dir, ".retriever", "scripts"), recursive = TRUE)
+    }
+  }else if (tolower(scope) == "data" & tolower(choice.name) == "y") {
+    if (file.exists(file.path(home_dir, ".retriever", "raw_data"))) {
+      unlink(file.path(home_dir, ".retriever", "raw_data"), recursive = TRUE)
+    }
+  }else if (tolower(scope) == "connections" &
+            tolower(choice.name) == "y") {
+    if (file.exists(file.path(home_dir, ".retriever", "connections"))) {
+      unlink(file.path(home_dir, ".retriever", "connections"), recursive = TRUE)
+    }
+  }
+}
+
 #' Update the retriever's dataset scripts to the most recent versions.
 #' 
 #' This function will check if the version of the retriever's scripts in your local
 #' directory \file{~/.retriever/scripts/} is up-to-date with the most recent official
 #' retriever release. Note it is possible that even more updated scripts exist
 #' at the retriever repository \url{https://github.com/weecology/retriever/tree/master/scripts}
-#' that have not yet been incorperated into an official release, and you should 
+#' that have not yet been incorperated into an official release, and you should
 #' consider checking that page if you have any concerns. 
 #' @keywords utilities
 #' @export
@@ -199,18 +234,24 @@ print.update_log = function(x, ...) {
     check_for_retriever()
 }
 
+#' Determine and set a consistent HOME across systems
+#'
+#' On Windows RStudio produces different results for Sys.getenv('HOME') than
+#' running R in other ways. This also influences CLIs for other programs wrapped
+#' in R.  This function checks to see if an extra "Documents" has been appended
+#' to the home path and sets the environmental variable correctly.
+set_home = function(...) {
+    Sys.setenv(HOME = gsub("/Documents", "", Sys.getenv('HOME')))
+}
+
 check_for_retriever = function(...) {
     retriever_path = Sys.which('retriever')
-    
+    set_home()
+    home_dir = Sys.getenv('HOME')
     #Rstudio will not import any paths configured for anaconda python installs, so add default anaconda paths
     #manually. See http://stackoverflow.com/questions/31121645/rstudio-shows-a-different-path-variable
     if (retriever_path == '') {
         os = Sys.info()[['sysname']]
-        if (os == 'Windows') {
-            home_dir = dirname(Sys.getenv('HOME'))
-        } else {
-            home_dir = Sys.getenv('HOME')
-        }
         possible_pathes = c('/Anaconda3/Scripts',
                             '/Anaconda2/Scripts',
                             '/Anaconda/Scripts',
