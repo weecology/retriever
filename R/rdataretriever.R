@@ -208,6 +208,8 @@ get_updates = function() {
     writeLines(strwrap(update_log[3]))
 }
 
+#' print the output from get_updates
+#' @keywords internal
 #' @export
 print.update_log = function(x, ...) {
     if (length(x) == 0) {
@@ -243,10 +245,13 @@ print.update_log = function(x, ...) {
 #' running R in other ways. This also influences CLIs for other programs wrapped
 #' in R.  This function checks to see if an extra "Documents" has been appended
 #' to the home path and sets the environmental variable correctly.
-set_home = function() {
+#' @keywords internal
+set_home = function(...) {
     Sys.setenv(HOME = gsub("/Documents", "", Sys.getenv('HOME')))
 }
 
+#' Check if retriever is on the user's path
+#' @keywords internal
 check_for_retriever = function(...) {
     retriever_path = Sys.which('retriever')
     set_home()
@@ -290,6 +295,7 @@ check_for_retriever = function(...) {
 #' function uses shell() on Windows and system() on other operating systems
 #'
 #' @param command string containing a command line call to the retriever
+#' @keywords internal
 run_cli = function(...) {
     os = Sys.info()[['sysname']]
     if (os == "Windows") {
