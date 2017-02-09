@@ -13,3 +13,4 @@ run_cli(...)
 system() calls to the retriever execute inconsistently on Windows so this
 function uses shell() on Windows and system() on other operating systems
 }
+\keyword{internal}

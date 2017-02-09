@@ -4,7 +4,7 @@
 \alias{set_home}
 \title{Determine and set a consistent HOME across systems}
 \usage{
-set_home()
+set_home(...)
 }
 \description{
 On Windows RStudio produces different results for Sys.getenv('HOME') than
@@ -12,3 +12,4 @@ running R in other ways. This also influences CLIs for other programs wrapped
 in R.  This function checks to see if an extra "Documents" has been appended
 to the home path and sets the environmental variable correctly.
 }
+\keyword{internal}
