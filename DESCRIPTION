@@ -24,4 +24,4 @@ Imports:
 SystemRequirements: Data Retriever (>= 1.8)
 License: MIT + file LICENSE
 LazyData: true
-RoxygenNote: 6.0.1
+RoxygenNote: 5.0.1

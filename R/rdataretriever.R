@@ -25,7 +25,7 @@
 #' @export
 #' @examples
 #' \donttest{
-#' rdataretriever::install('MCDB', 'csv')
+#' rdataretriever::install('iris', 'csv')
 #' }
 install = function(dataset, connection, db_file=NULL, conn_file=NULL,
                    data_dir='.', log_dir=NULL){ 
@@ -79,12 +79,12 @@ install = function(dataset, connection, db_file=NULL, conn_file=NULL,
 #' @export
 #' @examples
 #' \donttest{
-#' ## fetch the Mammal Community Database (MCDB)
-#' MCDB = rdataretriever::fetch('MCDB')
-#' class(MCDB)
-#' names(MCDB)
-#' ## preview the data in the MCDB communities datafile
-#' head(MCDB$communities)
+#' ## fetch the portal Database
+#' portal = rdataretriever::fetch('portal')
+#' class(portal)
+#' names(portal)
+#' ## preview the data in the portal species datafile
+#' head(portal$species)
 #' }
 fetch = function(dataset, quiet=TRUE){
   temp_path = tempdir()
@@ -119,9 +119,9 @@ fetch = function(dataset, quiet=TRUE){
 #' @export
 #' @examples 
 #' \donttest{
-#' rdataretriever::download('MCDB')
+#' rdataretriever::download('portal')
 #' ## list files downloaded
-#' dir('.', pattern='MCDB')
+#' dir('.', pattern='portal')
 #' }
 download = function(dataset, path='.', sub_dir=FALSE, log_dir=NULL) {
     if (sub_dir)
