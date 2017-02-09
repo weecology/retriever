@@ -13,3 +13,4 @@ in R.  This function checks to see if an extra "Documents" has been appended
 to the home path and sets the environmental variable correctly.
 }
 \keyword{internal}
+

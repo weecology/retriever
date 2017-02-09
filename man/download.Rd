@@ -22,8 +22,9 @@ non-tabular data.
 }
 \examples{
 \donttest{
-rdataretriever::download('MCDB')
+rdataretriever::download('portal')
 ## list files downloaded
-dir('.', pattern='MCDB')
+dir('.', pattern='portal')
 }
 }
+

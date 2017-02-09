@@ -17,11 +17,12 @@ then imported as a data.frame as a member of a named list.
 }
 \examples{
 \donttest{
-## fetch the Mammal Community Database (MCDB)
-MCDB = rdataretriever::fetch('MCDB')
-class(MCDB)
-names(MCDB)
-## preview the data in the MCDB communities datafile
-head(MCDB$communities)
+## fetch the portal Database
+portal = rdataretriever::fetch('portal')
+class(portal)
+names(portal)
+## preview the data in the portal species datafile
+head(portal$species)
 }
 }
+

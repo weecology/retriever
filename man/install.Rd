@@ -39,6 +39,7 @@ systems: MySQL, PostgreSQL, SQLite, or Microsoft Access.
 }
 \examples{
 \donttest{
-rdataretriever::install('MCDB', 'csv')
+rdataretriever::install('iris', 'csv')
 }
 }
+

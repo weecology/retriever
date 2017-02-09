@@ -42,17 +42,17 @@ library(rdataretriever)
 # List the datasets available via the Retriever
 rdataretriever::datasets()
 
-# Install the Gentry dataset into csv files in your working directory
-rdataretriever::install('Gentry', 'csv')
+# Install the portal into csv files in your working directory
+rdataretriever::install('portal', 'csv')
 
-# Download the raw Gentry dataset files without any processing to the 
+# Download the raw portal dataset files without any processing to the
 # subdirectory named data
-rdataretriever::download('Gentry', './data/')
+rdataretriever::download('portal', './data/')
 
 # Install and load a dataset as a list
-Gentry = rdataretriever::fetch('Gentry')
-names(Gentry)
-head(Gentry$counts)
+portal = rdataretriever::fetch('portal')
+names(portal)
+head(portal$species)
 ```
 
 To get citation information for the `rdataretriever` in R use `citation(package = 'rdataretriever')`
