@@ -4,10 +4,10 @@ block_cipher = None
 
 
 a = Analysis(['__main__.py'],
-             pathex=['lib','engines', 'C:\\Users\\Henry\\Documents\\GitHub\\retriever'],
+             pathex=['.', 'lib','engines', 'scripts'],
              binaries=[],
              datas=[],
-             hiddenimports=[],
+             hiddenimports=['xlrd'],
              hookspath=[],
              runtime_hooks=[],
              excludes=[],
@@ -15,13 +15,23 @@ a = Analysis(['__main__.py'],
              win_private_assemblies=False,
              cipher=block_cipher)
 
-a.pure += [('retriever.engines.mysql','engines/mysql.py','PYMODULE'), ('retriever.engines.postgres','engines/postgres.py', 'PYMODULE'), ('retriever.engines.sqlite','engines/sqlite.py', 'PYMODULE'), ('retriever.engines.msaccess','engines/msaccess.py', 'PYMODULE'), ('retriever.engines.csvengine','engines/csvengine.py', 'PYMODULE'), ('retriever.engines.download_only','engines/download_only.py', 'PYMODULE'), ('retriever.engines.jsonengine','engines/jsonengine.py', 'PYMODULE'), ('retriever.engines.xmlengine','engines/xmlengine.py', 'PYMODULE')]
+a.pure += [('retriever.engines.mysql','engines/mysql.py','PYMODULE'),
+           ('retriever.engines.postgres','engines/postgres.py', 'PYMODULE'),
+           ('retriever.engines.sqlite','engines/sqlite.py', 'PYMODULE'),
+           ('retriever.engines.msaccess','engines/msaccess.py', 'PYMODULE'),
+           ('retriever.engines.csvengine','engines/csvengine.py', 'PYMODULE'),
+           ('retriever.engines.download_only','engines/download_only.py', 'PYMODULE'),
+           ('retriever.engines.jsonengine','engines/jsonengine.py', 'PYMODULE'),
+           ('retriever.engines.xmlengine','engines/xmlengine.py', 'PYMODULE'),
+           ('retriever.lib.templates', 'lib/templates.py', 'PYMODULE'),
+           ('retriever.lib.excel', 'lib/excel.py', 'PYMODULE')]
+
 pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
 exe = EXE(pyz,
           a.scripts,
           exclude_binaries=True,
-          name='__main__',
+          name='retriever',
           debug=False,
           strip=False,
           upx=True,
@@ -32,4 +42,4 @@ coll = COLLECT(exe,
                a.datas,
                strip=False,
                upx=True,
-               name='__main__')
+               name='packages')
