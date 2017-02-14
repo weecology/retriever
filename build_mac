@@ -1,13 +1,7 @@
 export DYLD_LIBRARY_PATH=/usr/local/mysql/lib/
 sudo rm -rf mac
+sudo mkdir mac
 sudo python setup.py install
-sudo python setup.py py2app
-sudo mv dist mac
-sudo rm mac/*.egg
-sudo rm -rf mac/scripts
-sudo ditto --rsrc x86_64 mac/retriever.app mac/retriever2.app
-sudo rm -rf mac/retriever.app
-sudo mv mac/retriever2.app mac/retriever.app
-cd mac
-sudo zip -r retriever.zip retriever.app
-cd ..
+sudo pyinstaller pyinstaller.spec --log-level ERROR
+sudo mv dist/retriever.app mac/retriever.app
+sudo rm -rf build dist

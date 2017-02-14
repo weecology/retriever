@@ -28,8 +28,8 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: modifypath; Description: Add application directory to your environmental path
 
 [Files]
-Source: "dist\retriever.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "dist\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "dist\packages\retriever.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "dist\packages\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
