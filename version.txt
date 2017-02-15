@@ -1,8 +1,14 @@
 v2.0.dev
 abalone-age.json,1.2.0
 amniote-life-hist.json,1.1.0
+AmnioteLH.py,
 antarctic-breed-bird.json,1.1.0
+baad.py,
+Baldridge2012.py,
+bbs.py,
+bbs50stop.py,
 bioclim.py,1.1.0
+bioclim_2pt5.py,
 biomass-allometry-db.py,1.2.0
 bird-size.json,1.1.0
 breast-cancer-wi.json,1.1.0
@@ -11,6 +17,9 @@ breed-bird-survey.py,1.3.0
 butterfly-population-network.json,1.1.0
 car-eval.json,1.1.0
 community-abundance-misc.json,1.0
+Dryad_tamburello_etal_2013.py,
+EA_adler2007.py,
+EA_anderson2011.py,
 elton-traits.json,1.1.0
 fish-parasite-hosts.json,1.1.0
 forest-biomass-china.json,1.1.0
