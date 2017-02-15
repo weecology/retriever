@@ -41,7 +41,7 @@ packages = [
 
 includes = [
     'xlrd',
-    'future'
+    'future',
     'pymysql',
     'psycopg2',
     'sqlite3',
@@ -66,7 +66,7 @@ excludes = [
 setup(name='retriever',
       version=clean_version(__version__),
       description='Data Retriever',
-      author='Ben Morris, Ethan White, Henry Senyondo',
+      author='Ben Morris, Akash Goel, Henry Senyondo, Ethan White',
       author_email='ethan@weecology.org',
       url='https://github.com/weecology/retriever',
       classifiers=['Intended Audience :: Science/Research',
