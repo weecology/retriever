@@ -1,18 +1,21 @@
 #retriever
 """Retriever script for National Phenology Network data
+The dataset contains observation data retrieved from start date to current date
+date format YYYY-MM-DD
+Data having a value -9999 or "-9999" are considered 'null' or 'empty
+Data from the API is xml having both taxa(plantae and animalia)
 """
 from future import standard_library
+
 standard_library.install_aliases()
-from builtins import range
+from builtins import str
 
-import os
-import urllib.request, urllib.parse, urllib.error
-import zipfile
-from decimal import Decimal
+import time
+import xml.etree.ElementTree as ET
+
 from retriever.lib.templates import Script
-from retriever.lib.models import Table, Cleanup, no_cleanup, correct_invalid_value
-
-VERSION = '0.5'
+from retriever.lib.models import Table
+from retriever import open_fr, open_fw, open_csvw
 
 
 class main(Script):
@@ -21,53 +24,108 @@ class main(Script):
         self.name = "USA National Phenology Network"
         self.shortname = "NPN"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.0'
+        self.version = '2.0.0'
         self.ref = "http://www.usanpn.org/results/data"
         self.tags = ["Data Type > Phenology", "Spatial Scale > Continental"]
         self.description = "The data set was collected via Nature's Notebook phenology observation program (2009-present), and (2) Lilac and honeysuckle data (1955-present)"
         self.citation = "Schwartz, M. D., Ault, T. R., & J. L. Betancourt, 2012: Spring Onset Variations and Trends in the Continental USA: Past and Regional Assessment Using Temperature-Based Indices. International Journal of Climatology (published online, DOI: 10.1002/joc.3625)."
+
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
 
         engine = self.engine
+        csv_files = []
+        request_src = "http://www.data-retriever.org/"
+        base_url = "http://www.usanpn.org/npn_portal/observations/getObservations.xml?start_date={startYear}-01-01&end_date={endYear_date}&request_src={request_src}"
+        start_year = 2009
+        end_year = int(time.strftime("%Y"))
+        header_values = ["observation_id",
+                         "update_datetime",
+                         "site_id",
+                         "latitude",
+                         "longitude",
+                         "elevation_in_meters",
+                         "state",
+                         "species_id",
+                         "genus",
+                         "species",
+                         "common_name",
+                         "kingdom",
+                         "individual_id",
+                         "phenophase_id",
+                         "phenophase_description",
+                         "observation_date",
+                         "day_of_year",
+                         "phenophase_status",
+                         "intensity_category_id",
+                         "intensity_value",
+                         "abundance_value"
+                         ]
 
-        taxa = ('Plant', 'Animal')
+        columns = [("record_id", ("pk-auto",)),
+                   ("observation_id", ("int",)),  # subsequently refered to as "status record"
+                   ("update_datetime", ("char",)),
+                   ("site_id", ("int",)),
+                   ("latitude", ("double",)),
+                   ("longitude", ("double",)),
+                   ("elevation_in_meters", ("char",)),
+                   ("state", ("char",)),
+                   ("species_id", ("int",)),
+                   ("genus", ("char",)),
+                   ("species", ("char",)),
+                   ("common_name", ("char",)),
+                   ("kingdom", ("char",)),  # skip kingdom
+                   ("individual_id", ("char",)),
+                   ("phenophase_id", ("int",)),
+                   ("phenophase_description", ("char",)),
+                   ("observation_date", ("char",)),
+                   ("day_of_year", ("char",)),
+                   ("phenophase_status", ("char",)),
+                   ("intensity_category_id", ("char",)),
+                   ("intensity_value", ("char",)),
+                   ("abundance_value", ("char",))
+                   ]
+        while start_year <= end_year:
+            if start_year == end_year:
+                # get the data in the current year to current day (sometimes the recent day's data is empty)
+                # Data starts from 01-01 to 12-31 of each year
+                data_url = base_url.format(startYear=start_year, endYear_date=str(time.strftime("%Y-%d-%m")),
+                                           request_src=request_src)
+            else:
+                data_url = base_url.format(startYear=start_year, endYear_date=str(start_year + 1) + "-12-31",
+                                           request_src=request_src)
+            xml_file_name = '{}'.format(start_year) + ".xml"
+            engine.download_file(data_url, xml_file_name)
 
-        for tax in taxa:
-            table = Table(tax.lower() + 's', delimiter=',', header_rows = 3, pk='record_id', contains_pk=True)
+            # Create csv files for that year
+            csv_observation = '{}'.format(start_year) + ".csv"
+            csv_files.append(csv_observation)
+            csv_buff = open_fw(engine.format_filename(csv_observation))
+            csv_writer = open_csvw(csv_buff)
 
-            columns =     [("record_id"             ,   ("pk-int",)     ),
-                           ("station_id"            ,   ("int",)        ),
-                           ("obs_date"              ,   ("char",)       ),
-                           ("ind_id"                ,   ("int",)        ),
-                           ("sci_name"              ,   ("char",)       ),
-                           ("com_name"              ,   ("char",)       ),
-                           ("kingdom"               ,   ("char",)       ),
-                           ("pheno_cat"             ,   ("char",)       ),
-                           ("pheno_name"            ,   ("char",)       ),
-                           ("pheno_status"          ,   ("char",)       ),
-                           ("lat"                   ,   ("double",)     ),
-                           ("lon"                   ,   ("double",)     ),
-                           ("elevation"             ,   ("int",)        ),
-                           ("network_name"          ,   ("char",)       )]
-            table.columns = columns
+            csv_writer.writerow(header_values)
 
-            engine.table = table
-            engine.create_table()
+            # Parse xml to read data
+            file_output = open_fr(engine.format_filename(xml_file_name), encode=False)
+            v = file_output.read()
+            tree = ET.parse(v)
+            root = tree.getroot()
+            for elements in root:
+                index_map = {val: i for i, val in enumerate(header_values)}
+                diction = sorted(elements.attrib.items(), key=lambda pair: index_map[pair[0]])
+                csv_writer.writerow([x[1] for x in diction])
 
-            base_url = 'http://www.usanpn.org/getObs/observations/'
-            years = list(range(2009, 2013))
+            file_output.close()
+            csv_buff.close()
+            start_year += 1
 
-            for year in years:
-                if year == 2009 and tax == 'Animal': continue
-
-                url = base_url + 'get%s%sDataNoDefinitions' % (year, tax)
-
-                filename = '%s_%s.csv' % (tax, year)
-                engine.download_file(url, filename)
-
-                engine.insert_data_from_file(engine.find_file(filename))
-
+        # Create table
+        table = Table('obsercations', delimiter=',', pk='record_id', contains_pk=True)
+        table.columns = columns
+        engine.table = table
+        engine.create_table()
+        for data_file in csv_files:
+            engine.insert_data_from_file(engine.find_file(data_file))
         return engine
 
 
