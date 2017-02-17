@@ -9,7 +9,7 @@ import platform
 current_platform = platform.system().lower()
 extra_includes = []
 
-__version__ = 'v2.0.dev'
+__version__ = 'v2.0.0'
 with open("_version.py", "w") as version_file:
     version_file.write("__version__ = " + "'" + __version__ + "'\n")
     version_file.close()
