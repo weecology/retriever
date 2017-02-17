@@ -4,7 +4,7 @@ rm -rf build dist
 mkdir packages
 
 #create distributable version
-python setup.py py2exe
+pyinstaller pyinstaller.spec
 
 #package distributable installer
 ISCC.exe retriever_installer.iss
