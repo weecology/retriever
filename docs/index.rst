@@ -17,7 +17,7 @@ Contents:
    Release.rst
    developer.rst
    code_of_conduct.rst
-   ecoretriever.rst
+   rdataretriever.rst
    datasets.rst
    modules.rst
 

@@ -27,7 +27,7 @@ Linux
 
 1. **Run the tests** (unless you just ran them on the same machine)
 2. Checkout master
-3. Run ``bash build.sh``
+3. Run ``build.sh``
 
 Windows
 -------
@@ -35,7 +35,7 @@ Windows
 1. **Run the tests**. This helps makes sure that the build environment
    is properly set up.
 2. Checkout master
-3. Run ``build_win``
+3. Run ``sh build_win``
 
 Mac
 ---
@@ -43,8 +43,7 @@ Mac
 1. **Run the tests**. This helps makes sure that the build environment
    is properly set up.
 2. Checkout master
-3. Run ``bash build_mac``. This creates a folder called “mac” with two
-   files; retriever.app and retriever.zip
+3. Run ``build_mac``
 4. Install the retriever for verification. Reference
    http://www.data-retriever.org/download.html
 
@@ -58,4 +57,3 @@ Cleanup
 
 1. Bump the version numbers in ``__init__.py`` and
    ``retriever_installer.iss``
-2. In ``__init__.py`` change ``MASTER = False`` to ``MASTER = True``

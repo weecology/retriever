@@ -66,9 +66,8 @@ DATA_DIR = '.'
 def open_fr(file_name, encoding='ISO-8859-1', encode=True):
     """Open file for reading respecting Python version and OS differences
 
-    Sets newline to Linux line endings on Windows + Python 3
-    When encode=False does not set encoding on *nix + Python 3 to keep as bytes
-
+    Sets newline to Linux line endings on Windows and Python 3
+    When encode=False does not set encoding on nix and Python 3 to keep as bytes
     """
     if sys.version_info >= (3, 0, 0):
         if os.name == 'nt':
@@ -87,8 +86,7 @@ def open_fw(file_name, encoding='ISO-8859-1', encode=True):
     """Open file for writing respecting Python version and OS differences
 
     Sets newline to Linux line endings on Python 3
-    When encode=False does not set encoding on *nix + Python 3 to keep as bytes
-
+    When encode=False does not set encoding on nix and Python 3 to keep as bytes
     """
     if sys.version_info >= (3, 0, 0):
         if encode:
