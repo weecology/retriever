@@ -1,3 +1,33 @@
+rdataretriever 1.0.0
+====================
+
+NEW PACKAGE NAME
+
+* The `EcoData Retriever` has been renamed to `Data Retriever` to reflect its 
+utility outside of ecological data and consequently we have renamed the R package
+from `ecoretriever` to `rdataretriever`
+
+NEW COAUTHORS
+
+* We welcome Henry Senyondo and Shawn Taylor as coauthors on the package. Thanks
+for the great help Henry and Shawn!
+
+NEW FEATURES
+
+* Add `reset` which allows a user to delete all the `Data Retriever` downloaded
+files
+
+MINOR IMPROVEMENTS
+
+* Accomodate new retriever naming conventions in fetch
+* Don't change the class or return the update log
+* Specify in documentation which functions are for internal use.
+* Change dataset names in source and README.md
+
+BUG FIXES
+
+* Search for Anaconda installs of the `Data Retriever`
+
 ecoretriever 0.3.0
 ==================
 
