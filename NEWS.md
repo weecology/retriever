@@ -16,6 +16,7 @@ NEW FEATURES
 
 * Add `reset` which allows a user to delete all the `Data Retriever` downloaded
 files
+* Add `json` and `xml` as output options
 
 MINOR IMPROVEMENTS
 
@@ -27,6 +28,7 @@ MINOR IMPROVEMENTS
 BUG FIXES
 
 * Search for Anaconda installs of the `Data Retriever`
+* Obtain correct home path in RStudio on Windows
 
 ecoretriever 0.3.0
 ==================
