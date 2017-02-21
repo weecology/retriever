@@ -1,0 +1,66 @@
+{
+    "citation": "Michael W. Palmer, Robert K. Peet, Rebecca A. Reed, Weimin Xi, and Peter S. White. 2007. A multiscale study of vascular plants in a North Carolina Piedmont forest. Ecology 88:2674.",
+    "description": "A data set collected in 1989 of vascular plant occurrences in overlapping grids of nested plots in the Oosting Natural Area of the Duke Forest, Orange County, North Carolina, USA.",
+    "homepage": "http://esapubs.org/archive/ecol/E088/162/",
+    "keywords": [
+        "plants",
+        "local-scale",
+        "time-series",
+        "observational"
+    ],
+    "name": "plant-occur-oosting",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "pres",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E088/162/Oosting_pres2.txt"
+        },
+        {
+            "dialect": {},
+            "name": "species",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E088/162/species_codes.txt"
+        },
+        {
+            "dialect": {
+                "missingValues": [
+                    ".",
+                    ""
+                ],
+                "replace_columns": [
+                    [
+                        "check",
+                        "checkrec"
+                    ]
+                ]
+            },
+            "name": "trees",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E088/162/Oosting_Trees_1998.txt"
+        },
+        {
+            "dialect": {
+                "replace_columns": [
+                    [
+                        "check",
+                        "checkrec"
+                    ]
+                ]
+            },
+            "name": "env",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E088/162/Oosting_env.txt"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.dev",
+    "title": "Oosting Natural Area (North Carolina) plant occurrence (Palmer et al. 2007)",
+    "urls": {
+        "env": "http://esapubs.org/archive/ecol/E088/162/Oosting_env.txt",
+        "pres": "http://esapubs.org/archive/ecol/E088/162/Oosting_pres2.txt",
+        "species": "http://esapubs.org/archive/ecol/E088/162/species_codes.txt",
+        "trees": "http://esapubs.org/archive/ecol/E088/162/Oosting_Trees_1998.txt"
+    },
+    "version": "1.1.1"
+}

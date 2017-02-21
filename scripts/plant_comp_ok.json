@@ -1,0 +1,62 @@
+{
+    "citation": "Daniel J. McGlinn, Peter G. Earls, and Michael W. Palmer. 2010. A 12-year study on the scaling of vascular plant composition in an Oklahoma tallgrass prairie. Ecology 91:1872.",
+    "description": "The data is part of a monitoring project on vascular plant composition at the Tallgrass Prairie Preserve in Osage County, Oklahoma, USA.",
+    "homepage": "http://esapubs.org/archive/ecol/E091/124/",
+    "keywords": [
+        "plants",
+        "local-scale",
+        "time-series",
+        "observational"
+    ],
+    "name": "plant-comp-ok",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "pres",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E091/124/TGPP_pres.csv"
+        },
+        {
+            "dialect": {},
+            "name": "cover",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E091/124/TGPP_cover.csv"
+        },
+        {
+            "dialect": {},
+            "name": "richness",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E091/124/TGPP_rich.csv"
+        },
+        {
+            "dialect": {},
+            "name": "species",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E091/124/TGPP_specodes.csv"
+        },
+        {
+            "dialect": {},
+            "name": "environment",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E091/124/TGPP_env.csv"
+        },
+        {
+            "dialect": {},
+            "name": "climate",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E091/124/TGPP_clim.csv"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.dev",
+    "title": "Vascular plant composition - McGlinn, et al., 2010",
+    "urls": {
+        "climate": "http://esapubs.org/archive/ecol/E091/124/TGPP_clim.csv",
+        "cover": "http://esapubs.org/archive/ecol/E091/124/TGPP_cover.csv",
+        "environment": "http://esapubs.org/archive/ecol/E091/124/TGPP_env.csv",
+        "pres": "http://esapubs.org/archive/ecol/E091/124/TGPP_pres.csv",
+        "richness": "http://esapubs.org/archive/ecol/E091/124/TGPP_rich.csv",
+        "species": "http://esapubs.org/archive/ecol/E091/124/TGPP_specodes.csv"
+    },
+    "version": "1.1.1"
+}

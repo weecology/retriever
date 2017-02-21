@@ -32,9 +32,9 @@ download_md5 = [
 ]
 
 db_md5 = [
-    # ('DelMoral2010', '0'),
-    ('bird-size', '98dcfdca19d729c90ee1c6db5221b775'),
-    ('mammal-masses', '6fec0fc63007a4040d9bbc5cfcd9953e')
+    # ('mt_st_helens_veg', '0'),
+    ('bird_size', '98dcfdca19d729c90ee1c6db5221b775'),
+    ('mammal_masses', '6fec0fc63007a4040d9bbc5cfcd9953e')
 ]
 
 
