@@ -1,0 +1,31 @@
+{
+    "citation": "C. Barnes, D. M. Bethea, R. D. Brodeur, J. Spitz, V. Ridoux, C. Pusineri, B. C. Chase, M. E. Hunsicker, F. Juanes, A. Kellermann, J. Lancaster, F. Menard, F.-X. Bard, P. Munk, J. K. Pinnegar, F. S. Scharf, R. A. Rountree, K. I. Stergiou, C. Sassa, A. Sabates, and S. Jennings. 2008. Predator and prey body sizes in marine food webs. Ecology 89:881.",
+    "description": "The data set contains relationships between predator and prey size which are needed to describe interactions of species and size classes in food webs.",
+    "homepage": "http://www.esapubs.org/Archive/ecol/E089/051/",
+    "keywords": [
+        "fish",
+        "literature-compilation",
+        "size"
+    ],
+    "name": "predator-prey-size-marine",
+    "resources": [
+        {
+            "dialect": {
+                "missingValues": [
+                    "n/a",
+                    "0.0000E+00"
+                ]
+            },
+            "name": "main",
+            "schema": {},
+            "url": "http://www.esapubs.org/Archive/ecol/E089/051/Predator_and_prey_body_sizes_in_marine_food_webs_vsn3.txt"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.dev",
+    "title": "Marine Predator and Prey Body Sizes - Barnes et al. 2008",
+    "urls": {
+        "main": "http://www.esapubs.org/Archive/ecol/E089/051/Predator_and_prey_body_sizes_in_marine_food_webs_vsn3.txt"
+    },
+    "version": "1.1.1"
+}

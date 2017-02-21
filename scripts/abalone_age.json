@@ -1,0 +1,63 @@
+{
+    "citation": "Lichman, M. (2013). UCI Machine Learning Repository [http://archive.ics.uci.edu/ml]. Irvine, CA: University of California, School of Information and Computer Science.",
+    "description": "Database to aid in the prediction of the age of an Abalone given physical measurements",
+    "homepage": "http://archive.ics.uci.edu/ml/datasets/Abalone",
+    "keywords": [],
+    "name": "abalone-age",
+    "resources": [
+        {
+            "dialect": {
+                "header_rows": 0
+            },
+            "name": "data",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "Sex",
+                        "type": "char"
+                    },
+                    {
+                        "name": "Length",
+                        "type": "double"
+                    },
+                    {
+                        "name": "Diameter",
+                        "type": "double"
+                    },
+                    {
+                        "name": "Height",
+                        "type": "double"
+                    },
+                    {
+                        "name": "Whole_Weight",
+                        "type": "double"
+                    },
+                    {
+                        "name": "Shucked_weight",
+                        "type": "double"
+                    },
+                    {
+                        "name": "Viscera_weight",
+                        "type": "double"
+                    },
+                    {
+                        "name": "Shell_weight",
+                        "type": "double"
+                    },
+                    {
+                        "name": "Rings",
+                        "type": "int"
+                    }
+                ]
+            },
+            "url": "http://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.dev",
+    "title": "Abalone Age and Size Data",
+    "urls": {
+        "data": "http://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data"
+    },
+    "version": "1.2.1"
+}
