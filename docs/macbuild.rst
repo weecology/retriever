@@ -9,28 +9,10 @@ Python binaries
 This build will allow you to successfully build the Mac App for
 distribution to other systems.
 
-1. If running OS X 10.8+ go to
-   ``System Preferences -> Security & Privacy -> General`` and select
-   ``Allow apps downloaded from Anywhere``. This is necessary because
-   GateKeeper will try to prevent this installation. You can return this
-   setting to its previous state following the installation.
-2. Install the Python 2.7 Installer from the `Python download site`_
-   (double click the dmg and then double click the installer). Use the
-   Mac OS X 64-bit/32-bit x86-64/i386 Installer for Mac OS X 10.6 and
-   later unless you have a good reason to do otherwise.
-3. Install setuptools (if you haven’t already)
-
-   -  Download `ez\_setup.py`_
-   -  Navigate to the directory where you downloaded it and run
-      ``sudo python ez_setup.py``)
-
-4. Install pip: ``easy_install pip``
-5. Use pip to install the xlrd ``pip install xlrd``
-6. Use pip to install any desired optional dependencies
-   ``pip install PyMySQL MySQL-python psycopg2 py2app``
-
-   -  You will need all of these dependencies if you want to build the
-      Mac App for distribution
+1. Install the Python 3 Installer (or Python 2 if you have a specific reason for doing so)
+   from the `Python download site`_.
+2. Use pip to install any desired optional dependencies ``pip install pymysql psycopg2 pyinstaller pytest``
+   You will need all of these dependencies, for example pyinstaller, if you want to build the Mac App for distribution
 
 Homebrew
 --------
@@ -49,11 +31,10 @@ if you build the App on OS X 10.9 it will only run on 10.9)
     ``echo export PATH='usr/local/bin:$PATH' >> ~/.bash_profile``
 6.  Install xlrd via pip ``pip install xlrd``. No ``sudo`` is necessary
     since we’re using brew.
-7.  Install py2app via pip ``pip install py2app``.
-8.  Clone the Retriever
+7.  Clone the Retriever
     ``git clone git@github.com:weecology/retriever.git``
-9. Switch directories ``cd retriever``
-10. Standard install ``python setup.py install``
+8. Switch directories ``cd retriever``
+9. Standard install ``pip install . --upgrade``
 
 If you also want to install the dependencies for MySQL and PostgreSQL
 this can be done using a combination of homebrew and pip.
@@ -74,4 +55,4 @@ Conda
 -  This hasn’t been tested yet
 
 .. _Python download site: http://www.python.org/download/
-.. _ez\_setup.py: https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
+

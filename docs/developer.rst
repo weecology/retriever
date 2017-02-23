@@ -32,9 +32,7 @@ You will also need the following modules:
 
   mysqldb (MySQL)
   psycopg2 (PostgreSQL)
-  pyodbc (MS Access).
-  py2app (Mac)
-  py2exe (Windows)
+  pypyodbc (MS Access)
 
 Style Guide for Python Code
 ===========================
@@ -58,13 +56,13 @@ we can either install from source as
 
 .. code-block:: bash
 
-  $ pip setup.py install
+  $ pip install . --upgrade or python setup.py install
 
 or install in development mode.
 
 .. code-block:: bash
 
-  $  pip setup.py develop
+  $  python setup.py develop
 
 For more about `installing`_ refer to the python setuptools `documentation`_.
 
@@ -98,7 +96,10 @@ Check the services' home pages in case you have to add the same capabilities to 
 
 links `Read The Docs`_, `codecov`_, `AppVeyor`_ and  `Travis`_
 
-To run the test you will need to have all of the relevant database management systems and associated modules installed (see Setting up servers). You will then need to create the appropriate permissions for the tests to access the databases. You can do this by running the following commands in MySQL and PostgreSQL and creating the .pgpass file as described below:
+To run the tests you will need to have all of the relevant database management systems and associated
+modules installed (see ``Setting up servers``). Create the appropriate permissions for the tests to access
+the databases. You can do this by running the following commands in MySQL and
+PostgreSQL and creating the .pgpass file as described below:
 
 ::
 
@@ -140,7 +141,7 @@ The main GitHub repository runs test on both the Travis (Linux) and AppVeyor
 (Windows) continuous integration platforms.
 
 Pull requests submitted to the repository will automatically be tested using
-these systems and results reported in the `checks` section of the pull request
+these systems and results reported in the ``checks`` section of the pull request
 page.
 
 
@@ -158,7 +159,7 @@ In case you want to change the organization of the Documentation, please refer t
 
 The documetation is automatically updated for changes with in modules.
 However, the documentation should be updated after addition of new modules in the engines or lib directory.
-Change to the docs directory and create a temporary directory, i.e. `source`.
+Change to the docs directory and create a temporary directory, i.e. ``source``.
 Run
 
 .. code-block:: bash
@@ -167,9 +168,9 @@ Run
   mkdir source
   sphinx-apidoc -f  -o ./source /Users/../retriever/
 
-The `source` is the destination folder for the source rst files. `/Users/../retriever/` is the path to where
+The ``source`` is the destination folder for the source rst files. ``/Users/../retriever/`` is the path to where
 the retriever source code is located.
-Copy the `.rst` files that you want to update to the docs direcotry, overwriting the old files.
+Copy the ``.rst`` files that you want to update to the docs direcotry, overwriting the old files.
 Make sure you check the changes and edit if necessary to ensure that only what is required is updated.
 Commit and push the new changes.
 Do not commit the temporary source directory.
@@ -203,7 +204,12 @@ From your local branch of retriever, commit to your origin.
 Once tests have passed you can then make a pull request to the retriever master (upstream)
 For each commit, add the issue number at the end of the description with the tag ``fixes #[issue_number]``.
 
-Example; ``add version number to postgres.py to enable tracking. fixes #3``
+Example::
+
+  Add version number to postgres.py to enable tracking
+
+  Skip a line and add more explanation if needed
+  fixes #3
 
 **Clean histroy**
 
@@ -222,7 +228,7 @@ Use ``-f`` flag to force pushing changes to the branch. ``git push -f origin [br
 .. _Travis: https://travis-ci.org/
 .. _AppVeyor: https://www.appveyor.com/
 .. _documentation: https://pythonhosted.org/an_example_pypi_project/setuptools.html
-.. _installing: https://docs.python.org/2/install/
+.. _installing: https://docs.python.org/3.6/install/
 .. _installing the wheel: http://www.lfd.uci.edu/~gohlke/pythonlibs/
 .. _setup tools: https://pythonhosted.org/an_example_pypi_project/setuptools.html
 

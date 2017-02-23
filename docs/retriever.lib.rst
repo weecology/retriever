@@ -20,6 +20,14 @@ retriever.lib.compile module
     :undoc-members:
     :show-inheritance:
 
+retriever.lib.datapackage module
+--------------------------------
+
+.. automodule:: retriever.lib.datapackage
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 retriever.lib.engine module
 ---------------------------
 
@@ -44,18 +52,10 @@ retriever.lib.get_opts module
     :undoc-members:
     :show-inheritance:
 
-retriever.lib.lists module
---------------------------
+retriever.lib.parse_script_to_json module
+-----------------------------------------
 
-.. automodule:: retriever.lib.lists
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-retriever.lib.models module
----------------------------
-
-.. automodule:: retriever.lib.models
+.. automodule:: retriever.lib.parse_script_to_json
     :members:
     :undoc-members:
     :show-inheritance:
