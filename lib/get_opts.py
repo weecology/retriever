@@ -17,6 +17,7 @@ subparsers = parser.add_subparsers(help='sub-command help', dest='command')
 # retriever download/install/update/new help
 download_parser = subparsers.add_parser('download', help='download raw data files for a dataset')
 install_parser = subparsers.add_parser('install', help='download and install dataset')
+default_parser = subparsers.add_parser('defaults', help='displays default options')
 update_parser = subparsers.add_parser('update', help='download updated versions of scripts')
 new_parser = subparsers.add_parser('new', help='create a new sample retriever script')
 new_json_parser = subparsers.add_parser('new_json', help='CLI to create retriever datapackage.json script')

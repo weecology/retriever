@@ -53,6 +53,14 @@ def main():
         if hasattr(args, 'compile') and args.compile:
             script_list = SCRIPT_LIST(force_compile=True)
 
+        if args.command == 'defaults':
+            for engine_item in engine_list:
+                print("Default options for engine ", engine_item.name)
+                for default_opts in engine_item.required_opts:
+                    print(default_opts[0], " ", default_opts[2])
+                print()
+            return
+
         if args.command == 'update':
             check_for_updates()
             script_list = SCRIPT_LIST()
