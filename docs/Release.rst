@@ -50,7 +50,7 @@ Mac
 Pypi
 ----
 
-1. sudo python setup.py sdist upload
+1. `sudo python setup.py sdist bdist_wheel upload`
 
 Cleanup
 -------
