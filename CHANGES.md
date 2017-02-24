@@ -1,3 +1,43 @@
+# v2.0.0
+
+## Major changes
+
+* Add Python 3 support, python 2/3 compatibility
+* Add json and xml as output formats
+* Switch to using the frictionless data datapackage json standard. This a
+  **backwards incompatible change** as the form of dataset description files the
+  retriever uses to describe the location and processing of simple datasets has
+  changed.
+* Add CLI for creating, editing, deleting datapackage.json scripts
+* Broaden scope to include non-ecological data and rename to Data Retriever
+* Major expansion of documentation and move documentation to Read the Docs
+* Add developer documentation
+* Remove the GUI
+* Use csv module for reading of raw data to improve handling of newlines in fields
+* Major expansion of integration testing
+* Refactor regression testing to produce a single hash for a dataset regardless
+  of output format
+* Add continuous integration testing for Windows
+
+
+## Minor changes
+
+* Use pyinstaller for creating exe for windows and app for mac and remove py2app
+* Use 3 level semantic versioning for both scripts and core code
+* Rename datasets with more descriptive names
+* Add a retriever minimum version for each dataset
+* Rename dataset description files to follow python modules conventions
+* Switch to py.test from nose
+* Expand unit testing
+* Add version requirements for sqlite and postgresql
+* Default to latin encoding
+* Improve UI for updating user on downloading and processing progress
+
+
+## New datasets
+
+* Added machine Learning datasets from UC Irvine's machine learning data sets
+
 # v1.8.3
 
 * Fixed regression in GUI
