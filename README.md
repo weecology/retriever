@@ -54,6 +54,7 @@ database management systems:
 * sqlite3 (for SQLite)
 * psycopg2 (for PostgreSQL)
 * pyodbc (for MS Access - this option is only available on Windows)
+* Microsoft Access Driver (ODBC for windows)
 
 ### To install from source
 
@@ -78,43 +79,52 @@ After installing, run `retriever update` to download all of the available datase
 To see the full list of command line options and datasets run `retriever --help`.
 The output will look like this:
 ```
-usage: retriever [-h] [-v] [-q] {install,update,new,ls,citation,help} ...
+usage: retriever [-h] [-v] [-q]
+                 {download,install,defaults,update,new,new_json,edit_json,delete_json,ls,citation,reset,help}
+                 ...
 
 positional arguments:
-  {install,update,new,ls,citation,help}
+  {download,install,defaults,update,new,new_json,edit_json,delete_json,ls,citation,reset,help}
                         sub-command help
+    download            download raw data files for a dataset
     install             download and install dataset
+    defaults            displays default options
     update              download updated versions of scripts
     new                 create a new sample retriever script
+    new_json            CLI to create retriever datapackage.json script
+    edit_json           CLI to edit retriever datapackage.json script
+    delete_json         CLI to remove retriever datapackage.json script
     ls                  display a list all available dataset scripts
     citation            view citation
+    reset               reset retriever: removes configation settings,
+                        scripts, and cached data
     help
 
 optional arguments:
   -h, --help            show this help message and exit
   -v, --version         show program's version number and exit
   -q, --quiet           suppress command-line output
-```
-
-To install datasets, use `retriever install`:
 
 ```
 usage: retriever install [-h] [--compile] [--debug]
-                         {mysql,postgres,sqlite,msaccess,csv} ...
+                         {mysql,postgres,sqlite,msaccess,csv,json,xml} ...
 
 positional arguments:
-  {mysql,postgres,sqlite,msaccess,csv}
+  {mysql,postgres,sqlite,msaccess,csv,json,xml}
                         engine-specific help
     mysql               MySQL
     postgres            PostgreSQL
     sqlite              SQLite
     msaccess            Microsoft Access
     csv                 CSV
+    json                JSON
+    xml                 XML
 
 optional arguments:
   -h, --help            show this help message and exit
   --compile             force re-compile of script before downloading
   --debug               run in debug mode
+
 ```
 
 
@@ -122,6 +132,7 @@ optional arguments:
 
 ```
 These examples are using the [*Iris* flower dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set).
+More exapmles can be found in the Data Retriever documentation.
 
 Using Install
 
@@ -132,9 +143,9 @@ Using specific database engine, retriever install {Engine}
   retriever install mysql -h     (gives install mysql options)
   retriever install mysql --user myuser --password ******** --host localhost --port 8888 --database_name testdbase iris
 
-install data into an sqlite database named mydatabase.db you would use:
+install data into an sqlite database named iris.db you would use:
 
-  retriever install sqlite iris -f iris.sqlite
+  retriever install sqlite iris -f iris.db
 
 Using download
 
