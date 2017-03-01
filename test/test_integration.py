@@ -15,7 +15,8 @@ if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding(encoding)
 import pytest
 from retriever.lib.compile import compile_json
-from retriever import HOME_DIR, ENGINE_LIST
+from retriever.lib.defaults import HOME_DIR
+from retriever import ENGINE_LIST
 from retriever.lib.tools import file_2string
 from retriever.lib.tools import create_file
 

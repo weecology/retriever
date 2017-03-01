@@ -21,7 +21,8 @@ import shutil
 from decimal import Decimal
 from hashlib import md5
 
-from retriever import HOME_DIR, open_fr, open_fw, open_csvw
+from retriever import open_fr, open_fw, open_csvw
+from retriever.lib.defaults import HOME_DIR
 from retriever.lib.models import *
 import csv
 import json

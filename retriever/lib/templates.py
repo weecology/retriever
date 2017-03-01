@@ -4,7 +4,7 @@ from __future__ import print_function
 from builtins import object
 import os
 import shutil
-from retriever import DATA_DIR
+from retriever.lib.defaults import DATA_DIR
 from retriever.lib.models import *
 from retriever.lib.tools import choose_engine
 
