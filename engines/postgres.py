@@ -1,5 +1,6 @@
 import os
 from retriever.lib.models import Engine, no_cleanup
+from retriever import ENCODING
 
 
 class engine(Engine):
@@ -122,7 +123,10 @@ CSV HEADER;"""
         return Engine.format_insert_value(self, value, datatype)
 
     def get_connection(self):
-        """Gets the db connection."""
+        """Gets the db connection.
+           
+           Please update the encoding lookup table if the required encoding is not present.
+        """
         import psycopg2 as dbapi
         self.get_input()
         conn = dbapi.connect(host=self.opts["host"],
@@ -130,5 +134,10 @@ CSV HEADER;"""
                              user=self.opts["user"],
                              password=self.opts["password"],
                              database=self.opts["database"])
-        conn.set_client_encoding('Latin1')
+        encoding = ENCODING.lower()
+        if self.script.encoding:
+            encoding = self.script.encoding.lower()
+        encoding_lookup = {'iso-8859-1': 'Latin1','latin-1' : 'Latin1' ,'utf-8': 'UTF8'}
+        db_encoding = encoding_lookup.get(encoding)
+        conn.set_client_encoding(db_encoding)
         return conn

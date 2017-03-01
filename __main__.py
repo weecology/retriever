@@ -14,11 +14,13 @@ from imp import reload
 import os
 import platform
 import sys
+from retriever import ENCODING
+
+encoding = ENCODING.lower()
 # sys removes the setdefaultencoding method at startup; reload to get it back
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
-    # set default encoding to latin-1 to decode source text
-    sys.setdefaultencoding('latin-1')
+    sys.setdefaultencoding(encoding)
 
 from retriever import VERSION, SCRIPT_LIST, HOME_DIR, sample_script, CITATION
 from retriever.engines import engine_list
