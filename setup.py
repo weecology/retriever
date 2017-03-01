@@ -4,13 +4,13 @@ from __future__ import absolute_import
 from setuptools import setup
 from pkg_resources import parse_version
 import platform
-
+import os
 
 current_platform = platform.system().lower()
 extra_includes = []
 
 __version__ = 'v2.0.0'
-with open("_version.py", "w") as version_file:
+with open(os.path.join("retriever", "_version.py"), "w") as version_file:
     version_file.write("__version__ = " + "'" + __version__ + "'\n")
     version_file.close()
 
@@ -53,10 +53,10 @@ setup(name='retriever',
                    'License :: OSI Approved :: MIT License',
                    'Programming Language :: Python',
                    'Programming Language :: Python :: 2',
-                   'Programming Language :: Python :: 3',],
+                   'Programming Language :: Python :: 3', ],
       packages=packages,
       package_dir={
-          'retriever': ''
+          'retriever': 'retriever'
       },
       entry_points={
           'console_scripts': [
