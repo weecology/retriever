@@ -138,7 +138,7 @@ class HtmlTableTemplate(Script):
     pass
 
 
-TEMPLATES = [
-    ("Basic Text", BasicTextTemplate),
-    ("HTML Table", HtmlTableTemplate),
-]
+TEMPLATES = {
+   "default": BasicTextTemplate,
+   "html_table": HtmlTableTemplate
+}

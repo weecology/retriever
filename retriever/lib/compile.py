@@ -4,19 +4,8 @@ import sys
 if sys.version_info[0] < 3:
     from codecs import open
 
-script_templates = {
-    "default": """#retriever
-from retriever.lib.templates import BasicTextTemplate
-from retriever.lib.models import Table, Cleanup, correct_invalid_value
-
-SCRIPT = BasicTextTemplate(%s)""",
-
-    "html_table": """#retriever
-from retriever.lib.templates import HtmlTableTemplate
-from retriever.lib.models import Table, Cleanup, correct_invalid_value
-
-SCRIPT = HtmlTableTemplate(%s)""",
-}
+from retriever.lib.templates import TEMPLATES
+from retriever.lib.models import Cleanup, Table, correct_invalid_value
 
 
 def add_dialect(table_dict, table):
@@ -30,11 +19,10 @@ def add_dialect(table_dict, table):
         # dialect related key-value pairs
         # copied as is
         if key == "missingValues":
-            table_dict[
-                'cleanup'] = "Cleanup(correct_invalid_value, nulls=" + str(val) + ")"
+            table_dict['cleanup'] = Cleanup(correct_invalid_value, nulls=str(val))
 
         elif key == "delimiter":
-            table_dict[key] = "'" + str(val) + "'"
+            table_dict[key] = str(val)
         else:
             table_dict[key] = val
 
@@ -92,43 +80,42 @@ def compile_json(json_file):
         # Compile only files that have retriever key
         return
 
-    values = {}
-    values['urls'] = {}
+    values = {'urls': {}}
 
     keys_to_ignore = ["template"]
 
     for (key, value) in json_object.items():
 
         if key == "title":
-            values["name"] = "\"" + str(value) + "\""
+            values["name"] = str(value)
 
         elif key == "name":
-            values["shortname"] = "\"" + str(value) + "\""
+            values["shortname"] = str(value)
 
         elif key == "description":
-            values["description"] = "\"" + str(value) + "\""
+            values["description"] = str(value)
 
         elif key == "addendum":
-            values["addendum"] = "\"" + str(value) + "\""
+            values["addendum"] = str(value)
 
         elif key == "homepage":
-            values["ref"] = "\"" + str(value) + "\""
+            values["ref"] = str(value)
 
         elif key == "citation":
-            values["citation"] = "\"" + str(value) + "\""
+            values["citation"] = str(value)
 
         elif key == "keywords":
             values["tags"] = value
 
         elif key == "version":
-            values["version"] = "\"" + str(value) + "\""
+            values["version"] = str(value)
 
         elif key == "encoding":
             values["encoding"] = "\"" + str(value) + "\""
             # Adding the key 'encoding'
 
         elif key == "retriever_minimum_version":
-            values["retriever_minimum_version"] = "\"" + str(value) + "\""
+            values["retriever_minimum_version"] = str(value)
 
         elif key == "resources":
             # Array of table objects
@@ -159,31 +146,15 @@ def compile_json(json_file):
         else:
             values[key] = value 
     # Create a Table object string using the tables dict
-    table_desc = "{"
+    table_obj = {}
     for (key, value) in tables.items():
-        table_desc += "'" + key + "': Table('" + key + "', "
-        table_desc += ','.join([key + "=" + str(value)
-                                for key, value, in value.items()])
-        table_desc += "),"
-    if table_desc != '{':
-        table_desc = table_desc[:-1]
-    table_desc += "}"
+        table_obj[key] = Table(key, **value)
 
-    values["tables"] = table_desc
-
-    script_desc = []
-    for key, value in values.items():
-        if key not in keys_to_ignore:
-            script_desc.append(key + "=" + str(value))
-    script_desc = (',\n' + ' ' * 27).join(script_desc)
+    values["tables"] = table_obj
 
     if 'template' in values.keys():
         template = values["template"]
     else:
         template = "default"
-    script_contents = (script_templates[template] % script_desc)
 
-    new_script = open(json_file + '.py', 'w', encoding='utf-8')
-    new_script.write('# -*- latin-1 -*-\n')
-    new_script.write(script_contents)
-    new_script.close()
+    return TEMPLATES[template](**values)

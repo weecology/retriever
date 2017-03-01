@@ -394,9 +394,9 @@ def get_output_as_csv(dataset, engines, tmpdir, db):
     workdir = tmpdir.mkdtemp()
     workdir.chdir()
     script_module = get_script_module(dataset["name"])
-    script_module.SCRIPT.download(engines)
-    script_module.SCRIPT.engine.final_cleanup()
-    script_module.SCRIPT.engine.to_csv()
+    script_module.download(engines)
+    script_module.engine.final_cleanup()
+    script_module.engine.to_csv()
     # get filename and append .csv
     csv_file = engines.opts['table_name'].format(db=db, table=dataset["name"])
     # csv engine already has the .csv extension

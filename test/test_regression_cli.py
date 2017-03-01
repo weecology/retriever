@@ -51,9 +51,9 @@ def get_csv_md5(dataset, engines, tmpdir):
     workdir = tmpdir.mkdtemp()
     workdir.chdir()
     script_module = get_script_module(dataset)
-    script_module.SCRIPT.download(engines)
-    script_module.SCRIPT.engine.final_cleanup()
-    script_module.SCRIPT.engine.to_csv()
+    script_module.download(engines)
+    script_module.engine.final_cleanup()
+    script_module.engine.to_csv()
     current_md5 = getmd5(data=str(workdir), data_type='dir')
     return current_md5
 
