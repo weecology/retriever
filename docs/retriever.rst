@@ -44,15 +44,6 @@ retriever.try_install_all module
     :undoc-members:
     :show-inheritance:
 
-retriever.version module
-------------------------
-
-.. automodule:: retriever.version
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-
 Module contents
 ---------------
 
