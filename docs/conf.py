@@ -36,7 +36,13 @@ for script_num, script in enumerate(script_list, start=1):
         reference_link = list(script.urls.values())[0].rpartition('/')[0]
     else:
         reference_link = ""
-    datasetfile.write("| " + str(script_num) + ". **{}** \n| shortname: {}\n| reference: {}\n\n".format(script.name, script.shortname, reference_link))
+    datasetfile.write("| " + str(script_num) + ". **{}** "
+                                               "\n\n| **shortname:**    {}"
+                                               "\n| **reference:**    {}"
+                                               "\n| **citation:**    {}"
+                                               "\n| **description:**   {}"
+                                               "\n\n\n".format(script.name, script.shortname, reference_link,
+                                                            script.citation, script.description))
 datasetfile.close()
 
 needs_sphinx = '1.3'

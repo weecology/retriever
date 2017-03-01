@@ -104,6 +104,9 @@ optional arguments:
   -h, --help            show this help message and exit
   -v, --version         show program's version number and exit
   -q, --quiet           suppress command-line output
+```
+
+To install datasets, use `retriever install`:
 
 ```
 usage: retriever install [-h] [--compile] [--debug]
@@ -124,7 +127,6 @@ optional arguments:
   -h, --help            show this help message and exit
   --compile             force re-compile of script before downloading
   --debug               run in debug mode
-
 ```
 
 
