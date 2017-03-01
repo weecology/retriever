@@ -1,5 +1,5 @@
 #retriever
-from retriever import VERSION
+from retriever.lib.defaults import VERSION
 from retriever.lib.templates import DownloadOnlyTemplate
 
 SCRIPT = DownloadOnlyTemplate(name="Mammal Super Tree",

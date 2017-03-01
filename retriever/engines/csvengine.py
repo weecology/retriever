@@ -7,7 +7,8 @@ import sys
 import csv
 
 from retriever.lib.models import Engine
-from retriever import DATA_DIR, open_fw, open_csvw
+from retriever import open_fw, open_csvw
+from retriever.lib.defaults import DATA_DIR
 from retriever.lib.tools import sort_csv
 
 

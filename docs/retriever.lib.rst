@@ -68,6 +68,14 @@ retriever.lib.repository module
     :undoc-members:
     :show-inheritance:
 
+retriever.lib.scripts module
+----------------------------
+
+.. automodule:: retriever.lib.scripts
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 retriever.lib.table module
 --------------------------
 

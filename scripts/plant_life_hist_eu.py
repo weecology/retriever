@@ -3,7 +3,8 @@
 from builtins import str
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 from retriever.lib.templates import Script
-from retriever import HOME_DIR, open_fr, open_fw
+from retriever import open_fr, open_fw
+from retriever.lib.defaults import HOME_DIR
 
 
 class main(Script):

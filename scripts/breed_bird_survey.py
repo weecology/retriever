@@ -14,8 +14,8 @@ import zipfile
 from decimal import Decimal
 from retriever.lib.templates import Script
 from retriever.lib.models import Table, Cleanup, no_cleanup, correct_invalid_value
-from retriever import HOME_DIR, open_fr, open_fw
-
+from retriever import open_fr, open_fw
+from retriever.lib.defaults import HOME_DIR
 
 class main(Script):
     def __init__(self, **kwargs):
