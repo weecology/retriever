@@ -11,7 +11,7 @@ from argcomplete.completers import ChoicesCompleter
 module_list = MODULE_LIST()
 script_list = [module.shortname for module in module_list]
 json_list = [module.shortname for module in module_list
-             if os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.json')]
+             if os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.json')]
 
 keywords_list = set()
 for module in module_list:

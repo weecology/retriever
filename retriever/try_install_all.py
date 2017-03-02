@@ -90,14 +90,14 @@ for module in MODULE_LIST:
     for (key, value) in list(TEST_ENGINES.items()):
         if module.shortname.lower() not in IGNORE:
             if value != None:
-                print("==>", module.__name__, value.name, "..........", module.shortname)
+                print("==>", module._name, value.name, "..........", module.shortname)
                 try:
                     module.download(value)
                 except KeyboardInterrupt:
                     pass
                 except Exception as e:
                     print("ERROR.")
-                    errors.append((key, module.__name__, e))
+                    errors.append((key, module._name, e))
             else:
                 errors.append((key, "No connection detected......" + module.shortname))
 print('')

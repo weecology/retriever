@@ -11,12 +11,12 @@ def get_module_version():
     scripts = []
     for module in modules:
         if module.public:
-            if os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.json') and module.version:
-                module_name = module.__name__ + '.json'
+            if os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.json') and module.version:
+                module_name = module._name + '.json'
                 scripts.append(','.join([module_name, str(module.version)]))
-            elif os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.py') and \
-                    not os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.json'):
-                module_name = module.__name__ + '.py'
+            elif os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.py') and \
+                    not os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.json'):
+                module_name = module._name + '.py'
                 scripts.append(','.join([module_name, str(module.version)]))
 
     scripts = sorted(scripts, key = str.lower)
