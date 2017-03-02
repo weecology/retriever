@@ -3,7 +3,6 @@ import json
 import sys
 if sys.version_info[0] < 3:
     from codecs import open
-
 from retriever.lib.templates import TEMPLATES
 from retriever.lib.models import Cleanup, Table, correct_invalid_value
 
@@ -12,14 +11,13 @@ def add_dialect(table_dict, table):
     """
     Reads dialect key of JSON script and extracts key-value pairs to store them
     in python script
-
     Contains properties such 'nulls', delimiter', etc
     """
     for (key, val) in table['dialect'].items():
         # dialect related key-value pairs
         # copied as is
         if key == "missingValues":
-            table_dict['cleanup'] = Cleanup(correct_invalid_value, nulls=str(val))
+            table_dict['cleanup'] = Cleanup(correct_invalid_value, nulls=val)
 
         elif key == "delimiter":
             table_dict[key] = str(val)
