@@ -141,7 +141,7 @@ def create_json():
     http://specs.frictionlessdata.io/data-packages/#descriptor-datapackagejson
     Takes input from user via command line.
 
-    Usage: retriever create_json
+    Usage: retriever new_json
     '''
     contents = {}
     tableUrls = {}

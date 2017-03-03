@@ -78,7 +78,7 @@ def add_schema(table_dict, table):
 def compile_json(json_file):
     """
     Function to compile JSON script files to python scripts
-    The scripts are created with `retriever create_json <script_name` using
+    The scripts are created with `retriever new_json <script_name>` using
     command line
     """
     json_object = {}
