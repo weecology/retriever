@@ -7,8 +7,9 @@ import commands
 import os
 import sys
 import urllib.request, urllib.parse, urllib.error
-
+from distutils.version import LooseVersion
 import re
+
 pattern = re.compile(r'script_version["\s:=]+(\d+\.\d+)')
 version_dict = {}
 versionfile = urllib.request.urlopen(
@@ -22,7 +23,7 @@ for lines in versionfile:
 
 def get_script_version(file_name):
     file_name = os.path.split(file_name)[1]
-    return float(version_dict[file_name])
+    return LooseVersion(version_dict[file_name])
 
 
 # check if script directory changes
@@ -34,7 +35,7 @@ scripts_changed = output.split("\n")
 # get_version_text_files_from_master:
 # discus if we need the version files in master of in last commit
 # this is tricky
-version_files = ['scripts/Adler2007.json', 'scripts/AmnioteDB.json']
+version_files = subprocess.check_output("git diff --cached --name-only", shell = True).decode("UTF-8")
 
 versions_not_changed =[]  # if script changes we expect to change the version
 versions_updated = True
@@ -42,7 +43,7 @@ for files in scripts_changed:
     if files in version_files:
         status, output = commands.getstatusoutput('git show :{}'.format(files))
         match = re.search(pattern, output)
-        script_previous_version = float(match.group(1))
+        script_previous_version = LooseVersion(match.group(1))
         if not script_previous_version > get_script_version(files):
             versions_not_changed.append(files)
             versions_updated = False
@@ -55,4 +56,4 @@ if len(versions_not_changed) > 0:
         exit(1)
     else:
         os.system('python version.py')
-        os.system('git add version.py')
+        os.system('git add version.txt')

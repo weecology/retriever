@@ -7,16 +7,18 @@ import platform
 import sys
 import warnings
 import os
-
+import subprocess
 
 current_platform = platform.system().lower()
 extra_includes = []
 if current_platform == "darwin":
-    os.system("pwd")
+  if(subprocess.check_output("[ ! -f .git/hooks/pre-commit ] && echo \"Not Found\"") == "Not Found"):
     os.system("chmod +x hooks/pre-commit")
     os.system("cp -p hooks/pre-commit .git/hooks/pre-commit")
     # os.system("chmod +x hooks/pre-commit")
     # os.system("ln -s hooks/pre-commit .git/hooks/pre-commit")
+  else:
+
     try:
         import py2app
     except ImportError:
