@@ -4,10 +4,37 @@ from __future__ import absolute_import
 from setuptools import setup
 from pkg_resources import parse_version
 import platform
-
+import sys
+import warnings
+import os
+import subprocess
 
 current_platform = platform.system().lower()
 extra_includes = []
+if current_platform == "darwin":
+  if(subprocess.check_output("[ ! -f .git/hooks/pre-commit ] && echo \"Not Found\"") == "Not Found"):
+    os.system("chmod +x hooks/pre-commit")
+    os.system("cp -p hooks/pre-commit .git/hooks/pre-commit")
+    # os.system("chmod +x hooks/pre-commit")
+    # os.system("ln -s hooks/pre-commit .git/hooks/pre-commit")
+  else:
+
+    try:
+        import py2app
+    except ImportError:
+        pass
+    extra_includes = []
+elif current_platform == "windows":
+    os.system("chmod +x hooks/pre-commit")
+    os.system("mklink hooks/pre-commit .git/hooks/pre-commit")
+    try:
+        import py2exe
+    except ImportError:
+        pass
+    import sys
+    extra_includes = ['pyodbc', 'inspect']
+    sys.path.append(
+        "C:\\Windows\\winsxs\\x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_9.0.21022.8_none_bcb86ed6ac711f91")
 
 __version__ = 'v2.0.0'
 with open("_version.py", "w") as version_file:
