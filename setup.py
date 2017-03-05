@@ -12,13 +12,11 @@ import subprocess
 current_platform = platform.system().lower()
 extra_includes = []
 if current_platform == "darwin":
-  if(subprocess.check_output("[ ! -f .git/hooks/pre-commit ] && echo \"Not Found\"") == "Not Found"):
-    os.system("chmod +x hooks/pre-commit")
-    os.system("cp -p hooks/pre-commit .git/hooks/pre-commit")
-    # os.system("chmod +x hooks/pre-commit")
-    # os.system("ln -s hooks/pre-commit .git/hooks/pre-commit")
-  else:
-
+    if(subprocess.check_output("[ ! -f .git/hooks/pre-commit ] && echo \"Not Found\"") == "Not Found"):
+      os.system("chmod +x hooks/pre-commit")
+      os.system("cp -p hooks/pre-commit .git/hooks/pre-commit")
+    else:
+      os.system("ln -s -f ../../hooks/pre-commit .git/hooks/pre-commit")
     try:
         import py2app
     except ImportError:
