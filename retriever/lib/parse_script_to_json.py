@@ -64,6 +64,9 @@ def parse_script_to_json(script_file, location=SCRIPT_DIR):
                 if replace:
                     last_table["dialect"]["replace_columns"] = replace
 
+            elif key == "encoding":
+                values["encoding"] = value
+
             elif key == "*column":
                 if last_table:
                     vs = [v.strip() for v in value.split(',')]

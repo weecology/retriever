@@ -165,7 +165,7 @@ class Engine(object):
 
         if self.table.header_rows > 0 and not self.table.columns:
             source = (skip_rows,
-                           (self.table.header_rows-1, self.load_data(file_path)))
+                      (self.table.header_rows - 1, self.load_data(file_path)))
 
             lines = gen_from_source(source)
             header = next(lines)
@@ -173,7 +173,6 @@ class Engine(object):
 
             source = (skip_rows,
                       (self.table.header_rows, self.load_data(file_path)))
-
 
             lines = gen_from_source(source)
 
@@ -386,9 +385,9 @@ class Engine(object):
             db_name = name
         return db_name.replace('-', '_')
 
-    def download_file(self, url, filename):
+    def download_file(self, url, filename, use_cache=True):
         """Downloads a file to the raw data directory."""
-        if not self.find_file(filename):
+        if not self.find_file(filename) or not use_cache:
             path = self.format_filename(filename)
             self.create_raw_data_dir()
             print("\nDownloading " + filename + "...")
@@ -623,18 +622,18 @@ class Engine(object):
                         (self.load_data, (filename, ))))
         self.add_to_table(data_source)
 
-    def insert_data_from_url(self, url):
+    def insert_data_from_url(self, url, use_cache=True):
         """Insert data from a web resource, such as a text file."""
         filename = filename_from_url(url)
         find = self.find_file(filename)
-        if find:
+        if find and use_cache:
             # Use local copy
             self.insert_data_from_file(find)
         else:
             # Save a copy of the file locally, then load from that file
             self.create_raw_data_dir()
             print("\nSaving a copy of " + filename + "...")
-            self.download_file(url, filename)
+            self.download_file(url, filename, use_cache)
             self.insert_data_from_file(self.find_file(filename))
 
     def insert_statement(self, values):

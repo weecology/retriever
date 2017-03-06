@@ -123,6 +123,10 @@ def compile_json(json_file):
         elif key == "version":
             values["version"] = "\"" + str(value) + "\""
 
+        elif key == "encoding":
+            values["encoding"] = "\"" + str(value) + "\""
+            # Adding the key 'encoding'
+
         elif key == "retriever_minimum_version":
             values["retriever_minimum_version"] = "\"" + str(value) + "\""
 
@@ -180,6 +184,6 @@ def compile_json(json_file):
     script_contents = (script_templates[template] % script_desc)
 
     new_script = open(json_file + '.py', 'w', encoding='utf-8')
-    new_script.write('# -*- coding: latin-1 -*-\n')
+    new_script.write('# -*- latin-1 -*-\n')
     new_script.write(script_contents)
     new_script.close()

@@ -9,6 +9,7 @@ import warnings
 import os
 import subprocess
 
+
 current_platform = platform.system().lower()
 extra_includes = []
 if current_platform == "darwin":
@@ -35,7 +36,7 @@ elif current_platform == "windows":
         "C:\\Windows\\winsxs\\x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_9.0.21022.8_none_bcb86ed6ac711f91")
 
 __version__ = 'v2.0.0'
-with open("_version.py", "w") as version_file:
+with open(os.path.join("retriever", "_version.py"), "w") as version_file:
     version_file.write("__version__ = " + "'" + __version__ + "'\n")
     version_file.close()
 
@@ -78,10 +79,10 @@ setup(name='retriever',
                    'License :: OSI Approved :: MIT License',
                    'Programming Language :: Python',
                    'Programming Language :: Python :: 2',
-                   'Programming Language :: Python :: 3',],
+                   'Programming Language :: Python :: 3', ],
       packages=packages,
       package_dir={
-          'retriever': ''
+          'retriever': 'retriever'
       },
       entry_points={
           'console_scripts': [
