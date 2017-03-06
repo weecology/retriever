@@ -6,10 +6,13 @@ import os
 import sys
 import shutil
 from imp import reload
+from retriever import ENCODING
+
+encoding = ENCODING.lower()
 
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
-    sys.setdefaultencoding('latin-1')
+    sys.setdefaultencoding(encoding)
 import pytest
 from retriever.lib.compile import compile_json
 from retriever import HOME_DIR, ENGINE_LIST

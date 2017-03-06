@@ -4,10 +4,13 @@ import imp
 import os
 import sys
 import shutil
+from retriever import ENCODING
+
+encoding = ENCODING.lower()
 
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
-    sys.setdefaultencoding('latin-1')
+    sys.setdefaultencoding(encoding)
 import pytest
 from retriever.lib.tools import getmd5
 from retriever import ENGINE_LIST
