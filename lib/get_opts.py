@@ -38,6 +38,7 @@ edit_json_parser.add_argument('filename', help='script filename')
 reset_parser.add_argument('scope', help='things to reset: all, scripts, data, or connections', choices=['all', 'scripts', 'data', 'connections'])
 install_parser.add_argument('--compile', help='force re-compile of script before downloading', action='store_true')
 install_parser.add_argument('--debug', help='run in debug mode', action='store_true')
+install_parser.add_argument('--not-cached', help='overwrites local cache of raw data', action='store_true')
 download_parser.add_argument('dataset', help='dataset name')
 ls_parser.add_argument('-l', help='verbose list of datasets containing following keywords (lists all when no keywords are specified)', nargs='*')
 delete_json_parser.add_argument('dataset', help='dataset name')
@@ -68,7 +69,7 @@ for engine in engine_list:
             # [--subdir [SUBDIR]]
 
             # subdir doesn't take any arguments, if included takes True if excluded takes False
-            if arg_name.lower()== "subdir":
+            if arg_name.lower() == "subdir":
                 download_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help_msg, default=default, action='store_true')
                 # parser.add_argument('--foo', action='store_const', const = False)
             else:
