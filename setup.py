@@ -1,14 +1,17 @@
 """Use the following command to install retriever: python setup.py install"""
 from __future__ import absolute_import
-import os
-
-from setuptools import setup
-from pkg_resources import parse_version
 import platform
 import os
+from setuptools import setup
+from pkg_resources import parse_version
 
 current_platform = platform.system().lower()
 extra_includes = []
+
+if os.path.exists(".git/hooks"):  # check if we are in git repo
+    os.system("cp hooks/pre-commit .git/hooks/pre-commit")
+    os.system("chmod +x .git/hooks/pre-commit")
+
 
 __version__ = 'v2.0.0'
 with open(os.path.join("retriever", "_version.py"), "w") as version_file:
