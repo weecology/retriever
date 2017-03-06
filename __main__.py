@@ -29,7 +29,6 @@ from retriever.lib.tools import choose_engine, name_matches, reset_retriever
 from retriever.lib.get_opts import parser
 from retriever.lib.datapackage import create_json, edit_json
 
-
 def main():
     """This function launches the Data Retriever."""
     if len(sys.argv) == 1:
@@ -175,6 +174,11 @@ def main():
             debug = False
             sys.tracebacklimit = 0
 
+        if hasattr(args, 'debug') and args.not_cached:
+            use_cache = False
+        else:
+            use_cache = True
+
         if args.dataset is not None:
             scripts = name_matches(script_list, args.dataset)
         else:
@@ -183,7 +187,7 @@ def main():
             for dataset in scripts:
                 print("=> Installing", dataset.name)
                 try:
-                    dataset.download(engine, debug=debug)
+                    dataset.download(engine, debug=debug, use_cache=use_cache)
                     dataset.engine.final_cleanup()
                 except KeyboardInterrupt:
                     pass
