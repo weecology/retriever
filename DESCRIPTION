@@ -1,7 +1,7 @@
 Package: rdataretriever
 Title: R Interface to the Data Retriever
 Description: Provides an R interface to the Data Retriever
-    (http://data-retriever.org/) via the Data Retriever's
+    <http://data-retriever.org/> via the Data Retriever's
     command line interface. The Data Retriever automates the
     tasks of finding, downloading, and cleaning public datasets,
     and then stores them in a local database.
