@@ -1,7 +1,8 @@
 #retriever
 from retriever.lib.templates import Script
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
-from retriever import open_fr, open_fw
+from retriever import open_fr, open_fw, VERSION
+from pkg_resources import parse_version
 
 class main(Script):
     def __init__(self):
@@ -9,13 +10,17 @@ class main(Script):
                         name="Gulf of Maine intertidal density/cover (Petraitis et al. 2008)",
                         citation="Peter S. Petraitis, Harrison Liu, and Erika C. Rhile. 2008. Densities and cover data for intertidal organisms in the Gulf of Maine, USA, from 2003 to 2007. Ecology 89:588.",
                         shortname="intertidal-abund-me",
-                        ref="http://www.esapubs.org/archive/ecol/E089/032/",
+                        ref="https://figshare.com/collections/DENSITIES_AND_COVER_DATA_FOR_INTERTIDAL_ORGANISMS_IN_THE_GULF_OF_MAINE_USA_FROM_2003_TO_2007/3300200",
                         description="The data set provides access to data on densities and percent cover in the 60 experimental plots from 2003 to 2007 and to update data from 1996 to 2002 that are already published in Ecological Archives.It includes densities of mussels, an herbivorous limpet, herbivorous snails, a predatory snail, a barnacle , and fucoid algae and percent cover by mussels, barnacles, fucoids, and other sessile organisms.",
                         retriever_minimum_version='2.0.dev',
-                        version='1.3.1',
-                        urls={"main": "http://www.esapubs.org/archive/ecol/E089/032/Succession_sampling_03-07_data.txt"},
-                        tables={"main": Table("main", cleanup=Cleanup(correct_invalid_value, nulls=[-999.9]))}
+                        version='1.4.0',
+                        urls={"main": "https://ndownloader.figshare.com/files/5600831"},
+                        tables={"main": Table("main", cleanup=Cleanup(correct_invalid_value, missingValues=[-999.9]))}
                         )
+        if parse_version(VERSION) < parse_version("2.0.0"):
+            self.shortname = self.name
+            self.name = self.title
+            self.tags = self.keywords
 
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)

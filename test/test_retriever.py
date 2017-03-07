@@ -32,7 +32,7 @@ from retriever.lib.compile import add_dialect, add_schema
 test_engine = Engine()
 test_engine.table = Table("test")
 test_engine.script = BasicTextTemplate(tables={'test': test_engine.table},
-                                       shortname='test')
+                                       name='test')
 test_engine.opts = {'database_name': '{db}_abc'}
 HOMEDIR = os.path.expanduser('~')
 file_location = os.path.dirname(os.path.realpath(__file__))
@@ -101,11 +101,11 @@ def test_auto_get_delimiter_semicolon():
 
 
 def test_correct_invalid_value_string():
-    assert correct_invalid_value('NA', {'nulls': ['NA', '-999']}) == None
+    assert correct_invalid_value('NA', {'missing_values': ['NA', '-999']}) == None
 
 
 def test_correct_invalid_value_number():
-    assert correct_invalid_value(-999, {'nulls': ['NA', '-999']}) == None
+    assert correct_invalid_value(-999, {'missing_values': ['NA', '-999']}) == None
 
 
 def test_correct_invalid_value_exception():
@@ -155,21 +155,21 @@ def test_find_file_present():
     We copy the raw_data directory to retriever_root_dir which is the current working directory.
     This enables the data to be in the DATA_SEARCH_PATHS.
     """
-    test_engine.script.shortname = 'bird-size'
+    test_engine.script.name = 'bird-size'
     assert test_engine.find_file('avian_ssd_jan07.txt') == os.path.normpath(
         'raw_data/bird-size/avian_ssd_jan07.txt')
 
 
 def test_format_data_dir():
     "Test if directory for storing data is properly formated"
-    test_engine.script.shortname = "TestName"
+    test_engine.script.name = "TestName"
     assert os.path.normpath(test_engine.format_data_dir()) == os.path.normpath(
         os.path.join(HOMEDIR, '.retriever/raw_data/TestName'))
 
 
 def test_format_filename():
     "Test if filenames for stored files are properly formated"
-    test_engine.script.shortname = "TestName"
+    test_engine.script.name = "TestName"
     assert os.path.normpath(test_engine.format_filename('testfile.csv')) == os.path.normpath(
         os.path.join(HOMEDIR, '.retriever/raw_data/TestName/testfile.csv'))
 
@@ -377,7 +377,7 @@ def test_add_dialect():
     table['dialect']['dummy_key'] = 'dummy_value'
 
     result = {}
-    result['cleanup'] = 'Cleanup(correct_invalid_value, nulls=\x00)'
+    result['cleanup'] = 'Cleanup(correct_invalid_value, missing_values=\x00)'
     result['delimiter'] = "'\t'"
     result['dummy_key'] = 'dummy_value'
 

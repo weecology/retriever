@@ -1,7 +1,7 @@
 {
     "citation": "Isabella Capellini, Chris Venditti, and Robert A. Barton. 2010. Phylogeny and metabolic rates in mammals. Ecology 20:2783-2793.",
     "description": "Data on basal metabolic rate (BMR) with experimental animal body mass, field metabolic rate (FMR) with wild animal body mass, and sources of the data. Ecological Archives E091-198-S1.",
-    "homepage": "http://www.esapubs.org/archive/ecol/E091/198/",
+    "homepage": "https://figshare.com/collections/Phylogeny_and_metabolic_scaling_in_mammals/3303477",
     "keywords": [
         "mammals",
         "literature-compilation",
@@ -17,14 +17,14 @@
             },
             "name": "MammalMR2010",
             "schema": {},
-            "url": "http://www.esapubs.org/archive/ecol/E091/198/data.txt"
+            "url": "https://ndownloader.figshare.com/files/5616942"
         }
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Phylogeny and metabolic rates in mammals (Ecological Archives 2010)",
     "urls": {
-        "MetabolicRate": "http://www.esapubs.org/archive/ecol/E091/198/data.txt"
+        "MetabolicRate": "https://ndownloader.figshare.com/files/5616942"
     },
-    "version": "1.1.1"
+    "version": "1.2.0"
 }
