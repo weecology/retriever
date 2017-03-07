@@ -6,9 +6,9 @@ from retriever.lib.models import Table, Cleanup, correct_invalid_value
 class main(Script):
     def __init__(self):
         Script.__init__(self,
-                        tables={'trees': Table('trees', cleanup=Cleanup(correct_invalid_value, nulls=[-999]))},
+                        tables={'trees': Table('trees', cleanup=Cleanup(correct_invalid_value, missingValues=[-999]))},
                         name="Tree growth, mortality, physical condition - Clark, 2006",
-                        tags=['plants', 'time-series'],
+                        keywords=['plants', 'time-series'],
                         urls={'trees': 'http://esapubs.org/archive/ecol/E087/132/LS_trees_1983_2000.txt'},
                         shortname="la-selva-trees",
                         description="The data set helps to examine the post-establishment ecology of 10 species of tropical wet forest trees selected to span a range of predicted life history patterns at the La Selva Biological Station in Costa Rica.",

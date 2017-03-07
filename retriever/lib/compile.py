@@ -24,14 +24,14 @@ def add_dialect(table_dict, table):
     Reads dialect key of JSON script and extracts key-value pairs to store them
     in python script
 
-    Contains properties such 'nulls', delimiter', etc
+    Contains properties such 'missingValues', delimiter', etc
     """
     for (key, val) in table['dialect'].items():
         # dialect related key-value pairs
         # copied as is
         if key == "missingValues":
             table_dict[
-                'cleanup'] = "Cleanup(correct_invalid_value, nulls=" + str(val) + ")"
+                'cleanup'] = "Cleanup(correct_invalid_value, missing_values=" + str(val) + ")"
 
         elif key == "delimiter":
             table_dict[key] = "'" + str(val) + "'"
@@ -100,10 +100,10 @@ def compile_json(json_file):
     for (key, value) in json_object.items():
 
         if key == "title":
-            values["name"] = "\"" + str(value) + "\""
+            values["title"] = "\"" + str(value) + "\""
 
         elif key == "name":
-            values["shortname"] = "\"" + str(value) + "\""
+            values["name"] = "\"" + str(value) + "\""
 
         elif key == "description":
             values["description"] = "\"" + str(value) + "\""
@@ -118,7 +118,7 @@ def compile_json(json_file):
             values["citation"] = "\"" + str(value) + "\""
 
         elif key == "keywords":
-            values["tags"] = value
+            values["keywords"] = value
 
         elif key == "version":
             values["version"] = "\"" + str(value) + "\""
