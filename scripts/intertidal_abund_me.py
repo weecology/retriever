@@ -14,7 +14,7 @@ class main(Script):
                         retriever_minimum_version='2.0.dev',
                         version='1.3.1',
                         urls={"main": "http://www.esapubs.org/archive/ecol/E089/032/Succession_sampling_03-07_data.txt"},
-                        tables={"main": Table("main", cleanup=Cleanup(correct_invalid_value, nulls=[-999.9]))}
+                        tables={"main": Table("main", cleanup=Cleanup(correct_invalid_value, missingValues=[-999.9]))}
                         )
 
     def download(self, engine=None, debug=False):

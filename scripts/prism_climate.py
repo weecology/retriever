@@ -11,13 +11,18 @@ import urllib.request, urllib.parse, urllib.error
 class main(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
-        self.name = "PRISM Climate Data"
-        self.shortname = "prism-climate"
+        self.title = "PRISM Climate Data"
+        self.name = "prism-climate"
         self.retriever_minimum_version = '2.0.dev'
         self.version = '1.1.1'
         self.ref = "http://prism.oregonstate.edu/"
         self.urls = {"climate": "http://services.nacse.org/prism/data/public/4km/"}
         self.description = "The PRISM data set represents climate observations from a wide range of monitoring networks, applies sophisticated quality control measures, and develops spatial climate datasets to reveal short- and long-term climate patterns. "
+
+        if parse_version(VERSION) < parse_version("2.1.dev"):
+            self.shortname = self.name
+            self.name = self.title
+            self.tags = self.keywords
 
     def get_file_names(self, clim_var, mval, year, month):
         """Create a list of all filenames in a given monthly data zip file """

@@ -22,15 +22,15 @@ TAX_GROUPS = 9756 #9819
 class main(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
-        self.name = "Alwyn H. Gentry Forest Transect Dataset"
-        self.shortname = "gentry-forest-transects"
+        self.title = "Alwyn H. Gentry Forest Transect Dataset"
+        self.name = "gentry-forest-transects"
         self.retriever_minimum_version = '2.0.dev'
         self.version = '1.3.1'
         self.urls = {"stems": "http://www.mobot.org/mobot/gentry/123/all_Excel.zip",
                      "sites": "https://ndownloader.figshare.com/files/5515373",
                      "species": "",
                      "counts": ""}
-        self.tags = ["plants", "global-scale", "observational"]
+        self.keywords = ["plants", "global-scale", "observational"]
         self.ref = "http://www.mobot.org/mobot/research/gentry/welcome.shtml"
         self.citation = "Phillips, O. and Miller, J.S., 2002. Global patterns of plant diversity: Alwyn H. Gentry's forest transect data set. Missouri Botanical Press."
         self.addendum = """Researchers who make use of the data in publications are requested to acknowledge Alwyn H. Gentry, the Missouri Botanical Garden, and collectors who assisted Gentry or contributed data for specific sites. It is also requested that a reprint of any publication making use of the Gentry Forest Transect Data be sent to:

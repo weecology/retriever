@@ -29,13 +29,13 @@ def parse_script_to_json(script_file, location=SCRIPT_DIR):
             if key == "name":
                 values["title"] = value
 
-            elif key == "shortname":
+            elif key == "name":
                 values["name"] = value
 
             elif key == "description":
                 values["description"] = value
 
-            elif key == "tags":
+            elif key == "keywords":
                 values["keywords"] = [v.strip() for v in value.split(",")]
 
             elif key == "url" or key == "ref":
@@ -82,11 +82,11 @@ def parse_script_to_json(script_file, location=SCRIPT_DIR):
 
                     last_table["schema"]["fields"].append(copy(column))
 
-            elif key == "*nulls":
+            elif key == "*missingValues":
                 if last_table:
-                    nulls = [eval(v) for v in [val.strip()
+                    missing_values = [eval(v) for v in [val.strip()
                                                for val in value.split(',')]]
-                    last_table["dialect"]["nulls"] = nulls
+                    last_table["dialect"]["missing_values"] = missing_values
 
             elif key == "*ct_column":
                 if last_table:

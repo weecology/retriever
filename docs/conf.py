@@ -37,11 +37,11 @@ for script_num, script in enumerate(script_list, start=1):
     else:
         reference_link = ""
     datasetfile.write("| " + str(script_num) + ". **{}** "
-                                               "\n\n| **shortname:**    {}"
+                                               "\n\n| **name:**    {}"
                                                "\n| **reference:**    {}"
                                                "\n| **citation:**    {}"
                                                "\n| **description:**   {}"
-                                               "\n\n\n".format(script.name, script.shortname, reference_link,
+                                               "\n\n\n".format(script.title, script.name, reference_link,
                                                             script.citation, script.description))
 datasetfile.close()
 

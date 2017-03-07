@@ -15,18 +15,19 @@ import zipfile
 from decimal import Decimal
 from retriever.lib.templates import Script
 from retriever.lib.models import Table, Cleanup, no_cleanup, correct_invalid_value
-from retriever import HOME_DIR, open_fr, open_fw
+from retriever import HOME_DIR, open_fr, open_fw, VERSION
+from pkg_resources import parse_version
 
 
 class main(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
-        self.name = "USGS North American Breeding Bird Survey 50 stop"
-        self.shortname = "breed-bird-survey-50stop"
+        self.title = "USGS North American Breeding Bird Survey 50 stop"
+        self.name = "breed-bird-survey-50stop"
         self.description = "A Cooperative effort between the U.S. Geological Survey's Patuxent Wildlife Research Center and Environment Canada's Canadian Wildlife Service to monitor the status and trends of North American bird populations."
         self.citation = "Pardieck, K.L., D.J. Ziolkowski Jr., M.-A.R. Hudson. 2015. North American Breeding Bird Survey Dataset 1966 - 2014, version 2014.0. U.S. Geological Survey, Patuxent Wildlife Research Center."
         self.ref = "http://www.pwrc.usgs.gov/BBS/"
-        self.tags = ["birds", "continental-scale"]
+        self.keywords = ["birds", "continental-scale"]
         self.retriever_minimum_version = '2.0.dev'
         self.version = '1.3.1'
         self.urls = {
@@ -36,6 +37,11 @@ class main(Script):
                      "region_codes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/RegionCodes.txt",
                      "species": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/SpeciesList.txt"
                      }
+
+        if parse_version(VERSION) < parse_version("2.1.dev"):
+            self.shortname = self.name
+            self.name = self.title
+            self.tags = self.keywords
 
     def download(self, engine=None, debug=False):
         try:
@@ -91,7 +97,7 @@ class main(Script):
                 read.close()
 
             engine.auto_create_table(Table("weather", pk="RouteDataId",
-                                           cleanup=Cleanup(correct_invalid_value, nulls=['NULL'])),
+                                           cleanup=Cleanup(correct_invalid_value, missingValues=['NULL'])),
                                      filename="weather_new.csv")
             engine.insert_data_from_file(engine.format_filename("weather_new.csv"))
 
@@ -194,7 +200,7 @@ class main(Script):
                         print("Failed bulk insert on " + part + ", inserting manually.")
                         engine.connection.rollback()
                         engine.table.cleanup = Cleanup(correct_invalid_value,
-                                                       nulls=['*'])
+                                                       missingValues=['*'])
                         engine.insert_data_from_archive(self.urls["counts"] +
                                                         "Fifty" + part + ".zip",
                                                         ["fifty" + part + ".csv"])

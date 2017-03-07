@@ -11,6 +11,7 @@ import zipfile
 from decimal import Decimal
 from retriever.lib.templates import Script
 from retriever.lib.models import Table, Cleanup, no_cleanup, correct_invalid_value
+from pkg_resources import parse_version
 
 VERSION = '0.5'
 
@@ -18,14 +19,20 @@ VERSION = '0.5'
 class main(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
-        self.name = "USA National Phenology Network"
-        self.shortname = "NPN"
+        self.title = "USA National Phenology Network"
+        self.name = "NPN"
         self.retriever_minimum_version = '2.0.dev'
         self.version = '1.0'
         self.ref = "http://www.usanpn.org/results/data"
-        self.tags = ["Data Type > Phenology", "Spatial Scale > Continental"]
+        self.keywords = ["Data Type > Phenology", "Spatial Scale > Continental"]
         self.description = "The data set was collected via Nature's Notebook phenology observation program (2009-present), and (2) Lilac and honeysuckle data (1955-present)"
         self.citation = "Schwartz, M. D., Ault, T. R., & J. L. Betancourt, 2012: Spring Onset Variations and Trends in the Continental USA: Past and Regional Assessment Using Temperature-Based Indices. International Journal of Climatology (published online, DOI: 10.1002/joc.3625)."
+
+        if parse_version(VERSION) < parse_version("2.1.dev"):
+            self.shortname = self.name
+            self.name = self.title
+            self.tags = self.keywords
+
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
 
