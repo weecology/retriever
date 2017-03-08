@@ -20,7 +20,7 @@
                     null
                 ]
             },
-            "name": "main",
+            "name": "portal_rodents",
             "schema": {
                 "fields": [
                     {
@@ -161,19 +161,31 @@
                     }
                 ]
             },
-            "url": "http://esapubs.org/archive/ecol/E090/118/Portal_rodents_19772002.csv"
+            "url": "https://raw.githubusercontent.com/weecology/PortalData/master/Rodents/Portal_rodent.csv"
         },
         {
             "dialect": {},
-            "name": "species",
+            "name": "portal_rodents_species",
             "schema": {},
-            "url": "https://ndownloader.figshare.com/files/3299483"
+            "url": "https://github.com/weecology/PortalData/blob/master/Rodents/Portal_rodent_species.csv"
         },
         {
             "dialect": {},
-            "name": "plots",
+            "name": "plots_rodents",
             "schema": {},
             "url": "https://ndownloader.figshare.com/files/3299474"
+        },
+        {
+            "dialect": {},
+            "name": "portal_rodents_trapping",
+            "schema": {},
+            "url": "https://github.com/weecology/PortalData/blob/master/Rodents/Portal_rodent_trapping.csv"
+        },
+        {
+            "dialect": {},
+            "name": "portal_rodents_datanotes",
+            "schema": {},
+            "url": "https://github.com/weecology/PortalData/blob/master/Rodents/Portal_rodent_datanotes.csv"
         }
     ],
     "retriever": "True",
@@ -181,9 +193,11 @@
     "scan_lines": "40000",
     "title": "Portal Project Data (Ernest et al. 2009)",
     "urls": {
-        "main": "http://esapubs.org/archive/ecol/E090/118/Portal_rodents_19772002.csv",
-        "plots": "https://ndownloader.figshare.com/files/3299474",
-        "species": "https://ndownloader.figshare.com/files/3299483"
+        "portal_rodents": "https://raw.githubusercontent.com/weecology/PortalData/master/Rodents/Portal_rodent.csv",
+        "portal_rodents_species" : "https://github.com/weecology/PortalData/blob/master/Rodents/Portal_rodent_species.csv",
+        "portal_rodents_trapping" : "https://github.com/weecology/PortalData/blob/master/Rodents/Portal_rodent_trapping.csv",
+        "portal_rodents_datanotes" : "https://github.com/weecology/PortalData/blob/master/Rodents/Portal_rodent_datanotes.csv",
+        "plots": "https://ndownloader.figshare.com/files/3299474"
     },
     "version": "1.1.0"
 }
