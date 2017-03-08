@@ -20,7 +20,7 @@ class main(Script):
         self.name = "Global wood density database - Zanne et al. 2009"
         self.shortname = "wood-density"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.2.1'
+        self.version = '1.2.2'
         self.urls = {"GWDD": "http://datadryad.org/bitstream/handle/10255/dryad.235/GlobalWoodDensityDatabase.xls?sequence=1"}
         self.tags = ["Taxon > Plants", "Spatial Scale > Global",
                      "Data Type > Observational"]
@@ -37,13 +37,13 @@ class main(Script):
         2. Provide recognition of the efforts of this group in the assembly of the data by using the citation for the database above.
         3. Recognize that these data were assembled by the group for various analyses and research questions. If any of these uses overlap with your interests, you recognize that group has precedence in addressing these questions."""
 
-    def download(self, engine=None, debug=False):
-        Script.download(self, engine, debug)
+    def download(self, engine=None, debug=False, use_cache=True):
+        Script.download(self, engine, debug, use_cache)
         reload(sys)
         if hasattr(sys, 'setdefaultencoding'):
             sys.setdefaultencoding("utf-8")
 
-        self.engine.download_file(self.urls["GWDD"], "GlobalWoodDensityDatabase.xls")
+        self.engine.download_file(self.urls["GWDD"], "GlobalWoodDensityDatabase.xls", use_cache)
         filename = os.path.basename("GlobalWoodDensityDatabase.xls")
         book = xlrd.open_workbook(self.engine.format_filename(filename))
         sh = book.sheet_by_index(1)

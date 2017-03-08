@@ -12,7 +12,7 @@ class main(Script):
         self.name = "A database on the life history traits of the Northwest European flora" 
         self.shortname = "plant-life-hist-eu"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.3.1'
+        self.version = '1.3.2'
         self.ref = "http://www.uni-oldenburg.de/en/biology/landeco/research/projects/leda/"
         self.urls = {
             "Age_of_first_flowering": "http://www.uni-oldenburg.de/fileadmin/user_upload/biologie/ag/landeco/download/LEDA/Data_files/age_of_first_flowering.txt",
@@ -46,10 +46,10 @@ class main(Script):
         self.tags = ['plants', 'observational']
         self.description = "The LEDA Traitbase provides information on plant traits that describe three key features of plant dynamics: persistence, regeneration and dispersal. "
 
-    def download(self, engine=None, debug=False):
-        Script.download(self, engine, debug)
+    def download(self, engine=None, debug=False, use_cache=True):
+        Script.download(self, engine, debug, use_cache)
         for key in self.urls:
-            self.engine.download_file(self.urls[key], self.urls[key].rpartition('/')[-1])
+            self.engine.download_file(self.urls[key], self.urls[key].rpartition('/')[-1], use_cache)
             new_file_path = self.engine.format_filename("new" + key)
             old_data = open_fr(self.engine.find_file(self.urls[key].rpartition('/')[-1]))
             new_data = open_fw(new_file_path)

@@ -14,7 +14,7 @@ class main(Script):
         self.name = "vertnet:"
         self.shortname = "vertnet"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.3.0'
+        self.version = '1.3.1'
         self.ref = "http://vertnet.org/resources/datatoolscode.html"
         self.urls = {
                     'amphibians': 'https://de.iplantcollaborative.org/anon-files//iplant/home/shared/commons_repo/curated/Vertnet_Amphibia_Sep2016/VertNet_Amphibia_Sept2016.zip',
@@ -26,8 +26,8 @@ class main(Script):
         self.description = " "
         self.tags = ['Taxon > animals']
 
-    def download(self, engine=None, debug=False):
-        Script.download(self, engine, debug)
+    def download(self, engine=None, debug=False, use_cache=True):
+        Script.download(self, engine, debug, use_cache)
         engine = self.engine
 
         file_names = [ ('vertnet_latest_amphibians.csv','amphibians'),
@@ -239,7 +239,7 @@ class main(Script):
 
             engine.table = table
             if not os.path.isfile(engine.format_filename(filename)):
-                engine.download_files_from_archive(self.urls[tablename], [filename], filetype="zip", archivename="vertnet_latest_" + str(tablename))
+                engine.download_files_from_archive(self.urls[tablename], [filename], filetype="zip", archivename="vertnet_latest_" + str(tablename), use_cache=use_cache)
             engine.create_table()
             engine.insert_data_from_file(engine.format_filename(str(filename)))
 

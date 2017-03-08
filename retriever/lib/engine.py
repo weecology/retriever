@@ -401,7 +401,7 @@ class Engine(object):
                 py2urlretrieve(url, path, reporthook=reporthook)
 
     def download_files_from_archive(self, url, filenames, filetype="zip",
-                                    keep_in_dir=False, archivename=None):
+                                    keep_in_dir=False, archivename=None, use_cache=True):
         """Downloads files from an archive into the raw data directory.
         """
         print()
@@ -420,7 +420,7 @@ class Engine(object):
         else:
             archivebase = ''
         for filename in filenames:
-            if self.find_file(os.path.join(archivebase, filename)):
+            if self.find_file(os.path.join(archivebase, filename)) and use_cache:
                 # Use local copy
                 pass
             else:
@@ -601,11 +601,11 @@ class Engine(object):
             if self.opts[opt[0]] in ["", "default"]:
                 self.opts[opt[0]] = opt[2]
 
-    def insert_data_from_archive(self, url, filenames):
+    def insert_data_from_archive(self, url, filenames, use_cache=True):
         """Insert data from files located in an online archive. This function
         extracts the file, inserts the data, and deletes the file if raw data
         archiving is not set."""
-        self.download_files_from_archive(url, filenames)
+        self.download_files_from_archive(url, filenames, use_cache=use_cache)
         for filename in filenames:
             file_path = self.find_file(filename)
             if file_path:

@@ -25,7 +25,7 @@ class main(Script):
         self.name = "Alwyn H. Gentry Forest Transect Dataset"
         self.shortname = "gentry-forest-transects"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.3.1'
+        self.version = '1.3.2'
         self.urls = {"stems": "http://www.mobot.org/mobot/gentry/123/all_Excel.zip",
                      "sites": "https://ndownloader.figshare.com/files/5515373",
                      "species": "",
@@ -41,24 +41,24 @@ P.O. Box 299
 St. Louis, MO 63166-0299
 U.S.A. """
 
-    def download(self, engine=None, debug=False):
-        Script.download(self, engine, debug)
+    def download(self, engine=None, debug=False, use_cache=True):
+        Script.download(self, engine, debug, use_cache)
 
         self.engine.auto_create_table(Table("sites"), url=self.urls["sites"], filename='gentry_sites.csv')
-        self.engine.insert_data_from_url(self.urls["sites"])
+        self.engine.insert_data_from_url(self.urls["sites"], use_cache)
 
-        self.engine.download_file(self.urls["stems"], "all_Excel.zip")
+        self.engine.download_file(self.urls["stems"], "all_Excel.zip", use_cache)
         local_zip = zipfile.ZipFile(self.engine.format_filename("all_Excel.zip"))
         filelist = local_zip.namelist()
         local_zip.close()
-        self.engine.download_files_from_archive(self.urls["stems"], filelist)
+        self.engine.download_files_from_archive(self.urls["stems"], filelist, use_cache)
 
         filelist = [os.path.basename(filename) for filename in filelist]
 
         # Currently all_Excel.zip is missing CURUYUQU.xls
         # Download it separately and add it to the file list
         if not self.engine.find_file('CURUYUQU.xls'):
-            self.engine.download_file("http://www.mobot.org/mobot/gentry/123/samerica/CURUYUQU.xls", "CURUYUQU.xls")
+            self.engine.download_file("http://www.mobot.org/mobot/gentry/123/samerica/CURUYUQU.xls", "CURUYUQU.xls", use_cache)
             filelist.append('CURUYUQU.xls')
 
         lines = []
