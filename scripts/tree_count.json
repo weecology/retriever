@@ -5,35 +5,27 @@
     "keywords":[
         "trees",
         "new-york-city",
-        "biology"
+        "biology",
+        "obesrvational"
     ],
     "name":"tree-count",
     "resources":[
         {
-            "dialect": {
-                "missingValues": [
-                    "",
-                    null
-                ]
-            },
+            "dialect": {},
             "name":"main",
             "schema":{
                 "fields": [
                     {
                         "name":"created_at",
-                        "type":"date"
+                        "type":"char"
                     },
                     {
                         "name":"tree_id",
-                        "type":"pk-int"
+                        "type":"int"
                     },
                     {
                         "name":"block_id",
                         "type":"int"
-                    },
-                    {
-                        "name":"the_geom",
-                        "type":"(double,double)"
                     },
                     {
                         "name":"tree_dbh",
@@ -172,7 +164,7 @@
                         "type":"char"
                     },
                     {
-                        "name":"Latitude",
+                        "name":"latitude",
                         "type":"double"
                     },
                     {
@@ -195,6 +187,8 @@
     "retriever":"True",
     "retriever_minimum_version":"2.0.dev",
     "title":"tree-count, dateset of evert street tree of new-york-city",
-    "urls":"https://data.cityofnewyork.us/api/views/5rq2-4hqu/rows.csv?accessType=DOWNLOAD",
+    "urls":{
+        "main":"https://data.cityofnewyork.us/api/views/5rq2-4hqu/rows.csv?accessType=DOWNLOAD"
+    },
     "version":"1.2.1"
   }
