@@ -27,7 +27,7 @@ class main(Script):
         self.ref = "http://www.pwrc.usgs.gov/BBS/"
         self.tags = ["birds", "continental-scale"]
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.3.1'
+        self.version = '1.3.2'
         self.urls = {
                      "counts": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/",
                      "routes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/Routes.zip",
@@ -36,9 +36,9 @@ class main(Script):
                      "species": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/SpeciesList.txt"
                      }
 
-    def download(self, engine=None, debug=False):
+    def download(self, engine=None, debug=False, use_cache=True):
         try:
-            Script.download(self, engine, debug)
+            Script.download(self, engine, debug, use_cache)
 
             engine = self.engine
 
@@ -60,10 +60,10 @@ class main(Script):
 
             engine.table = table
             engine.create_table()
-            engine.insert_data_from_url(self.urls["species"])
+            engine.insert_data_from_url(self.urls["species"], use_cache)
 
             # Routes table
-            engine.download_files_from_archive(self.urls["routes"], ["routes.csv"])
+            engine.download_files_from_archive(self.urls["routes"], ["routes.csv"], use_cache=use_cache)
             engine.auto_create_table(Table("routes", cleanup=Cleanup()),
                                      filename="routes.csv")
             engine.insert_data_from_file(engine.format_filename("routes.csv"))
@@ -71,7 +71,7 @@ class main(Script):
             # Weather table
             if not os.path.isfile(engine.format_filename("weather_new.csv")):
                 engine.download_files_from_archive(self.urls["weather"],
-                                                   ["weather.csv"])
+                                                   ["weather.csv"], use_cache=use_cache)
                 read = open_fr(engine.format_filename("weather.csv"))
                 write = open_fw(engine.format_filename("weather_new.csv"))
                 print("Cleaning weather data...")
@@ -115,7 +115,7 @@ class main(Script):
             engine.table = table
             engine.create_table()
 
-            engine.insert_data_from_url(self.urls["region_codes"])
+            engine.insert_data_from_url(self.urls["region_codes"], use_cache)
 
             # Counts table
             table = Table("counts", delimiter=',')
@@ -169,14 +169,14 @@ class main(Script):
                     try:
                         engine.table.cleanup = Cleanup()
                         engine.insert_data_from_archive(self.urls["counts"] + shortstate + ".zip",
-                                                        [shortstate + ".csv"])
+                                                        [shortstate + ".csv"], use_cache)
                     except:
                         print("Failed bulk insert on " + state + ", inserting manually.")
                         engine.connection.rollback()
                         engine.table.cleanup = Cleanup(correct_invalid_value,
                                                        nulls=['*'])
                         engine.insert_data_from_archive(self.urls["counts"] + shortstate + ".zip",
-                                                        [shortstate + ".csv"])
+                                                        [shortstate + ".csv"], use_cache)
 
                 except:
                     print("There was an error in " + state + ".")

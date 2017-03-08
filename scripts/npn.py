@@ -21,13 +21,13 @@ class main(Script):
         self.name = "USA National Phenology Network"
         self.shortname = "NPN"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.0'
+        self.version = '1.1'
         self.ref = "http://www.usanpn.org/results/data"
         self.tags = ["Data Type > Phenology", "Spatial Scale > Continental"]
         self.description = "The data set was collected via Nature's Notebook phenology observation program (2009-present), and (2) Lilac and honeysuckle data (1955-present)"
         self.citation = "Schwartz, M. D., Ault, T. R., & J. L. Betancourt, 2012: Spring Onset Variations and Trends in the Continental USA: Past and Regional Assessment Using Temperature-Based Indices. International Journal of Climatology (published online, DOI: 10.1002/joc.3625)."
-    def download(self, engine=None, debug=False):
-        Script.download(self, engine, debug)
+    def download(self, engine=None, debug=False, use_cache=True):
+        Script.download(self, engine, debug, use_cache)
 
         engine = self.engine
 
@@ -64,7 +64,7 @@ class main(Script):
                 url = base_url + 'get%s%sDataNoDefinitions' % (year, tax)
 
                 filename = '%s_%s.csv' % (tax, year)
-                engine.download_file(url, filename)
+                engine.download_file(url, filename, use_cache)
 
                 engine.insert_data_from_file(engine.find_file(filename))
 

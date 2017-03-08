@@ -15,11 +15,11 @@ class main(Script):
         self.citation = "Falster, D.S., Duursma, R.A., Ishihara, M.I., Barneche, D.R., FitzJohn, R.G., Varhammar, A., Aiba, M., Ando, M., Anten, N., Aspinwall, M.J. and Baltzer, J.L., 2015. BAAD: a Biomass And Allometry Database for woody plants."
         self.tags = ['plants', 'observational']
         self.retriever_minimum_version = "2.0.dev"
-        self.version = "1.2.1"
+        self.version = "1.2.2"
         self.description = "The data set is a Biomass and allometry database (BAAD) for woody plants containing 259634 measurements collected in 176 different studies from 21084 individuals across 678 species."
 
-    def download(self, engine=None, debug=False):
-        Script.download(self, engine, debug)
+    def download(self, engine=None, debug=False, use_cache=True):
+        Script.download(self, engine, debug, use_cache)
         engine = self.engine
 
         # files are nested in another baad_data folder
@@ -27,7 +27,7 @@ class main(Script):
         # relevant files can be added in the same manner
 
         file_names = ["baad_data/baad_data.csv", "baad_data/baad_methods.csv"]
-        engine.download_files_from_archive(self.urls["BAAD"], file_names)
+        engine.download_files_from_archive(self.urls["BAAD"], file_names, use_cache=use_cache)
 
         # creating data from baad_data.csv
         engine.auto_create_table(Table("data", cleanup=Cleanup(correct_invalid_value, nulls=['NA'])),

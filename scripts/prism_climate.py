@@ -14,7 +14,7 @@ class main(Script):
         self.name = "PRISM Climate Data"
         self.shortname = "prism-climate"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.1.1'
+        self.version = '1.1.2'
         self.ref = "http://prism.oregonstate.edu/"
         self.urls = {"climate": "http://services.nacse.org/prism/data/public/4km/"}
         self.description = "The PRISM data set represents climate observations from a wide range of monitoring networks, applies sophisticated quality control measures, and develops spatial climate datasets to reveal short- and long-term climate patterns. "
@@ -33,10 +33,10 @@ class main(Script):
                                                                          extension))
         return file_names
 
-    def download(self, engine=None, debug=False):
+    def download(self, engine=None, debug=False, use_cache=True):
         if engine.name != "Download Only":
             raise Exception("The PRISM dataset contains only non-tabular data files, and can only be used with the 'download only' engine.")
-        Script.download(self, engine, debug)
+        Script.download(self, engine, debug, use_cache)
 
         clim_vars = ['ppt', 'tmax', 'tmean', 'tmin']
         years = list(range(1981, 2015))
@@ -48,7 +48,7 @@ class main(Script):
                     file_names = self.get_file_names(clim_var, mval, year, month)
                     file_url = urllib.parse.urljoin(self.urls["climate"], "{}/{}{}".format(clim_var, year, month))
                     archivename = "PRISM_{}_stable_4km{}_{}{}_bil.zip".format(clim_var, mval, year, month)
-                    self.engine.download_files_from_archive(file_url, file_names, archivename=archivename, keep_in_dir=True)
+                    self.engine.download_files_from_archive(file_url, file_names, archivename=archivename, keep_in_dir=True, use_cache=use_cache)
                     self.engine.register_files(file_names)
 
 SCRIPT = main()

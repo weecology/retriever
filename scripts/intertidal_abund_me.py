@@ -12,15 +12,15 @@ class main(Script):
                         ref="http://www.esapubs.org/archive/ecol/E089/032/",
                         description="The data set provides access to data on densities and percent cover in the 60 experimental plots from 2003 to 2007 and to update data from 1996 to 2002 that are already published in Ecological Archives.It includes densities of mussels, an herbivorous limpet, herbivorous snails, a predatory snail, a barnacle , and fucoid algae and percent cover by mussels, barnacles, fucoids, and other sessile organisms.",
                         retriever_minimum_version='2.0.dev',
-                        version='1.3.1',
+                        version='1.3.2',
                         urls={"main": "http://www.esapubs.org/archive/ecol/E089/032/Succession_sampling_03-07_data.txt"},
                         tables={"main": Table("main", cleanup=Cleanup(correct_invalid_value, nulls=[-999.9]))}
                         )
 
-    def download(self, engine=None, debug=False):
-        Script.download(self, engine, debug)
+    def download(self, engine=None, debug=False, use_cache=True):
+        Script.download(self, engine, debug, use_cache)
 
-        self.engine.download_file(self.urls["main"], "Succession_sampling_03-07_data_original.txt")
+        self.engine.download_file(self.urls["main"], "Succession_sampling_03-07_data_original.txt", use_cache)
         data_path = self.engine.format_filename("Succession_sampling_03-07_data.txt")
         old_data = open_fr(self.engine.find_file("Succession_sampling_03-07_data_original.txt"))
         new_data = open_fw(data_path)

@@ -19,7 +19,7 @@ class main(Script):
         self.name = "Forest Inventory and Analysis"
         self.shortname = "forest-inventory-analysis"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.3.1'
+        self.version = '1.3.2'
         self.ref = "http://fia.fs.fed.us/"
         self.urls = {"main": "https://apps.fs.usda.gov/fiadb-downloads/CSV/",
                      'species': 'https://apps.fs.usda.gov/fiadb-downloads/CSV/REF_SPECIES.csv'}
@@ -28,14 +28,14 @@ class main(Script):
         self.description = """WARNING: This dataset requires downloading many large files and will probably take several hours to finish installing."""
         self.addendum = """This dataset requires downloading many large files - please be patient."""
 
-    def download(self, engine=None, debug=False):
-        Script.download(self, engine, debug)
+    def download(self, engine=None, debug=False, use_cache=True):
+        Script.download(self, engine, debug, use_cache)
         engine = self.engine
 
         # download and create species table
         table = Table('species')
         self.engine.auto_create_table(table, url=self.urls['species'])
-        self.engine.insert_data_from_url(self.urls['species'])
+        self.engine.insert_data_from_url(self.urls['species'], use_cache)
 
         # State abbreviations with the year annual inventory began for that state
         stateslist = [('AL', 2001), ('AK', 2004), ('AZ', 2001), ('AR', 2000),
@@ -57,7 +57,7 @@ class main(Script):
         for table in tablelist:
             for state, year in stateslist:
                 engine.download_files_from_archive(self.urls["main"] + state + "_" + table + ".ZIP",
-                                                   [state + "_" + table + ".csv"])
+                                                   [state + "_" + table + ".csv"], use_cache=use_cache)
 
         for table in tablelist:
             print("Scanning data for table %s..." % table)
