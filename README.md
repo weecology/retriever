@@ -1,4 +1,4 @@
-rdataretriever [![Build Status](http://cranlogs.r-pkg.org/badges/grand-total/ecoretriever)](http://cran.rstudio.com/web/packages/ecoretriever/index.html)
+rdataretriever [![Build Status](https://cranlogs.r-pkg.org/badges/grand-total/ecoretriever)](https://cran.rstudio.com/web/packages/ecoretriever/index.html)
 ============
 
 R interface to the [Data Retriever](http://data-retriever.org).
@@ -14,7 +14,7 @@ handling can easily be integrated into R workflows.
 Installation
 ------------
 To use the R package `rdataretriever` you first need to install the Retriever.
-Installers are available for all major operating systems from the [Download page](http://data-retriever.org/download.html)
+Installers are available for all major operating systems from the [Install page](http://www.data-retriever.org/#install)
 or it can be installed from [source](https://github.com/weecology/retriever).
 
 Add Retriever to the path
