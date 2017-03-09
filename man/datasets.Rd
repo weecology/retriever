@@ -10,7 +10,7 @@ datasets()
 returns a character vector with the available datasets for download
 }
 \description{
-Additional information on the available datasets can be found at http://data-retriever.org/available-data.html
+Additional information on the available datasets can be found at \url{https://retriever.readthedocs.io/en/latest/datasets.html}
 }
 \examples{
 \donttest{

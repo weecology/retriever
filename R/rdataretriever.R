@@ -137,7 +137,7 @@ download = function(dataset, path='.', sub_dir=FALSE, log_dir=NULL) {
 
 #' Name all available dataset scripts.
 #'
-#' Additional information on the available datasets can be found at http://data-retriever.org/available-data.html
+#' Additional information on the available datasets can be found at \url{https://retriever.readthedocs.io/en/latest/datasets.html}
 #' 
 #' @return returns a character vector with the available datasets for download
 #' @export
@@ -279,8 +279,8 @@ check_for_retriever = function(...) {
     
     if (retriever_path == '') {
         path_warn = 'The retriever is not on your path and may not be installed.'
-        mac_instr = 'Follow the instructions for installing and manually adding the Data Retriever to your path at http://data-retriever.org/download.html'
-        download_instr = 'Please upgrade to the most recent version of the Data Retriever, which will automatically add itself to the path http://data-retriever.org/download.html'
+        mac_instr = 'Follow the instructions for installing and manually adding the Data Retriever to your path at http://www.data-retriever.org/#install'
+        download_instr = 'Please upgrade to the most recent version of the Data Retriever, which will automatically add itself to the path http://www.data-retriever.org/#install'
         os = Sys.info()[['sysname']]
         if (os == 'Darwin')
             packageStartupMessage(paste(path_warn, mac_instr))
