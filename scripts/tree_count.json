@@ -28,6 +28,10 @@
                         "type":"int"
                     },
                     {
+                        "name":"the_geom",
+                        "type":"skip"
+                    },
+                    {
                         "name":"tree_dbh",
                         "type":"int"
                     },
@@ -190,5 +194,5 @@
     "urls":{
         "main":"https://data.cityofnewyork.us/api/views/5rq2-4hqu/rows.csv?accessType=DOWNLOAD"
     },
-    "version":"1.2.1"
+    "version":"1.0.0"
   }
