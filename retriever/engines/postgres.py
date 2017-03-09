@@ -1,8 +1,7 @@
 import os
 import io
 from retriever.lib.models import Engine, no_cleanup
-from retriever import ENCODING, PGPASS_FILE_PATH
-import io
+from retriever import ENCODING, PGPASS_FILE_PATH, open_fr
 
 class engine(Engine):
     """Engine instance for PostgreSQL."""
@@ -18,30 +17,22 @@ class engine(Engine):
         "bool": "boolean",
     }
     max_int = 2147483647
-    try:
-        pgpass_file = io.open(PGPASS_FILE_PATH, 'r')
-        pgpass_credentials = pgpass_file.split(':') # Split the credentials file of the format hostname:port:database:username:password
-        pgpass_lookup = {'username': pgpass_credentials[3], 'password': pgpass_credentials[4], 'host': pgpass_credentials[0], 'port': pgpass_credentials[1], 'database': pgpass_credentials[2]}
-    except IOError:
-        pgpass_lookup = {'username': "postgres", 'password': "", 'host': "localhost", 'port': 5432, 'database': "postgres"}
 
-    for key in pgpass_lookup.keys():
-        if pgpass_lookup[key] == "*" : pgpass_lookup[key] = ""
     required_opts = [("user",
                       "Enter your PostgreSQL username",
-                      pgpass_lookup['username']),
+                      "postgres"),
                      ("password",
                       "Enter your password",
-                      pgpass_lookup['password']),
+                      ""),
                      ("host",
                       "Enter your PostgreSQL host",
-                      pgpass_lookup['host']),
+                      "localhost"),
                      ("port",
                       "Enter your PostgreSQL port",
-                      pgpass_lookup['port']),
+                      5432),
                      ("database",
                       "Enter your PostgreSQL database name",
-                      pgpass_lookup['database']),
+                      "postgres"),
                      ("database_name",
                       "Format of schema name",
                       "{db}"),
@@ -49,6 +40,27 @@ class engine(Engine):
                       "Format of table name",
                       "{db}.{table}"),
                      ]
+
+    def check_credentials(self):
+        """
+        Checks the credentials of the user in the file path ~/.pgpass for the postgreSQL
+        credentials by checking the username provided by the user in cli.
+        If found, it updates the credentials to initialize the connection, else uses the
+        default ones.
+        """
+        self.get_input()
+        if os.path.exists(PGPASS_FILE_PATH):
+            pgpass_file = open_fr(PGPASS_FILE_PATH)
+            # Map the index of PostgreSQL credentials to self.opts dictionary keys
+            pg_map_keys = {"user": 3, "password": 4, "host": 0, "port": 1, "database": 2}
+            # Split the credentials file of the format
+            # hostname:port:database:username:password
+            for line in pgpass_file:
+                pgpass_credentials = line.split(":")
+                if self.opts["user"] == pgpass_credentials[pg_map_keys["user"]]:
+                    for key in self.opts.keys():
+                        if not self.pgpass_credentials[pg_map_keys[key]] == "*" or self.pgpass_credentials[pg_map_keys[key]] == "":
+                            self.opts[key] = pgpass_credentials[pg_map_keys[key]]
 
     def create_db_statement(self):
         """In PostgreSQL, the equivalent of a SQL database is a schema."""
@@ -138,7 +150,7 @@ CSV HEADER;"""
            Please update the encoding lookup table if the required encoding is not present.
         """
         import psycopg2 as dbapi
-        self.get_input()
+        self.check_credentials()
         conn = dbapi.connect(host=self.opts["host"],
                              port=int(self.opts["port"]),
                              user=self.opts["user"],
