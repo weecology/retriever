@@ -7,10 +7,13 @@ import os
 import sys
 import shutil
 from imp import reload
+from retriever import ENCODING
+
+encoding = ENCODING.lower()
 
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
-    sys.setdefaultencoding('latin-1')
+    sys.setdefaultencoding(encoding)
 from retriever.lib.engine import Engine
 from retriever.lib.table import Table
 from retriever.lib.templates import BasicTextTemplate
@@ -404,3 +407,4 @@ def test_add_schema():
 
     add_schema(table_dict, table)
     assert(table_dict == result)
+    

@@ -1,16 +1,17 @@
 """Use the following command to install retriever: python setup.py install"""
 from __future__ import absolute_import
+import os
 
 from setuptools import setup
 from pkg_resources import parse_version
 import platform
-
+import os
 
 current_platform = platform.system().lower()
 extra_includes = []
 
 __version__ = 'v2.0.0'
-with open("_version.py", "w") as version_file:
+with open(os.path.join("retriever", "_version.py"), "w") as version_file:
     version_file.write("__version__ = " + "'" + __version__ + "'\n")
     version_file.close()
 
@@ -27,6 +28,7 @@ packages = [
 includes = [
     'xlrd',
     'future',
+    'argcomplete',
     'pymysql',
     'psycopg2',
     'sqlite3',
@@ -53,10 +55,10 @@ setup(name='retriever',
                    'License :: OSI Approved :: MIT License',
                    'Programming Language :: Python',
                    'Programming Language :: Python :: 2',
-                   'Programming Language :: Python :: 3',],
+                   'Programming Language :: Python :: 3', ],
       packages=packages,
       package_dir={
-          'retriever': ''
+          'retriever': 'retriever'
       },
       entry_points={
           'console_scripts': [
@@ -65,7 +67,8 @@ setup(name='retriever',
       },
       install_requires=[
           'xlrd',
-          'future'
+          'future',
+          'argcomplete'
       ],
 
       # py2app flags
@@ -74,6 +77,29 @@ setup(name='retriever',
       setup_requires=[],
       )
 
+# windows doesn't have bash. No point in using bash-completion
+if current_platform != "windows":
+    # if platform is OS X use "~/.bash_profile"
+    if current_platform == "darwin":
+        bash_file = "~/.bash_profile"
+    # if platform is Linux use "~/.bashrc
+    elif current_platform == "linux":
+        bash_file = "~/.bashrc"
+    # else write and discard
+    else:
+        bash_file = "/dev/null"
+
+    argcomplete_command = 'eval "$(register-python-argcomplete retriever)"'
+    with open(os.path.expanduser(bash_file), "a+") as bashrc:
+        bashrc.seek(0)
+        # register retriever for arg-completion if not already registered
+        # whenever a new shell is spawned
+        if argcomplete_command not in bashrc.read():
+            bashrc.write(argcomplete_command + "\n")
+            bashrc.close()
+    os.system("activate-global-python-argcomplete")
+    # register for the current shell
+    os.system(argcomplete_command)
 
 try:
     from retriever.compile import compile

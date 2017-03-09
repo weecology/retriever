@@ -1,5 +1,6 @@
 future
 xlrd>=0.7
+argcomplete
 PyMySQL>=0.4
 psycopg2>=2.0
 numpydoc

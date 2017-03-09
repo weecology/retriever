@@ -3,7 +3,7 @@ from builtins import input
 import os
 import json
 from time import sleep
-from retriever import SCRIPT_LIST, HOME_DIR
+from retriever import SCRIPT_LIST, HOME_DIR, ENCODING
 
 short_names = [script.shortname.lower() for script in SCRIPT_LIST()]
 
@@ -141,7 +141,7 @@ def create_json():
     http://specs.frictionlessdata.io/data-packages/#descriptor-datapackagejson
     Takes input from user via command line.
 
-    Usage: retriever create_json
+    Usage: retriever new_json
     '''
     contents = {}
     tableUrls = {}
@@ -162,6 +162,8 @@ def create_json():
     contents['resources'] = []
     contents['retriever'] = "True"
     contents['retriever_minimum_version'] = "2.0.dev"
+    contents['encoding'] = clean_input("encoding: ", ignore_empty = True)
+    if is_empty(clean_input("encoding: ", ignore_empty = True)) : contents['encoding'] = ENCODING
     contents['version'] = "1.0.0";
 
     # Add tables -
