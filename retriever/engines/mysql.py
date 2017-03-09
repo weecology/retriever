@@ -1,8 +1,9 @@
 from __future__ import print_function
 from builtins import str
 import os
+import io
 from retriever.lib.models import Engine, no_cleanup
-from retriever import ENCODING
+from retriever import ENCODING, MYSQL_CONF_PATH
 
 
 class engine(Engine):
@@ -19,12 +20,25 @@ class engine(Engine):
         "bool": "BOOL",
     }
     max_int = 4294967295
+    try:
+        sql_conf = io.open(MYSQL_CONF_PATH, 'r')
+        for line in sql_conf:
+            if re.search("user=", line):
+                username = re.search("\"\"", line).group(1)
+            elif re.search("password=", line):
+                password = re.search("\"\"", line).group(1)
+            else:
+                pass
+    except IOError:
+        username = "root"
+        password = ""
+        
     required_opts = [("user",
                       "Enter your MySQL username",
-                      "root"),
+                      username),
                      ("password",
                       "Enter your password",
-                      ""),
+                      password),
                      ("host",
                       "Enter your MySQL host",
                       "localhost"),

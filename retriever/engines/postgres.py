@@ -1,7 +1,8 @@
 import os
+import io
 from retriever.lib.models import Engine, no_cleanup
-from retriever import ENCODING
-
+from retriever import ENCODING, PGPASS_FILE_PATH
+import io
 
 class engine(Engine):
     """Engine instance for PostgreSQL."""
@@ -17,21 +18,30 @@ class engine(Engine):
         "bool": "boolean",
     }
     max_int = 2147483647
+    try:
+        pgpass_file = io.open(PGPASS_FILE_PATH, 'r')
+        pgpass_credentials = pgpass_file.split(':') # Split the credentials file of the format hostname:port:database:username:password
+        pgpass_lookup = {'username': pgpass_credentials[3], 'password': pgpass_credentials[4], 'host': pgpass_credentials[0], 'port': pgpass_credentials[1], 'database': pgpass_credentials[2]}
+    except IOError:
+        pgpass_lookup = {'username': "postgres", 'password': "", 'host': "localhost", 'port': 5432, 'database': "postgres"}
+
+    for key in pgpass_lookup.keys():
+        if pgpass_lookup[key] == "*" : pgpass_lookup[key] = ""
     required_opts = [("user",
                       "Enter your PostgreSQL username",
-                      "postgres"),
+                      pgpass_lookup['username']),
                      ("password",
                       "Enter your password",
-                      ""),
+                      pgpass_lookup['password']),
                      ("host",
                       "Enter your PostgreSQL host",
-                      "localhost"),
+                      pgpass_lookup['host']),
                      ("port",
                       "Enter your PostgreSQL port",
-                      5432),
+                      pgpass_lookup['port']),
                      ("database",
                       "Enter your PostgreSQL database name",
-                      "postgres"),
+                      pgpass_lookup['database']),
                      ("database_name",
                       "Format of schema name",
                       "{db}"),
