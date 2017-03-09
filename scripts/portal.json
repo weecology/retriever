@@ -186,7 +186,111 @@
             "name": "portal_rodents_datanotes",
             "schema": {},
             "url": "https://github.com/weecology/PortalData/blob/master/Rodents/Portal_rodent_datanotes.csv"
-        }
+        },
+        {
+            "dialect": {
+                "delimiter":","
+            },
+            "name": "portal_ant_bait",
+            "schema": {
+                "fields":[
+                    {
+                        "name":"month",
+                        "type":"char"
+                    },
+                    {
+                        "name":"year",
+                        "type":"char"
+                    },
+                    {
+                        "name":"plot",
+                        "type":"int"
+                    },
+                    {
+                        "name":"stack",
+                        "type":"int"
+                    },
+                    {
+                        "name":"species",
+                        "type":"char"
+                    },
+                    {
+                        "name":"abundance",
+                        "type":"int"
+                    }
+                ]
+            },
+            "url": "https://github.com/weecology/PortalData/blob/master/Ants/Portal_ant_bait.csv"
+        },
+        {
+            "dialect": {
+                "delimiter":",",
+                "missingValues":[
+                    "",
+                    null
+                ]
+            },
+            "name": "portal_ant_colony",
+            "schema": {
+                "fields":[
+                    {
+                        "name":"day",
+                        "type":"int"
+                    },
+                    {
+                        "name":"month",
+                        "type":"int"
+                    },
+                    {
+                        "name":"year",
+                        "type":"int"
+                    },
+                    {
+                        "name":"plot",
+                        "type":"int"
+                    },
+                    {
+                        "name":"stack",
+                        "type":"int"
+                    },
+                    {
+                        "name":"species",
+                        "type":"char"
+                    },
+                    {
+                        "name":"colonies",
+                        "type":"int"
+                    },
+                    {
+                        "name":"openings",
+                        "type":"int"
+                    },
+                    {
+                        "name":"flag",
+                        "type":"int"
+                    }
+                ]
+            },
+            "url": "https://raw.githubusercontent.com/weecology/PortalData/master/Ants/Portal_ant_colony.csv"
+        },
+        {
+            "dialect": {},
+            "name": "plots_ant_dataflags",
+            "schema": {},
+            "url": "https://github.com/weecology/PortalData/blob/master/Ants/Portal_ant_dataflags.csv"
+        },
+        {
+            "dialect": {
+                "delimiter":",",
+                "missingValues":[
+                    "",
+                    null
+                ]
+            },
+            "name": "plots_ant_species",
+            "schema": {},
+            "url": "https://github.com/weecology/PortalData/blob/master/Ants/Portal_ant_species.csv"
+        },
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
@@ -197,7 +301,11 @@
         "portal_rodents_species" : "https://github.com/weecology/PortalData/blob/master/Rodents/Portal_rodent_species.csv",
         "portal_rodents_trapping" : "https://github.com/weecology/PortalData/blob/master/Rodents/Portal_rodent_trapping.csv",
         "portal_rodents_datanotes" : "https://github.com/weecology/PortalData/blob/master/Rodents/Portal_rodent_datanotes.csv",
-        "plots": "https://ndownloader.figshare.com/files/3299474"
+        "plots": "https://ndownloader.figshare.com/files/3299474",
+        "portal_ant_bait":"https://github.com/weecology/PortalData/blob/master/Ants/Portal_ant_bait.csv",
+        "portal_ant_colony":"https://raw.githubusercontent.com/weecology/PortalData/master/Ants/Portal_ant_colony.csv",
+        "portal_ant_dataflags":"https://github.com/weecology/PortalData/blob/master/Ants/Portal_ant_dataflags.csv",
+        "portal_ant_species":"https://github.com/weecology/PortalData/blob/master/Ants/Portal_ant_species.csv"
     },
     "version": "1.1.0"
 }
