@@ -290,7 +290,7 @@
             "name": "plots_ant_species",
             "schema": {},
             "url": "https://github.com/weecology/PortalData/blob/master/Ants/Portal_ant_species.csv"
-        },
+        }
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
