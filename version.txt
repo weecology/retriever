@@ -14,7 +14,7 @@ community_abundance_misc.json,1.0.1
 elton_traits.json,1.1.1
 fish_parasite_hosts.json,1.1.1
 forest_biomass_china.json,1.1.1
-forest_fires_portugal.json,1.1.2
+forest_fires_portugal.json,1.1.3
 forest_inventory_analysis.py,1.3.1
 forest_plots_michigan.json,1.1.1
 forest_plots_wghats.json,1.1.1
@@ -36,7 +36,7 @@ mapped_plant_quads_id.json,1.1.1
 mapped_plant_quads_ks.json,1.1.1
 mapped_plant_quads_mt.json,1.1.1
 mt_st_helens_veg.json,1.1.1
-npn.py,1.0
+npn.py,2.0.0
 pantheria.json,1.1.0
 phytoplankton_size.json,1.1.1
 plant_comp_ok.json,1.1.1
