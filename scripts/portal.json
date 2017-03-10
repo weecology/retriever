@@ -20,7 +20,7 @@
                     null
                 ]
             },
-            "name": "portal_rodents",
+            "name": "rodents",
             "schema": {
                 "fields": [
                     {
@@ -165,33 +165,151 @@
         },
         {
             "dialect": {},
-            "name": "portal_rodents_species",
-            "schema": {},
+            "name": "rodents_species",
+            "schema": {
+                "fields":[
+                    {
+                        "name":"species_code",
+                        "type":"char",
+                        "size":"2"
+                    },
+                    {
+                        "name":"scientific_name",
+                        "type":"char"
+                    },
+                    {
+                        "name":"taxa",
+                        "type":"char"
+                    },
+                    {
+                        "name":"common_name",
+                        "type":"char"
+                    },
+                    {
+                        "name":"census_target",
+                        "type":"int"
+                    },
+                    {
+                        "name":"unidentified",
+                        "type":"int"
+                    },
+                    {
+                        "name":"rodent",
+                        "type":"int"
+                    },
+                    {
+                        "name":"granivore",
+                        "type":"int"
+                    }
+                ]
+            },
             "url": "https://github.com/weecology/PortalData/blob/master/Rodents/Portal_rodent_species.csv"
         },
         {
             "dialect": {},
-            "name": "plots_rodents",
-            "schema": {},
-            "url": "https://ndownloader.figshare.com/files/3299474"
+            "name": "plots",
+            "schema": {
+                "fields":[
+                    {
+                        "name":"year",
+                        "type":"int"
+                    },
+                    {
+                        "name":"plot",
+                        "type":"int"
+                    },
+                    {
+                        "name":"treatment",
+                        "type":"char"
+                    }
+                ]
+            },
+            "url": "https://raw.githubusercontent.com/weecology/PortalData/master/SiteandMethods/Portal_plots.csv"
         },
         {
             "dialect": {},
-            "name": "portal_rodents_trapping",
-            "schema": {},
+            "name": "rodents_trapping",
+            "schema": {
+                "fields":[
+                    {
+                        "name":"day",
+                        "type":"int"
+                    },
+                    {
+                        "name":"month",
+                        "type":"int"
+                    },
+                    {
+                        "name":"year",
+                        "type":"int"
+                    },
+                    {
+                        "name":"period",
+                        "type":"int"
+                    },
+                    {
+                        "name":"plot",
+                        "type":"int"
+                    },
+                    {
+                        "name":"sampled",
+                        "type":"int"
+                    }
+                ]
+            },
             "url": "https://github.com/weecology/PortalData/blob/master/Rodents/Portal_rodent_trapping.csv"
         },
         {
             "dialect": {},
-            "name": "portal_rodents_datanotes",
-            "schema": {},
+            "name": "rodents_datanotes",
+            "schema": {
+                "fields":[
+                    {
+                        "name":"note1",
+                        "type":"int"
+                    },
+                    {
+                        "name":"meaning",
+                        "type":"char"
+                    }
+                ]
+            },
             "url": "https://github.com/weecology/PortalData/blob/master/Rodents/Portal_rodent_datanotes.csv"
+        },
+        {
+            "dialect": {
+                "missingValues":[
+                    "NA"
+                ]
+            },
+            "name": "moon_dates",
+            "schema": {
+                "fields":[
+                    {
+                        "name":"new_moon_number",
+                        "type":"int"
+                    },
+                    {
+                        "name":"new_moon_date",
+                        "type":"char"
+                    },
+                    {
+                        "name":"period",
+                        "type":"char"
+                    },
+                    {
+                        "name":"census_date",
+                        "type":"char"
+                    }
+                ]
+            },
+            "url": "https://github.com/weecology/PortalData/blob/master/Rodents/moon_dates.csv"
         },
         {
             "dialect": {
                 "delimiter":","
             },
-            "name": "portal_ant_bait",
+            "name": "ant_bait",
             "schema": {
                 "fields":[
                     {
@@ -230,7 +348,7 @@
                     null
                 ]
             },
-            "name": "portal_ant_colony",
+            "name": "ant_colony",
             "schema": {
                 "fields":[
                     {
@@ -275,8 +393,19 @@
         },
         {
             "dialect": {},
-            "name": "plots_ant_dataflags",
-            "schema": {},
+            "name": "ant_dataflags",
+            "schema": {
+                "fields":[
+                    {
+                        "name":"flag",
+                        "type":"int"
+                    },
+                    {
+                        "name":"meaning",
+                        "type":"char"
+                    }
+                ]
+            },
             "url": "https://github.com/weecology/PortalData/blob/master/Ants/Portal_ant_dataflags.csv"
         },
         {
@@ -287,8 +416,23 @@
                     null
                 ]
             },
-            "name": "plots_ant_species",
-            "schema": {},
+            "name": "ant_species",
+            "schema": {
+                "fields":[
+                    {
+                        "name":"species_code",
+                        "type":"char"
+                    },
+                    {
+                        "name":"scientific_name",
+                        "type":"char"
+                    },
+                    {
+                        "name":"id_issues",
+                        "type":"char"
+                    }
+                ]
+            },
             "url": "https://github.com/weecology/PortalData/blob/master/Ants/Portal_ant_species.csv"
         }
     ],
@@ -296,15 +440,16 @@
     "retriever_minimum_version": "2.0.dev",
     "title": "Portal Project Data (Ernest et al. 2009)",
     "urls": {
-        "portal_rodents": "https://raw.githubusercontent.com/weecology/PortalData/master/Rodents/Portal_rodent.csv",
-        "portal_rodents_species" : "https://github.com/weecology/PortalData/blob/master/Rodents/Portal_rodent_species.csv",
-        "portal_rodents_trapping" : "https://github.com/weecology/PortalData/blob/master/Rodents/Portal_rodent_trapping.csv",
-        "portal_rodents_datanotes" : "https://github.com/weecology/PortalData/blob/master/Rodents/Portal_rodent_datanotes.csv",
-        "plots": "https://ndownloader.figshare.com/files/3299474",
-        "portal_ant_bait":"https://github.com/weecology/PortalData/blob/master/Ants/Portal_ant_bait.csv",
-        "portal_ant_colony":"https://raw.githubusercontent.com/weecology/PortalData/master/Ants/Portal_ant_colony.csv",
-        "portal_ant_dataflags":"https://github.com/weecology/PortalData/blob/master/Ants/Portal_ant_dataflags.csv",
-        "portal_ant_species":"https://github.com/weecology/PortalData/blob/master/Ants/Portal_ant_species.csv"
+        "rodents": "https://raw.githubusercontent.com/weecology/PortalData/master/Rodents/Portal_rodent.csv",
+        "rodents_species" : "https://github.com/weecology/PortalData/blob/master/Rodents/Portal_rodent_species.csv",
+        "rodents_trapping" : "https://github.com/weecology/PortalData/blob/master/Rodents/Portal_rodent_trapping.csv",
+        "rodents_datanotes" : "https://github.com/weecology/PortalData/blob/master/Rodents/Portal_rodent_datanotes.csv",
+        "plots": "https://raw.githubusercontent.com/weecology/PortalData/master/SiteandMethods/Portal_plots.csv",
+        "moon_dates":"https://github.com/weecology/PortalData/blob/master/Rodents/moon_dates.csv",
+        "ant_bait":"https://github.com/weecology/PortalData/blob/master/Ants/Portal_ant_bait.csv",
+        "ant_colony":"https://raw.githubusercontent.com/weecology/PortalData/master/Ants/Portal_ant_colony.csv",
+        "ant_dataflags":"https://github.com/weecology/PortalData/blob/master/Ants/Portal_ant_dataflags.csv",
+        "ant_species":"https://github.com/weecology/PortalData/blob/master/Ants/Portal_ant_species.csv"
     },
-    "version": "1.1.0"
+    "version": "2.0.0"
 }
