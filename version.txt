@@ -51,6 +51,11 @@ prism_climate.py,1.1.1
 tree_demog_wghats.json,1.1.1
 veg_plots_sdl.json,1.1.1
 vertnet.py,1.3.0
+vertnet_amphibians.py,1.0.0
+vertnet_birds.py,1.0.0
+vertnet_fishes.py,1.0.0
+vertnet_mammals.py,1.0.0
+vertnet_reptiles.py,1.0.0
 wine_composition.json,1.1.1
 wine_quality.json,1.1.1
 wood_density.py,1.2.1
