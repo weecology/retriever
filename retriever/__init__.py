@@ -29,6 +29,7 @@ COPYRIGHT = "Copyright (C) 2011-2016 Weecology University of Florida"
 REPO_URL = "https://raw.github.com/weecology/retriever/"
 MASTER_BRANCH = REPO_URL + "master/"
 REPOSITORY = MASTER_BRANCH
+ENCODING = 'ISO-8859-1'
 
 # create the necessary directory structure for storing scripts/raw_data
 # in the ~/.retriever directory
@@ -63,7 +64,7 @@ DATA_WRITE_PATH = DATA_SEARCH_PATHS[-1]
 DATA_DIR = '.'
 
 
-def open_fr(file_name, encoding='ISO-8859-1', encode=True):
+def open_fr(file_name, encoding=ENCODING, encode=True):
     """Open file for reading respecting Python version and OS differences
 
     Sets newline to Linux line endings on Windows and Python 3
@@ -82,7 +83,7 @@ def open_fr(file_name, encoding='ISO-8859-1', encode=True):
     return file_obj
 
 
-def open_fw(file_name, encoding='ISO-8859-1', encode=True):
+def open_fw(file_name, encoding=ENCODING, encode=True):
     """Open file for writing respecting Python version and OS differences
 
     Sets newline to Linux line endings on Python 3
