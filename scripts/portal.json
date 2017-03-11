@@ -438,48 +438,10 @@
         {
             "dialect": {
                 "missingValues":[
-                    "unknown",
-                    "none"
-                ]
-            },
-            "name": "plant_1981_2015",
-            "schema": {
-                "fields":[
-                    {
-                        "name":"year",
-                        "type":"int"
-                    },
-                    {
-                        "name":"season",
-                        "type":"char"
-                    },
-                    {
-                        "name":"plot",
-                        "type":"int"
-                    },
-                    {
-                        "name":"quadrant",
-                        "type":"int"
-                    },
-                    {
-                        "name":"species",
-                        "type":"char"
-                    },
-                    {
-                        "name":"abundance",
-                        "type":"int"
-                    }
-                ]
-            },
-            "url": "https://raw.githubusercontent.com/weecology/PortalData/master/Plants/Portal_plant_1981_2015.csv"
-        },
-        {
-            "dialect": {
-                "missingValues":[
                     ""
                 ]
             },
-            "name": "plant_2015_present",
+            "name": "plants",
             "schema": {
                 "fields":[
                     {
@@ -508,7 +470,7 @@
                     },
                     {
                         "name":"cover",
-                        "type":"int"
+                        "type":"double"
                     },
                     {
                         "name":"cf",
@@ -516,8 +478,9 @@
                     }
                 ]
             },
-            "url": "https://github.com/weecology/PortalData/blob/master/Plants/Portal_plant_2015_present.csv"
+            "url": "https://raw.githubusercontent.com/weecology/PortalData/master/Plants/Portal_plants.csv"
         },
+        
         {
             "dialect": {
                 "missingValues":[
@@ -653,8 +616,7 @@
         "ant_colony":"https://raw.githubusercontent.com/weecology/PortalData/master/Ants/Portal_ant_colony.csv",
         "ant_dataflags":"https://github.com/weecology/PortalData/blob/master/Ants/Portal_ant_dataflags.csv",
         "ant_species":"https://github.com/weecology/PortalData/blob/master/Ants/Portal_ant_species.csv",
-        "plant_1981_2015":"https://raw.githubusercontent.com/weecology/PortalData/master/Plants/Portal_plant_1981_2015.csv",
-        "plant_2015_present":"https://github.com/weecology/PortalData/blob/master/Plants/Portal_plant_2015_present.csv",
+        "plants":"https://raw.githubusercontent.com/weecology/PortalData/master/Plants/Portal_plants.csv",
         "plant_census_dates":"https://github.com/weecology/PortalData/blob/master/Plants/Portal_plant_census_dates.csv",
         "plant_censuses":"https://github.com/weecology/PortalData/edit/master/Plants/Portal_plant_censuses.csv",
         "plant_species":"https://github.com/weecology/PortalData/blob/master/Plants/Portal_plant_species.csvd"
