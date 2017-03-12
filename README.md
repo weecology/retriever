@@ -1,4 +1,4 @@
-rdataretriever [![Build Status](https://cranlogs.r-pkg.org/badges/grand-total/ecoretriever)](https://cran.rstudio.com/web/packages/ecoretriever/index.html)
+rdataretriever [![Build Status](https://cranlogs.r-pkg.org/badges/grand-total/rdataretriever)](https://CRAN.R-project.org/package=rdataretriever)
 ============
 
 R interface to the [Data Retriever](http://data-retriever.org).
