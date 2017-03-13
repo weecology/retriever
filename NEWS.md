@@ -20,7 +20,7 @@ files
 
 MINOR IMPROVEMENTS
 
-* Accomodate new retriever naming conventions in fetch
+* Accommodate new retriever naming conventions in fetch
 * Don't change the class or return the update log
 * Specify in documentation which functions are for internal use.
 * Change dataset names in source and README.md
