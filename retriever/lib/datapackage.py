@@ -235,7 +235,11 @@ def create_json():
                 table['schema']['ct_column'] = ct_column
                 table['schema']['ct_names'] = ct_names
 
-            contents['resources'].append(table)  
+            contents['resources'].append(table)
+    give_message = clean_input(
+        "Would you like to add a Message? (y,N): ", ignore_empty=True)
+    if give_message.lower() in ["y", "yes"]:
+        contents['message'] = clean_input("Provide your Message: ", ignore_empty=True)
     contents['urls'] = tableUrls
     file_name = contents['name'] + ".json"
     file_name = file_name.replace('-', '_')
