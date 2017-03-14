@@ -20,7 +20,7 @@
                     null
                 ]
             },
-            "name": "rodents",
+            "name": "rodent",
             "schema": {
                 "fields": [
                     {
@@ -161,11 +161,11 @@
                     }
                 ]
             },
-            "url": "https://raw.githubusercontent.com/weecology/PortalData/master/Rodents/Portal_rodent.csv"
+            "url": "https://raw.githubusercontent.com/weecology/PortalData/v1.0.1/Rodents/Portal_rodent.csv"
         },
         {
             "dialect": {},
-            "name": "rodents_species",
+            "name": "rodent_species",
             "schema": {
                 "fields":[
                     {
@@ -203,7 +203,7 @@
                     }
                 ]
             },
-            "url": "https://github.com/weecology/PortalData/blob/master/Rodents/Portal_rodent_species.csv"
+            "url": "https://github.com/weecology/PortalData/blob/v1.0.1/Rodents/Portal_rodent_species.csv"
         },
         {
             "dialect": {},
@@ -224,11 +224,11 @@
                     }
                 ]
             },
-            "url": "https://raw.githubusercontent.com/weecology/PortalData/master/SiteandMethods/Portal_plots.csv"
+            "url": "https://raw.githubusercontent.com/weecology/PortalData/v1.0.1/SiteandMethods/Portal_plots.csv"
         },
         {
             "dialect": {},
-            "name": "rodents_trapping",
+            "name": "rodent_trapping",
             "schema": {
                 "fields":[
                     {
@@ -257,11 +257,11 @@
                     }
                 ]
             },
-            "url": "https://github.com/weecology/PortalData/blob/master/Rodents/Portal_rodent_trapping.csv"
+            "url": "https://github.com/weecology/PortalData/blob/v1.0.1/Rodents/Portal_rodent_trapping.csv"
         },
         {
             "dialect": {},
-            "name": "rodents_datanotes",
+            "name": "rodent_datanotes",
             "schema": {
                 "fields":[
                     {
@@ -274,7 +274,7 @@
                     }
                 ]
             },
-            "url": "https://github.com/weecology/PortalData/blob/master/Rodents/Portal_rodent_datanotes.csv"
+            "url": "https://github.com/weecology/PortalData/blob/v1.0.1/Rodents/Portal_rodent_datanotes.csv"
         },
         {
             "dialect": {
@@ -303,7 +303,7 @@
                     }
                 ]
             },
-            "url": "https://github.com/weecology/PortalData/blob/master/Rodents/moon_dates.csv"
+            "url": "https://github.com/weecology/PortalData/blob/v1.0.1/Rodents/moon_dates.csv"
         },
         {
             "dialect": {
@@ -338,7 +338,7 @@
                     }
                 ]
             },
-            "url": "https://github.com/weecology/PortalData/blob/master/Ants/Portal_ant_bait.csv"
+            "url": "https://github.com/weecology/PortalData/blob/v1.0.1/Ants/Portal_ant_bait.csv"
         },
         {
             "dialect": {
@@ -389,7 +389,7 @@
                     }
                 ]
             },
-            "url": "https://raw.githubusercontent.com/weecology/PortalData/master/Ants/Portal_ant_colony.csv"
+            "url": "https://raw.githubusercontent.com/weecology/PortalData/v1.0.1/Ants/Portal_ant_colony.csv"
         },
         {
             "dialect": {},
@@ -406,7 +406,7 @@
                     }
                 ]
             },
-            "url": "https://github.com/weecology/PortalData/blob/master/Ants/Portal_ant_dataflags.csv"
+            "url": "https://github.com/weecology/PortalData/blob/v1.0.1/Ants/Portal_ant_dataflags.csv"
         },
         {
             "dialect": {
@@ -433,7 +433,7 @@
                     }
                 ]
             },
-            "url": "https://github.com/weecology/PortalData/blob/master/Ants/Portal_ant_species.csv"
+            "url": "https://github.com/weecology/PortalData/blob/v1.0.1/Ants/Portal_ant_species.csv"
         },
         {
             "dialect": {
@@ -478,7 +478,7 @@
                     }
                 ]
             },
-            "url": "https://raw.githubusercontent.com/weecology/PortalData/master/Plants/Portal_plants.csv"
+            "url": "https://raw.githubusercontent.com/weecology/PortalData/v1.0.1/Plants/Portal_plants.csv"
         },
 
         {
@@ -513,7 +513,7 @@
                     }
                 ]
             },
-            "url": "https://github.com/weecology/PortalData/blob/master/Plants/Portal_plant_census_dates.csv"
+            "url": "https://github.com/weecology/PortalData/blob/v1.0.1/Plants/Portal_plant_census_dates.csv"
         },
         {
             "dialect": {},
@@ -546,7 +546,7 @@
                     }
                 ]
             },
-            "url": "https://github.com/weecology/PortalData/edit/master/Plants/Portal_plant_censuses.csv"
+            "url": "https://github.com/weecology/PortalData/edit/v1.0.1/Plants/Portal_plant_censuses.csv"
         },
         {
             "dialect": {
@@ -599,7 +599,7 @@
                     }
                 ]
             },
-            "url": "https://github.com/weecology/PortalData/blob/master/Plants/Portal_plant_species.csv"
+            "url": "https://github.com/weecology/PortalData/blob/v1.0.1/Plants/Portal_plant_species.csv"
         },
         {
             "dialect": {
@@ -636,7 +636,7 @@
                     }
                 ]
             },
-            "url": "https://github.com/weecology/PortalData/blob/master/Weather/Portal_weather_19801989.csv"
+            "url": "https://github.com/weecology/PortalData/blob/v1.0.1/Weather/Portal_weather_19801989.csv"
         },
         {
             "dialect": {},
@@ -669,29 +669,29 @@
                     }
                 ]
             },
-            "url": "https://raw.githubusercontent.com/weecology/PortalData/master/Weather/Portal_weather.csv"
+            "url": "https://raw.githubusercontent.com/weecology/PortalData/v1.0.1/Weather/Portal_weather.csv"
         }
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Portal Project Data (Ernest et al. 2009)",
     "urls": {
-        "rodents": "https://raw.githubusercontent.com/weecology/PortalData/master/Rodents/Portal_rodent.csv",
-        "rodents_species" : "https://github.com/weecology/PortalData/blob/master/Rodents/Portal_rodent_species.csv",
-        "rodents_trapping" : "https://github.com/weecology/PortalData/blob/master/Rodents/Portal_rodent_trapping.csv",
-        "rodents_datanotes" : "https://github.com/weecology/PortalData/blob/master/Rodents/Portal_rodent_datanotes.csv",
-        "plots": "https://raw.githubusercontent.com/weecology/PortalData/master/SiteandMethods/Portal_plots.csv",
-        "moon_dates":"https://github.com/weecology/PortalData/blob/master/Rodents/moon_dates.csv",
-        "ant_bait":"https://github.com/weecology/PortalData/blob/master/Ants/Portal_ant_bait.csv",
-        "ant_colony":"https://raw.githubusercontent.com/weecology/PortalData/master/Ants/Portal_ant_colony.csv",
-        "ant_dataflags":"https://github.com/weecology/PortalData/blob/master/Ants/Portal_ant_dataflags.csv",
-        "ant_species":"https://github.com/weecology/PortalData/blob/master/Ants/Portal_ant_species.csv",
-        "plants":"https://raw.githubusercontent.com/weecology/PortalData/master/Plants/Portal_plants.csv",
-        "plant_census_dates":"https://github.com/weecology/PortalData/blob/master/Plants/Portal_plant_census_dates.csv",
-        "plant_censuses":"https://github.com/weecology/PortalData/edit/master/Plants/Portal_plant_censuses.csv",
-        "plant_species":"https://github.com/weecology/PortalData/blob/master/Plants/Portal_plant_species.csvd",
-        "weather_19801989":"https://github.com/weecology/PortalData/blob/master/Weather/Portal_weather_19801989.csv",
-        "weather":"https://raw.githubusercontent.com/weecology/PortalData/master/Weather/Portal_weather.csv"
+        "rodent": "https://raw.githubusercontent.com/weecology/PortalData/v1.0.1/Rodents/Portal_rodent.csv",
+        "rodent_species" : "https://github.com/weecology/PortalData/blob/v1.0.1/Rodents/Portal_rodent_species.csv",
+        "rodent_trapping" : "https://github.com/weecology/PortalData/blob/v1.0.1/Rodents/Portal_rodent_trapping.csv",
+        "rodent_datanotes" : "https://github.com/weecology/PortalData/blob/v1.0.1/Rodents/Portal_rodent_datanotes.csv",
+        "plots": "https://raw.githubusercontent.com/weecology/PortalData/v1.0.1/SiteandMethods/Portal_plots.csv",
+        "moon_dates":"https://github.com/weecology/PortalData/blob/v1.0.1/Rodents/moon_dates.csv",
+        "ant_bait":"https://github.com/weecology/PortalData/blob/v1.0.1/Ants/Portal_ant_bait.csv",
+        "ant_colony":"https://raw.githubusercontent.com/weecology/PortalData/v1.0.1/Ants/Portal_ant_colony.csv",
+        "ant_dataflags":"https://github.com/weecology/PortalData/blob/v1.0.1/Ants/Portal_ant_dataflags.csv",
+        "ant_species":"https://github.com/weecology/PortalData/blob/v1.0.1/Ants/Portal_ant_species.csv",
+        "plants":"https://raw.githubusercontent.com/weecology/PortalData/v1.0.1/Plants/Portal_plants.csv",
+        "plant_census_dates":"https://github.com/weecology/PortalData/blob/v1.0.1/Plants/Portal_plant_census_dates.csv",
+        "plant_censuses":"https://github.com/weecology/PortalData/edit/v1.0.1/Plants/Portal_plant_censuses.csv",
+        "plant_species":"https://github.com/weecology/PortalData/blob/v1.0.1/Plants/Portal_plant_species.csvd",
+        "weather_19801989":"https://github.com/weecology/PortalData/blob/v1.0.1/Weather/Portal_weather_19801989.csv",
+        "weather":"https://raw.githubusercontent.com/weecology/PortalData/v1.0.1/Weather/Portal_weather.csv"
     },
     "version": "2.0.0"
 }
