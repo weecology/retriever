@@ -23,7 +23,7 @@ class main(Script):
         self.description = "Compilation of digitized museum records of reptiles including locations, dates of collection, and some trait data."
         self.tags = ['reptiles']
 
-    def download(self, engine=None, debug=False, use_cache=True):
+    def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
         engine = self.engine
 
