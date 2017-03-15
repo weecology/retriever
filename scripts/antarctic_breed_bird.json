@@ -2,6 +2,7 @@
     "citation": "Heather J. Lynch, Ron Naveen, and Paula Casanovas. 2013. Antarctic Site Inventory breeding bird survey data, 1994-2013. Ecology 94:2653.",
     "description": "The data set represents the accumulation of 19 years of seabird population abundance data which was collected by the Antarctic Site Inventory, an opportunistic vessel-based monitoring program surveying the Antarctic Peninsula and associated sub-Antarctic Islands.",
     "homepage": "http://esapubs.org/archive/ecol/E094/243/",
+    "dataset_availability": "True",
     "keywords": [
         "birds"
     ],

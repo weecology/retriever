@@ -12,6 +12,7 @@ class main(Script):
         self.name = "A database on the life history traits of the Northwest European flora" 
         self.shortname = "plant-life-hist-eu"
         self.retriever_minimum_version = '2.0.dev'
+        self.dataset_availability = 'True'
         self.version = '1.3.1'
         self.ref = "http://www.uni-oldenburg.de/en/biology/landeco/research/projects/leda/"
         self.urls = {

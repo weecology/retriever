@@ -127,6 +127,9 @@ def compile_json(json_file):
             values["encoding"] = "\"" + str(value) + "\""
             # Adding the key 'encoding'
 
+        elif key == "dataset_availability":
+            values["dataset_availability"] = "\"" + str(value) + "\""
+
         elif key == "retriever_minimum_version":
             values["retriever_minimum_version"] = "\"" + str(value) + "\""
 

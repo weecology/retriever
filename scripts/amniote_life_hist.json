@@ -2,6 +2,7 @@
     "citation": "Myhrvold, N.P., Baldridge, E., Chan, B., Sivam, D., Freeman, D.L. and Ernest, S.M., 2015. An amniote life-history database to perform comparative analyses with birds, mammals, and reptiles:Ecological Archives E096-269. Ecology, 96(11), pp.3109-000.",
     "description": "Compilation of life history traits for birds, mammals, and reptiles.",
     "homepage": "http://esapubs.org/archive/ecol/E096/269",
+    "dataset_availability": "True",
     "keywords": [
         "mammals",
         "literature-compilation"

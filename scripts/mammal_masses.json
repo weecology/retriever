@@ -2,6 +2,7 @@
     "citation": "Felisa A. Smith, S. Kathleen Lyons, S. K. Morgan Ernest, Kate E. Jones, Dawn M. Kaufman, Tamar Dayan, Pablo A. Marquet, James H. Brown, and John P. Haskell. 2003. Body mass of late Quaternary mammals. Ecology 84:3403.",
     "description": "A data set of compiled body mass information for all mammals on Earth.",
     "homepage": "http://www.esapubs.org/archive/ecol/E084/094/",
+    "dataset_availability": "True",
     "keywords": [
         "mammals",
         "literature-compilation",

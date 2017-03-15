@@ -16,6 +16,7 @@ class main(Script):
         self.description = "Bioclimatic variables that are derived from the monthly temperature and rainfall values in order to generate more biologically meaningful variables."
         self.citation = "Hijmans, R.J., S.E. Cameron, J.L. Parra, P.G. Jones and A. Jarvis, 2005. Very high resolution interpolated climate surfaces for global land areas. International Journal of Climatology 25: 1965-1978."
         self.retriever_minimum_version = '2.0.dev'
+        self.dataset_availability = 'True'
         self.version = '1.1.0'
         self.tags = ["climate"]
         

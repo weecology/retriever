@@ -2,6 +2,7 @@
     "citation": "Peter B. Adler, William R. Tyburczy, and William K. Lauenroth. 2007. Long-term mapped quadrats from Kansas prairie:demographic information for herbaceaous plants. Ecology 88:2673.",
     "description": "Demographic data for testing current theories in plant ecology and forecasting the effects of global change.",
     "homepage": "http://esapubs.org/archive/ecol/E088/161/",
+    "dataset_availability": "True",
     "keywords": [
         "plants",
         "local-scale",

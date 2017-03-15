@@ -164,6 +164,8 @@ def create_json():
     contents['retriever_minimum_version'] = "2.0.dev"
     contents['encoding'] = clean_input("encoding: ", ignore_empty = True)
     if is_empty(clean_input("encoding: ", ignore_empty = True)) : contents['encoding'] = ENCODING
+    contents['dataset_availability'] = clean_input("Message for non-availability of dataset: ", ignore_empty = True)
+    if is_empty(clean_input("Message for dataset availability: ", ignore_empty = True)) : contents['dataset_availability'] = 'True'
     contents['version'] = "1.0.0";
 
     # Add tables -

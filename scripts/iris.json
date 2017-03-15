@@ -2,6 +2,7 @@
     "citation": "R. A. Fisher. 1936. The Use of Multiple Measurements in Taxonomic Problems. and Asuncion, A. & Newman, D.J. (2007). UCI Machine Learning Repository [http://www.ics.uci.edu/~mlearn/MLRepository.html]. Irvine, CA: University of California, School of Information and Computer Science.",
     "description": "Famous dataset from R. A. Fisher. This dataset has been corrected. Information Source: Asuncion, A. & Newman, D.J. (2007). UCI Machine Learning Repository [http://www.ics.uci.edu/~mlearn/MLRepository.html]. Irvine, CA: University of California, School of Information and Computer Science.",
     "homepage": "http://mlr.cs.umass.edu/ml/datasets/Iris",
+    "dataset_availability": "True",
     "keywords": [
         "plants",
         "literature-compilation",

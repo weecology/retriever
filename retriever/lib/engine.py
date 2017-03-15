@@ -387,22 +387,21 @@ class Engine(object):
 
     def download_file(self, url, filename, use_cache=True):
         """Downloads a file to the raw data directory."""
-        if not self.find_file(filename) or not use_cache:
-            path = self.format_filename(filename)
-            self.create_raw_data_dir()
-            print("\nDownloading " + filename + "...")
-            try:
-                urlretrieve(url, path, reporthook=reporthook)
-            except:
+        if self.script.dataset_availability != "True":
+            print(self.script.dataset_availability)
+        else:
+            if not self.find_file(filename) or not use_cache:
+                path = self.format_filename(filename)
+                self.create_raw_data_dir()
+                print("\nDownloading " + filename + "...")
                 try:
+                    urlretrieve(url, path, reporthook=reporthook)
+                except:
                     # For some urls lacking filenames urlretrieve from the future
                     # package seems to fail. This issue occurred in the PlantTaxonomy
                     # script. If this happens, fall back to the standard Python 2 version.
                     from urllib import urlretrieve as py2urlretrieve
                     py2urlretrieve(url, path, reporthook=reporthook)
-                except:
-                    print(
-    "\nThis dataset is currently not available. Either the data is no longer openly available or the way in which it is provided has changed so that the Retriever doesn't know how to work with it")
 
     def download_files_from_archive(self, url, filenames, filetype="zip",
                                     keep_in_dir=False, archivename=None):

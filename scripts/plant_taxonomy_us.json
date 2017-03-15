@@ -2,6 +2,7 @@
     "citation": "USDA, NRCS. 2017. The PLANTS Database (http://plants.usda.gov, DATEOFDOWNLOAD). National Plant Data Team, Greensboro, NC 27401-4901 USA.",
     "description": "Plant taxonomy data for the United States from the USDA plants website",
     "homepage": "http://plants.usda.gov",
+    "dataset_availability": "True",
     "keywords": [
         "plants",
         "taxonomy"

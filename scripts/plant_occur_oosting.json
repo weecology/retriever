@@ -2,6 +2,7 @@
     "citation": "Michael W. Palmer, Robert K. Peet, Rebecca A. Reed, Weimin Xi, and Peter S. White. 2007. A multiscale study of vascular plants in a North Carolina Piedmont forest. Ecology 88:2674.",
     "description": "A data set collected in 1989 of vascular plant occurrences in overlapping grids of nested plots in the Oosting Natural Area of the Duke Forest, Orange County, North Carolina, USA.",
     "homepage": "http://esapubs.org/archive/ecol/E088/162/",
+    "dataset_availability": "True",
     "keywords": [
         "plants",
         "local-scale",

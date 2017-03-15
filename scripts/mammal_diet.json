@@ -1,6 +1,7 @@
 {
     "citation": "Kissling WD, Dalby L, Flojgaard C, Lenoir J, Sandel B, Sandom C, Trojelsgaard K, Svenning J-C (2014) Establishing macroecological trait datasets:digitalization, extrapolation, and validation of diet preferences in terrestrial mammals worldwide. Ecology and Evolution, online in advance of print. doi:10.1002/ece3.1136",
     "description": "MammalDIET provides a comprehensive, unique and freely available dataset on diet preferences for all terrestrial mammals worldwide.",
+    "dataset_availability": "True",
     "keywords": [
         "mammals",
         "literature-compilation"

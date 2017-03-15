@@ -2,6 +2,7 @@
     "citation": "S. K. Morgan Ernest. 2003. Life history characteristics of placental non-volant mammals. Ecology 84:3402.",
     "description": "The purpose of this data set was to compile general life history characteristics for a variety of mammalian species to perform comparative life history analyses among different taxa and different body size groups.",
     "homepage": "http://esapubs.org/archive/ecol/E084/093/",
+    "dataset_availability": "True",
     "keywords": [
         "mammals",
         "literature-compilation",
