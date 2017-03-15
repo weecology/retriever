@@ -10,7 +10,7 @@ from retriever import MODULE_LIST
 
 module_list = MODULE_LIST()
 script_list = [module.SCRIPT.shortname for module in module_list]
-json_list = [module.SCRIPT.shortname for module in module_list
+json_list = ['.'.join(os.path.basename(module.__file__).split('.')[:-1]) for module in module_list
              if os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.json')]
 
 keywords_list = set()
