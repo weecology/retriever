@@ -21,7 +21,8 @@ import shutil
 from decimal import Decimal
 from hashlib import md5
 
-from retriever import HOME_DIR, open_fr, open_fw, open_csvw
+from retriever import open_fr, open_fw, open_csvw
+from retriever.lib.defaults import HOME_DIR
 from retriever.lib.models import *
 import csv
 import json
@@ -100,42 +101,6 @@ def get_default_connection():
         return default_connection
     else:
         return None
-
-
-def choose_engine(opts, choice=True):
-    """Prompts the user to select a database engine"""
-    from retriever.engines import engine_list
-
-    if "engine" in list(opts.keys()):
-        enginename = opts["engine"]
-    elif opts["command"] == "download":
-        enginename = "download"
-    else:
-        if not choice:
-            return None
-        print("Choose a database engine:")
-        for engine in engine_list:
-            if engine.abbreviation:
-                abbreviation = "(" + engine.abbreviation + ") "
-            else:
-                abbreviation = ""
-            print("    " + abbreviation + engine.name)
-        enginename = input(": ")
-    enginename = enginename.lower()
-
-    engine = Engine()
-    if not enginename:
-        engine = engine_list[0]
-    else:
-        for thisengine in engine_list:
-            if (enginename == thisengine.name.lower() or
-                    thisengine.abbreviation and
-                    enginename == thisengine.abbreviation):
-                engine = thisengine
-
-    engine.opts = opts
-    return engine
-
 
 def reset_retriever(scope):
     """Remove stored information on scripts, data, and connections"""

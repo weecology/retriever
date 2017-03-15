@@ -9,9 +9,9 @@ if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding('latin-1')
 
 from builtins import str
-from retriever import VERSION,COPYRIGHT
+from retriever.lib.defaults import VERSION, COPYRIGHT
 from retriever.lib.repository import check_for_updates
-from retriever import SCRIPT_LIST
+from retriever.lib.scripts import SCRIPT_LIST
 
 # Create the .rst file for the available datasets
 datasetfile = open("datasets.rst", "w")

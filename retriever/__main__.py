@@ -22,10 +22,12 @@ reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding(encoding)
 
-from retriever import VERSION, SCRIPT_LIST, HOME_DIR, sample_script, CITATION
-from retriever.engines import engine_list
+from retriever import sample_script, CITATION
+from retriever.lib.defaults import VERSION, HOME_DIR
+from retriever.lib.scripts import SCRIPT_LIST
+from retriever.engines import engine_list, choose_engine
 from retriever.lib.repository import check_for_updates
-from retriever.lib.tools import choose_engine, name_matches, reset_retriever
+from retriever.lib.tools import name_matches, reset_retriever
 from retriever.lib.get_opts import parser
 from retriever.lib.datapackage import create_json, edit_json
 
