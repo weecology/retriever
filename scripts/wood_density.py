@@ -20,7 +20,6 @@ class main(Script):
         self.name = "Global wood density database - Zanne et al. 2009"
         self.shortname = "wood-density"
         self.retriever_minimum_version = '2.0.dev'
-        self.dataset_availability = 'True'
         self.version = '1.2.1'
         self.urls = {"GWDD": "http://datadryad.org/bitstream/handle/10255/dryad.235/GlobalWoodDensityDatabase.xls?sequence=1"}
         self.tags = ["Taxon > Plants", "Spatial Scale > Global",

@@ -2,7 +2,6 @@
     "citation": "Lichman, M. (2013). UCI Machine Learning Repository [http://archive.ics.uci.edu/ml]. Irvine, CA: University of California, School of Information and Computer Science.",
     "description": "A dataset used to predict poker hands",
     "homepage": "http://archive.ics.uci.edu/ml/datasets/Poker+Hand",
-    "dataset_availability": "True",
     "keywords": [
 	"games",
 	"poker"

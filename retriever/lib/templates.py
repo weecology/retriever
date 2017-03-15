@@ -15,7 +15,7 @@ class Script(object):
 
     def __init__(self, name="", description="", shortname="", urls=dict(),
                  tables=dict(), ref="", public=True, addendum=None, citation="Not currently available",
-                 retriever_minimum_version="", version="", encoding="",dataset_availability="" **kwargs):
+                 retriever_minimum_version="", version="", encoding="", dataset_availability="True", **kwargs):
         self.name = name
         self.shortname = shortname
         self.filename = __name__

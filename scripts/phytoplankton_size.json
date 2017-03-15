@@ -2,7 +2,6 @@
     "citation": "Colin T. Kremer, Jacob P. Gillette, Lars G. Rudstam, Pal Brettum, and Robert Ptacnik. 2014. A compendium of cell and natural unit biovolumes for >1200 freshwater phytoplankton species. Ecology 95:2984.",
     "description": "Sampling phytoplankton communities basing on cell size.",
     "homepage": "http://www.esapubs.org/archive/ecol/E095/257/",
-    "dataset_availability": "True",
     "keywords": [
         "phytoplankton",
         "literature-compilation",

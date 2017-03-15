@@ -2,7 +2,6 @@
     "citation": "Forina, M. et al, PARVUS - An Extendible Package for Data",
     "description": "A chemical analysis of wines grown in the same region in Italy but derived from three different cultivators.",
     "homepage": "Exploration, Classification and Correlation. Institute of Pharmaceutical",
-    "dataset_availability": "True",
     "keywords": [
         "wine",
         "alcohol"

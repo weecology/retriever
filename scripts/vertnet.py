@@ -14,7 +14,6 @@ class main(Script):
         self.name = "vertnet:"
         self.shortname = "vertnet"
         self.retriever_minimum_version = '2.0.dev'
-        self.dataset_availability = 'True'
         self.version = '1.3.0'
         self.ref = "http://vertnet.org/resources/datatoolscode.html"
         self.urls = {

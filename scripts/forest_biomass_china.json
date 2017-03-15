@@ -2,7 +2,6 @@
     "citation": "Yunjian Luo, Xiaoquan Zhang, Xiaoke Wang, and Fei Lu. 2014. Biomass and its allocation in Chinese forest ecosystems. Ecology 95:2026.",
     "description": "Forest biomass data set of China which includes tree overstory components (stems, branches, leaves, and roots, among all other plant material), the understory vegetation (saplings, shrubs, herbs, and mosses), woody liana vegetation, and the necromass components of dead organic matter (litterfall, suspended branches, and dead trees).",
     "homepage": "http://esapubs.org/archive/ecol/E095/177/",
-    "dataset_availability": "True",
     "keywords": [
 	"biomass",
 	"China",

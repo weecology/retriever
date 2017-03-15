@@ -15,7 +15,6 @@ class main(Script):
         self.citation = "Falster, D.S., Duursma, R.A., Ishihara, M.I., Barneche, D.R., FitzJohn, R.G., Varhammar, A., Aiba, M., Ando, M., Anten, N., Aspinwall, M.J. and Baltzer, J.L., 2015. BAAD: a Biomass And Allometry Database for woody plants."
         self.tags = ['plants', 'observational']
         self.retriever_minimum_version = "2.0.dev"
-        self.dataset_availability = 'True'
         self.version = "1.2.1"
         self.description = "The data set is a Biomass and allometry database (BAAD) for woody plants containing 259634 measurements collected in 176 different studies from 21084 individuals across 678 species."
 
