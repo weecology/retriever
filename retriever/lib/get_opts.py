@@ -1,22 +1,22 @@
 import argparse
 import os
-from retriever import VERSION
+from retriever.lib.defaults import VERSION
+from retriever.lib.scripts import MODULE_LIST
 from retriever.engines import engine_list
 import argcomplete
 
 from argcomplete.completers import ChoicesCompleter
 
-from retriever import MODULE_LIST
 
 module_list = MODULE_LIST()
-script_list = [module.SCRIPT.shortname for module in module_list]
-json_list = [module.SCRIPT.shortname for module in module_list
-             if os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.json')]
+script_list = [module.shortname for module in module_list]
+json_list = [module.shortname for module in module_list
+             if os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.json')]
 
 keywords_list = set()
 for module in module_list:
-    if hasattr(module.SCRIPT, "tags"):
-        keywords_list = keywords_list | set(module.SCRIPT.tags)
+    if hasattr(module, "tags"):
+        keywords_list = keywords_list | set(module.tags)
 
 parser = argparse.ArgumentParser(prog="retriever")
 parser.add_argument('-v', '--version', action='version', version=VERSION)

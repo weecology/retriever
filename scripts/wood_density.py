@@ -12,7 +12,8 @@ from imp import reload
 from retriever.lib.templates import Script
 from retriever.lib.models import Table
 from retriever.lib.excel import Excel
-from retriever import HOME_DIR, open_fr, open_fw, open_csvw, to_str
+from retriever import open_fr, open_fw, open_csvw, to_str
+from retriever.lib.defaults import HOME_DIR
 
 class main(Script):
     def __init__(self, **kwargs):

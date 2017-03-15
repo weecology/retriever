@@ -3,7 +3,8 @@ from builtins import input
 import os
 import json
 from time import sleep
-from retriever import SCRIPT_LIST, HOME_DIR, ENCODING
+from retriever.lib.scripts import SCRIPT_LIST
+from retriever.lib.defaults import HOME_DIR, ENCODING
 
 short_names = [script.shortname.lower() for script in SCRIPT_LIST()]
 

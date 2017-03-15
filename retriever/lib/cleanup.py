@@ -34,3 +34,7 @@ class Cleanup(object):
     def __init__(self, function=no_cleanup, **kwargs):
         self.function = function
         self.args = kwargs
+
+    def __eq__(self, other):
+        if isinstance(other, Cleanup):
+            return self.args == other.args

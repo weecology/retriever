@@ -15,7 +15,8 @@ if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding(encoding)
 import pytest
 from retriever.lib.compile import compile_json
-from retriever import HOME_DIR, ENGINE_LIST
+from retriever.lib.defaults import HOME_DIR
+from retriever import ENGINE_LIST
 from retriever.lib.tools import file_2string
 from retriever.lib.tools import create_file
 
@@ -371,7 +372,6 @@ def setup_module():
             os.makedirs(os.path.join(HOME_DIR, "raw_data", test['name']))
         create_file(test['raw_data'], os.path.join(HOME_DIR, "raw_data", test['name'], test['name'] + '.txt'))
         create_file(test['script'], os.path.join(HOME_DIR, "scripts", test['name'] + '.json'))
-        compile_json(os.path.join(HOME_DIR, "scripts", test['name']))
 
 
 def teardown_module():
@@ -379,7 +379,6 @@ def teardown_module():
     for test in tests:
         shutil.rmtree(os.path.join(HOME_DIR, "raw_data", test['name']))
         os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.json'))
-        os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.py'))
         os.system("rm -r *{}".format(test['name']))
         os.system("rm testdb.sqlite")
 
@@ -393,9 +392,9 @@ def get_output_as_csv(dataset, engines, tmpdir, db):
     workdir = tmpdir.mkdtemp()
     workdir.chdir()
     script_module = get_script_module(dataset["name"])
-    script_module.SCRIPT.download(engines)
-    script_module.SCRIPT.engine.final_cleanup()
-    script_module.SCRIPT.engine.to_csv()
+    script_module.download(engines)
+    script_module.engine.final_cleanup()
+    script_module.engine.to_csv()
     # get filename and append .csv
     csv_file = engines.opts['table_name'].format(db=db, table=dataset["name"])
     # csv engine already has the .csv extension
@@ -408,9 +407,7 @@ def get_output_as_csv(dataset, engines, tmpdir, db):
 
 def get_script_module(script_name):
     """Load a script module"""
-    file, pathname, desc = imp.find_module(script_name, [os.path.join(HOME_DIR, "scripts")])
-    return imp.load_module(script_name, file, pathname, desc)
-
+    return compile_json(os.path.join(HOME_DIR, "scripts", script_name))
 
 mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, csv_engine, download_engine, json_engine, xml_engine = ENGINE_LIST()
 

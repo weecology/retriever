@@ -14,6 +14,8 @@ if hasattr(sys, 'setdefaultencoding'):
 import pytest
 from retriever.lib.tools import getmd5
 from retriever import ENGINE_LIST
+from retriever.lib.defaults import HOME_DIR
+from retriever.lib.compile import compile_json
 
 # Set postgres password, Appveyor service needs the password given
 # The Travis service obtains the password from the config file.
@@ -43,17 +45,16 @@ db_md5 = [
 
 def get_script_module(script_name):
     """Load a script module from the downloaded scripts directory in the retriever"""
-    file, pathname, desc = imp.find_module(script_name, [working_script_dir])
-    return imp.load_module(script_name, file, pathname, desc)
+    return compile_json(os.path.join(working_script_dir, script_name))
 
 
 def get_csv_md5(dataset, engines, tmpdir):
     workdir = tmpdir.mkdtemp()
     workdir.chdir()
     script_module = get_script_module(dataset)
-    script_module.SCRIPT.download(engines)
-    script_module.SCRIPT.engine.final_cleanup()
-    script_module.SCRIPT.engine.to_csv()
+    script_module.download(engines)
+    script_module.engine.final_cleanup()
+    script_module.engine.to_csv()
     current_md5 = getmd5(data=str(workdir), data_type='dir')
     return current_md5
 

@@ -9,7 +9,7 @@ import urllib.parse
 import urllib.error
 import imp
 from pkg_resources import parse_version
-from retriever import REPOSITORY, SCRIPT_WRITE_PATH, HOME_DIR
+from retriever.lib.defaults import REPOSITORY, SCRIPT_WRITE_PATH, HOME_DIR
 from retriever.lib.models import file_exists
 
 global abort, executable_name
@@ -66,7 +66,7 @@ def check_for_updates():
             try:
                 file_object, pathname, desc = imp.find_module(''.join(script_name.split('.')[:-1]), [SCRIPT_WRITE_PATH])
                 new_module = imp.load_module(script_name, file_object, pathname, desc)
-                m = str(new_module.SCRIPT.version)
+                m = str(new_module.version)
                 need_to_download = parse_version(str(script_version)) > parse_version(m)
             except:
                 pass

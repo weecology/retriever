@@ -4,7 +4,8 @@ from builtins import str
 from builtins import object
 from builtins import range
 from retriever.lib.models import Engine
-from retriever import DATA_DIR, open_fr, open_fw
+from retriever import open_fr, open_fw
+from retriever.lib.defaults import DATA_DIR
 from retriever.lib.tools import xml2csv, sort_csv
 
 
