@@ -394,11 +394,15 @@ class Engine(object):
             try:
                 urlretrieve(url, path, reporthook=reporthook)
             except:
-                # For some urls lacking filenames urlretrieve from the future
-                # package seems to fail. This issue occurred in the PlantTaxonomy
-                # script. If this happens, fall back to the standard Python 2 version.
-                from urllib import urlretrieve as py2urlretrieve
-                py2urlretrieve(url, path, reporthook=reporthook)
+                try:
+                    # For some urls lacking filenames urlretrieve from the future
+                    # package seems to fail. This issue occurred in the PlantTaxonomy
+                    # script. If this happens, fall back to the standard Python 2 version.
+                    from urllib import urlretrieve as py2urlretrieve
+                    py2urlretrieve(url, path, reporthook=reporthook)
+                except:
+                    print(
+    "\nThis dataset is currently not available. Either the data is no longer openly available or the way in which it is provided has changed so that the Retriever doesn't know how to work with it")
 
     def download_files_from_archive(self, url, filenames, filetype="zip",
                                     keep_in_dir=False, archivename=None):
