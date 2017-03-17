@@ -175,9 +175,9 @@ def main():
             sys.tracebacklimit = 0
 
         if hasattr(args, 'debug') and args.not_cached:
-            use_cache = False
+            engine.use_cache = False
         else:
-            use_cache = True
+            engine.use_cache = True
 
         if args.dataset is not None:
             scripts = name_matches(script_list, args.dataset)
@@ -187,7 +187,7 @@ def main():
             for dataset in scripts:
                 print("=> Installing", dataset.name)
                 try:
-                    dataset.download(engine, debug=debug, use_cache=use_cache)
+                    dataset.download(engine, debug=debug)
                     dataset.engine.final_cleanup()
                 except KeyboardInterrupt:
                     pass
