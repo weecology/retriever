@@ -1,0 +1,24 @@
+{
+    "citation": "S. Paula, M. Arianoutsou, D. Kazanis, Ç. Tavsanoglu, F. Lloret, C. Buhk, F. Ojeda, B. Luna, J. M. Moreno, A. Rodrigo, J. M. Espelta, S. Palacio, B. Fernández-Santos,, P. M. Fernandes, and J. G. Pausas. 2009. Fire-related traits for plant species of the Mediterranean Basin. Ecology 90:1420.",
+    "description": "This data set compiles the most updated and comprehensive information on fire-related traits for vascular plant species of the Mediterranean Basin",
+    "homepage": "https://figshare.com/articles/Data_Paper_Data_Paper/3531092",
+    "keywords": [
+        "Taxon > Plants"
+    ],
+    "name": "mediter-basin-plant-traits",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "species",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5603675"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.0-dev",
+    "version": "1.0.0",
+    "title": "Fire-related traits for plant species of the Mediterranean Basin. Ecology 90:1420",
+    "urls": {
+        "species": "https://ndownloader.figshare.com/files/5603675"
+    }
+}

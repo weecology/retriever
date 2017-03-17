@@ -1,23 +1,23 @@
 {
     "citation": "Andrew Rassweiler, Katie K. Arkema, Daniel C. Reed, Richard C. Zimmerman, and Mark A. Brzezinski. 2008. Net primary production, growth, and standing crop of Macrocystis pyrifera in southern California. Ecology 89:2068.",
     "description": "",
-    "homepage": "http://esapubs.org/archive/ecol/E089/119/",
+    "homepage": "https://figshare.com/articles/Data_Paper_Data_Paper/3529700",
     "keywords": [
         "Taxon > plants"
     ],
-    "name": "Rassweiler2008",
+    "name": "macrocystis-variation",
     "resources": [
         {
             "dialect": {},
             "name": "production",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E089/119/M_pyrifera_net_primary_production_and_growth.txt"
+            "url": "https://ndownloader.figshare.com/files/5601731"
         },
         {
             "dialect": {},
             "name": "density",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E089/119/M_pyrifera_standing_crop_plant_density_and_loss_rates.txt"
+            "url": "https://ndownloader.figshare.com/files/5601734"
         },
         {
             "dialect": {
@@ -27,16 +27,16 @@
             },
             "name": "fronds",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E089/119/Census_of_fronds_on_marked_plants.txt"
+            "url": "https://ndownloader.figshare.com/files/5601737"
         }
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.0-dev",
-    "script_version": 1.0,
+    "version": "1.0.0",
     "title": "The data was used to investigate patterns and causes of variation in NPP by the giant kelp, Macrocystis pyrifera, which is believed to be one of the fastest growing autotrophs on earth.",
     "urls": {
-        "density": "http://esapubs.org/archive/ecol/E089/119/M_pyrifera_standing_crop_plant_density_and_loss_rates.txt",
-        "fronds": "http://esapubs.org/archive/ecol/E089/119/Census_of_fronds_on_marked_plants.txt",
-        "production": "http://esapubs.org/archive/ecol/E089/119/M_pyrifera_net_primary_production_and_growth.txt"
+        "density": "https://ndownloader.figshare.com/files/5601734",
+        "fronds": "https://ndownloader.figshare.com/files/5601737",
+        "production": "https://ndownloader.figshare.com/files/5601731"
     }
 }

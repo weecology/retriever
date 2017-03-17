@@ -1,0 +1,49 @@
+{
+    "citation": "Alain Paquette, Etienne Laliberté, André Bouchard, Sylvie de Blois, Pierre Legendre, and Jacques Brisson. 2007. Lac Croche understory vegetation data set (1998-2006). Ecology 88:3209.",
+    "description": "The Lac Croche data set covers a nine-year period (1998-2006) of detailed understory vegetation sampling of a temperate North American forest located in the Station de Biologie des Laurentides (SBL), Québec, Canada.",
+    "homepage": "https://figshare.com/articles/Data_Paper_Data_Paper/3528707",
+    "keywords": [
+        "Taxon > plants"
+    ],
+    "name": "croche-vegetation-data",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "croche_vegCover",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5600480"
+        },
+        {
+            "dialect": {},
+            "name": "croche_seedDens",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5600483"
+        },
+        {
+            "dialect": {},
+            "name": "croche_env",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5600486"
+        },
+        {
+            "dialect": {
+                "nulls": [
+                    "-999"
+                ]
+            },
+            "name": "croche_ba",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5600489"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.0-dev",
+    "script_version": 1.0,
+    "title": "Croche understory vegetation data set",
+    "urls": {
+        "croche_ba": "https://ndownloader.figshare.com/files/5600489",
+        "croche_env": "https://ndownloader.figshare.com/files/5600486",
+        "croche_seedDens": "https://ndownloader.figshare.com/files/5600483",
+        "croche_vegCover": "https://ndownloader.figshare.com/files/5600480"
+    }
+}

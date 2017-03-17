@@ -1,24 +1,24 @@
 {
     "citation": "Steven E. Travers and Kelsey L. Dunnell. 2009. First-flowering dates of plants in the Northern Great Plains. Ecology 90:2332.",
     "description": "Observations data of first-flowering time of native and nonnative plant species in North Dakota and Minnesota over the course of 51 years in the last century",
-    "homepage": "http://esapubs.org/archive/ecol/E090/162/",
+    "homepage": "https://figshare.com/articles/Data_Paper_Data_Paper/3531716",
     "keywords": [
         "Taxon > Plants"
     ],
-    "name": "Travers2009",
+    "name": "ngreatplains-flowering-dates",
     "resources": [
         {
             "dialect": {},
             "name": "observations",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E090/162/FFDND.txt"
+            "url": "https://ndownloader.figshare.com/files/5604587"
         }
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.0-dev",
-    "script_version": 1.0,
+    "version": "1.0.0",
     "title": "First-flowering dates of plants in the Northern Great Plains",
     "urls": {
-        "observations": "http://esapubs.org/archive/ecol/E090/162/FFDND.txt"
+        "observations": "https://ndownloader.figshare.com/files/5604587"
     }
 }
