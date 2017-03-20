@@ -37,6 +37,7 @@ class Engine(object):
     required_opts = []
     pkformat = "%s PRIMARY KEY %s "
     script = None
+    use_cache = True
     debug = False
     warnings = []
 
@@ -385,12 +386,13 @@ class Engine(object):
             db_name = name
         return db_name.replace('-', '_')
 
-    def download_file(self, url, filename, use_cache=True):
+    def download_file(self, url, filename):
         """Downloads a file to the raw data directory."""
+
         if self.script.dataset_availability != "True":
             print(self.script.dataset_availability)
         else:
-            if not self.find_file(filename) or not use_cache:
+            if not self.find_file(filename) or not self.use_cache:
                 path = self.format_filename(filename)
                 self.create_raw_data_dir()
                 print("\nDownloading " + filename + "...")
@@ -402,6 +404,9 @@ class Engine(object):
                     # script. If this happens, fall back to the standard Python 2 version.
                     from urllib import urlretrieve as py2urlretrieve
                     py2urlretrieve(url, path, reporthook=reporthook)
+                finally:
+                    # Download is complete, set to prevent repeated downloads
+                    self.use_cache = True
 
     def download_files_from_archive(self, url, filenames, filetype="zip",
                                     keep_in_dir=False, archivename=None):
@@ -625,18 +630,18 @@ class Engine(object):
                         (self.load_data, (filename, ))))
         self.add_to_table(data_source)
 
-    def insert_data_from_url(self, url, use_cache=True):
+    def insert_data_from_url(self, url):
         """Insert data from a web resource, such as a text file."""
         filename = filename_from_url(url)
         find = self.find_file(filename)
-        if find and use_cache:
+        if find and self.use_cache:
             # Use local copy
             self.insert_data_from_file(find)
         else:
             # Save a copy of the file locally, then load from that file
             self.create_raw_data_dir()
             print("\nSaving a copy of " + filename + "...")
-            self.download_file(url, filename, use_cache)
+            self.download_file(url, filename)
             self.insert_data_from_file(self.find_file(filename))
 
     def insert_statement(self, values):
