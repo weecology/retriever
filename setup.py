@@ -5,10 +5,21 @@ import os
 from setuptools import setup
 from pkg_resources import parse_version
 import platform
+import sys
+import warnings
 import os
+import subprocess
 
 current_platform = platform.system().lower()
 extra_includes = []
+
+if current_platform == "windows":
+    os.system("chmod +x hooks/pre-commit")
+    os.system("mklink hooks/pre-commit .git/hooks/pre-commit")
+
+else:
+    os.system("chmod +x hooks/pre-commit")
+    os.system("ln -s -f ../../hooks/pre-commit .git/hooks/pre-commit")
 
 __version__ = 'v2.0.0'
 with open(os.path.join("retriever", "_version.py"), "w") as version_file:
