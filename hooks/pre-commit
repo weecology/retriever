@@ -1,0 +1,103 @@
+#!/usr/bin/env python
+from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
+import os
+import urllib.request
+import urllib.parse
+import urllib.error
+from distutils.version import LooseVersion
+import re
+import sys
+import subprocess
+
+pattern = re.compile(r'[."]version["\s":=]+(\d+\.\d+.\d+)')
+version_dict = {}
+version_file = urllib.request.urlopen(
+    "https://raw.githubusercontent.com/weecology/retriever/master/version.txt")
+version_file.readline()
+
+
+def to_string(value):
+    if sys.version_info >= (3, 0, 0):
+        return value.decode("UTF-8")
+    else:
+        return value
+
+
+for lines in version_file:
+    key_values = to_string(lines).split(",")
+    version_dict[key_values[0]] = key_values[1]
+
+
+def get_script_version(file_name):
+    file_name = os.path.split(file_name)[1]
+    return LooseVersion(version_dict[file_name])
+
+
+# check if upstream is added as remote
+remotes = to_string(subprocess.check_output("git remote -v", shell=True))
+
+if u"upstream\thttps://github.com/weecology/retriever.git (fetch)" not in remotes:
+    print("\nPlease first add upstream as a remote."
+          "\ngit remote add upstream https://github.com/weecology/retriever.git")
+    exit(1)
+
+# check if repo is up-to-date with upstream master
+logs_update = to_string(
+    subprocess.check_output("git fetch upstream", shell=True))
+logs_ahead = to_string(
+    subprocess.check_output(
+        "git log --oneline upstream/master..HEAD | wc -l", shell=True))
+logs_behind = to_string(
+    subprocess.check_output(
+        "git log --oneline HEAD..upstream/master | wc -l", shell=True))
+if int(logs_ahead) > 0 and int(logs_behind) > 0:
+    print(
+        "\nCurrent branch is behind upstream/master."
+        "\nPlease update your branch with upstream master before making commits")
+    exit(1)
+
+# check and get script directory changes
+output = subprocess.check_output(
+    "git diff --name-only upstream/master scripts")
+
+# get list of changed scripts
+scripts_changed = to_string(output).splitlines()
+
+# get the changes staged for the next commit relative to HEAD
+staged_scripts = to_string(
+    subprocess.check_output(
+        "git diff --cached --name-only",
+        shell=True))
+
+versions_not_changed = []  # if script changes we expect to change the version
+versions_updated = True
+for files in scripts_changed:
+    if files in staged_scripts:
+        # add the file if both staged and edited
+        to_string(
+            subprocess.check_output(
+                "git add {}".format(files),
+                shell=True))
+        output = to_string(subprocess.check_output('cat {}'.format(files)))
+        match = re.search(pattern, output)
+        script_previous_version = LooseVersion(match.group(1))
+        if not script_previous_version > get_script_version(files):
+            versions_not_changed.append(files)
+            versions_updated = False
+
+if len(versions_not_changed) > 0:
+    if not versions_updated:
+        print("\nThese scripts have changed, update the version numbers before commit:")
+        for items in versions_not_changed:
+            print(items)
+        exit(1)
+
+if scripts_changed and not versions_updated:
+    exit(1)
+else:
+    print("Updating version.txt")
+    os.system('python version.py')
+    print("version.txt added to commit")
+    os.system('git add version.txt')
