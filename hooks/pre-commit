@@ -1,0 +1,62 @@
+#!/usr/bin/env python
+from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
+
+import commands
+import os
+import sys
+import urllib.request, urllib.parse, urllib.error
+from distutils.version import LooseVersion
+import re
+
+pattern = re.compile(r'[."]version["\s":=]+(\d+\.\d+.\d+)')
+version_dict = {}
+versionfile = urllib.request.urlopen(
+    "https://raw.githubusercontent.com/weecology/retriever/master/version.txt")
+versionfile.readline()
+
+for lines in versionfile:
+    key_values = lines.split(",")
+    version_dict[key_values[0]] = key_values[1]
+
+
+def get_script_version(file_name):
+    file_name = os.path.split(file_name)[1]
+    return LooseVersion(version_dict[file_name])
+
+
+# check if script directory changes
+remotes = subprocess.check_output("git remote -v")
+if "upstream    https://github.com/weecology/retriever.git" in remotes:
+    status, output = commands.getstatusoutput("git diff --name-only upstream/master scripts")
+else:
+    print("Please first add upstream as a remote.\n"
+          "git remote add upstream https://github.com/weecology/retriever.git")
+    exit(1)
+# get list of changed scripts
+scripts_changed = output.split("\n")
+
+# get the changes staged for the next commit relative to HEAD
+staged_scripts = subprocess.check_output("git diff --cached --name-only", shell = True).decode("UTF-8")
+
+versions_not_changed =[]  # if script changes we expect to change the version
+versions_updated = True
+for files in scripts_changed:
+    if files in version_files:
+        status, output = commands.getstatusoutput('git show :{}'.format(files))
+        match = re.search(pattern, output)
+        script_previous_version = LooseVersion(match.group(1))
+        if not script_previous_version > get_script_version(files):
+            versions_not_changed.append(files)
+            versions_updated = False
+
+if len(versions_not_changed) > 0:
+    if not versions_updated:
+        print("These scripts have changed, update the version numbers before commit")
+        for items in versions_not_changed:
+            print (items)
+        exit(1)
+    else:
+        os.system('python version.py')
+        os.system('git add version.txt')
