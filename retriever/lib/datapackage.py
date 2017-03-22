@@ -237,6 +237,7 @@ def create_json():
             contents['resources'].append(table)  
     contents['urls'] = tableUrls
     file_name = contents['name'] + ".json"
+    file_name = file_name.replace('-', '_')
     with open(os.path.join(HOME_DIR, 'scripts', file_name), 'w') as output_file:
         json_str = json.dumps(contents, output_file, sort_keys=True, indent=4,
                               separators=(',', ': '))
@@ -412,6 +413,7 @@ def edit_json(json_file):
     edit_dict(contents, 1)
 
     file_name = contents['name'] + ".json"
+    file_name = file_name.replace('-', '_')
     with open(os.path.join(HOME_DIR, 'scripts', file_name), 'w') as output_file:
         json_str = json.dumps(contents, output_file, sort_keys=True, indent=4,
                               separators=(',', ': '))
