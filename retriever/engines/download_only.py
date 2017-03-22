@@ -97,13 +97,13 @@ class engine(Engine):
             # If the file doesn't exist, download it
             self.download_file(url, filename)
 
-    def insert_data_from_url(self, url, use_cache=True):
+    def insert_data_from_url(self, url):
         """Insert data from a web resource"""
         filename = filename_from_url(url)
         find = self.find_file(filename)
         if not find:
             self.create_raw_data_dir()
-            self.download_file(url, filename, use_cache)
+            self.download_file(url, filename)
 
     def find_file(self, filename):
         """Checks for the given file and adds it to the list of all files"""

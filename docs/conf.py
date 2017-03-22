@@ -2,16 +2,15 @@ from __future__ import print_function
 from __future__ import absolute_import
 from imp import reload
 import sys
+
+from builtins import str
+from retriever import VERSION, COPYRIGHT
+from retriever import SCRIPT_LIST
 # sys removes the setdefaultencoding method at startup; reload to get it back
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     # set default encoding to latin-1 to decode source text
     sys.setdefaultencoding('latin-1')
-
-from builtins import str
-from retriever import VERSION,COPYRIGHT
-from retriever.lib.repository import check_for_updates
-from retriever import SCRIPT_LIST
 
 # Create the .rst file for the available datasets
 datasetfile = open("datasets.rst", "w")
@@ -22,7 +21,6 @@ Datasets Available
 
 
 """
-check_for_updates()
 script_list = SCRIPT_LIST()
 
 # write the title of dataset rst file
