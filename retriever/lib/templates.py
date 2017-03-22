@@ -39,10 +39,9 @@ class Script(object):
             desc += "\n" + self.reference_url()
         return desc
 
-    def download(self, engine=None, debug=False, use_cache=True):
+    def download(self, engine=None, debug=False):
         self.engine = self.checkengine(engine)
         self.engine.debug = debug
-        self.engine.use_cache = use_cache
         self.engine.db_name = self.name
         self.engine.create_db()
 
@@ -91,8 +90,8 @@ class BasicTextTemplate(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
 
-    def download(self, engine=None, debug=False, use_cache=True):
-        Script.download(self, engine, debug, use_cache)
+    def download(self, engine=None, debug=False):
+        Script.download(self, engine, debug)
 
         for key in list(self.urls.keys()):
             if key not in list(self.tables.keys()):
@@ -101,7 +100,7 @@ class BasicTextTemplate(Script):
 
         for key, value in list(self.urls.items()):
             self.engine.auto_create_table(self.tables[key], url=value)
-            self.engine.insert_data_from_url(value, use_cache)
+            self.engine.insert_data_from_url(value)
             self.tables[key].record_id = 0
         return self.engine
 
@@ -119,13 +118,13 @@ class DownloadOnlyTemplate(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
 
-    def download(self, engine=None, debug=False, use_cache=True):
+    def download(self, engine=None, debug=False):
         if engine.name != "Download Only":
             raise Exception("This dataset contains only non-tabular data files, and can only be used with the 'download only' engine.\nTry 'retriever download datasetname instead.")
-        Script.download(self, engine, debug, use_cache)
+        Script.download(self, engine, debug)
 
         for filename, url in self.urls.items():
-            self.engine.download_file(url, filename, use_cache)
+            self.engine.download_file(url, filename)
             if os.path.exists(self.engine.format_filename(filename)):
                 shutil.copy(self.engine.format_filename(filename), DATA_DIR)
             else:
