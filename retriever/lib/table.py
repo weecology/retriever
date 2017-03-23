@@ -82,7 +82,8 @@ class Table(object):
             "select": "selects",
             "table": "tables",
             "update": "updates",
-            "date": "record_date"
+            "date": "record_date",
+            "index": "indices"
         }
         for x in (")", "\n", "\r", '"', "'"):
             replace_dict[x] = ''
