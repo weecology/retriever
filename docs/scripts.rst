@@ -86,7 +86,7 @@ table.
           "Mammals",
           "Compilation"
       ],
-      "name": "exMammal",
+      "name": "example-mammal",
       "resources": [
           {
               "dialect": {},
@@ -116,10 +116,14 @@ Explanation for the keys:
 - ``resources``: List of tables within the dataset
 
   - ``dialect``: Metadata for retriever to process the table
+
+    - ``missingValues``: (Optional) List of strings which represents missing values in tables
+    - ``delimiter``: (Optional) a character which represent boundary between two separate value(ex. ',' in csv files)
+    - ``header_rows``: (Optional) number of header rows in table.
   - ``name``: Name of the table
   - ``schema``: List of the columns in the table
 
-    - ``fields``: (Optional) List of columns and their types and (optional) size values
+    - ``fields``: (Optional-Recommended) List of columns and their types and (optional) size values
     - ``ct_column``: (Optional) Cross-tab column with column names from dataset
 
   - ``url``: URL of the table
@@ -353,7 +357,14 @@ Full control over column names and data types
 
 By default the Retriever automatically detects both column names and data types, but you can also exercise complete
 control over the structure of the resulting database by adding column names and types.
+
+It is recommended to describe the schema of the table while creating the JSON file. This enables processing of the data faster since column detection increases the processing time.
+
 These values are stored in the ``fields`` array of the ``schema`` dict of the JSON script.
+
+The ``fields`` value enables full control of the columns, which includes, renaming columns, skipping unwanted columns, mentioning primary key and combining columns.
+
+The basic format for ``fields`` is as shown below:
 
 ::
 
@@ -364,6 +375,22 @@ These values are stored in the ``fields`` array of the ``schema`` dict of the JS
   name, char, 40
   year, int
   ...
+
+
+where ``name`` represents name of the column and ``type`` represents the type of data present in the column. The following can be used to describe the data type:
+
+::
+
+  pk-auto: Auto generated primary key starting from 1
+  pk-[char,int,double]: primary key with data type
+  char: strings
+  int: integers
+  double:floats/decimals
+  ct-[int,double,char]:Cross tab data
+  skip: used to skip the column in database
+
+
+``pk-auto`` is used to create an additional column of type int which acts as a primary key with values starting from 1. While ``pk-[char,int,double]`` is used to make a primary key from existing columns of the table having data type of char/int/double.
 
 The Smith et al. Masses of Mammals ``mammal-masses`` dataset script includes this type of functionality.
 
@@ -602,7 +629,7 @@ The `Moral et al 2010 script`_. ``mt-st-helens-veg`` takes advantage of this fun
 
 Script Editing
 --------------
-**Note:** Any time a script gets updated, the minor version number must be incremented from within the script. 
+**Note:** Any time a script gets updated, the minor version number must be incremented from within the script.
 
 The JSON scripts created using the retriever CLI can also be edited using the CLI.
 

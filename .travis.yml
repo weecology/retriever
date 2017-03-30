@@ -15,7 +15,7 @@ services:
   - postgresql
 install:
   - pip install -r requirements.txt
-  - python setup.py -q install
+  - pip install -e .
   - pip install codecov
   - pip install pytest-cov
   - pip install pytest-xdist
