@@ -19,7 +19,8 @@ from retriever.lib.models import Table, Cleanup, no_cleanup, correct_invalid_val
 from pkg_resources import parse_version
 import xml.etree.ElementTree as ET
 import datetime
-from retriever import open_fr, open_fw, open_csvw, DATA_WRITE_PATH
+from retriever import open_fr, open_fw, open_csvw, DATA_WRITE_PATH, VERSION
+from pkg_resources import parse_version
 
 
 class main(Script):
