@@ -6,6 +6,8 @@ from builtins import str
 from retriever.lib.models import Table
 from retriever.lib.templates import Script
 import os
+from retriever import VERSION
+from pkg_resources import parse_version
 
 from retriever import VERSION
 from pkg_resources import parse_version

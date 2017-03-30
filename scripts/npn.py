@@ -10,9 +10,15 @@ from future import standard_library
 standard_library.install_aliases()
 from builtins import str
 
+import os
+import urllib.request, urllib.parse, urllib.error
+import zipfile
+from decimal import Decimal
+from retriever.lib.templates import Script
+from retriever.lib.models import Table, Cleanup, no_cleanup, correct_invalid_value
+from pkg_resources import parse_version
 import xml.etree.ElementTree as ET
 import datetime
-
 from retriever.lib.templates import Script
 from retriever.lib.models import Table
 from retriever import open_fw, open_csvw, DATA_WRITE_PATH, VERSION
