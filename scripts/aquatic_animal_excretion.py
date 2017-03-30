@@ -14,7 +14,7 @@ class main(Script):
         self.name = "Aquatic Animal Excretion"
         self.shortname = "aquatic-animal-excretion"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.0.0'
+        self.version = '1.1.0'
         self.ref = "http://onlinelibrary.wiley.com/doi/10.1002/ecy.1792/abstract"
         self.urls = {
             'aquatic_animals': 'http://onlinelibrary.wiley.com/store/10.1002/ecy.1792/asset/supinfo/ecy1792-sup-0001-DataS1.zip?v=1&s=3a9094a807bbc2d03ba43045d2b72782bfb348ef'

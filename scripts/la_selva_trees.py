@@ -14,7 +14,7 @@ class main(Script):
                         description="The data set helps to examine the post-establishment ecology of 10 species of tropical wet forest trees selected to span a range of predicted life history patterns at the La Selva Biological Station in Costa Rica.",
                         ref="http://esapubs.org/archive/ecol/E087/132/",
                         retriever_minimum_version= "2.0.dev",
-                        version='1.2.1',
+                        version='1.3.0',
                         citation="David B. Clark and Deborah A. Clark. 2006. Tree growth, mortality, physical condition, and microsite in an old-growth lowland tropical rain forest. Ecology 87:2132.")
 
     def download(self, engine=None, debug=False):

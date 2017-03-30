@@ -19,7 +19,7 @@ class main(Script):
         self.title = "Forest Inventory and Analysis"
         self.name = "forest-inventory-analysis"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.3.1'
+        self.version = '1.4.0'
         self.ref = "http://fia.fs.fed.us/"
         self.urls = {"main": "https://apps.fs.usda.gov/fiadb-downloads/CSV/",
                      'species': 'https://apps.fs.usda.gov/fiadb-downloads/CSV/REF_SPECIES.csv'}

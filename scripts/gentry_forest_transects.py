@@ -14,9 +14,8 @@ import xlrd
 from retriever.lib.templates import Script
 from retriever.lib.models import Table
 from retriever.lib.excel import Excel
-from retriever import open_fr, open_fw, open_csvw, to_str
 
-TAX_GROUPS = 9756 #9819
+TAX_GROUPS = 9756  # 9819
 
 
 class main(Script):
@@ -25,7 +24,7 @@ class main(Script):
         self.title = "Alwyn H. Gentry Forest Transect Dataset"
         self.name = "gentry-forest-transects"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.3.1'
+        self.version = '1.4.0'
         self.urls = {"stems": "http://www.mobot.org/mobot/gentry/123/all_Excel.zip",
                      "sites": "https://ndownloader.figshare.com/files/5515373",
                      "species": "",

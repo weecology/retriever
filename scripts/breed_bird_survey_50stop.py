@@ -29,7 +29,7 @@ class main(Script):
         self.ref = "http://www.pwrc.usgs.gov/BBS/"
         self.keywords = ["birds", "continental-scale"]
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.3.1'
+        self.version = '1.4.0'
         self.urls = {
                      "counts": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/50-StopData/1997ToPresent_SurveyWide/",
                      "routes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/Routes.zip",
