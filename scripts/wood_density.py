@@ -15,13 +15,14 @@ from retriever.lib.excel import Excel
 from retriever import HOME_DIR, open_fr, open_fw, open_csvw, to_str, VERSION
 from pkg_resources import parse_version
 
+
 class main(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
         self.title = "Global wood density database - Zanne et al. 2009"
         self.name = "wood-density"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.2.1'
+        self.version = '1.3.0'
         self.urls = {"GWDD": "http://datadryad.org/bitstream/handle/10255/dryad.235/GlobalWoodDensityDatabase.xls?sequence=1"}
         self.keywords = ["Taxon > Plants", "Spatial Scale > Global",
                      "Data Type > Observational"]

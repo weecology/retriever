@@ -9,6 +9,9 @@ import os
 from retriever import VERSION
 from pkg_resources import parse_version
 
+from retriever import VERSION
+from pkg_resources import parse_version
+
 
 class main(Script):
     def __init__(self, **kwargs):
@@ -16,7 +19,7 @@ class main(Script):
         self.title = "Vertnet Amphibians"
         self.name = "vertnet-amphibians"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.0.0'
+        self.version = '1.1.0'
         self.ref = "http://vertnet.org/resources/datatoolscode.html"
         self.urls = {
             'amphibians': 'https://de.iplantcollaborative.org/anon-files//iplant/home/shared/commons_repo/curated/Vertnet_Amphibia_Sep2016/VertNet_Amphibia_Sept2016.zip'

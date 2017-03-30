@@ -16,7 +16,7 @@ class main(Script):
         self.title = "Vertnet Reptiles"
         self.name = "vertnet-reptiles"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.0.0'
+        self.version = '1.1.0'
         self.ref = "http://vertnet.org/resources/datatoolscode.html"
         self.urls = {
             'reptiles': 'https://de.iplantcollaborative.org/anon-files//iplant/home/shared/commons_repo/curated/Vertnet_Reptilia_Sep2016/VertNet_Reptilia_Sept2016.zip'

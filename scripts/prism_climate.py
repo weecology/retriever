@@ -15,7 +15,7 @@ class main(Script):
         self.title = "PRISM Climate Data"
         self.name = "prism-climate"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.1.1'
+        self.version = '1.2.0'
         self.ref = "http://prism.oregonstate.edu/"
         self.urls = {"climate": "http://services.nacse.org/prism/data/public/4km/"}
         self.description = "The PRISM data set represents climate observations from a wide range of monitoring networks, applies sophisticated quality control measures, and develops spatial climate datasets to reveal short- and long-term climate patterns. "
