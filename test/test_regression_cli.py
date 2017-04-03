@@ -29,8 +29,8 @@ working_script_dir = os.path.abspath(os.path.join(retriever_root_dir, "scripts")
 HOMEDIR = os.path.expanduser('~')
 
 download_md5 = [
-    ('mt-st-helens-veg', '9f81bbccfd6a99938e5455a489fdb7b5'),
-    ('bird-size', 'dce81ee0f040295cd14c857c18cc3f7e'),
+    ('mt-st-helens-veg', 'd5782e07241cb3fe9f5b2e1bb804a794'),
+    ('bird-size', '45c7507ae945868c71b5179f7682ea9c'),
     ('mammal-masses', 'b54b80d0d1959bdea0bb8a59b70fa871')
 ]
 
