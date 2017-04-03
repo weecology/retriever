@@ -13,11 +13,11 @@ class Script(object):
     """This class represents a database toolkit script. Scripts should inherit
     from this class and execute their code in the download method."""
 
-    def __init__(self, name="", description="", shortname="", urls=dict(),
+    def __init__(self, title="", description="", name="", urls=dict(),
                  tables=dict(), ref="", public=True, addendum=None, citation="Not currently available",
                  retriever_minimum_version="", version="", encoding="", **kwargs):
+        self.title = title
         self.name = name
-        self.shortname = shortname
         self.filename = __name__
         self.description = description
         self.urls = urls
@@ -26,7 +26,7 @@ class Script(object):
         self.public = public
         self.addendum = addendum
         self.citation = citation
-        self.tags = []
+        self.keywords = []
         self.retriever_minimum_version = retriever_minimum_version
         self.encoding = encoding
         self.version = version
@@ -42,7 +42,7 @@ class Script(object):
     def download(self, engine=None, debug=False):
         self.engine = self.checkengine(engine)
         self.engine.debug = debug
-        self.engine.db_name = self.shortname
+        self.engine.db_name = self.name
         self.engine.create_db()
 
     def reference_url(self):
@@ -73,8 +73,8 @@ class Script(object):
             search_string = ' '.join([
                     self.name,
                     self.description,
-                    self.shortname
-                ] + self.tags).upper()
+                    self.name
+                ] + self.keywords).upper()
 
             for term in terms:
                 if not term.upper() in search_string:
@@ -96,7 +96,7 @@ class BasicTextTemplate(Script):
         for key in list(self.urls.keys()):
             if key not in list(self.tables.keys()):
                 self.tables[key] = Table(key, cleanup=Cleanup(correct_invalid_value,
-                                                              nulls=[-999]))
+                                                              missing_values=[-999]))
 
         for key, value in list(self.urls.items()):
             self.engine.auto_create_table(self.tables[key], url=value)

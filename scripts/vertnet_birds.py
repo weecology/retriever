@@ -6,22 +6,29 @@ from builtins import str
 from retriever.lib.models import Table
 from retriever.lib.templates import Script
 import os
+from retriever import VERSION
+from pkg_resources import parse_version
 
 
 class main(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
-        self.name = "Vertnet Birds"
-        self.shortname = "vertnet-birds"
+        self.title = "Vertnet Birds"
+        self.name = "vertnet-birds"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.0.0'
+        self.version = '1.1.0'
         self.ref = "http://vertnet.org/resources/datatoolscode.html"
         self.urls = {
             'birds': 'https://de.iplantcollaborative.org/anon-files//iplant/home/shared/commons_repo/curated/Vertnet_Aves_Sep2016/VertNet_Aves_Sept2016.zip'
         }
         self.citation = "Bloom, D., Wieczorek J., Russell, L. (2016).  VertNet_Aves_Sept. 2016. CyVerse Data Commons. http://datacommons.cyverse.org/browse/iplant/home/shared/commons_repo/curated/VertNet_Aves_Sep2016"
         self.description = "Compilation of digitized museum records of birds including locations, dates of collection, and some trait data."
-        self.tags = ['birds']
+        self.keywords = ['birds']
+
+        if parse_version(VERSION) < parse_version("2.1.dev"):
+            self.shortname = self.name
+            self.name = self.title
+            self.tags = self.keywords
 
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)

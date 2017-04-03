@@ -11,11 +11,11 @@ def floatable(value):
 
 
 def correct_invalid_value(value, args):
-    """This cleanup function replaces null indicators with None."""
+    """This cleanup function replaces missing value indicators with None."""
     try:
-        if value in [item for item in args["nulls"]]:
+        if value in [item for item in args["missing_values"]]:
             return None
-        if float(value) in [float(item) for item in args["nulls"] if floatable(item)]:
+        if float(value) in [float(item) for item in args["missing_values"] if floatable(item)]:
             return None
         return value
     except:
