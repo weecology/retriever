@@ -137,32 +137,33 @@ def main():
             for script in script_list:
                 if script.shortname:
                     if args.l is not None:
-                        script_name = script.name + "\nShortname: " + script.shortname + "\n"
-                        if script.tags:
-                            script_name += "Tags: " + \
-                                str([tag for tag in script.tags]) + "\n"
                         not_found = 0
                         for term in args.l:
-                            if script_name.lower().find(term.lower()) == -1:
+                            if term.lower().find(script.shortname) == 0:
                                 not_found = 1
                                 break
-                        if not_found == 0:
-                            all_scripts.append(script_name)
+                        if not_found == 1 or not args.l:
+                            all_scripts.append(script)
                     else:
-                        script_name = script.shortname
-                        all_scripts.append(script_name)
+                        all_scripts.append(script.shortname)
 
-            all_scripts = sorted(all_scripts, key=lambda s: s.lower())
-
-            print("Available datasets : {}\n".format(len(all_scripts)))
+            print("Available datasets: {}\n".format(len(all_scripts)))
 
             if args.l is None:
                 from retriever import lscolumns
                 lscolumns.printls(sorted(all_scripts, key=lambda s: s.lower()))
             else:
                 count = 1
+                all_scripts = sorted(all_scripts, key=lambda s: s.shortname.lower())
                 for script in all_scripts:
-                    print("%d. %s" % (count, script))
+                    script_name = script.name + "\nShortname: " + script.shortname
+                    if script.tags:
+                        script_name += "\nTags: " + str([tag for tag in script.tags])
+                    print("%d. %s" % (count, script_name))
+                    print("Available Tables:")
+                    for url in script.urls.keys():
+                        print("   -{}".format(url))
+                    print("\n")
                     count += 1
             return
 
@@ -183,12 +184,21 @@ def main():
             scripts = name_matches(script_list, args.dataset)
         else:
             raise Exception("no dataset specified.")
+
         if scripts:
             for dataset in scripts:
                 print("=> Installing", dataset.name)
                 try:
-                    dataset.download(engine, debug=debug)
-                    dataset.engine.final_cleanup()
+                    if not args.tb or args.tb is None:
+                        dataset.download(engine, debug=debug)
+                        dataset.engine.final_cleanup()
+                    else:
+                        tables = {}
+                        for t in args.tb:
+                            if dataset.urls[t] != None:
+                                tables.update({t:dataset.urls[t]}   )
+                        dataset.download(engine, tables, debug=debug)
+                        dataset.engine.final_cleanup()
                 except KeyboardInterrupt:
                     pass
                 except Exception as e:

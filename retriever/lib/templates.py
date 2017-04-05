@@ -90,19 +90,30 @@ class BasicTextTemplate(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
 
-    def download(self, engine=None, debug=False):
+    def download(self, engine=None, tabl=None, debug=False):
         Script.download(self, engine, debug)
+        if tabl is None or not tabl:
+            for key in list(self.urls.keys()):
+                if key not in list(self.tables.keys()):
+                    self.tables[key] = Table(key, cleanup=Cleanup(correct_invalid_value,
+                                                                  nulls=[-999]))
 
-        for key in list(self.urls.keys()):
-            if key not in list(self.tables.keys()):
-                self.tables[key] = Table(key, cleanup=Cleanup(correct_invalid_value,
-                                                              nulls=[-999]))
+            for key, value in list(self.urls.items()):
+                self.engine.auto_create_table(self.tables[key], url=value)
+                self.engine.insert_data_from_url(value)
+                self.tables[key].record_id = 0
+            return self.engine
+        else:
+            for key in list(tabl.keys()):
+                if key not in list(self.tables.keys()):
+                    self.tables[key] = Table(key, cleanup=Cleanup(correct_invalid_value,
+                                                                  nulls=[-999]))
 
-        for key, value in list(self.urls.items()):
-            self.engine.auto_create_table(self.tables[key], url=value)
-            self.engine.insert_data_from_url(value)
-            self.tables[key].record_id = 0
-        return self.engine
+            for key, value in list(tabl.items()):
+                self.engine.auto_create_table(self.tables[key], url=value)
+                self.engine.insert_data_from_url(value)
+                self.tables[key].record_id = 0
+            return self.engine
 
     def reference_url(self):
         if self.ref:
@@ -118,18 +129,27 @@ class DownloadOnlyTemplate(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
 
-    def download(self, engine=None, debug=False):
+    def download(self, engine=None, tabl=None, debug=False):
         if engine.name != "Download Only":
             raise Exception("This dataset contains only non-tabular data files, and can only be used with the 'download only' engine.\nTry 'retriever download datasetname instead.")
         Script.download(self, engine, debug)
 
-        for filename, url in self.urls.items():
-            self.engine.download_file(url, filename)
-            if os.path.exists(self.engine.format_filename(filename)):
-                shutil.copy(self.engine.format_filename(filename), DATA_DIR)
-            else:
-                print("{} was not downloaded".format(filename))
-                print("A file with the same name may be in your working directory")
+        if tabl is None or not tabl:
+            for filename, url in self.urls.items():
+                self.engine.download_file(url, filename)
+                if os.path.exists(self.engine.format_filename(filename)):
+                    shutil.copy(self.engine.format_filename(filename), DATA_DIR)
+                else:
+                    print("{} was not downloaded".format(filename))
+                    print("A file with the same name may be in your working directory")
+        else:
+            for filename, url in tabl.items():
+                self.engine.download_file(url, filename)
+                if os.path.exists(self.engine.format_filename(filename)):
+                    shutil.copy(self.engine.format_filename(filename), DATA_DIR)
+                else:
+                    print("{} was not downloaded".format(filename))
+                    print("A file with the same name may be in your working directory")
 
 
 class HtmlTableTemplate(Script):
