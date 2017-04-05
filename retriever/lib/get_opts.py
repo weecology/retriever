@@ -10,7 +10,7 @@ from retriever import MODULE_LIST
 
 module_list = MODULE_LIST()
 script_list = [module.SCRIPT.shortname for module in module_list]
-json_list = ['.'.join(os.path.basename(module.__file__).split('.')[:-1]) for module in module_list
+json_list = [module.SCRIPT.shortname for module in module_list
              if os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.json')]
 
 keywords_list = set()
@@ -49,7 +49,7 @@ help_parser = subparsers.add_parser('help', help='')
 
 citation_parser.add_argument('dataset', help='dataset name', nargs='?', default=None, choices=script_list + [None])
 new_parser.add_argument('filename', help='new script filename')
-edit_json_parser.add_argument('filename', help='script filename', choices=json_list)
+edit_json_parser.add_argument('dataset', help='dataset name', choices=json_list)
 reset_parser.add_argument('scope', help='things to reset: all, scripts, data, or connections',
                           choices=['all', 'scripts', 'data', 'connections'])
 install_parser.add_argument('--compile', help='force re-compile of script before downloading', action='store_true')
