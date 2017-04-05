@@ -1,0 +1,667 @@
+{
+    "citation": "S. K. Morgan Ernest, Thomas J. Valone, and James H. Brown. 2009. Long-term monitoring and experimental manipulation of a Chihuahuan Desert ecosystem near Portal, Arizona, USA. Ecology 90:1708.",
+    "description": "The data set represents a Desert ecosystems using the composition and abundances of ants, plants, and rodents has occurred continuously on 24 plots. Currently includes only mammal data.",
+    "homepage": "http://esapubs.org/archive/ecol/E090/118/",
+    "keywords": [
+        "mammals",
+        "desert",
+        "time-series",
+        "experimental",
+        "observational"
+    ],
+    "name": "portal-dev",
+    "resources": [
+        {
+            "dialect": {
+                "contains_pk": "True",
+                "delimiter": ",",
+                "missingValues": [
+                    "",
+                    null
+                ]
+            },
+            "name": "rodent",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "recordid",
+                        "type": "pk-int"
+                    },
+                    {
+                        "name": "mo",
+                        "type": "int"
+                    },
+                    {
+                        "name": "dy",
+                        "type": "int"
+                    },
+                    {
+                        "name": "yr",
+                        "type": "int"
+                    },
+                    {
+                        "name": "period",
+                        "type": "int"
+                    },
+                    {
+                        "name": "plot",
+                        "type": "int"
+                    },
+                    {
+                        "name": "note1",
+                        "size": "9",
+                        "type": "char"
+                    },
+                    {
+                        "name": "stake",
+                        "type": "int"
+                    },
+                    {
+                        "name": "species",
+                        "size": "9",
+                        "type": "char"
+                    },
+                    {
+                        "name": "sex",
+                        "size": "9",
+                        "type": "char"
+                    },
+                    {
+                        "name": "age",
+                        "size": "9",
+                        "type": "char"
+                    },
+                    {
+                        "name": "reprod",
+                        "size": "9",
+                        "type": "char"
+                    },
+                    {
+                        "name": "testes",
+                        "size": "9",
+                        "type": "char"
+                    },
+                    {
+                        "name": "vagina",
+                        "size": "9",
+                        "type": "char"
+                    },
+                    {
+                        "name": "pregnant",
+                        "size": "9",
+                        "type": "char"
+                    },
+                    {
+                        "name": "nipples",
+                        "size": "9",
+                        "type": "char"
+                    },
+                    {
+                        "name": "lactation",
+                        "size": "9",
+                        "type": "char"
+                    },
+                    {
+                        "name": "hfl",
+                        "type": "int"
+                    },
+                    {
+                        "name": "wgt",
+                        "type": "int"
+                    },
+                    {
+                        "name": "tag",
+                        "size": "9",
+                        "type": "char"
+                    },
+                    {
+                        "name": "note2",
+                        "size": "9",
+                        "type": "char"
+                    },
+                    {
+                        "name": "ltag",
+                        "size": "9",
+                        "type": "char"
+                    },
+                    {
+                        "name": "note3",
+                        "size": "9",
+                        "type": "char"
+                    },
+                    {
+                        "name": "prevrt",
+                        "size": "9",
+                        "type": "char"
+                    },
+                    {
+                        "name": "prevlet",
+                        "size": "9",
+                        "type": "char"
+                    },
+                    {
+                        "name": "nestdir",
+                        "size": "9",
+                        "type": "char"
+                    },
+                    {
+                        "name": "neststk",
+                        "size": "9",
+                        "type": "char"
+                    },
+                    {
+                        "name": "note4",
+                        "size": "9",
+                        "type": "char"
+                    },
+                    {
+                        "name": "note5",
+                        "size": "9",
+                        "type": "char"
+                    }
+                ]
+            },
+            "url": "https://raw.githubusercontent.com/weecology/PortalData/master/Rodents/Portal_rodent.csv"
+        },
+        {
+            "dialect": {},
+            "name": "rodent_species",
+            "schema": {
+                "fields":[
+                    {
+                        "name":"species_code",
+                        "type":"char",
+                        "size":"2"
+                    },
+                    {
+                        "name":"scientific_name",
+                        "type":"char"
+                    },
+                    {
+                        "name":"taxa",
+                        "type":"char"
+                    },
+                    {
+                        "name":"common_name",
+                        "type":"char"
+                    },
+                    {
+                        "name":"census_target",
+                        "type":"int"
+                    },
+                    {
+                        "name":"unidentified",
+                        "type":"int"
+                    },
+                    {
+                        "name":"rodent",
+                        "type":"int"
+                    },
+                    {
+                        "name":"granivore",
+                        "type":"int"
+                    }
+                ]
+            },
+            "url": "https://raw.githubusercontent.com/weecology/PortalData/master/Rodents/Portal_rodent_species.csv"
+        },
+        {
+            "dialect": {},
+            "name": "rodent_trapping",
+            "schema": {
+                "fields":[
+                    {
+                        "name":"day",
+                        "type":"int"
+                    },
+                    {
+                        "name":"month",
+                        "type":"int"
+                    },
+                    {
+                        "name":"year",
+                        "type":"int"
+                    },
+                    {
+                        "name":"period",
+                        "type":"int"
+                    },
+                    {
+                        "name":"plot",
+                        "type":"int"
+                    },
+                    {
+                        "name":"sampled",
+                        "type":"int"
+                    }
+                ]
+            },
+            "url": "https://raw.githubusercontent.com/weecology/PortalData/master/Rodents/Portal_rodent_trapping.csv"
+        },
+        {
+            "dialect": {},
+            "name": "rodent_datanotes",
+            "schema": {
+                "fields":[
+                    {
+                        "name":"note1",
+                        "type":"int"
+                    },
+                    {
+                        "name":"meaning",
+                        "type":"char"
+                    }
+                ]
+            },
+            "url": "https://raw.githubusercontent.com/weecology/PortalData/master/Rodents/Portal_rodent_datanotes.csv"
+        },
+        {
+            "dialect": {},
+            "name": "plots",
+            "schema": {
+                "fields":[
+                    {
+                        "name":"year",
+                        "type":"int"
+                    },
+                    {
+                        "name":"plot",
+                        "type":"int"
+                    },
+                    {
+                        "name":"treatment",
+                        "type":"char"
+                    }
+                ]
+            },
+            "url": "https://raw.githubusercontent.com/weecology/PortalData/master/SiteandMethods/Portal_plots.csv"
+        },
+        {
+            "dialect": {
+                "delimiter":","
+            },
+            "name": "ant_bait",
+            "schema": {
+                "fields":[
+                    {
+                        "name":"month",
+                        "type":"char"
+                    },
+                    {
+                        "name":"year",
+                        "type":"char"
+                    },
+                    {
+                        "name":"plot",
+                        "type":"int"
+                    },
+                    {
+                        "name":"stack",
+                        "type":"int"
+                    },
+                    {
+                        "name":"species",
+                        "type":"char"
+                    },
+                    {
+                        "name":"abundance",
+                        "type":"int"
+                    }
+                ]
+            },
+            "url": "https://raw.githubusercontent.com/weecology/PortalData/master/Ants/Portal_ant_bait.csv"
+        },
+        {
+            "dialect": {
+                "delimiter":",",
+                "missingValues":[
+                    "",
+                    null
+                ]
+            },
+            "name": "ant_colony",
+            "schema": {
+                "fields":[
+                    {
+                        "name":"day",
+                        "type":"int"
+                    },
+                    {
+                        "name":"month",
+                        "type":"int"
+                    },
+                    {
+                        "name":"year",
+                        "type":"int"
+                    },
+                    {
+                        "name":"plot",
+                        "type":"int"
+                    },
+                    {
+                        "name":"stack",
+                        "type":"int"
+                    },
+                    {
+                        "name":"species",
+                        "type":"char"
+                    },
+                    {
+                        "name":"colonies",
+                        "type":"int"
+                    },
+                    {
+                        "name":"openings",
+                        "type":"int"
+                    },
+                    {
+                        "name":"flag",
+                        "type":"int"
+                    }
+                ]
+            },
+            "url": "https://raw.githubusercontent.com/weecology/PortalData/master/Ants/Portal_ant_colony.csv"
+        },
+        {
+            "dialect": {},
+            "name": "ant_dataflags",
+            "schema": {
+                "fields":[
+                    {
+                        "name":"flag",
+                        "type":"int"
+                    },
+                    {
+                        "name":"meaning",
+                        "type":"char"
+                    }
+                ]
+            },
+            "url": "https://raw.githubusercontent.com/weecology/PortalData/master/Ants/Portal_ant_dataflags.csv"
+        },
+        {
+            "dialect": {
+                "delimiter":",",
+                "missingValues":[
+                    "",
+                    null
+                ]
+            },
+            "name": "ant_species",
+            "schema": {
+                "fields":[
+                    {
+                        "name":"species_code",
+                        "type":"char"
+                    },
+                    {
+                        "name":"scientific_name",
+                        "type":"char"
+                    },
+                    {
+                        "name":"id_issues",
+                        "type":"char"
+                    }
+                ]
+            },
+            "url": "https://raw.githubusercontent.com/weecology/PortalData/master/Ants/Portal_ant_species.csv"
+        },
+        {
+            "dialect": {
+                "missingValues":[
+                    ""
+                ]
+            },
+            "name": "plant_quadrats",
+            "schema": {
+                "fields":[
+                    {
+                        "name":"year",
+                        "type":"int"
+                    },
+                    {
+                        "name":"season",
+                        "type":"char"
+                    },
+                    {
+                        "name":"plot",
+                        "type":"int"
+                    },
+                    {
+                        "name":"quadrant",
+                        "type":"int"
+                    },
+                    {
+                        "name":"species",
+                        "type":"char"
+                    },
+                    {
+                        "name":"abundance",
+                        "type":"int"
+                    },
+                    {
+                        "name":"cover",
+                        "type":"double"
+                    },
+                    {
+                        "name":"cf",
+                        "type":"char"
+                    }
+                ]
+            },
+            "url": "https://raw.githubusercontent.com/weecology/PortalData/master/Plants/Portal_plant_quadrats.csv"
+        },
+
+        {
+            "dialect": {
+                "missingValues":[
+                    "unknown",
+                    "none"
+                ]
+            },
+            "name": "plant_census_dates",
+            "schema": {
+                "fields":[
+                    {
+                        "name":"year",
+                        "type":"int"
+                    },
+                    {
+                        "name":"season",
+                        "type":"char"
+                    },
+                    {
+                        "name":"census_done",
+                        "type":"char"
+                    },
+                    {
+                        "name":"census_month",
+                        "type":"char"
+                    },
+                    {
+                        "name":"census_days",
+                        "type":"char"
+                    }
+                ]
+            },
+            "url": "https://raw.githubusercontent.com/weecology/PortalData/master/Plants/Portal_plant_census_dates.csv"
+        },
+        {
+            "dialect": {},
+            "name": "plant_censuses",
+            "schema": {
+                "fields":[
+                    {
+                        "name":"year",
+                        "type":"int"
+                    },
+                    {
+                        "name":"season",
+                        "type":"char"
+                    },
+                    {
+                        "name":"plot",
+                        "type":"int"
+                    },
+                    {
+                        "name":"quadrant",
+                        "type":"int"
+                    },
+                    {
+                        "name":"censused",
+                        "type":"int"
+                    },
+                    {
+                        "name":"area",
+                        "type":"double"
+                    }
+                ]
+            },
+            "url": "https://raw.githubusercontent.com/weecology/PortalData/master/Plants/Portal_plant_censuses.csv"
+        },
+        {
+            "dialect": {
+                "missingValues":[
+                    ""
+                ]
+            },
+            "name": "plant_species",
+            "schema": {
+                "fields":[
+                    {
+                        "name":"species_code",
+                        "type":"char"
+                    },
+                    {
+                        "name":"genus",
+                        "type":"char"
+                    },
+                    {
+                        "name":"alt_genus",
+                        "type":"char"
+                    },
+                    {
+                        "name":"species",
+                        "type":"char"
+                    },
+                    {
+                        "name":"alt_species",
+                        "type":"char"
+                    },
+                    {
+                        "name":"subspecies",
+                        "type":"char"
+                    },
+                    {
+                        "name":"common_name",
+                        "type":"char"
+                    },
+                    {
+                        "name":"family",
+                        "type":"char"
+                    },
+                    {
+                        "name":"duration",
+                        "type":"char"
+                    },
+                    {
+                        "name":"community",
+                        "type":"char"
+                    }
+                ]
+            },
+            "url": "https://raw.githubusercontent.com/weecology/PortalData/master/Plants/Portal_plant_species.csv"
+        },
+        {
+            "dialect": {
+                "missingValues":[
+                    "-99"
+                ]
+            },
+            "name": "weather_19801989",
+            "schema": {
+                "fields":[
+                    {
+                        "name":"Year",
+                        "type":"int"
+                    },
+                    {
+                        "name":"Month",
+                        "type":"int"
+                    },
+                    {
+                        "name":"Day",
+                        "type":"int"
+                    },
+                    {
+                        "name":"MaxTemp",
+                        "type":"double"
+                    },
+                    {
+                        "name":"MinTemp",
+                        "type":"double"
+                    },
+                    {
+                        "name":"Precipitation",
+                        "type":"double"
+                    }
+                ]
+            },
+            "url": "https://raw.githubusercontent.com/weecology/PortalData/master/Weather/Portal_weather_19801989.csv"
+        },
+        {
+            "dialect": {},
+            "name": "weather",
+            "schema": {
+                "fields":[
+                    {
+                        "name":"Year",
+                        "type":"int"
+                    },
+                    {
+                        "name":"Month",
+                        "type":"int"
+                    },
+                    {
+                        "name":"Day",
+                        "type":"int"
+                    },
+                    {
+                        "name":"Hour",
+                        "type":"int"
+                    },
+                    {
+                        "name":"TempAir",
+                        "type":"double"
+                    },
+                    {
+                        "name":"Precipitation",
+                        "type":"double"
+                    }
+                ]
+            },
+            "url": "https://raw.githubusercontent.com/weecology/PortalData/master/Weather/Portal_weather.csv"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.dev",
+    "title": "Portal Project Data (Ernest et al. 2009)",
+    "urls": {
+        "rodent": "https://raw.githubusercontent.com/weecology/PortalData/master/Rodents/Portal_rodent.csv",
+        "rodent_species" : "https://raw.githubusercontent.com/weecology/PortalData/master/Rodents/Portal_rodent_species.csv",
+        "rodent_trapping" : "https://raw.githubusercontent.com/weecology/PortalData/master/Rodents/Portal_rodent_trapping.csv",
+        "rodent_datanotes" : "https://raw.githubusercontent.com/weecology/PortalData/master/Rodents/Portal_rodent_datanotes.csv",
+        "plots": "https://raw.githubusercontent.com/weecology/PortalData/master/SiteandMethods/Portal_plots.csv",
+        "ant_bait":"https://raw.githubusercontent.com/weecology/PortalData/master/Ants/Portal_ant_bait.csv",
+        "ant_colony":"https://raw.githubusercontent.com/weecology/PortalData/master/Ants/Portal_ant_colony.csv",
+        "ant_dataflags":"https://raw.githubusercontent.com/weecology/PortalData/master/Ants/Portal_ant_dataflags.csv",
+        "ant_species":"https://raw.githubusercontent.com/weecology/PortalData/master/Ants/Portal_ant_species.csv",
+        "plant_quadrats":"https://raw.githubusercontent.com/weecology/PortalData/master/Plants/Portal_plant_quadrats.csv",
+        "plant_census_dates":"https://raw.githubusercontent.com/weecology/PortalData/master/Plants/Portal_plant_census_dates.csv",
+        "plant_censuses":"https://raw.githubusercontent.com/weecology/PortalData/master/Plants/Portal_plant_censuses.csv",
+        "plant_species":"https://raw.githubusercontent.com/weecology/PortalData/master/Plants/Portal_plant_species.csv",
+        "weather_19801989":"https://raw.githubusercontent.com/weecology/PortalData/master/Weather/Portal_weather_19801989.csv",
+        "weather":"https://raw.githubusercontent.com/weecology/PortalData/master/Weather/Portal_weather.csv"
+    },
+    "version": "1.0.0"
+}
