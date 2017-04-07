@@ -4,7 +4,7 @@ amniote_life_hist.json,1.1.1
 antarctic_breed_bird.json,1.1.1
 aquatic_animal_excretion.py,1.0.0
 bioclim.py,1.1.0
-biomass_allometry_db.py,1.2.1
+biomass_allometry_db.py,1.3.0
 bird_size.json,1.2.0
 breast_cancer_wi.json,1.1.1
 breed_bird_survey.py,1.3.1
