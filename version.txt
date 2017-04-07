@@ -13,7 +13,7 @@ butterfly_population_network.json,1.1.1
 car_eval.json,1.1.1
 community_abundance_misc.json,1.0.1
 elton_traits.json,1.1.1
-fish_parasite_hosts.json,1.1.1
+fish_parasite_hosts.json,1.2.0
 forest_biomass_china.json,1.1.1
 forest_fires_portugal.json,1.1.3
 forest_inventory_analysis.py,1.3.1
