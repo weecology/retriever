@@ -9,7 +9,7 @@ bird_size.json,1.2.0
 breast_cancer_wi.json,1.1.1
 breed_bird_survey.py,1.3.1
 breed_bird_survey_50stop.py,1.3.1
-butterfly_population_network.json,1.1.1
+butterfly_population_network.json,1.2.0
 car_eval.json,1.1.1
 community_abundance_misc.json,1.0.1
 elton_traits.json,1.1.1

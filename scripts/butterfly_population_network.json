@@ -1,6 +1,7 @@
 {
     "citation": "Matter, Stephen F., Nusha Keyghobadhi, and Jens Roland. 2014. Ten years of abundance data within a spatial population network of the alpine butterfly, Parnassius smintheus. Ecology 95:2985. Ecological Archives E095-258.",
     "description": "Stephen F. Matter, Nusha Keyghobadhi, and Jens Roland. 2014. Ten years of abundance data within a spatial population network of the alpine butterfly, Parnassius smintheus. Ecology 95:2985.",
+    "homepage": "https://figshare.com/collections/Ten_years_of_abundance_data_within_a_spatial_population_network_of_the_alpine_butterfly_i_Parnassius_smintheus_i_/3307179",
     "keywords": [
         "butterflies",
         "observational"
@@ -15,7 +16,7 @@
             },
             "name": "PopulationAbunMark_Recap",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E095/258/PopulationAbunMark-Recap.csv"
+            "url": "https://ndownloader.figshare.com/files/5632164"
         },
         {
             "dialect": {
@@ -25,7 +26,7 @@
             },
             "name": "PopulationAbunTransect",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E095/258/PopulationAbunTransect.csv"
+            "url": "https://ndownloader.figshare.com/files/5632167"
         },
         {
             "dialect": {
@@ -35,7 +36,7 @@
             },
             "name": "Dispersal",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E095/258/Dispersal.csv"
+            "url": "https://ndownloader.figshare.com/files/5632170"
         },
         {
             "dialect": {
@@ -45,17 +46,17 @@
             },
             "name": "Landscape",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E095/258/Landscape.csv"
+            "url": "https://ndownloader.figshare.com/files/5632173"
         }
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Spatial Population Data Alpine Butterfly - Matter et al 2014",
     "urls": {
-        "Dispersal": "http://esapubs.org/archive/ecol/E095/258/Dispersal.csv",
-        "Landscape": "http://esapubs.org/archive/ecol/E095/258/Landscape.csv",
-        "PopulationAbunMark_Recap": "http://esapubs.org/archive/ecol/E095/258/PopulationAbunMark-Recap.csv",
-        "PopulationAbunTransect": "http://esapubs.org/archive/ecol/E095/258/PopulationAbunTransect.csv"
+        "Dispersal": "https://ndownloader.figshare.com/files/5632170",
+        "Landscape": "https://ndownloader.figshare.com/files/5632173",
+        "PopulationAbunMark_Recap": "https://ndownloader.figshare.com/files/5632164",
+        "PopulationAbunTransect": "https://ndownloader.figshare.com/files/5632167"
     },
-    "version": "1.1.1"
+    "version": "1.2.0"
 }
