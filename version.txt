@@ -28,7 +28,7 @@ la_selva_trees.py,1.3.0
 leaf_herbivory.json,1.1.1
 mammal_community_db.json,1.2.0
 mammal_diet.json,1.1.1
-mammal_life_hist.json,1.1.1
+mammal_life_hist.json,1.2.0
 mammal_masses.json,1.3.0
 mammal_metabolic_rate.json,1.1.1
 MammalSuperTree.py,1.1.0
