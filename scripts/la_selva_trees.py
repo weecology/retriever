@@ -9,12 +9,12 @@ class main(Script):
                         tables={'trees': Table('trees', cleanup=Cleanup(correct_invalid_value, nulls=[-999]))},
                         name="Tree growth, mortality, physical condition - Clark, 2006",
                         tags=['plants', 'time-series'],
-                        urls={'trees': 'http://esapubs.org/archive/ecol/E087/132/LS_trees_1983_2000.txt'},
+                        urls={'trees': 'https://ndownloader.figshare.com/files/5597693'},
                         shortname="la-selva-trees",
                         description="The data set helps to examine the post-establishment ecology of 10 species of tropical wet forest trees selected to span a range of predicted life history patterns at the La Selva Biological Station in Costa Rica.",
-                        ref="http://esapubs.org/archive/ecol/E087/132/",
+                        ref="https://doi.org/10.6084/m9.figshare.c.3299324.v1",
                         retriever_minimum_version= "2.0.dev",
-                        version='1.2.1',
+                        version='1.3.0',
                         citation="David B. Clark and Deborah A. Clark. 2006. Tree growth, mortality, physical condition, and microsite in an old-growth lowland tropical rain forest. Ecology 87:2132.")
 
     def download(self, engine=None, debug=False):
