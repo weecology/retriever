@@ -10,12 +10,12 @@ class main(Script):
         Script.__init__(self, **kwargs)
         self.name = "BAAD: a Biomass And Allometry Database for woody plants"
         self.shortname = "biomass-allometry-db"
-        self.ref = "http://esapubs.org/archive/ecol/E096/128/"
-        self.urls = {"BAAD": "http://www.esapubs.org/archive/ecol/E096/128/baad_data.zip"}
+        self.ref = "https://doi.org/10.6084/m9.figshare.c.3307692.v1"
+        self.urls = {"BAAD": "https://ndownloader.figshare.com/files/5634309"}
         self.citation = "Falster, D.S., Duursma, R.A., Ishihara, M.I., Barneche, D.R., FitzJohn, R.G., Varhammar, A., Aiba, M., Ando, M., Anten, N., Aspinwall, M.J. and Baltzer, J.L., 2015. BAAD: a Biomass And Allometry Database for woody plants."
         self.tags = ['plants', 'observational']
         self.retriever_minimum_version = "2.0.dev"
-        self.version = "1.2.1"
+        self.version = "1.3.0"
         self.description = "The data set is a Biomass and allometry database (BAAD) for woody plants containing 259634 measurements collected in 176 different studies from 21084 individuals across 678 species."
 
     def download(self, engine=None, debug=False):
