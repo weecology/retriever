@@ -39,7 +39,7 @@ mapped_plant_quads_mt.json,1.2.0
 mt_st_helens_veg.json,1.2.0
 npn.py,2.0.0
 nyc_tree_count.json,1.0.0
-pantheria.json,1.1.0
+pantheria.py,1.2.0
 phytoplankton_size.json,1.2.0
 plant_comp_ok.json,1.2.0
 plant_life_hist_eu.py,1.3.1
