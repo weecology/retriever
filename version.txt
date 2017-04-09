@@ -50,7 +50,7 @@ portal-dev.json,1.0.0
 portal.json,1.2.0
 predator_prey_size_marine.json,1.1.1
 prism_climate.py,1.1.1
-tree_demog_wghats.json,1.1.1
+tree_demog_wghats.py,1.2.0
 veg_plots_sdl.json,1.2.0
 vertnet.py,1.3.0
 vertnet_amphibians.py,1.0.0
