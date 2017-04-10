@@ -2,6 +2,7 @@ from __future__ import print_function
 from builtins import input
 import os
 import json
+import glob
 from time import sleep
 from retriever import SCRIPT_LIST, HOME_DIR, ENCODING
 
@@ -237,6 +238,7 @@ def create_json():
             contents['resources'].append(table)  
     contents['urls'] = tableUrls
     file_name = contents['name'] + ".json"
+    file_name = file_name.replace('-', '_')
     with open(os.path.join(HOME_DIR, 'scripts', file_name), 'w') as output_file:
         json_str = json.dumps(contents, output_file, sort_keys=True, indent=4,
                               separators=(',', ': '))
@@ -405,13 +407,14 @@ def edit_json(json_file):
     try:
         contents = json.load(
             open(os.path.join(HOME_DIR, 'scripts', json_file), 'r'))
-    except FileNotFoundError:
+    except (IOError,OSError):
         print("Script not found.")
         return
 
     edit_dict(contents, 1)
 
     file_name = contents['name'] + ".json"
+    file_name = file_name.replace('-', '_')
     with open(os.path.join(HOME_DIR, 'scripts', file_name), 'w') as output_file:
         json_str = json.dumps(contents, output_file, sort_keys=True, indent=4,
                               separators=(',', ': '))
@@ -419,3 +422,23 @@ def edit_json(json_file):
         print("\nScript written to " +
               os.path.join(HOME_DIR, 'scripts', file_name))
         output_file.close()
+
+def delete_json(json_file):
+    try:
+        # delete scripts from home directory
+        if os.path.exists(os.path.join(HOME_DIR, 'scripts', json_file)):
+            os.remove(os.path.join(HOME_DIR, 'scripts', json_file))
+
+        [os.remove(x) for x in glob.glob(os.path.join(HOME_DIR, 'scripts', json_file[:-4] + 'py*'))]
+
+        # delete scripts from current directory if exists
+        if os.path.exists(os.path.join(os.getcwd(), 'scripts', json_file)):
+            os.remove(os.path.join(os.getcwd(), 'scripts', json_file))
+
+        [os.remove(x) for x in glob.glob(os.path.join(os.getcwd(), 'scripts', json_file[:-4] + 'py*'))]
+    except OSError:
+        print("Couldn't delete Script.")
+
+def get_script_filename(shortname):
+    return shortname.replace('-', '_')+'.json'
+

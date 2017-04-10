@@ -1,35 +1,35 @@
 {
     "citation": "Jed Anderson, Lance Vermeire, and Peter B. Adler. 2011. Fourteen years of mapped, permanent quadrats in a northern mixed prairie, USA. Ecology 92:1703.",
     "description": "Long term plant quadrats of northern mixed prairie in Montana.",
-    "homepage": "https://doi.org/10.1890/11-0193.1",
+    "homepage": "https://figshare.com/articles/Data_Paper_Data_Paper/3551799",
     "name": "mapped-plant-quads-mt",
     "resources": [
         {
             "dialect": {},
             "name": "allrecords_density",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E092/143/allrecords_density.csv"
+            "url": "https://ndownloader.figshare.com/files/5619444"
         },
         {
             "dialect": {},
             "name": "allrecords_cover",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E092/143/allrecords_cover.csv"
+            "url": "https://ndownloader.figshare.com/files/5619447"
         },
         {
             "dialect": {},
             "name": "species_list",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E092/143/species_list.csv"
+            "url": "https://ndownloader.figshare.com/files/5619456"
         }
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Mapped plant quadrat time-series from Montana (Anderson et al. 2011)",
     "urls": {
-        "allrecords_cover": "http://esapubs.org/archive/ecol/E092/143/allrecords_cover.csv",
-        "allrecords_density": "http://esapubs.org/archive/ecol/E092/143/allrecords_density.csv",
-        "species_list": "http://esapubs.org/archive/ecol/E092/143/species_list.csv"
+        "allrecords_cover": "https://ndownloader.figshare.com/files/5619447",
+        "allrecords_density": "https://ndownloader.figshare.com/files/5619444",
+        "species_list": "https://ndownloader.figshare.com/files/5619456"
     },
-    "version": "1.1.1"
+    "version": "1.2.0"
 }

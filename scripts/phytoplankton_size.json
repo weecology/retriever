@@ -1,7 +1,7 @@
 {
     "citation": "Colin T. Kremer, Jacob P. Gillette, Lars G. Rudstam, Pal Brettum, and Robert Ptacnik. 2014. A compendium of cell and natural unit biovolumes for >1200 freshwater phytoplankton species. Ecology 95:2984.",
     "description": "Sampling phytoplankton communities basing on cell size.",
-    "homepage": "http://www.esapubs.org/archive/ecol/E095/257/",
+    "homepage": "https://figshare.com/articles/Data_Paper_Data_Paper/3560628",
     "keywords": [
         "phytoplankton",
         "literature-compilation",
@@ -17,7 +17,7 @@
             },
             "name": "bvd_raw",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E095/257/bvd_raw_052814.csv"
+            "url": "https://ndownloader.figshare.com/files/5632146"
         },
         {
             "dialect": {
@@ -27,7 +27,7 @@
             },
             "name": "bvd_species_raw",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E095/257/bvd_species_raw_030614.csv"
+            "url": "https://ndownloader.figshare.com/files/5632152"
         },
         {
             "dialect": {
@@ -37,7 +37,7 @@
             },
             "name": "bvd_genus_raw",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E095/257/bvd_genus_raw_030614.csv"
+            "url": "https://ndownloader.figshare.com/files/5632143"
         },
         {
             "dialect": {
@@ -47,7 +47,7 @@
             },
             "name": "bvd_species_ag",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E095/257/bvd_species_ag_030614.csv"
+            "url": "https://ndownloader.figshare.com/files/5632149"
         },
         {
             "dialect": {
@@ -57,7 +57,7 @@
             },
             "name": "bvd_genus_ag",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E095/257/bvd_genus_ag_030614.csv"
+            "url": "https://ndownloader.figshare.com/files/5632140"
         },
         {
             "dialect": {
@@ -67,19 +67,19 @@
             },
             "name": "taxa_table",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E095/257/taxa_table_030614.csv"
+            "url": "https://ndownloader.figshare.com/files/5632155"
         }
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Biovolumes for freshwater phytoplankton - Colin et al. 2014",
     "urls": {
-        "bvd_genus_ag": "http://esapubs.org/archive/ecol/E095/257/bvd_genus_ag_030614.csv",
-        "bvd_genus_raw": "http://esapubs.org/archive/ecol/E095/257/bvd_genus_raw_030614.csv",
-        "bvd_raw": "http://esapubs.org/archive/ecol/E095/257/bvd_raw_052814.csv",
-        "bvd_species_ag": "http://esapubs.org/archive/ecol/E095/257/bvd_species_ag_030614.csv",
-        "bvd_species_raw": "http://esapubs.org/archive/ecol/E095/257/bvd_species_raw_030614.csv",
-        "taxa_table": "http://esapubs.org/archive/ecol/E095/257/taxa_table_030614.csv"
+        "bvd_genus_ag": "https://ndownloader.figshare.com/files/5632140",
+        "bvd_genus_raw": "https://ndownloader.figshare.com/files/5632143",
+        "bvd_raw": "https://ndownloader.figshare.com/files/5632146",
+        "bvd_species_ag": "https://ndownloader.figshare.com/files/5632149",
+        "bvd_species_raw": "https://ndownloader.figshare.com/files/5632152",
+        "taxa_table": "https://ndownloader.figshare.com/files/5632155"
     },
-    "version": "1.1.1"
+    "version": "1.2.0"
 }
