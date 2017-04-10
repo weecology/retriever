@@ -27,7 +27,7 @@ from retriever.engines import engine_list
 from retriever.lib.repository import check_for_updates
 from retriever.lib.tools import choose_engine, name_matches, reset_retriever
 from retriever.lib.get_opts import parser
-from retriever.lib.datapackage import create_json, edit_json
+from retriever.lib.datapackage import create_json, edit_json, delete_json, get_script_filename
 
 def main():
     """This function launches the Data Retriever."""
@@ -98,31 +98,18 @@ def main():
 
         elif args.command == 'edit_json':
             # edit existing JSON script
-            for json_file in [filename for filename in
-                              os.listdir(os.path.join(HOME_DIR, 'scripts')) if filename[-5:] == '.json']:
-                if json_file.lower().find(args.filename.lower()) != -1:
-                    edit_json(json_file)
-                    return
-            raise Exception("File not found")
+            json_file = get_script_filename(args.dataset.lower())
+            edit_json(json_file)
+            return
 
         elif args.command == 'delete_json':
-            # delete existing JSON script
-            for json_file in [filename for filename in
-                              os.listdir(os.path.join(HOME_DIR, 'scripts')) if filename[-5:] == '.json']:
-                if json_file.lower().find(args.dataset.lower()) != -1:
-                    confirm = input("Really remove " + json_file +
-                                    " and all its contents? (y/N): ")
-                    if confirm.lower().strip() in ['y', 'yes']:
-                        # raise Exception(json_file)
-                        os.remove(os.path.join(HOME_DIR, 'scripts', json_file))
-                        try:
-                            os.remove(os.path.join(
-                                HOME_DIR, 'scripts', json_file[:-4] + 'py'))
-                        except:
-                            # Not compiled yet
-                            pass
-                    return
-            raise Exception("File not found")
+            # delete existing JSON script from home directory and or script directory if exists in current dir
+            confirm = input("Really remove " + args.dataset.lower() +
+                            " and all its contents? (y/N): ")
+            if confirm.lower().strip() in ['y', 'yes']:
+                json_file = get_script_filename(args.dataset.lower())
+                delete_json(json_file)
+            return
 
         if args.command == 'ls':
             # If scripts have never been downloaded there is nothing to list
