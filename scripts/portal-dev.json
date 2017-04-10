@@ -1,5 +1,5 @@
 {
-    "citation": "S. K. M. Ernest, G. M. Yenni, G. Allington, E. M. Christensen, K. Geluso, J. R. Goheen, M. R. Schutzenhofer, S. R. Supp, K. M. Thibault, James H. Brown, and T. J. Valone. 2016. Long-term monitoring and experimental manipulation of a Chihuahuan desert ecosystem near Portal, Arizona (1977–2013). Ecology 97:1082.",
+    "citation": "S. K. M. Ernest, G. M. Yenni, G. Allington, E. M. Christensen, K. Geluso, J. R. Goheen, M. R. Schutzenhofer, S. R. Supp, K. M. Thibault, James H. Brown, and T. J. Valone. 2016. Long-term monitoring and experimental manipulation of a Chihuahuan desert ecosystem near Portal, Arizona (1977-2013). Ecology 97:1082.",
     "description": "The data set represents a Desert ecosystems using the composition and abundances of ants, plants, and rodents has occurred continuously on 24 plots.",
     "homepage": "https://github.com/weecology/PortalData",
     "keywords": [
@@ -663,5 +663,5 @@
         "weather_19801989":"https://raw.githubusercontent.com/weecology/PortalData/master/Weather/Portal_weather_19801989.csv",
         "weather":"https://raw.githubusercontent.com/weecology/PortalData/master/Weather/Portal_weather.csv"
     },
-    "version": "1.0.1"
+    "version": "1.0.2"
 }
