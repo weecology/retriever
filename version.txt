@@ -30,7 +30,7 @@ mammal_community_db.json,1.2.0
 mammal_diet.json,1.1.1
 mammal_life_hist.json,1.2.0
 mammal_masses.json,1.3.0
-mammal_metabolic_rate.json,1.1.1
+mammal_metabolic_rate.json,1.2.0
 MammalSuperTree.py,1.1.0
 mapped_plant_quads_co.json,1.2.0
 mapped_plant_quads_id.json,1.2.0
