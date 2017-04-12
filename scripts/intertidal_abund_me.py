@@ -1,7 +1,8 @@
 #retriever
 from retriever.lib.templates import Script
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
-from retriever import open_fr, open_fw
+from retriever import open_fr, open_fw, VERSION
+from pkg_resources import parse_version
 
 class main(Script):
     def __init__(self):
@@ -14,8 +15,12 @@ class main(Script):
                         retriever_minimum_version='2.0.dev',
                         version='1.4.0',
                         urls={"main": "https://ndownloader.figshare.com/files/5600831"},
-                        tables={"main": Table("main", cleanup=Cleanup(correct_invalid_value, nulls=[-999.9]))}
+                        tables={"main": Table("main", cleanup=Cleanup(correct_invalid_value, missingValues=[-999.9]))}
                         )
+        if parse_version(VERSION) < parse_version("2.0.0"):
+            self.shortname = self.name
+            self.name = self.title
+            self.tags = self.keywords
 
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
