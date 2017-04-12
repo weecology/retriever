@@ -39,7 +39,7 @@ class main(Script):
         self.description = "Dataset containing the nutrient cycling rates of individual animals."
         self.keywords = ['Aquatic']
 
-        if parse_version(VERSION) < parse_version("2.0.0"):
+        if parse_version(VERSION) <= parse_version("2.0.0"):
             self.shortname = self.name
             self.name = self.title
             self.tags = self.keywords

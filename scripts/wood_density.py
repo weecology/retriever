@@ -39,7 +39,7 @@ class main(Script):
         2. Provide recognition of the efforts of this group in the assembly of the data by using the citation for the database above.
         3. Recognize that these data were assembled by the group for various analyses and research questions. If any of these uses overlap with your interests, you recognize that group has precedence in addressing these questions."""
 
-        if parse_version(VERSION) < parse_version("2.0.0"):
+        if parse_version(VERSION) <= parse_version("2.0.0"):
             self.shortname = self.name
             self.name = self.title
             self.tags = self.keywords

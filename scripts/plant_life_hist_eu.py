@@ -3,7 +3,8 @@
 from builtins import str
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 from retriever.lib.templates import Script
-from retriever import HOME_DIR, open_fr, open_fw
+from retriever import HOME_DIR, open_fr, open_fw, VERSION
+from pkg_resources import parse_version
 
 
 class main(Script):
@@ -46,6 +47,14 @@ class main(Script):
         self.keywords = ['plants', 'observational']
         self.description = "The LEDA Traitbase provides information on plant traits that describe three key features of plant dynamics: persistence, regeneration and dispersal. "
 
+        if parse_version(VERSION) <= parse_version("2.0.0"):
+            self.shortname = self.name
+            self.name = self.title
+            self.tags = self.keywords
+            self.cleanup_func_table = Cleanup(correct_invalid_value, nulls=['NA'])
+        else:
+            self.cleanup_func_table = Cleanup(correct_invalid_value, missing_values=['NA'])
+
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
         for key in self.urls:
@@ -67,8 +76,7 @@ class main(Script):
             file_block.close()
             new_data.close()
             self.engine.auto_create_table(Table(key,
-                                                cleanup=Cleanup(correct_invalid_value,
-                                                                missingValues=[-999.9])),filename=str("new" + key))
+                                                cleanup=cleanup_func_table),filename=str("new" + key))
             self.engine.insert_data_from_file(new_file_path)
 
 

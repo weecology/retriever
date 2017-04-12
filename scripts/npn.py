@@ -10,10 +10,6 @@ from future import standard_library
 standard_library.install_aliases()
 from builtins import str
 
-import os
-import urllib.request, urllib.parse, urllib.error
-import zipfile
-from decimal import Decimal
 from retriever.lib.templates import Script
 from retriever.lib.models import Table, Cleanup, no_cleanup, correct_invalid_value
 from pkg_resources import parse_version
@@ -34,7 +30,7 @@ class main(Script):
         self.description = "The data set was collected via Nature's Notebook phenology observation program (2009-present), and (2) Lilac and honeysuckle data (1955-present)"
         self.citation = "Schwartz, M. D., Ault, T. R., & J. L. Betancourt, 2012: Spring Onset Variations and Trends in the Continental USA: Past and Regional Assessment Using Temperature-Based Indices. International Journal of Climatology (published online, DOI: 10.1002/joc.3625)."
 
-        if parse_version(VERSION) < parse_version("2.0.0"):
+        if parse_version(VERSION) <= parse_version("2.0.0"):
             self.shortname = self.name
             self.name = self.title
             self.tags = self.keywords

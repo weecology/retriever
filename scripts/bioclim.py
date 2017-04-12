@@ -21,7 +21,7 @@ class main(Script):
         self.version = '1.2.0'
         self.keywords = ["climate"]
         
-        if parse_version(VERSION) < parse_version("2.0.0"):
+        if parse_version(VERSION) <= parse_version("2.0.0"):
             self.shortname = self.name
             self.name = self.title
             self.tags = self.keywords

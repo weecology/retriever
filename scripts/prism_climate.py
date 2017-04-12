@@ -21,7 +21,7 @@ class main(Script):
         self.description = "The PRISM data set represents climate observations from a wide range of monitoring networks, applies sophisticated quality control measures, and develops spatial climate datasets to reveal short- and long-term climate patterns. "
         self.keywords = []
         
-        if parse_version(VERSION) < parse_version("2.0.0"):
+        if parse_version(VERSION) <= parse_version("2.0.0"):
             self.shortname = self.name
             self.name = self.title
             self.tags = self.keywords

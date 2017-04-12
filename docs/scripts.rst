@@ -58,7 +58,7 @@ table.
   Add Table? (y/N): y
   table-name: species
   table-url: http://esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt
-  missingValues (separated by ';'):
+  missing-values (separated by ';'):
   replace_columns (separated by ';'):
   delimiter:
   do_not_bulk_insert (bool = True/False):

@@ -3,6 +3,8 @@
 
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 from retriever.lib.templates import Script
+from retriever import VERSION
+from pkg_resources import parse_version
 
 
 class main(Script):
@@ -11,7 +13,7 @@ class main(Script):
         self.title = "Indian Forest Stand Structure and Composition (Ramesh et al. 2010)"
         self.name = "forest-plots-wghats"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.2.0'
+        self.version = '1.3.0'
         self.ref = "https://figshare.com/collections/Forest_stand_structure_and_composition_in_96_sites_" \
                    "along_environmental_gradients_in_the_central_Western_Ghats_of_India/3303531"
         self.urls = {'data': 'https://ndownloader.figshare.com/files/5617140'}
@@ -23,13 +25,13 @@ class main(Script):
                            "sites spread across 22000 km2 in central Western Ghats region, Karnataka, India."
         self.keywords = ['plants', 'regional-scale', 'observational']
 
-        if parse_version(VERSION) < parse_version("2.0.0"):
+        if parse_version(VERSION) <= parse_version("2.0.0"):
             self.shortname = self.name
             self.name = self.title
             self.tags = self.keywords
             self.cleanup_func_table = Cleanup(correct_invalid_value, nulls=['NA'])
         else:
-            self.cleanup_func_table = Cleanup(correct_invalid_value, missingValues=['NA'])
+            self.cleanup_func_table = Cleanup(correct_invalid_value, missing_values=['NA'])
 
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)

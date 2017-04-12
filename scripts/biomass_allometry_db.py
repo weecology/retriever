@@ -17,16 +17,16 @@ class main(Script):
         self.citation = "Falster, D.S., Duursma, R.A., Ishihara, M.I., Barneche, D.R., FitzJohn, R.G., Varhammar, A., Aiba, M., Ando, M., Anten, N., Aspinwall, M.J. and Baltzer, J.L., 2015. BAAD: a Biomass And Allometry Database for woody plants."
         self.keywords = ['plants', 'observational']
         self.retriever_minimum_version = "2.0.dev"
-        self.version = "1.3.0"
+        self.version = "1.4.0"
         self.description = "The data set is a Biomass and allometry database (BAAD) for woody plants containing 259634 measurements collected in 176 different studies from 21084 individuals across 678 species."
         
-        if parse_version(VERSION) < parse_version("2.0.0"):
+        if parse_version(VERSION) <= parse_version("2.0.0"):
             self.shortname = self.name
             self.name = self.title
             self.tags = self.keywords
             self.cleanup_func_table = Cleanup(correct_invalid_value, nulls=['NA'])
         else:
-            self.cleanup_func_table = Cleanup(correct_invalid_value, missingValues=['NA'])
+            self.cleanup_func_table = Cleanup(correct_invalid_value, missing_values=['NA'])
     
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)

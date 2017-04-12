@@ -14,6 +14,8 @@ import xlrd
 from retriever.lib.templates import Script
 from retriever.lib.models import Table
 from retriever.lib.excel import Excel
+from retriever import VERSION
+from pkg_resources import parse_version
 
 TAX_GROUPS = 9756  # 9819
 
@@ -39,6 +41,11 @@ Missouri Botanical Garden
 P.O. Box 299
 St. Louis, MO 63166-0299
 U.S.A. """
+
+        if parse_version(VERSION) <= parse_version("2.0.0"):
+            self.shortname = self.name
+            self.name = self.title
+            self.tags = self.keywords
 
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)

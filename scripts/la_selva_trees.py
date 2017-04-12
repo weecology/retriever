@@ -6,23 +6,24 @@ from pkg_resources import parse_version
 
 
 class main(Script):
-    def __init__(self):
-        Script.__init__(self,
-                        tables={'trees': Table('trees', cleanup=Cleanup(correct_invalid_value, missingValues=[-999]))},
-                        title="Tree growth, mortality, physical condition - Clark, 2006",
-                        keywords=['plants', 'time-series'],
-                        urls={'trees': 'https://ndownloader.figshare.com/files/5597693'},
-                        sname="la-selva-trees",
-                        description="The data set helps to examine the post-establishment ecology of 10 species of tropical wet forest trees selected to span a range of predicted life history patterns at the La Selva Biological Station in Costa Rica.",
-                        ref="https://doi.org/10.6084/m9.figshare.c.3299324.v1",
-                        retriever_minimum_version= "2.0.dev",
-                        version='1.3.0',
-                        citation="David B. Clark and Deborah A. Clark. 2006. Tree growth, mortality, physical condition, and microsite in an old-growth lowland tropical rain forest. Ecology 87:2132.")
+    def __init__(self, **kwargs):
+        Script.__init__(self, **kwargs)
+        self.tables={'trees': Table('trees', cleanup=Cleanup(correct_invalid_value, missingValues=[-999]))}
+        self.title="Tree growth, mortality, physical condition - Clark, 2006"
+        self.keywords=['plants', 'time-series']
+        self.urls={'trees': 'https://ndownloader.figshare.com/files/5597693'}
+        self.name="la-selva-trees"
+        self.description="The data set helps to examine the post-establishment ecology of 10 species of tropical wet forest trees selected to span a range of predicted life history patterns at the La Selva Biological Station in Costa Rica."
+        self.ref="https://doi.org/10.6084/m9.figshare.c.3299324.v1"
+        self.retriever_minimum_version= "2.0.dev"
+        self.version='1.4.0'
+        self.citation="David B. Clark and Deborah A. Clark. 2006. Tree growth, mortality, physical condition, and microsite in an old-growth lowland tropical rain forest. Ecology 87:2132."
 
-        if parse_version(VERSION) < parse_version("2.0.0"):
+        if parse_version(VERSION) <= parse_version("2.0.0"):
             self.shortname = self.name
             self.name = self.title
             self.tags = self.keywords
+            self.tables = {"trees": Table("trees", cleanup=Cleanup(correct_invalid_value, nulls=[-999.9]))}
 
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)

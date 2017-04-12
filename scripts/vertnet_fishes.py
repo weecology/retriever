@@ -25,7 +25,7 @@ class main(Script):
         self.description = "Compilation of digitized museum records of fishes including locations, dates of collection, and some trait data."
         self.keywords = ['fishes']
 
-        if parse_version(VERSION) < parse_version("2.0.0"):
+        if parse_version(VERSION) <= parse_version("2.0.0"):
             self.shortname = self.name
             self.name = self.title
             self.tags = self.keywords
