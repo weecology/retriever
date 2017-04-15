@@ -1,0 +1,8 @@
+# basic information about the script
+name: eBird Observational Dataset
+shortname: eBirdOD
+description:  2014. EOD - eBird Observation Dataset. CLOEODMETADATA.05192014.1
+tags: Taxon > Birds, Spatial Scale > Global, Data Type > Observational
+
+# tables
+table: species_count, https://dataone.ornith.cornell.edu/metacat/d1/mn/v1/object/CLOEODDATA.05192014.1
