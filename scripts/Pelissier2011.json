@@ -1,0 +1,31 @@
+{
+    "citation": "Rapha\u00ebl Pelissier, Jean-Pierre Pascal, N. Ayyappan, B. R. Ramesh, S. Aravajy, and S. R. Ramalingam. 2011. Twenty years tree demography in an undisturbed Dipterocarp permanent sample plot at Uppangala, Western Ghats of India. Ecology 92:1376.",
+    "description": "This is a data set on demography of trees monitored over 20 years in Uppangala permanent sample plot (UPSP) in undisturbed, old-growth wet evergreen Dipterocarp forest located within the Pushpagiri Wildlife Sanctuary in India's Western Ghats biodiversity hotspot",
+    "homepage": "http://esapubs.org/archive/ecol/E092/115/",
+    "keywords": [
+        "Taxon > Plants"
+    ],
+    "name": "Pelissier2011",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "upsp_data",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E092/115/UPSP_Demo_data.txt"
+        },
+        {
+            "dialect": {},
+            "name": "species",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E092/115/UPSP_Species_list2.txt"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.0-dev",
+    "script_version": 1.0,
+    "title": "Twenty years tree demography in an undisturbed Dipterocarp permanent sample plot at Uppangala, Western Ghats of India",
+    "urls": {
+        "species": "http://esapubs.org/archive/ecol/E092/115/UPSP_Species_list2.txt",
+        "upsp_data": "http://esapubs.org/archive/ecol/E092/115/UPSP_Demo_data.txt"
+    }
+}

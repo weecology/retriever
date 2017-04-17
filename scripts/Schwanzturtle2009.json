@@ -1,0 +1,24 @@
+{
+    "citation": "Lisa E. Schwanz, Rachel M. Bowden, Ricky-John Spencer, and Fredric J. Janzen. 2009. Nesting ecology and offspring recruitment in a long-lived turtle. Ecology 90:1709.",
+    "description": "",
+    "homepage": "http://esapubs.org/archive/ecol/E090/119/",
+    "keywords": [
+        "Taxon > Animals"
+    ],
+    "name": "Schwanzturtle2009",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "species",
+            "schema": {},
+            "url": "http://esapubs.org/archive/ecol/E094/243/Antarctic_Site_Inventory_census_data_1994_2012.csv"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.0-dev",
+    "script_version": 1.0,
+    "title": "Nesting ecology and offspring recruitment in a long-lived turtle",
+    "urls": {
+        "species": "http://esapubs.org/archive/ecol/E094/243/Antarctic_Site_Inventory_census_data_1994_2012.csv"
+    }
+}
