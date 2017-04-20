@@ -6,10 +6,12 @@ from builtins import object
 import csv
 import io
 import sys
+import logging
 from functools import reduce
 
 from retriever.lib.cleanup import *
 
+_logger=logging.getLogger(__name__)
 
 class Table(object):
     """Information about a database table."""

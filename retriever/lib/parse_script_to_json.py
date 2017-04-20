@@ -1,10 +1,10 @@
 import json
 import os
 from copy import copy
-
+import logging
 JSON_DIR = "../scripts/"
 SCRIPT_DIR = "../scripts/"
-
+_logger=logging.getLogger(__name__)
 
 def parse_script_to_json(script_file, location=SCRIPT_DIR):
 

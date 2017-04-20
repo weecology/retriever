@@ -3,8 +3,11 @@ from builtins import input
 import os
 import json
 import glob
+import logging
 from time import sleep
 from retriever import SCRIPT_LIST, HOME_DIR, ENCODING
+
+_logger=logging.getLogger(__name__)
 
 short_names = [script.shortname.lower() for script in SCRIPT_LIST()]
 
@@ -23,16 +26,16 @@ def clean_input(prompt="", split_char='', ignore_empty=False, dtype=None):
             val = [v.strip() for v in val.split(split_char) if v.strip() != ""]
         # do not ignore empty input if not allowed
         if not ignore_empty and is_empty(val):
-            print("\tError: empty input. Need one or more values.\n")
+            _logger.error("Error: empty input. Need one or more values.")
             continue
         # ensure correct input datatype if specified
         if not is_empty(val) and dtype is not None:
             try:
                 if not type(eval(val)) == dtype:
-                    print("\tError: input doesn't match required type ", dtype, "\n")
+                    _logger.error("Error: input doesn't match required type %s",dtype)
                     continue
             except:
-                print("\tError: illegal argument. Input type should be ", dtype, "\n")
+                _logger("Error: illegal argument. Input type should be %s", dtype)
                 continue
         break
     return val
