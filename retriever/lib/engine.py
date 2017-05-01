@@ -18,6 +18,7 @@ import csv
 import re
 import io
 import time
+import logging
 from urllib.request import urlretrieve
 from retriever import DATA_SEARCH_PATHS, DATA_WRITE_PATH, open_fr, open_fw, open_csvw
 from retriever.lib.cleanup import no_cleanup
@@ -40,6 +41,7 @@ class Engine(object):
     use_cache = True
     debug = False
     warnings = []
+    _logger = logging.getLogger("retriever")
 
     def connect(self, force_reconnect=False):
         if force_reconnect:

@@ -1,8 +1,11 @@
 from builtins import str
 import json
+import logging
 import sys
 if sys.version_info[0] < 3:
     from codecs import open
+
+_logger=logging.getLogger(__name__)
 
 script_templates = {
     "default": """#retriever

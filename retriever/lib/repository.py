@@ -8,6 +8,7 @@ import urllib.request
 import urllib.parse
 import urllib.error
 import imp
+import logging
 from pkg_resources import parse_version
 from retriever import REPOSITORY, SCRIPT_WRITE_PATH, HOME_DIR
 from retriever.lib.models import file_exists
@@ -15,7 +16,7 @@ from retriever.lib.models import file_exists
 global abort, executable_name
 abort = False
 executable_name = "retriever"
-
+_logger=logging.getLogger(__name__)
 
 def download_from_repository(filepath, newpath, repo=REPOSITORY):
     """Downloads the latest version of a file from the repository."""

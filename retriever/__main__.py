@@ -8,6 +8,7 @@ The main() function can be used for bootstrapping.
 """
 from __future__ import print_function
 from __future__ import absolute_import
+import logging
 from builtins import str
 from builtins import input
 from imp import reload
@@ -28,6 +29,20 @@ from retriever.lib.repository import check_for_updates
 from retriever.lib.tools import choose_engine, name_matches, reset_retriever
 from retriever.lib.get_opts import parser
 from retriever.lib.datapackage import create_json, edit_json, delete_json, get_script_filename
+
+_logger = logging.getLogger("retriever")
+_logger.setLevel(logging.DEBUG)
+
+#handler for file
+fileHandler = logging.FileHandler("retriever.log",'w')
+fileHandler.setLevel(logging.DEBUG)
+_logger.addHandler(fileHandler)
+
+#handler for stream
+streamHandler = logging.StreamHandler()
+streamHandler.setLevel(logging.INFO)
+_logger.addHandler(streamHandler)
+
 
 def main():
     """This function launches the Data Retriever."""
@@ -141,7 +156,7 @@ def main():
 
             all_scripts = sorted(all_scripts, key=lambda s: s.lower())
 
-            print("Available datasets : {}\n".format(len(all_scripts)))
+            _logger.info("Available datasets : {}\n".format(len(all_scripts)))
 
             if args.l is None:
                 from retriever import lscolumns

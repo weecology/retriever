@@ -3,11 +3,13 @@ import os
 from retriever import VERSION
 from retriever.engines import engine_list
 import argcomplete
+import logging
 
 from argcomplete.completers import ChoicesCompleter
 
 from retriever import MODULE_LIST
 
+_logger=logging.getLogger(__name__)
 module_list = MODULE_LIST()
 script_list = [module.SCRIPT.shortname for module in module_list]
 json_list = [module.SCRIPT.shortname for module in module_list
