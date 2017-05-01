@@ -1,21 +1,28 @@
 #retriever
 from retriever.lib.templates import Script
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
+from retriever import VERSION
+from pkg_resources import parse_version
 
 
 class main(Script):
     def __init__(self):
         Script.__init__(self,
-                        tables={'trees': Table('trees', cleanup=Cleanup(correct_invalid_value, nulls=[-999]))},
-                        name="Tree growth, mortality, physical condition - Clark, 2006",
-                        tags=['plants', 'time-series'],
+                        tables={'trees': Table('trees', cleanup=Cleanup(correct_invalid_value, missingValues=[-999]))},
+                        title="Tree growth, mortality, physical condition - Clark, 2006",
+                        keywords=['plants', 'time-series'],
                         urls={'trees': 'https://ndownloader.figshare.com/files/5597693'},
-                        shortname="la-selva-trees",
+                        sname="la-selva-trees",
                         description="The data set helps to examine the post-establishment ecology of 10 species of tropical wet forest trees selected to span a range of predicted life history patterns at the La Selva Biological Station in Costa Rica.",
                         ref="https://doi.org/10.6084/m9.figshare.c.3299324.v1",
                         retriever_minimum_version= "2.0.dev",
                         version='1.3.0',
                         citation="David B. Clark and Deborah A. Clark. 2006. Tree growth, mortality, physical condition, and microsite in an old-growth lowland tropical rain forest. Ecology 87:2132.")
+
+        if parse_version(VERSION) < parse_version("2.0.0"):
+            self.shortname = self.name
+            self.name = self.title
+            self.tags = self.keywords
 
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)

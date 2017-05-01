@@ -7,14 +7,16 @@ import os
 
 from retriever.lib.models import Table
 from retriever.lib.templates import Script
+from retriever import VERSION
+from pkg_resources import parse_version
  
 class main(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
-        self.name = "Aquatic Animal Excretion"
-        self.shortname = "aquatic-animal-excretion"
+        self.title = "Aquatic Animal Excretion"
+        self.name = "aquatic-animal-excretion"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.0.0'
+        self.version = '1.1.0'
         self.ref = "http://onlinelibrary.wiley.com/doi/10.1002/ecy.1792/abstract"
         self.urls = {
             'aquatic_animals': 'http://onlinelibrary.wiley.com/store/10.1002/ecy.1792/asset/supinfo/ecy1792-sup-0001-DataS1.zip?v=1&s=3a9094a807bbc2d03ba43045d2b72782bfb348ef'
@@ -35,7 +37,12 @@ class main(Script):
                         "A global database of nitrogen and phosphorus excretion rates of aquatic animals. " \
                         "Ecology. Accepted Author Manuscript. doi:10.1002/ecy.1792"
         self.description = "Dataset containing the nutrient cycling rates of individual animals."
-        self.tags = ['Aquatic']
+        self.keywords = ['Aquatic']
+
+        if parse_version(VERSION) < parse_version("2.0.0"):
+            self.shortname = self.name
+            self.name = self.title
+            self.tags = self.keywords
 
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)

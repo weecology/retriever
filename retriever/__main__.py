@@ -122,12 +122,12 @@ def main():
             all_scripts = []
 
             for script in script_list:
-                if script.shortname:
+                if script.name:
                     if args.l is not None:
-                        script_name = script.name + "\nShortname: " + script.shortname + "\n"
-                        if script.tags:
-                            script_name += "Tags: " + \
-                                str([tag for tag in script.tags]) + "\n"
+                        script_name = script.title + "\nName: " + script.name + "\n"
+                        if script.keywords:
+                            script_name += "Keywords: " + \
+                                str([tag for tag in script.keywords]) + "\n"
                         not_found = 0
                         for term in args.l:
                             if script_name.lower().find(term.lower()) == -1:
@@ -136,7 +136,7 @@ def main():
                         if not_found == 0:
                             all_scripts.append(script_name)
                     else:
-                        script_name = script.shortname
+                        script_name = script.name
                         all_scripts.append(script_name)
 
             all_scripts = sorted(all_scripts, key=lambda s: s.lower())
