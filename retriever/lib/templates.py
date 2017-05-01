@@ -15,7 +15,7 @@ class Script(object):
 
     def __init__(self, name="", description="", shortname="", urls=dict(),
                  tables=dict(), ref="", public=True, addendum=None, citation="Not currently available",
-                 retriever_minimum_version="", version="", encoding="", **kwargs):
+                 retriever_minimum_version="", version="", encoding="", dataset_availability="True", **kwargs):
         self.name = name
         self.shortname = shortname
         self.filename = __name__
@@ -28,6 +28,7 @@ class Script(object):
         self.citation = citation
         self.tags = []
         self.retriever_minimum_version = retriever_minimum_version
+        self.dataset_availability = dataset_availability
         self.encoding = encoding
         self.version = version
         for key, item in list(kwargs.items()):

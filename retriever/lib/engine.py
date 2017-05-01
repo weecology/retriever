@@ -388,21 +388,25 @@ class Engine(object):
 
     def download_file(self, url, filename):
         """Downloads a file to the raw data directory."""
-        if not self.find_file(filename) or not self.use_cache:
-            path = self.format_filename(filename)
-            self.create_raw_data_dir()
-            print("\nDownloading " + filename + "...")
-            try:
-                urlretrieve(url, path, reporthook=reporthook)
-            except:
-                # For some urls lacking filenames urlretrieve from the future
-                # package seems to fail. This issue occurred in the PlantTaxonomy
-                # script. If this happens, fall back to the standard Python 2 version.
-                from urllib import urlretrieve as py2urlretrieve
-                py2urlretrieve(url, path, reporthook=reporthook)
-            finally:
-                # Download is complete, set to prevent repeated downloads
-                self.use_cache = True
+
+        if self.script.dataset_availability != "True":
+            print(self.script.dataset_availability)
+        else:
+            if not self.find_file(filename) or not self.use_cache:
+                path = self.format_filename(filename)
+                self.create_raw_data_dir()
+                print("\nDownloading " + filename + "...")
+                try:
+                    urlretrieve(url, path, reporthook=reporthook)
+                except:
+                    # For some urls lacking filenames urlretrieve from the future
+                    # package seems to fail. This issue occurred in the PlantTaxonomy
+                    # script. If this happens, fall back to the standard Python 2 version.
+                    from urllib import urlretrieve as py2urlretrieve
+                    py2urlretrieve(url, path, reporthook=reporthook)
+                finally:
+                    # Download is complete, set to prevent repeated downloads
+                    self.use_cache = True
 
     def download_files_from_archive(self, url, filenames, filetype="zip",
                                     keep_in_dir=False, archivename=None):
