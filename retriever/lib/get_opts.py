@@ -70,6 +70,8 @@ for engine in engine_list:
     else:
         engine_parser = install_subparsers.add_parser(engine.abbreviation, help=engine.name)
         engine_parser.add_argument('dataset', help='dataset name').completer = ChoicesCompleter(script_list)
+        engine_parser.add_argument('-tb', help='download specific tables from a script',
+                       nargs='+').completer = ChoicesCompleter(list(keywords_list))
 
     abbreviations = set('h')
 
