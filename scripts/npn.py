@@ -24,7 +24,7 @@ class main(Script):
         self.title = "USA National Phenology Network"
         self.name = "NPN"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '2.0.0'
+        self.version = '2.1.0'
         self.ref = "http://www.usanpn.org/results/data"
         self.keywords = ["Data Type > Phenology", "Spatial Scale > Continental"]
         self.description = "The data set was collected via Nature's Notebook phenology observation program (2009-present), and (2) Lilac and honeysuckle data (1955-present)"

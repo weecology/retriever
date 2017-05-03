@@ -8,7 +8,7 @@ from pkg_resources import parse_version
 class main(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
-        self.tables={'trees': Table('trees', cleanup=Cleanup(correct_invalid_value, missingValues=[-999]))}
+        self.cleanup_func_table = Cleanup(correct_invalid_value, missing_values=[-999])
         self.title="Tree growth, mortality, physical condition - Clark, 2006"
         self.keywords=['plants', 'time-series']
         self.urls={'trees': 'https://ndownloader.figshare.com/files/5597693'}
@@ -23,7 +23,8 @@ class main(Script):
             self.shortname = self.name
             self.name = self.title
             self.tags = self.keywords
-            self.tables = {"trees": Table("trees", cleanup=Cleanup(correct_invalid_value, nulls=[-999.9]))}
+            self.cleanup_func_table = Cleanup(correct_invalid_value, nulls=[-999])
+        self.tables={'trees': Table('trees', cleanup=self.cleanup_func_table)}
 
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)

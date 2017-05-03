@@ -15,12 +15,13 @@ class main(Script):
         self.retriever_minimum_version='2.0.dev'
         self.version='1.5.0'
         self.urls={"main": "https://ndownloader.figshare.com/files/5600831"}
-        self.tables={"main": Table("main", cleanup=Cleanup(correct_invalid_value, missingValues=[-999.9]))}
+        self.cleanup_func_table = Cleanup(correct_invalid_value, missing_values=[-999.9])
                         
         if parse_version(VERSION) <= parse_version("2.0.0"):
             self.shortname = self.name
             self.name = self.title
-            self.tables = {"main": Table("main", cleanup=Cleanup(correct_invalid_value, nulls=[-999.9]))}
+            self.cleanup_func_table = Cleanup(correct_invalid_value, nulls=[-999.9])
+        self.tables={"main": Table("main", cleanup=self.cleanup_func_table)}
 
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)

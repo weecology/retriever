@@ -45,8 +45,8 @@ class main(Script):
             self.cleanup_func_table = Cleanup(correct_invalid_value, nulls=['NULL'])
             self.cleanup_func_clean = Cleanup(correct_invalid_value, nulls = ['*'])
         else:
-            self.cleanup_func_table = Cleanup(correct_invalid_value, missingValues=['NULL'])
-            self.cleanup_func_clean = Cleanup(correct_invalid_value, missingValues = ['*'])         
+            self.cleanup_func_table = Cleanup(correct_invalid_value, missing_values=['NULL'])
+            self.cleanup_func_clean = Cleanup(correct_invalid_value, missing_values = ['*'])         
 
     def download(self, engine=None, debug=False):
         try:
