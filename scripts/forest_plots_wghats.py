@@ -3,15 +3,17 @@
 
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 from retriever.lib.templates import Script
+from retriever import VERSION
+from pkg_resources import parse_version
 
 
 class main(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
-        self.name = "Indian Forest Stand Structure and Composition (Ramesh et al. 2010)"
-        self.shortname = "forest-plots-wghats"
+        self.title = "Indian Forest Stand Structure and Composition (Ramesh et al. 2010)"
+        self.name = "forest-plots-wghats"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.2.0'
+        self.version = '1.3.0'
         self.ref = "https://figshare.com/collections/Forest_stand_structure_and_composition_in_96_sites_" \
                    "along_environmental_gradients_in_the_central_Western_Ghats_of_India/3303531"
         self.urls = {'data': 'https://ndownloader.figshare.com/files/5617140'}
@@ -21,7 +23,15 @@ class main(Script):
                         "Western Ghats of India. Ecology 91:3118."
         self.description = "This data set reports woody plant species abundances in a network of 96 sampling " \
                            "sites spread across 22000 km2 in central Western Ghats region, Karnataka, India."
-        self.tags = ['plants', 'regional-scale', 'observational']
+        self.keywords = ['plants', 'regional-scale', 'observational']
+
+        if parse_version(VERSION) <= parse_version("2.0.0"):
+            self.shortname = self.name
+            self.name = self.title
+            self.tags = self.keywords
+            self.cleanup_func_table = Cleanup(correct_invalid_value, nulls=['NA'])
+        else:
+            self.cleanup_func_table = Cleanup(correct_invalid_value, missing_values=['NA'])
 
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
@@ -30,12 +40,12 @@ class main(Script):
         engine.download_files_from_archive(self.urls["data"], files, filetype="zip")
 
         # Create table species
-        engine.auto_create_table(Table('species', cleanup=Cleanup(correct_invalid_value, nulls=['NA'])),
+        engine.auto_create_table(Table('species', cleanup=self.cleanup_func_table),
                                  filename="Species_list.txt")
         engine.insert_data_from_file(engine.format_filename("Species_list.txt"))
 
         # Create table sites
-        engine.auto_create_table(Table('sites', cleanup=Cleanup(correct_invalid_value, nulls=['NA'])),
+        engine.auto_create_table(Table('sites', cleanup=self.cleanup_func_table),
                                  filename="Site_variables.txt")
         engine.insert_data_from_file(engine.format_filename("Site_variables.txt"))
 

@@ -21,7 +21,7 @@ import shutil
 from decimal import Decimal
 from hashlib import md5
 
-from retriever import HOME_DIR, open_fr, open_fw, open_csvw
+from retriever import HOME_DIR, open_fr, open_fw, open_csvw, ENCODING
 from retriever.lib.models import *
 import csv
 import json
@@ -34,9 +34,9 @@ TEST_ENGINES = dict()
 def name_matches(scripts, arg):
     matches = []
     for script in scripts:
-        if arg.lower() == script.shortname.lower(): return [script]
-        max_ratio = max([difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in (script.shortname.lower(), script.name.lower(), script.filename.lower())] +
-                        [difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in [tag.strip().lower() for tagset in script.tags for tag in tagset]]
+        if arg.lower() == script.name.lower(): return [script]
+        max_ratio = max([difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in (script.name.lower(), script.title.lower(), script.filename.lower())] +
+                        [difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in [keyword.strip().lower() for keywordset in script.keywords for keyword in keywordset]]
                         )
         if arg.lower() == 'all':
             max_ratio = 1.0
@@ -235,11 +235,11 @@ def getmd5(data, data_type='lines'):
         # don't use open_fr to keep line endings consistent across OSs
         if sys.version_info >= (3, 0, 0):
             if os.name == 'nt':
-                input_file = io.open(file_path, 'r', encoding='ISO-8859-1')
+                input_file = io.open(file_path, 'r', encoding=ENCODING)
             else:
-                input_file = open(file_path, 'r', encoding='ISO-8859-1')
+                input_file = open(file_path, 'r', encoding=ENCODING)
         else:
-            input_file = io.open(file_path, encoding='ISO-8859-1')
+            input_file = io.open(file_path, encoding=ENCODING)
 
         for line in input_file:
             if type(line) == bytes:
@@ -317,7 +317,7 @@ def file_2string(input_file):
     if sys.version_info >= (3, 0, 0):
         input = io.open(input_file, 'rU')
     else:
-        input = io.open(input_file, encoding='ISO-8859-1')
+        input = io.open(input_file, encoding=ENCODING)
 
     obs_out = input.read()
     return obs_out

@@ -377,7 +377,7 @@ class Engine(object):
         """Returns the name of the database"""
         if not name:
             try:
-                name = self.script.shortname
+                name = self.script.name
             except AttributeError:
                 name = "{db}"
         try:
@@ -418,7 +418,7 @@ class Engine(object):
         if keep_in_dir:
             archivebase = os.path.splitext(os.path.basename(archivename))[0]
             archivedir = os.path.join(DATA_WRITE_PATH, archivebase)
-            archivedir = archivedir.format(dataset=self.script.shortname)
+            archivedir = archivedir.format(dataset=self.script.name)
             if not os.path.exists(archivedir):
                 os.makedirs(archivedir)
         else:
@@ -487,7 +487,7 @@ class Engine(object):
     def exists(self, script):
         """Checks to see if the given table exists"""
         return all([self.table_exists(
-            script.shortname,
+            script.name,
             key
         )
             for key in list(script.urls.keys()) if key])
@@ -502,7 +502,7 @@ class Engine(object):
     def find_file(self, filename):
         """Checks for an existing datafile"""
         for search_path in DATA_SEARCH_PATHS:
-            search_path = search_path.format(dataset=self.script.shortname)
+            search_path = search_path.format(dataset=self.script.name)
             file_path = os.path.normpath(os.path.join(search_path, filename))
             if file_exists(file_path):
                 return file_path
@@ -510,7 +510,7 @@ class Engine(object):
 
     def format_data_dir(self):
         """Returns the correctly formatted raw data directory location."""
-        return DATA_WRITE_PATH.format(dataset=self.script.shortname)
+        return DATA_WRITE_PATH.format(dataset=self.script.name)
 
     def format_filename(self, filename):
         """Returns the full path of a file in the archive directory."""
@@ -542,8 +542,8 @@ class Engine(object):
         quotes = ["'", '"']
         if len(strvalue) > 1 and strvalue[0] == strvalue[-1] and strvalue[0] in quotes:
             strvalue = strvalue[1:-1]
-        nulls = ("null", "none")
-        if strvalue.lower() in nulls:
+        missing_values = ("null", "none")
+        if strvalue.lower() in missing_values:
             return "null"
         elif datatype in ("int", "bigint", "bool"):
             if strvalue:
@@ -564,7 +564,7 @@ class Engine(object):
             else:
                 return "null"
         elif datatype == "char":
-            if strvalue.lower() in nulls:
+            if strvalue.lower() in missing_values:
                 return "null"
             if escape:
                 # automatically escape quotes in string fields
@@ -703,7 +703,7 @@ class Engine(object):
         self.disconnect()
 
     def warning(self, warning):
-        new_warning = Warning('%s:%s' % (self.script.shortname, self.table.name), warning)
+        new_warning = Warning('%s:%s' % (self.script.name, self.table.name), warning)
         self.warnings.append(new_warning)
 
     def load_data(self, filename):

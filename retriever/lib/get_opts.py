@@ -9,14 +9,14 @@ from argcomplete.completers import ChoicesCompleter
 from retriever import MODULE_LIST
 
 module_list = MODULE_LIST()
-script_list = [module.SCRIPT.shortname for module in module_list]
-json_list = [module.SCRIPT.shortname for module in module_list
+script_list = [module.SCRIPT.name for module in module_list]
+json_list = [module.SCRIPT.name for module in module_list
              if os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.json')]
 
 keywords_list = set()
 for module in module_list:
-    if hasattr(module.SCRIPT, "tags"):
-        keywords_list = keywords_list | set(module.SCRIPT.tags)
+    if hasattr(module.SCRIPT, "keywords"):
+        keywords_list = keywords_list | set(module.SCRIPT.keywords)
 
 parser = argparse.ArgumentParser(prog="retriever")
 parser.add_argument('-v', '--version', action='version', version=VERSION)

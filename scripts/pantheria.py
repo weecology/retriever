@@ -3,15 +3,17 @@
 
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 from retriever.lib.templates import Script
+from retriever import VERSION
+from pkg_resources import parse_version
 
 
 class main(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
-        self.name = "Pantheria (Jones et al. 2009)"
-        self.shortname = "pantheria"
+        self.title = "Pantheria (Jones et al. 2009)"
+        self.name = "pantheria"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.2.0'
+        self.version = '1.3.0'
         self.ref = "https://figshare.com/collections/PanTHERIA_a_species-level_database_of_life_history_ecology_" \
                    "and_geography_of_extant_and_recently_extinct_mammals/3301274"
         self.urls = {"data": "https://ndownloader.figshare.com/files/5604752"}
@@ -25,7 +27,15 @@ class main(Script):
         self.description = "PanTHERIA is a data set of multispecies trait data from diverse literature sources " \
                            "and also includes spatial databases of mammalian geographic ranges and global climatic " \
                            "and anthropogenic variables."
-        self.tags = ["mammals", "literature-compilation", "life-history"]
+        self.keywords = ["mammals", "literature-compilation", "life-history"]
+
+        if parse_version(VERSION) <= parse_version("2.0.0"):
+            self.shortname = self.name
+            self.name = self.title
+            self.tags = self.keywords
+            self.cleanup_func_table = Cleanup(correct_invalid_value, nulls=['NA'])
+        else:
+            self.cleanup_func_table = Cleanup(correct_invalid_value, missing_values=['NA'])
 
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
@@ -34,7 +44,7 @@ class main(Script):
                                            filetype="zip")
 
         # Create table Species
-        engine.auto_create_table(Table('species', cleanup=Cleanup(correct_invalid_value, nulls=['NA'])),
+        engine.auto_create_table(Table('species', cleanup=self.cleanup_func_table),
                                  filename="PanTHERIA_1-0_WR05_Aug2008.txt")
         engine.insert_data_from_file(engine.format_filename("PanTHERIA_1-0_WR05_Aug2008.txt"))
 
