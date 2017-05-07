@@ -10,6 +10,7 @@ class main(Script):
         Script.__init__(self, **kwargs)
         self.title="Food web including metazoan parasites for a brackish shallow water ecosystem in Germany and Denmark"
         self.citation="C. Dieter Zander, Neri Josten, Kim C. Detloff, Robert Poulin, John P. McLaughlin, and David W. Thieltges. 2011. Food web including metazoan parasites for a brackish shallow water ecosystem in Germany and Denmark. Ecology 92:2007."
+        self.name="flensburg-food-web"
         self.shortname="flensburg-food-web"
         self.ref="https://figshare.com/articles/Full_Archive/3552066"
         self.description="This data is of a food web for the Flensburg Fjord, a brackish shallow water inlet on the Baltic Sea, between Germany and Denmark."
@@ -17,6 +18,12 @@ class main(Script):
         self.version='1.0.0'
         self.urls={"zip": "https://ndownloader.figshare.com/files/5620326"}
         self.cleanup_func_table = Cleanup(correct_invalid_value, missing_values=[''])
+
+        if parse_version(VERSION) <= parse_version("2.0.0"):
+            self.shortname = self.name
+            self.name = self.title
+            self.tags = self.keywords
+            self.cleanup_func_table = Cleanup(correct_invalid_value, nulls=['', 'unknown'])
 
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
@@ -29,9 +36,7 @@ class main(Script):
         
         for(filename,tablename) in file_names:
             data_path = self.engine.format_filename(filename)
-            print(data_path)
             self.engine.auto_create_table(Table(str(tablename), cleanup=self.cleanup_func_table),filename=filename)
-
             self.engine.insert_data_from_file(data_path)
 
 SCRIPT = main()

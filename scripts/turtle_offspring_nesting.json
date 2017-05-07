@@ -10,7 +10,42 @@
         {
             "dialect": {},
             "name": "species",
-            "schema": {},
+            "schema": {
+                "fields": [
+                    {
+                        "name": "Year",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Nest",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Nest_date",
+                        "type": "char"
+                    },
+                    {
+                        "name": "SW_Vegetation",
+                        "type": "double"
+                    },
+                    {
+                        "name": "Clutch_Size",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Nest_Predation",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Nest_Survival",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Live_Hatchlings",
+                        "type": "int"
+                    }
+                ]
+            },
             "url": "https://ndownloader.figshare.com/files/5604044"
         }
     ],

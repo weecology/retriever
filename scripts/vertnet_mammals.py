@@ -6,24 +6,31 @@ from builtins import str
 from retriever.lib.models import Table
 from retriever.lib.templates import Script
 import os
+from retriever import VERSION
+from pkg_resources import parse_version
 
 
 class main(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
-        self.name = "Vertnet Mammals"
-        self.shortname = "vertnet-mammals"
+        self.title = "Vertnet Mammals"
+        self.name = "vertnet-mammals"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.0.0'
+        self.version = '1.1.0'
         self.ref = "http://vertnet.org/resources/datatoolscode.html"
         self.urls = {
             'mammals': 'https://de.iplantcollaborative.org/anon-files//iplant/home/shared/commons_repo/curated/Vertnet_Mammalia_Sep2016/VertNet_Mammalia_Sept2016.zip',
         }
         self.citation = "Bloom, D., Wieczorek J., Russell, L. (2016).  VertNet_Mammals_Sept. 2016. CyVerse Data Commons. http://datacommons.cyverse.org/browse/iplant/home/shared/commons_repo/curated/VertNet_Mammals_Sep2016"
         self.description = "Compilation of digitized museum records of mammals including locations, dates of collection, and some trait data."
-        self.tags = ['mammals']
+        self.keywords = ['mammals']
 
-    def download(self, engine=None, debug=False, use_cache=True):
+        if parse_version(VERSION) <= parse_version("2.0.0"):
+            self.shortname = self.name
+            self.name = self.title
+            self.tags = self.keywords
+
+    def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
         engine = self.engine
 

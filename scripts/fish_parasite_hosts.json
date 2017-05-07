@@ -1,6 +1,7 @@
 {
     "citation": "Giovanni Strona, Maria Lourdes D. Palomares, Nicolas Bailly, Paolo Galli, and Kevin D. Lafferty. 2013. Host range, host ecology, and distribution of more than 11800 fish parasite species. Ecology 94:544.",
     "description": "The data set includes 38008 fish parasite records (for Acanthocephala, Cestoda, Monogenea, Nematoda, Trematoda) compiled from scientific literature.",
+    "homepage": "https://figshare.com/articles/Data_Paper_Data_Paper/3555378",
     "name": "fish-parasite-hosts",
     "resources": [
         {
@@ -89,14 +90,14 @@
             },
             "name": "host_characteristics",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E094/045/FPEDB.csv"
+            "url": "https://ndownloader.figshare.com/files/5624799"
         }
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Fish parasite host ecological characteristics (Strona, et al., 2013)",
     "urls": {
-        "host_characteristics": "http://esapubs.org/archive/ecol/E094/045/FPEDB.csv"
+        "host_characteristics": "https://ndownloader.figshare.com/files/5624799"
     },
-    "version": "1.1.1"
+    "version": "1.2.0"
 }

@@ -87,9 +87,9 @@ for engine in ENGINE_LIST:
 errors = []
 for module in MODULE_LIST:
     for (key, value) in list(TEST_ENGINES.items()):
-        if module.SCRIPT.shortname.lower() not in IGNORE:
+        if module.SCRIPT.name.lower() not in IGNORE:
             if value != None:
-                print("==>", module.__name__, value.name, "..........", module.SCRIPT.shortname)
+                print("==>", module.__name__, value.name, "..........", module.SCRIPT.name)
                 try:
                     module.SCRIPT.download(value)
                 except KeyboardInterrupt:
@@ -98,7 +98,7 @@ for module in MODULE_LIST:
                     print("ERROR.")
                     errors.append((key, module.__name__, e))
             else:
-                errors.append((key, "No connection detected......" + module.SCRIPT.shortname))
+                errors.append((key, "No connection detected......" + module.SCRIPT.name))
 print('')
 if errors:
     print("Engine, Dataset, Error")

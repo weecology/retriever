@@ -15,7 +15,7 @@
         }
     ],
     "retriever": "True",
-    "retriever_minimum_version": "2.0.0-dev",
+    "retriever_minimum_version": "2.0.dev",
     "version": "1.0.0",
     "title": "The effects of biodiversity on ecosystem community, and population variables reported 1974-2004",
     "urls": {
