@@ -16,9 +16,9 @@ services:
 install:
   - pip install -r requirements.txt
   - pip install -e .
-  - pip install codecov
-  - pip install pytest-cov
-  - pip install pytest-xdist
+  - pip install codecov -U
+  - pip install pytest-cov -U
+  - pip install pytest-xdist -U
 
 
 # command to run tests using py.test

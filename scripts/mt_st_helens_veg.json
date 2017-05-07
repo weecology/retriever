@@ -1,7 +1,7 @@
 {
     "citation": "Roger del Moral. 2010. Thirty years of permanent vegetation plots, Mount St. Helens, Washington. Ecology 91:2185.",
     "description": "Documenting vegetation recovery from volcanic disturbances using the most common species found in non-forested habitats on Mount St. Helens.",
-    "homepage": "http://esapubs.org/archive/ecol/E091/152/",
+    "homepage": "https://figshare.com/collections/Thirty_years_of_permanent_vegetation_plots_Mount_St_Helens_Washington_USA/3303093",
     "keywords": [
         "plants",
         "local-scale",
@@ -133,13 +133,13 @@
                     }
                 ]
             },
-            "url": "http://esapubs.org/archive/ecol/E091/152/MSH_SPECIES_PLOT_YEAR.csv"
+            "url": "https://ndownloader.figshare.com/files/5613783"
         },
         {
             "dialect": {},
             "name": "structure_plot_year",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E091/152/MSH_STRUCTURE_PLOT_YEAR.csv"
+            "url": "https://ndownloader.figshare.com/files/5613786"
         },
         {
             "dialect": {
@@ -148,23 +148,23 @@
             },
             "name": "species",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E091/152/MSH_SPECIES_DESCRIPTORS.csv"
+            "url": "https://ndownloader.figshare.com/files/5613789"
         },
         {
             "dialect": {},
             "name": "plots",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E091/152/MSH_PLOT_DESCRIPTORS.csv"
+            "url": "https://ndownloader.figshare.com/files/5613792"
         }
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Mount St. Helens vegetation recovery plots (del Moral 2010)",
     "urls": {
-        "plots": "http://esapubs.org/archive/ecol/E091/152/MSH_PLOT_DESCRIPTORS.csv",
-        "species": "http://esapubs.org/archive/ecol/E091/152/MSH_SPECIES_DESCRIPTORS.csv",
-        "species_plot_year": "http://esapubs.org/archive/ecol/E091/152/MSH_SPECIES_PLOT_YEAR.csv",
-        "structure_plot_year": "http://esapubs.org/archive/ecol/E091/152/MSH_STRUCTURE_PLOT_YEAR.csv"
+        "plots": "https://ndownloader.figshare.com/files/5613792",
+        "species": "https://ndownloader.figshare.com/files/5613789",
+        "species_plot_year": "https://ndownloader.figshare.com/files/5613783",
+        "structure_plot_year": "https://ndownloader.figshare.com/files/5613786"
     },
-    "version": "1.1.1"
+    "version": "1.2.0"
 }

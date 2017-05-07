@@ -1,7 +1,7 @@
 {
     "citation": "Cover, density, and demographics of shortgrass steppe plants mapped 1997-2010 in permanent grazed and ungrazed quadrats. Chengjin Chu, John Norman, Robert Flynn, Nicole Kaplan, William K. Lauenroth, and Peter B. Adler. Ecology 2013 94:6, 1435-1435.",
     "description": "This data set maps and analyzes demographic rates of many common plant species in the shortgrass steppe of North America under grazed and ungrazed conditions.",
-    "homepage": "http://www.esajournals.org/doi/abs/10.1890/13-0121.1",
+    "homepage": "https://figshare.com/articles/Data_Paper_Data_Paper/3556779",
     "keywords": [
         "plants",
         "local-scale",
@@ -18,7 +18,7 @@
             },
             "name": "allrecords_density",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E094/128/allrecords_density.csv"
+            "url": "https://ndownloader.figshare.com/files/5626698"
         },
         {
             "dialect": {
@@ -28,7 +28,7 @@
             },
             "name": "allrecords_cover",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E094/128/allrecords_cover.csv"
+            "url": "https://ndownloader.figshare.com/files/5626701"
         },
         {
             "dialect": {
@@ -38,7 +38,7 @@
             },
             "name": "quad_inventory",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E094/128/quad_inventory.csv"
+            "url": "https://ndownloader.figshare.com/files/5626707"
         },
         {
             "dialect": {
@@ -48,7 +48,7 @@
             },
             "name": "quad_info",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E094/128/quad_info.csv"
+            "url": "https://ndownloader.figshare.com/files/5626710"
         },
         {
             "dialect": {
@@ -58,7 +58,7 @@
             },
             "name": "quad_stocking_rate",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E094/128/quad_stocking_rate.csv"
+            "url": "https://ndownloader.figshare.com/files/5626713"
         },
         {
             "dialect": {
@@ -68,7 +68,7 @@
             },
             "name": "daily_climate",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E094/128/daily_climate_data.csv"
+            "url": "https://ndownloader.figshare.com/files/5626716"
         },
         {
             "dialect": {
@@ -78,7 +78,7 @@
             },
             "name": "species_list",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E094/128/species_list.csv"
+            "url": "https://ndownloader.figshare.com/files/5626719"
         },
         {
             "dialect": {
@@ -88,21 +88,21 @@
             },
             "name": "species_name_changes",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E094/128/species_name_changes.csv"
+            "url": "https://ndownloader.figshare.com/files/5626722"
         }
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Shortgrass steppe mapped plants quads - Chu et al. 2013",
     "urls": {
-        "allrecords_cover": "http://esapubs.org/archive/ecol/E094/128/allrecords_cover.csv",
-        "allrecords_density": "http://esapubs.org/archive/ecol/E094/128/allrecords_density.csv",
-        "daily_climate": "http://esapubs.org/archive/ecol/E094/128/daily_climate_data.csv",
-        "quad_info": "http://esapubs.org/archive/ecol/E094/128/quad_info.csv",
-        "quad_inventory": "http://esapubs.org/archive/ecol/E094/128/quad_inventory.csv",
-        "quad_stocking_rate": "http://esapubs.org/archive/ecol/E094/128/quad_stocking_rate.csv",
-        "species_list": "http://esapubs.org/archive/ecol/E094/128/species_list.csv",
-        "species_name_changes": "http://esapubs.org/archive/ecol/E094/128/species_name_changes.csv"
+        "allrecords_cover": "https://ndownloader.figshare.com/files/5626701",
+        "allrecords_density": "https://ndownloader.figshare.com/files/5626698",
+        "daily_climate": "https://ndownloader.figshare.com/files/5626716",
+        "quad_info": "https://ndownloader.figshare.com/files/5626710",
+        "quad_inventory": "https://ndownloader.figshare.com/files/5626707",
+        "quad_stocking_rate": "https://ndownloader.figshare.com/files/5626713",
+        "species_list": "https://ndownloader.figshare.com/files/5626719",
+        "species_name_changes": "https://ndownloader.figshare.com/files/5626722"
     },
-    "version": "1.1.1"
+    "version": "1.2.0"
 }

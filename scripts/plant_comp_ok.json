@@ -1,7 +1,7 @@
 {
     "citation": "Daniel J. McGlinn, Peter G. Earls, and Michael W. Palmer. 2010. A 12-year study on the scaling of vascular plant composition in an Oklahoma tallgrass prairie. Ecology 91:1872.",
     "description": "The data is part of a monitoring project on vascular plant composition at the Tallgrass Prairie Preserve in Osage County, Oklahoma, USA.",
-    "homepage": "http://esapubs.org/archive/ecol/E091/124/",
+    "homepage": "https://figshare.com/articles/Data_Paper_Data_Paper/3547209",
     "keywords": [
         "plants",
         "local-scale",
@@ -14,49 +14,49 @@
             "dialect": {},
             "name": "pres",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E091/124/TGPP_pres.csv"
+            "url": "https://ndownloader.figshare.com/files/5613435"
         },
         {
             "dialect": {},
             "name": "cover",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E091/124/TGPP_cover.csv"
+            "url": "https://ndownloader.figshare.com/files/5613438"
         },
         {
             "dialect": {},
             "name": "richness",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E091/124/TGPP_rich.csv"
+            "url": "https://ndownloader.figshare.com/files/5613441"
         },
         {
             "dialect": {},
             "name": "species",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E091/124/TGPP_specodes.csv"
+            "url": "https://ndownloader.figshare.com/files/5613444"
         },
         {
             "dialect": {},
             "name": "environment",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E091/124/TGPP_env.csv"
+            "url": "https://ndownloader.figshare.com/files/5613447"
         },
         {
             "dialect": {},
             "name": "climate",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E091/124/TGPP_clim.csv"
+            "url": "https://ndownloader.figshare.com/files/5613450"
         }
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Vascular plant composition - McGlinn, et al., 2010",
     "urls": {
-        "climate": "http://esapubs.org/archive/ecol/E091/124/TGPP_clim.csv",
-        "cover": "http://esapubs.org/archive/ecol/E091/124/TGPP_cover.csv",
-        "environment": "http://esapubs.org/archive/ecol/E091/124/TGPP_env.csv",
-        "pres": "http://esapubs.org/archive/ecol/E091/124/TGPP_pres.csv",
-        "richness": "http://esapubs.org/archive/ecol/E091/124/TGPP_rich.csv",
-        "species": "http://esapubs.org/archive/ecol/E091/124/TGPP_specodes.csv"
+        "climate": "https://ndownloader.figshare.com/files/5613450",
+        "cover": "https://ndownloader.figshare.com/files/5613438",
+        "environment": "https://ndownloader.figshare.com/files/5613447",
+        "pres": "https://ndownloader.figshare.com/files/5613435",
+        "richness": "https://ndownloader.figshare.com/files/5613441",
+        "species": "https://ndownloader.figshare.com/files/5613444"
     },
-    "version": "1.1.1"
+    "version": "1.2.0"
 }

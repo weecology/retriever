@@ -10,7 +10,8 @@ import sys
 import subprocess
 import urllib.request
 
-pattern = re.compile(r'[."]version["\s":=]+(\d+\.\d+.\d+)')
+
+pattern = re.compile(r'[."]version[\'"\s":=]+(\d+\.\d+.\d+)')
 version_dict = {}
 version_file = urllib.request.urlopen(
     "https://raw.githubusercontent.com/weecology/retriever/master/version.txt")
@@ -46,7 +47,8 @@ scripts_changed = to_string(output).splitlines()
 
 # get the changes staged for the next commit relative to HEAD
 staged_scripts = to_string(subprocess.check_output(
-    "git diff --cached --name-only scripts", shell=True))
+
+    "git diff --cached --name-only --diff-filter=AMd scripts", shell=True))
 
 versions_not_changed = []  # if script changes we expect to change the version
 versions_updated = True
