@@ -3,6 +3,8 @@
 """Retriever script for direct download of data data"""
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 from retriever.lib.templates import Script
+from retriever import VERSION
+from pkg_resources import parse_version
 
 
 class main(Script):
@@ -17,6 +19,10 @@ class main(Script):
         self.retriever_minimum_version = "2.0.dev"
         self.version = "1.0.0"
         self.description = "A dataset of 3,250,404 measurements, collated from 26,114 sampling locations in 94 countries and representing 47,044 species."
+
+        if parse_version(VERSION) <= parse_version("2.0.0"):
+            self.shortname = self.name
+            self.name = self.title
 
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
