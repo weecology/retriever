@@ -240,6 +240,100 @@
             "url": "https://ndownloader.figshare.com/files/5625384"
         },
         {
+            "dialect": {},
+            "name": "seed_03_051",
+            "schema": {
+                "ct_column": "sampling_date",
+                "ct_names": [
+                    "Dec-03",
+                    "Apr-04",
+                    "Aug-04",
+                    "Dec-04",
+                    "Apr-05",
+                    "Aug-05",
+                    "Dec-05"
+                ],
+                "fields": [
+                    {
+                        "name": "record_id",
+                        "type": "pk-auto"
+                    },
+                    {
+                        "name": "species",
+                        "size": "10",
+                        "type": "char"
+                    },
+                    {
+                        "name": "treatment",
+                        "size": "20",
+                        "type": "char"
+                    },
+                    {
+                        "name": "grid",
+                        "type": "int"
+                    },
+                    {
+                        "name": "position",
+                        "type": "char"
+                    },
+                    {
+                        "name": "cover",
+                        "type": "ct-double"
+                    }
+                ]
+            },
+            "url": "https://ndownloader.figshare.com/files/5625387"
+        },
+        {
+            "dialect": {},
+            "name": "seed_03_052",
+            "schema": {
+                "ct_column": "sampling_date",
+                "ct_names": [
+                    "Apr-89",
+                    "Apr-03",
+                    "Aug-03",
+                    "Dec-03",
+                    "Apr-04",
+                    "Aug-04",
+                    "Dec-04",
+                    "Apr-05",
+                    "Aug-05",
+                    "Dec-05"
+                    
+                ],
+                "fields": [
+                    {
+                        "name": "record_id",
+                        "type": "pk-auto"
+                    },
+                    {
+                        "name": "species",
+                        "size": "10",
+                        "type": "char"
+                    },
+                    {
+                        "name": "treatment",
+                        "size": "20",
+                        "type": "char"
+                    },
+                    {
+                        "name": "grid",
+                        "type": "int"
+                    },
+                    {
+                        "name": "shrub",
+                        "type": "char"
+                    },
+                    {
+                        "name": "cover",
+                        "type": "ct-double"
+                    }
+                ]
+            },
+            "url": "https://ndownloader.figshare.com/files/5625390"
+        },
+        {
             "dialect": {
                 "missingValues": [
                     ".",
@@ -259,7 +353,10 @@
         "mammals": "https://ndownloader.figshare.com/files/5625372",
         "perennials": "https://ndownloader.figshare.com/files/5625381",
         "precip": "https://ndownloader.figshare.com/files/5625396",
-        "seeds": "https://ndownloader.figshare.com/files/5625384"
+        "seeds8902": "https://ndownloader.figshare.com/files/5625384",
+        "seeds03051": "https://ndownloader.figshare.com/files/5625387",
+        "seeds03052": "https://ndownloader.figshare.com/files/5625390"
+
     },
-    "version": "1.3.0"
+    "version": "1.4.0"
 }
