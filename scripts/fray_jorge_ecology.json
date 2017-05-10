@@ -171,7 +171,7 @@
         },
         {
             "dialect": {},
-            "name": "seed_89_02",
+            "name": "seed8902",
             "schema": {
                 "ct_column": "sampling_date",
                 "ct_names": [
@@ -241,7 +241,7 @@
         },
         {
             "dialect": {},
-            "name": "seed_03_051",
+            "name": "seed03051",
             "schema": {
                 "ct_column": "sampling_date",
                 "ct_names": [
@@ -286,7 +286,7 @@
         },
         {
             "dialect": {},
-            "name": "seed_03_052",
+            "name": "seed03052",
             "schema": {
                 "ct_column": "sampling_date",
                 "ct_names": [
@@ -358,5 +358,5 @@
         "seeds03052": "https://ndownloader.figshare.com/files/5625390"
 
     },
-    "version": "1.4.0"
+    "version": "1.4.1"
 }
