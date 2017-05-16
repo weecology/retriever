@@ -3,6 +3,7 @@ from builtins import input
 import os
 import json
 import glob
+import re
 from time import sleep
 from retriever import SCRIPT_LIST, HOME_DIR, ENCODING
 
@@ -147,9 +148,14 @@ def create_json():
     contents = {}
     tableUrls = {}
 
+    invalid_name =True
     script_exists = True
-    while script_exists:
+    while script_exists or invalid_name:
         contents['name'] = clean_input("name (a short unique identifier; only lowercase letters and - allowed): ")
+        invalid_name=re.compile(r'[^a-z-]').search(contents['name'])
+        if invalid_name:
+            print("name can only contain lowercase letters and -")
+            continue
         script_exists = contents['name'].lower() in short_names
         if script_exists:
             print("Dataset already available. Check the list or try a different name")
