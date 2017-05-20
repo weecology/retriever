@@ -18,15 +18,27 @@ def get_module_version():
                 module_name = module.__name__ + '.py'
                 scripts.append(','.join([module_name, str(module.SCRIPT.version)]))
 
-    scripts = sorted(scripts, key = str.lower)
+    scripts = sorted(scripts, key=str.lower)
     return scripts
 
-scripts = get_module_version()
 
-if os.path.isfile("version.txt"):
-    os.remove("version.txt")
+def write_version_file(scripts):
+    """The function creates / updates version.txt with the script version numbers."""
+    if os.path.isfile("version.txt"):
+        os.remove("version.txt")
 
-with open("version.txt", "w") as version_file:
-    version_file.write(VERSION)
-    for script in scripts:
-        version_file.write('\n' + script)
+    with open("version.txt", "w") as version_file:
+        version_file.write(VERSION)
+        for script in scripts:
+            version_file.write('\n' + script)
+
+
+def update_version_file():
+    """The main function."""
+    scripts = get_module_version()
+    write_version_file(scripts)
+    print("A configuration file with script version number generated.")
+
+
+if __name__ == '__main__':
+    update_version_file()
