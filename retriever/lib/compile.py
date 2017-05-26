@@ -130,6 +130,9 @@ def compile_json(json_file):
         elif key == "retriever_minimum_version":
             values["retriever_minimum_version"] = "\"" + str(value) + "\""
 
+        elif key == "message":
+            values["message"] = "\"" + str(value) + "\""
+
         elif key == "resources":
             # Array of table objects
             tables = {}
