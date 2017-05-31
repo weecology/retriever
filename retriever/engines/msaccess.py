@@ -1,8 +1,9 @@
 from __future__ import print_function
-from builtins import str
 import os
+from builtins import str
 from retriever.lib.models import Engine, no_cleanup
-from retriever import DATA_DIR, current_platform
+from retriever.lib.defaults import DATA_DIR
+from retriever import current_platform
 
 
 class engine(Engine):

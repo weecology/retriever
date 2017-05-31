@@ -4,8 +4,8 @@ from imp import reload
 import sys
 
 from builtins import str
-from retriever import VERSION, COPYRIGHT
-from retriever import SCRIPT_LIST
+from retriever.lib.defaults import VERSION, COPYRIGHT
+from retriever.lib.scripts import SCRIPT_LIST
 # sys removes the setdefaultencoding method at startup; reload to get it back
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):

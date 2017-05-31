@@ -36,7 +36,6 @@ def printls(values, max_width=None, spacing=2):
                       spacing for column in columns]
             if sum(widths) < max_width:
                 break
-
         for pos in range(len(columns[0])):
             for column, width in zip(columns, widths):
                 if len(column) > pos:

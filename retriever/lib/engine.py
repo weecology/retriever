@@ -16,10 +16,10 @@ import gzip
 import tarfile
 import csv
 import re
-import io
 import time
 from urllib.request import urlretrieve
-from retriever import DATA_SEARCH_PATHS, DATA_WRITE_PATH, open_fr, open_fw, open_csvw
+from retriever.lib.scripts import open_fr, open_fw, open_csvw
+from retriever.lib.defaults import DATA_SEARCH_PATHS, DATA_WRITE_PATH
 from retriever.lib.cleanup import no_cleanup
 from retriever.lib.warning import Warning
 

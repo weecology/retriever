@@ -10,18 +10,17 @@ standard_library.install_aliases()
 
 from builtins import str
 from builtins import input
-from builtins import next
 import difflib
 import os
+import sys
 import io
 from io import StringIO as newfile
 import warnings
-import unittest
 import shutil
-from decimal import Decimal
 from hashlib import md5
 
-from retriever import HOME_DIR, open_fr, open_fw, open_csvw, ENCODING
+from retriever.lib.defaults import HOME_DIR, ENCODING
+from retriever.lib.scripts import open_fr, open_fw, open_csvw
 from retriever.lib.models import *
 import csv
 import json
@@ -34,7 +33,8 @@ TEST_ENGINES = dict()
 def name_matches(scripts, arg):
     matches = []
     for script in scripts:
-        if arg.lower() == script.name.lower(): return [script]
+        if arg.lower() == script.name.lower():
+            return [script]
         max_ratio = max([difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in (script.name.lower(), script.title.lower(), script.filename.lower())] +
                         [difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in [keyword.strip().lower() for keywordset in script.keywords for keyword in keywordset]]
                         )
@@ -102,41 +102,6 @@ def get_default_connection():
         return None
 
 
-def choose_engine(opts, choice=True):
-    """Prompts the user to select a database engine"""
-    from retriever.engines import engine_list
-
-    if "engine" in list(opts.keys()):
-        enginename = opts["engine"]
-    elif opts["command"] == "download":
-        enginename = "download"
-    else:
-        if not choice:
-            return None
-        print("Choose a database engine:")
-        for engine in engine_list:
-            if engine.abbreviation:
-                abbreviation = "(" + engine.abbreviation + ") "
-            else:
-                abbreviation = ""
-            print("    " + abbreviation + engine.name)
-        enginename = input(": ")
-    enginename = enginename.lower()
-
-    engine = Engine()
-    if not enginename:
-        engine = engine_list[0]
-    else:
-        for thisengine in engine_list:
-            if (enginename == thisengine.name.lower() or
-                    thisengine.abbreviation and
-                    enginename == thisengine.abbreviation):
-                engine = thisengine
-
-    engine.opts = opts
-    return engine
-
-
 def reset_retriever(scope):
     """Remove stored information on scripts, data, and connections"""
 
@@ -169,7 +134,7 @@ def json2csv(input_file, output_file=None, header_values=None):
     """Convert Json file to CSV
     function is used for only testing and can handle the file of the size
     """
-    file_out = open_fr(input_file, encode = False)
+    file_out = open_fr(input_file, encode=False)
     # set output file name and write header
     if output_file is None:
         output_file = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
@@ -322,3 +287,14 @@ def file_2string(input_file):
     obs_out = input.read()
     return obs_out
 
+
+def set_proxy():
+    """Check for proxies and makes them available to urllib"""
+    proxies = ["https_proxy", "http_proxy", "ftp_proxy",
+               "HTTP_PROXY", "HTTPS_PROXY", "FTP_PROXY"]
+    for proxy in proxies:
+        if os.getenv(proxy):
+            if len(os.environ[proxy]) != 0:
+                for i in proxies:
+                    os.environ[i] = os.environ[proxy]
+                break
