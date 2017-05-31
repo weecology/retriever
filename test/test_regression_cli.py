@@ -4,7 +4,7 @@ import imp
 import os
 import sys
 import shutil
-from retriever import ENCODING
+from retriever.lib.defaults import ENCODING
 
 encoding = ENCODING.lower()
 
@@ -13,7 +13,7 @@ if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding(encoding)
 import pytest
 from retriever.lib.tools import getmd5
-from retriever import ENGINE_LIST
+from retriever.engines import engine_list
 
 # Set postgres password, Appveyor service needs the password given
 # The Travis service obtains the password from the config file.
@@ -22,7 +22,7 @@ if os.name == "nt":
 else:
     os_password = ""
 
-mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, csv_engine, download_engine, json_engine, xml_engine = ENGINE_LIST()
+mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, csv_engine, download_engine, json_engine, xml_engine = engine_list
 file_location = os.path.dirname(os.path.realpath(__file__))
 retriever_root_dir = os.path.abspath(os.path.join(file_location, os.pardir))
 working_script_dir = os.path.abspath(os.path.join(retriever_root_dir, "scripts"))

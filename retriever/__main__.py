@@ -8,13 +8,11 @@ The main() function can be used for bootstrapping.
 """
 from __future__ import print_function
 from __future__ import absolute_import
-from builtins import str
 from builtins import input
 from imp import reload
 import os
-import platform
 import sys
-from retriever import ENCODING
+from retriever.lib.defaults import ENCODING
 
 encoding = ENCODING.lower()
 # sys removes the setdefaultencoding method at startup; reload to get it back
@@ -22,12 +20,15 @@ reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding(encoding)
 
-from retriever import VERSION, SCRIPT_LIST, HOME_DIR, sample_script, CITATION
+from retriever.lib.defaults import sample_script, CITATION
+from retriever.lib.scripts import SCRIPT_LIST
 from retriever.engines import engine_list
 from retriever.lib.repository import check_for_updates
-from retriever.lib.tools import choose_engine, name_matches, reset_retriever
+from retriever.lib.tools import name_matches, reset_retriever
+from retriever.engines import choose_engine
 from retriever.lib.get_opts import parser
 from retriever.lib.datapackage import create_json, edit_json, delete_json, get_script_filename
+
 
 def main():
     """This function launches the Data Retriever."""
@@ -43,7 +44,7 @@ def main():
         args = parser.parse_args()
 
         if args.command == "install" and not args.engine:
-            parser.parse_args(['install','-h'])
+            parser.parse_args(['install', '-h'])
 
         if args.quiet:
             sys.stdout = open(os.devnull, 'w')

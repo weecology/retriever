@@ -5,7 +5,8 @@ import json
 import glob
 import re
 from time import sleep
-from retriever import SCRIPT_LIST, HOME_DIR, ENCODING
+from retriever.lib.defaults import HOME_DIR, ENCODING
+from retriever.lib.scripts import SCRIPT_LIST
 
 short_names = [script.name.lower() for script in SCRIPT_LIST()]
 
