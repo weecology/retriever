@@ -1,7 +1,7 @@
 #retriever
 from retriever.lib.templates import Script
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
-from retriever import VERSION
+from retriever.lib.defaults import VERSION
 from pkg_resources import parse_version
 
 

@@ -28,6 +28,22 @@ retriever.lib.datapackage module
     :undoc-members:
     :show-inheritance:
 
+retriever.lib.datasets module
+-----------------------------
+
+.. automodule:: retriever.lib.datasets
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+retriever.lib.defaults module
+-----------------------------
+
+.. automodule:: retriever.lib.defaults
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 retriever.lib.engine module
 ---------------------------
 
@@ -64,6 +80,14 @@ retriever.lib.repository module
 -------------------------------
 
 .. automodule:: retriever.lib.repository
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+retriever.lib.scripts module
+----------------------------
+
+.. automodule:: retriever.lib.scripts
     :members:
     :undoc-members:
     :show-inheritance:

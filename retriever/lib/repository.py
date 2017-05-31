@@ -9,7 +9,7 @@ import urllib.parse
 import urllib.error
 import imp
 from pkg_resources import parse_version
-from retriever import REPOSITORY, SCRIPT_WRITE_PATH, HOME_DIR
+from retriever.lib.defaults import REPOSITORY, SCRIPT_WRITE_PATH, HOME_DIR
 from retriever.lib.models import file_exists
 
 global abort, executable_name
