@@ -12,7 +12,6 @@ from builtins import str
 from builtins import input
 from imp import reload
 import os
-import platform
 import sys
 from retriever import ENCODING
 
@@ -22,7 +21,7 @@ reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding(encoding)
 
-from retriever import VERSION, SCRIPT_LIST, HOME_DIR, sample_script, CITATION
+from retriever import SCRIPT_LIST, sample_script, CITATION
 from retriever.engines import engine_list
 from retriever.lib.repository import check_for_updates
 from retriever.lib.tools import choose_engine, name_matches, reset_retriever
