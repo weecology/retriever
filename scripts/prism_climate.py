@@ -4,7 +4,7 @@
 from future import standard_library
 standard_library.install_aliases()
 from builtins import range
-from retriever import VERSION
+from retriever.lib.defaults import VERSION
 from retriever.lib.templates import Script
 import urllib.request, urllib.parse, urllib.error
 from pkg_resources import parse_version

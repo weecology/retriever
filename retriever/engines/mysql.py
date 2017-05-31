@@ -2,7 +2,7 @@ from __future__ import print_function
 from builtins import str
 import os
 from retriever.lib.models import Engine, no_cleanup
-from retriever import ENCODING
+from retriever.lib.defaults import ENCODING
 
 
 class engine(Engine):
