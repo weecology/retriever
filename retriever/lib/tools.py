@@ -10,15 +10,12 @@ standard_library.install_aliases()
 
 from builtins import str
 from builtins import input
-from builtins import next
 import difflib
 import os
 import io
 from io import StringIO as newfile
 import warnings
-import unittest
 import shutil
-from decimal import Decimal
 from hashlib import md5
 
 from retriever import HOME_DIR, open_fr, open_fw, open_csvw, ENCODING

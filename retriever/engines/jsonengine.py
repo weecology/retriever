@@ -1,7 +1,6 @@
 """Engine for writing data to a JSON file"""
 from builtins import zip
 from builtins import object
-from builtins import range
 
 import os
 import json

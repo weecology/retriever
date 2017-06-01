@@ -1,10 +1,6 @@
-from builtins import str
 from builtins import object
 
 import os
-import io
-import sys
-import csv
 
 from retriever.lib.models import Engine
 from retriever import DATA_DIR, open_fw, open_csvw
