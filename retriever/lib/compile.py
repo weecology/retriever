@@ -82,6 +82,7 @@ def compile_json(json_file):
     command line
     """
     json_object = {}
+    source_encoding = "latin-1"
     try:
         json_object = json.load(open(json_file + ".json", "r"))
     except ValueError as e:
@@ -126,6 +127,7 @@ def compile_json(json_file):
         elif key == "encoding":
             values["encoding"] = "\"" + str(value) + "\""
             # Adding the key 'encoding'
+            source_encoding = str(value)
 
         elif key == "retriever_minimum_version":
             values["retriever_minimum_version"] = "\"" + str(value) + "\""
@@ -187,6 +189,6 @@ def compile_json(json_file):
     script_contents = (script_templates[template] % script_desc)
 
     new_script = open(json_file + '.py', 'w', encoding='utf-8')
-    new_script.write('# -*- latin-1 -*-\n')
+    new_script.write('# -*- coding: {}  -*-\n'.format(source_encoding.lower()))
     new_script.write(script_contents)
     new_script.close()
