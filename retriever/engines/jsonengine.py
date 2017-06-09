@@ -6,9 +6,10 @@ import os
 import json
 
 from retriever.lib.models import Engine
-from retriever import DATA_DIR, open_fw, open_fr
+from retriever import open_fw, open_fr
 from collections import OrderedDict
 from retriever.lib.tools import json2csv, sort_csv
+from retriever.lib.defaults import DATA_DIR
 
 
 class DummyConnection(object):

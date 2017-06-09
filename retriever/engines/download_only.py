@@ -6,7 +6,7 @@ import inspect
 
 from retriever.lib.engine import filename_from_url
 from retriever.lib.models import Engine
-from retriever import DATA_DIR
+from retriever.lib.defaults import DATA_DIR
 
 
 class DummyConnection(object):

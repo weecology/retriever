@@ -1,12 +1,12 @@
 import argparse
 import os
-from retriever import VERSION
-from retriever.engines import engine_list
 import argcomplete
 
 from argcomplete.completers import ChoicesCompleter
 
-from retriever import MODULE_LIST
+from retriever.engines import engine_list
+from retriever.lib.scripts import MODULE_LIST
+from retriever.lib.defaults import VERSION
 
 module_list = MODULE_LIST()
 script_list = [module.SCRIPT.name for module in module_list]

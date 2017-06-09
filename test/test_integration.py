@@ -15,7 +15,8 @@ if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding(encoding)
 import pytest
 from retriever.lib.compile import compile_json
-from retriever import HOME_DIR, ENGINE_LIST
+from retriever.lib.defaults import HOME_DIR
+from retriever.engines import engine_list
 from retriever.lib.tools import file_2string
 from retriever.lib.tools import create_file
 
@@ -412,7 +413,7 @@ def get_script_module(script_name):
     return imp.load_module(script_name, file, pathname, desc)
 
 
-mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, csv_engine, download_engine, json_engine, xml_engine = ENGINE_LIST()
+mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, csv_engine, download_engine, json_engine, xml_engine = engine_list
 
 
 @pytest.mark.parametrize("dataset, expected", test_parameters)
