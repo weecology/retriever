@@ -10,24 +10,7 @@ from retriever.lib.models import Engine
 from retriever import DATA_DIR, open_fw, open_fr
 from collections import OrderedDict
 from retriever.lib.tools import json2csv, sort_csv
-
-
-class DummyConnection(object):
-    def cursor(self):
-        pass
-
-    def commit(self):
-        pass
-
-    def rollback(self):
-        pass
-
-    def close(self):
-        pass
-
-
-class DummyCursor(DummyConnection):
-    pass
+from retriever.lib.dummy import DummyConnection, DummyCursor
 
 
 class engine(Engine):
