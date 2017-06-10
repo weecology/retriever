@@ -2,7 +2,7 @@
 
 This module, when run, attempts to install datasets from all Retriever scripts
 in the /scripts folder (except for those listed in IGNORE), for each engine in
-ENGINE_LIST() from __init__.py. In other words, it runs trys to install using
+engine_list in retriever.engines. In other words, it runs trys to install using
 all possible combinations of database platform and script and checks to
 see if there are any errors. It does not check the values in the database.
 
@@ -12,8 +12,8 @@ from __future__ import absolute_import
 import os
 import sys
 from imp import reload
-from retriever.lib.tools import choose_engine
-from retriever import MODULE_LIST, ENGINE_LIST, SCRIPT_LIST
+from retriever.lib.scripts import MODULE_LIST, SCRIPT_LIST
+from retriever.engines import engine_list, choose_engine
 
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
@@ -24,10 +24,9 @@ else:
     os_password = ""
 
 MODULE_LIST = MODULE_LIST()
-ENGINE_LIST = ENGINE_LIST()
 if len(sys.argv) > 1:
     ENGINE_LIST = [
-                    e for e in ENGINE_LIST
+                    e for e in engine_list
                     if e.name in sys.argv[1:] or
                     e.abbreviation in sys.argv[1:]
     ]
