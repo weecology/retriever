@@ -1,13 +1,12 @@
 """Engine for writing data to a JSON file"""
-from builtins import zip
-from builtins import object
-
 import os
 import json
 
-from retriever.lib.models import Engine
-from retriever import open_fw, open_fr
+from builtins import zip
+from builtins import object
 from collections import OrderedDict
+from retriever.lib.models import Engine
+from retriever.lib.scripts import open_fw, open_fr
 from retriever.lib.tools import json2csv, sort_csv
 from retriever.lib.defaults import DATA_DIR
 

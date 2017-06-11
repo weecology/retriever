@@ -6,7 +6,7 @@ import os
 import sys
 import shutil
 from imp import reload
-from retriever import ENCODING
+from retriever.lib.defaults import ENCODING
 
 encoding = ENCODING.lower()
 

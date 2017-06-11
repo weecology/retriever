@@ -3,7 +3,7 @@ from builtins import object
 import os
 
 from retriever.lib.models import Engine
-from retriever import open_fw, open_csvw
+from retriever.lib.scripts import open_fw, open_csvw
 from retriever.lib.defaults import DATA_DIR
 from retriever.lib.tools import sort_csv
 

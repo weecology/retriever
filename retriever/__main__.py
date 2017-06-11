@@ -12,7 +12,7 @@ from builtins import input
 from imp import reload
 import os
 import sys
-from retriever import ENCODING
+from retriever.lib.defaults import ENCODING
 
 encoding = ENCODING.lower()
 # sys removes the setdefaultencoding method at startup; reload to get it back
