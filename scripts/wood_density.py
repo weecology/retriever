@@ -12,7 +12,7 @@ from imp import reload
 from retriever.lib.templates import Script
 from retriever.lib.models import Table
 from retriever.lib.defaults import VERSION
-from retriever import open_fw, open_csvw, to_str
+from retriever.lib.scripts import open_fw, open_csvw, to_str
 from pkg_resources import parse_version
 
 

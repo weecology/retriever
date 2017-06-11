@@ -19,8 +19,8 @@ import warnings
 import shutil
 from hashlib import md5
 
-from retriever import open_fr, open_fw, open_csvw
 from retriever.lib.defaults import HOME_DIR, ENCODING
+from retriever.lib.scripts import open_fr, open_fw, open_csvw
 from retriever.lib.models import *
 import csv
 import json
@@ -286,3 +286,15 @@ def file_2string(input_file):
 
     obs_out = input.read()
     return obs_out
+
+
+def set_proxy():
+    """Check for proxies and makes them available to urllib"""
+    proxies = ["https_proxy", "http_proxy", "ftp_proxy",
+               "HTTP_PROXY", "HTTPS_PROXY", "FTP_PROXY"]
+    for proxy in proxies:
+        if os.getenv(proxy):
+            if len(os.environ[proxy]) != 0:
+                for i in proxies:
+                    os.environ[i] = os.environ[proxy]
+                break
