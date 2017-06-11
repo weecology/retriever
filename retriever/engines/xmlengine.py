@@ -6,25 +6,7 @@ from builtins import range
 from retriever.lib.models import Engine
 from retriever import DATA_DIR, open_fr, open_fw
 from retriever.lib.tools import xml2csv, sort_csv
-
-
-class DummyConnection(object):
-
-    def cursor(self):
-        pass
-
-    def commit(self):
-        pass
-
-    def rollback(self):
-        pass
-
-    def close(self):
-        pass
-
-
-class DummyCursor(DummyConnection):
-    pass
+from retriever.lib.dummy import DummyConnection, DummyCursor
 
 
 class engine(Engine):

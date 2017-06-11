@@ -8,25 +8,7 @@ import inspect
 from retriever.lib.engine import filename_from_url
 from retriever.lib.models import Engine, no_cleanup
 from retriever import DATA_DIR, HOME_DIR
-
-
-class DummyConnection(object):
-
-    def cursor(self):
-        pass
-
-    def commit(self):
-        pass
-
-    def rollback(self):
-        pass
-
-    def close(self):
-        pass
-
-
-class DummyCursor(DummyConnection):
-    pass
+from retriever.lib.dummy import DummyConnection, DummyCursor
 
 
 class engine(Engine):
