@@ -75,7 +75,8 @@ if modified_staged_scripts != "":
             print(items)
         exit(1)
 
-#only runs version.py if we have modified scripts which have had their versions updated, or we have no modified scripts but either deleted or added scripts. 
+# only runs version.py if we have modified scripts which have had their versions updated, 
+# or we have no modified scripts but either deleted or added scripts. 
 if (modified_staged_scripts and versions_updated) or (added_deleted_staged_scripts != ""):
     print("Updating version.txt")
     os.system('python version.py')
