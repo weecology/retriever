@@ -1,0 +1,31 @@
+{
+    "citation": "Christian Mulder and J. Arie Vonk. 2011. Nematode traits and environmental constraints in 200 soil systems:scaling within the 60–6000 µm body size range. Ecology 92:2004.",
+    "description": "This data set includes information on taxonomy, life stage, sex, feeding habit, trophic level, geographic location, sampling period, ecosystem type, soil type, and soil chemistry",
+    "homepage": "https://figshare.com/articles/Data_Paper_Data_Paper/3552057",
+    "keywords": [
+        "Taxon > Plants"
+    ],
+    "name": "nematode-traits",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "Dutchagroecosystems",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5620302"
+        },
+        {
+            "dialect": {},
+            "name": "Trait",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5620305"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.0-dev",
+    "version": "1.0.0",
+    "title": "Nematode traits and environmental constraints in 200 soil systems",
+    "urls": {
+        "Dutchagroecosystems": "https://ndownloader.figshare.com/files/5620302",
+        "Trait": "https://ndownloader.figshare.com/files/5620305"
+    }
+}

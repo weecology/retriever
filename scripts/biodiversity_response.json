@@ -1,0 +1,24 @@
+{
+    "citation": "Bernhard Schmid, Andrea B. Pfisterer, and Patricia Balvanera. 2009. Effects of biodiversity on ecosystem community, and population variables reported 1974-2004. Ecology 90:853",
+    "description": "",
+    "homepage": "https://figshare.com/articles/Data_Paper_Data_Paper/3530822",
+    "keywords": [
+        "Taxon > plants"
+    ],
+    "name": "biodiversity-response",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "population_response",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5603108"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.dev",
+    "version": "1.0.0",
+    "title": "The effects of biodiversity on ecosystem community, and population variables reported 1974-2004",
+    "urls": {
+        "population_response": "https://ndownloader.figshare.com/files/5603108"
+    }
+}
