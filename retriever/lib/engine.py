@@ -605,6 +605,16 @@ class Engine(object):
             if self.opts[opt[0]] in ["", "default"]:
                 self.opts[opt[0]] = opt[2]
 
+    def check_credentials(self):
+        """
+        Checks the credentials of the user in the credentials file path for the database
+        credentials by checking the username provided by the user in cli.
+        If found, it updates the credentials to initialize the connection, else uses the
+        default ones.
+        This method has been overidden in different engines accordingly.
+        """
+        pass
+
     def insert_data_from_archive(self, url, filenames):
         """Insert data from files located in an online archive. This function
         extracts the file, inserts the data, and deletes the file if raw data

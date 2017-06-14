@@ -30,6 +30,8 @@ REPO_URL = "https://raw.github.com/weecology/retriever/"
 MASTER_BRANCH = REPO_URL + "master/"
 REPOSITORY = MASTER_BRANCH
 ENCODING = 'ISO-8859-1'
+PGPASS_FILE_PATH = os.path.expanduser('~/.pgpass')
+MYSQL_CONF_PATH = os.path.expanduser('~/.my.cnf')
 
 # create the necessary directory structure for storing scripts/raw_data
 # in the ~/.retriever directory

@@ -2,7 +2,8 @@ from __future__ import print_function
 from builtins import str
 import os
 from retriever.lib.models import Engine, no_cleanup
-from retriever import ENCODING
+from retriever import ENCODING, MYSQL_CONF_PATH, open_fr
+import re
 
 
 class engine(Engine):
@@ -19,6 +20,7 @@ class engine(Engine):
         "bool": "BOOL",
     }
     max_int = 4294967295
+
     required_opts = [("user",
                       "Enter your MySQL username",
                       "root"),
@@ -38,6 +40,26 @@ class engine(Engine):
                       "Format of table name",
                       "{db}.{table}"),
                      ]
+
+    def check_credentials(self):
+        """
+        Checks the credentials of the user in the file path ~/.my.cnf for the MySQL
+        credentials by checking the username provided by the user in cli.
+        If found, it updates the credentials to initialize the connection, else uses the
+        default ones.
+        """
+        self.get_input()
+        if os.path.exists(MYSQL_CONF_PATH):
+            sql_conf = open_fr(MYSQL_CONF_PATH)
+            sql_conf_lines = sql_conf.readlines()
+            for line in sql_conf_lines:
+                if re.search("user = ", line) and re.sub("user = ", "", line) == self.opts["user"]:
+                    username = re.sub("user = ", "", line)
+                    pswd_line_index = sql_conf_lines.index(line)+1
+                    while not (re.search("password = ", sql_conf_lines[pswd_line_index])):
+                        pswd_line_index+=1
+                    password = re.sub("password = ", "", sql_conf_lines[pswd_line_index])
+                    self.opts["password"] = password
 
     def create_db_statement(self):
         """Returns a SQL statement to create a database."""
@@ -107,6 +129,7 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
 
     def get_connection(self):
         """Gets the db connection."""
+        self.check_credentials()
         args = {'host': self.opts['host'],
                 'port': int(self.opts['port']),
                 'user': self.opts['user'],
@@ -114,5 +137,4 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
         import pymysql as dbapi
         import pymysql.constants.CLIENT as client
         args['client_flag'] = client.LOCAL_FILES
-        self.get_input()
         return dbapi.connect(**args)
