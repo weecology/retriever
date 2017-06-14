@@ -14,8 +14,9 @@ class main(Script):
         self.shortname="flensburg-food-web"
         self.ref="https://figshare.com/articles/Full_Archive/3552066"
         self.description="This data is of a food web for the Flensburg Fjord, a brackish shallow water inlet on the Baltic Sea, between Germany and Denmark."
+        self.keywords = []
         self.retriever_minimum_version='2.0.dev'
-        self.version='1.0.0'
+        self.version='1.0.1'
         self.urls={"zip": "https://ndownloader.figshare.com/files/5620326"}
         self.cleanup_func_table = Cleanup(correct_invalid_value, missing_values=[''])
 
