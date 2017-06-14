@@ -10,12 +10,8 @@ import sys
 import subprocess
 import urllib.request
 
-
 pattern = re.compile(r'[."]version[\'"\s":=]+(\d+\.\d+.\d+)')
 version_dict = {}
-version_file = urllib.request.urlopen(
-    "https://raw.githubusercontent.com/weecology/retriever/master/version.txt")
-version_file.readline()
 
 
 def to_string(value):
@@ -25,33 +21,36 @@ def to_string(value):
         return value
 
 
-for line in version_file:
-    key, value = to_string(line).split(",")
-    version_dict[key] = value
+def get_version_dict():
+    """Create a dictionary of scripts and versions currently in master"""
+    version_file = urllib.request.urlopen("https://raw.githubusercontent.com/weecology/retriever/master/version.txt")
+    version_file.readline()
+    for line in version_file:
+        key, value = to_string(line).strip().split(",")
+        version_dict[key] = value
+    pass
 
 
 def get_script_version(file_name):
+    """Use the file path to extract the filename and return the version"""
     file_name = os.path.basename(file_name)
     return LooseVersion(version_dict[file_name])
 
 
-# check and get script directory changes
-subprocess.check_output(
-    'git fetch https://github.com/weecology/retriever.git master', shell=True)
+# Check and get script directory changes
+subprocess.check_output('git fetch https://github.com/weecology/retriever.git master', shell=True)
+output = subprocess.check_output("git diff --name-only FETCH_HEAD scripts", shell=True)
 
-output = subprocess.check_output(
-    "git diff --name-only FETCH_HEAD scripts", shell=True)
-
-# get list of changed scripts
+# Get list of changed scripts
 scripts_changed = to_string(output).splitlines()
 
-# get the changes staged for the next commit relative to HEAD
+# Get the changes staged for the next commit relative to HEAD
 staged_scripts = to_string(subprocess.check_output(
-
     "git diff --cached --name-only --diff-filter=AMd scripts", shell=True))
 
-versions_not_changed = []  # if script changes we expect to change the version
+versions_not_changed = []  # If script changes we expect to change the version
 versions_updated = True
+
 for file in scripts_changed:
     if file in staged_scripts:
         # add the file if both staged and edited
@@ -59,9 +58,11 @@ for file in scripts_changed:
         output = to_string(subprocess.check_output('cat {}'.format(file), shell=True))
         match = re.search(pattern, output)
         script_current_version = LooseVersion(match.group(1))
-        if not script_current_version > get_script_version(file):
-            versions_not_changed.append(file)
-            versions_updated = False
+
+        if os.path.basename(file) in version_dict.keys():  # New scripts are not checked for version changes
+            if not script_current_version > get_script_version(file):
+                versions_not_changed.append(file)
+                versions_updated = False
 
 if scripts_changed and not versions_updated:
     print("\nThese scripts have changed, update the version numbers before commit:")
