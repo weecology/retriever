@@ -26,8 +26,6 @@ class Table(object):
         self.record_id = 0
         self.columns = []
         self.replace_columns = []
-        self.escape_single_quotes = True
-        self.escape_double_quotes = True
         self.cleaned_columns = False
         for key, item in list(kwargs.items()):
             setattr(self, key, item[0] if isinstance(item, tuple) else item)

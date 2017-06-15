@@ -143,8 +143,7 @@
         },
         {
             "dialect": {
-                "do_not_bulk_insert": "True",
-                "escape_single_quotes": "True"
+                "do_not_bulk_insert": "True"
             },
             "name": "species",
             "schema": {},
@@ -166,5 +165,5 @@
         "species_plot_year": "https://ndownloader.figshare.com/files/5613783",
         "structure_plot_year": "https://ndownloader.figshare.com/files/5613786"
     },
-    "version": "1.2.0"
+    "version": "1.2.1"
 }

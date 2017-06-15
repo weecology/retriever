@@ -17,6 +17,7 @@ class engine(Engine):
         "bool": "boolean",
     }
     max_int = 2147483647
+    placeholder = "%s"
     required_opts = [("user",
                       "Enter your PostgreSQL username",
                       "postgres"),
@@ -62,10 +63,6 @@ class engine(Engine):
         statement = Engine.drop_statement(self, objecttype, objectname)
         statement += " CASCADE;"
         return statement.replace(" DATABASE ", " SCHEMA ")
-
-    def escape_single_quotes(self, value):
-        """Escapes single quotes in the value"""
-        return value.replace("'", "''")
 
     def insert_data_from_file(self, filename):
         """Use PostgreSQL's "COPY FROM" statement to perform a bulk insert."""

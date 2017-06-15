@@ -17,6 +17,7 @@ class engine(Engine):
         "char": "TEXT",
         "bool": "INTEGER",
     }
+    placeholder = "?"
     required_opts = [("file",
                       "Enter the filename of your SQLite database",
                       os.path.join(DATA_DIR, "sqlite.db"),
@@ -30,10 +31,6 @@ class engine(Engine):
         """SQLite doesn't create databases; each database is a file and needs
         a separate connection."""
         return None
-
-    def escape_single_quotes(self, line):
-        """Escapes single quotes in the line"""
-        return line.replace("'", "''")
 
     def get_bulk_insert_statement(self):
         """Get insert statement for bulk inserts
