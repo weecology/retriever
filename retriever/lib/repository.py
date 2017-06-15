@@ -12,19 +12,13 @@ from pkg_resources import parse_version
 from retriever.lib.defaults import REPOSITORY, SCRIPT_WRITE_PATH, HOME_DIR
 from retriever.lib.models import file_exists
 
-global abort, executable_name
-abort = False
-executable_name = "retriever"
 
-
-def download_from_repository(filepath, newpath, repo=REPOSITORY):
+def _download_from_repository(filepath, newpath, repo=REPOSITORY):
     """Downloads the latest version of a file from the repository."""
     try:
-        filename = filepath.split('/')[-1]
         urllib.request.urlretrieve(repo + filepath, newpath)
     except:
         raise
-        pass
 
 
 def check_for_updates():
@@ -49,7 +43,7 @@ def check_for_updates():
         if not os.path.isdir(SCRIPT_WRITE_PATH):
             os.makedirs(SCRIPT_WRITE_PATH)
 
-        update_progressbar(0.0 / float(total_script_count))
+        _update_progressbar(0.0 / float(total_script_count))
         for index, script in enumerate(scripts):
             script_name = script[0]
             if len(script) > 1:
@@ -59,7 +53,7 @@ def check_for_updates():
 
             path_script_name = os.path.normpath(os.path.join(HOME_DIR, "scripts", script_name))
             if not file_exists(path_script_name):
-                download_from_repository("scripts/" + script_name,
+                _download_from_repository("scripts/" + script_name,
                                          os.path.normpath(os.path.join(SCRIPT_WRITE_PATH, script_name)))
 
             need_to_download = False
@@ -73,19 +67,18 @@ def check_for_updates():
             if need_to_download:
                 try:
                     os.remove(os.path.normpath(os.path.join(HOME_DIR, "scripts", script_name)))
-                    download_from_repository("scripts/" + script_name,
+                    _download_from_repository("scripts/" + script_name,
                                              os.path.normpath(os.path.join(SCRIPT_WRITE_PATH, script_name)))
                 except Exception as e:
                     print(e)
                     pass
-            update_progressbar(float(index + 1) / float(total_script_count))
+            _update_progressbar(float(index + 1) / float(total_script_count))
     except:
         raise
-        return
     print("\nThe retriever is up-to-date")
 
 
-def update_progressbar(progress):
+def _update_progressbar(progress):
     """Show progressbar
     Takes a number between 0 and 1 to indicate progress from 0 to 100%.
     And set the bar_length according to the console size
