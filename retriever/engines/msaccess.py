@@ -51,10 +51,6 @@ class engine(Engine):
         dropstatement = "DROP %s %s" % (objecttype, objectname)
         return dropstatement
 
-    def escape_single_quotes(self, value):
-        """Escapes the single quotes in the value"""
-        return value.replace("'", "''")
-
     def insert_data_from_file(self, filename):
         """Perform a bulk insert."""
         self.get_cursor()

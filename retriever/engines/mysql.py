@@ -19,6 +19,7 @@ class engine(Engine):
         "bool": "BOOL",
     }
     max_int = 4294967295
+    placeholder = "%s"
     required_opts = [("user",
                       "Enter your MySQL username",
                       "root"),

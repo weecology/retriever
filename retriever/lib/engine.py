@@ -112,15 +112,15 @@ class Engine(object):
                         if self.debug:
                             print(cleanvalues)
                         raise
-                    multiple_values = []
                     try:
-                        self.execute(insert_stmt, commit=False)
+                        self.executemany(insert_stmt, multiple_values, commit=False)
                         prompt = "Progress: " + str(count_iter) + " / " + str(real_line_length) + " rows inserted into " + self.table_name() + " totaling " + str(total) + ":"
                         sys.stdout.write(prompt + "\b" * len(prompt))
                         sys.stdout.flush()
                     except:
                         print(insert_stmt)
                         raise
+                    multiple_values = []
                 else:
                     multiple_values.append(cleanvalues)
             count_iter += 1
@@ -470,17 +470,15 @@ class Engine(object):
         dropstatement = "DROP %s IF EXISTS %s" % (objecttype, objectname)
         return dropstatement
 
-    def escape_single_quotes(self, value):
-        """Escapes single quotes in the value"""
-        return value.replace("'", "\\'")
-
-    def escape_double_quotes(self, value):
-        """Escapes double quotes in the value"""
-        return value.replace('"', '\\"')
-
     def execute(self, statement, commit=True):
         """Executes the given statement"""
         self.cursor.execute(statement)
+        if commit:
+            self.connection.commit()
+
+    def executemany(self, statement, values, commit=True):
+        """Executes the given statement with multiple values"""
+        self.cursor.executemany(statement, values)
         if commit:
             self.connection.commit()
 
@@ -516,7 +514,7 @@ class Engine(object):
         """Returns the full path of a file in the archive directory."""
         return os.path.join(self.format_data_dir(), filename)
 
-    def format_insert_value(self, value, datatype, escape=True, processed=False):
+    def format_insert_value(self, value, datatype):
         """Format a value for an insert statement based on data type
 
         Different data types need to be formated differently to be properly
@@ -527,14 +525,7 @@ class Engine(object):
         2. Harmonizing null indicators
         3. Cleaning up badly formatted integers
         4. Obtaining consistent float representations of decimals
-
-        The optional `escape` argument controls whether additional quotes in
-        strings are escaped, as needed for SQL database management systems
-        (escape=True), or not escaped, as needed for flat file based engines
-        (escape=False).
-
-        The optional processed argument indicates that the engine has it's own
-        escaping mechanism. i.e the csv engine which uses its own dialect"""
+        """
         datatype = datatype.split('-')[-1]
         strvalue = str(value).strip()
 
@@ -544,41 +535,32 @@ class Engine(object):
             strvalue = strvalue[1:-1]
         missing_values = ("null", "none")
         if strvalue.lower() in missing_values:
-            return "null"
+            return None
         elif datatype in ("int", "bigint", "bool"):
             if strvalue:
                 intvalue = strvalue.split('.')[0]
                 if intvalue:
                     return int(intvalue)
                 else:
-                    return "null"
+                    return None
             else:
-                return "null"
+                return None
         elif datatype in ("double", "decimal"):
             if strvalue.strip():
                 try:
                     decimals = float(str(strvalue))
                     return str(decimals)
                 except:
-                    return "null"
+                    return None
             else:
-                return "null"
+                return None
         elif datatype == "char":
             if strvalue.lower() in missing_values:
-                return "null"
-            if escape:
-                # automatically escape quotes in string fields
-                if hasattr(self.table, "escape_double_quotes") and self.table.escape_double_quotes:
-                    strvalue = self.escape_double_quotes(strvalue)
-                if hasattr(self.table, "escape_single_quotes") and self.table.escape_single_quotes:
-                    strvalue = self.escape_single_quotes(strvalue)
-                return "'" + strvalue + "'"
-            if processed:
-                return strvalue
+                return None
             else:
-                return "'" + strvalue + "'"
+                return strvalue
         else:
-            return "null"
+            return None
 
     def get_cursor(self):
         """Gets the db cursor."""
@@ -645,15 +627,19 @@ class Engine(object):
         columns = self.table.get_insert_columns()
         types = self.table.get_column_datatypes()
         columncount = len(self.table.get_insert_columns(join=False, create=False))
-        insert_stmt = "INSERT INTO {} ({}) VALUES ".format(self.table_name(), columns)
         for row in values:
             row_length = len(row)
             # Add None with appropriate value type for empty cells
             for i in range(columncount - row_length):
                 row.append(self.format_insert_value(None, types[row_length + i]))
 
-            insert_stmt += " (" + ", ".join([str(val) for val in row]) + "), "
-        insert_stmt = insert_stmt.rstrip(", ") + ";"
+        insert_stmt = "INSERT INTO " + self.table_name()
+        insert_stmt += " (" + columns + ")"
+        insert_stmt += " VALUES ("
+        for i in range(0, columncount):
+            insert_stmt += "{}, ".format(self.placeholder)
+        insert_stmt = insert_stmt.rstrip(", ") + ")"
+
         if self.debug:
             print(insert_stmt)
         return insert_stmt
