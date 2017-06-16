@@ -97,26 +97,6 @@ def get_contains_pk(dialect):
     dialect['contains_pk'] = val
 
 
-def get_escape_single_quotes(dialect):
-    """Set escape_single_quotes property"""
-    val = clean_input("escape_single_quotes (bool = True/False) (press return to skip): ",
-                      ignore_empty=True, dtype=bool)
-    if val == "" or val == []:
-        # return and dont add key to dialect dict if empty val
-        return
-    dialect['escape_single_quotes'] = val
-
-
-def get_escape_double_quotes(dialect):
-    """Set escape_double_quotes property"""
-    val = clean_input("escape_double_quotes (bool = True/False) (press return to skip): ",
-                      ignore_empty=True, dtype=bool)
-    if val == "" or val == []:
-        # return and dont add key to dialect dict if empty val
-        return
-    dialect['escape_double_quotes'] = val
-
-
 def get_fixed_width(dialect):
     """Set fixed_width property"""
     val = clean_input("fixed_width (bool = True/False) (press return to skip): ",
@@ -195,8 +175,6 @@ def create_json():
             get_delimiter(table['dialect'])
             get_do_not_bulk_insert(table['dialect'])
             get_contains_pk(table['dialect'])
-            get_escape_single_quotes(table['dialect'])
-            get_escape_double_quotes(table['dialect'])
             get_fixed_width(table['dialect'])
             get_header_rows(table['dialect'])
 
