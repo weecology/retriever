@@ -127,16 +127,6 @@ def test_drop_statement():
     assert test_engine.drop_statement('TABLE', 'tablename') == "DROP TABLE IF EXISTS tablename"
 
 
-def test_escape_single_quotes():
-    """Test escaping of single quotes"""
-    assert test_engine.escape_single_quotes("1,2,3,'a'") == "1,2,3,\\'a\\'"
-
-
-def test_escape_double_quotes():
-    """Test escaping of double quotes"""
-    assert test_engine.escape_double_quotes('"a",1,2,3') == '\\"a\\",1,2,3'
-
-
 def test_extract_values_fixed_width():
     """Test extraction of values from line of fixed width data"""
     test_engine.table.fixed_width = [5, 2, 2, 3, 4]
@@ -181,18 +171,18 @@ def test_format_insert_value_int():
 
 def test_format_insert_value_double():
     """Test formatting of values for insert statements"""
-    assert test_engine.format_insert_value(26.22, 'double') == '26.22'
+    assert test_engine.format_insert_value(26.22, 'double') == 26.22
 
 
 def test_format_insert_value_string_simple():
     """Test formatting of values for insert statements"""
-    assert test_engine.format_insert_value('simple text', 'char') == "'simple text'"
+    assert test_engine.format_insert_value('simple text', 'char') == "simple text"
 
 
 def test_format_insert_value_string_complex():
     """Test formatting of values for insert statements"""
     assert test_engine.format_insert_value('my notes: "have extra, stuff"',
-                                           'char') == '\'my notes: \\"have extra, stuff\\"\''
+                                           'char') == 'my notes: "have extra, stuff"'
 
 
 def test_getmd5_lines():
@@ -407,4 +397,3 @@ def test_add_schema():
 
     add_schema(table_dict, table)
     assert(table_dict == result)
-    

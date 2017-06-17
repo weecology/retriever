@@ -64,10 +64,14 @@ class engine(Engine):
         """Write a line to the output file"""
         self.output_file.writelines(statement)
 
+    def executemany(self, statement, values, commit=True):
+        """Write a line to the output file"""
+        self.output_file.writelines(statement)
+
     def format_insert_value(self, value, datatype):
         """Formats a value for an insert statement"""
-        v = Engine.format_insert_value(self, value, datatype, escape=False, processed=True)
-        if v == 'null':
+        v = Engine.format_insert_value(self, value, datatype)
+        if v == None:
             return ""
         try:
             if len(v) > 1 and v[0] == v[-1] == "'":
