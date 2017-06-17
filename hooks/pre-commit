@@ -24,7 +24,6 @@ def to_string(value):
     else:
         return value
 
-
 for line in version_file:
     key, value = to_string(line).split(",")
     version_dict[key] = value
@@ -45,31 +44,40 @@ output = subprocess.check_output(
 # get list of changed scripts
 scripts_changed = to_string(output).splitlines()
 
-# get the changes staged for the next commit relative to HEAD
-staged_scripts = to_string(subprocess.check_output(
+# get the changed scripts staged for the next commit relative to HEAD for scripts which are MODIFIED
+modified_staged_scripts = to_string(subprocess.check_output(
+    "git diff --cached --name-only --diff-filter=aMd scripts", shell=True))
 
-    "git diff --cached --name-only --diff-filter=AMd scripts", shell=True))
+# get the scripts staged for the next commit relative to HEAD for scripts which are ADDED (new) or deleted
+added_deleted_staged_scripts = to_string(subprocess.check_output(
+    "git diff --cached --name-only --diff-filter=AmD scripts", shell=True))
 
-versions_not_changed = []  # if script changes we expect to change the version
-versions_updated = True
-for file in scripts_changed:
-    if file in staged_scripts:
-        # add the file if both staged and edited
-        subprocess.check_output("git add {}".format(file), shell=True)
-        output = to_string(subprocess.check_output('cat {}'.format(file), shell=True))
-        match = re.search(pattern, output)
-        script_current_version = LooseVersion(match.group(1))
-        if not script_current_version > get_script_version(file):
-            versions_not_changed.append(file)
-            versions_updated = False
+# Check to see if we have any modified scripts that are staged. 
+# We can skip this completely if there are only added or deleted scripts
+if modified_staged_scripts != "":
+    versions_not_changed = []  # if script changes we expect to change the version
+    versions_updated = True
 
-if scripts_changed and not versions_updated:
-    print("\nThese scripts have changed, update the version numbers before commit:")
-    for items in versions_not_changed:
-        print(items)
-    exit(1)
+    for file in scripts_changed:
+        if file in modified_staged_scripts:
+            # add the file if both staged and edited
+            subprocess.check_output("git add {}".format(file), shell=True)
+            output = to_string(subprocess.check_output('cat {}'.format(file), shell=True))
+            match = re.search(pattern, output)
+            script_current_version = LooseVersion(match.group(1))
+            if not script_current_version > get_script_version(file):
+                versions_not_changed.append(file)
+                versions_updated = False
 
-if staged_scripts and versions_updated:
+    if not versions_updated:
+        print("\nThese scripts have changed, update the version numbers before commit:")
+        for items in versions_not_changed:
+            print(items)
+        exit(1)
+
+# only runs version.py if we have modified scripts which have had their versions updated, 
+# or we have no modified scripts but either deleted or added scripts. 
+if (modified_staged_scripts and versions_updated) or (added_deleted_staged_scripts != ""):
     print("Updating version.txt")
     os.system('python version.py')
     print("version.txt added to commit")
