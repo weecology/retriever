@@ -65,9 +65,11 @@ if modified_staged_scripts != "":
             output = to_string(subprocess.check_output('cat {}'.format(file), shell=True))
             match = re.search(pattern, output)
             script_current_version = LooseVersion(match.group(1))
-            if not script_current_version > get_script_version(file):
-                versions_not_changed.append(file)
-                versions_updated = False
+
+            if os.path.basename(file) in version_dict.keys():
+                if not script_current_version > get_script_version(file):
+                    versions_not_changed.append(file)
+                    versions_updated = False
 
     if not versions_updated:
         print("\nThese scripts have changed, update the version numbers before commit:")
