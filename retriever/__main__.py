@@ -8,27 +8,24 @@ The main() function can be used for bootstrapping.
 """
 from __future__ import print_function
 from __future__ import absolute_import
-from builtins import input
-from imp import reload
 import os
 import sys
-from retriever.lib.defaults import ENCODING
+from builtins import input
+from imp import reload
+from retriever.engines import engine_list, choose_engine
+from retriever.lib.datapackage import create_json, edit_json, delete_json, get_script_filename
+from retriever.lib.datasets import datasets
+from retriever.lib.defaults import sample_script, CITATION, ENCODING
+from retriever.lib.get_opts import parser
+from retriever.lib.repository import check_for_updates
+from retriever.lib.scripts import SCRIPT_LIST
+from retriever.lib.tools import name_matches, reset_retriever
 
 encoding = ENCODING.lower()
 # sys removes the setdefaultencoding method at startup; reload to get it back
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding(encoding)
-
-from retriever.lib.defaults import sample_script, CITATION
-from retriever.lib.scripts import SCRIPT_LIST
-from retriever.engines import engine_list
-from retriever.lib.repository import check_for_updates
-from retriever.lib.tools import name_matches, reset_retriever
-from retriever.engines import choose_engine
-from retriever.lib.get_opts import parser
-from retriever.lib.datapackage import create_json, edit_json, delete_json, get_script_filename
-from retriever.lib.datasets import datasets
 
 
 def main():
