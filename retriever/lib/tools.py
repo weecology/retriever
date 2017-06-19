@@ -21,12 +21,13 @@ import shutil
 from decimal import Decimal
 from hashlib import md5
 
-from retriever import HOME_DIR, open_fr, open_fw, open_csvw, ENCODING
+from retriever import HOME_DIR, open_fr, open_fw, open_csvw, ENCODING, MODULE_LIST
 from retriever.lib.models import *
 import csv
 import json
 import xml.etree.ElementTree as ET
 warnings.filterwarnings("ignore")
+
 
 TEST_ENGINES = dict()
 
@@ -322,3 +323,20 @@ def file_2string(input_file):
     obs_out = input.read()
     return obs_out
 
+
+def get_module_version():
+    """This function gets the version number of the scripts and returns them in array form."""
+    modules = MODULE_LIST()
+    scripts = []
+    for module in modules:
+        if module.SCRIPT.public:
+            if os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.json') and module.SCRIPT.version:
+                module_name = module.__name__ + '.json'
+                scripts.append(','.join([module_name, str(module.SCRIPT.version)]))
+            elif os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.py') and \
+                    not os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.json'):
+                module_name = module.__name__ + '.py'
+                scripts.append(','.join([module_name, str(module.SCRIPT.version)]))
+
+    scripts = sorted(scripts, key=str.lower)
+    return scripts
