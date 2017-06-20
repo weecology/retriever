@@ -147,13 +147,13 @@ def create_json():
     Usage: retriever new_json
     '''
     contents = {}
-    tableUrls = {}
+    tableurls = {}
 
-    invalid_name =True
+    invalid_name = True
     script_exists = True
     while script_exists or invalid_name:
         contents['name'] = clean_input("name (a short unique identifier; only lowercase letters and - allowed): ")
-        invalid_name=re.compile(r'[^a-z-]').search(contents['name'])
+        invalid_name = re.compile(r'[^a-z-]').search(contents['name'])
         if invalid_name:
             print("name can only contain lowercase letters and -")
             continue
@@ -170,16 +170,16 @@ def create_json():
     contents['resources'] = []
     contents['retriever'] = "True"
     contents['retriever_minimum_version'] = "2.0.dev"
-    contents['encoding'] = clean_input("encoding: ", ignore_empty = True)
-    if is_empty(clean_input("encoding: ", ignore_empty = True)) : contents['encoding'] = ENCODING
-    contents['version'] = "1.0.0";
+    contents['encoding'] = clean_input("encoding: ", ignore_empty=True)
+    if is_empty(clean_input("encoding: ", ignore_empty=True)): contents['encoding'] = ENCODING
+    contents['version'] = "1.0.0"
 
     # Add tables -
     while True:
-        addTable = clean_input("\nAdd Table? (y/N): ")
-        if addTable.lower() in ["n", "no"]:
+        addtable = clean_input("\nAdd Table? (y/N): ")
+        if addtable.lower() in ["n", "no"]:
             break
-        elif addTable.lower() not in ["y", "yes"]:
+        elif addtable.lower() not in ["y", "yes"]:
             print("Not a valid option\n")
             continue
         else:
@@ -187,7 +187,7 @@ def create_json():
             table['name'] = clean_input("table-name: ")
             table['url'] = clean_input("table-url: ")
             table['dialect'] = {}
-            tableUrls[table['name']] = table['url']
+            tableurls[table['name']] = table['url']
 
             # get table properties (dialect)
             # refer retriever.lib.table.Table
@@ -208,7 +208,7 @@ def create_json():
             while True:
                 # get column list (optional)
                 try:
-                    col_list = clean_input("", split_char = ',', ignore_empty = True)
+                    col_list = clean_input("", split_char=',', ignore_empty=True)
                     if col_list == []:
                         break
                     elif type(col_list) != list:
@@ -247,7 +247,7 @@ def create_json():
         "Would you like to add a Message? (y,N): ", ignore_empty=True)
     if give_message.lower() in ["y", "yes"]:
         contents['message'] = clean_input("Provide your Message: ", ignore_empty=True)
-    contents['urls'] = tableUrls
+    contents['urls'] = tableurls
     file_name = contents['name'] + ".json"
     file_name = file_name.replace('-', '_')
     with open(os.path.join(HOME_DIR, 'scripts', file_name), 'w') as output_file:
@@ -418,7 +418,7 @@ def edit_json(json_file):
     try:
         contents = json.load(
             open(os.path.join(HOME_DIR, 'scripts', json_file), 'r'))
-    except (IOError,OSError):
+    except (IOError, OSError):
         print("Script not found.")
         return
 
@@ -433,6 +433,7 @@ def edit_json(json_file):
         print("\nScript written to " +
               os.path.join(HOME_DIR, 'scripts', file_name))
         output_file.close()
+
 
 def delete_json(json_file):
     try:
@@ -450,6 +451,6 @@ def delete_json(json_file):
     except OSError:
         print("Couldn't delete Script.")
 
-def get_script_filename(shortname):
-    return shortname.replace('-', '_')+'.json'
 
+def get_script_filename(shortname):
+    return shortname.replace('-', '_') + '.json'

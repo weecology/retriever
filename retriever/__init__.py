@@ -10,6 +10,7 @@ from __future__ import absolute_import
 import os
 import platform
 
+from .lib import *
 from retriever.lib.defaults import HOME_DIR
 from retriever.lib.tools import set_proxy
 
