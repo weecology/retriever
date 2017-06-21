@@ -26,10 +26,10 @@ class main(Script):
             self.name = self.title
             self.tags = self.keywords
         
-    def download(self, engine=None, debug=False):
+    def download(self, engine=None):
         if engine.name != "Download Only":
             raise Exception("The Bioclim dataset contains only non-tabular data files, and can only be used with the 'download only' engine.")
-        Script.download(self, engine, debug)
+        Script.download(self, engine)
         file_names = []
         for file_num in range(1, 20):
             for ext in (['bil', 'hdr']):

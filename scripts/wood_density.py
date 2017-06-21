@@ -44,8 +44,8 @@ class main(Script):
             self.name = self.title
             self.tags = self.keywords
 
-    def download(self, engine=None, debug=False):
-        Script.download(self, engine, debug)
+    def download(self, engine=None):
+        Script.download(self, engine)
         reload(sys)
         if hasattr(sys, 'setdefaultencoding'):
             sys.setdefaultencoding("utf-8")

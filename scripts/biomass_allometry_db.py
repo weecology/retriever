@@ -28,8 +28,8 @@ class main(Script):
         else:
             self.cleanup_func_table = Cleanup(correct_invalid_value, missing_values=['NA'])
     
-    def download(self, engine=None, debug=False):
-        Script.download(self, engine, debug)
+    def download(self, engine=None):
+        Script.download(self, engine)
         engine = self.engine
 
         # files are nested in another baad_data folder

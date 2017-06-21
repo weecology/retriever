@@ -47,8 +47,8 @@ U.S.A. """
             self.name = self.title
             self.tags = self.keywords
 
-    def download(self, engine=None, debug=False):
-        Script.download(self, engine, debug)
+    def download(self, engine=None):
+        Script.download(self, engine)
 
         self.engine.auto_create_table(Table("sites"), url=self.urls["sites"], filename='gentry_sites.csv')
         self.engine.insert_data_from_url(self.urls["sites"])

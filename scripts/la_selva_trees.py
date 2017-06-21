@@ -26,8 +26,8 @@ class main(Script):
             self.cleanup_func_table = Cleanup(correct_invalid_value, nulls=[-999])
         self.tables={'trees': Table('trees', cleanup=self.cleanup_func_table)}
 
-    def download(self, engine=None, debug=False):
-        Script.download(self, engine, debug)
+    def download(self, engine=None):
+        Script.download(self, engine)
         self.engine.download_file(self.urls["trees"], "LS_trees_1983_2000.txt")
         data_path = self.engine.format_filename("LS_trees_1983_2000.txt")
         self.engine.auto_create_table(self.tables["trees"], filename="LS_trees_1983_2000.txt")
