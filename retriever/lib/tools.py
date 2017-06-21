@@ -10,24 +10,47 @@ standard_library.install_aliases()
 
 from builtins import str
 from builtins import input
+import csv
 import difflib
-import os
-import sys
 import io
-from io import StringIO as newfile
-import warnings
+import json
+import os
+import platform
 import shutil
-from hashlib import md5
+import sys
+import warnings
 
+from hashlib import md5
+from io import StringIO as newfile
 from retriever.lib.defaults import HOME_DIR, ENCODING
 from retriever.lib.scripts import open_fr, open_fw, open_csvw
 from retriever.lib.models import *
-import csv
-import json
 import xml.etree.ElementTree as ET
 warnings.filterwarnings("ignore")
 
 TEST_ENGINES = dict()
+
+
+def create_dir():
+    """Create Directory for retriever."""
+    current_platform = platform.system().lower()
+    if current_platform != 'windows':
+        import pwd
+
+    # create the necessary directory structure for storing scripts/raw_data
+    # in the ~/.retriever directory
+    for dir in (HOME_DIR, os.path.join(HOME_DIR, 'raw_data'), os.path.join(HOME_DIR, 'scripts')):
+        if not os.path.exists(dir):
+            try:
+                os.makedirs(dir)
+                if (current_platform != 'windows') and os.getenv("SUDO_USER"):
+                    # owner of .retriever should be user even when installing
+                    # w/sudo
+                    pw = pwd.getpwnam(os.getenv("SUDO_USER"))
+                    os.chown(dir, pw.pw_uid, pw.pw_gid)
+            except OSError:
+                print("The Retriever lacks permission to access the ~/.retriever/ directory.")
+                raise
 
 
 def name_matches(scripts, arg):
