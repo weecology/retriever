@@ -37,8 +37,8 @@ class main(Script):
         else:
             self.cleanup_func_table = Cleanup(correct_invalid_value, missing_values=['NA'])
 
-    def download(self, engine=None, debug=False):
-        Script.download(self, engine, debug)
+    def download(self, engine=None):
+        Script.download(self, engine)
         engine = self.engine
         engine.download_files_from_archive(self.urls["data"], ["PanTHERIA_1-0_WR05_Aug2008.txt"],
                                            filetype="zip")

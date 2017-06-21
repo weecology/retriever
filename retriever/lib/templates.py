@@ -41,9 +41,8 @@ class Script(object):
             desc += "\n" + self.reference_url()
         return desc
 
-    def download(self, engine=None, debug=False):
+    def download(self, engine=None):
         self.engine = self.checkengine(engine)
-        self.engine.debug = debug
         self.engine.db_name = self.name
         self.engine.create_db()
 
@@ -60,6 +59,7 @@ class Script(object):
         if engine is None:
             opts = {}
             engine = choose_engine(opts)
+            engine.debug = False
         engine.get_input()
         engine.script = self
         return engine
@@ -92,8 +92,8 @@ class BasicTextTemplate(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
 
-    def download(self, engine=None, debug=False):
-        Script.download(self, engine, debug)
+    def download(self, engine=None):
+        Script.download(self, engine)
 
         for key in list(self.urls.keys()):
             if key not in list(self.tables.keys()):
@@ -125,10 +125,10 @@ class DownloadOnlyTemplate(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
 
-    def download(self, engine=None, debug=False):
+    def download(self, engine=None):
         if engine.name != "Download Only":
             raise Exception("This dataset contains only non-tabular data files, and can only be used with the 'download only' engine.\nTry 'retriever download datasetname instead.")
-        Script.download(self, engine, debug)
+        Script.download(self, engine)
 
         for filename, url in self.urls.items():
             self.engine.download_file(url, filename)

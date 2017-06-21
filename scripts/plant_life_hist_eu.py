@@ -55,8 +55,8 @@ class main(Script):
         else:
             self.cleanup_func_table = Cleanup(correct_invalid_value, missing_values=['NA'])
 
-    def download(self, engine=None, debug=False):
-        Script.download(self, engine, debug)
+    def download(self, engine=None):
+        Script.download(self, engine)
         for key in self.urls:
             self.engine.download_file(self.urls[key], self.urls[key].rpartition('/')[-1])
             new_file_path = self.engine.format_filename("new" + key)
