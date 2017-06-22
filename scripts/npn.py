@@ -16,7 +16,7 @@ from pkg_resources import parse_version
 import xml.etree.ElementTree as ET
 import datetime
 from retriever.lib.scripts import open_fw, open_csvw
-from retriever.lib.defualts import VERSION, DATA_WRITE_PATH
+from retriever.lib.defaults import VERSION, DATA_WRITE_PATH
 
 
 class main(Script):
