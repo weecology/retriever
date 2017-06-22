@@ -11,10 +11,11 @@ import sys
 import urllib.request
 import urllib.parse
 import urllib.error
-from distutils.version import LooseVersion
 from imp import reload
-from retriever.lib.tools import choose_engine
-from retriever import MODULE_LIST, ENGINE_LIST, SCRIPT_LIST, ENCODING
+from distutils.version import LooseVersion
+from retriever.engines import choose_engine, engine_list
+from retriever.lib.defaults import ENCODING
+from retriever.lib.scripts import MODULE_LIST, SCRIPT_LIST
 from retriever.lib.tools import get_module_version
 
 reload(sys)
@@ -25,7 +26,6 @@ if os.name == "nt":
     os_password = "Password12!"
 
 module_list = MODULE_LIST()
-engine_list = ENGINE_LIST()
 script_list = SCRIPT_LIST()
 test_engines = {}
 ignore = [
@@ -74,15 +74,15 @@ def get_modified_scripts():
 def install_modified():
     """Installs modified scripts and returns any errors found"""
     errors = []
-    global engine_list
     modified_scripts = get_modified_scripts()
     if modified_scripts is None:
         print("No new scripts found. Database is up to date.")
         sys.exit()
 
+    engine_list_install = engine_list
     # If engine argument, tests are only run on given engines
     if len(sys.argv) > 1:
-        engine_list = [
+        engine_list_install = [
             e for e in engine_list
             if e.name in sys.argv[1:] or
             e.abbreviation in sys.argv[1:]
@@ -122,7 +122,7 @@ def install_modified():
         "sqlite": {'engine': 'sqlite',
                    'file': dbfile, 'table_name': '{db}_{table}'}
     }
-    for engine in engine_list:
+    for engine in engine_list_install:
         if engine.abbreviation in engine_test:
             try:
                 opts = engine_test[engine.abbreviation]
