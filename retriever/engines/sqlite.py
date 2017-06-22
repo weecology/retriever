@@ -1,6 +1,6 @@
 from builtins import range
 import os
-from retriever.lib.models import Engine
+from retriever.lib.models import Engine, no_cleanup
 from retriever.lib.defaults import DATA_DIR
 
 
