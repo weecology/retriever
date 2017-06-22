@@ -14,7 +14,7 @@ import xlrd
 from retriever.lib.templates import Script
 from retriever.lib.models import Table
 from retriever.lib.excel import Excel
-from retriever import VERSION
+from retriever.lib.defaults import VERSION
 from pkg_resources import parse_version
 
 TAX_GROUPS = 9756  # 9819

@@ -1,7 +1,8 @@
 #retriever
 from retriever.lib.templates import Script
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
-from retriever import open_fr, open_fw, VERSION
+from retriever.lib.scripts import open_fr, open_fw
+from retriever.lib.defaults import VERSION
 from pkg_resources import parse_version
 
 class main(Script):
@@ -16,7 +17,7 @@ class main(Script):
         self.version='1.5.0'
         self.urls={"main": "https://ndownloader.figshare.com/files/5600831"}
         self.cleanup_func_table = Cleanup(correct_invalid_value, missing_values=[-999.9])
-                        
+
         if parse_version(VERSION) <= parse_version("2.0.0"):
             self.shortname = self.name
             self.name = self.title

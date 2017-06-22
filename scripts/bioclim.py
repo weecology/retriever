@@ -4,7 +4,7 @@
 from builtins import range
 
 from retriever.lib.templates import Script
-from retriever import VERSION
+from retriever.lib.defaults import VERSION
 from pkg_resources import parse_version
 
 

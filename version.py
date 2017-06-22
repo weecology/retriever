@@ -2,7 +2,7 @@
 from __future__ import absolute_import
 import os
 from retriever.lib.tools import get_module_version
-from retriever import VERSION
+from retriever.lib.defaults import VERSION
 
 
 def write_version_file(scripts):

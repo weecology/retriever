@@ -1,8 +1,9 @@
 from __future__ import print_function
-from builtins import str
 import os
+import platform
+from builtins import str
 from retriever.lib.models import Engine, no_cleanup
-from retriever import DATA_DIR, current_platform
+from retriever.lib.defaults import DATA_DIR
 
 
 class engine(Engine):
@@ -143,6 +144,7 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
 
     def get_connection(self):
         """Gets the db connection."""
+        current_platform = platform.system().lower()
         if current_platform != "windows":
             raise Exception("MS Access can only be used in Windows.")
         import pypyodbc as dbapi

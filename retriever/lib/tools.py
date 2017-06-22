@@ -10,21 +10,21 @@ standard_library.install_aliases()
 
 from builtins import str
 from builtins import input
-from builtins import next
-import difflib
-import os
-import io
-from io import StringIO as newfile
-import warnings
-import unittest
-import shutil
-from decimal import Decimal
-from hashlib import md5
-
-from retriever import HOME_DIR, open_fr, open_fw, open_csvw, ENCODING, MODULE_LIST
-from retriever.lib.models import *
 import csv
+import difflib
+import io
 import json
+import os
+import platform
+import shutil
+import sys
+import warnings
+
+from hashlib import md5
+from io import StringIO as newfile
+from retriever.lib.defaults import HOME_DIR, ENCODING
+from retriever.lib.scripts import open_fr, open_fw, open_csvw, MODULE_LIST
+from retriever.lib.models import *
 import xml.etree.ElementTree as ET
 warnings.filterwarnings("ignore")
 
@@ -32,10 +32,33 @@ warnings.filterwarnings("ignore")
 TEST_ENGINES = dict()
 
 
+def create_dir():
+    """Create Directory for retriever."""
+    current_platform = platform.system().lower()
+    if current_platform != 'windows':
+        import pwd
+
+    # create the necessary directory structure for storing scripts/raw_data
+    # in the ~/.retriever directory
+    for dir in (HOME_DIR, os.path.join(HOME_DIR, 'raw_data'), os.path.join(HOME_DIR, 'scripts')):
+        if not os.path.exists(dir):
+            try:
+                os.makedirs(dir)
+                if (current_platform != 'windows') and os.getenv("SUDO_USER"):
+                    # owner of .retriever should be user even when installing
+                    # w/sudo
+                    pw = pwd.getpwnam(os.getenv("SUDO_USER"))
+                    os.chown(dir, pw.pw_uid, pw.pw_gid)
+            except OSError:
+                print("The Retriever lacks permission to access the ~/.retriever/ directory.")
+                raise
+
+
 def name_matches(scripts, arg):
     matches = []
     for script in scripts:
-        if arg.lower() == script.name.lower(): return [script]
+        if arg.lower() == script.name.lower():
+            return [script]
         max_ratio = max([difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in (script.name.lower(), script.title.lower(), script.filename.lower())] +
                         [difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in [keyword.strip().lower() for keywordset in script.keywords for keyword in keywordset]]
                         )
@@ -103,41 +126,6 @@ def get_default_connection():
         return None
 
 
-def choose_engine(opts, choice=True):
-    """Prompts the user to select a database engine"""
-    from retriever.engines import engine_list
-
-    if "engine" in list(opts.keys()):
-        enginename = opts["engine"]
-    elif opts["command"] == "download":
-        enginename = "download"
-    else:
-        if not choice:
-            return None
-        print("Choose a database engine:")
-        for engine in engine_list:
-            if engine.abbreviation:
-                abbreviation = "(" + engine.abbreviation + ") "
-            else:
-                abbreviation = ""
-            print("    " + abbreviation + engine.name)
-        enginename = input(": ")
-    enginename = enginename.lower()
-
-    engine = Engine()
-    if not enginename:
-        engine = engine_list[0]
-    else:
-        for thisengine in engine_list:
-            if (enginename == thisengine.name.lower() or
-                    thisengine.abbreviation and
-                    enginename == thisengine.abbreviation):
-                engine = thisengine
-
-    engine.opts = opts
-    return engine
-
-
 def reset_retriever(scope):
     """Remove stored information on scripts, data, and connections"""
 
@@ -170,7 +158,7 @@ def json2csv(input_file, output_file=None, header_values=None):
     """Convert Json file to CSV
     function is used for only testing and can handle the file of the size
     """
-    file_out = open_fr(input_file, encode = False)
+    file_out = open_fr(input_file, encode=False)
     # set output file name and write header
     if output_file is None:
         output_file = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
@@ -340,3 +328,15 @@ def get_module_version():
 
     scripts = sorted(scripts, key=str.lower)
     return scripts
+
+
+def set_proxy():
+    """Check for proxies and makes them available to urllib"""
+    proxies = ["https_proxy", "http_proxy", "ftp_proxy",
+               "HTTP_PROXY", "HTTPS_PROXY", "FTP_PROXY"]
+    for proxy in proxies:
+        if os.getenv(proxy):
+            if len(os.environ[proxy]) != 0:
+                for i in proxies:
+                    os.environ[i] = os.environ[proxy]
+                break

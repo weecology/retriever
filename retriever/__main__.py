@@ -8,13 +8,18 @@ The main() function can be used for bootstrapping.
 """
 from __future__ import print_function
 from __future__ import absolute_import
-from builtins import str
+import os
+import sys
 from builtins import input
 from imp import reload
-import os
-import platform
-import sys
-from retriever import ENCODING
+from retriever.engines import engine_list, choose_engine
+from retriever.lib.datapackage import create_json, edit_json, delete_json, get_script_filename
+from retriever.lib.datasets import datasets
+from retriever.lib.defaults import sample_script, CITATION, ENCODING
+from retriever.lib.get_opts import parser
+from retriever.lib.repository import check_for_updates
+from retriever.lib.scripts import SCRIPT_LIST
+from retriever.lib.tools import name_matches, reset_retriever
 
 encoding = ENCODING.lower()
 # sys removes the setdefaultencoding method at startup; reload to get it back
@@ -22,12 +27,6 @@ reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding(encoding)
 
-from retriever import VERSION, SCRIPT_LIST, HOME_DIR, sample_script, CITATION
-from retriever.engines import engine_list
-from retriever.lib.repository import check_for_updates
-from retriever.lib.tools import choose_engine, name_matches, reset_retriever
-from retriever.lib.get_opts import parser
-from retriever.lib.datapackage import create_json, edit_json, delete_json, get_script_filename
 
 def main():
     """This function launches the Data Retriever."""
@@ -43,7 +42,7 @@ def main():
         args = parser.parse_args()
 
         if args.command == "install" and not args.engine:
-            parser.parse_args(['install','-h'])
+            parser.parse_args(['install', '-h'])
 
         if args.quiet:
             sys.stdout = open(os.devnull, 'w')
@@ -117,30 +116,8 @@ def main():
                 print("No scripts are currently available. Updating scripts now...")
                 check_for_updates()
                 print("\n\nScripts downloaded.\n")
-                script_list = SCRIPT_LIST()
 
-            all_scripts = []
-
-            for script in script_list:
-                if script.name:
-                    if args.l is not None:
-                        script_name = script.title + "\nName: " + script.name + "\n"
-                        if script.keywords:
-                            script_name += "Keywords: " + \
-                                str([tag for tag in script.keywords]) + "\n"
-                        not_found = 0
-                        for term in args.l:
-                            if script_name.lower().find(term.lower()) == -1:
-                                not_found = 1
-                                break
-                        if not_found == 0:
-                            all_scripts.append(script_name)
-                    else:
-                        script_name = script.name
-                        all_scripts.append(script_name)
-
-            all_scripts = sorted(all_scripts, key=lambda s: s.lower())
-
+            all_scripts = datasets(args.l)
             print("Available datasets : {}\n".format(len(all_scripts)))
 
             if args.l is None:
