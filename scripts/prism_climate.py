@@ -40,10 +40,10 @@ class main(Script):
                                                                          extension))
         return file_names
 
-    def download(self, engine=None):
+    def download(self, engine=None, debug=False):
         if engine.name != "Download Only":
             raise Exception("The PRISM dataset contains only non-tabular data files, and can only be used with the 'download only' engine.")
-        Script.download(self, engine)
+        Script.download(self, engine, debug)
 
         clim_vars = ['ppt', 'tmax', 'tmean', 'tmin']
         years = list(range(1981, 2015))

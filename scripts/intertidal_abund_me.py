@@ -23,8 +23,8 @@ class main(Script):
             self.cleanup_func_table = Cleanup(correct_invalid_value, nulls=[-999.9])
         self.tables={"main": Table("main", cleanup=self.cleanup_func_table)}
 
-    def download(self, engine=None):
-        Script.download(self, engine)
+    def download(self, engine=None, debug=False):
+        Script.download(self, engine, debug)
 
         self.engine.download_file(self.urls["main"], "Succession_sampling_03-07_data_original.txt")
         data_path = self.engine.format_filename("Succession_sampling_03-07_data.txt")

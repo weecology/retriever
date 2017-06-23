@@ -156,9 +156,9 @@ def main():
         engine = choose_engine(args.__dict__)
 
         if hasattr(args, 'debug') and args.debug:
-            engine.debug = True
+            debug = True
         else:
-            engine.debug = False
+            debug = False
             sys.tracebacklimit = 0
 
         if hasattr(args, 'debug') and args.not_cached:
@@ -174,13 +174,13 @@ def main():
             for dataset in scripts:
                 print("=> Installing", dataset.name)
                 try:
-                    dataset.download(engine)
+                    dataset.download(engine, debug=debug)
                     dataset.engine.final_cleanup()
                 except KeyboardInterrupt:
                     pass
                 except Exception as e:
                     print(e)
-                    if engine.debug:
+                    if debug:
                         raise
             print("Done!")
         else:

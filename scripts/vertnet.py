@@ -33,8 +33,8 @@ class main(Script):
             self.name = self.title
             self.tags = self.keywords
 
-    def download(self, engine=None):
-        Script.download(self, engine)
+    def download(self, engine=None, debug=False):
+        Script.download(self, engine, debug)
         engine = self.engine
 
         file_names = [ ('vertnet_latest_amphibians.csv','amphibians'),

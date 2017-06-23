@@ -33,8 +33,8 @@ class main(Script):
         else:
             self.cleanup_func_table = Cleanup(correct_invalid_value, missing_values=['NA'])
 
-    def download(self, engine=None):
-        Script.download(self, engine)
+    def download(self, engine=None, debug=False):
+        Script.download(self, engine, debug)
         engine = self.engine
         files = ["Macroplot_data_Rev.txt", "Microplot_data.txt", "Site_variables.txt", "Species_list.txt"]
         engine.download_files_from_archive(self.urls["data"], files, filetype="zip")

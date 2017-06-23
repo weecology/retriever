@@ -31,8 +31,8 @@ class main(Script):
             self.tags = self.keywords
             self.cleanup_func_table = Cleanup(correct_invalid_value, nulls=['-999'])
 
-    def download(self, engine=None):
-        Script.download(self, engine)
+    def download(self, engine=None, debug=False):
+        Script.download(self, engine, debug)
         engine = self.engine
         engine.download_files_from_archive(self.urls["data"], ["Data_Files/Amniote_Database_Aug_2015.csv",
                                                                "Data_Files/Amniote_Database_References_Aug_2015.csv",

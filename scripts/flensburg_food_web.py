@@ -26,8 +26,8 @@ class main(Script):
             self.tags = self.keywords
             self.cleanup_func_table = Cleanup(correct_invalid_value, nulls=['', 'unknown'])
 
-    def download(self, engine=None):
-        Script.download(self, engine)
+    def download(self, engine=None, debug=False):
+        Script.download(self, engine, debug)
         engine = self.engine
         file_names = [ ('Flensburg_Data_Links.csv','links'),
                         ('Flensburg_Data_Nodes.csv','nodes')
