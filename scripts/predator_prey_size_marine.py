@@ -32,8 +32,8 @@ class main(Script):
             self.tags = self.keywords
             self.cleanup_func_table = Cleanup(correct_invalid_value, nulls=['n/a', '0.0000E+00'])
 
-    def download(self, engine=None):
-        Script.download(self, engine)
+    def download(self, engine=None, debug=False):
+        Script.download(self, engine, debug)
         engine = self.engine
         engine.download_files_from_archive(self.urls["data"],
                                            ["Predator_and_prey_body_sizes_in_marine_food_webs_vsn4.txt"],
