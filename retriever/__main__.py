@@ -141,8 +141,6 @@ def main():
 
             all_scripts = sorted(all_scripts, key=lambda s: s.lower())
 
-            print("Available datasets : {}\n".format(len(all_scripts)))
-
             if args.l is None:
                 from retriever import lscolumns
                 lscolumns.printls(sorted(all_scripts, key=lambda s: s.lower()))
