@@ -116,4 +116,4 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
         import pymysql.constants.CLIENT as client
         args['client_flag'] = client.LOCAL_FILES
         self.get_input()
-        return dbapi.connect(**args)
+        return dbapi.connect(read_default_file='~/.my.cnf', **args)
