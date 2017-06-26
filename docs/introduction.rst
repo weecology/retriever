@@ -241,6 +241,39 @@ The ``citation`` command show the citation for the retriever and for the scripts
 
 **To create new, edit, delete scripts please read the documentation on scripts**
 
+
+Storing database connection details
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The retriever reads from the standard configuration files for the database
+management systems. If you want to store connection details they should be
+stored in those files. Make sure to secure these files appropriately.
+
+For postgreSQL, create or modify `~/.pgpass`. This is a file named `.pgpass`
+located in the users home directory. It should take the general form:
+
+``hostname:port:database:username:password``
+
+where each word is replaced with the correct information for your database
+connection or replaced with an ``*`` to apply to all values for that section.
+
+For MySQL, create or modify `~/.my.cnf`. This is a file named `.my.cnf` located
+in the users home directory. The relevant portion of this file for the retriever
+is the `client` section which should take the general form:
+
+::
+
+   [client]
+   host=hostname
+   port=port
+   user=username
+   password=password
+
+where each word to the right of the `=` is replaced with the correct information
+for your database connection. Remove or comment out the lines for any values you
+don't want to set. 
+
+
 Acknowledgments
 ~~~~~~~~~~~~~~~
 
