@@ -7,6 +7,8 @@ from pkg_resources import parse_version
 
 current_platform = platform.system().lower()
 extra_includes = []
+if current_platform == "windows":
+    extra_includes = ["pypyodbc"]
 
 if os.path.exists(".git/hooks"):  # check if we are in git repo
     os.system("cp hooks/pre-commit .git/hooks/pre-commit")
