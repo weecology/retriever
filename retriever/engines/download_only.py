@@ -1,14 +1,13 @@
 from __future__ import print_function
 from builtins import object
 import os
-import platform
 import shutil
 import inspect
 
 from retriever.lib.engine import filename_from_url
-from retriever.lib.models import Engine, no_cleanup
-from retriever import DATA_DIR, HOME_DIR
 from retriever.lib.dummy import DummyConnection, DummyCursor
+from retriever.lib.models import Engine
+from retriever.lib.defaults import DATA_DIR
 
 
 class engine(Engine):

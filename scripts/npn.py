@@ -11,11 +11,12 @@ standard_library.install_aliases()
 from builtins import str
 
 from retriever.lib.templates import Script
-from retriever.lib.models import Table, Cleanup, no_cleanup, correct_invalid_value
+from retriever.lib.models import Table
 from pkg_resources import parse_version
 import xml.etree.ElementTree as ET
 import datetime
-from retriever import open_fw, open_csvw, DATA_WRITE_PATH, VERSION
+from retriever.lib.scripts import open_fw, open_csvw
+from retriever.lib.defaults import VERSION, DATA_WRITE_PATH
 
 
 class main(Script):
