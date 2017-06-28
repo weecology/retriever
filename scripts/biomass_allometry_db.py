@@ -15,9 +15,10 @@ class main(Script):
         self.ref = "https://doi.org/10.6084/m9.figshare.c.3307692.v1"
         self.urls = {"BAAD": "https://ndownloader.figshare.com/files/5634309"}
         self.citation = "Falster, D.S., Duursma, R.A., Ishihara, M.I., Barneche, D.R., FitzJohn, R.G., Varhammar, A., Aiba, M., Ando, M., Anten, N., Aspinwall, M.J. and Baltzer, J.L., 2015. BAAD: a Biomass And Allometry Database for woody plants."
+        self.licenses = [{"name": "CC0-1.0"}]
         self.keywords = ['plants', 'observational']
         self.retriever_minimum_version = "2.0.dev"
-        self.version = "1.4.0"
+        self.version = "1.4.1"
         self.description = "The data set is a Biomass and allometry database (BAAD) for woody plants containing 259634 measurements collected in 176 different studies from 21084 individuals across 678 species."
         
         if parse_version(VERSION) <= parse_version("2.0.0"):
