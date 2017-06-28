@@ -61,6 +61,15 @@ def SCRIPT_LIST(force_compile=False):
     return [module.SCRIPT for module in MODULE_LIST(force_compile)]
 
 
+def get_script(dataset):
+    """Return the script for a named dataset"""
+    scripts = {script.name: script for script in SCRIPT_LIST()}
+    if dataset in scripts:
+        return scripts[dataset]
+    else:
+        raise KeyError("No dataset named: {}".format(dataset))
+
+
 def open_fr(file_name, encoding=ENCODING, encode=True):
     """Open file for reading respecting Python version and OS differences
 

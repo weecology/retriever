@@ -40,6 +40,7 @@ edit_json_parser = subparsers.add_parser('edit_json', help='CLI to edit retrieve
 delete_json_parser = subparsers.add_parser('delete_json', help='CLI to remove retriever datapackage.json script')
 ls_parser = subparsers.add_parser('ls', help='display a list all available dataset scripts')
 citation_parser = subparsers.add_parser('citation', help='view citation')
+license_parser = subparsers.add_parser('license', help='view dataset license')
 reset_parser = subparsers.add_parser('reset', help='reset retriever: removes configation settings, scripts, and cached data')
 help_parser = subparsers.add_parser('help', help='')
 
@@ -48,6 +49,7 @@ help_parser = subparsers.add_parser('help', help='')
 # ..............................................................
 
 citation_parser.add_argument('dataset', help='dataset name', nargs='?', default=None, choices=script_list + [None])
+license_parser.add_argument('dataset', help='dataset name', nargs='?', default=None, choices=script_list + [None])
 new_parser.add_argument('filename', help='new script filename')
 edit_json_parser.add_argument('dataset', help='dataset name', choices=json_list)
 reset_parser.add_argument('scope', help='things to reset: all, scripts, data, or connections',

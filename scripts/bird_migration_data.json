@@ -6,6 +6,7 @@
         "Taxon > Plants"
     ],
     "name": "bird-migration-data",
+    "licenses": [{"name": "CC0-1.0"}],
     "resources": [
         {
             "dialect": {},
@@ -22,7 +23,7 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.0-dev",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "A database on visible diurnal spring migration of birds",
     "urls": {
         "BirdMigration": "https://ndownloader.figshare.com/files/5620119",
