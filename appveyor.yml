@@ -67,3 +67,9 @@ build_script:
 
 test_script:
   - py.test -v
+
+after_test:
+  - pip install retriever -I
+  - retriever -v
+  - retriever ls
+  - py.test test/test_backward_compatibility.py -v

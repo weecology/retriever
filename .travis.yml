@@ -35,6 +35,13 @@ before_script:
 after_success:
   - codecov
 
+
+after_script:
+  - pip install retriever -I
+  - retriever -v
+  - retriever ls
+  - py.test test/test_backward_compatibility.py -v
+
 notifications:
   slack:
     secure: h18p9TjI6fiQ/8IT4lk9zcgC15z5HlK0UAYiegvf8ckpw3DadOZ2bo4YyeoAv6OJgp8JGYdw0C3UISfKpoiECdjJvuClk9ZFu5/i+J+3pTaedUbaxU+ps5hDfH5ubaRGLIro61Iz2bUfwqHftc5sxKhdfoEV1TI72gTs041I5I4=
