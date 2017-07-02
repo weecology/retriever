@@ -30,6 +30,7 @@ if hasattr(sys, 'setdefaultencoding'):
 
 def main():
     """This function launches the Data Retriever."""
+    sys.argv[1:] = [arg.lower() for arg in sys.argv[1:]]
     if len(sys.argv) == 1:
         # if no command line args are passed, show the help options
         parser.parse_args(['-h'])
