@@ -14,7 +14,7 @@ from builtins import input
 from imp import reload
 from retriever.engines import engine_list, choose_engine
 from retriever.lib.datapackage import create_json, edit_json, delete_json, get_script_filename
-from retriever.lib.datasets import datasets
+from retriever.lib.datasets import datasets, license
 from retriever.lib.defaults import sample_script, CITATION, ENCODING
 from retriever.lib.get_opts import parser
 from retriever.lib.repository import check_for_updates
@@ -77,6 +77,14 @@ def main():
                     print("Citation:   {}".format(dataset.citation))
                     print("Description:   {}\n".format(dataset.description))
 
+            return
+
+        elif args.command == 'license':
+            dataset_license = license(args.dataset)
+            if dataset_license:
+                print(dataset_license)
+            else:
+                print("There is no license information for {}".format(args.dataset))
             return
 
         elif args.command == 'new':

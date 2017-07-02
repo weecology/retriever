@@ -118,6 +118,9 @@ def compile_json(json_file):
         elif key == "citation":
             values["citation"] = "\"" + str(value) + "\""
 
+        elif key == "licenses":
+            values["licenses"] = value
+
         elif key == "keywords":
             values["keywords"] = value
 

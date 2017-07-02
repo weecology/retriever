@@ -7,6 +7,7 @@
         "literature-compilation"
     ],
     "name": "bird-size",
+    "licenses": [{"name": "CC0-1.0"}],
     "resources": [
         {
             "dialect": {
@@ -25,5 +26,5 @@
     "urls": {
         "species": "https://ndownloader.figshare.com/files/5599229"
     },
-    "version": "1.2.0"
+    "version": "1.2.1"
 }

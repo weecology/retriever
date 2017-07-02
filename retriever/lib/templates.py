@@ -14,8 +14,11 @@ class Script(object):
     from this class and execute their code in the download method."""
 
     def __init__(self, title="", description="", name="", urls=dict(),
-                 tables=dict(), ref="", public=True, addendum=None, citation="Not currently available",
-                 retriever_minimum_version="", version="", encoding="",message="", **kwargs):
+                 tables=dict(), ref="", public=True, addendum=None,
+                 citation="Not currently available",
+                 licenses=[{'name': None}],
+                 retriever_minimum_version="",
+                 version="", encoding="",message="", **kwargs):
 
         self.title = title
         self.name = name
@@ -27,6 +30,7 @@ class Script(object):
         self.public = public
         self.addendum = addendum
         self.citation = citation
+        self.licenses = licenses
         self.keywords = []
         self.retriever_minimum_version = retriever_minimum_version
         self.encoding = encoding

@@ -1,5 +1,4 @@
-from retriever.lib.scripts import SCRIPT_LIST
-
+from retriever.lib.scripts import SCRIPT_LIST, get_script
 
 def datasets(arg_script=None):
     """Return list of all available datasets."""
@@ -28,3 +27,7 @@ def datasets(arg_script=None):
     all_scripts = sorted(all_scripts, key=lambda s: s.lower())
 
     return all_scripts
+
+def license(dataset):
+    """Get the license for a dataset"""
+    return get_script(dataset).licenses[0]['name']
