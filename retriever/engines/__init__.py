@@ -22,8 +22,6 @@ engine_list = [module.engine() for module in engine_module_list]
 
 def choose_engine(opts, choice=True):
     """Prompts the user to select a database engine"""
-    from retriever.engines import engine_list
-
     if "engine" in list(opts.keys()):
         enginename = opts["engine"]
     elif opts["command"] == "download":
