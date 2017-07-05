@@ -28,6 +28,7 @@ class engine(Engine):
                       "Format of table name",
                       "[{db} {table}]"),
                      ]
+    placeholder = "?"
 
     def convert_data_type(self, datatype):
         """MS Access can't handle complex Decimal types"""

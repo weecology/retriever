@@ -67,9 +67,9 @@ class Engine(object):
         """This function adds data to a table from one or more lines specified
         in engine.table.source."""
         if self.table.columns[-1][1][0][:3] == "ct-":
-            lines = gen_from_source(data_source)
             # cross-tab data
-            real_line_length, real_lines = self.get_ct_data(lines)
+            real_line_length = self.get_ct_line_length(gen_from_source(data_source))
+            real_lines = self.get_ct_data(gen_from_source(data_source))
         else:
             real_lines = gen_from_source(data_source)
             len_source = gen_from_source(data_source)
@@ -127,9 +127,22 @@ class Engine(object):
         self.connection.commit()
         print("\n")
 
+    def get_ct_line_length(self, lines):
+        """Returns the number of real lines for cross-tab data"""
+        real_line_length = 0
+        for values in lines:
+            initial_cols = len(self.table.columns) - \
+                (3 if hasattr(self.table, "ct_names") else 2)
+            # add one if auto increment is not set to get the right initial columns
+            if not self.table.columns[0][1][0] == "pk-auto":
+                initial_cols += 1
+            rest = values[initial_cols:]
+            real_line_length = real_line_length + len(rest)
+
+        return real_line_length
+
     def get_ct_data(self, lines):
         """Creates cross tab data"""
-        real_lines = []
         for values in lines:
             initial_cols = len(self.table.columns) - \
                 (3 if hasattr(self.table, "ct_names") else 2)
@@ -145,9 +158,7 @@ class Engine(object):
                     n += 1
                 else:
                     name = []
-                real_lines.append(begin + name + [item])
-        real_line_length = len(real_lines)
-        return real_line_length, real_lines
+                yield (begin + name + [item])
 
     def auto_create_table(self, table, url=None, filename=None, pk=None):
         """Creates a table automatically by analyzing a data source and

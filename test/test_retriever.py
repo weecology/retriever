@@ -200,7 +200,7 @@ def test_getmd5_path():
 def test_json2csv():
     """Test json2csv function
     creates a json file and tests the md5 sum calculation"""
-    json_file = create_file("""[ {"User": "Alex", "Country": "US", "Age": "25"} ]""", 'output.json')
+    json_file = create_file(["""[ {"User": "Alex", "Country": "US", "Age": "25"} ]"""], 'output.json')
     output_json = json2csv(json_file, "output_json.csv", header_values=["User", "Country", "Age"])
     obs_out = file_2string(output_json)
     os.remove(output_json)
@@ -210,14 +210,15 @@ def test_json2csv():
 def test_xml2csv():
     """Test xml2csv function
     creates a xml file and tests the md5 sum calculation"""
-    xml_file = create_file("<root>\n<row>\n"
-                           "<User>Alex</User>\n"
-                           "<Country>US</Country>\n"
-                           "<Age>25</Age>\n</row>\n"
-                           "<row>\n<User>Ben</User>\n"
-                           "<Country>US</Country>S\n"
-                           "<Age>24</Age>\n"
-                           "</row>\n</root>", 'output.xml')
+    xml_file = create_file(['<root>', '<row>',
+                            '<User>Alex</User>',
+                            '<Country>US</Country>',
+                            '<Age>25</Age>', '</row>',
+                            '<row>', '<User>Ben</User>',
+                            '<Country>US</Country>',
+                            '<Age>24</Age>',
+                            '</row>', '</root>'], 'output.xml')
+
     output_xml = xml2csv(xml_file, "output_xml.csv", header_values=["User", "Country", "Age"])
     obs_out = file_2string(output_xml)
     os.remove(output_xml)
@@ -226,11 +227,11 @@ def test_xml2csv():
 
 def test_sort_file():
     """Test md5 sum calculation"""
-    data_file = create_file("Ben,US,24\nAlex,US,25\nAlex,PT,25")
+    data_file = create_file(['Ben,US,24', 'Alex,US,25', 'Alex,PT,25'])
     out_file = sort_file(data_file)
     obs_out = file_2string(out_file)
     os.remove(out_file)
-    assert obs_out == 'Alex,PT,25\nAlex,US,25\nBen,US,24\n'
+    assert data_file  == 'Alex,PT,25\nAlex,US,25\nBen,US,24\n'
 
 
 def test_sort_csv():
