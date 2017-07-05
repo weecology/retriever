@@ -292,7 +292,7 @@ def sort_csv(filename):
 
 
 def create_file(data, output='output_file'):
-    """Writes a string to a file for use by tests"""
+    """writes lines to a file from a list"""
     output_file = os.path.normpath(output)
     with open(output_file, 'w') as testfile:
         testfile.write(data)
