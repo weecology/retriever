@@ -54,55 +54,6 @@ def final_cleanup(engine):
 config_path = os.path.join(HOME_DIR, 'connections.config')
 
 
-def get_saved_connection(engine_name):
-    """Given the name of an engine, returns the stored connection for that engine
-    from connections.config."""
-    parameters = {}
-    if os.path.isfile(config_path):
-        config = open(config_path, "r")
-        for line in config:
-            values = line.rstrip('\n').split(',')
-            if values[0] == engine_name:
-                try:
-                    parameters = eval(','.join(values[1:]))
-                except:
-                    pass
-    return parameters
-
-
-def save_connection(engine_name, values_dict):
-    """Saves connection information for an engine in connections.config."""
-    lines = []
-    if os.path.isfile(config_path):
-        config = open(config_path, "r")
-        for line in config:
-            if line.split(',')[0] != engine_name:
-                lines.append('\n' + line.rstrip('\n'))
-        config.close()
-        os.remove(config_path)
-        config = open(config_path, "w")
-    else:
-        config = open(config_path, "w")
-    if "file" in values_dict:
-        values_dict["file"] = os.path.abspath(values_dict["file"])
-    config.write(engine_name + "," + str(values_dict))
-    for line in lines:
-        config.write(line)
-    config.close()
-
-
-def get_default_connection():
-    """Gets the first (most recently used) stored connection from
-    connections.config."""
-    if os.path.isfile(config_path):
-        config = open(config_path, "r")
-        default_connection = config.readline().split(",")[0]
-        config.close()
-        return default_connection
-    else:
-        return None
-
-
 def choose_engine(opts, choice=True):
     """Prompts the user to select a database engine"""
     from retriever.engines import engine_list
