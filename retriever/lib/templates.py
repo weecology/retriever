@@ -47,15 +47,6 @@ class Script(object):
         self.engine.db_name = self.name
         self.engine.create_db()
 
-    def reference_url(self):
-        if self.ref:
-            return self.ref
-        else:
-            if len(self.urls) == 1:
-                return self.urls[list(self.urls.keys())[0]]
-            else:
-                return None
-
     def checkengine(self, engine=None):
         if engine is None:
             opts = {}
