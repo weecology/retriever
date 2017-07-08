@@ -95,8 +95,7 @@ def reset_retriever(scope):
     warning_messages = {
         'all': "\nThis will remove existing scripts, cached data, and information on database connections. \nSpecifically it will remove the scripts and raw_data folders and the connections.config file in {}. \nDo you want to proceed? (y/N)\n",
         'scripts': "\nThis will remove existing scripts. \nSpecifically it will remove the scripts folder in {}.\nDo you want to proceed? (y/N)\n",
-        'data': "\nThis will remove raw data cached by the Retriever. \nSpecifically it will remove the raw_data folder in {}. \nDo you want to proceed? (y/N)\n",
-        'connections': "\nThis will remove stored information on database connections. \nSpecifically it will remove the connections.config file in {}. \nDo you want to proceed? (y/N)\n"
+        'data': "\nThis will remove raw data cached by the Retriever. \nSpecifically it will remove the raw_data folder in {}. \nDo you want to proceed? (y/N)\n"
     }
 
     path = os.path.normpath(HOME_DIR)
@@ -110,11 +109,6 @@ def reset_retriever(scope):
             shutil.rmtree(os.path.join(path, 'raw_data'))
         if scope in ['scripts', 'all']:
             shutil.rmtree(os.path.join(path, 'scripts'))
-        if scope in ['connections', 'all']:
-            try:
-                os.remove(os.path.join(path, 'connections.config'))
-            except:
-                pass
 
 
 def json2csv(input_file, output_file=None, header_values=None):
