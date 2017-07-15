@@ -117,16 +117,21 @@ def main():
                 check_for_updates()
                 print("\n\nScripts downloaded.\n")
 
-            all_scripts = datasets(args.l)
-            print("Available datasets : {}\n".format(len(all_scripts)))
-
             if args.l is None:
+                all_scripts = datasets(args.l)
+                print("Available datasets : {}\n".format(len(all_scripts)))
                 from retriever import lscolumns
-                lscolumns.printls(sorted(all_scripts, key=lambda s: s.lower()))
+                script_names = [script.name for script in all_scripts]
+                lscolumns.printls(script_names)
             else:
+                all_scripts = datasets(args.l[0])
+                print("Available datasets : {}\n".format(len(all_scripts)))
                 count = 1
                 for script in all_scripts:
-                    print("%d. %s" % (count, script))
+                    print("%d. %s" % (count, script.title))
+                    print(script.name)
+                    print(script.keywords)
+                    print()
                     count += 1
             return
 
