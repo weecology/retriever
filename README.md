@@ -20,13 +20,19 @@ user to get most large datasets up and running by hours, and in some cases days.
 
 ## Installing the Current Release
 
-If you have Python installed you can install the current release using `pip`:
+If you have Python installed you can install the current release using either `pip`:
 
 ```
 pip install retriever
 ```
 
-Depending on your system configuration this may require `sudo`:
+or `conda` after adding the `conda-forge` channel (`conda config --add channels conda-forge`):
+
+```
+conda install retriever
+```
+
+Depending on your system configuration this may require `sudo` for `pip`:
 
 ```
 sudo pip install retriever
