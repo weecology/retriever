@@ -17,7 +17,7 @@ import pytest
 from retriever.lib.compile import compile_json
 from retriever.lib.defaults import HOME_DIR
 from retriever.engines import engine_list
-from retriever.lib.tools import file_2string
+from retriever.lib.tools import file_2list
 from retriever.lib.tools import create_file
 
 # Set postgres password, Appveyor service needs the password given
@@ -52,7 +52,7 @@ simple_csv = {'name': 'simple_csv',
                          '}',
                          '}'
                          ],
-              'expect_out': 'a,b,c\n1,2,3\n4,5,6\n'
+              'expect_out': ['a,b,c', '1,2,3', '4,5,6']
               }
 
 data_no_header = {'name': 'data_no_header',
@@ -95,12 +95,12 @@ data_no_header = {'name': 'data_no_header',
                              '"data_no_header": "http://example.com/data_no_header.txt"',
                              '}',
                              '}'],
-                  'expect_out': 'a,b,c\n1,2,3\n4,5,6\n'
+                  'expect_out': ['a,b,c', '1,2,3', '4,5,6']
                   }
 
 csv_latin1_encoding = {'name': 'csv_latin1_encoding',
                        'raw_data': ['a,b,c',
-                                    '1,2,4Löve',
+                                    u'1,2,4Löve',
                                     '4,5,6'],
                        'script': ['{',
                                   '"name": "csv_latin1_encoding",',
@@ -122,7 +122,7 @@ csv_latin1_encoding = {'name': 'csv_latin1_encoding',
                                   '}',
                                   '}'
                                   ],
-                       'expect_out': u'a,b,c\n1,2,4Löve\n4,5,6\n'
+                       'expect_out': [u'a,b,c', u'1,2,4Löve', u'4,5,6']
                        }
 
 autopk_csv = {'name': 'autopk_csv',
@@ -166,7 +166,7 @@ autopk_csv = {'name': 'autopk_csv',
                          '}',
                          '}'
                          ],
-              'expect_out': 'record_id,a,b,c\n1,1,2,3\n2,4,5,6\n'
+              'expect_out': ['record_id,a,b,c', '1,1,2,3', '2,4,5,6']
               }
 
 crosstab = {'name': 'crosstab',
@@ -211,7 +211,7 @@ crosstab = {'name': 'crosstab',
                        '}',
                        '}'
                        ],
-            'expect_out': 'a,b,c,val\n1,1,c1,1.1\n1,1,c2,1.2\n1,2,c1,2.1\n1,2,c2,2.2\n'
+            'expect_out': ['a,b,c,val', '1,1,c1,1.1', '1,1,c2,1.2', '1,2,c1,2.1', '1,2,c2,2.2']
             }
 
 autopk_crosstab = {'name': 'autopk_crosstab',
@@ -260,7 +260,7 @@ autopk_crosstab = {'name': 'autopk_crosstab',
                               '}',
                               '}'
                               ],
-                   'expect_out': 'record_id,a,b,c,val\n1,1,1,c1,1.1\n2,1,1,c2,1.2\n3,1,2,c1,2.1\n4,1,2,c2,2.2\n'
+                   'expect_out': ['record_id,a,b,c,val', '1,1,1,c1,1.1', '2,1,1,c2,1.2', '3,1,2,c1,2.1', '4,1,2,c2,2.2']
                    }
 
 skip_csv = {'name': 'skip_csv',
@@ -302,7 +302,7 @@ skip_csv = {'name': 'skip_csv',
                        '}',
                        '}'
                        ],
-            'expect_out': 'b,c\n2,3\n5,6\n'
+            'expect_out': ['b,c', '2,3', '5,6']
             }
 
 extra_newline = {'name': 'extra_newline',
@@ -330,7 +330,7 @@ extra_newline = {'name': 'extra_newline',
                             '}',
                             '}'
                             ],
-                 'expect_out': "col1,col2,col3\nab,e f,cd\n"
+                 'expect_out': ['col1,col2,col3', 'ab,e f,cd']
                  }
 
 change_header_values = {'name': 'change_header_values',
@@ -375,7 +375,7 @@ change_header_values = {'name': 'change_header_values',
                                    '}',
                                    '}'
                                    ],
-                        'expect_out': 'aa,bb,c_c\n1,2,3\n4,5,6\n'
+                        'expect_out': ['aa,bb,c_c', '1,2,3', '4,5,6']
                         }
 
 tests = [simple_csv, data_no_header, csv_latin1_encoding, autopk_csv, crosstab, autopk_crosstab, skip_csv, extra_newline, change_header_values]
@@ -430,7 +430,7 @@ def get_output_as_csv(dataset, engines, tmpdir, db):
     # csv engine already has the .csv extension
     if engines.opts["engine"] != 'csv':
         csv_file += '.csv'
-    obs_out = file_2string(csv_file)
+    obs_out = file_2list(csv_file)
     os.chdir(retriever_root_dir)
     return obs_out
 

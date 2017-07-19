@@ -24,7 +24,7 @@ from retriever.lib.tools import json2csv
 from retriever.lib.tools import sort_file
 from retriever.lib.tools import sort_csv
 from retriever.lib.tools import create_file
-from retriever.lib.tools import file_2string
+from retriever.lib.tools import file_2list
 from retriever.lib.datapackage import clean_input, is_empty
 from retriever.lib.compile import add_dialect, add_schema
 
@@ -187,13 +187,19 @@ def test_format_insert_value_string_complex():
 
 def test_getmd5_lines():
     """Test md5 sum calculation given a line"""
+    lines = ['a,b,c', '1,2,3', '4,5,6']
+    assert getmd5(data=lines, data_type='lines') == 'ca471abda3ebd4ae8ce1b0814b8f470c'
+
+
+def test_getmd5_lines():
+    """Test md5 sum calculation given a line with end of line character"""
     lines = ['a,b,c\n', '1,2,3\n', '4,5,6\n']
     assert getmd5(data=lines, data_type='lines') == '0bec5bf6f93c547bc9c6774acaf85e1a'
 
 
 def test_getmd5_path():
     """Test md5 sum calculation given a path to data source"""
-    data_file = create_file('a,b,c\n1,2,3\n4,5,6\n')
+    data_file = create_file(['a,b,c', '1,2,3', '4,5,6'])
     assert getmd5(data=data_file, data_type='file') == '0bec5bf6f93c547bc9c6774acaf85e1a'
 
 
@@ -202,9 +208,9 @@ def test_json2csv():
     creates a json file and tests the md5 sum calculation"""
     json_file = create_file(["""[ {"User": "Alex", "Country": "US", "Age": "25"} ]"""], 'output.json')
     output_json = json2csv(json_file, "output_json.csv", header_values=["User", "Country", "Age"])
-    obs_out = file_2string(output_json)
+    obs_out = file_2list(output_json)
     os.remove(output_json)
-    assert obs_out == 'User,Country,Age\nAlex,US,25\n'
+    assert obs_out == ['User,Country,Age', 'Alex,US,25']
 
 
 def test_xml2csv():
@@ -220,27 +226,27 @@ def test_xml2csv():
                             '</row>', '</root>'], 'output.xml')
 
     output_xml = xml2csv(xml_file, "output_xml.csv", header_values=["User", "Country", "Age"])
-    obs_out = file_2string(output_xml)
+    obs_out = file_2list(output_xml)
     os.remove(output_xml)
-    assert obs_out == "User,Country,Age\nAlex,US,25\nBen,US,24\n"
+    assert obs_out == ['User,Country,Age', 'Alex,US,25', 'Ben,US,24']
 
 
 def test_sort_file():
     """Test md5 sum calculation"""
     data_file = create_file(['Ben,US,24', 'Alex,US,25', 'Alex,PT,25'])
     out_file = sort_file(data_file)
-    obs_out = file_2string(out_file)
+    obs_out = file_2list(out_file)
     os.remove(out_file)
-    assert data_file  == 'Alex,PT,25\nAlex,US,25\nBen,US,24\n'
+    assert obs_out == ['Alex,PT,25', 'Alex,US,25', 'Ben,US,24']
 
 
 def test_sort_csv():
     """Test md5 sum calculation"""
-    data_file = create_file("User,Country,Age\nBen,US,24\nAlex,US,25\nAlex,PT,25")
+    data_file = create_file(['User,Country,Age', 'Ben,US,24', 'Alex,US,25', 'Alex,PT,25'])
     out_file = sort_csv(data_file)
-    obs_out = file_2string(out_file)
+    obs_out = file_2list(out_file)
     os.remove(out_file)
-    assert obs_out == "User,Country,Age\nAlex,PT,25\nAlex,US,25\nBen,US,24\n"
+    assert obs_out == ['User,Country,Age', 'Alex,PT,25', 'Alex,US,25', 'Ben,US,24']
 
 
 def test_is_empty_null_string():

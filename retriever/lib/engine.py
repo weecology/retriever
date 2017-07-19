@@ -724,7 +724,6 @@ class Engine(object):
             for row in csv.reader(dataset_file, delimiter=self.table.delimiter):
                 yield [reg.sub(" ", values) for values in row]
 
-
     def extract_fixed_width(self, line):
         """Splits a line based on the fixed width and returns a list of the values"""
         pos = 0

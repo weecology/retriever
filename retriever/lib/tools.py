@@ -8,22 +8,16 @@ from __future__ import print_function
 from future import standard_library
 standard_library.install_aliases()
 
-from builtins import str
-from builtins import input
-import csv
 import difflib
-import io
 import json
-import os
 import platform
 import shutil
-import sys
 import warnings
 
 from hashlib import md5
 from io import StringIO as newfile
 from retriever.lib.defaults import HOME_DIR, ENCODING
-from retriever.lib.scripts import open_fr, open_fw, open_csvw, MODULE_LIST
+from retriever.lib.scripts import MODULE_LIST
 from retriever.lib.models import *
 import xml.etree.ElementTree as ET
 warnings.filterwarnings("ignore")
@@ -295,21 +289,26 @@ def create_file(data, output='output_file'):
     """writes lines to a file from a list"""
     output_file = os.path.normpath(output)
     with open(output_file, 'w') as testfile:
-        testfile.write(data)
+        for line in data:
+            testfile.write(line)
+            testfile.write("\n")
         testfile.close()
     return output_file
 
 
-def file_2string(input_file):
-    """return file contents as a string"""
+def file_2list(input_file):
+    """Read in a csv file and return lines a list"""
     input_file = os.path.normpath(input_file)
-    if sys.version_info >= (3, 0, 0):
-        input = io.open(input_file, 'rU')
-    else:
-        input = io.open(input_file, encoding=ENCODING)
 
-    obs_out = input.read()
-    return obs_out
+    if sys.version_info >= (3, 0, 0):
+        input_obj = io.open(input_file, 'rU')
+    else:
+        input_obj = io.open(input_file, encoding=ENCODING)
+
+    abs_list = []
+    for line in input_obj.readlines():
+        abs_list.append(line.strip())
+    return abs_list
 
 
 def get_module_version():
