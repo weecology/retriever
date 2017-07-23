@@ -23,7 +23,6 @@ def MODULE_LIST(force_compile=False):
                     isfile(join(search_path, file[:-5] + '.py')) and (
                         getmtime(join(search_path, file[:-5] + '.py')) < getmtime(
                             join(search_path, file)))) or force_compile)]
-
         for script in to_compile:
             script_name = '.'.join(script.split('.')[:-1])
             compile_json(join(search_path, script_name))
@@ -42,7 +41,7 @@ def MODULE_LIST(force_compile=False):
                     if hasattr(new_module.SCRIPT, "retriever_minimum_version"):
                         # a script with retriever_minimum_version should be loaded
                         # only if its compliant with the version of the retriever
-                        if not parse_version(VERSION) >= parse_version("{}".format(
+                        if not parse_version(VERSION) >=  parse_version("{}".format(
                                 new_module.SCRIPT.retriever_minimum_version)):
                             print("{} is supported by Retriever version {}".format(script_name,
                                                                                    new_module.SCRIPT.retriever_minimum_version))
