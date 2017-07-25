@@ -14,7 +14,7 @@ import urllib.error
 from distutils.version import LooseVersion
 from imp import reload
 from retriever.lib.tools import choose_engine
-from retriever import MODULE_LIST, ENGINE_LIST, SCRIPT_LIST, ENCODING
+from retriever import MODULE_LIST, ENGINE_LIST, ENCODING
 from retriever.lib.tools import get_module_version
 
 reload(sys)
@@ -25,7 +25,6 @@ if os.name == "nt":
     os_password = "Password12!"
 
 module_list = MODULE_LIST()
-script_list = SCRIPT_LIST()
 test_engines = {}
 ignore = [
     "forest-inventory-analysis",
