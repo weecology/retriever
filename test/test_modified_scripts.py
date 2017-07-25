@@ -129,6 +129,7 @@ def install_modified(engine_list=ENGINE_LIST()):
                     print("==>", module.__name__, value.name, "..........", module.SCRIPT.name)
                     try:
                         module.SCRIPT.download(value)
+                        module.SCRIPT.engine.final_cleanup()
                     except KeyboardInterrupt:
                         pass
                     except Exception as e:
