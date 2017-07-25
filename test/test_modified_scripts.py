@@ -18,25 +18,8 @@ from retriever import MODULE_LIST, ENGINE_LIST, ENCODING
 from retriever.lib.tools import get_module_version
 
 reload(sys)
-os_password = ""
 if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding(ENCODING)
-if os.name == "nt":
-    os_password = "Password12!"
-
-module_list = MODULE_LIST()
-test_engines = {}
-ignore = [
-    "forest-inventory-analysis",
-    "bioclim",
-    "prism-climate",
-    "vertnet",
-    "NPN",
-    "mammal-super-tree"
-]
-ignore_list = [dataset.lower() for dataset in ignore]
-upstream_versions = {}
-
 
 def to_string(value_to_str):
     if sys.version_info >= (3, 0, 0):
@@ -44,13 +27,13 @@ def to_string(value_to_str):
     else:
         return value_to_str
 
-
 def get_modified_scripts():
     """Get modified script list, using version.txt in repo and master upstream"""
     modified_list = []
     version_file = urllib.request.urlopen("https://raw.githubusercontent.com/weecology/retriever/master/version.txt")
     local_repo_scripts = get_module_version()  # local repo versions
 
+    upstream_versions = {}
     version_file.readline()
     for line in version_file.readlines():
         master_script_name, master_script_version = to_string(line).lower().strip().split(",")
@@ -65,13 +48,26 @@ def get_modified_scripts():
         else:
             if LooseVersion(local_version) != upstream_versions[local_script]:
                 modified_list.append(os.path.basename(local_script).split('.')[0])
-
     return modified_list
 
 
 def install_modified(engine_list=ENGINE_LIST()):
     """Installs modified scripts and returns any errors found"""
-    errors = []
+
+    os_password = ""
+    if os.name == "nt":
+        os_password = "Password12!"
+
+    ignore = [
+        "forest-inventory-analysis",
+        "bioclim",
+        "prism-climate",
+        "vertnet",
+        "NPN",
+        "mammal-super-tree"
+    ]
+    ignore_list = [dataset.lower() for dataset in ignore]
+
     modified_scripts = get_modified_scripts()
     if modified_scripts is None:
         print("No new scripts found. Database is up to date.")
@@ -112,6 +108,8 @@ def install_modified(engine_list=ENGINE_LIST()):
         "sqlite": {'engine': 'sqlite',
                    'file': dbfile, 'table_name': '{db}_{table}'}
     }
+
+    test_engines = {}
     for engine in engine_list:
         if engine.abbreviation in engine_test:
             try:
@@ -121,6 +119,8 @@ def install_modified(engine_list=ENGINE_LIST()):
                 test_engines[engine.abbreviation] = None
                 pass
 
+    module_list = MODULE_LIST()
+    errors = []
     for module in module_list:
         for (key, value) in list(test_engines.items()):
             shortname = module.SCRIPT.name.lower()
