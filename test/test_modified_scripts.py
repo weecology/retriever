@@ -25,7 +25,6 @@ if os.name == "nt":
     os_password = "Password12!"
 
 module_list = MODULE_LIST()
-engine_list = ENGINE_LIST()
 script_list = SCRIPT_LIST()
 test_engines = {}
 ignore = [
@@ -71,22 +70,14 @@ def get_modified_scripts():
     return modified_list
 
 
-def install_modified():
+def install_modified(engine_list=ENGINE_LIST()):
     """Installs modified scripts and returns any errors found"""
     errors = []
-    global engine_list
     modified_scripts = get_modified_scripts()
     if modified_scripts is None:
         print("No new scripts found. Database is up to date.")
         sys.exit()
 
-    # If engine argument, tests are only run on given engines
-    if len(sys.argv) > 1:
-        engine_list = [
-            e for e in engine_list
-            if e.name in sys.argv[1:] or
-            e.abbreviation in sys.argv[1:]
-            ]
     if os.path.exists("test_modified"):
         os.system("rm -r test_modified")
     os.makedirs("test_modified")
@@ -156,7 +147,16 @@ def test_install_modified():
 
 
 def main():
-    errors = install_modified()
+    engine_list = ENGINE_LIST()
+    # If engine argument, tests are only run on given engines
+    if len(sys.argv) > 1:
+        engine_list = [
+            e for e in engine_list
+            if e.name in sys.argv[1:] or
+            e.abbreviation in sys.argv[1:]
+            ]
+
+    errors = install_modified(engine_list)
     if errors:
         print("Engine, Dataset, Error")
         for error in errors:
