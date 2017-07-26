@@ -292,24 +292,28 @@ def sort_csv(filename):
 
 
 def create_file(data, output='output_file'):
-    """Writes a string to a file for use by tests"""
+    """writes lines to a file from a list"""
     output_file = os.path.normpath(output)
     with open(output_file, 'w') as testfile:
-        testfile.write(data)
-        testfile.close()
+        for line in data:
+            testfile.write(line)
+            testfile.write("\n")
     return output_file
 
 
-def file_2string(input_file):
-    """return file contents as a string"""
+def file_2list(input_file):
+    """Read in a csv file and return lines a list"""
     input_file = os.path.normpath(input_file)
-    if sys.version_info >= (3, 0, 0):
-        input = io.open(input_file, 'rU')
-    else:
-        input = io.open(input_file, encoding=ENCODING)
 
-    obs_out = input.read()
-    return obs_out
+    if sys.version_info >= (3, 0, 0):
+        input_obj = io.open(input_file, 'rU')
+    else:
+        input_obj = io.open(input_file, encoding=ENCODING)
+
+    abs_list = []
+    for line in input_obj.readlines():
+        abs_list.append(line.strip())
+    return abs_list
 
 
 def get_module_version():
