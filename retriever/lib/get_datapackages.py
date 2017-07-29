@@ -48,6 +48,26 @@ def add_retriever_metadata(dp):
     dp["retriever_minimum_version"] = "2.0.0"
     return dp
 
+def match_types(dp):
+    """Match the datapackage types to the retriever types
+
+    The retriever still describes types using its old system instead of the
+    official frictionless data spec. This converts frictionless data types to
+    retriever types.
+
+    """
+
+    types = {'string': 'char',
+             'number': 'double',
+             'integer': 'int',
+             'date': 'char'
+    }
+
+    for resource in dp['resources']:
+        for field in resource['schema']['fields']:
+            field['type'] = types.get(field['type'], field['type'])
+    return dp
+
 def download_dps_json(dps):
     """Download json files for each external data package"""
     scripts_dir = os.path.join(HOME_DIR, 'scripts')
@@ -57,6 +77,7 @@ def download_dps_json(dps):
         url = dps[dp_name]
         dp = load_dp_json(url)
         dp = replace_path(dp, url)
+        dp = match_types(dp)
         dp = add_retriever_metadata(dp)
         write_path = os.path.join(scripts_dir,
                                   dp_name.replace('-', '_') + ".json")
