@@ -48,6 +48,16 @@ def add_retriever_metadata(dp):
     dp["retriever_minimum_version"] = "2.0.0"
     return dp
 
+def replace_name(dp, dp_name):
+    """Replace the original dp name with the name chosen for the retriever
+
+    There is no system for ensuring that data package names are unique and
+    descriptive, so we replace the name in the original dp with the name
+    specified in datapackage.yml
+    """
+    dp["name"] = dp_name
+    return dp
+
 def match_types(dp):
     """Match the datapackage types to the retriever types
 
@@ -77,6 +87,7 @@ def download_dps_json(dps):
         url = dps[dp_name]
         dp = load_dp_json(url)
         dp = replace_path(dp, url)
+        dp = replace_name(dp, dp_name)
         dp = match_types(dp)
         dp = add_retriever_metadata(dp)
         write_path = os.path.join(scripts_dir,
