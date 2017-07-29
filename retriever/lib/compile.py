@@ -129,8 +129,17 @@ def compile_json(json_file):
             # Adding the key 'encoding'
             source_encoding = str(value)
 
+        elif key == "retriever":
+            values["retriever"] = value
+
         elif key == "retriever_minimum_version":
             values["retriever_minimum_version"] = "\"" + str(value) + "\""
+
+        elif key == "urls":
+            values["urls"] == value
+
+        elif key == "scan_lines":
+            values["scan_lines"] = value
 
         elif key == "message":
             values["message"] = "\"" + str(value) + "\""
@@ -160,9 +169,7 @@ def compile_json(json_file):
                         add_schema(table_dict, table)
 
                 tables[table["name"]] = table_dict
-
-        else:
-            values[key] = value 
+            
     # Create a Table object string using the tables dict
     table_desc = "{"
     for (key, value) in tables.items():
