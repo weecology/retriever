@@ -60,7 +60,7 @@ install_parser.add_argument('--not-cached', help='overwrites local cache of raw 
 download_parser.add_argument('dataset', help='dataset name').completer = ChoicesCompleter(script_list)
 ls_parser.add_argument('-l', help='verbose list of datasets containing following keywords '
                                   '(lists all when no keywords are specified)',
-                       nargs='*').completer = ChoicesCompleter(list(keywords_list))
+                       nargs=1).completer = ChoicesCompleter(list(keywords_list))
 delete_json_parser.add_argument('dataset', help='dataset name', choices=json_list)
 # retriever Install {Engine} ..
 # retriever download [options]
