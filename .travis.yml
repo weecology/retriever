@@ -1,4 +1,5 @@
 sudo: false
+dist: trusty
 language: python
 python:
   - "2.7"
@@ -24,12 +25,13 @@ install:
 # command to run tests using py.test
 
 script:
-  - py.test -v --cov=retriever
+  - py.test -k "not test_mysql_integration" -v --cov=retriever
 
 # database setup
 before_script:
   - sqlite3 --version
   - mysql -e 'create database myapp_test;'
+  - mysql -e 'CREATE USER 'travis'@'localhost';GRANT ALL PRIVILEGES ON *.* TO 'travis'@'localhost';GRANT FILE ON *.* TO 'travis'@'localhost';'
   - psql -c 'create database testdb;' -U postgres
 
 after_success:
