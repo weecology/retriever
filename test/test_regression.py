@@ -2,9 +2,18 @@ from __future__ import absolute_import
 from imp import reload
 import imp
 import os
+import io
 import sys
 import shutil
 from retriever.lib.defaults import ENCODING
+from retriever import datasets
+from retriever import install_sqlite
+from retriever import install_csv
+from retriever import install_json
+from retriever import install_mysql
+from retriever import install_postgres
+from retriever import install_xml
+from retriever import download
 
 encoding = ENCODING.lower()
 
@@ -27,6 +36,7 @@ file_location = os.path.dirname(os.path.realpath(__file__))
 retriever_root_dir = os.path.abspath(os.path.join(file_location, os.pardir))
 working_script_dir = os.path.abspath(os.path.join(retriever_root_dir, "scripts"))
 HOMEDIR = os.path.expanduser('~')
+script_home = "{}/.retriever/scripts".format(HOMEDIR)
 
 download_md5 = [
     ('mt-st-helens-veg', 'd5782e07241cb3fe9f5b2e1bb804a794'),
@@ -47,13 +57,14 @@ def get_script_module(script_name):
     return imp.load_module(script_name, file, pathname, desc)
 
 
-def get_csv_md5(dataset, engines, tmpdir):
+def get_csv_md5(dataset, engine, tmpdir, install_function, config):
     workdir = tmpdir.mkdtemp()
     workdir.chdir()
+    install_function(dataset.replace("_", "-"), **config)
     script_module = get_script_module(dataset)
-    script_module.SCRIPT.download(engines)
-    script_module.SCRIPT.engine.final_cleanup()
-    script_module.SCRIPT.engine.to_csv()
+    engine_obj = script_module.SCRIPT.checkengine(engine)
+    engine_obj.to_csv()
+    os.chdir(retriever_root_dir)
     current_md5 = getmd5(data=str(workdir), data_type='dir')
     return current_md5
 
@@ -61,7 +72,9 @@ def get_csv_md5(dataset, engines, tmpdir):
 def setup_module():
     """Update retriever scripts and cd to test directory to find data"""
     os.chdir(retriever_root_dir)
-    os.system('cp -r {0} {1}'.format(os.path.join(retriever_root_dir, "test/raw_data"), retriever_root_dir))
+    os.system("cp -r ./scripts/  {}/".format(script_home))
+    os.system('cp -r {0} {1}'.format(os.path.join(retriever_root_dir,
+                                                  "test/raw_data"), retriever_root_dir))
 
 
 def teardown_module():
@@ -76,15 +89,18 @@ def teardown_module():
 def test_sqlite_regression(dataset, expected, tmpdir):
     """Check for sqlite regression"""
     dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb.sqlite'))
-    sqlite_engine.opts = {'engine': 'sqlite', 'file': dbfile, 'table_name': '{db}_{table}'}
-    assert get_csv_md5(dataset, sqlite_engine, tmpdir) == expected
+    sqlite_engine.opts = {
+        'engine': 'sqlite',
+        'file': dbfile,
+        'table_name': '{db}_{table}'}
+    interface_opts = {'file': dbfile}
+    assert get_csv_md5(dataset, sqlite_engine, tmpdir, install_sqlite, interface_opts) == expected
 
 
 @pytest.mark.parametrize("dataset, expected", db_md5)
 def test_postgres_regression(dataset, expected, tmpdir):
     """Check for postgres regression"""
-    os.system(
-        'psql -U postgres -d testdb -h localhost -c "DROP SCHEMA IF EXISTS testschema CASCADE"')
+    os.system('psql -U postgres -d testdb -h localhost -c "DROP SCHEMA IF EXISTS testschema CASCADE"')
     postgres_engine.opts = {'engine': 'postgres',
                             'user': 'postgres',
                             'password': os_password,
@@ -93,7 +109,12 @@ def test_postgres_regression(dataset, expected, tmpdir):
                             'database': 'testdb',
                             'database_name': 'testschema',
                             'table_name': '{db}.{table}'}
-    assert get_csv_md5(dataset, postgres_engine, tmpdir) == expected
+    interface_opts = {"user": 'postgres',
+                      "password": postgres_engine.opts['password'],
+                      "database": postgres_engine.opts['database'],
+                      "database_name": postgres_engine.opts['database_name'],
+                      "table_name": postgres_engine.opts['table_name']}
+    assert get_csv_md5(dataset, postgres_engine, tmpdir, install_postgres, interface_opts) == expected
 
 
 @pytest.mark.parametrize("dataset, expected", db_md5)
@@ -107,37 +128,60 @@ def test_mysql_regression(dataset, expected, tmpdir):
                          'port': 3306,
                          'database_name': 'testdb',
                          'table_name': '{db}.{table}'}
-    assert get_csv_md5(dataset, mysql_engine, tmpdir) == expected
+    interface_opts = {"user": mysql_engine.opts['user'],
+                      "database_name": mysql_engine.opts['database_name'],
+                      "table_name": mysql_engine.opts['table_name']}
+    assert get_csv_md5(dataset, mysql_engine, tmpdir, install_mysql, interface_opts) == expected
 
 
 @pytest.mark.parametrize("dataset, expected", db_md5)
 def test_xmlengine_regression(dataset, expected, tmpdir):
     """Check for xmlenginee regression"""
-    xml_engine.opts = {'engine': 'xml',
-                       'table_name': 'output_file_{table}.xml'}
-    assert get_csv_md5(dataset, xml_engine, tmpdir) == expected
+    xml_engine.opts = {
+        'engine': 'xml',
+        'table_name': 'output_file_{table}.xml'}
+    interface_opts = {'table_name': 'output_file_{table}.xml'}
+    assert get_csv_md5(dataset, xml_engine, tmpdir, install_xml, interface_opts) == expected
 
 
 @pytest.mark.parametrize("dataset, expected", db_md5)
 def test_jsonengine_regression(dataset, expected, tmpdir):
     """Check for jsonenginee regression"""
-    json_engine.opts = {'engine': 'json',
-                        'table_name': 'output_file_{table}.json'}
-    assert get_csv_md5(dataset, json_engine, tmpdir) == expected
+    json_engine.opts = {
+        'engine': 'json',
+        'table_name': 'output_file_{table}.json'}
+    interface_opts = {'table_name': 'output_file_{table}.json'}
+    assert get_csv_md5(dataset, json_engine, tmpdir, install_json, interface_opts) == expected
 
 
 @pytest.mark.parametrize("dataset, expected", db_md5)
 def test_csv_regression(dataset, expected, tmpdir):
     """Check csv regression"""
-    csv_engine.opts = {'engine': 'csv',
-                       'table_name': 'output_file_{table}.csv'}
-    assert get_csv_md5(dataset, csv_engine, tmpdir) == expected
+    csv_engine.opts = {
+        'engine': 'csv',
+        'table_name': 'output_file_{table}.csv'}
+    interface_opts = {'table_name': 'output_file_{table}.csv'}
+    assert get_csv_md5(dataset, csv_engine, tmpdir, install_csv, interface_opts) == expected
 
 
 @pytest.mark.parametrize("dataset, expected", download_md5)
 def test_download_regression(dataset, expected):
-    """Check for regression for a particular dataset downloaded only"""
-    os.chdir(retriever_root_dir)
-    os.system("retriever download {0} -p raw_data/{0}".format(dataset))
+    """Test download regression"""
+    download(dataset, "raw_data/{0}".format(dataset))
     current_md5 = getmd5(data="raw_data/{0}".format(dataset), data_type='dir')
     assert current_md5 == expected
+
+
+def test_scripts():
+    """Test if all datasets are working well
+
+    The dataset list is in the version.txt and includes one extra line for the version
+
+    """
+    input_file = os.path.join(retriever_root_dir, "version.txt")
+    if sys.version_info >= (3, 0, 0):
+        input_obj = io.open(input_file, 'rU')
+    else:
+        input_obj = io.open(input_file, encoding=ENCODING)
+    abs_list = [line.strip() for line in input_obj.readlines()]
+    assert len([data_set for data_set in datasets()]) == len(abs_list) - 1
