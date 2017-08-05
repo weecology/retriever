@@ -7,7 +7,7 @@ bioclim.py,1.2.0
 biodiversity_response.json,1.0.1
 biomass_allometry_db.py,1.4.1
 bird_migration_data.json,1.0.1
-bird_size.json,1.2.1
+bird_size.json,1.2.2
 breast_cancer_wi.json,1.1.1
 breed_bird_survey.py,1.4.0
 breed_bird_survey_50stop.py,1.4.0
