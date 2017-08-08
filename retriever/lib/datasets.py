@@ -1,5 +1,6 @@
 from retriever.lib.scripts import SCRIPT_LIST, get_script
 
+
 def datasets(arg_keyword=None):
     """Return list of all available datasets."""
     script_list = SCRIPT_LIST()
@@ -21,6 +22,18 @@ def datasets(arg_keyword=None):
 
     return all_scripts
 
+
+def dataset_names():
+    """Return list of all available dataset names."""
+    all_scripts = datasets()
+    scripts_name = []
+
+    for script in all_scripts:
+        scripts_name.append(script.name)
+
+    return scripts_name
+
+
 def license(dataset):
-    """Get the license for a dataset"""
+    """Get the license for a dataset."""
     return get_script(dataset).licenses[0]['name']
