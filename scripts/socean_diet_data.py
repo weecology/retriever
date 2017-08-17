@@ -2,7 +2,10 @@
 #retriever
 from retriever.lib.templates import Script
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
-from retriever.lib.defaults import VERSION
+try:
+    from retriever import VERSION
+except ImportError:
+    from retriever.lib.defaults import VERSION
 from pkg_resources import parse_version
 
 class main(Script):
@@ -16,7 +19,7 @@ class main(Script):
         self.description="Diet-related data from published and unpublished data sets and studies"
         self.keywords = []
         self.retriever_minimum_version='2.0.dev'
-        self.version='1.0.1'
+        self.version='1.0.2'
         self.urls={"zip": "https://ndownloader.figshare.com/files/5618823"}
         self.cleanup_func_table = Cleanup(correct_invalid_value, missing_values=['', 'unknown'])
 

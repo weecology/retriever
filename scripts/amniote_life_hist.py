@@ -5,7 +5,10 @@ from pkg_resources import parse_version
 
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 from retriever.lib.templates import Script
-from retriever.lib.defaults import VERSION
+try:
+    from retriever import VERSION
+except ImportError:
+    from retriever.lib.defaults import VERSION
 
 
 class main(Script):

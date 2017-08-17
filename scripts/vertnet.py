@@ -6,7 +6,10 @@ from builtins import str
 from retriever.lib.models import Table
 from retriever.lib.templates import Script
 import os
-from retriever.lib.defaults import VERSION
+try:
+    from retriever import VERSION
+except ImportError:
+    from retriever.lib.defaults import VERSION
 from pkg_resources import parse_version
 
 
@@ -16,7 +19,7 @@ class main(Script):
         self.title = "vertnet:"
         self.name = "vertnet"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.4.0'
+        self.version = '1.4.1'
         self.ref = "http://vertnet.org/resources/datatoolscode.html"
         self.urls = {
                     'amphibians': 'https://de.iplantcollaborative.org/anon-files//iplant/home/shared/commons_repo/curated/Vertnet_Amphibia_Sep2016/VertNet_Amphibia_Sept2016.zip',

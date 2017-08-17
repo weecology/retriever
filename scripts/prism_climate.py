@@ -4,7 +4,10 @@
 from future import standard_library
 standard_library.install_aliases()
 from builtins import range
-from retriever.lib.defaults import VERSION
+try:
+    from retriever import VERSION
+except ImportError:
+    from retriever.lib.defaults import VERSION
 from retriever.lib.templates import Script
 import urllib.request, urllib.parse, urllib.error
 from pkg_resources import parse_version
@@ -15,7 +18,7 @@ class main(Script):
         self.title = "PRISM Climate Data"
         self.name = "prism-climate"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.2.0'
+        self.version = '1.2.1'
         self.ref = "http://prism.oregonstate.edu/"
         self.urls = {"climate": "http://services.nacse.org/prism/data/public/4km/"}
         self.description = "The PRISM data set represents climate observations from a wide range of monitoring networks, applies sophisticated quality control measures, and develops spatial climate datasets to reveal short- and long-term climate patterns. "

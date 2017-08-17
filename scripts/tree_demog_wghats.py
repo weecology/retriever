@@ -3,7 +3,10 @@
 
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 from retriever.lib.templates import Script
-from retriever.lib.defaults import VERSION
+try:
+    from retriever import VERSION
+except ImportError:
+    from retriever.lib.defaults import VERSION
 from pkg_resources import parse_version
 
 
@@ -13,7 +16,7 @@ class main(Script):
         self.title = "Tree demography in Western Ghats, India - Pelissier et al. 2011"
         self.name = "tree-demog-wghats"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.3.0'
+        self.version = '1.3.1'
         self.ref = "https://figshare.com/collections/Tree_demography_in_an_undisturbed_" \
                    "Dipterocarp_permanent_sample_plot_at_Uppangala_Western_Ghats_of_India/3304026"
         self.urls = {"data": "https://ndownloader.figshare.com/files/5619033"}
