@@ -6,9 +6,9 @@ from pkg_resources import parse_version
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 from retriever.lib.templates import Script
 try:
-    from retriever import VERSION
-except ImportError:
     from retriever.lib.defaults import VERSION
+except ImportError:
+    from retriever import VERSION
 
 
 class main(Script):
@@ -17,7 +17,7 @@ class main(Script):
         self.title = "Amniote life History database"
         self.name = "amniote-life-hist"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '2.0.1'
+        self.version = '2.0.2'
         self.ref = "https://figshare.com/collections/An_amniote_life-history_database_to_perform_comparative_" \
                    "analyses_with_birds_mammals_and_reptiles/3308127"
         self.urls = {"data": "https://ndownloader.figshare.com/files/8067269"}

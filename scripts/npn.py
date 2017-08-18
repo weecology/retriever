@@ -16,11 +16,10 @@ from pkg_resources import parse_version
 import xml.etree.ElementTree as ET
 import datetime
 try:
-    from retriever.lib.models import Cleanup, no_cleanup, correct_invalid_value
-    from retriever import open_fw, open_csvw, DATA_WRITE_PATH, VERSION
-except ImportError:
     from retriever.lib.scripts import open_fw, open_csvw
     from retriever.lib.defaults import VERSION, DATA_WRITE_PATH
+except ImportError:
+    from retriever import open_fw, open_csvw, DATA_WRITE_PATH, VERSION
 
 
 class main(Script):

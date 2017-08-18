@@ -7,11 +7,11 @@ import os
 
 from retriever.lib.models import Table
 from retriever.lib.templates import Script
-try:
-    from retriever import VERSION
-except ImportError:
-    from retriever.lib.defaults import VERSION
 from pkg_resources import parse_version
+try:
+    from retriever.lib.defaults import VERSION
+except ImportError:
+    from retriever import VERSION
 
 
 class main(Script):

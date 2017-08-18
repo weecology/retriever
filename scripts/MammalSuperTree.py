@@ -1,10 +1,11 @@
 #retriever
-try:
-    from retriever import VERSION
-except ImportError:
-    from retriever.lib.defaults import VERSION
 from retriever.lib.templates import DownloadOnlyTemplate
 from pkg_resources import parse_version
+try:
+    from retriever.lib.defaults import VERSION
+except ImportError:
+    from retriever import VERSION
+
 
 class main(DownloadOnlyTemplate):
     def __init__(self, **kwargs):

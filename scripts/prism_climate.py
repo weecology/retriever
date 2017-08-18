@@ -4,13 +4,14 @@
 from future import standard_library
 standard_library.install_aliases()
 from builtins import range
-try:
-    from retriever import VERSION
-except ImportError:
-    from retriever.lib.defaults import VERSION
 from retriever.lib.templates import Script
 import urllib.request, urllib.parse, urllib.error
 from pkg_resources import parse_version
+try:
+    from retriever.lib.defaults import VERSION
+except ImportError:
+    from retriever import VERSION
+
 
 class main(Script):
     def __init__(self, **kwargs):

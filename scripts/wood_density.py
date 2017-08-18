@@ -8,16 +8,15 @@ import sys
 import os
 import xlrd
 from imp import reload
-
 from retriever.lib.templates import Script
 from retriever.lib.models import Table
+from retriever.lib.excel import Excel
+from pkg_resources import parse_version
 try:
-    from retriever.lib.excel import Excel
-    from retriever import HOME_DIR, open_fr, open_fw, open_csvw, to_str, VERSION
-except ImportError:
     from retriever.lib.defaults import VERSION
     from retriever.lib.scripts import open_fw, open_csvw, to_str
-from pkg_resources import parse_version
+except ImportError:
+    from retriever import HOME_DIR, open_fr, open_fw, open_csvw, to_str, VERSION
 
 
 class main(Script):

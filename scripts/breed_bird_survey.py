@@ -12,16 +12,14 @@ import os
 import urllib.request, urllib.parse, urllib.error
 import zipfile
 from decimal import Decimal
+from pkg_resources import parse_version
+from retriever.lib.templates import Script
+from retriever.lib.models import Table, Cleanup, correct_invalid_value
 try:
-    from retriever.lib.templates import Script
-    from retriever.lib.models import Table, Cleanup, no_cleanup, correct_invalid_value
-    from retriever import HOME_DIR, open_fr, open_fw, VERSION
-except ImportError:
-    from retriever.lib.templates import Script
-    from retriever.lib.models import Table, Cleanup, correct_invalid_value
     from retriever.lib.scripts import open_fr, open_fw
     from retriever.lib.defaults import VERSION
-from pkg_resources import parse_version
+except ImportError:
+    from retriever import open_fr, open_fw, VERSION
 
 
 class main(Script):

@@ -1,11 +1,11 @@
 v2.1.dev
 abalone_age.json,1.2.1
-amniote_life_hist.py,2.0.1
+amniote_life_hist.py,2.0.2
 antarctic_breed_bird.json,1.2.1
 aquatic_animal_excretion.py,1.1.1
 bioclim.py,1.2.1
 biodiversity_response.json,1.0.1
-biomass_allometry_db.py,1.4.1
+biomass_allometry_db.py,1.4.2
 bird_migration_data.json,1.0.1
 bird_size.json,1.2.2
 breast_cancer_wi.json,1.1.1
