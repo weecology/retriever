@@ -1,8 +1,11 @@
 #retriever
 from retriever.lib.templates import Script
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
-from retriever.lib.defaults import VERSION
 from pkg_resources import parse_version
+try:
+    from retriever.lib.defaults import VERSION
+except ImportError:
+    from retriever import VERSION
 
 
 class main(Script):
@@ -16,7 +19,7 @@ class main(Script):
         self.description="The data set helps to examine the post-establishment ecology of 10 species of tropical wet forest trees selected to span a range of predicted life history patterns at the La Selva Biological Station in Costa Rica."
         self.ref="https://doi.org/10.6084/m9.figshare.c.3299324.v1"
         self.retriever_minimum_version= "2.0.dev"
-        self.version='1.4.0'
+        self.version='1.4.1'
         self.citation="David B. Clark and Deborah A. Clark. 2006. Tree growth, mortality, physical condition, and microsite in an old-growth lowland tropical rain forest. Ecology 87:2132."
 
         if parse_version(VERSION) <= parse_version("2.0.0"):

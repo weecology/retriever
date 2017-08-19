@@ -3,8 +3,11 @@
 """Retriever script for direct download of data data"""
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 from retriever.lib.templates import Script
-from retriever.lib.defaults import VERSION
 from pkg_resources import parse_version
+try:
+    from retriever.lib.defaults import VERSION
+except ImportError:
+    from retriever import VERSION
 
 
 class main(Script):
@@ -18,7 +21,7 @@ class main(Script):
         self.licenses = [{"name": "CC0-1.0"}]
         self.keywords = ['plants', 'observational']
         self.retriever_minimum_version = "2.0.dev"
-        self.version = "1.4.1"
+        self.version = "1.4.2"
         self.description = "The data set is a Biomass and allometry database (BAAD) for woody plants containing 259634 measurements collected in 176 different studies from 21084 individuals across 678 species."
         
         if parse_version(VERSION) <= parse_version("2.0.0"):

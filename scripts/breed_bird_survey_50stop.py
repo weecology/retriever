@@ -15,9 +15,12 @@ import zipfile
 from decimal import Decimal
 from retriever.lib.templates import Script
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
-from retriever.lib.scripts import open_fr, open_fw
-from retriever.lib.defaults import VERSION
 from pkg_resources import parse_version
+try:
+    from retriever import HOME_DIR, open_fr, open_fw, VERSION
+except ImportError:
+    from retriever.lib.scripts import open_fr, open_fw
+    from retriever.lib.defaults import VERSION
 
 
 class main(Script):
@@ -30,7 +33,7 @@ class main(Script):
         self.ref = "http://www.pwrc.usgs.gov/BBS/"
         self.keywords = ["birds", "continental-scale"]
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.4.0'
+        self.version = '1.4.1'
         self.urls = {
                      "counts": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/50-StopData/1997ToPresent_SurveyWide/",
                      "routes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/Routes.zip",
