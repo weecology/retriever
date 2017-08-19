@@ -1,12 +1,14 @@
 """Class models for dataset scripts from various locations. Scripts should
 inherit from the most specific class available."""
 from __future__ import print_function
-from builtins import object
+
 import os
 import shutil
-from retriever.lib.defaults import DATA_DIR
+from builtins import object
+
 from retriever.lib.models import *
 from retriever.engines import choose_engine
+from retriever.lib.defaults import DATA_DIR
 
 
 class Script(object):
@@ -18,7 +20,7 @@ class Script(object):
                  citation="Not currently available",
                  licenses=[{'name': None}],
                  retriever_minimum_version="",
-                 version="", encoding="",message="", **kwargs):
+                 version="", encoding="", message="", **kwargs):
 
         self.title = title
         self.name = name
@@ -35,7 +37,7 @@ class Script(object):
         self.retriever_minimum_version = retriever_minimum_version
         self.encoding = encoding
         self.version = version
-        self.message=message
+        self.message = message
         for key, item in list(kwargs.items()):
             setattr(self, key, item[0] if isinstance(item, tuple) else item)
 
@@ -77,10 +79,10 @@ class Script(object):
     def matches_terms(self, terms):
         try:
             search_string = ' '.join([
-                    self.name,
-                    self.description,
-                    self.name
-                ] + self.keywords).upper()
+                                         self.name,
+                                         self.description,
+                                         self.name
+                                     ] + self.keywords).upper()
 
             for term in terms:
                 if not term.upper() in search_string:
@@ -131,7 +133,10 @@ class DownloadOnlyTemplate(Script):
 
     def download(self, engine=None, debug=False):
         if engine.name != "Download Only":
-            raise Exception("This dataset contains only non-tabular data files, and can only be used with the 'download only' engine.\nTry 'retriever download datasetname instead.")
+            raise Exception(
+                "This dataset contains only non-tabular data files, "
+                "and can only be used with the 'download only' engine."
+                "\nTry 'retriever download datasetname instead.")
         Script.download(self, engine, debug)
 
         for filename, url in self.urls.items():

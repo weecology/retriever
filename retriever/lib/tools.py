@@ -5,29 +5,25 @@ scripts.
 
 """
 from __future__ import print_function
+
 from future import standard_library
+
 standard_library.install_aliases()
 
-from builtins import str
-from builtins import input
-import csv
 import difflib
-import io
 import json
-import os
 import platform
 import shutil
-import sys
 import warnings
 
 from hashlib import md5
 from io import StringIO as newfile
 from retriever.lib.defaults import HOME_DIR, ENCODING
-from retriever.lib.scripts import open_fr, open_fw, open_csvw, MODULE_LIST
+from retriever.lib.scripts import MODULE_LIST
 from retriever.lib.models import *
 import xml.etree.ElementTree as ET
-warnings.filterwarnings("ignore")
 
+warnings.filterwarnings("ignore")
 
 TEST_ENGINES = dict()
 
@@ -59,8 +55,10 @@ def name_matches(scripts, arg):
     for script in scripts:
         if arg.lower() == script.name.lower():
             return [script]
-        max_ratio = max([difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in (script.name.lower(), script.title.lower(), script.filename.lower())] +
-                        [difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in [keyword.strip().lower() for keywordset in script.keywords for keyword in keywordset]]
+        max_ratio = max([difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in
+                         (script.name.lower(), script.title.lower(), script.filename.lower())] +
+                        [difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in
+                         [keyword.strip().lower() for keywordset in script.keywords for keyword in keywordset]]
                         )
         if arg.lower() == 'all':
             max_ratio = 1.0
@@ -164,7 +162,8 @@ def json2csv(input_file, output_file=None, header_values=None):
         output_file = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
     csv_out = open_fw(output_file, encode=False)
     if os.name == 'nt':
-        outfile = csv.DictWriter(csv_out, dialect='excel', escapechar="\\", lineterminator='\n', fieldnames=header_values)
+        outfile = csv.DictWriter(csv_out, dialect='excel', escapechar="\\", lineterminator='\n',
+                                 fieldnames=header_values)
     else:
         outfile = csv.DictWriter(csv_out, dialect='excel', escapechar="\\", fieldnames=header_values)
     raw_data = json.loads(file_out.read())

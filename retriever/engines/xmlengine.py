@@ -1,11 +1,10 @@
 import os
 
-from builtins import object
-from retriever.lib.models import Engine
-from retriever.lib.tools import xml2csv, sort_csv
-from retriever.lib.dummy import DummyConnection, DummyCursor
-from retriever.lib.scripts import open_fr, open_fw
 from retriever.lib.defaults import DATA_DIR
+from retriever.lib.dummy import DummyConnection
+from retriever.lib.models import Engine
+from retriever.lib.scripts import open_fr, open_fw
+from retriever.lib.tools import xml2csv, sort_csv
 
 
 class engine(Engine):
@@ -97,7 +96,8 @@ class engine(Engine):
         return xml_lines
 
     def _format_single_row(self, keys, line_data):
-        return ''.join('    <{key}>{value}</{key}>\n'.format(key=key, value=value) for key, value in zip(keys, line_data))
+        return ''.join(
+            '    <{key}>{value}</{key}>\n'.format(key=key, value=value) for key, value in zip(keys, line_data))
 
     def table_exists(self, dbname, tablename):
         """Check to see if the data file currently exists"""

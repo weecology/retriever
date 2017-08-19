@@ -3,8 +3,8 @@
 This module contains dummy classes required for non-db based children of the Engine class.
 """
 
-class DummyConnection(object):
 
+class DummyConnection(object):
     def cursor(self):
         pass
 
@@ -20,4 +20,3 @@ class DummyConnection(object):
 
 class DummyCursor(DummyConnection):
     pass
-

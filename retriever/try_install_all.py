@@ -7,13 +7,15 @@ all possible combinations of database platform and script and checks to
 see if there are any errors. It does not check the values in the database.
 
 """
-from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import print_function
+
 import os
 import sys
 from imp import reload
-from retriever.lib.scripts import MODULE_LIST, SCRIPT_LIST
+
 from retriever.engines import engine_list, choose_engine
+from retriever.lib.scripts import MODULE_LIST, SCRIPT_LIST
 
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
@@ -26,10 +28,10 @@ else:
 MODULE_LIST = MODULE_LIST()
 if len(sys.argv) > 1:
     ENGINE_LIST = [
-                    e for e in engine_list
-                    if e.name in sys.argv[1:] or
-                    e.abbreviation in sys.argv[1:]
-    ]
+        e for e in engine_list
+        if e.name in sys.argv[1:] or
+        e.abbreviation in sys.argv[1:]
+        ]
 
 if os.path.exists("test_all"):
     os.system("rm -r test_all")

@@ -1,6 +1,7 @@
-from builtins import str
 import json
 import sys
+from builtins import str
+
 if sys.version_info[0] < 3:
     from codecs import open
 
@@ -165,8 +166,8 @@ def compile_json(json_file):
                 tables[table["name"]] = table_dict
 
         else:
-            values[key] = value 
-    # Create a Table object string using the tables dict
+            values[key] = value
+            # Create a Table object string using the tables dict
     table_desc = "{"
     for (key, value) in tables.items():
         table_desc += "'" + key + "': Table('" + key + "', "

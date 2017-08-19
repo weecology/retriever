@@ -1,10 +1,12 @@
 from __future__ import print_function
-from builtins import input
-import os
-import json
+
 import glob
+import json
+import os
 import re
+from builtins import input
 from time import sleep
+
 from retriever.lib.defaults import HOME_DIR, ENCODING
 from retriever.lib.scripts import SCRIPT_LIST
 
@@ -146,7 +148,7 @@ def create_json():
     contents['citation'] = clean_input("citation: ", ignore_empty=True)
     contents['homepage'] = clean_input("homepage (for the entire dataset): ", ignore_empty=True)
     contents['keywords'] = clean_input("keywords (separated by ';'): ",
-                                        split_char=';', ignore_empty=True)
+                                       split_char=';', ignore_empty=True)
     contents['resources'] = []
     contents['retriever'] = "True"
     contents['retriever_minimum_version'] = "2.0.dev"
@@ -193,7 +195,7 @@ def create_json():
                         raise Exception
 
                     col_list = [c.strip() for c in col_list]
-                    col_obj = {}    # dict to store column data
+                    col_obj = {}  # dict to store column data
                     col_obj["name"] = col_list[0]
                     col_obj["type"] = col_list[1]
 

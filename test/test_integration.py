@@ -1,12 +1,14 @@
 # -*- coding: latin-1  -*-
 # """Integrations tests for Data Retriever"""
 from __future__ import print_function
+
 import imp
-import os
 import json
-import sys
+import os
 import shutil
+import sys
 from imp import reload
+
 from retriever.lib.defaults import ENCODING
 
 encoding = ENCODING.lower()
@@ -312,7 +314,8 @@ change_header_values = {'name': 'change_header_values',
                         'expect_out': ['aa,bb,c_c', '1,2,3', '4,5,6']
                         }
 
-tests = [simple_csv, data_no_header, csv_latin1_encoding, autopk_csv, crosstab, autopk_crosstab, skip_csv, extra_newline, change_header_values]
+tests = [simple_csv, data_no_header, csv_latin1_encoding, autopk_csv, crosstab, autopk_crosstab, skip_csv,
+         extra_newline, change_header_values]
 
 # Create a tuple of all test scripts with their expected values
 test_parameters = [(test, test['expect_out']) for test in tests]
@@ -412,7 +415,8 @@ def test_jsonengine_integration(dataset, expected, tmpdir):
 def test_postgres_integration(dataset, expected, tmpdir):
     """Check for postgres regression"""
     os.system('psql -U postgres -d testdb -h localhost -c "DROP SCHEMA IF EXISTS testschema CASCADE"')
-    postgres_engine.opts = {'engine': 'postgres', 'user': 'postgres', 'password': os_password, 'host': 'localhost', 'port': 5432,
+    postgres_engine.opts = {'engine': 'postgres', 'user': 'postgres', 'password': os_password, 'host': 'localhost',
+                            'port': 5432,
                             'database': 'testdb', 'database_name': 'testschema', 'table_name': '{db}.{table}'}
     assert get_output_as_csv(dataset, postgres_engine, tmpdir, db=postgres_engine.opts['database_name']) == expected
 

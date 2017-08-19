@@ -1,6 +1,8 @@
-from __future__ import print_function
 from __future__ import division
+from __future__ import print_function
+
 from future import standard_library
+
 standard_library.install_aliases()
 from builtins import object
 from builtins import range
@@ -114,7 +116,9 @@ class Engine(object):
                         raise
                     try:
                         self.executemany(insert_stmt, multiple_values, commit=False)
-                        prompt = "Progress: " + str(count_iter) + " / " + str(real_line_length) + " rows inserted into " + self.table_name() + " totaling " + str(total) + ":"
+                        prompt = "Progress: " + str(count_iter) + " / " + str(
+                            real_line_length) + " rows inserted into " + self.table_name() + " totaling " + str(
+                            total) + ":"
                         sys.stdout.write(prompt + "\b" * len(prompt))
                         sys.stdout.flush()
                     except:
@@ -131,8 +135,7 @@ class Engine(object):
         """Creates cross tab data"""
         real_lines = []
         for values in lines:
-            initial_cols = len(self.table.columns) - \
-                (3 if hasattr(self.table, "ct_names") else 2)
+            initial_cols = len(self.table.columns) - (3 if hasattr(self.table, "ct_names") else 2)
             # add one if auto increment is not set to get the right initial columns
             if not self.table.columns[0][1][0] == "pk-auto":
                 initial_cols += 1
@@ -181,8 +184,12 @@ class Engine(object):
 
             self.auto_get_datatypes(pk, lines, columns, column_values)
 
-        if self.table.columns[-1][1][0][:3] == "ct-" and hasattr(self.table, "ct_names") and not self.table.ct_column in [c[0] for c in self.table.columns]:
-            self.table.columns = self.table.columns[:-1] + [(self.table.ct_column, ("char", 50))] + [self.table.columns[-1]]
+        if self.table.columns[-1][1][0][:3] == "ct-" and hasattr(self.table,
+                                                                 "ct_names") and not self.table.ct_column in [c[0] for c
+                                                                                                              in
+                                                                                                              self.table.columns]:
+            self.table.columns = self.table.columns[:-1] + [(self.table.ct_column, ("char", 50))] + [
+                self.table.columns[-1]]
 
         self.create_table()
 
@@ -488,7 +495,7 @@ class Engine(object):
             script.name,
             key
         )
-            for key in list(script.urls.keys()) if key])
+                    for key in list(script.urls.keys()) if key])
 
     def final_cleanup(self):
         """Close the database connection."""
@@ -605,7 +612,7 @@ class Engine(object):
         for inserting bulk data from files can override this function."""
         data_source = (skip_rows,
                        (self.table.header_rows,
-                        (self.load_data, (filename, ))))
+                        (self.load_data, (filename,))))
         self.add_to_table(data_source)
 
     def insert_data_from_url(self, url):
@@ -713,7 +720,6 @@ class Engine(object):
             for row in csv.reader(dataset_file, delimiter=self.table.delimiter):
                 yield [reg.sub(" ", values) for values in row]
 
-
     def extract_fixed_width(self, line):
         """Splits a line based on the fixed width and returns a list of the values"""
         pos = 0
@@ -769,9 +775,9 @@ def reporthook(count, block_size, total_size):
             start_time = time.time()
             return
         duration = time.time() - start_time
-        if duration !=0:
+        if duration != 0:
             speed = int(progress_size / (1024 * duration))
-            percent = min(int(count*block_size*100/total_size),100)
+            percent = min(int(count * block_size * 100 / total_size), 100)
             sys.stdout.write("\r%2d%%  %d seconds " % (percent, duration))
             sys.stdout.flush()
     else:

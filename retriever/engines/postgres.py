@@ -1,6 +1,7 @@
 import os
-from retriever.lib.models import Engine, no_cleanup
+
 from retriever.lib.defaults import ENCODING
+from retriever.lib.models import Engine, no_cleanup
 
 
 class engine(Engine):
@@ -134,7 +135,7 @@ CSV HEADER;"""
         encoding = ENCODING.lower()
         if self.script.encoding:
             encoding = self.script.encoding.lower()
-        encoding_lookup = {'iso-8859-1': 'Latin1','latin-1' : 'Latin1' ,'utf-8': 'UTF8'}
+        encoding_lookup = {'iso-8859-1': 'Latin1', 'latin-1': 'Latin1', 'utf-8': 'UTF8'}
         db_encoding = encoding_lookup.get(encoding)
         conn.set_client_encoding(db_encoding)
         return conn

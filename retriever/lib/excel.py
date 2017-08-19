@@ -3,12 +3,11 @@
 This module contains optional functions for importing data from Excel.
 
 """
-from builtins import str
 from builtins import object
+from builtins import str
 
 
 class Excel(object):
-
     @staticmethod
     def empty_cell(cell):
         """Tests whether an excel cell is empty or contains only

@@ -1,13 +1,14 @@
-import os
 import csv
-import io
-from os.path import join, isfile, getmtime, exists
-from pkg_resources import parse_version
 import imp
+import io
+import os
 import sys
+from os.path import join, isfile, getmtime, exists
 
-from retriever.lib.defaults import SCRIPT_SEARCH_PATHS, VERSION, ENCODING
+from pkg_resources import parse_version
+
 from retriever.lib.compile import compile_json
+from retriever.lib.defaults import SCRIPT_SEARCH_PATHS, VERSION, ENCODING
 
 
 def MODULE_LIST(force_compile=False):
@@ -41,10 +42,10 @@ def MODULE_LIST(force_compile=False):
                     if hasattr(new_module.SCRIPT, "retriever_minimum_version"):
                         # a script with retriever_minimum_version should be loaded
                         # only if its compliant with the version of the retriever
-                        if not parse_version(VERSION) >=  parse_version("{}".format(
+                        if not parse_version(VERSION) >= parse_version("{}".format(
                                 new_module.SCRIPT.retriever_minimum_version)):
-                            print("{} is supported by Retriever version {}".format(script_name,
-                                                                                   new_module.SCRIPT.retriever_minimum_version))
+                            print("{} is supported by Retriever version "
+                                  "{}".format(script_name, new_module.SCRIPT.retriever_minimum_version))
                             print("Current version is {}".format(VERSION))
                             continue
                     # if the script wasn't found in an early search path
@@ -101,7 +102,7 @@ def open_fw(file_name, encoding=ENCODING, encode=True):
         else:
             file_obj = io.open(file_name, 'w', newline='')
     else:
-        file_obj = io.open(file_name, 'wb',)
+        file_obj = io.open(file_name, 'wb', )
     return file_obj
 
 

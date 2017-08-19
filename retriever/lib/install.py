@@ -1,10 +1,12 @@
-from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import print_function
+
 import os
+
 from retriever.engines import choose_engine
 from retriever.lib.defaults import DATA_DIR
-from retriever.lib.tools import name_matches
 from retriever.lib.scripts import SCRIPT_LIST
+from retriever.lib.tools import name_matches
 
 
 def _install(args, use_cache, debug, compile):
@@ -25,7 +27,8 @@ def _install(args, use_cache, debug, compile):
                 if debug:
                     raise
     else:
-        message = "The dataset \"{}\" isn't currently available in the Retriever. Run retriever.datasets() to see a list of currently available datasets".format(args['dataset'])
+        message = "The dataset \"{}\" isn't currently available in the Retriever. Run retriever.datasets() to see a list of currently available datasets".format(
+            args['dataset'])
         raise ValueError(message)
 
 
@@ -46,7 +49,8 @@ def install_csv(dataset, table_name=None, compile=False, debug=False, quite=Fals
     _install(args, use_cache, debug, compile)
 
 
-def install_mysql(dataset, user='root', password='', host='localhost', port=3306, database_name=None, table_name=None, compile=False, debug=False, quite=False, use_cache=True):
+def install_mysql(dataset, user='root', password='', host='localhost', port=3306, database_name=None, table_name=None,
+                  compile=False, debug=False, quite=False, use_cache=True):
     """Install scripts in mysql."""
     if not database_name:
         database_name = '{db}'
@@ -71,7 +75,8 @@ def install_mysql(dataset, user='root', password='', host='localhost', port=3306
     _install(args, use_cache, debug, compile)
 
 
-def install_postgres(dataset, user='postgres', password='', host='localhost', port=5432, database='postgres', database_name=None, table_name=None, compile=False, debug=False, quite=False, use_cache=True):
+def install_postgres(dataset, user='postgres', password='', host='localhost', port=5432, database='postgres',
+                     database_name=None, table_name=None, compile=False, debug=False, quite=False, use_cache=True):
     """Install scripts in postgres."""
     if not table_name:
         table_name = '{db}.{table}'

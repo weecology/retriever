@@ -1,12 +1,10 @@
-from builtins import object
-
 import os
 
+from retriever.lib.defaults import DATA_DIR
+from retriever.lib.dummy import DummyConnection
 from retriever.lib.models import Engine
 from retriever.lib.scripts import open_fw, open_csvw
-from retriever.lib.defaults import DATA_DIR
 from retriever.lib.tools import sort_csv
-from retriever.lib.dummy import DummyConnection, DummyCursor
 
 
 class engine(Engine):
@@ -38,7 +36,7 @@ class engine(Engine):
         self.auto_column_number = 1
         self.file = open_fw(self.table_name())
         self.output_file = open_csvw(self.file)
-        self.output_file.writerow([u'{}'.format(val) for val in self.table.get_insert_columns(join=False,create=True)])
+        self.output_file.writerow([u'{}'.format(val) for val in self.table.get_insert_columns(join=False, create=True)])
         self.table_names.append((self.file, self.table_name()))
 
     def disconnect(self):

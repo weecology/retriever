@@ -1,6 +1,8 @@
 """Checks the repository for updates."""
 from __future__ import print_function
+
 from future import standard_library
+
 standard_library.install_aliases()
 import os
 import sys
@@ -55,7 +57,7 @@ def check_for_updates(quite=True):
             path_script_name = os.path.normpath(os.path.join(HOME_DIR, "scripts", script_name))
             if not file_exists(path_script_name):
                 _download_from_repository("scripts/" + script_name,
-                                         os.path.normpath(os.path.join(SCRIPT_WRITE_PATH, script_name)))
+                                          os.path.normpath(os.path.join(SCRIPT_WRITE_PATH, script_name)))
 
             need_to_download = False
             try:
@@ -69,7 +71,7 @@ def check_for_updates(quite=True):
                 try:
                     os.remove(os.path.normpath(os.path.join(HOME_DIR, "scripts", script_name)))
                     _download_from_repository("scripts/" + script_name,
-                                             os.path.normpath(os.path.join(SCRIPT_WRITE_PATH, script_name)))
+                                              os.path.normpath(os.path.join(SCRIPT_WRITE_PATH, script_name)))
                 except Exception as e:
                     print(e)
                     pass

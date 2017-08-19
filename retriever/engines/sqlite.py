@@ -1,7 +1,8 @@
-from builtins import range
 import os
-from retriever.lib.models import Engine, no_cleanup
+from builtins import range
+
 from retriever.lib.defaults import DATA_DIR
+from retriever.lib.models import Engine, no_cleanup
 
 
 class engine(Engine):
@@ -75,7 +76,7 @@ class engine(Engine):
                 with open(filename, 'r') as data_file:
                     data_chunk = data_file.readlines(CHUNK_SIZE)
                     data_chunk = [line.rstrip('\r\n') for line in data_chunk if line not in line_endings]
-                    del(data_chunk[:self.table.header_rows])
+                    del (data_chunk[:self.table.header_rows])
                     while data_chunk:
                         data_chunk_split = [row.split(self.table.delimiter)
                                             for row in data_chunk]

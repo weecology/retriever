@@ -54,7 +54,7 @@ def teardown_module():
 def test_auto_get_columns():
     """Basic test of getting column labels from header"""
     test_engine.table.delimiter = ","
-    columns, column_values = test_engine.table.auto_get_columns(['a','b','c','d'])
+    columns, column_values = test_engine.table.auto_get_columns(['a', 'b', 'c', 'd'])
     assert columns == [['a', None], ['b', None], ['c', None], ['d', None]]
 
 
@@ -62,7 +62,8 @@ def test_auto_get_datatypes():
     """Test the length detected by auto_get_datatype
     The function adds 100 to the auto detected length of column
     """
-    test_engine.auto_get_datatypes(None, [["ö",'bb','Löve']], [['a', None], ['b', None], ['c', None]], {'a': [], 'c': [], 'b': []})
+    test_engine.auto_get_datatypes(None, [["ö", 'bb', 'Löve']], [['a', None], ['b', None], ['c', None]],
+                                   {'a': [], 'c': [], 'b': []})
     length = test_engine.table.columns
     assert [length[0][1][1], length[1][1][1], length[2][1][1]] == [101, 102, 104]
 
@@ -70,15 +71,15 @@ def test_auto_get_datatypes():
 def test_auto_get_columns_extra_whitespace():
     """Test getting column labels from header with extra whitespace"""
     test_engine.table.delimiter = ","
-    columns, column_values = test_engine.table.auto_get_columns([ 'a' ,'b', 'c','d  '])
+    columns, column_values = test_engine.table.auto_get_columns(['a', 'b', 'c', 'd  '])
     assert columns == [['a', None], ['b', None], ['c', None], ['d', None]]
 
 
 def test_auto_get_columns_cleanup():
     """Test of automatically cleaning up column labels from header"""
     test_engine.table.delimiter = ","
-    columns, column_values = test_engine.table.auto_get_columns(['a)','a\nd','b.b','c/c','d___d','group'])
-    assert columns == [['a', None], ['ad', None],  ['b_b', None], ['c_c', None], ['d_d', None],
+    columns, column_values = test_engine.table.auto_get_columns(['a)', 'a\nd', 'b.b', 'c/c', 'd___d', 'group'])
+    assert columns == [['a', None], ['ad', None], ['b_b', None], ['c_c', None], ['d_d', None],
                        ['grp', None]]
 
 
@@ -379,7 +380,7 @@ def test_add_dialect():
     result['dummy_key'] = 'dummy_value'
 
     add_dialect(table_dict, table)
-    assert(table_dict == result)
+    assert (table_dict == result)
 
 
 def test_add_schema():
@@ -388,19 +389,19 @@ def test_add_schema():
     table['schema'] = {}
     table_dict = {}
     table['schema']['fields'] = []
-    table['schema']['fields'].append({'name':'col1', 'type':'int'})
-    table['schema']['fields'].append({'name':'col2', 'type':'char', 'size':20})
+    table['schema']['fields'].append({'name': 'col1', 'type': 'int'})
+    table['schema']['fields'].append({'name': 'col2', 'type': 'char', 'size': 20})
     table['schema']['ct_column'] = 'ct_column'
     table['schema']['ct_names'] = ['ct1', 'ct2', 'ct3', 'ct4']
     table['schema']['dummy_key'] = 'dummy_value'
 
     result = {}
     result['columns'] = []
-    result['columns'].append(('col1', ('int',) ))
+    result['columns'].append(('col1', ('int',)))
     result['columns'].append(('col2', ('char', 20)))
     result['ct_column'] = "'ct_column'"
     result['ct_names'] = ['ct1', 'ct2', 'ct3', 'ct4']
     result['dummy_key'] = 'dummy_value'
 
     add_schema(table_dict, table)
-    assert(table_dict == result)
+    assert (table_dict == result)

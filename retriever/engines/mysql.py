@@ -1,8 +1,10 @@
 from __future__ import print_function
-from builtins import str
+
 import os
-from retriever.lib.models import Engine, no_cleanup
+from builtins import str
+
 from retriever.lib.defaults import ENCODING
+from retriever.lib.models import Engine, no_cleanup
 
 
 class engine(Engine):
@@ -51,7 +53,7 @@ class engine(Engine):
 
         mysql_set_autocommit_off = """SET autocommit=0; SET UNIQUE_CHECKS=0; SET FOREIGN_KEY_CHECKS=0; SET sql_log_bin=0;"""
         mysql_set_autocommit_on = """SET GLOBAL innodb_flush_log_at_trx_commit=1; COMMIT; SET autocommit=1; SET unique_checks=1; SET foreign_key_checks=1;"""
-        
+
         self.get_cursor()
         ct = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
         if (self.table.cleanup.function == no_cleanup and
@@ -59,7 +61,7 @@ class engine(Engine):
                 not ct and
                 (not hasattr(self.table, "do_not_bulk_insert") or not self.table.do_not_bulk_insert)):
 
-            print ("Inserting data from " + os.path.basename(filename) + "...")
+            print("Inserting data from " + os.path.basename(filename) + "...")
 
             columns = self.table.get_insert_columns()
             statement = """

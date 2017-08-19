@@ -1,19 +1,21 @@
 from __future__ import absolute_import
-from imp import reload
+
 import imp
-import os
 import io
-import sys
+import os
 import shutil
-from retriever.lib.defaults import ENCODING
+import sys
+from imp import reload
+
 from retriever import datasets
-from retriever import install_sqlite
+from retriever import download
 from retriever import install_csv
 from retriever import install_json
 from retriever import install_mysql
 from retriever import install_postgres
+from retriever import install_sqlite
 from retriever import install_xml
-from retriever import download
+from retriever.lib.defaults import ENCODING
 
 encoding = ENCODING.lower()
 

@@ -1,7 +1,6 @@
 from future import standard_library
+
 standard_library.install_aliases()
-from builtins import next
-from builtins import object
 
 import csv
 import io
@@ -96,9 +95,9 @@ class Table(object):
         dialect = csv.excel
         dialect.escapechar = "\\"
         if sys.version_info >= (3, 0):
-            writer_file =  io.StringIO()
+            writer_file = io.StringIO()
         else:
-            writer_file =  io.BytesIO()
+            writer_file = io.BytesIO()
         writer = csv.writer(writer_file, dialect=dialect, delimiter=self.delimiter)
         writer.writerow(line_as_list)
         return writer_file.getvalue()
