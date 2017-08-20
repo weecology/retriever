@@ -40,26 +40,27 @@ retriever_root_dir = os.path.abspath(os.path.join(file_location, os.pardir))
 
 
 def setup_module():
-    """"Make sure you are in the main local retriever directory"""
+    """"Make sure you are in the main local retriever directory."""
     os.chdir(retriever_root_dir)
     os.system('cp -r {0} {1}'.format(os.path.join(retriever_root_dir, "test/raw_data"), retriever_root_dir))
 
 
 def teardown_module():
-    """Make sure you are in the main local retriever directory after these tests"""
+    """Make sure you are in the main local retriever directory after these tests."""
     os.chdir(retriever_root_dir)
     shutil.rmtree(os.path.join(retriever_root_dir, "raw_data"))
 
 
 def test_auto_get_columns():
-    """Basic test of getting column labels from header"""
+    """Basic test of getting column labels from header."""
     test_engine.table.delimiter = ","
     columns, column_values = test_engine.table.auto_get_columns(['a', 'b', 'c', 'd'])
     assert columns == [['a', None], ['b', None], ['c', None], ['d', None]]
 
 
 def test_auto_get_datatypes():
-    """Test the length detected by auto_get_datatype
+    """Test the length detected by auto_get_datatype.
+
     The function adds 100 to the auto detected length of column
     """
     test_engine.auto_get_datatypes(None, [["ö", 'bb', 'Löve']], [['a', None], ['b', None], ['c', None]],
@@ -69,14 +70,14 @@ def test_auto_get_datatypes():
 
 
 def test_auto_get_columns_extra_whitespace():
-    """Test getting column labels from header with extra whitespace"""
+    """Test getting column labels from header with extra whitespace."""
     test_engine.table.delimiter = ","
     columns, column_values = test_engine.table.auto_get_columns(['a', 'b', 'c', 'd  '])
     assert columns == [['a', None], ['b', None], ['c', None], ['d', None]]
 
 
 def test_auto_get_columns_cleanup():
-    """Test of automatically cleaning up column labels from header"""
+    """Test of automatically cleaning up column labels from header."""
     test_engine.table.delimiter = ","
     columns, column_values = test_engine.table.auto_get_columns(['a)', 'a\nd', 'b.b', 'c/c', 'd___d', 'group'])
     assert columns == [['a', None], ['ad', None], ['b_b', None], ['c_c', None], ['d_d', None],
@@ -84,19 +85,19 @@ def test_auto_get_columns_cleanup():
 
 
 def test_auto_get_delimiter_comma():
-    """Test if commas are properly detected as delimiter"""
+    """Test if commas are properly detected as delimiter."""
     test_engine.auto_get_delimiter("a,b,c;,d")
     assert test_engine.table.delimiter == ","
 
 
 def test_auto_get_delimiter_tab():
-    """Test if commas are properly detected as delimiter"""
+    """Test if commas are properly detected as delimiter."""
     test_engine.auto_get_delimiter("a\tb\tc\td,")
     assert test_engine.table.delimiter == "\t"
 
 
 def test_auto_get_delimiter_semicolon():
-    """Test if semicolons are properly detected as delimiter"""
+    """Test if semicolons are properly detected as delimiter."""
     test_engine.auto_get_delimiter("a;b;c;,d")
     assert test_engine.table.delimiter == ";"
 
@@ -114,33 +115,33 @@ def test_correct_invalid_value_exception():
 
 
 def test_create_db_statement():
-    """Test creating the create database SQL statement"""
+    """Test creating the create database SQL statement."""
     assert test_engine.create_db_statement() == 'CREATE DATABASE test_abc'
 
 
 def test_database_name():
-    """Test creating database name"""
+    """Test creating database name."""
     assert test_engine.database_name() == 'test_abc'
 
 
 def test_drop_statement():
-    "Test the creation of drop statements"
+    """Test the creation of drop statements."""
     assert test_engine.drop_statement('TABLE', 'tablename') == "DROP TABLE IF EXISTS tablename"
 
 
 def test_extract_values_fixed_width():
-    """Test extraction of values from line of fixed width data"""
+    """Test extraction of values from line of fixed width data."""
     test_engine.table.fixed_width = [5, 2, 2, 3, 4]
     assert test_engine.extract_fixed_width('abc  1 2 3  def ') == ['abc', '1', '2', '3', 'def']
 
 
 def test_find_file_absent():
-    """Test if find_file() properly returns false if no file is present"""
+    """Test if find_file() properly returns false if no file is present."""
     assert test_engine.find_file('missingfile.txt') is False
 
 
 def test_find_file_present():
-    """Test if existing datafile is found
+    """Test if existing datafile is found.
 
     Using the bird-size dataset which is included for regression testing.
     We copy the raw_data directory to retriever_root_dir which is the current working directory.
@@ -152,61 +153,63 @@ def test_find_file_present():
 
 
 def test_format_data_dir():
-    "Test if directory for storing data is properly formated"
+    """Test if directory for storing data is properly formated."""
     test_engine.script.name = "TestName"
     assert os.path.normpath(test_engine.format_data_dir()) == os.path.normpath(
         os.path.join(HOMEDIR, '.retriever/raw_data/TestName'))
 
 
 def test_format_filename():
-    "Test if filenames for stored files are properly formated"
+    """Test if filenames for stored files are properly formated."""
     test_engine.script.name = "TestName"
     assert os.path.normpath(test_engine.format_filename('testfile.csv')) == os.path.normpath(
         os.path.join(HOMEDIR, '.retriever/raw_data/TestName/testfile.csv'))
 
 
 def test_format_insert_value_int():
-    """Test formatting of values for insert statements"""
+    """Test formatting of values for insert statements."""
     assert test_engine.format_insert_value(42, 'int') == 42
 
 
 def test_format_insert_value_double():
-    """Test formatting of values for insert statements"""
+    """Test formatting of values for insert statements."""
     assert test_engine.format_insert_value(26.22, 'double') == 26.22
 
 
 def test_format_insert_value_string_simple():
-    """Test formatting of values for insert statements"""
+    """Test formatting of values for insert statements."""
     assert test_engine.format_insert_value('simple text', 'char') == "simple text"
 
 
 def test_format_insert_value_string_complex():
-    """Test formatting of values for insert statements"""
+    """Test formatting of values for insert statements."""
     assert test_engine.format_insert_value('my notes: "have extra, stuff"',
                                            'char') == 'my notes: "have extra, stuff"'
 
 
 def test_getmd5_lines():
-    """Test md5 sum calculation given a line"""
+    """Test md5 sum calculation given a line."""
     lines = ['a,b,c', '1,2,3', '4,5,6']
     assert getmd5(data=lines, data_type='lines') == 'ca471abda3ebd4ae8ce1b0814b8f470c'
 
 
 def test_getmd5_line_end():
-    """Test md5 sum calculation given a line with end of line character"""
+    """Test md5 sum calculation given a line with end of line character."""
     lines_end = ['a,b,c\n', '1,2,3\n', '4,5,6\n']
     assert getmd5(data=lines_end, data_type='lines') == '0bec5bf6f93c547bc9c6774acaf85e1a'
 
 
 def test_getmd5_path():
-    """Test md5 sum calculation given a path to data source"""
+    """Test md5 sum calculation given a path to data source."""
     data_file = create_file(['a,b,c', '1,2,3', '4,5,6'])
     assert getmd5(data=data_file, data_type='file') == '0bec5bf6f93c547bc9c6774acaf85e1a'
 
 
 def test_json2csv():
-    """Test json2csv function
-    creates a json file and tests the md5 sum calculation"""
+    """Test json2csv function.
+
+    Creates a json file and tests the md5 sum calculation.
+    """
     json_file = create_file(["""[ {"User": "Alex", "Country": "US", "Age": "25"} ]"""], 'output.json')
     output_json = json2csv(json_file, "output_json.csv", header_values=["User", "Country", "Age"])
     obs_out = file_2list(output_json)
@@ -215,8 +218,10 @@ def test_json2csv():
 
 
 def test_xml2csv():
-    """Test xml2csv function
-    creates a xml file and tests the md5 sum calculation"""
+    """Test xml2csv function.
+
+    Creates a xml file and tests the md5 sum calculation.
+    """
     xml_file = create_file(['<root>', '<row>',
                             '<User>Alex</User>',
                             '<Country>US</Country>',
@@ -233,7 +238,7 @@ def test_xml2csv():
 
 
 def test_sort_file():
-    """Test md5 sum calculation"""
+    """Test md5 sum calculation."""
     data_file = create_file(['Ben,US,24', 'Alex,US,25', 'Alex,PT,25'])
     out_file = sort_file(data_file)
     obs_out = file_2list(out_file)
@@ -242,7 +247,7 @@ def test_sort_file():
 
 
 def test_sort_csv():
-    """Test md5 sum calculation"""
+    """Test md5 sum calculation."""
     data_file = create_file(['User,Country,Age', 'Ben,US,24', 'Alex,US,25', 'Alex,PT,25'])
     out_file = sort_csv(data_file)
     obs_out = file_2list(out_file)
@@ -251,28 +256,27 @@ def test_sort_csv():
 
 
 def test_is_empty_null_string():
-    """Test for null string"""
+    """Test for null string."""
     assert is_empty("") == True
 
 
 def test_is_empty_empty_list():
-    """Test for empty list"""
+    """Test for empty list."""
     assert is_empty([]) == True
 
 
 def test_is_empty_not_null_string():
-    """Test for non-null string"""
+    """Test for non-null string."""
     assert is_empty("not empty") == False
 
 
 def test_is_empty_not_empty_list():
-    """Test for not empty list"""
+    """Test for not empty list."""
     assert is_empty(["not empty"]) == False
 
 
 def test_clean_input_empty_input_ignore_empty(monkeypatch):
-    """Test with empty input ignored"""
-
+    """Test with empty input ignored."""
     def mock_input(prompt):
         return ""
 
@@ -281,8 +285,7 @@ def test_clean_input_empty_input_ignore_empty(monkeypatch):
 
 
 def test_clean_input_empty_input_not_ignore_empty(monkeypatch):
-    """Test with empty input not ignored"""
-
+    """Test with empty input not ignored."""
     def mock_input(prompt):
         mock_input.counter += 1
         if mock_input.counter <= 1:
@@ -296,8 +299,7 @@ def test_clean_input_empty_input_not_ignore_empty(monkeypatch):
 
 
 def test_clean_input_string_input(monkeypatch):
-    """Test with non-empty input"""
-
+    """Test with non-empty input."""
     def mock_input(prompt):
         return "not empty"
 
@@ -306,8 +308,7 @@ def test_clean_input_string_input(monkeypatch):
 
 
 def test_clean_input_empty_list_ignore_empty(monkeypatch):
-    """Test with empty list ignored"""
-
+    """Test with empty list ignored."""
     def mock_input(prompt):
         return ",  ,   ,"
 
@@ -316,8 +317,7 @@ def test_clean_input_empty_list_ignore_empty(monkeypatch):
 
 
 def test_clean_input_empty_list_not_ignore_empty(monkeypatch):
-    """Test with empty list not ignored"""
-
+    """Test with empty list not ignored."""
     def mock_input(prompt):
         mock_input.counter += 1
         if mock_input.counter <= 1:
@@ -331,8 +331,7 @@ def test_clean_input_empty_list_not_ignore_empty(monkeypatch):
 
 
 def test_clean_input_not_empty_list(monkeypatch):
-    """Test with list input"""
-
+    """Test with list input."""
     def mock_input(prompt):
         return "1,    2,     3"
 
@@ -341,8 +340,7 @@ def test_clean_input_not_empty_list(monkeypatch):
 
 
 def test_clean_input_bool(monkeypatch):
-    """Test with correct datatype input"""
-
+    """Test with correct datatype input."""
     def mock_input(prompt):
         return "True "
 
@@ -351,8 +349,7 @@ def test_clean_input_bool(monkeypatch):
 
 
 def test_clean_input_not_bool(monkeypatch):
-    """Test with incorrect datatype input"""
-
+    """Test with incorrect datatype input."""
     def mock_input(prompt):
         mock_input.counter += 1
         if mock_input.counter <= 1:
@@ -366,7 +363,7 @@ def test_clean_input_not_bool(monkeypatch):
 
 
 def test_add_dialect():
-    """Test adding values from dialect key to python script"""
+    """Test adding values from dialect key to python script."""
     table = {}
     table['dialect'] = {}
     table_dict = {}
@@ -384,7 +381,7 @@ def test_add_dialect():
 
 
 def test_add_schema():
-    """Test adding values from schema key to python script"""
+    """Test adding values from schema key to python script."""
     table = {}
     table['schema'] = {}
     table_dict = {}

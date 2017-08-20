@@ -63,7 +63,7 @@ def SCRIPT_LIST(force_compile=False):
 
 
 def get_script(dataset):
-    """Return the script for a named dataset"""
+    """Return the script for a named dataset."""
     scripts = {script.name: script for script in SCRIPT_LIST()}
     if dataset in scripts:
         return scripts[dataset]
@@ -72,7 +72,7 @@ def get_script(dataset):
 
 
 def open_fr(file_name, encoding=ENCODING, encode=True):
-    """Open file for reading respecting Python version and OS differences
+    """Open file for reading respecting Python version and OS differences.
 
     Sets newline to Linux line endings on Windows and Python 3
     When encode=False does not set encoding on nix and Python 3 to keep as bytes
@@ -91,7 +91,7 @@ def open_fr(file_name, encoding=ENCODING, encode=True):
 
 
 def open_fw(file_name, encoding=ENCODING, encode=True):
-    """Open file for writing respecting Python version and OS differences
+    """Open file for writing respecting Python version and OS differences.
 
     Sets newline to Linux line endings on Python 3
     When encode=False does not set encoding on nix and Python 3 to keep as bytes
@@ -107,7 +107,7 @@ def open_fw(file_name, encoding=ENCODING, encode=True):
 
 
 def open_csvw(csv_file, encode=True):
-    """Open a csv writer forcing the use of Linux line endings on Windows
+    """Open a csv writer forcing the use of Linux line endings on Windows.
 
     Also sets dialect to 'excel' and escape characters to '\\'
 

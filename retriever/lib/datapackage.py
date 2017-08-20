@@ -14,12 +14,12 @@ short_names = [script.name.lower() for script in SCRIPT_LIST()]
 
 
 def is_empty(val):
-    """Check if a variable is an empty string or an empty list"""
+    """Check if a variable is an empty string or an empty list."""
     return val == "" or val == []
 
 
 def clean_input(prompt="", split_char='', ignore_empty=False, dtype=None):
-    """Clean the user-input from the CLI before adding it"""
+    """Clean the user-input from the CLI before adding it."""
     while True:
         val = input(prompt).strip()
         # split to list type if split_char specified
@@ -43,7 +43,7 @@ def clean_input(prompt="", split_char='', ignore_empty=False, dtype=None):
 
 
 def get_replace_columns(dialect):
-    """Get list of tuples with old and new names for the columns in the table"""
+    """Get list of tuples with old and new names for the columns in the table."""
     val = clean_input("replace_columns (separated by ';', with comma-separated values) (press return to skip): ",
                       split_char=';', ignore_empty=True)
     if val == "" or val == []:
@@ -59,7 +59,7 @@ def get_replace_columns(dialect):
 
 
 def get_nulls(dialect):
-    """Get list of strings that denote missing value in the dataset"""
+    """Get list of strings that denote missing value in the dataset."""
     val = clean_input("missing values (separated by ';') (press return to skip): ",
                       split_char=';', ignore_empty=True)
     if val == "" or val == []:
@@ -72,7 +72,7 @@ def get_nulls(dialect):
 
 
 def get_delimiter(dialect):
-    """Get the string delimiter for the dataset file(s)"""
+    """Get the string delimiter for the dataset file(s)."""
     val = clean_input("delimiter (press return to skip): ", ignore_empty=True)
     if val == "" or val == []:
         # return and dont add key to dialect dict if empty val
@@ -81,7 +81,7 @@ def get_delimiter(dialect):
 
 
 def get_do_not_bulk_insert(dialect):
-    """Set do_not_bulk_insert property"""
+    """Set do_not_bulk_insert property."""
     val = clean_input("do_not_bulk_insert (bool = True/False) (press return to skip): ",
                       ignore_empty=True, dtype=bool)
     if val == "" or val == []:
@@ -91,7 +91,7 @@ def get_do_not_bulk_insert(dialect):
 
 
 def get_contains_pk(dialect):
-    """Set contains_pk property"""
+    """Set contains_pk property."""
     val = clean_input("contains_pk (bool = True/False) (press return to skip): ",
                       ignore_empty=True, dtype=bool)
     if val == "" or val == []:
@@ -101,7 +101,7 @@ def get_contains_pk(dialect):
 
 
 def get_fixed_width(dialect):
-    """Set fixed_width property"""
+    """Set fixed_width property."""
     val = clean_input("fixed_width (bool = True/False) (press return to skip): ",
                       ignore_empty=True, dtype=bool)
     if val == "" or val == []:
@@ -111,7 +111,7 @@ def get_fixed_width(dialect):
 
 
 def get_header_rows(dialect):
-    """Get number of rows considered as the header"""
+    """Get number of rows considered as the header."""
     val = clean_input("header_rows (int) (press return to skip): ",
                       ignore_empty=True, dtype=int)
     if val == "" or val == []:
@@ -121,13 +121,13 @@ def get_header_rows(dialect):
 
 
 def create_json():
-    '''
+    """
     Creates datapackage.JSON script.
     http://specs.frictionlessdata.io/data-packages/#descriptor-datapackagejson
     Takes input from user via command line.
 
     Usage: retriever new_json
-    '''
+    """
     contents = {}
     tableurls = {}
 
@@ -239,9 +239,9 @@ def create_json():
 
 
 def edit_dict(obj, tabwidth=0):
-    '''
+    """
     Recursive helper function for edit_json() to edit a datapackage.JSON script file.
-    '''
+    """
     for (key, val) in obj.items():
         print('\n' + "  " * tabwidth + "->" + key + " (", type(val), ") :\n")
         if type(val) == list:
@@ -389,12 +389,12 @@ def edit_dict(obj, tabwidth=0):
 
 
 def edit_json(json_file):
-    '''
-    Edits existing datapackage.JSON script.
+    """
+    Edit existing datapackage.JSON script.
 
     Usage: retriever edit_json <script_name>
     Note: Name of script is the dataset name.
-    '''
+    """
     try:
         contents = json.load(
             open(os.path.join(HOME_DIR, 'scripts', json_file), 'r'))

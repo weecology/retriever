@@ -7,6 +7,7 @@ from retriever.lib.models import Engine, no_cleanup
 
 class engine(Engine):
     """Engine instance for SQLite."""
+
     name = "SQLite"
     abbreviation = "sqlite"
     datatypes = {
@@ -29,8 +30,10 @@ class engine(Engine):
                      ]
 
     def create_db(self):
-        """SQLite doesn't create databases; each database is a file and needs
-        a separate connection."""
+        """
+        SQLite doesn't create databases; each database is a file and needs
+        a separate connection.
+        """
         return None
 
     def get_bulk_insert_statement(self):
@@ -90,7 +93,7 @@ class engine(Engine):
             return Engine.insert_data_from_file(self, filename)
 
     def table_exists(self, dbname, tablename):
-        """Determine if the table already exists in the database"""
+        """Determine if the table already exists in the database."""
         if not hasattr(self, 'existing_table_names'):
             self.cursor.execute(
                 "SELECT name FROM sqlite_master WHERE type='table';")
@@ -103,7 +106,7 @@ class engine(Engine):
         Engine.to_csv(self)
 
     def get_connection(self):
-        """Gets the db connection."""
+        """Get db connection."""
         import sqlite3 as dbapi
         self.get_input()
         return dbapi.connect(self.opts["file"])

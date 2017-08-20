@@ -12,8 +12,10 @@ from retriever.lib.defaults import DATA_DIR
 
 
 class Script(object):
-    """This class represents a database toolkit script. Scripts should inherit
-    from this class and execute their code in the download method."""
+    """This class represents a database toolkit script.
+
+    Scripts inherit from this class and execute their code in the download method.
+    """
 
     def __init__(self, title="", description="", name="", urls=dict(),
                  tables=dict(), ref="", public=True, addendum=None,
@@ -78,11 +80,9 @@ class Script(object):
 
     def matches_terms(self, terms):
         try:
-            search_string = ' '.join([
-                                         self.name,
-                                         self.description,
-                                         self.name
-                                     ] + self.keywords).upper()
+            search_string = ' '.join([self.name,
+                                      self.description,
+                                      self.name] + self.keywords).upper()
 
             for term in terms:
                 if not term.upper() in search_string:
@@ -126,7 +126,7 @@ class BasicTextTemplate(Script):
 
 
 class DownloadOnlyTemplate(Script):
-    """Script template for non-tabular data that are only for download"""
+    """Script template for non-tabular data that are only for download."""
 
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
@@ -149,7 +149,8 @@ class DownloadOnlyTemplate(Script):
 
 
 class HtmlTableTemplate(Script):
-    """Script template for parsing data in HTML tables"""
+    """Script template for parsing data in HTML tables."""
+
     pass
 
 

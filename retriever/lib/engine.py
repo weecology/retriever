@@ -29,6 +29,7 @@ from retriever.lib.warning import Warning
 class Engine(object):
     """A generic database system. Specific database platforms will inherit
     from this class."""
+
     name = ""
     instructions = "Enter your database connection information:"
     db = None
@@ -61,8 +62,8 @@ class Engine(object):
             self._cursor = None
 
     def get_connection(self):
-        '''This method should be overloaded by specific implementations
-        of Engine.'''
+        """This method should be overloaded by specific implementations
+        of Engine."""
         pass
 
     def add_to_table(self, data_source):
@@ -132,7 +133,7 @@ class Engine(object):
         print("\n")
 
     def get_ct_data(self, lines):
-        """Creates cross tab data"""
+        """Create cross tab data."""
         real_lines = []
         for values in lines:
             initial_cols = len(self.table.columns) - (3 if hasattr(self.table, "ct_names") else 2)
@@ -153,7 +154,7 @@ class Engine(object):
         return real_line_length, real_lines
 
     def auto_create_table(self, table, url=None, filename=None, pk=None):
-        """Creates a table automatically by analyzing a data source and
+        """Create table automatically by analyzing a data source and
         predicting column names, data types, delimiter, etc."""
         if url and not filename:
             filename = filename_from_url(url)
@@ -194,7 +195,7 @@ class Engine(object):
         self.create_table()
 
     def auto_get_datatypes(self, pk, source, columns, column_values):
-        """Determines data types for each column.
+        """Determine data types for each column.
 
         For string columns adds an additional 100 characters to the maximum
         observed value to provide extra space for cases where special characters
@@ -257,7 +258,7 @@ class Engine(object):
             self.table.columns.append((column[0], tuple(column[1])))
 
     def auto_get_delimiter(self, header):
-        """Determine the delimiter
+        """Determine the delimiter.
 
         Find out which of a set of common delimiters occurs most in the header
         line and use this as the delimiter.
@@ -269,8 +270,8 @@ class Engine(object):
                 self.table.delimiter = other_delimiter
 
     def convert_data_type(self, datatype):
-        """Converts Retriever generic data types to database platform specific
-        data types
+        """Convert Retriever generic data types to database platform specific
+        data types.
         """
         # get the type from the dataset variables
         key = datatype[0]
@@ -305,8 +306,8 @@ class Engine(object):
         return thistype
 
     def create_db(self):
-        """Creates a new database based on settings supplied in Database object
-        engine.db"""
+        """Create a new database based on settings supplied in Database object
+        engine.db."""
         db_name = self.database_name()
         if db_name:
             print("Creating database " + db_name + "...\n")
@@ -324,19 +325,19 @@ class Engine(object):
                 print("Couldn't create database (%s). Trying to continue anyway." % e)
 
     def create_db_statement(self):
-        """Returns a SQL statement to create a database."""
+        """Return SQL statement to create a database."""
         create_stmt = "CREATE DATABASE " + self.database_name()
         return create_stmt
 
     def create_raw_data_dir(self):
-        """Checks to see if the archive directory exists and creates it if
+        """Check to see if the archive directory exists and creates it if
         necessary."""
         path = self.format_data_dir()
         if not os.path.exists(path):
             os.makedirs(path)
 
     def create_table(self):
-        """Creates a new database table based on settings supplied in Table
+        """Create new database table based on settings supplied in Table
         object engine.table."""
         print("Creating table " + self.table_name() + "...")
 
@@ -360,7 +361,7 @@ class Engine(object):
             print("Couldn't create table (%s). Trying to continue anyway." % e)
 
     def create_table_statement(self):
-        """Returns a SQL statement to create a table"""
+        """Return SQL statement to create a table."""
         create_stmt = "CREATE TABLE " + self.table_name() + " ("
         columns = self.table.get_insert_columns(join=False, create=True)
         types = []
@@ -381,7 +382,7 @@ class Engine(object):
         return create_stmt
 
     def database_name(self, name=None):
-        """Returns the name of the database"""
+        """Return name of the database."""
         if not name:
             try:
                 name = self.script.name
@@ -394,7 +395,7 @@ class Engine(object):
         return db_name.replace('-', '_')
 
     def download_file(self, url, filename):
-        """Downloads a file to the raw data directory."""
+        """Download file to the raw data directory."""
         if not self.find_file(filename) or not self.use_cache:
             path = self.format_filename(filename)
             self.create_raw_data_dir()
@@ -413,8 +414,7 @@ class Engine(object):
 
     def download_files_from_archive(self, url, filenames, filetype="zip",
                                     keep_in_dir=False, archivename=None):
-        """Downloads files from an archive into the raw data directory.
-        """
+        """Download files from an archive into the raw data directory."""
         print()
         downloaded = False
         if archivename:
@@ -473,28 +473,25 @@ class Engine(object):
                     archive.close()
 
     def drop_statement(self, objecttype, objectname):
-        """Returns a drop table or database SQL statement."""
+        """Return drop table or database SQL statement."""
         dropstatement = "DROP %s IF EXISTS %s" % (objecttype, objectname)
         return dropstatement
 
     def execute(self, statement, commit=True):
-        """Executes the given statement"""
+        """Execute given statement."""
         self.cursor.execute(statement)
         if commit:
             self.connection.commit()
 
     def executemany(self, statement, values, commit=True):
-        """Executes the given statement with multiple values"""
+        """Execute given statement with multiple values."""
         self.cursor.executemany(statement, values)
         if commit:
             self.connection.commit()
 
     def exists(self, script):
-        """Checks to see if the given table exists"""
-        return all([self.table_exists(
-            script.name,
-            key
-        )
+        """Check to see if the given table exists."""
+        return all([self.table_exists(script.name, key)
                     for key in list(script.urls.keys()) if key])
 
     def final_cleanup(self):
@@ -505,7 +502,7 @@ class Engine(object):
         self.disconnect()
 
     def find_file(self, filename):
-        """Checks for an existing datafile"""
+        """Check for an existing datafile."""
         for search_path in DATA_SEARCH_PATHS:
             search_path = search_path.format(dataset=self.script.name)
             file_path = os.path.normpath(os.path.join(search_path, filename))
@@ -514,15 +511,15 @@ class Engine(object):
         return False
 
     def format_data_dir(self):
-        """Returns the correctly formatted raw data directory location."""
+        """Return correctly formatted raw data directory location."""
         return DATA_WRITE_PATH.format(dataset=self.script.name)
 
     def format_filename(self, filename):
-        """Returns the full path of a file in the archive directory."""
+        """Return full path of a file in the archive directory."""
         return os.path.join(self.format_data_dir(), filename)
 
     def format_insert_value(self, value, datatype):
-        """Format a value for an insert statement based on data type
+        """Format a value for an insert statement based on data type.
 
         Different data types need to be formated differently to be properly
         stored in database management systems. The correct formats are
@@ -570,7 +567,7 @@ class Engine(object):
             return None
 
     def get_cursor(self):
-        """Gets the db cursor."""
+        """Get db cursor."""
         if self._cursor is None:
             self._cursor = self.connection.cursor()
         return self._cursor
@@ -630,7 +627,7 @@ class Engine(object):
             self.insert_data_from_file(self.find_file(filename))
 
     def insert_statement(self, values):
-        """Returns a SQL statement to insert a set of values."""
+        """Return SQL statement to insert a set of values."""
         columns = self.table.get_insert_columns()
         types = self.table.get_column_datatypes()
         columncount = len(self.table.get_insert_columns(join=False, create=False))
@@ -665,7 +662,7 @@ class Engine(object):
         return False
 
     def table_name(self, name=None, dbname=None):
-        """Returns the full tablename."""
+        """Return full tablename."""
         if not name:
             name = self.table.name
         if not dbname:
@@ -675,7 +672,7 @@ class Engine(object):
         return self.opts["table_name"].format(db=dbname, table=name)
 
     def to_csv(self):
-        # due to Cyclic imports we can not move this import to the top
+        # Due to Cyclic imports we can not move this import to the top
         from retriever.lib.tools import sort_csv
         for item in list(self.script.urls.keys()):
             table_name = self.table_name()
@@ -700,7 +697,7 @@ class Engine(object):
         self.warnings.append(new_warning)
 
     def load_data(self, filename):
-        """Generator returning lists of values from lines in a data file
+        """Generator returning lists of values from lines in a data file.
 
         1. Works on both delimited (csv module) and fixed width data (extract_fixed_width)
         2. Identifies the delimiter if not known
@@ -721,7 +718,7 @@ class Engine(object):
                 yield [reg.sub(" ", values) for values in row]
 
     def extract_fixed_width(self, line):
-        """Splits a line based on the fixed width and returns a list of the values"""
+        """Split line based on the fixed width and returns a list of the values."""
         pos = 0
         values = []
         for width in self.table.fixed_width:
@@ -739,17 +736,17 @@ def skip_rows(rows, source):
 
 
 def file_exists(path):
-    """Returns true if a file exists and its size is greater than 0."""
+    """Return true if a file exists and its size is greater than 0."""
     return os.path.isfile(path) and os.path.getsize(path) > 0
 
 
 def filename_from_url(url):
-    """Extracts and returns the filename from the url"""
+    """Extract and returns the filename from the url."""
     return url.split('/')[-1].split('?')[0]
 
 
 def gen_from_source(source):
-    """Returns a generator from a source tuple.
+    """Return generator from a source tuple.
 
     Source tuples are of the form (callable, args) where callable(\*args)
     returns either a generator or another source tuple.
@@ -762,7 +759,7 @@ def gen_from_source(source):
 
 
 def reporthook(count, block_size, total_size):
-    """Generated the progress bar
+    """Generate the progress bar.
 
     Uses file size to calculate the percentage of file size downloaded.
     If the total_size of the file being downloaded is not in the header,

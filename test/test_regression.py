@@ -54,7 +54,7 @@ db_md5 = [
 
 
 def get_script_module(script_name):
-    """Load a script module from the downloaded scripts directory in the retriever"""
+    """Load a script module from the downloaded scripts directory in the retriever."""
     file, pathname, desc = imp.find_module(script_name, [working_script_dir])
     return imp.load_module(script_name, file, pathname, desc)
 
@@ -72,7 +72,7 @@ def get_csv_md5(dataset, engine, tmpdir, install_function, config):
 
 
 def setup_module():
-    """Update retriever scripts and cd to test directory to find data"""
+    """Update retriever scripts and cd to test directory to find data."""
     os.chdir(retriever_root_dir)
     os.system("cp -r ./scripts/  {}/".format(script_home))
     os.system('cp -r {0} {1}'.format(os.path.join(retriever_root_dir,
@@ -80,7 +80,7 @@ def setup_module():
 
 
 def teardown_module():
-    """Cleanup temporary output files after testing and return to root directory"""
+    """Cleanup temporary output files after testing and return to root directory."""
     os.chdir(retriever_root_dir)
     os.system("rm -r output*")
     shutil.rmtree(os.path.join(retriever_root_dir, "raw_data"))
@@ -89,7 +89,7 @@ def teardown_module():
 
 @pytest.mark.parametrize("dataset, expected", db_md5)
 def test_sqlite_regression(dataset, expected, tmpdir):
-    """Check for sqlite regression"""
+    """Check for sqlite regression."""
     dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb.sqlite'))
     sqlite_engine.opts = {
         'engine': 'sqlite',
@@ -101,7 +101,7 @@ def test_sqlite_regression(dataset, expected, tmpdir):
 
 @pytest.mark.parametrize("dataset, expected", db_md5)
 def test_postgres_regression(dataset, expected, tmpdir):
-    """Check for postgres regression"""
+    """Check for postgres regression."""
     os.system('psql -U postgres -d testdb -h localhost -c "DROP SCHEMA IF EXISTS testschema CASCADE"')
     postgres_engine.opts = {'engine': 'postgres',
                             'user': 'postgres',
@@ -121,7 +121,7 @@ def test_postgres_regression(dataset, expected, tmpdir):
 
 @pytest.mark.parametrize("dataset, expected", db_md5)
 def test_mysql_regression(dataset, expected, tmpdir):
-    """Check for mysql regression"""
+    """Check for mysql regression."""
     os.system('mysql -u travis -Bse "DROP DATABASE IF EXISTS testdb"')
     mysql_engine.opts = {'engine': 'mysql',
                          'user': 'travis',
@@ -138,7 +138,7 @@ def test_mysql_regression(dataset, expected, tmpdir):
 
 @pytest.mark.parametrize("dataset, expected", db_md5)
 def test_xmlengine_regression(dataset, expected, tmpdir):
-    """Check for xmlenginee regression"""
+    """Check for xmlenginee regression."""
     xml_engine.opts = {
         'engine': 'xml',
         'table_name': 'output_file_{table}.xml'}
@@ -148,7 +148,7 @@ def test_xmlengine_regression(dataset, expected, tmpdir):
 
 @pytest.mark.parametrize("dataset, expected", db_md5)
 def test_jsonengine_regression(dataset, expected, tmpdir):
-    """Check for jsonenginee regression"""
+    """Check for jsonenginee regression."""
     json_engine.opts = {
         'engine': 'json',
         'table_name': 'output_file_{table}.json'}
@@ -158,7 +158,7 @@ def test_jsonengine_regression(dataset, expected, tmpdir):
 
 @pytest.mark.parametrize("dataset, expected", db_md5)
 def test_csv_regression(dataset, expected, tmpdir):
-    """Check csv regression"""
+    """Check csv regression."""
     csv_engine.opts = {
         'engine': 'csv',
         'table_name': 'output_file_{table}.csv'}
@@ -168,14 +168,14 @@ def test_csv_regression(dataset, expected, tmpdir):
 
 @pytest.mark.parametrize("dataset, expected", download_md5)
 def test_download_regression(dataset, expected):
-    """Test download regression"""
+    """Test download regression."""
     download(dataset, "raw_data/{0}".format(dataset))
     current_md5 = getmd5(data="raw_data/{0}".format(dataset), data_type='dir')
     assert current_md5 == expected
 
 
 def test_scripts():
-    """Test if all datasets are working well
+    """Test if all datasets are working well.
 
     The dataset list is in the version.txt and includes one extra line for the version
 

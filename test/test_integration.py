@@ -331,7 +331,7 @@ retriever_root_dir = os.path.abspath(os.path.join(file_location, os.pardir))
 
 
 def setup_module():
-    """Put raw data and scripts in appropriate .retriever directories"""
+    """Put raw data and scripts in appropriate .retriever directories."""
     for test in tests:
         if not os.path.exists(os.path.join(HOME_DIR, "raw_data", test['name'])):
             os.makedirs(os.path.join(HOME_DIR, "raw_data", test['name']))
@@ -343,7 +343,7 @@ def setup_module():
 
 
 def teardown_module():
-    """Remove test data and scripts from .retriever directories"""
+    """Remove test data and scripts from .retriever directories."""
     for test in tests:
         shutil.rmtree(os.path.join(HOME_DIR, "raw_data", test['name']))
         os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.json'))
@@ -353,7 +353,7 @@ def teardown_module():
 
 
 def get_output_as_csv(dataset, engines, tmpdir, db):
-    """Install dataset and return the output as a string version of the csv
+    """Install dataset and return the output as a string version of the csv.
 
     The string version of the csv output returned by this function can be compared
     directly to the expect_out values in the dataset test dictionaries.
@@ -375,7 +375,7 @@ def get_output_as_csv(dataset, engines, tmpdir, db):
 
 
 def get_script_module(script_name):
-    """Load a script module"""
+    """Load a script module."""
     file, pathname, desc = imp.find_module(script_name, [os.path.join(HOME_DIR, "scripts")])
     return imp.load_module(script_name, file, pathname, desc)
 
@@ -399,21 +399,21 @@ def test_sqlite_integration(dataset, expected, tmpdir):
 
 @pytest.mark.parametrize("dataset, expected", xml_test_parameters)
 def test_xmlengine_integration(dataset, expected, tmpdir):
-    """Check for xmlenginee regression"""
+    """Check for xmlenginee regression."""
     xml_engine.opts = {'engine': 'xml', 'table_name': '{db}_{table}'}
     assert get_output_as_csv(dataset, xml_engine, tmpdir, db=dataset["name"]) == expected
 
 
 @pytest.mark.parametrize("dataset, expected", test_parameters)
 def test_jsonengine_integration(dataset, expected, tmpdir):
-    """Check for jsonenginee regression"""
+    """Check for jsonenginee regression."""
     json_engine.opts = {'engine': 'json', 'table_name': '{db}_{table}'}
     assert get_output_as_csv(dataset, json_engine, tmpdir, db=dataset["name"]) == expected
 
 
 @pytest.mark.parametrize("dataset, expected", test_parameters)
 def test_postgres_integration(dataset, expected, tmpdir):
-    """Check for postgres regression"""
+    """Check for postgres regression."""
     os.system('psql -U postgres -d testdb -h localhost -c "DROP SCHEMA IF EXISTS testschema CASCADE"')
     postgres_engine.opts = {'engine': 'postgres', 'user': 'postgres', 'password': os_password, 'host': 'localhost',
                             'port': 5432,
@@ -423,7 +423,7 @@ def test_postgres_integration(dataset, expected, tmpdir):
 
 @pytest.mark.parametrize("dataset, expected", test_parameters)
 def test_mysql_integration(dataset, expected, tmpdir):
-    """Check for mysql regression"""
+    """Check for mysql regression."""
     os.system('mysql -u travis -Bse "DROP DATABASE IF EXISTS testdb"')
     mysql_engine.opts = {'engine': 'mysql', 'user': 'travis', 'password': '', 'host': 'localhost', 'port': 3306,
                          'database_name': 'testdb', 'table_name': '{db}.{table}'}
