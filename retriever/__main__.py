@@ -63,7 +63,7 @@ def main():
             return
 
         if args.command == 'update':
-            check_for_updates()
+            check_for_updates(False)
             script_list = SCRIPT_LIST()
             return
 
@@ -123,7 +123,7 @@ def main():
             # If scripts have never been downloaded there is nothing to list
             if not script_list:
                 print("No scripts are currently available. Updating scripts now...")
-                check_for_updates()
+                check_for_updates(False)
                 print("\n\nScripts downloaded.\n")
 
             if args.l is None:
