@@ -21,7 +21,7 @@ def _download_from_repository(filepath, newpath, repo=REPOSITORY):
         raise
 
 
-def check_for_updates():
+def check_for_updates(quite=True):
     """Check for updates to scripts.
 
     This updates the HOME_DIR scripts directory with the latest script versions
@@ -33,7 +33,6 @@ def check_for_updates():
 
         # read scripts from the repository and the checksums from the version.txt
         scripts = []
-        print("Downloading scripts...")
         for line in version_file:
             scripts.append(line.decode().strip('\n').split(','))
 
@@ -43,7 +42,9 @@ def check_for_updates():
         if not os.path.isdir(SCRIPT_WRITE_PATH):
             os.makedirs(SCRIPT_WRITE_PATH)
 
-        _update_progressbar(0.0 / float(total_script_count))
+        if not quite:
+            print("Downloading scripts...")
+            _update_progressbar(0.0 / float(total_script_count))
         for index, script in enumerate(scripts):
             script_name = script[0]
             if len(script) > 1:
@@ -72,10 +73,12 @@ def check_for_updates():
                 except Exception as e:
                     print(e)
                     pass
-            _update_progressbar(float(index + 1) / float(total_script_count))
+            if not quite:
+                _update_progressbar(float(index + 1) / float(total_script_count))
     except:
         raise
-    print("\nThe retriever is up-to-date")
+    if not quite:
+        print("\nThe retriever is up-to-date")
 
 
 def _update_progressbar(progress):
