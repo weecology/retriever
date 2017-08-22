@@ -79,10 +79,10 @@ class engine(Engine):
         else:
             return values
 
-    def table_exists(self, db_name, table_name):
+    def table_exists(self, dbname, tablename):
         """Check to see if the data file currently exists"""
-        table_name = self.table_name(name=table_name, dbname=db_name)
-        return os.path.exists(table_name)
+        tablename = self.table_name(name=tablename, dbname=dbname)
+        return os.path.exists(tablename)
 
     def to_csv(self):
         """Export sorted version of CSV file"""
