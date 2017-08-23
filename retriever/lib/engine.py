@@ -185,12 +185,12 @@ class Engine(object):
 
             self.auto_get_datatypes(pk, lines, columns, column_values)
 
-        if self.table.columns[-1][1][0][:3] == "ct-" and hasattr(self.table,
-                                                                 "ct_names") and not self.table.ct_column in [c[0] for c
-                                                                                                              in
-                                                                                                              self.table.columns]:
-            self.table.columns = self.table.columns[:-1] + [(self.table.ct_column, ("char", 50))] + [
-                self.table.columns[-1]]
+        if self.table.columns[-1][1][0][:3] == "ct-" \
+                and hasattr(self.table, "ct_names") \
+                and not self.table.ct_column in [c[0] for c in self.table.columns]:
+            self.table.columns = self.table.columns[:-1] + \
+                                 [(self.table.ct_column, ("char", 50))] + \
+                                 [self.table.columns[-1]]
 
         self.create_table()
 
@@ -674,7 +674,7 @@ class Engine(object):
     def to_csv(self):
         # Due to Cyclic imports we can not move this import to the top
         from retriever.lib.tools import sort_csv
-        for item in list(self.script.urls.keys()):
+        for _ in list(self.script.urls.keys()):
             table_name = self.table_name()
             csv_file_output = os.path.normpath(table_name + '.csv')
             csv_file = open_fw(csv_file_output)
@@ -699,7 +699,8 @@ class Engine(object):
     def load_data(self, filename):
         """Generator returning lists of values from lines in a data file.
 
-        1. Works on both delimited (csv module) and fixed width data (extract_fixed_width)
+        1. Works on both delimited (csv module)
+        and fixed width data (extract_fixed_width)
         2. Identifies the delimiter if not known
         3. Removes extra line endings
 
@@ -718,7 +719,7 @@ class Engine(object):
                 yield [reg.sub(" ", values) for values in row]
 
     def extract_fixed_width(self, line):
-        """Split line based on the fixed width and returns a list of the values."""
+        """Split line based on the fixed width, returns list of the values."""
         pos = 0
         values = []
         for width in self.table.fixed_width:

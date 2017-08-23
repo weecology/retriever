@@ -30,9 +30,10 @@ class engine(Engine):
                      ]
 
     def create_db(self):
-        """
-        SQLite doesn't create databases; each database is a file and needs
-        a separate connection.
+        """Don't create database for SQLite
+
+        SQLite doesn't create databases. Each database is a file and needs a separate
+        connection. This overloads`create_db` to do nothing in this case.
         """
         return None
 
@@ -43,7 +44,6 @@ class engine(Engine):
         operate as designed
         """
         columns = self.table.get_insert_columns()
-        types = self.table.get_column_datatypes()
         column_count = len(self.table.get_insert_columns(False))
         insert_stmt = "INSERT INTO " + self.table_name()
         insert_stmt += " (" + columns + ")"
@@ -60,7 +60,7 @@ class engine(Engine):
         it in chunks and inserts those chunks into the database using
         executemany.
         """
-        CHUNK_SIZE = 1000000
+        chunk_size = 1000000
         self.get_cursor()
 
         # Determine if the dataset includes cross-tab data
@@ -69,22 +69,20 @@ class engine(Engine):
         if (([self.table.cleanup.function, self.table.header_rows] == [no_cleanup, 1])
             and not self.table.fixed_width
             and not crosstab
-            and (not hasattr(self.table, "do_not_bulk_insert") or not self.table.do_not_bulk_insert)
-            ):
-            columns = self.table.get_insert_columns()
+            and (not hasattr(self.table, "do_not_bulk_insert") or not self.table.do_not_bulk_insert)):
             filename = os.path.abspath(filename)
             try:
                 bulk_insert_statement = self.get_bulk_insert_statement()
                 line_endings = set(['\n', '\r', '\r\n'])
                 with open(filename, 'r') as data_file:
-                    data_chunk = data_file.readlines(CHUNK_SIZE)
+                    data_chunk = data_file.readlines(chunk_size)
                     data_chunk = [line.rstrip('\r\n') for line in data_chunk if line not in line_endings]
-                    del (data_chunk[:self.table.header_rows])
+                    del data_chunk[:self.table.header_rows]
                     while data_chunk:
                         data_chunk_split = [row.split(self.table.delimiter)
                                             for row in data_chunk]
                         self.cursor.executemany(bulk_insert_statement, data_chunk_split)
-                        data_chunk = data_file.readlines(CHUNK_SIZE)
+                        data_chunk = data_file.readlines(chunk_size)
                 self.connection.commit()
             except:
                 self.connection.rollback()

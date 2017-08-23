@@ -54,7 +54,7 @@ db_md5 = [
 
 
 def get_script_module(script_name):
-    """Load a script module from the downloaded scripts directory in the retriever."""
+    """Load a script module from the scripts directory in the retriever."""
     file, pathname, desc = imp.find_module(script_name, [working_script_dir])
     return imp.load_module(script_name, file, pathname, desc)
 
@@ -75,12 +75,11 @@ def setup_module():
     """Update retriever scripts and cd to test directory to find data."""
     os.chdir(retriever_root_dir)
     os.system("cp -r ./scripts/  {}/".format(script_home))
-    os.system('cp -r {0} {1}'.format(os.path.join(retriever_root_dir,
-                                                  "test/raw_data"), retriever_root_dir))
+    os.system('cp -r {0} {1}'.format("test/raw_data", retriever_root_dir))
 
 
 def teardown_module():
-    """Cleanup temporary output files after testing and return to root directory."""
+    """Cleanup temporary output files and return to root directory."""
     os.chdir(retriever_root_dir)
     os.system("rm -r output*")
     shutil.rmtree(os.path.join(retriever_root_dir, "raw_data"))

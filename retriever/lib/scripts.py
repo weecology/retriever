@@ -102,7 +102,7 @@ def open_fw(file_name, encoding=ENCODING, encode=True):
         else:
             file_obj = io.open(file_name, 'w', newline='')
     else:
-        file_obj = io.open(file_name, 'wb', )
+        file_obj = io.open(file_name, 'wb')
     return file_obj
 
 

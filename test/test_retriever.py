@@ -42,7 +42,7 @@ retriever_root_dir = os.path.abspath(os.path.join(file_location, os.pardir))
 def setup_module():
     """"Make sure you are in the main local retriever directory."""
     os.chdir(retriever_root_dir)
-    os.system('cp -r {0} {1}'.format(os.path.join(retriever_root_dir, "test/raw_data"), retriever_root_dir))
+    os.system('cp -r {0} {1}'.format("test/raw_data", retriever_root_dir))
 
 
 def teardown_module():
@@ -54,7 +54,8 @@ def teardown_module():
 def test_auto_get_columns():
     """Basic test of getting column labels from header."""
     test_engine.table.delimiter = ","
-    columns, column_values = test_engine.table.auto_get_columns(['a', 'b', 'c', 'd'])
+    columns, column_values = test_engine.table.auto_get_columns(
+        ['a', 'b', 'c', 'd'])
     assert columns == [['a', None], ['b', None], ['c', None], ['d', None]]
 
 
@@ -63,24 +64,34 @@ def test_auto_get_datatypes():
 
     The function adds 100 to the auto detected length of column
     """
-    test_engine.auto_get_datatypes(None, [["ö", 'bb', 'Löve']], [['a', None], ['b', None], ['c', None]],
+    test_engine.auto_get_datatypes(None,
+                                   [["ö", 'bb', 'Löve']],
+                                   [['a', None], ['b', None], ['c', None]],
                                    {'a': [], 'c': [], 'b': []})
     length = test_engine.table.columns
-    assert [length[0][1][1], length[1][1][1], length[2][1][1]] == [101, 102, 104]
+    assert [length[0][1][1], length[1][1][1], length[2][1][1]] == \
+           [101, 102, 104]
 
 
 def test_auto_get_columns_extra_whitespace():
     """Test getting column labels from header with extra whitespace."""
     test_engine.table.delimiter = ","
-    columns, column_values = test_engine.table.auto_get_columns(['a', 'b', 'c', 'd  '])
+    columns, column_values = test_engine.table.auto_get_columns(
+        ['a', 'b', 'c', 'd  '])
     assert columns == [['a', None], ['b', None], ['c', None], ['d', None]]
 
 
 def test_auto_get_columns_cleanup():
     """Test of automatically cleaning up column labels from header."""
     test_engine.table.delimiter = ","
-    columns, column_values = test_engine.table.auto_get_columns(['a)', 'a\nd', 'b.b', 'c/c', 'd___d', 'group'])
-    assert columns == [['a', None], ['ad', None], ['b_b', None], ['c_c', None], ['d_d', None],
+    columns, column_values = test_engine.table.auto_get_columns([
+        'a)', 'a\nd', 'b.b', 'c/c', 'd___d', 'group'])
+
+    assert columns == [['a', None],
+                       ['ad', None],
+                       ['b_b', None],
+                       ['c_c', None],
+                       ['d_d', None],
                        ['grp', None]]
 
 
@@ -103,11 +114,13 @@ def test_auto_get_delimiter_semicolon():
 
 
 def test_correct_invalid_value_string():
-    assert correct_invalid_value('NA', {'missing_values': ['NA', '-999']}) == None
+    assert \
+        correct_invalid_value('NA', {'missing_values': ['NA', '-999']}) is None
 
 
 def test_correct_invalid_value_number():
-    assert correct_invalid_value(-999, {'missing_values': ['NA', '-999']}) == None
+    assert \
+        correct_invalid_value(-999, {'missing_values': ['NA', '-999']}) is None
 
 
 def test_correct_invalid_value_exception():
@@ -126,13 +139,15 @@ def test_database_name():
 
 def test_drop_statement():
     """Test the creation of drop statements."""
-    assert test_engine.drop_statement('TABLE', 'tablename') == "DROP TABLE IF EXISTS tablename"
+    assert test_engine.drop_statement(
+        'TABLE', 'tablename') == "DROP TABLE IF EXISTS tablename"
 
 
 def test_extract_values_fixed_width():
     """Test extraction of values from line of fixed width data."""
     test_engine.table.fixed_width = [5, 2, 2, 3, 4]
-    assert test_engine.extract_fixed_width('abc  1 2 3  def ') == ['abc', '1', '2', '3', 'def']
+    assert test_engine.extract_fixed_width('abc  1 2 3  def ') == [
+        'abc', '1', '2', '3', 'def']
 
 
 def test_find_file_absent():
@@ -155,15 +170,17 @@ def test_find_file_present():
 def test_format_data_dir():
     """Test if directory for storing data is properly formated."""
     test_engine.script.name = "TestName"
-    assert os.path.normpath(test_engine.format_data_dir()) == os.path.normpath(
-        os.path.join(HOMEDIR, '.retriever/raw_data/TestName'))
+    r_path = '.retriever/raw_data/TestName'
+    assert os.path.normpath(test_engine.format_data_dir()) == \
+           os.path.normpath(os.path.join(HOMEDIR, r_path))
 
 
 def test_format_filename():
     """Test if filenames for stored files are properly formated."""
     test_engine.script.name = "TestName"
-    assert os.path.normpath(test_engine.format_filename('testfile.csv')) == os.path.normpath(
-        os.path.join(HOMEDIR, '.retriever/raw_data/TestName/testfile.csv'))
+    r_path = '.retriever/raw_data/TestName/testfile.csv'
+    assert os.path.normpath(test_engine.format_filename('testfile.csv')) == \
+           os.path.normpath(os.path.join(HOMEDIR, r_path))
 
 
 def test_format_insert_value_int():
@@ -178,31 +195,35 @@ def test_format_insert_value_double():
 
 def test_format_insert_value_string_simple():
     """Test formatting of values for insert statements."""
-    assert test_engine.format_insert_value('simple text', 'char') == "simple text"
+    test_str = "simple text"
+    assert test_engine.format_insert_value(test_str, 'char') == test_str
 
 
 def test_format_insert_value_string_complex():
     """Test formatting of values for insert statements."""
-    assert test_engine.format_insert_value('my notes: "have extra, stuff"',
-                                           'char') == 'my notes: "have extra, stuff"'
+    test_str = 'my notes: "have extra, stuff"'
+    assert test_engine.format_insert_value(test_str, 'char') == test_str
 
 
 def test_getmd5_lines():
     """Test md5 sum calculation given a line."""
     lines = ['a,b,c', '1,2,3', '4,5,6']
-    assert getmd5(data=lines, data_type='lines') == 'ca471abda3ebd4ae8ce1b0814b8f470c'
+    exp_hash = 'ca471abda3ebd4ae8ce1b0814b8f470c'
+    assert getmd5(data=lines, data_type='lines') == exp_hash
 
 
 def test_getmd5_line_end():
     """Test md5 sum calculation given a line with end of line character."""
     lines_end = ['a,b,c\n', '1,2,3\n', '4,5,6\n']
-    assert getmd5(data=lines_end, data_type='lines') == '0bec5bf6f93c547bc9c6774acaf85e1a'
+    exp_hash = '0bec5bf6f93c547bc9c6774acaf85e1a'
+    assert getmd5(data=lines_end, data_type='lines') == exp_hash
 
 
 def test_getmd5_path():
     """Test md5 sum calculation given a path to data source."""
     data_file = create_file(['a,b,c', '1,2,3', '4,5,6'])
-    assert getmd5(data=data_file, data_type='file') == '0bec5bf6f93c547bc9c6774acaf85e1a'
+    exp_hash = '0bec5bf6f93c547bc9c6774acaf85e1a'
+    assert getmd5(data=data_file, data_type='file') == exp_hash
 
 
 def test_json2csv():
@@ -210,8 +231,12 @@ def test_json2csv():
 
     Creates a json file and tests the md5 sum calculation.
     """
-    json_file = create_file(["""[ {"User": "Alex", "Country": "US", "Age": "25"} ]"""], 'output.json')
-    output_json = json2csv(json_file, "output_json.csv", header_values=["User", "Country", "Age"])
+    json_file = create_file([
+        """[ {"User": "Alex", "Country": "US", "Age": "25"} ]"""],
+        'output.json')
+
+    output_json = json2csv(json_file, "output_json.csv",
+                           header_values=["User", "Country", "Age"])
     obs_out = file_2list(output_json)
     os.remove(output_json)
     assert obs_out == ['User,Country,Age', 'Alex,US,25']
@@ -231,7 +256,8 @@ def test_xml2csv():
                             '<Age>24</Age>',
                             '</row>', '</root>'], 'output.xml')
 
-    output_xml = xml2csv(xml_file, "output_xml.csv", header_values=["User", "Country", "Age"])
+    output_xml = xml2csv(xml_file, "output_xml.csv",
+                         header_values=["User", "Country", "Age"])
     obs_out = file_2list(output_xml)
     os.remove(output_xml)
     assert obs_out == ['User,Country,Age', 'Alex,US,25', 'Ben,US,24']
@@ -248,21 +274,28 @@ def test_sort_file():
 
 def test_sort_csv():
     """Test md5 sum calculation."""
-    data_file = create_file(['User,Country,Age', 'Ben,US,24', 'Alex,US,25', 'Alex,PT,25'])
+    data_file = create_file(['User,Country,Age',
+                             'Ben,US,24',
+                             'Alex,US,25',
+                             'Alex,PT,25'])
     out_file = sort_csv(data_file)
     obs_out = file_2list(out_file)
     os.remove(out_file)
-    assert obs_out == ['User,Country,Age', 'Alex,PT,25', 'Alex,US,25', 'Ben,US,24']
+    assert obs_out == [
+        'User,Country,Age',
+        'Alex,PT,25',
+        'Alex,US,25',
+        'Ben,US,24']
 
 
 def test_is_empty_null_string():
     """Test for null string."""
-    assert is_empty("") == True
+    assert is_empty("")
 
 
 def test_is_empty_empty_list():
     """Test for empty list."""
-    assert is_empty([]) == True
+    assert is_empty([])
 
 
 def test_is_empty_not_null_string():
@@ -277,6 +310,7 @@ def test_is_empty_not_empty_list():
 
 def test_clean_input_empty_input_ignore_empty(monkeypatch):
     """Test with empty input ignored."""
+
     def mock_input(prompt):
         return ""
 
@@ -286,6 +320,7 @@ def test_clean_input_empty_input_ignore_empty(monkeypatch):
 
 def test_clean_input_empty_input_not_ignore_empty(monkeypatch):
     """Test with empty input not ignored."""
+
     def mock_input(prompt):
         mock_input.counter += 1
         if mock_input.counter <= 1:
@@ -300,6 +335,7 @@ def test_clean_input_empty_input_not_ignore_empty(monkeypatch):
 
 def test_clean_input_string_input(monkeypatch):
     """Test with non-empty input."""
+
     def mock_input(prompt):
         return "not empty"
 
@@ -309,6 +345,7 @@ def test_clean_input_string_input(monkeypatch):
 
 def test_clean_input_empty_list_ignore_empty(monkeypatch):
     """Test with empty list ignored."""
+
     def mock_input(prompt):
         return ",  ,   ,"
 
@@ -318,6 +355,7 @@ def test_clean_input_empty_list_ignore_empty(monkeypatch):
 
 def test_clean_input_empty_list_not_ignore_empty(monkeypatch):
     """Test with empty list not ignored."""
+
     def mock_input(prompt):
         mock_input.counter += 1
         if mock_input.counter <= 1:
@@ -332,15 +370,18 @@ def test_clean_input_empty_list_not_ignore_empty(monkeypatch):
 
 def test_clean_input_not_empty_list(monkeypatch):
     """Test with list input."""
+
     def mock_input(prompt):
         return "1,    2,     3"
 
     monkeypatch.setattr('retriever.lib.datapackage.input', mock_input)
-    assert clean_input("", ignore_empty=True, split_char=',', dtype=None) == ["1", "2", "3"]
+    assert clean_input("", ignore_empty=True, split_char=',', dtype=None) == \
+           ["1", "2", "3"]
 
 
 def test_clean_input_bool(monkeypatch):
     """Test with correct datatype input."""
+
     def mock_input(prompt):
         return "True "
 
@@ -350,6 +391,7 @@ def test_clean_input_bool(monkeypatch):
 
 def test_clean_input_not_bool(monkeypatch):
     """Test with incorrect datatype input."""
+
     def mock_input(prompt):
         mock_input.counter += 1
         if mock_input.counter <= 1:
@@ -377,7 +419,7 @@ def test_add_dialect():
     result['dummy_key'] = 'dummy_value'
 
     add_dialect(table_dict, table)
-    assert (table_dict == result)
+    assert table_dict == result
 
 
 def test_add_schema():
@@ -387,7 +429,8 @@ def test_add_schema():
     table_dict = {}
     table['schema']['fields'] = []
     table['schema']['fields'].append({'name': 'col1', 'type': 'int'})
-    table['schema']['fields'].append({'name': 'col2', 'type': 'char', 'size': 20})
+    table['schema']['fields'].append(
+        {'name': 'col2', 'type': 'char', 'size': 20})
     table['schema']['ct_column'] = 'ct_column'
     table['schema']['ct_names'] = ['ct1', 'ct2', 'ct3', 'ct4']
     table['schema']['dummy_key'] = 'dummy_value'
@@ -401,4 +444,4 @@ def test_add_schema():
     result['dummy_key'] = 'dummy_value'
 
     add_schema(table_dict, table)
-    assert (table_dict == result)
+    assert table_dict == result
