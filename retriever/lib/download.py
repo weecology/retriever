@@ -8,18 +8,16 @@ from retriever.lib.tools import name_matches
 script_list = SCRIPT_LIST()
 
 
-def download(dataset, path='./', quite=False, subdir=False, use_cache=False, debug=False):
+def download(dataset, path='./', quite=False, subdir=False, debug=False):
     """Download scripts for retriever."""
     args = {
         'dataset': dataset,
         'command': 'download',
         'path': path,
         'subdir': subdir,
-        'quite': quite,
-        'use_cache': use_cache
+        'quite': quite
     }
     engine = choose_engine(args)
-    engine.use_cache = use_cache
 
     scripts = name_matches(script_list, args['dataset'])
     if scripts:
