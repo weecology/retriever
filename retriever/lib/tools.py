@@ -124,7 +124,7 @@ def get_default_connection():
         return None
 
 
-def reset_retriever(scope):
+def reset_retriever(scope="all"):
     """Remove stored information on scripts, data, and connections."""
     warning_messages = {
         'all': "\nThis will remove existing scripts, cached data, and information on database connections. \nSpecifically it will remove the scripts and raw_data folders and the connections.config file in {}. \nDo you want to proceed? (y/N)\n",
