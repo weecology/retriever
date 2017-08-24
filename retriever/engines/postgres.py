@@ -1,10 +1,12 @@
 import os
-from retriever.lib.models import Engine, no_cleanup
+
 from retriever.lib.defaults import ENCODING
+from retriever.lib.models import Engine, no_cleanup
 
 
 class engine(Engine):
     """Engine instance for PostgreSQL."""
+
     name = "PostgreSQL"
     abbreviation = "postgres"
     datatypes = {
@@ -46,7 +48,7 @@ class engine(Engine):
         return Engine.create_db_statement(self).replace("DATABASE", "SCHEMA")
 
     def create_db(self):
-        """Creates the database"""
+        """Create Engine database."""
         try:
             Engine.create_db(self)
         except:
@@ -91,14 +93,14 @@ CSV HEADER;"""
             return Engine.insert_data_from_file(self, filename)
 
     def insert_statement(self, values):
-        """Returns a SQL statement to insert a set of values"""
+        """Return SQL statement to insert a set of values."""
         statement = Engine.insert_statement(self, values)
         if isinstance(statement, bytes):
             statement = statement.decode("utf-8", "ignore")
         return statement
 
     def table_exists(self, dbname, tablename):
-        """Checks to see if the given table exists"""
+        """Check to see if the given table exists."""
         if not hasattr(self, 'existing_table_names'):
             self.cursor.execute(
                 "SELECT schemaname, tablename FROM pg_tables WHERE schemaname NOT LIKE 'pg_%';")
@@ -108,7 +110,7 @@ CSV HEADER;"""
         return (dbname.lower(), tablename.lower()) in self.existing_table_names
 
     def format_insert_value(self, value, datatype):
-        """Formats a value for an insert statement"""
+        """Format value for an insert statement."""
         if datatype == "bool":
             try:
                 if int(value) == 1:
@@ -120,9 +122,9 @@ CSV HEADER;"""
         return Engine.format_insert_value(self, value, datatype)
 
     def get_connection(self):
-        """Gets the db connection.
-           
-           Please update the encoding lookup table if the required encoding is not present.
+        """
+        Get db connection.
+        Please update the encoding lookup table if the required encoding is not present.
         """
         import psycopg2 as dbapi
         self.get_input()
@@ -134,7 +136,7 @@ CSV HEADER;"""
         encoding = ENCODING.lower()
         if self.script.encoding:
             encoding = self.script.encoding.lower()
-        encoding_lookup = {'iso-8859-1': 'Latin1','latin-1' : 'Latin1' ,'utf-8': 'UTF8'}
+        encoding_lookup = {'iso-8859-1': 'Latin1', 'latin-1': 'Latin1', 'utf-8': 'UTF8'}
         db_encoding = encoding_lookup.get(encoding)
         conn.set_client_encoding(db_encoding)
         return conn

@@ -1,12 +1,12 @@
 import argparse
 import os
-import argcomplete
 
+import argcomplete
 from argcomplete.completers import ChoicesCompleter
 
 from retriever.engines import engine_list
-from retriever.lib.scripts import MODULE_LIST
 from retriever.lib.defaults import VERSION
+from retriever.lib.scripts import MODULE_LIST
 
 module_list = MODULE_LIST()
 script_list = [module.SCRIPT.name for module in module_list]
@@ -41,7 +41,8 @@ delete_json_parser = subparsers.add_parser('delete_json', help='CLI to remove re
 ls_parser = subparsers.add_parser('ls', help='display a list all available dataset scripts')
 citation_parser = subparsers.add_parser('citation', help='view citation')
 license_parser = subparsers.add_parser('license', help='view dataset license')
-reset_parser = subparsers.add_parser('reset', help='reset retriever: removes configation settings, scripts, and cached data')
+reset_parser = subparsers.add_parser('reset',
+                                     help='reset retriever: removes configation settings, scripts, and cached data')
 help_parser = subparsers.add_parser('help', help='')
 
 # ..............................................................
@@ -67,7 +68,7 @@ delete_json_parser.add_argument('dataset', help='dataset name', choices=json_lis
 install_subparsers = install_parser.add_subparsers(help='engine-specific help', dest='engine')
 
 for engine in engine_list:
-    if engine.name == "Download Only":   # skip the Download engine and just add attributes
+    if engine.name == "Download Only":  # skip the Download engine and just add attributes
         pass
     else:
         engine_parser = install_subparsers.add_parser(engine.abbreviation, help=engine.name)
@@ -90,7 +91,8 @@ for engine in engine_list:
 
             # subdir doesn't take any arguments, if included takes True if excluded takes False
             if arg_name.lower() == "subdir":
-                download_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help_msg, default=default, action='store_true')
+                download_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help_msg, default=default,
+                                             action='store_true')
                 # parser.add_argument('--foo', action='store_const', const = False)
             else:
                 # path must take arguments else it takes default "./"

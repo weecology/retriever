@@ -1,12 +1,15 @@
 from __future__ import print_function
-from builtins import str
+
 import os
-from retriever.lib.models import Engine, no_cleanup
+from builtins import str
+
 from retriever.lib.defaults import ENCODING
+from retriever.lib.models import Engine, no_cleanup
 
 
 class engine(Engine):
     """Engine instance for MySQL."""
+
     name = "MySQL"
     abbreviation = "mysql"
     datatypes = {
@@ -41,17 +44,16 @@ class engine(Engine):
                      ]
 
     def create_db_statement(self):
-        """Returns a SQL statement to create a database."""
+        """Return SQL statement to create a database."""
         createstatement = "CREATE DATABASE IF NOT EXISTS " + self.database_name()
         return createstatement
 
     def insert_data_from_file(self, filename):
-        """Calls MySQL "LOAD DATA LOCAL INFILE" statement to perform a bulk
-        insert."""
+        """Call MySQL "LOAD DATA LOCAL INFILE" statement to perform a bulk insert."""
 
         mysql_set_autocommit_off = """SET autocommit=0; SET UNIQUE_CHECKS=0; SET FOREIGN_KEY_CHECKS=0; SET sql_log_bin=0;"""
         mysql_set_autocommit_on = """SET GLOBAL innodb_flush_log_at_trx_commit=1; COMMIT; SET autocommit=1; SET unique_checks=1; SET foreign_key_checks=1;"""
-        
+
         self.get_cursor()
         ct = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
         if (self.table.cleanup.function == no_cleanup and
@@ -59,7 +61,7 @@ class engine(Engine):
                 not ct and
                 (not hasattr(self.table, "do_not_bulk_insert") or not self.table.do_not_bulk_insert)):
 
-            print ("Inserting data from " + os.path.basename(filename) + "...")
+            print("Inserting data from " + os.path.basename(filename) + "...")
 
             columns = self.table.get_insert_columns()
             statement = """
@@ -83,7 +85,7 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
             return Engine.insert_data_from_file(self, filename)
 
     def table_exists(self, dbname, tablename):
-        """Checks to see if the given table exists"""
+        """Check to see if the given table exists."""
         if not hasattr(self, 'existing_table_names'):
             self.cursor.execute(
                 "SELECT table_schema, table_name "
@@ -107,7 +109,7 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
         self.execute("SET NAMES '{0}';".format(db_encoding))
 
     def get_connection(self):
-        """Gets the db connection."""
+        """Get db connection."""
         args = {'host': self.opts['host'],
                 'port': int(self.opts['port']),
                 'user': self.opts['user'],

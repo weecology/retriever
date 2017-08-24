@@ -6,12 +6,14 @@ to choose from all scripts.
 The main() function can be used for bootstrapping.
 
 """
-from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import print_function
+
 import os
 import sys
 from builtins import input
 from imp import reload
+
 from retriever.engines import engine_list, choose_engine
 from retriever.lib.datapackage import create_json, edit_json, delete_json, get_script_filename
 from retriever.lib.datasets import datasets, license
@@ -178,6 +180,7 @@ def main():
             print("The dataset {} isn't currently available in the Retriever".format(
                 args.dataset))
             print("Run 'retriever ls to see a list of currently available datasets")
+
 
 if __name__ == "__main__":
     main()

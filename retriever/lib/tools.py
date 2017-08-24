@@ -5,29 +5,25 @@ scripts.
 
 """
 from __future__ import print_function
+
 from future import standard_library
+
 standard_library.install_aliases()
 
-from builtins import str
-from builtins import input
-import csv
 import difflib
-import io
 import json
-import os
 import platform
 import shutil
-import sys
 import warnings
 
 from hashlib import md5
 from io import StringIO as newfile
 from retriever.lib.defaults import HOME_DIR, ENCODING
-from retriever.lib.scripts import open_fr, open_fw, open_csvw, MODULE_LIST
+from retriever.lib.scripts import MODULE_LIST
 from retriever.lib.models import *
 import xml.etree.ElementTree as ET
-warnings.filterwarnings("ignore")
 
+warnings.filterwarnings("ignore")
 
 TEST_ENGINES = dict()
 
@@ -59,8 +55,10 @@ def name_matches(scripts, arg):
     for script in scripts:
         if arg.lower() == script.name.lower():
             return [script]
-        max_ratio = max([difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in (script.name.lower(), script.title.lower(), script.filename.lower())] +
-                        [difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in [keyword.strip().lower() for keywordset in script.keywords for keyword in keywordset]]
+        max_ratio = max([difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in
+                         (script.name.lower(), script.title.lower(), script.filename.lower())] +
+                        [difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in
+                         [keyword.strip().lower() for keywordset in script.keywords for keyword in keywordset]]
                         )
         if arg.lower() == 'all':
             max_ratio = 1.0
@@ -94,7 +92,7 @@ def get_saved_connection(engine_name):
 
 
 def save_connection(engine_name, values_dict):
-    """Saves connection information for an engine in connections.config."""
+    """Save connection information for an engine in connections.config."""
     lines = []
     if os.path.isfile(config_path):
         config = open(config_path, "r")
@@ -115,7 +113,7 @@ def save_connection(engine_name, values_dict):
 
 
 def get_default_connection():
-    """Gets the first (most recently used) stored connection from
+    """Get first (most recently used) stored connection from
     connections.config."""
     if os.path.isfile(config_path):
         config = open(config_path, "r")
@@ -127,8 +125,7 @@ def get_default_connection():
 
 
 def reset_retriever(scope):
-    """Remove stored information on scripts, data, and connections"""
-
+    """Remove stored information on scripts, data, and connections."""
     warning_messages = {
         'all': "\nThis will remove existing scripts, cached data, and information on database connections. \nSpecifically it will remove the scripts and raw_data folders and the connections.config file in {}. \nDo you want to proceed? (y/N)\n",
         'scripts': "\nThis will remove existing scripts. \nSpecifically it will remove the scripts folder in {}.\nDo you want to proceed? (y/N)\n",
@@ -155,8 +152,9 @@ def reset_retriever(scope):
 
 
 def json2csv(input_file, output_file=None, header_values=None):
-    """Convert Json file to CSV
-    function is used for only testing and can handle the file of the size
+    """Convert Json file to CSV.
+
+    Function is used for only testing and can handle the file of the size.
     """
     file_out = open_fr(input_file, encode=False)
     # set output file name and write header
@@ -164,7 +162,8 @@ def json2csv(input_file, output_file=None, header_values=None):
         output_file = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
     csv_out = open_fw(output_file, encode=False)
     if os.name == 'nt':
-        outfile = csv.DictWriter(csv_out, dialect='excel', escapechar="\\", lineterminator='\n', fieldnames=header_values)
+        outfile = csv.DictWriter(csv_out, dialect='excel', escapechar="\\", lineterminator='\n',
+                                 fieldnames=header_values)
     else:
         outfile = csv.DictWriter(csv_out, dialect='excel', escapechar="\\", fieldnames=header_values)
     raw_data = json.loads(file_out.read())
@@ -178,8 +177,9 @@ def json2csv(input_file, output_file=None, header_values=None):
 
 
 def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
-    """Convert xml to csv
-    function is used for only testing and can handle the file of the size
+    """Convert xml to csv.
+
+    Function is used for only testing and can handle the file of the size.
     """
     file_output = open_fr(input_file, encode=False)
     # set output file name and write header
@@ -204,7 +204,7 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
 
 
 def getmd5(data, data_type='lines'):
-    """Get MD5 of a data source"""
+    """Get MD5 of a data source."""
     checksum = md5()
     if data_type == 'lines':
         for line in data:
@@ -239,8 +239,9 @@ def getmd5(data, data_type='lines'):
 
 
 def sort_file(file_path):
-    """Sort file by line and return the file
-    function is used for only testing and can handle the file of the size
+    """Sort file by line and return the file.
+
+    Function is used for only testing and can handle the file of the size.
     """
     file_path = os.path.normpath(file_path)
     input_file = open_fr(file_path)
@@ -255,8 +256,9 @@ def sort_file(file_path):
 
 
 def sort_csv(filename):
-    """Sort CSV rows minus the header and return the file
-    function is used for only testing and can handle the file of the size
+    """Sort CSV rows minus the header and return the file.
+
+    Function is used for only testing and can handle the file of the size.
     """
     filename = os.path.normpath(filename)
     input_file = open_fr(filename)
@@ -292,7 +294,7 @@ def sort_csv(filename):
 
 
 def create_file(data, output='output_file'):
-    """writes lines to a file from a list"""
+    """Write lines to file from a list."""
     output_file = os.path.normpath(output)
     with open(output_file, 'w') as testfile:
         for line in data:
@@ -302,7 +304,7 @@ def create_file(data, output='output_file'):
 
 
 def file_2list(input_file):
-    """Read in a csv file and return lines a list"""
+    """Read in a csv file and return lines a list."""
     input_file = os.path.normpath(input_file)
 
     if sys.version_info >= (3, 0, 0):
@@ -335,7 +337,7 @@ def get_module_version():
 
 
 def set_proxy():
-    """Check for proxies and makes them available to urllib"""
+    """Check for proxies and makes them available to urllib."""
     proxies = ["https_proxy", "http_proxy", "ftp_proxy",
                "HTTP_PROXY", "HTTPS_PROXY", "FTP_PROXY"]
     for proxy in proxies:

@@ -1,9 +1,11 @@
 from __future__ import print_function
+
 import os
 import platform
 from builtins import str
-from retriever.lib.models import Engine, no_cleanup
+
 from retriever.lib.defaults import DATA_DIR
+from retriever.lib.models import Engine, no_cleanup
 
 
 class engine(Engine):
@@ -57,12 +59,12 @@ class engine(Engine):
         self.get_cursor()
         ct = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
         if ((self.table.cleanup.function == no_cleanup and not self.table.fixed_width and
-             self.table.header_rows < 2)
+                     self.table.header_rows < 2)
             and (self.table.delimiter in ["\t", ","])
             and not ct
             and (not hasattr(self.table, "do_not_bulk_insert") or not self.table.do_not_bulk_insert)
             ):
-            print ("Inserting data from " + os.path.basename(filename) + "...")
+            print("Inserting data from " + os.path.basename(filename) + "...")
 
             if self.table.delimiter == "\t":
                 fmt = "TabDelimited"

@@ -1,7 +1,6 @@
 from future import standard_library
+
 standard_library.install_aliases()
-from builtins import next
-from builtins import object
 
 import csv
 import io
@@ -31,7 +30,7 @@ class Table(object):
             setattr(self, key, item[0] if isinstance(item, tuple) else item)
 
     def auto_get_columns(self, header):
-        """Gets the column names from the header row
+        """Get column names from the header row.
 
         Identifies the column names from the header row.
         Replaces database keywords with alternatives.
@@ -44,7 +43,7 @@ class Table(object):
 
     def clean_column_name(self, column_name):
         """Clean column names using the expected sql guidelines
-        remove leading whitespaces, replace sql key words, etc..
+        remove leading whitespaces, replace sql key words, etc.
         """
         column_name = column_name.lower().strip().replace("\n", "")
         replace_columns = {old.lower(): new.lower()
@@ -92,13 +91,13 @@ class Table(object):
         return column_name
 
     def combine_on_delimiter(self, line_as_list):
-        """Combine a list of values into a line of csv data"""
+        """Combine a list of values into a line of csv data."""
         dialect = csv.excel
         dialect.escapechar = "\\"
         if sys.version_info >= (3, 0):
-            writer_file =  io.StringIO()
+            writer_file = io.StringIO()
         else:
-            writer_file =  io.BytesIO()
+            writer_file = io.BytesIO()
         writer = csv.writer(writer_file, dialect=dialect, delimiter=self.delimiter)
         writer.writerow(line_as_list)
         return writer_file.getvalue()
@@ -136,7 +135,7 @@ class Table(object):
         return linevalues
 
     def get_insert_columns(self, join=True, create=False):
-        """Gets column names for insert statements
+        """Get column names for insert statements.
 
         `create` should be set to `True` if the returned values are going to be used
         for creating a new table. It includes the `pk_auto` column if present. This
@@ -162,7 +161,7 @@ class Table(object):
             return columns
 
     def get_column_datatypes(self):
-        """Gets a set of column names for insert statements."""
+        """Get set of column names for insert statements."""
         columns = []
         for item in self.get_insert_columns(False):
             for column in self.columns:

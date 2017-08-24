@@ -1,8 +1,10 @@
 """Generates a configuration file containing the version number."""
 from __future__ import absolute_import
+
 import os
-from retriever.lib.tools import get_module_version
+
 from retriever.lib.defaults import VERSION
+from retriever.lib.tools import get_module_version
 
 
 def write_version_file(scripts):
