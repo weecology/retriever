@@ -8,14 +8,14 @@ from retriever.lib.tools import name_matches
 script_list = SCRIPT_LIST()
 
 
-def download(dataset, path='./', quite=False, subdir=False, debug=False):
+def download(dataset, path='./', quiet=False, subdir=False, debug=False):
     """Download scripts for retriever."""
     args = {
         'dataset': dataset,
         'command': 'download',
         'path': path,
         'subdir': subdir,
-        'quite': quite
+        'quiet': quiet
     }
     engine = choose_engine(args)
 
