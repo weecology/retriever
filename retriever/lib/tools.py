@@ -75,62 +75,12 @@ def final_cleanup(engine):
 config_path = os.path.join(HOME_DIR, 'connections.config')
 
 
-def get_saved_connection(engine_name):
-    """Given the name of an engine, returns the stored connection for that engine
-    from connections.config."""
-    parameters = {}
-    if os.path.isfile(config_path):
-        config = open(config_path, "r")
-        for line in config:
-            values = line.rstrip('\n').split(',')
-            if values[0] == engine_name:
-                try:
-                    parameters = eval(','.join(values[1:]))
-                except:
-                    pass
-    return parameters
-
-
-def save_connection(engine_name, values_dict):
-    """Save connection information for an engine in connections.config."""
-    lines = []
-    if os.path.isfile(config_path):
-        config = open(config_path, "r")
-        for line in config:
-            if line.split(',')[0] != engine_name:
-                lines.append('\n' + line.rstrip('\n'))
-        config.close()
-        os.remove(config_path)
-        config = open(config_path, "w")
-    else:
-        config = open(config_path, "w")
-    if "file" in values_dict:
-        values_dict["file"] = os.path.abspath(values_dict["file"])
-    config.write(engine_name + "," + str(values_dict))
-    for line in lines:
-        config.write(line)
-    config.close()
-
-
-def get_default_connection():
-    """Get first (most recently used) stored connection from
-    connections.config."""
-    if os.path.isfile(config_path):
-        config = open(config_path, "r")
-        default_connection = config.readline().split(",")[0]
-        config.close()
-        return default_connection
-    else:
-        return None
-
-
 def reset_retriever(scope="all"):
     """Remove stored information on scripts, data, and connections."""
     warning_messages = {
         'all': "\nThis will remove existing scripts, cached data, and information on database connections. \nSpecifically it will remove the scripts and raw_data folders and the connections.config file in {}. \nDo you want to proceed? (y/N)\n",
         'scripts': "\nThis will remove existing scripts. \nSpecifically it will remove the scripts folder in {}.\nDo you want to proceed? (y/N)\n",
-        'data': "\nThis will remove raw data cached by the Retriever. \nSpecifically it will remove the raw_data folder in {}. \nDo you want to proceed? (y/N)\n",
-        'connections': "\nThis will remove stored information on database connections. \nSpecifically it will remove the connections.config file in {}. \nDo you want to proceed? (y/N)\n"
+        'data': "\nThis will remove raw data cached by the Retriever. \nSpecifically it will remove the raw_data folder in {}. \nDo you want to proceed? (y/N)\n"
     }
 
     path = os.path.normpath(HOME_DIR)
@@ -144,11 +94,6 @@ def reset_retriever(scope="all"):
             shutil.rmtree(os.path.join(path, 'raw_data'))
         if scope in ['scripts', 'all']:
             shutil.rmtree(os.path.join(path, 'scripts'))
-        if scope in ['connections', 'all']:
-            try:
-                os.remove(os.path.join(path, 'connections.config'))
-            except:
-                pass
 
 
 def json2csv(input_file, output_file=None, header_values=None):
