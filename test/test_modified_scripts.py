@@ -23,6 +23,18 @@ reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding(ENCODING)
 
+file_location = os.path.dirname(os.path.realpath(__file__))
+retriever_root_dir = os.path.abspath(os.path.join(file_location, os.pardir))
+working_script_dir = os.path.abspath(os.path.join(retriever_root_dir, "scripts"))
+home_dir = os.path.expanduser('~')
+script_home = "{}/.retriever/scripts".format(home_dir)
+
+
+def setup_module():
+    """Update retriever scripts and cd to test directory to find data."""
+    os.chdir(retriever_root_dir)
+    os.system("cp -r ./scripts/  {}/".format(script_home))
+
 
 def to_string(value_to_str):
     if sys.version_info >= (3, 0, 0):
@@ -153,6 +165,7 @@ def test_install_modified():
 
 
 def main():
+    setup_module()
     errors = install_modified()
     if errors:
         print("Engine, Dataset, Error")
