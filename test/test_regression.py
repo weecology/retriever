@@ -60,10 +60,12 @@ def get_script_module(script_name):
 
 
 def get_csv_md5(dataset, engine, tmpdir, install_function, config):
+    # To test using scripts, we need to be in the source main directory
+    os.chdir(retriever_root_dir)
+    script_module = get_script_module(dataset)
     workdir = tmpdir.mkdtemp()
     workdir.chdir()
     install_function(dataset.replace("_", "-"), **config)
-    script_module = get_script_module(dataset)
     engine_obj = script_module.SCRIPT.checkengine(engine)
     engine_obj.to_csv()
     os.chdir(retriever_root_dir)
@@ -74,7 +76,6 @@ def get_csv_md5(dataset, engine, tmpdir, install_function, config):
 def setup_module():
     """Update retriever scripts and cd to test directory to find data."""
     os.chdir(retriever_root_dir)
-    os.system("cp -r ./scripts/  {}/".format(script_home))
     os.system('cp -r {0} {1}'.format("test/raw_data", retriever_root_dir))
 
 

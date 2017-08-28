@@ -31,9 +31,12 @@ script_home = "{}/.retriever/scripts".format(home_dir)
 
 
 def setup_module():
-    """Update retriever scripts and cd to test directory to find data."""
+    """Make sure that you are in the source main directory
+
+    This ensures that scripts obtained are from the script directory
+    and not the .retriever's script directory
+    """
     os.chdir(retriever_root_dir)
-    os.system("cp -r ./scripts/  {}/".format(script_home))
 
 
 def to_string(value_to_str):
@@ -45,6 +48,8 @@ def to_string(value_to_str):
 
 def get_modified_scripts():
     """Get modified script list, using version.txt in repo and master upstream"""
+
+    os.chdir(retriever_root_dir)
     modified_list = []
     version_file = urllib.request.urlopen("https://raw.githubusercontent.com/weecology/retriever/master/version.txt")
     local_repo_scripts = get_module_version()  # local repo versions

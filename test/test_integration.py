@@ -394,6 +394,10 @@ def get_output_as_csv(dataset, engines, tmpdir, db):
     """Install dataset and return the output as a string version of the csv."""
     workdir = tmpdir.mkdtemp()
     workdir.chdir()
+
+    # Since we are writing scripts to the .retriever directory,
+    # we don't have to change to the main source directory in order
+    # to have the scripts loaded
     script_module = get_script_module(dataset["name"])
     script_module.SCRIPT.download(engines)
     script_module.SCRIPT.engine.final_cleanup()
