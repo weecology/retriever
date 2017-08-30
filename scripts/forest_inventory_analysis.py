@@ -20,10 +20,10 @@ class main(Script):
         self.title = "Forest Inventory and Analysis"
         self.name = "forest-inventory-analysis"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.4.0'
+        self.version = '1.4.1'
         self.ref = "http://fia.fs.fed.us/"
-        self.urls = {"main": "https://apps.fs.usda.gov/fiadb-downloads/CSV/",
-                     'species': 'https://apps.fs.usda.gov/fiadb-downloads/CSV/REF_SPECIES.csv'}
+        self.urls = {"main": "https://apps.fs.usda.gov/fia/datamart/CSV/",
+                     'species': 'https://apps.fs.usda.gov/fia/datamart/CSV/REF_SPECIES.csv'}
         self.keywords = ["plants", "continental-scale", "observational"]
         self.citation = "DATEOFDOWNLOAD. Forest Inventory and Analysis Database, St. Paul, MN: U.S. Department of Agriculture, Forest Service, Northern Research Station. [Available only on internet: http://apps.fs.fed.us/fiadb-downloads/datamart.html]"
         self.description = """WARNING: This dataset requires downloading many large files and will probably take several hours to finish installing."""
