@@ -15,6 +15,7 @@ butterfly_population_network.json,1.2.0
 car_eval.json,1.1.1
 chytr_disease_distr.json,1.0.0
 community_abundance_misc.json,1.0.1
+croche_vegetation_data.json,1.0
 dicerandra_frutescens.json,1.0.0
 elton_traits.json,1.2.0
 fish_parasite_hosts.json,1.2.0

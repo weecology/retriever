@@ -33,6 +33,7 @@ packages = [
 includes = [
     'xlrd',
     'future',
+    'pyyaml',
     'argcomplete',
     'pymysql',
     'psycopg2',
@@ -73,7 +74,8 @@ setup(name='retriever',
       install_requires=[
           'xlrd',
           'future',
-          'argcomplete'
+          'argcomplete',
+          'pyyaml'
       ],
 
       # py2app flags

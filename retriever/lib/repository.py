@@ -11,6 +11,7 @@ import imp
 from pkg_resources import parse_version
 from retriever import REPOSITORY, SCRIPT_WRITE_PATH, HOME_DIR
 from retriever.lib.models import file_exists
+from retriever.lib import get_datapackages
 
 global abort, executable_name
 abort = False
@@ -26,6 +27,10 @@ def download_from_repository(filepath, newpath, repo=REPOSITORY):
         raise
         pass
 
+def download_external_dps():
+    """Downloads the current version of external data packages"""
+    dps = get_datapackages.get_dps()
+    get_datapackages.download_dps_json(dps)
 
 def check_for_updates():
     """Check for updates to scripts.
@@ -79,6 +84,10 @@ def check_for_updates():
                     print(e)
                     pass
             update_progressbar(float(index + 1) / float(total_script_count))
+        download_from_repository("scripts/" + "datapackages.yml",
+                                 os.path.normpath(os.path.join(SCRIPT_WRITE_PATH, "datapackages.yml")))
+        print("\nDownloading external data packages...")
+        download_external_dps()
     except:
         raise
         return
