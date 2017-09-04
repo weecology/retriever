@@ -60,15 +60,15 @@ def get_script_module(script_name):
 
 
 def get_csv_md5(dataset, engine, tmpdir, install_function, config):
-    # To test using scripts, we need to be in the source main directory
-    os.chdir(retriever_root_dir)
-    script_module = get_script_module(dataset)
     workdir = tmpdir.mkdtemp()
+    os.system("cp -r {} {}/".format(os.path.join(retriever_root_dir, 'scripts'),
+                                             os.path.join(str(workdir), 'scripts')))
     workdir.chdir()
+    script_module = get_script_module(dataset)
     install_function(dataset.replace("_", "-"), **config)
     engine_obj = script_module.SCRIPT.checkengine(engine)
     engine_obj.to_csv()
-    os.chdir(retriever_root_dir)
+    os.system("rm -r scripts") # need to remove scripts before checking md5 on dir
     current_md5 = getmd5(data=str(workdir), data_type='dir')
     return current_md5
 
@@ -167,8 +167,9 @@ def test_csv_regression(dataset, expected, tmpdir):
 
 
 @pytest.mark.parametrize("dataset, expected", download_md5)
-def test_download_regression(dataset, expected):
+def test_download_regression(dataset, expected, tmpdir):
     """Test download regression."""
+    os.chdir(retriever_root_dir)
     download(dataset, "raw_data/{0}".format(dataset))
     current_md5 = getmd5(data="raw_data/{0}".format(dataset), data_type='dir')
     assert current_md5 == expected
@@ -180,7 +181,8 @@ def test_scripts():
     The dataset list is in the version.txt and includes one extra line for the version
 
     """
-    input_file = os.path.join(retriever_root_dir, "version.txt")
+    os.chdir(retriever_root_dir)
+    input_file = "version.txt"
     if sys.version_info >= (3, 0, 0):
         input_obj = io.open(input_file, 'rU')
     else:
