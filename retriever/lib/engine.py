@@ -117,9 +117,8 @@ class Engine(object):
                         raise
                     try:
                         self.executemany(insert_stmt, multiple_values, commit=False)
-                        prompt = "Progress: " + str(count_iter) + " / " + str(
-                            real_line_length) + " rows inserted into " + self.table_name() + " totaling " + str(
-                            total) + ":"
+                        prompt = "Progress: {}/{} rows inserted into {} totaling {}:".format(
+                            count_iter, real_line_length, self.table_name(), total)
                         sys.stdout.write(prompt + "\b" * len(prompt))
                         sys.stdout.flush()
                     except:

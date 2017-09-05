@@ -37,23 +37,18 @@ List Datasets
 =============
 
 Listing available datasets using ``dataset_names`` function.
-The function returns a list of all the available scripts locally.
+The function returns a list of all the currently available scripts.
 
 .. code-block:: python
 
   >>> rt.dataset_names()
 
-You can add more datasets locally by yourself.
-`Adding dataset <http://retriever.readthedocs.io/en/latest/scripts.html>`_ documentation.
-
-.. code-block:: python
-
   ['abalone-age',
- 'antarctic-breed-bird',
- .
- .
- 'wine-composition',
- 'wine-quality']
+   'antarctic-breed-bird',
+   .
+   .
+   'wine-composition',
+   'wine-quality']
 
 
 For more detailed description of the scripts installed in retriever ``datasets`` function can be used.
@@ -77,25 +72,27 @@ There are a lot of different attributes provided in the Scripts class. Some nota
   urls
   version
 
+You can add more datasets locally by yourself.
+`Adding dataset <http://retriever.readthedocs.io/en/latest/scripts.html>`_ documentation.
+
 Update Datasets
 ===============
 
-If there are no scripts available or you want to update scripts to the latest version.
-``check_for_updates`` function can be used.
+If there are no scripts available, or you want to update scripts to the latest version,
+``check_for_updates`` will download the most recent version of all scripts.
+
 
 .. code-block:: python
 
   >>> rt.check_for_updates()
 
 
-Downloading for the first time the functions will take sometime depending on the internet connection.
-In case of poor internet connection or other problems an error is raised.
+Downloading recipes for all datasets can take a while depending on the internet connection.
 
 Download Datasets
 =================
 
-To download datasets the ``download`` function can be used.
-It has the following function definition.
+To directly download datasets without cleaning them use the ``download`` function
 
 .. code-block:: python
 
@@ -114,12 +111,12 @@ Output:
   => Downloading iris
 
   Downloading bezdekIris.data...
-  100%  0 seconds Copying bezdekIris.data from /home/user_name/.retriever/raw_data/iris
+  100%  0 seconds Copying bezdekIris.data
 
 
-This downloads the dataset in your current directory.
-You can control where the dataset downloads using ``path`` parameter.
-There are in all 4 default parameters.
+This downloads the dataset in your current working directory.
+You can control where the dataset is downloaded using the ``path`` parameter.
+
 
 .. code-block:: python
 
@@ -134,7 +131,7 @@ There are in all 4 default parameters.
 Install Datasets
 ================
 
-Retriever supports scripts installation into 7 major formats or engines as we call them.
+Retriever supports installation of datasets into 7 major databases and file formats.
 
 .. code-block::
 
@@ -147,7 +144,7 @@ Retriever supports scripts installation into 7 major formats or engines as we ca
   xml
 
 
-The function definition of the functions is as follows:
+There are separate functions for installing into each of the 7 backends:
 
 .. code-block:: python
 

@@ -17,10 +17,10 @@ from retriever.lib.templates import Script
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 from pkg_resources import parse_version
 try:
-    from retriever import HOME_DIR, open_fr, open_fw, VERSION
-except ImportError:
     from retriever.lib.scripts import open_fr, open_fw
     from retriever.lib.defaults import VERSION
+except ImportError:
+    from retriever import HOME_DIR, open_fr, open_fw, VERSION
 
 
 class main(Script):

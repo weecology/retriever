@@ -16,7 +16,7 @@ from imp import reload
 
 from retriever.engines import engine_list, choose_engine
 from retriever.lib.datapackage import create_json, edit_json, delete_json, get_script_filename
-from retriever.lib.datasets import datasets, license
+from retriever.lib.datasets import datasets, dataset_names, license
 from retriever.lib.defaults import sample_script, CITATION, ENCODING
 from retriever.lib.get_opts import parser
 from retriever.lib.repository import check_for_updates
@@ -129,17 +129,16 @@ def main():
                 print("\n\nScripts downloaded.\n")
 
             if args.l is None:
-                all_scripts = datasets(args.l)
+                all_scripts = datasets()
                 print("Available datasets : {}\n".format(len(all_scripts)))
                 from retriever import lscolumns
-                script_names = [script.name for script in all_scripts]
-                lscolumns.printls(script_names)
+                lscolumns.printls(dataset_names())
             else:
                 all_scripts = datasets(args.l[0])
                 print("Available datasets : {}\n".format(len(all_scripts)))
                 count = 1
                 for script in all_scripts:
-                    print("%d. %s" % (count, script.title))
+                    print("{}. {}".format(count, script.title))
                     print(script.name)
                     print(script.keywords)
                     print()

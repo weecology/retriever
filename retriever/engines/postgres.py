@@ -122,8 +122,8 @@ CSV HEADER;"""
         return Engine.format_insert_value(self, value, datatype)
 
     def get_connection(self):
-        """
-        Get db connection.
+        """Gets the db connection.
+
         Please update the encoding lookup table if the required encoding is not present.
         """
         import psycopg2 as dbapi
