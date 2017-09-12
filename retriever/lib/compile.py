@@ -1,6 +1,7 @@
 from builtins import str
 import json
 import sys
+import pprint
 if sys.version_info[0] < 3:
     from codecs import open
 from retriever.lib.templates import TEMPLATES
@@ -61,12 +62,13 @@ def add_schema(table_dict, table):
             table_dict[key] = val
 
 
-def compile_json(json_file):
+def compile_json(json_file, debug=False):
     """
     Function to compile JSON script files to python scripts
     The scripts are created with `retriever new_json <script_name>` using
     command line
     """
+    pp = pprint.PrettyPrinter(indent=4)
     json_object = {}
     try:
         json_object = json.load(open(json_file + ".json", "r"))
@@ -81,6 +83,14 @@ def compile_json(json_file):
     values = {'urls': {}}
 
     keys_to_ignore = ["template"]
+
+    required_fields = {
+        "shortname":"name",
+        "name":"title",
+        "description": "description",
+        "version": "version",
+        "tables": "tables"
+    }
 
     for (key, value) in json_object.items():
 
@@ -125,7 +135,8 @@ def compile_json(json_file):
                 try:
                     values['urls'][table['name']] = table['url']
                 except Exception as e:
-                    print(e, "\nError in reading table: " + table)
+                    print(e, "\nError in reading table: ")
+                    pp.pprint(table)
                     continue
 
                 if table["schema"] == {} and table["dialect"] == {}:
@@ -143,6 +154,7 @@ def compile_json(json_file):
 
         else:
             values[key] = value 
+
     # Create a Table object string using the tables dict
     table_obj = {}
     for (key, value) in tables.items():
@@ -155,4 +167,19 @@ def compile_json(json_file):
     else:
         template = "default"
 
-    return TEMPLATES[template](**values)
+    check=True
+    fields = []
+    for item in required_fields.keys(): 
+        if item not in values:
+            fields.append(required_fields[item])
+            check = False
+
+    if check:
+        if debug:
+            print("Values being passed to template: ")
+            pp.pprint(values)
+        return TEMPLATES[template](**values)
+    else:
+        print(json_file + " is missing parameters: \n")
+        print(fields)
+        sys.exit()

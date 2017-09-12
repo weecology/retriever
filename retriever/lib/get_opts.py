@@ -59,6 +59,7 @@ download_parser.add_argument('dataset', help='dataset name').completer = Choices
 ls_parser.add_argument('-l', help='verbose list of datasets containing following keywords '
                                   '(lists all when no keywords are specified)',
                        nargs='*').completer = ChoicesCompleter(list(keywords_list))
+ls_parser.add_argument('--debug', dest='debugScript', help='debug a certain script', action='store')
 delete_json_parser.add_argument('dataset', help='dataset name', choices=json_list)
 # retriever Install {Engine} ..
 # retriever download [options]

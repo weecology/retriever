@@ -8,7 +8,7 @@
         "categorical"
     ],
     "name": "iris",
-    "resources": [
+    "resources": [  
         {
             "dialect": {
                 "delimiter": ",",
