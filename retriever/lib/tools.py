@@ -75,7 +75,7 @@ def final_cleanup(engine):
 config_path = os.path.join(HOME_DIR, 'connections.config')
 
 
-def reset_retriever(scope="all"):
+def reset_retriever(scope="all", ask_permission=True):
     """Remove stored information on scripts, data, and connections."""
     warning_messages = {
         'all': "\nThis will remove existing scripts, cached data, and information on database connections. \nSpecifically it will remove the scripts and raw_data folders and the connections.config file in {}. \nDo you want to proceed? (y/N)\n",
@@ -85,10 +85,13 @@ def reset_retriever(scope="all"):
 
     path = os.path.normpath(HOME_DIR)
     warn_msg = warning_messages[scope].format(path)
-    confirm = input(warn_msg)
-    while not (confirm.lower() in ['y', 'n', '']):
-        print("Please enter either y or n.")
-        confirm = input()
+    if ask_permission:
+        confirm = input(warn_msg)
+        while not (confirm.lower() in ['y', 'n', '']):
+            print("Please enter either y or n.")
+            confirm = input()
+    else:
+        confirm = 'y'
     if confirm.lower() == 'y':
         if scope in ['data', 'all']:
             shutil.rmtree(os.path.join(path, 'raw_data'))
