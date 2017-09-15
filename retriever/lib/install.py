@@ -34,7 +34,7 @@ def _install(args, use_cache, debug, compile):
 
 
 def install_csv(dataset, table_name=None, compile=False, debug=False,
-                quiet=False, use_cache=True):
+                use_cache=True):
     """Install scripts in csv."""
     if not table_name:
         table_name = os.path.join(DATA_DIR, '{db}_{table}.csv')
@@ -43,9 +43,7 @@ def install_csv(dataset, table_name=None, compile=False, debug=False,
         'command': 'install',
         'dataset': dataset,
         'engine': 'csv',
-        'quiet': quiet,
-        'table_name': table_name,
-        'use_cache': use_cache
+        'table_name': table_name
     }
 
     _install(args, use_cache, debug, compile)
@@ -53,7 +51,7 @@ def install_csv(dataset, table_name=None, compile=False, debug=False,
 
 def install_mysql(dataset, user='root', password='', host='localhost',
                   port=3306, database_name=None, table_name=None,
-                  compile=False, debug=False, quiet=False, use_cache=True):
+                  compile=False, debug=False, use_cache=True):
     """Install scripts in mysql."""
     if not database_name:
         database_name = '{db}'
@@ -65,14 +63,11 @@ def install_mysql(dataset, user='root', password='', host='localhost',
         'database_name': database_name,
         'engine': 'mysql',
         'dataset': dataset,
-        'debug': debug,
         'host': host,
         'port': port,
         'password': password,
-        'quiet': quiet,
         'table_name': table_name,
-        'user': user,
-        'use_cache': use_cache
+        'user': user
     }
 
     _install(args, use_cache, debug, compile)
@@ -81,7 +76,7 @@ def install_mysql(dataset, user='root', password='', host='localhost',
 def install_postgres(dataset, user='postgres', password='',
                      host='localhost', port=5432, database='postgres',
                      database_name=None, table_name=None,
-                     compile=False, debug=False, quiet=False, use_cache=True):
+                     compile=False, debug=False, use_cache=True):
     """Install scripts in postgres."""
     if not table_name:
         table_name = '{db}.{table}'
@@ -94,21 +89,18 @@ def install_postgres(dataset, user='postgres', password='',
         'database_name': database_name,
         'engine': 'postgres',
         'dataset': dataset,
-        'debug': debug,
         'host': host,
         'port': port,
         'password': password,
-        'quiet': quiet,
         'table_name': table_name,
-        'user': user,
-        'use_cache': use_cache
+        'user': user
     }
 
     _install(args, use_cache, debug, compile)
 
 
 def install_sqlite(dataset, file=None, table_name=None,
-                   compile=False, debug=False, quiet=False, use_cache=True):
+                   compile=False, debug=False, use_cache=True):
     """Install scripts in sqlite."""
     if not table_name:
         table_name = '{db}_table'
@@ -120,16 +112,14 @@ def install_sqlite(dataset, file=None, table_name=None,
         'dataset': dataset,
         'engine': 'sqlite',
         'file': file,
-        'quiet': quiet,
-        'table_name': table_name,
-        'use_cache': use_cache
+        'table_name': table_name
     }
 
     _install(args, use_cache, debug, compile)
 
 
 def install_msaccess(dataset, file=None, table_name=None,
-                     compile=False, debug=False, quiet=False, use_cache=True):
+                     compile=False, debug=False, use_cache=True):
     """Install scripts in msaccess."""
     if not file:
         file = os.path.join(DATA_DIR, 'access.mdb')
@@ -141,16 +131,14 @@ def install_msaccess(dataset, file=None, table_name=None,
         'dataset': dataset,
         'engine': 'msaccess',
         'file': file,
-        'quiet': quiet,
-        'table_name': table_name,
-        'use_cache': use_cache
+        'table_name': table_name
     }
 
     _install(args, use_cache, debug, compile)
 
 
 def install_json(dataset, table_name=None, compile=False,
-                 debug=False, quiet=False, use_cache=True):
+                 debug=False, use_cache=True):
     """Install scripts in json."""
     if not table_name:
         table_name = os.path.join(DATA_DIR, '{db}_{table}.json')
@@ -159,16 +147,14 @@ def install_json(dataset, table_name=None, compile=False,
         'command': 'install',
         'dataset': dataset,
         'engine': 'json',
-        'quiet': quiet,
-        'table_name': table_name,
-        'use_cache': use_cache
+        'table_name': table_name
     }
 
     _install(args, use_cache, debug, compile)
 
 
 def install_xml(dataset, table_name=None, compile=False, debug=False,
-                quiet=False, use_cache=True):
+                use_cache=True):
     """Install scripts in xml."""
     if not table_name:
         table_name = os.path.join(DATA_DIR, '{db}_{table}.xml')
@@ -177,9 +163,7 @@ def install_xml(dataset, table_name=None, compile=False, debug=False,
         'command': 'install',
         'dataset': dataset,
         'engine': 'xml',
-        'quiet': quiet,
-        'table_name': table_name,
-        'use_cache': use_cache
+        'table_name': table_name
     }
 
     _install(args, use_cache, debug, compile)
