@@ -30,8 +30,6 @@ script:
 # database setup
 before_script:
   - sqlite3 --version
-  - mysql -e 'create database myapp_test;'
-  - mysql -e 'CREATE USER 'travis'@'localhost';GRANT ALL PRIVILEGES ON *.* TO 'travis'@'localhost';GRANT FILE ON *.* TO 'travis'@'localhost';'
   - psql -c 'create database testdb;' -U postgres
 
 after_success:
