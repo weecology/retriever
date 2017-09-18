@@ -14,7 +14,7 @@ def _install(args, use_cache, debug, compile):
     engine = choose_engine(args)
     engine.use_cache = use_cache
 
-    script_list = SCRIPT_LIST(force_compile=True)
+    script_list = SCRIPT_LIST()
     scripts = name_matches(script_list, args['dataset'])
     if scripts:
         for script in scripts:
@@ -33,31 +33,23 @@ def _install(args, use_cache, debug, compile):
         raise ValueError(message)
 
 
-def install_csv(dataset, table_name=None, compile=False, debug=False,
-                use_cache=True):
+def install_csv(dataset,
+                table_name=os.path.join(DATA_DIR, '{db}_{table}.csv'),
+                compile=False, debug=False, use_cache=True):
     """Install scripts in csv."""
-    if not table_name:
-        table_name = os.path.join(DATA_DIR, '{db}_{table}.csv')
-
     args = {
         'command': 'install',
         'dataset': dataset,
         'engine': 'csv',
         'table_name': table_name
     }
-
     _install(args, use_cache, debug, compile)
 
 
 def install_mysql(dataset, user='root', password='', host='localhost',
-                  port=3306, database_name=None, table_name=None,
+                  port=3306, database_name='{db}', table_name='{db}.{table}',
                   compile=False, debug=False, use_cache=True):
     """Install scripts in mysql."""
-    if not database_name:
-        database_name = '{db}'
-    if not table_name:
-        table_name = '{db}.{table}'
-
     args = {
         'command': 'install',
         'database_name': database_name,
@@ -69,20 +61,14 @@ def install_mysql(dataset, user='root', password='', host='localhost',
         'table_name': table_name,
         'user': user
     }
-
     _install(args, use_cache, debug, compile)
 
 
 def install_postgres(dataset, user='postgres', password='',
                      host='localhost', port=5432, database='postgres',
-                     database_name=None, table_name=None,
+                     database_name='{db}', table_name='{db}.{table}',
                      compile=False, debug=False, use_cache=True):
     """Install scripts in postgres."""
-    if not table_name:
-        table_name = '{db}.{table}'
-    if not database_name:
-        database_name = '{db}'
-
     args = {
         'command': 'install',
         'database': database,
@@ -95,18 +81,13 @@ def install_postgres(dataset, user='postgres', password='',
         'table_name': table_name,
         'user': user
     }
-
     _install(args, use_cache, debug, compile)
 
 
-def install_sqlite(dataset, file=None, table_name=None,
+def install_sqlite(dataset, file= os.path.join(DATA_DIR, 'sqlite.db'),
+                   table_name='{db}_table',
                    compile=False, debug=False, use_cache=True):
     """Install scripts in sqlite."""
-    if not table_name:
-        table_name = '{db}_table'
-    if not file:
-        file = os.path.join(DATA_DIR, 'sqlite.db')
-
     args = {
         'command': 'install',
         'dataset': dataset,
@@ -114,18 +95,13 @@ def install_sqlite(dataset, file=None, table_name=None,
         'file': file,
         'table_name': table_name
     }
-
     _install(args, use_cache, debug, compile)
 
 
-def install_msaccess(dataset, file=None, table_name=None,
+def install_msaccess(dataset, file=os.path.join(DATA_DIR, 'access.mdb'),
+                     table_name='[{db} {table}]',
                      compile=False, debug=False, use_cache=True):
     """Install scripts in msaccess."""
-    if not file:
-        file = os.path.join(DATA_DIR, 'access.mdb')
-    if not table_name:
-        table_name = '[{db} {table}]'
-
     args = {
         'command': 'install',
         'dataset': dataset,
@@ -133,37 +109,30 @@ def install_msaccess(dataset, file=None, table_name=None,
         'file': file,
         'table_name': table_name
     }
-
     _install(args, use_cache, debug, compile)
 
 
-def install_json(dataset, table_name=None, compile=False,
-                 debug=False, use_cache=True):
+def install_json(dataset,
+                 table_name=os.path.join(DATA_DIR, '{db}_{table}.json'),
+                 compile=False, debug=False, use_cache=True):
     """Install scripts in json."""
-    if not table_name:
-        table_name = os.path.join(DATA_DIR, '{db}_{table}.json')
-
     args = {
         'command': 'install',
         'dataset': dataset,
         'engine': 'json',
         'table_name': table_name
     }
-
     _install(args, use_cache, debug, compile)
 
 
-def install_xml(dataset, table_name=None, compile=False, debug=False,
-                use_cache=True):
+def install_xml(dataset,
+                table_name=os.path.join(DATA_DIR, '{db}_{table}.xml'),
+                compile=False, debug=False, use_cache=True):
     """Install scripts in xml."""
-    if not table_name:
-        table_name = os.path.join(DATA_DIR, '{db}_{table}.xml')
-
     args = {
         'command': 'install',
         'dataset': dataset,
         'engine': 'xml',
         'table_name': table_name
     }
-
     _install(args, use_cache, debug, compile)

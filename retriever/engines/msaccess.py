@@ -11,7 +11,8 @@ from retriever.lib.models import Engine, no_cleanup
 class engine(Engine):
     """Engine instance for Microsoft Access."""
     name = "Microsoft Access"
-    instructions = """Create a database in Microsoft Access, close Access, then \nselect your database file using this dialog."""
+    instructions = "Create a database in Microsoft Access, close Access," \
+                   "then \nselect your database file using this dialog."
     abbreviation = "msaccess"
     datatypes = {
         "auto": "AUTOINCREMENT",
