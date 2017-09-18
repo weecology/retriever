@@ -94,9 +94,11 @@ def reset_retriever(scope="all", ask_permission=True):
         confirm = 'y'
     if confirm.lower() == 'y':
         if scope in ['data', 'all']:
-            shutil.rmtree(os.path.join(path, 'raw_data'))
+            if os.path.exists(os.path.join(path, 'scripts')):
+                shutil.rmtree(os.path.join(path, 'raw_data'))
         if scope in ['scripts', 'all']:
-            shutil.rmtree(os.path.join(path, 'scripts'))
+            if os.path.exists(os.path.join(path, 'scripts')):
+                shutil.rmtree(os.path.join(path, 'scripts'))
 
 
 def json2csv(input_file, output_file=None, header_values=None):
