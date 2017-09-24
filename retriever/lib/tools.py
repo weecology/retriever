@@ -94,7 +94,7 @@ def reset_retriever(scope="all", ask_permission=True):
         confirm = 'y'
     if confirm.lower() == 'y':
         if scope in ['data', 'all']:
-            if os.path.exists(os.path.join(path, 'scripts')):
+            if os.path.exists(os.path.join(path, 'raw_data')):
                 shutil.rmtree(os.path.join(path, 'raw_data'))
         if scope in ['scripts', 'all']:
             if os.path.exists(os.path.join(path, 'scripts')):
