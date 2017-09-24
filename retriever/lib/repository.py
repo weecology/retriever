@@ -23,7 +23,7 @@ def _download_from_repository(filepath, newpath, repo=REPOSITORY):
         raise
 
 
-def check_for_updates(quiet=True):
+def check_for_updates(quiet=False):
     """Check for updates to datasets.
 
     This updates the HOME_DIR scripts directory with the latest script versions
