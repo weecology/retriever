@@ -85,7 +85,7 @@ def install_postgres(dataset, user='postgres', password='',
 
 
 def install_sqlite(dataset, file= os.path.join(DATA_DIR, 'sqlite.db'),
-                   table_name='{db}_table',
+                   table_name='{db}_{table}',
                    debug=False, use_cache=True):
     """Install datasets into sqlite."""
     args = {
