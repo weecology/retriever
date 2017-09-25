@@ -51,17 +51,31 @@ def create_home_dir():
 
 
 def name_matches(scripts, arg):
+    """Check for a match of the script in available scripts
+
+    if all, return the entire script list
+    if the exact script is available, return that script
+    if no exact script name detected, match the argument with keywords
+    title and name of all scripts and return the closest matches
+    """
     matches = []
+
+    if arg.strip().lower() == "":
+        raise ValueError("No dataset name specified")
+
+    if arg.strip().lower() == 'all':
+        return [scripts]
+
     for script in scripts:
-        if arg.lower() == script.name.lower():
+        if arg.strip().lower() == script.name.lower():
             return [script]
-        max_ratio = max([difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in
+
+    for script in scripts:
+        max_ratio = max([difflib.SequenceMatcher(None, arg.strip().lower(), factor).ratio() for factor in
                          (script.name.lower(), script.title.lower(), script.filename.lower())] +
-                        [difflib.SequenceMatcher(None, arg.lower(), factor).ratio() for factor in
+                        [difflib.SequenceMatcher(None, arg.strip().lower(), factor).ratio() for factor in
                          [keyword.strip().lower() for keywordset in script.keywords for keyword in keywordset]]
                         )
-        if arg.lower() == 'all':
-            max_ratio = 1.0
         matches.append((script, max_ratio))
     matches = [m for m in sorted(matches, key=lambda m: m[1], reverse=True) if m[1] > 0.6]
     return [match[0] for match in matches]
