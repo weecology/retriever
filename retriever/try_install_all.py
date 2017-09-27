@@ -27,7 +27,7 @@ else:
 
 MODULE_LIST = MODULE_LIST()
 if len(sys.argv) > 1:
-    ENGINE_LIST = [
+    engine_list = [
         e for e in engine_list
         if e.name in sys.argv[1:] or
         e.abbreviation in sys.argv[1:]
@@ -76,7 +76,7 @@ TEST_ENGINES = {}
 IGNORE = ["forest-inventory-analysis", "bioclim", "prism-climate", "vertnet", "NPN", "mammal-super-tree"]
 IGNORE = [dataset.lower() for dataset in IGNORE]
 
-for engine in ENGINE_LIST:
+for engine in engine_list:
     if engine.abbreviation in engine_test:
         try:
             opts = engine_test[engine.abbreviation]
