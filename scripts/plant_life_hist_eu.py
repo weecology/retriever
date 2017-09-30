@@ -80,7 +80,7 @@ class main(Script):
             file_block.close()
             new_data.close()
             self.engine.auto_create_table(Table(key,
-                                                cleanup=cleanup_func_table), filename=str("new" + key))
+                                                cleanup=self.cleanup_func_table), filename=str("new" + key))
             self.engine.insert_data_from_file(new_file_path)
 
 
