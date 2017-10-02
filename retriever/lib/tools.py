@@ -58,22 +58,23 @@ def name_matches(scripts, arg):
     if no exact script name detected, match the argument with keywords
     title and name of all scripts and return the closest matches
     """
+    arg = arg.strip().lower()
     matches = []
 
-    if arg.strip().lower() == "":
+    if not arg:
         raise ValueError("No dataset name specified")
 
-    if arg.strip().lower() == 'all':
-        return [scripts]
+    if arg == 'all':
+        return scripts
 
     for script in scripts:
-        if arg.strip().lower() == script.name.lower():
+        if arg == script.name.lower():
             return [script]
 
     for script in scripts:
-        max_ratio = max([difflib.SequenceMatcher(None, arg.strip().lower(), factor).ratio() for factor in
+        max_ratio = max([difflib.SequenceMatcher(None, arg, factor).ratio() for factor in
                          (script.name.lower(), script.title.lower(), script.filename.lower())] +
-                        [difflib.SequenceMatcher(None, arg.strip().lower(), factor).ratio() for factor in
+                        [difflib.SequenceMatcher(None, arg, factor).ratio() for factor in
                          [keyword.strip().lower() for keywordset in script.keywords for keyword in keywordset]]
                         )
         matches.append((script, max_ratio))
