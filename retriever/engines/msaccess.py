@@ -1,14 +1,18 @@
 from __future__ import print_function
-from builtins import str
+
 import os
+import platform
+from builtins import str
+
+from retriever.lib.defaults import DATA_DIR
 from retriever.lib.models import Engine, no_cleanup
-from retriever import DATA_DIR, current_platform
 
 
 class engine(Engine):
     """Engine instance for Microsoft Access."""
     name = "Microsoft Access"
-    instructions = """Create a database in Microsoft Access, close Access, then \nselect your database file using this dialog."""
+    instructions = "Create a database in Microsoft Access, close Access," \
+                   "then \nselect your database file using this dialog."
     abbreviation = "msaccess"
     datatypes = {
         "auto": "AUTOINCREMENT",
@@ -57,12 +61,12 @@ class engine(Engine):
         self.get_cursor()
         ct = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
         if ((self.table.cleanup.function == no_cleanup and not self.table.fixed_width and
-             self.table.header_rows < 2)
+                     self.table.header_rows < 2)
             and (self.table.delimiter in ["\t", ","])
             and not ct
             and (not hasattr(self.table, "do_not_bulk_insert") or not self.table.do_not_bulk_insert)
             ):
-            print ("Inserting data from " + os.path.basename(filename) + "...")
+            print("Inserting data from " + os.path.basename(filename) + "...")
 
             if self.table.delimiter == "\t":
                 fmt = "TabDelimited"
@@ -144,6 +148,7 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
 
     def get_connection(self):
         """Gets the db connection."""
+        current_platform = platform.system().lower()
         if current_platform != "windows":
             raise Exception("MS Access can only be used in Windows.")
         import pypyodbc as dbapi

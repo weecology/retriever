@@ -1,9 +1,11 @@
-from __future__ import print_function
-from __future__ import division
 from __future__ import absolute_import
-from builtins import zip
-from builtins import range
+from __future__ import division
+from __future__ import print_function
+
 import sys
+from builtins import range
+from builtins import zip
+
 from retriever.term_size import get_terminal_size
 
 
@@ -36,7 +38,6 @@ def printls(values, max_width=None, spacing=2):
                       spacing for column in columns]
             if sum(widths) < max_width:
                 break
-
         for pos in range(len(columns[0])):
             for column, width in zip(columns, widths):
                 if len(column) > pos:

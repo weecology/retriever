@@ -5,6 +5,7 @@
     "keywords": [
         "Taxon > plants"
     ],
+    "licenses": [{"name": "CC0-1.0"}],
     "name": "croche-vegetation-data",
     "resources": [
         {
@@ -38,7 +39,7 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.0-dev",
-    "script_version": 1.0,
+    "version": "1.0.1",
     "title": "Croche understory vegetation data set",
     "urls": {
         "croche_ba": "https://ndownloader.figshare.com/files/5600489",

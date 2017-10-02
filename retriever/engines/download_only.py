@@ -1,14 +1,13 @@
 from __future__ import print_function
-from builtins import object
-import os
-import platform
-import shutil
-import inspect
 
+import inspect
+import os
+import shutil
+
+from retriever.lib.defaults import DATA_DIR
+from retriever.lib.dummy import DummyConnection
 from retriever.lib.engine import filename_from_url
-from retriever.lib.models import Engine, no_cleanup
-from retriever import DATA_DIR, HOME_DIR
-from retriever.lib.dummy import DummyConnection, DummyCursor
+from retriever.lib.models import Engine
 
 
 class engine(Engine):
@@ -49,10 +48,10 @@ class engine(Engine):
                 subdir = os.path.split(file_path)[1] if self.opts['subdir'] else ''
                 dest_path = os.path.join(self.opts['path'], subdir)
                 if os.path.isfile(os.path.join(dest_path, file_name_nopath)):
-                    print ("File already exists at specified location")
+                    print("File already exists at specified location")
                 elif os.path.abspath(file_path) == os.path.abspath(os.path.join(DATA_DIR, subdir)):
-                    print ("%s is already in the working directory" %
-                           file_name_nopath)
+                    print("%s is already in the working directory" %
+                          file_name_nopath)
                     print("Keeping existing copy.")
                 else:
                     print("Copying %s from %s" % (file_name_nopath, file_path))
@@ -123,9 +122,9 @@ keep_methods = {'table_exists',
 remove_methods = ['insert_data_from_file', 'create_db']
 for name, method in methods:
     if (name not in keep_methods and
-            'download' not in name and
-            'file' not in name and
-            'dir' not in name):
+                'download' not in name and
+                'file' not in name and
+                'dir' not in name):
         setattr(engine, name, dummy_method)
 for name in remove_methods:
     setattr(engine, name, dummy_method)

@@ -1,16 +1,14 @@
 """Engine for writing data to a JSON file"""
-from builtins import zip
-from builtins import object
-from builtins import range
-
-import os
 import json
-
-from retriever.lib.models import Engine
-from retriever import DATA_DIR, open_fw, open_fr
+import os
+from builtins import zip
 from collections import OrderedDict
+
+from retriever.lib.defaults import DATA_DIR
+from retriever.lib.dummy import DummyConnection
+from retriever.lib.models import Engine
+from retriever.lib.scripts import open_fw, open_fr
 from retriever.lib.tools import json2csv, sort_csv
-from retriever.lib.dummy import DummyConnection, DummyCursor
 
 
 class engine(Engine):
@@ -94,7 +92,7 @@ class engine(Engine):
                 insert_stmt = [self.auto_column_number] + rows
                 newrows.append(insert_stmt)
                 self.auto_column_number += 1
-        else: 
+        else:
             newrows = values
         json_dumps = []
         for line_data in newrows:
@@ -103,7 +101,6 @@ class engine(Engine):
             json_dumps.append(json.dumps(write_data, ensure_ascii=False) + ",")
         return json_dumps
 
- 
         tuples = (zip(keys, [value for value in values]))
         write_data = OrderedDict(tuples)
         return json.dumps(write_data, ensure_ascii=False)

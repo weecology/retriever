@@ -10,8 +10,11 @@ standard_library.install_aliases()
 import os
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 from retriever.lib.templates import Script
-from retriever import VERSION
 from pkg_resources import parse_version
+try:
+    from retriever.lib.defaults import VERSION
+except ImportError:
+    from retriever import VERSION
 
 
 class main(Script):
@@ -26,7 +29,7 @@ class main(Script):
                         "The 2016 release of the PREDICTS database. http://dx.doi.org/10.5519/0066354"
         self.keywords = ['biodiversity', 'anthropogenic pressures']
         self.retriever_minimum_version = "2.0.dev"
-        self.version = "1.0.0"
+        self.version = "1.0.1"
         self.description = "A dataset of 3,250,404 measurements, collated from 26,114 sampling locations in 94 " \
                            "countries and representing 47,044 species."
 

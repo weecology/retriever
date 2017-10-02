@@ -7,6 +7,7 @@
         "literature-compilation"
     ],
     "name": "bird-size",
+    "licenses": [{"name": "CC0-1.0"}],
     "resources": [
         {
             "dialect": {
@@ -15,7 +16,178 @@
                 ]
             },
             "name": "species",
-            "schema": {},
+            "schema": {
+                "fields": [
+                    {
+                        "name": "Family",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Species_number",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Species_name",
+                        "size": "133",
+                        "type": "char"
+                    },
+                    {
+                        "name": "English_name",
+                        "size": "135",
+                        "type": "char"
+                    },
+                    {
+                        "name": "Subspecies",
+                        "size": "121",
+                        "type": "char"
+                    },
+                    {
+                        "name": "M_mass",
+                        "type": "double"
+                    },
+                    {
+                        "name": "M_mass_N",
+                        "type": "int"
+                    },
+                    {
+                        "name": "F_mass",
+                        "type": "double"
+                    },
+                    {
+                        "name": "F_mass_N",
+                        "type": "int"
+                    },
+                    {
+                        "name": "unsexed_mass",
+                        "type": "double"
+                    },
+                    {
+                        "name": "unsexed_mass_N",
+                        "type": "int"
+                    },
+                    {
+                        "name": "M_wing",
+                        "type": "double"
+                    },
+                    {
+                        "name": "M_wing_N",
+                        "type": "int"
+                    },
+                    {
+                        "name": "F_wing",
+                        "type": "double"
+                    },
+                    {
+                        "name": "F_wing_N",
+                        "type": "double"
+                    },
+                    {
+                        "name": "Unsexed_wing",
+                        "type": "double"
+                    },
+                    {
+                        "name": "Unsexed_wing_N",
+                        "type": "int"
+                    },
+                    {
+                        "name": "M_tarsus",
+                        "type": "double"
+                    },
+                    {
+                        "name": "M_tarsus_N",
+                        "type": "int"
+                    },
+                    {
+                        "name": "F_tarsus",
+                        "type": "double"
+                    },
+                    {
+                        "name": "F_tarsus_N",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Unsexed_tarsus",
+                        "type": "double"
+                    },
+                    {
+                        "name": "Unsexed_tarsus_N",
+                        "type": "int"
+                    },
+                    {
+                        "name": "M_bill",
+                        "type": "double"
+                    },
+                    {
+                        "name": "M_bill_N",
+                        "type": "int"
+                    },
+                    {
+                        "name": "F_bill",
+                        "type": "double"
+                    },
+                    {
+                        "name": "F_bill_N",
+                        "type": "double"
+                    },
+                    {
+                        "name": "Unsexed_bill",
+                        "type": "double"
+                    },
+                    {
+                        "name": "Unsexed_bill_N",
+                        "type": "int"
+                    },
+                    {
+                        "name": "M_tail",
+                        "type": "double"
+                    },
+                    {
+                        "name": "M_tail_N",
+                        "type": "int"
+                    },
+                    {
+                        "name": "F_tail",
+                        "type": "double"
+                    },
+                    {
+                        "name": "F_tail_N",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Unsexed_tail",
+                        "type": "double"
+                    },
+                    {
+                        "name": "Unsexed_tail_N",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Clutch_size",
+                        "type": "double"
+                    },
+                    {
+                        "name": "Egg_mass",
+                        "type": "double"
+                    },
+                    {
+                        "name": "Mating_System",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Display",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Resource",
+                        "type": "int"
+                    },
+                    {
+                        "name": "References",
+                        "size": "130",
+                        "type": "char"
+                    }
+                ]
+            },
             "url": "https://ndownloader.figshare.com/files/5599229"
         }
     ],
@@ -25,5 +197,5 @@
     "urls": {
         "species": "https://ndownloader.figshare.com/files/5599229"
     },
-    "version": "1.2.0"
+    "version": "1.2.2"
 }

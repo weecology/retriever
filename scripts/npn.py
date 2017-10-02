@@ -11,11 +11,15 @@ standard_library.install_aliases()
 from builtins import str
 
 from retriever.lib.templates import Script
-from retriever.lib.models import Table, Cleanup, no_cleanup, correct_invalid_value
+from retriever.lib.models import Table
 from pkg_resources import parse_version
 import xml.etree.ElementTree as ET
 import datetime
-from retriever import open_fw, open_csvw, DATA_WRITE_PATH, VERSION
+try:
+    from retriever.lib.scripts import open_fw, open_csvw
+    from retriever.lib.defaults import VERSION, DATA_WRITE_PATH
+except ImportError:
+    from retriever import open_fw, open_csvw, DATA_WRITE_PATH, VERSION
 
 
 class main(Script):
@@ -24,7 +28,7 @@ class main(Script):
         self.title = "USA National Phenology Network"
         self.name = "NPN"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '2.1.0'
+        self.version = '2.1.1'
         self.ref = "http://www.usanpn.org/results/data"
         self.keywords = ["Data Type > Phenology", "Spatial Scale > Continental"]
         self.description = "The data set was collected via Nature's Notebook phenology observation program (2009-present), and (2) Lilac and honeysuckle data (1955-present)"

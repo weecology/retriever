@@ -5,7 +5,10 @@ from pkg_resources import parse_version
 
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 from retriever.lib.templates import Script
-from retriever import VERSION
+try:
+    from retriever.lib.defaults import VERSION
+except ImportError:
+    from retriever import VERSION
 
 
 class main(Script):
@@ -14,13 +17,14 @@ class main(Script):
         self.title = "Amniote life History database"
         self.name = "amniote-life-hist"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '2.0.0'
+        self.version = '2.0.2'
         self.ref = "https://figshare.com/collections/An_amniote_life-history_database_to_perform_comparative_" \
                    "analyses_with_birds_mammals_and_reptiles/3308127"
         self.urls = {"data": "https://ndownloader.figshare.com/files/8067269"}
         self.citation = "Myhrvold, N.P., Baldridge, E., Chan, B., Sivam, D., Freeman, D.L. and Ernest, S.M., 2015. " \
                         "An amniote life-history database to perform comparative analyses with birds, mammals, " \
                         "and reptiles:Ecological Archives E096-269. Ecology, 96(11), pp.3109-000."
+        self.licenses = [{"name": "CC0-1.0"}]
         self.description = "Compilation of life history traits for birds, mammals, and reptiles."
         self.keywords = ["mammals", "literature-compilation"]
         self.cleanup_func_table = Cleanup(correct_invalid_value, missing_values=['-999'])

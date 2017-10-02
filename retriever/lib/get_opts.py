@@ -1,12 +1,12 @@
 import argparse
 import os
-from retriever import VERSION
-from retriever.engines import engine_list
-import argcomplete
 
+import argcomplete
 from argcomplete.completers import ChoicesCompleter
 
-from retriever import MODULE_LIST
+from retriever.engines import engine_list
+from retriever.lib.defaults import VERSION
+from retriever.lib.scripts import MODULE_LIST
 
 module_list = MODULE_LIST()
 script_list = [module.SCRIPT.name for module in module_list]
@@ -40,7 +40,9 @@ edit_json_parser = subparsers.add_parser('edit_json', help='CLI to edit retrieve
 delete_json_parser = subparsers.add_parser('delete_json', help='CLI to remove retriever datapackage.json script')
 ls_parser = subparsers.add_parser('ls', help='display a list all available dataset scripts')
 citation_parser = subparsers.add_parser('citation', help='view citation')
-reset_parser = subparsers.add_parser('reset', help='reset retriever: removes configation settings, scripts, and cached data')
+license_parser = subparsers.add_parser('license', help='view dataset license')
+reset_parser = subparsers.add_parser('reset',
+                                     help='reset retriever: removes configation settings, scripts, and cached data')
 help_parser = subparsers.add_parser('help', help='')
 
 # ..............................................................
@@ -48,6 +50,7 @@ help_parser = subparsers.add_parser('help', help='')
 # ..............................................................
 
 citation_parser.add_argument('dataset', help='dataset name', nargs='?', default=None, choices=script_list + [None])
+license_parser.add_argument('dataset', help='dataset name', nargs='?', default=None, choices=script_list + [None])
 new_parser.add_argument('filename', help='new script filename')
 edit_json_parser.add_argument('dataset', help='dataset name', choices=json_list)
 reset_parser.add_argument('scope', help='things to reset: all, scripts, data, or connections',
@@ -58,14 +61,14 @@ install_parser.add_argument('--not-cached', help='overwrites local cache of raw 
 download_parser.add_argument('dataset', help='dataset name').completer = ChoicesCompleter(script_list)
 ls_parser.add_argument('-l', help='verbose list of datasets containing following keywords '
                                   '(lists all when no keywords are specified)',
-                       nargs='*').completer = ChoicesCompleter(list(keywords_list))
+                       nargs=1).completer = ChoicesCompleter(list(keywords_list))
 delete_json_parser.add_argument('dataset', help='dataset name', choices=json_list)
 # retriever Install {Engine} ..
 # retriever download [options]
 install_subparsers = install_parser.add_subparsers(help='engine-specific help', dest='engine')
 
 for engine in engine_list:
-    if engine.name == "Download Only":   # skip the Download engine and just add attributes
+    if engine.name == "Download Only":  # skip the Download engine and just add attributes
         pass
     else:
         engine_parser = install_subparsers.add_parser(engine.abbreviation, help=engine.name)
@@ -88,7 +91,8 @@ for engine in engine_list:
 
             # subdir doesn't take any arguments, if included takes True if excluded takes False
             if arg_name.lower() == "subdir":
-                download_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help_msg, default=default, action='store_true')
+                download_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help_msg, default=default,
+                                             action='store_true')
                 # parser.add_argument('--foo', action='store_const', const = False)
             else:
                 # path must take arguments else it takes default "./"

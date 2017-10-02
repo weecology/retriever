@@ -1,8 +1,9 @@
 """This module, when run, attempts to install datasets for modified Retriever
 scripts in the /scripts folder (except for those listed in ignore_list)
 """
-from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import print_function
+
 from future import standard_library
 
 standard_library.install_aliases()
@@ -11,15 +12,32 @@ import sys
 import urllib.request
 import urllib.parse
 import urllib.error
-from distutils.version import LooseVersion
 from imp import reload
-from retriever.lib.tools import choose_engine
-from retriever import MODULE_LIST, ENGINE_LIST, ENCODING
+from distutils.version import LooseVersion
+from retriever.engines import choose_engine, engine_list
+from retriever.lib.defaults import ENCODING
+from retriever.lib.scripts import MODULE_LIST, SCRIPT_LIST
 from retriever.lib.tools import get_module_version
 
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding(ENCODING)
+
+file_location = os.path.dirname(os.path.realpath(__file__))
+retriever_root_dir = os.path.abspath(os.path.join(file_location, os.pardir))
+working_script_dir = os.path.abspath(os.path.join(retriever_root_dir, "scripts"))
+home_dir = os.path.expanduser('~')
+script_home = "{}/.retriever/scripts".format(home_dir)
+
+
+def setup_module():
+    """Make sure that you are in the source main directory
+
+    This ensures that scripts obtained are from the script directory
+    and not the .retriever's script directory
+    """
+    os.chdir(retriever_root_dir)
+
 
 def to_string(value_to_str):
     if sys.version_info >= (3, 0, 0):
@@ -27,8 +45,11 @@ def to_string(value_to_str):
     else:
         return value_to_str
 
+
 def get_modified_scripts():
     """Get modified script list, using version.txt in repo and master upstream"""
+
+    os.chdir(retriever_root_dir)
     modified_list = []
     version_file = urllib.request.urlopen("https://raw.githubusercontent.com/weecology/retriever/master/version.txt")
     local_repo_scripts = get_module_version()  # local repo versions
@@ -48,10 +69,11 @@ def get_modified_scripts():
         else:
             if LooseVersion(local_version) != upstream_versions[local_script]:
                 modified_list.append(os.path.basename(local_script).split('.')[0])
+
     return modified_list
 
 
-def install_modified(engine_list=ENGINE_LIST()):
+def install_modified():
     """Installs modified scripts and returns any errors found"""
 
     os_password = ""
@@ -73,6 +95,7 @@ def install_modified(engine_list=ENGINE_LIST()):
         print("No new scripts found. Database is up to date.")
         sys.exit()
 
+    engine_list_install = engine_list
     if os.path.exists("test_modified"):
         os.system("rm -r test_modified")
     os.makedirs("test_modified")
@@ -110,7 +133,7 @@ def install_modified(engine_list=ENGINE_LIST()):
     }
 
     test_engines = {}
-    for engine in engine_list:
+    for engine in engine_list_install:
         if engine.abbreviation in engine_test:
             try:
                 opts = engine_test[engine.abbreviation]
@@ -147,16 +170,8 @@ def test_install_modified():
 
 
 def main():
-    engine_list = ENGINE_LIST()
-    # If engine argument, tests are only run on given engines
-    if len(sys.argv) > 1:
-        engine_list = [
-            e for e in engine_list
-            if e.name in sys.argv[1:] or
-            e.abbreviation in sys.argv[1:]
-            ]
-
-    errors = install_modified(engine_list)
+    setup_module()
+    errors = install_modified()
     if errors:
         print("Engine, Dataset, Error")
         for error in errors:

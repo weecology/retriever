@@ -3,8 +3,11 @@
 
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 from retriever.lib.templates import Script
-from retriever import VERSION
 from pkg_resources import parse_version
+try:
+    from retriever.lib.defaults import VERSION
+except ImportError:
+    from retriever import VERSION
 
 
 class main(Script):
@@ -13,7 +16,7 @@ class main(Script):
         self.title = "Indian Forest Stand Structure and Composition (Ramesh et al. 2010)"
         self.name = "forest-plots-wghats"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.3.0'
+        self.version = '1.3.1'
         self.ref = "https://figshare.com/collections/Forest_stand_structure_and_composition_in_96_sites_" \
                    "along_environmental_gradients_in_the_central_Western_Ghats_of_India/3303531"
         self.urls = {'data': 'https://ndownloader.figshare.com/files/5617140'}

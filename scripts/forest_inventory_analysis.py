@@ -10,8 +10,12 @@ import os
 
 from retriever.lib.templates import Script
 from retriever.lib.models import Table
-from retriever import open_fr, open_fw, VERSION
 from pkg_resources import parse_version
+try:
+    from retriever.lib.defaults import VERSION
+    from retriever.lib.scripts import open_fr, open_fw
+except ImportError:
+    from retriever import open_fr, open_fw, VERSION
 
 
 class main(Script):

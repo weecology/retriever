@@ -3,8 +3,12 @@
 from builtins import str
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 from retriever.lib.templates import Script
-from retriever import HOME_DIR, open_fr, open_fw, VERSION
 from pkg_resources import parse_version
+try:
+    from retriever.lib.scripts import open_fr, open_fw
+    from retriever.lib.defaults import VERSION
+except ImportError:
+    from retriever import HOME_DIR, open_fr, open_fw, VERSION
 
 
 class main(Script):
@@ -13,7 +17,7 @@ class main(Script):
         self.title = "A database on the life history traits of the Northwest European flora" 
         self.name = "plant-life-hist-eu"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.4.0'
+        self.version = '1.4.1'
         self.ref = "http://www.uni-oldenburg.de/en/biology/landeco/research/projects/leda/"
         self.urls = {
             "Age_of_first_flowering": "http://www.uni-oldenburg.de/fileadmin/user_upload/biologie/ag/landeco/download/LEDA/Data_files/age_of_first_flowering.txt",
@@ -76,7 +80,7 @@ class main(Script):
             file_block.close()
             new_data.close()
             self.engine.auto_create_table(Table(key,
-                                                cleanup=cleanup_func_table), filename=str("new" + key))
+                                                cleanup=self.cleanup_func_table), filename=str("new" + key))
             self.engine.insert_data_from_file(new_file_path)
 
 

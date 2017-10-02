@@ -1,9 +1,11 @@
 """Use the following command to install retriever: python setup.py install"""
 from __future__ import absolute_import
-import platform
+
 import os
-from setuptools import setup
+import platform
+
 from pkg_resources import parse_version
+from setuptools import setup
 
 current_platform = platform.system().lower()
 extra_includes = []
@@ -14,7 +16,6 @@ if os.path.exists(".git/hooks"):  # check if we are in git repo
     os.system("cp hooks/pre-commit .git/hooks/pre-commit")
     os.system("chmod +x .git/hooks/pre-commit")
 
-
 __version__ = 'v2.1.dev'
 with open(os.path.join("retriever", "_version.py"), "w") as version_file:
     version_file.write("__version__ = " + "'" + __version__ + "'\n")
@@ -24,6 +25,7 @@ with open(os.path.join("retriever", "_version.py"), "w") as version_file:
 def clean_version(v):
     return parse_version(v).__repr__().lstrip("<Version('").rstrip("')>")
 
+
 packages = [
     'retriever.lib',
     'retriever.engines',
@@ -31,13 +33,13 @@ packages = [
 ]
 
 includes = [
-    'xlrd',
-    'future',
-    'argcomplete',
-    'pymysql',
-    'psycopg2',
-    'sqlite3',
-] + extra_includes
+               'xlrd',
+               'future',
+               'argcomplete',
+               'pymysql',
+               'psycopg2',
+               'sqlite3',
+           ] + extra_includes
 
 excludes = [
     'pyreadline',
@@ -109,7 +111,8 @@ if current_platform != "windows":
 try:
     from retriever.compile import compile
     from retriever.lib.repository import check_for_updates
+
     compile()
-    check_for_updates()
+    check_for_updates(False)
 except:
     pass

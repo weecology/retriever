@@ -1,16 +1,15 @@
 import os
 
-from builtins import str
-from builtins import object
-from builtins import range
+from retriever.lib.defaults import DATA_DIR
+from retriever.lib.dummy import DummyConnection
 from retriever.lib.models import Engine
-from retriever import DATA_DIR, open_fr, open_fw
+from retriever.lib.scripts import open_fr, open_fw
 from retriever.lib.tools import xml2csv, sort_csv
-from retriever.lib.dummy import DummyConnection, DummyCursor
 
 
 class engine(Engine):
     """Engine instance for writing data to a XML file."""
+
     name = "XML"
     abbreviation = "xml"
     datatypes = {
@@ -30,11 +29,11 @@ class engine(Engine):
     table_names = []
 
     def create_db(self):
-        """Override create_db since there is no database just an XML file"""
+        """Override create_db since there is no database just an XML file."""
         return None
 
     def create_table(self):
-        """Create the table by creating an empty XML file"""
+        """Create the table by creating an empty XML file."""
         self.output_file = open_fw(self.table_name())
         self.output_file.write(u'<?xml version="1.0" encoding="UTF-8"?>')
         self.output_file.write(u'\n<root>')
@@ -61,15 +60,15 @@ class engine(Engine):
             self.table_names = []
 
     def execute(self, statement, commit=True):
-        """Write a line to the output file"""
+        """Write a line to the output file."""
         self.output_file.writelines(statement)
 
     def executemany(self, statement, values, commit=True):
-        """Write a line to the output file"""
+        """Write a line to the output file."""
         self.output_file.writelines(statement)
 
     def format_insert_value(self, value, datatype):
-        """Formats a value for an insert statement"""
+        """Format value for an insert statement."""
         v = Engine.format_insert_value(self, value, datatype)
         if v == None:
             return ""
@@ -98,15 +97,16 @@ class engine(Engine):
         return xml_lines
 
     def _format_single_row(self, keys, line_data):
-        return ''.join('    <{key}>{value}</{key}>\n'.format(key=key, value=value) for key, value in zip(keys, line_data))
+        return ''.join(
+            '    <{key}>{value}</{key}>\n'.format(key=key, value=value) for key, value in zip(keys, line_data))
 
     def table_exists(self, dbname, tablename):
-        """Check to see if the data file currently exists"""
+        """Check to see if the data file currently exists."""
         tablename = self.table_name(name=tablename, dbname=dbname)
         return os.path.exists(tablename)
 
     def to_csv(self):
-        """Export table from xml engine to CSV file"""
+        """Export table from xml engine to CSV file."""
         for keys in list(self.script.tables):
             table_name = self.opts['table_name'].format(db=self.db_name, table=keys)
             header = self.script.tables[keys].get_insert_columns(join=False, create=True)
@@ -114,6 +114,6 @@ class engine(Engine):
             sort_csv(csv_outfile)
 
     def get_connection(self):
-        """Gets the db connection."""
+        """Get db connection."""
         self.get_input()
         return DummyConnection()

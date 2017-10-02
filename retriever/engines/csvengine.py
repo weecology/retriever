@@ -1,15 +1,10 @@
-from builtins import str
-from builtins import object
-
 import os
-import io
-import sys
-import csv
 
+from retriever.lib.defaults import DATA_DIR
+from retriever.lib.dummy import DummyConnection
 from retriever.lib.models import Engine
-from retriever import DATA_DIR, open_fw, open_csvw
+from retriever.lib.scripts import open_fw, open_csvw
 from retriever.lib.tools import sort_csv
-from retriever.lib.dummy import DummyConnection, DummyCursor
 
 
 class engine(Engine):
@@ -41,7 +36,7 @@ class engine(Engine):
         self.auto_column_number = 1
         self.file = open_fw(self.table_name())
         self.output_file = open_csvw(self.file)
-        self.output_file.writerow([u'{}'.format(val) for val in self.table.get_insert_columns(join=False,create=True)])
+        self.output_file.writerow([u'{}'.format(val) for val in self.table.get_insert_columns(join=False, create=True)])
         self.table_names.append((self.file, self.table_name()))
 
     def disconnect(self):
@@ -84,10 +79,10 @@ class engine(Engine):
         else:
             return values
 
-    def table_exists(self, db_name, table_name):
+    def table_exists(self, dbname, tablename):
         """Check to see if the data file currently exists"""
-        table_name = self.table_name(name=table_name, dbname=db_name)
-        return os.path.exists(table_name)
+        tablename = self.table_name(name=tablename, dbname=dbname)
+        return os.path.exists(tablename)
 
     def to_csv(self):
         """Export sorted version of CSV file"""

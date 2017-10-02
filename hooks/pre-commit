@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from __future__ import print_function
+
 from future import standard_library
 
 standard_library.install_aliases()
@@ -9,7 +10,6 @@ import re
 import sys
 import subprocess
 import urllib.request
-
 
 pattern = re.compile(r'[."]version[\'"\s":=]+(\d+\.\d+.\d+)')
 version_dict = {}
@@ -23,6 +23,7 @@ def to_string(value):
         return value.decode("UTF-8")
     else:
         return value
+
 
 for line in version_file:
     key, value = to_string(line).split(",")
@@ -52,7 +53,7 @@ modified_staged_scripts = to_string(subprocess.check_output(
 added_deleted_staged_scripts = to_string(subprocess.check_output(
     "git diff --cached --name-only --diff-filter=AmD scripts", shell=True))
 
-# Check to see if we have any modified scripts that are staged. 
+# Check to see if we have any modified scripts that are staged.
 # We can skip this completely if there are only added or deleted scripts
 if modified_staged_scripts != "":
     versions_not_changed = []  # if script changes we expect to change the version
@@ -77,8 +78,8 @@ if modified_staged_scripts != "":
             print(items)
         exit(1)
 
-# only runs version.py if we have modified scripts which have had their versions updated, 
-# or we have no modified scripts but either deleted or added scripts. 
+# only runs version.py if we have modified scripts which have had their versions updated,
+# or we have no modified scripts but either deleted or added scripts.
 if (modified_staged_scripts and versions_updated) or (added_deleted_staged_scripts != ""):
     print("Updating version.txt")
     os.system('python version.py')
