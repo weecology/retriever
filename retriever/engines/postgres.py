@@ -1,10 +1,12 @@
 import os
+
+from retriever.lib.defaults import ENCODING
 from retriever.lib.models import Engine, no_cleanup
-from retriever import ENCODING
 
 
 class engine(Engine):
     """Engine instance for PostgreSQL."""
+
     name = "PostgreSQL"
     abbreviation = "postgres"
     datatypes = {
@@ -17,6 +19,7 @@ class engine(Engine):
         "bool": "boolean",
     }
     max_int = 2147483647
+    placeholder = "%s"
     required_opts = [("user",
                       "Enter your PostgreSQL username",
                       "postgres"),
@@ -45,7 +48,7 @@ class engine(Engine):
         return Engine.create_db_statement(self).replace("DATABASE", "SCHEMA")
 
     def create_db(self):
-        """Creates the database"""
+        """Create Engine database."""
         try:
             Engine.create_db(self)
         except:
@@ -62,10 +65,6 @@ class engine(Engine):
         statement = Engine.drop_statement(self, objecttype, objectname)
         statement += " CASCADE;"
         return statement.replace(" DATABASE ", " SCHEMA ")
-
-    def escape_single_quotes(self, value):
-        """Escapes single quotes in the value"""
-        return value.replace("'", "''")
 
     def insert_data_from_file(self, filename):
         """Use PostgreSQL's "COPY FROM" statement to perform a bulk insert."""
@@ -94,14 +93,14 @@ CSV HEADER;"""
             return Engine.insert_data_from_file(self, filename)
 
     def insert_statement(self, values):
-        """Returns a SQL statement to insert a set of values"""
+        """Return SQL statement to insert a set of values."""
         statement = Engine.insert_statement(self, values)
         if isinstance(statement, bytes):
             statement = statement.decode("utf-8", "ignore")
         return statement
 
     def table_exists(self, dbname, tablename):
-        """Checks to see if the given table exists"""
+        """Check to see if the given table exists."""
         if not hasattr(self, 'existing_table_names'):
             self.cursor.execute(
                 "SELECT schemaname, tablename FROM pg_tables WHERE schemaname NOT LIKE 'pg_%';")
@@ -111,7 +110,7 @@ CSV HEADER;"""
         return (dbname.lower(), tablename.lower()) in self.existing_table_names
 
     def format_insert_value(self, value, datatype):
-        """Formats a value for an insert statement"""
+        """Format value for an insert statement."""
         if datatype == "bool":
             try:
                 if int(value) == 1:
@@ -124,8 +123,8 @@ CSV HEADER;"""
 
     def get_connection(self):
         """Gets the db connection.
-           
-           Please update the encoding lookup table if the required encoding is not present.
+
+        Please update the encoding lookup table if the required encoding is not present.
         """
         import psycopg2 as dbapi
         self.get_input()
@@ -137,7 +136,7 @@ CSV HEADER;"""
         encoding = ENCODING.lower()
         if self.script.encoding:
             encoding = self.script.encoding.lower()
-        encoding_lookup = {'iso-8859-1': 'Latin1','latin-1' : 'Latin1' ,'utf-8': 'UTF8'}
+        encoding_lookup = {'iso-8859-1': 'Latin1', 'latin-1': 'Latin1', 'utf-8': 'UTF8'}
         db_encoding = encoding_lookup.get(encoding)
         conn.set_client_encoding(db_encoding)
         return conn

@@ -1,34 +1,14 @@
 """Engine for writing data to a JSON file"""
-from builtins import zip
-from builtins import object
-from builtins import range
-
-import os
 import json
-
-from retriever.lib.models import Engine
-from retriever import open_fw, open_fr
-from retriever.lib.defaults import DATA_DIR
+import os
+from builtins import zip
 from collections import OrderedDict
-from retriever.lib.tools import json2csv, sort_csv
 
-
-class DummyConnection(object):
-    def cursor(self):
-        pass
-
-    def commit(self):
-        pass
-
-    def rollback(self):
-        pass
-
-    def close(self):
-        pass
-
-
-class DummyCursor(DummyConnection):
-    pass
+from retriever.lib.defaults import DATA_DIR
+from retriever.lib.dummy import DummyConnection
+from retriever.lib.models import Engine
+from retriever.lib.scripts import open_fw, open_fr
+from retriever.lib.scripts import json2csv, sort_csv
 
 
 class engine(Engine):
@@ -85,9 +65,13 @@ class engine(Engine):
         """Write a line to the output file"""
         self.output_file.writelines(statement)
 
+    def executemany(self, statement, values, commit=True):
+        """Write a line to the output file"""
+        self.output_file.writelines(statement)
+
     def format_insert_value(self, value, datatype):
         """Formats a value for an insert statement"""
-        v = Engine.format_insert_value(self, value, datatype, escape=False, processed=True)
+        v = Engine.format_insert_value(self, value, datatype)
         if v == 'null':
             return ""
         try:
@@ -108,7 +92,7 @@ class engine(Engine):
                 insert_stmt = [self.auto_column_number] + rows
                 newrows.append(insert_stmt)
                 self.auto_column_number += 1
-        else: 
+        else:
             newrows = values
         json_dumps = []
         for line_data in newrows:
@@ -117,7 +101,6 @@ class engine(Engine):
             json_dumps.append(json.dumps(write_data, ensure_ascii=False) + ",")
         return json_dumps
 
- 
         tuples = (zip(keys, [value for value in values]))
         write_data = OrderedDict(tuples)
         return json.dumps(write_data, ensure_ascii=False)

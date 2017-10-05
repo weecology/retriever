@@ -1,6 +1,7 @@
 {
     "citation": "Hamish Wilman, Jonathan Belmaker, Jennifer Simpson, Carolina de la Rosa, Marcelo M. Rivadeneira, and Walter Jetz. 2014. EltonTraits 1.0: Species-level foraging attributes of the world's birds and mammals. Ecology 95:2027.",
     "description": "Characterization of species by physiological, behavioral, and ecological attributes that are subjected to varying evolutionary and ecological constraints and jointly determine their role and function in ecosystems.",
+    "homepage": "https://figshare.com/collections/EltonTraits_1_0_Species-level_foraging_attributes_of_the_world_s_birds_and_mammals/3306933",
     "keywords": [
         "mammals",
         "birds",
@@ -12,35 +13,35 @@
             "dialect": {},
             "name": "BirdFuncDat",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E095/178/BirdFuncDat.txt"
+            "url": "https://ndownloader.figshare.com/files/5631081"
         },
         {
             "dialect": {},
             "name": "MammFuncDat",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E095/178/MamFuncDat.txt"
+            "url": "https://ndownloader.figshare.com/files/5631084"
         },
         {
             "dialect": {},
             "name": "BirdCitations",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E095/178/BirdFuncDatSources.txt"
+            "url": "https://ndownloader.figshare.com/files/5631087"
         },
         {
             "dialect": {},
             "name": "MammCitations",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E095/178/MamFuncDatSources.txt"
+            "url": "https://ndownloader.figshare.com/files/5631090"
         }
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Foraging attributes for birds and mammals (Wilman, et al., 2014)",
     "urls": {
-        "BirdCitations": "http://esapubs.org/archive/ecol/E095/178/BirdFuncDatSources.txt",
-        "BirdFuncDat": "http://esapubs.org/archive/ecol/E095/178/BirdFuncDat.txt",
-        "MammCitations": "http://esapubs.org/archive/ecol/E095/178/MamFuncDatSources.txt",
-        "MammFuncDat": "http://esapubs.org/archive/ecol/E095/178/MamFuncDat.txt"
+        "BirdCitations": "https://ndownloader.figshare.com/files/5631087",
+        "BirdFuncDat": "https://ndownloader.figshare.com/files/5631081",
+        "MammCitations": "https://ndownloader.figshare.com/files/5631090",
+        "MammFuncDat": "https://ndownloader.figshare.com/files/5631084"
     },
-    "version": "1.1.1"
+    "version": "1.2.0"
 }

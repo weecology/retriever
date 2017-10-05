@@ -10,23 +10,33 @@ import os
 
 from retriever.lib.templates import Script
 from retriever.lib.models import Table
-from retriever import open_fr, open_fw
+from pkg_resources import parse_version
+try:
+    from retriever.lib.defaults import VERSION
+    from retriever.lib.scripts import open_fr, open_fw
+except ImportError:
+    from retriever.lib.scripts import open_fr, open_fw, VERSION
 
 
 class main(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
-        self.name = "Forest Inventory and Analysis"
-        self.shortname = "forest-inventory-analysis"
+        self.title = "Forest Inventory and Analysis"
+        self.name = "forest-inventory-analysis"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.3.1'
+        self.version = '1.4.2'
         self.ref = "http://fia.fs.fed.us/"
-        self.urls = {"main": "https://apps.fs.usda.gov/fiadb-downloads/CSV/",
-                     'species': 'https://apps.fs.usda.gov/fiadb-downloads/CSV/REF_SPECIES.csv'}
-        self.tags = ["plants", "continental-scale", "observational"]
+        self.urls = {"main": "https://apps.fs.usda.gov/fia/datamart/CSV/",
+                     'species': 'https://apps.fs.usda.gov/fia/datamart/CSV/REF_SPECIES.csv'}
+        self.keywords = ["plants", "continental-scale", "observational"]
         self.citation = "DATEOFDOWNLOAD. Forest Inventory and Analysis Database, St. Paul, MN: U.S. Department of Agriculture, Forest Service, Northern Research Station. [Available only on internet: http://apps.fs.fed.us/fiadb-downloads/datamart.html]"
         self.description = """WARNING: This dataset requires downloading many large files and will probably take several hours to finish installing."""
         self.addendum = """This dataset requires downloading many large files - please be patient."""
+        
+        if parse_version(VERSION) <= parse_version("2.0.0"):
+            self.shortname = self.name
+            self.name = self.title
+            self.tags = self.keywords
 
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)

@@ -6,16 +6,24 @@ to choose from all scripts.
 The main() function can be used for bootstrapping.
 
 """
-from __future__ import print_function
 from __future__ import absolute_import
-from builtins import str
-from builtins import input
-from imp import reload
+from __future__ import print_function
+
 import os
 from os.path import join, exists
 import platform
 import sys
-from retriever import ENCODING
+from builtins import input
+from imp import reload
+
+from retriever.engines import engine_list, choose_engine
+from retriever.lib.datapackage import create_json, edit_json, delete_json, get_script_filename
+from retriever.lib.datasets import datasets, dataset_names, license
+from retriever.lib.defaults import *
+from retriever.lib.get_opts import parser
+from retriever.lib.repository import check_for_updates
+from retriever.lib.compile import SCRIPT_LIST, compile_json
+from retriever.lib.tools import name_matches, reset_retriever
 
 encoding = ENCODING.lower()
 # sys removes the setdefaultencoding method at startup; reload to get it back
@@ -23,18 +31,9 @@ reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding(encoding)
 
-from retriever import sample_script, CITATION
-from retriever.lib.defaults import SCRIPT_SEARCH_PATHS, VERSION, HOME_DIR
-from retriever.lib.scripts import SCRIPT_LIST
-from retriever.engines import engine_list
-from retriever.lib.repository import check_for_updates
-from retriever.lib.tools import choose_engine, name_matches, reset_retriever
-from retriever.lib.get_opts import parser
-from retriever.lib.datapackage import create_json, edit_json
-from retriever.lib.compile import compile_json
-
 def main():
     """This function launches the Data Retriever."""
+    sys.argv[1:] = [arg.lower() for arg in sys.argv[1:]]
     if len(sys.argv) == 1:
         # if no command line args are passed, show the help options
         parser.parse_args(['-h'])
@@ -47,7 +46,7 @@ def main():
         script_list = SCRIPT_LIST()
 
         if args.command == "install" and not args.engine:
-            parser.parse_args(['install','-h'])
+            parser.parse_args(['install', '-h'])
 
         if args.quiet:
             sys.stdout = open(os.devnull, 'w')
@@ -67,7 +66,7 @@ def main():
             return
 
         if args.command == 'update':
-            check_for_updates()
+            check_for_updates(False)
             script_list = SCRIPT_LIST()
             return
 
@@ -82,6 +81,14 @@ def main():
                     print("Citation:   {}".format(dataset.citation))
                     print("Description:   {}\n".format(dataset.description))
 
+            return
+
+        elif args.command == 'license':
+            dataset_license = license(args.dataset)
+            if dataset_license:
+                print(dataset_license)
+            else:
+                print("There is no license information for {}".format(args.dataset))
             return
 
         elif args.command == 'new':
@@ -102,89 +109,63 @@ def main():
 
         elif args.command == 'edit_json':
             # edit existing JSON script
-            for json_file in [filename for filename in
-                              os.listdir(os.path.join(HOME_DIR, 'scripts')) if filename[-5:] == '.json']:
-                if json_file.lower().find(args.filename.lower()) != -1:
-                    edit_json(json_file)
-                    return
-            raise Exception("File not found")
+            json_file = get_script_filename(args.dataset.lower())
+            edit_json(json_file)
+            return
 
         elif args.command == 'delete_json':
-            # delete existing JSON script
-            for json_file in [filename for filename in
-                              os.listdir(os.path.join(HOME_DIR, 'scripts')) if filename[-5:] == '.json']:
-                if json_file.lower().find(args.dataset.lower()) != -1:
-                    confirm = input("Really remove " + json_file +
-                                    " and all its contents? (y/N): ")
-                    if confirm.lower().strip() in ['y', 'yes']:
-                        # raise Exception(json_file)
-                        os.remove(os.path.join(HOME_DIR, 'scripts', json_file))
-                        try:
-                            os.remove(os.path.join(
-                                HOME_DIR, 'scripts', json_file[:-4] + 'py'))
-                        except:
-                            # Not compiled yet
-                            pass
-                    return
-            raise Exception("File not found")
+            # delete existing JSON script from home directory and or script directory if exists in current dir
+            confirm = input("Really remove " + args.dataset.lower() +
+                            " and all its contents? (y/N): ")
+            if confirm.lower().strip() in ['y', 'yes']:
+                json_file = get_script_filename(args.dataset.lower())
+                delete_json(json_file)
+            return
 
         if args.command == 'ls':
 
             if args.debugScript:
-                for search_path in [search_path for search_path in SCRIPT_SEARCH_PATHS if exists(search_path)]:
-                    for json_file in [filename for filename in os.listdir(search_path) if filename[-5:] == '.json']:
-                        if json_file.lower().find(args.debugScript.lower()) != -1:
-                            compile_json(join(search_path, json_file[:-5]), True)
-                            return
+                #convert from shortname to title or script name since it can't find some of em now
+                script = [script for script in script_list if script.name.find(args.debugScript) != -1]
+                if script:
+                    if script[0]._file[-5:] == '.json':
+                        compile_json(script[0]._file[:-5], True)
+                        return
+                    raise Exception("File must be a json file to debug")
                 raise Exception("File not found")
 
             # If scripts have never been downloaded there is nothing to list
             if not script_list:
                 print("No scripts are currently available. Updating scripts now...")
-                check_for_updates()
+                check_for_updates(False)
                 print("\n\nScripts downloaded.\n")
-                script_list = SCRIPT_LIST(debug=debug)
-
-            all_scripts = []
-
-            for script in script_list:
-                if script.shortname:
-                    if args.l is not None:
-                        script_name = script.name + "\nShortname: " + script.shortname + "\n"
-                        if script.tags:
-                            script_name += "Tags: " + \
-                                str([tag for tag in script.tags]) + "\n"
-                        not_found = 0
-                        for term in args.l:
-                            if script_name.lower().find(term.lower()) == -1:
-                                not_found = 1
-                                break
-                        if not_found == 0:
-                            all_scripts.append(script_name)
-                    else:
-                        script_name = script.shortname
-                        all_scripts.append(script_name)
-
-            all_scripts = sorted(all_scripts, key=lambda s: s.lower())
-
-            print("Available datasets : {}\n".format(len(all_scripts)))
 
             if args.l is None:
+                all_scripts = datasets()
+                print("Available datasets : {}\n".format(len(all_scripts)))
                 from retriever import lscolumns
-                lscolumns.printls(sorted(all_scripts, key=lambda s: s.lower()))
+                lscolumns.printls(dataset_names())
             else:
+                all_scripts = datasets(args.l[0])
+                print("Available datasets : {}\n".format(len(all_scripts)))
                 count = 1
                 for script in all_scripts:
-                    print("%d. %s" % (count, script))
+                    print("{}. {}".format(count, script.title))
+                    print(script.name)
+                    print(script.keywords)
+                    print()
                     count += 1
             return
 
         engine = choose_engine(args.__dict__)
 
-        if hasattr(args, 'debug') and args.not_cached:
-            use_cache = False
+        if hasattr(args, 'debug'):
+            if args.not_cached:
+                engine.use_cache = False
+            debug = True
         else:
-            use_cache = True
+            engine.use_cache = True
+            debug = False
 
         if args.dataset is not None:
             scripts = name_matches(script_list, args.dataset)
@@ -194,7 +175,7 @@ def main():
             for dataset in scripts:
                 print("=> Installing", dataset.name)
                 try:
-                    dataset.download(engine, debug=debug, use_cache=use_cache)
+                    dataset.download(engine, debug=debug)
                     dataset.engine.final_cleanup()
                 except KeyboardInterrupt:
                     pass
@@ -207,6 +188,7 @@ def main():
             print("The dataset {} isn't currently available in the Retriever".format(
                 args.dataset))
             print("Run 'retriever ls to see a list of currently available datasets")
+
 
 if __name__ == "__main__":
     main()

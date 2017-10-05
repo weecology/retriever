@@ -1,0 +1,25 @@
+{
+    "citation": "Eric S. Menges. 2008. Demography of the endemic mint Dicerandra frutescens in Florida scrub. Ecology 89:1474.",
+    "description": "Study of the demography of Dicerandra frutescens, an endemic and endangered mint restricted to Florida scrub",
+    "homepage": "https://figshare.com/articles/Data_Paper_Data_Paper/3529460",
+    "keywords": [
+        "Taxon > plants"
+    ],
+    "licenses": [{"name": "CC0-1.0"}],
+    "name": "dicerandra-frutescens",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "populations",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5601455"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.0-dev",
+    "version": "1.0.1",
+    "title": "Demography of the endemic mint Dicerandra frutescens in Florida scrub",
+    "urls": {
+        "populations": "https://ndownloader.figshare.com/files/5601455"
+    }
+}

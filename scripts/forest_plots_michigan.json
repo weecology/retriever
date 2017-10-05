@@ -1,7 +1,7 @@
 {
     "citation": "Kerry D. Woods. 2009. Multi-decade, spatially explicit population studies of canopy dynamics in Michigan old-growth forests. Ecology 90:3587.",
     "description": "The data set provides stem infomation from a regular grid of 256 permanent plots includes about 20% of a 100-ha old-growth forest at the Dukes Research Natural Area in northern Michigan, USA.",
-    "homepage": "http://www.esapubs.org/archive/ecol/E090/251/",
+    "homepage": "https://figshare.com/collections/Multi-decade_spatially_explicit_population_studies_of_canopy_dynamics_in_Michigan_old-growth_forests/3301757",
     "keywords": [
         "plants",
         "local-scale",
@@ -18,7 +18,7 @@
             },
             "name": "all_plots_1935_1948",
             "schema": {},
-            "url": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/all_plots_1935_1948.txt"
+            "url": "https://ndownloader.figshare.com/files/5608016"
         },
         {
             "dialect": {
@@ -28,19 +28,19 @@
             },
             "name": "all_plots_1974_1980",
             "schema": {},
-            "url": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/all_plots_1974-1980.txt"
+            "url": "https://ndownloader.figshare.com/files/5608019"
         },
         {
             "dialect": {},
             "name": "swamp",
             "schema": {},
-            "url": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/swamp_all_modern.txt"
+            "url": "https://ndownloader.figshare.com/files/5608025"
         },
         {
             "dialect": {},
             "name": "species_codes",
             "schema": {},
-            "url": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/species_codes.txt"
+            "url": "https://ndownloader.figshare.com/files/5608028"
         },
         {
             "dialect": {
@@ -51,7 +51,7 @@
             },
             "name": "upland_plots_1989_2007",
             "schema": {},
-            "url": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/upland_plots_89-07.txt"
+            "url": "https://ndownloader.figshare.com/files/5608022"
         },
         {
             "dialect": {
@@ -148,19 +148,19 @@
                     }
                 ]
             },
-            "url": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/sampling_history.txt"
+            "url": "https://ndownloader.figshare.com/files/5608031"
         }
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Michigan forest canopy dynamics plots - Woods et al. 2009",
     "urls": {
-        "all_plots_1935_1948": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/all_plots_1935_1948.txt",
-        "all_plots_1974_1980": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/all_plots_1974-1980.txt",
-        "sampling_history": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/sampling_history.txt",
-        "species_codes": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/species_codes.txt",
-        "swamp": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/swamp_all_modern.txt",
-        "upland_plots_1989_2007": "http://www.esapubs.org/archive/ecol/E090/251/datafiles/upland_plots_89-07.txt"
+        "all_plots_1935_1948": "https://ndownloader.figshare.com/files/5608016",
+        "all_plots_1974_1980": "https://ndownloader.figshare.com/files/5608019",
+        "sampling_history": "https://ndownloader.figshare.com/files/5608031",
+        "species_codes": "https://ndownloader.figshare.com/files/5608028",
+        "swamp": "https://ndownloader.figshare.com/files/5608025",
+        "upland_plots_1989_2007": "https://ndownloader.figshare.com/files/5608022"
     },
-    "version": "1.1.1"
+    "version": "1.2.0"
 }

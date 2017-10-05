@@ -14,7 +14,7 @@
             },
             "name": "Plots",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E094/083/Plots.csv"
+            "url": "https://ndownloader.figshare.com/files/5625330"
         },
         {
             "dialect": {
@@ -24,7 +24,7 @@
             },
             "name": "Plot_corners",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E094/083/Plot_corners.csv"
+            "url": "https://ndownloader.figshare.com/files/5625333"
         },
         {
             "dialect": {
@@ -34,7 +34,7 @@
             },
             "name": "Species",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E094/083/Species.csv"
+            "url": "https://ndownloader.figshare.com/files/5625336"
         },
         {
             "dialect": {
@@ -44,7 +44,7 @@
             },
             "name": "Seedling_counts",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E094/083/Seedling_counts.csv"
+            "url": "https://ndownloader.figshare.com/files/5625339"
         },
         {
             "dialect": {
@@ -54,7 +54,7 @@
             },
             "name": "Count1906",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E094/083/Count1906.csv"
+            "url": "https://ndownloader.figshare.com/files/5625342"
         },
         {
             "dialect": {
@@ -64,7 +64,7 @@
             },
             "name": "SMCover",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E094/083/SMCover.csv"
+            "url": "https://ndownloader.figshare.com/files/5625345"
         },
         {
             "dialect": {
@@ -74,7 +74,7 @@
             },
             "name": "SMDensity",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E094/083/SMDensity.csv"
+            "url": "https://ndownloader.figshare.com/files/5625348"
         },
         {
             "dialect": {
@@ -85,7 +85,7 @@
             },
             "name": "Stake_info",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E094/083/Stake_info.csv"
+            "url": "https://ndownloader.figshare.com/files/5625351"
         },
         {
             "dialect": {
@@ -95,22 +95,22 @@
             },
             "name": "Photo_info",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E094/083/Photo_info.csv"
+            "url": "https://ndownloader.figshare.com/files/5625354"
         }
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Sonoran Desert Lab perennials vegetation plots",
     "urls": {
-        "Count1906": "http://esapubs.org/archive/ecol/E094/083/Count1906.csv",
-        "Photo_info": "http://esapubs.org/archive/ecol/E094/083/Photo_info.csv",
-        "Plot_corners": "http://esapubs.org/archive/ecol/E094/083/Plot_corners.csv",
-        "Plots": "http://esapubs.org/archive/ecol/E094/083/Plots.csv",
-        "SMCover": "http://esapubs.org/archive/ecol/E094/083/SMCover.csv",
-        "SMDensity": "http://esapubs.org/archive/ecol/E094/083/SMDensity.csv",
-        "Seedling_counts": "http://esapubs.org/archive/ecol/E094/083/Seedling_counts.csv",
-        "Species": "http://esapubs.org/archive/ecol/E094/083/Species.csv",
-        "Stake_info": "http://esapubs.org/archive/ecol/E094/083/Stake_info.csv"
+        "Count1906": "https://ndownloader.figshare.com/files/5625342",
+        "Photo_info": "https://ndownloader.figshare.com/files/5625354",
+        "Plot_corners": "https://ndownloader.figshare.com/files/5625333",
+        "Plots": "https://ndownloader.figshare.com/files/5625330",
+        "SMCover": "https://ndownloader.figshare.com/files/5625345",
+        "SMDensity": "https://ndownloader.figshare.com/files/5625348",
+        "Seedling_counts": "https://ndownloader.figshare.com/files/5625339",
+        "Species": "https://ndownloader.figshare.com/files/5625336",
+        "Stake_info": "https://ndownloader.figshare.com/files/5625351"
     },
-    "version": "1.1.1"
+    "version": "1.2.0"
 }

@@ -1,0 +1,24 @@
+{
+    "citation": "Bradley J. Cardinale, Diane S. Srivastava, J. Emmett Duffy, Justin P. Wright, Amy L. Downing, Mahesh Sankaran, Claire Jouseau, Marc W. Cadotte, Ian T. Carroll, Jerome J. Weis, Andy Hector, and Michel Loreau. 2009. Effects of biodiversity on the functioning of ecosystems:A summary of 164 experimental manipulations of species richness. Ecology 90:854.",
+    "description": "A summary of the results on the accelerating rates of species extinction",
+    "homepage": "https://figshare.com/articles/Data_Paper_Data_Paper/3530825",
+    "keywords": [
+        "Taxon > Animals"
+    ],
+    "name": "species-exctinction-rates",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "richness",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5603117"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.0-dev",
+    "version": "1.0.0",
+    "title": "Effects of biodiversity on the functioning of ecosystems:A summary of 164 experimental manipulations of species richness",
+    "urls": {
+        "richness": "https://ndownloader.figshare.com/files/5603117"
+    }
+}

@@ -1,0 +1,196 @@
+{
+    "citation": "James A. Falcone, Daren M. Carlisle, David M. Wolock, and Michael R. Meador. 2010. GAGES:A stream gage database for evaluating natural and altered flow conditions in the conterminous United States. Ecology 91:621.",
+    "description": "streamflow in ecosystems",
+    "homepage": "https://figshare.com/articles/Data_Paper_Data_Paper/3544358",
+    "name": "streamflow-conditions",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "basinid",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608568"
+        },
+        {
+            "dialect": {},
+            "name": "bas_classif",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608571"
+        },
+        {
+            "dialect": {},
+            "name": "bas_morph",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608574"
+        },
+        {
+            "dialect": {},
+            "name": "census_block",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608577"
+        },
+        {
+            "dialect": {},
+            "name": "census_county",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608580"
+        },
+        {
+            "dialect": {},
+            "name": "climate",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608583"
+        },
+        {
+            "dialect": {},
+            "name": "geology",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608586"
+        },
+        {
+            "dialect": {},
+            "name": "hydro",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608589"
+        },
+        {
+            "dialect": {},
+            "name": "hydromod_dams",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608592"
+        },
+        {
+            "dialect": {},
+            "name": "hydromod_other",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608595"
+        },
+        {
+            "dialect": {},
+            "name": "infrastructure",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608598"
+        },
+        {
+            "dialect": {},
+            "name": "landscape_pat",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608601"
+        },
+        {
+            "dialect": {},
+            "name": "lc01_basin",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608604"
+        },
+        {
+            "dialect": {},
+            "name": "lc_change92",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608607"
+        },
+        {
+            "dialect": {},
+            "name": "lc01_mains100",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608610"
+        },
+        {
+            "dialect": {},
+            "name": "lc01_mains800",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608613"
+        },
+        {
+            "dialect": {},
+            "name": "c01_rip100",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608616"
+        },
+        {
+            "dialect": {},
+            "name": "lc01_rip800",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608619"
+        },
+        {
+            "dialect": {},
+            "name": "nutrient_app",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608622"
+        },
+        {
+            "dialect": {},
+            "name": "pest_app",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608625"
+        },
+        {
+            "dialect": {},
+            "name": "prot_areas",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608628"
+        },
+        {
+            "dialect": {},
+            "name": "reach",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608631"
+        },
+        {
+            "dialect": {},
+            "name": "regions",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608634"
+        },
+        {
+            "dialect": {},
+            "name": "soils",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608637"
+        },
+        {
+            "dialect": {},
+            "name": "topo",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608640"
+        },
+        {
+            "dialect": {},
+            "name": "ages_variable_desc",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5608646"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.0-dev",
+    "version": "1.0.0",
+    "title": "A stream gage database for evaluating natural and altered flow conditions in the conterminous United States.",
+    "urls": {
+        "ages_variable_desc": "https://ndownloader.figshare.com/files/5608646",
+        "bas_classif": "https://ndownloader.figshare.com/files/5608571",
+        "bas_morph": "https://ndownloader.figshare.com/files/5608574",
+        "basinid": "https://ndownloader.figshare.com/files/5608568",
+        "lc01_rip100": "https://ndownloader.figshare.com/files/5608616",
+        "census_block": "https://ndownloader.figshare.com/files/5608577",
+        "census_county": "https://ndownloader.figshare.com/files/5608580",
+        "climate": "https://ndownloader.figshare.com/files/5608583",
+        "geology": "https://ndownloader.figshare.com/files/5608586",
+        "hydro": "https://ndownloader.figshare.com/files/5608589",
+        "hydromod_dams": "https://ndownloader.figshare.com/files/5608592",
+        "hydromod_other": "https://ndownloader.figshare.com/files/5608595",
+        "infrastructure": "https://ndownloader.figshare.com/files/5608598",
+        "landscape_pat": "https://ndownloader.figshare.com/files/5608601",
+        "lc01_basin": "https://ndownloader.figshare.com/files/5608604",
+        "lc01_mains100": "https://ndownloader.figshare.com/files/5608610",
+        "lc01_mains800": "https://ndownloader.figshare.com/files/5608613",
+        "lc01_rip800": "https://ndownloader.figshare.com/files/5608619",
+        "lc_change92": "https://ndownloader.figshare.com/files/5608607",
+        "nutrient_app": "https://ndownloader.figshare.com/files/5608622",
+        "pest_app": "https://ndownloader.figshare.com/files/5608625",
+        "prot_areas": "https://ndownloader.figshare.com/files/5608628",
+        "reach": "https://ndownloader.figshare.com/files/5608631",
+        "regions": "https://ndownloader.figshare.com/files/5608634",
+        "soils": "https://ndownloader.figshare.com/files/5608637",
+        "topo": "https://ndownloader.figshare.com/files/5608640"
+    }
+}

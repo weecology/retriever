@@ -1,12 +1,87 @@
-from builtins import str
 import json
 import sys
 import pprint
+import os
+import imp
+from builtins import str
+
 if sys.version_info[0] < 3:
     from codecs import open
 from retriever.lib.templates import TEMPLATES
 from retriever.lib.models import Cleanup, Table, correct_invalid_value
+from retriever.lib.defaults import SCRIPT_SEARCH_PATHS
+from os.path import join, isfile, getmtime, exists
 
+def MODULE_LIST(force_compile=False):
+    """Load scripts from scripts directory and return list of modules."""
+    modules = []
+    loaded_scripts = []
+    
+    for search_path in [search_path for search_path in SCRIPT_SEARCH_PATHS if exists(search_path)]:
+        to_compile = [
+            file for file in os.listdir(search_path) if file[-5:] == ".json" and
+            file[0] != "_" and (
+                (not isfile(join(search_path, file[:-5] + '.py'))) or (
+                    isfile(join(search_path, file[:-5] + '.py')) and (
+                        getmtime(join(search_path, file[:-5] + '.py')) < getmtime(
+                            join(search_path, file)))) or force_compile)]
+        for script in to_compile:
+            script_name = '.'.join(script.split('.')[:-1])
+            if script_name not in loaded_scripts:
+                compiled_script = compile_json(join(search_path, script_name))
+                setattr(compiled_script, "_file", os.path.join(search_path, script))
+                setattr(compiled_script, "_name", script_name)
+                modules.append(compiled_script)
+                loaded_scripts.append(script_name)
+
+        files = [file for file in os.listdir(search_path)
+                 if file[-3:] == ".py" and file[0] != "_" and
+                 '#retriever' in ' '.join(open(join(search_path, file), 'r').readlines()[:2]).lower()]
+
+
+        for script in files:
+            script_name = '.'.join(script.split('.')[:-1])
+            if script_name not in loaded_scripts:
+                loaded_scripts.append(script_name)
+                file, pathname, desc = imp.find_module(script_name, [search_path])
+                try:
+                    new_module = imp.load_module(script_name, file, pathname, desc)
+                    if hasattr(new_module, "retriever_minimum_version"):
+                        # a script with retriever_minimum_version should be loaded
+                        # only if its compliant with the version of the retriever
+                        if not parse_version(VERSION) >= parse_version("{}".format(
+                                new_module.retriever_minimum_version)):
+                            print("{} is supported by Retriever version "
+                                  "{}".format(script_name, new_module.retriever_minimum_version))
+
+                            print("Current version is {}".format(VERSION))
+                            continue
+                    # if the script wasn't found in an early search path
+                    # make sure it works and then add it
+                    new_module.SCRIPT.download
+                    setattr(new_module.SCRIPT, "_file", os.path.join(search_path, script))
+                    setattr(new_module.SCRIPT, "_name", script_name)
+                    modules.append(new_module.SCRIPT)
+
+                except Exception as e:
+                    sys.stderr.write("Failed to load script: %s (%s)\nException: %s \n" % (
+                        script_name, search_path, str(e)))
+    return modules
+
+
+def SCRIPT_LIST(force_compile=False):
+    scripts = [module for module in MODULE_LIST(force_compile)]
+    
+    return scripts 
+
+
+def get_script(dataset):
+    """Return the script for a named dataset."""
+    scripts = {script.name: script for script in SCRIPT_LIST()}
+    if dataset in scripts:
+        return scripts[dataset]
+    else:
+        raise KeyError("No dataset named: {}".format(dataset))
 
 def add_dialect(table_dict, table):
     """
@@ -70,9 +145,10 @@ def compile_json(json_file, debug=False):
     """
     pp = pprint.PrettyPrinter(indent=4)
     json_object = {}
+    source_encoding = "latin-1"
     try:
         json_object = json.load(open(json_file + ".json", "r"))
-    except ValueError as e:
+    except ValueError:
         pass
     if type(json_object) is not dict:
         return
@@ -85,8 +161,8 @@ def compile_json(json_file, debug=False):
     keys_to_ignore = ["template"]
 
     required_fields = {
-        "shortname":"name",
-        "name":"title",
+        "title":"title",
+        "name":"name",
         "description": "description",
         "version": "version",
         "tables": "tables"
@@ -95,10 +171,10 @@ def compile_json(json_file, debug=False):
     for (key, value) in json_object.items():
 
         if key == "title":
-            values["name"] = str(value)
+            values["title"] = str(value)
 
         elif key == "name":
-            values["shortname"] = str(value)
+            values["name"] = str(value)
 
         elif key == "description":
             values["description"] = str(value)
@@ -112,8 +188,11 @@ def compile_json(json_file, debug=False):
         elif key == "citation":
             values["citation"] = str(value)
 
+        elif key == "licenses":
+            values["licenses"] = value
+
         elif key == "keywords":
-            values["tags"] = value
+            values["keywords"] = value
 
         elif key == "version":
             values["version"] = str(value)
@@ -121,9 +200,13 @@ def compile_json(json_file, debug=False):
         elif key == "encoding":
             values["encoding"] = "\"" + str(value) + "\""
             # Adding the key 'encoding'
+            source_encoding = str(value)
 
         elif key == "retriever_minimum_version":
             values["retriever_minimum_version"] = str(value)
+
+        elif key == "message":
+            values["message"] = "\"" + str(value) + "\""
 
         elif key == "resources":
             # Array of table objects

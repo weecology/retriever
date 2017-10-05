@@ -1,0 +1,42 @@
+{
+    "citation": "Andrew Rassweiler, Katie K. Arkema, Daniel C. Reed, Richard C. Zimmerman, and Mark A. Brzezinski. 2008. Net primary production, growth, and standing crop of Macrocystis pyrifera in southern California. Ecology 89:2068.",
+    "description": "",
+    "homepage": "https://figshare.com/articles/Data_Paper_Data_Paper/3529700",
+    "keywords": [
+        "Taxon > plants"
+    ],
+    "name": "macrocystis-variation",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "production",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5601731"
+        },
+        {
+            "dialect": {},
+            "name": "density",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5601734"
+        },
+        {
+            "dialect": {
+                "nulls": [
+                    "-99999"
+                ]
+            },
+            "name": "fronds",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5601737"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.0-dev",
+    "version": "1.0.0",
+    "title": "The data was used to investigate patterns and causes of variation in NPP by the giant kelp, Macrocystis pyrifera, which is believed to be one of the fastest growing autotrophs on earth.",
+    "urls": {
+        "density": "https://ndownloader.figshare.com/files/5601734",
+        "fronds": "https://ndownloader.figshare.com/files/5601737",
+        "production": "https://ndownloader.figshare.com/files/5601731"
+    }
+}

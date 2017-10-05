@@ -1,32 +1,12 @@
 from __future__ import print_function
-from builtins import object
-import os
-import platform
-import shutil
+
 import inspect
+import os
+import shutil
 
-from retriever.lib.engine import filename_from_url
-from retriever.lib.models import Engine, no_cleanup
-from retriever.lib.defaults import DATA_DIR, HOME_DIR
-
-
-class DummyConnection(object):
-
-    def cursor(self):
-        pass
-
-    def commit(self):
-        pass
-
-    def rollback(self):
-        pass
-
-    def close(self):
-        pass
-
-
-class DummyCursor(DummyConnection):
-    pass
+from retriever.lib.defaults import DATA_DIR
+from retriever.lib.dummy import DummyConnection
+from retriever.lib.engine import filename_from_url, Engine
 
 
 class engine(Engine):
@@ -67,10 +47,10 @@ class engine(Engine):
                 subdir = os.path.split(file_path)[1] if self.opts['subdir'] else ''
                 dest_path = os.path.join(self.opts['path'], subdir)
                 if os.path.isfile(os.path.join(dest_path, file_name_nopath)):
-                    print ("File already exists at specified location")
+                    print("File already exists at specified location")
                 elif os.path.abspath(file_path) == os.path.abspath(os.path.join(DATA_DIR, subdir)):
-                    print ("%s is already in the working directory" %
-                           file_name_nopath)
+                    print("%s is already in the working directory" %
+                          file_name_nopath)
                     print("Keeping existing copy.")
                 else:
                     print("Copying %s from %s" % (file_name_nopath, file_path))
@@ -97,13 +77,13 @@ class engine(Engine):
             # If the file doesn't exist, download it
             self.download_file(url, filename)
 
-    def insert_data_from_url(self, url, use_cache=True):
+    def insert_data_from_url(self, url):
         """Insert data from a web resource"""
         filename = filename_from_url(url)
         find = self.find_file(filename)
         if not find:
             self.create_raw_data_dir()
-            self.download_file(url, filename, use_cache)
+            self.download_file(url, filename)
 
     def find_file(self, filename):
         """Checks for the given file and adds it to the list of all files"""
@@ -141,9 +121,9 @@ keep_methods = {'table_exists',
 remove_methods = ['insert_data_from_file', 'create_db']
 for name, method in methods:
     if (name not in keep_methods and
-            'download' not in name and
-            'file' not in name and
-            'dir' not in name):
+                'download' not in name and
+                'file' not in name and
+                'dir' not in name):
         setattr(engine, name, dummy_method)
 for name in remove_methods:
     setattr(engine, name, dummy_method)

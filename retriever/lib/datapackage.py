@@ -1,21 +1,24 @@
 from __future__ import print_function
-from builtins import input
-import os
+
+import glob
 import json
+import os
+import re
+from builtins import input
 from time import sleep
-from retriever.lib.scripts import SCRIPT_LIST
+from retriever.lib.compile import SCRIPT_LIST
 from retriever.lib.defaults import HOME_DIR, ENCODING
 
-short_names = [script.shortname.lower() for script in SCRIPT_LIST()]
+short_names = [script.name.lower() for script in SCRIPT_LIST()]
 
 
 def is_empty(val):
-    """Check if a variable is an empty string or an empty list"""
+    """Check if a variable is an empty string or an empty list."""
     return val == "" or val == []
 
 
 def clean_input(prompt="", split_char='', ignore_empty=False, dtype=None):
-    """Clean the user-input from the CLI before adding it"""
+    """Clean the user-input from the CLI before adding it."""
     while True:
         val = input(prompt).strip()
         # split to list type if split_char specified
@@ -39,7 +42,7 @@ def clean_input(prompt="", split_char='', ignore_empty=False, dtype=None):
 
 
 def get_replace_columns(dialect):
-    """Get list of tuples with old and new names for the columns in the table"""
+    """Get list of tuples with old and new names for the columns in the table."""
     val = clean_input("replace_columns (separated by ';', with comma-separated values) (press return to skip): ",
                       split_char=';', ignore_empty=True)
     if val == "" or val == []:
@@ -55,20 +58,20 @@ def get_replace_columns(dialect):
 
 
 def get_nulls(dialect):
-    """Get list of strings that denote null in the dataset"""
-    val = clean_input("nulls (separated by ';') (press return to skip): ",
+    """Get list of strings that denote missing value in the dataset."""
+    val = clean_input("missing values (separated by ';') (press return to skip): ",
                       split_char=';', ignore_empty=True)
     if val == "" or val == []:
         # return and dont add key to dialect dict if empty val
         return
-    dialect['nulls'] = val
+    dialect['missingValues'] = val
     # change list to single value if size == 1
-    if len(dialect['nulls']) == 1:
-        dialect['nulls'] = dialect['nulls'][0]
+    if len(dialect['missingValues']) == 1:
+        dialect['missingValues'] = dialect['missingValues'][0]
 
 
 def get_delimiter(dialect):
-    """Get the string delimiter for the dataset file(s)"""
+    """Get the string delimiter for the dataset file(s)."""
     val = clean_input("delimiter (press return to skip): ", ignore_empty=True)
     if val == "" or val == []:
         # return and dont add key to dialect dict if empty val
@@ -77,7 +80,7 @@ def get_delimiter(dialect):
 
 
 def get_do_not_bulk_insert(dialect):
-    """Set do_not_bulk_insert property"""
+    """Set do_not_bulk_insert property."""
     val = clean_input("do_not_bulk_insert (bool = True/False) (press return to skip): ",
                       ignore_empty=True, dtype=bool)
     if val == "" or val == []:
@@ -87,7 +90,7 @@ def get_do_not_bulk_insert(dialect):
 
 
 def get_contains_pk(dialect):
-    """Set contains_pk property"""
+    """Set contains_pk property."""
     val = clean_input("contains_pk (bool = True/False) (press return to skip): ",
                       ignore_empty=True, dtype=bool)
     if val == "" or val == []:
@@ -96,28 +99,8 @@ def get_contains_pk(dialect):
     dialect['contains_pk'] = val
 
 
-def get_escape_single_quotes(dialect):
-    """Set escape_single_quotes property"""
-    val = clean_input("escape_single_quotes (bool = True/False) (press return to skip): ",
-                      ignore_empty=True, dtype=bool)
-    if val == "" or val == []:
-        # return and dont add key to dialect dict if empty val
-        return
-    dialect['escape_single_quotes'] = val
-
-
-def get_escape_double_quotes(dialect):
-    """Set escape_double_quotes property"""
-    val = clean_input("escape_double_quotes (bool = True/False) (press return to skip): ",
-                      ignore_empty=True, dtype=bool)
-    if val == "" or val == []:
-        # return and dont add key to dialect dict if empty val
-        return
-    dialect['escape_double_quotes'] = val
-
-
 def get_fixed_width(dialect):
-    """Set fixed_width property"""
+    """Set fixed_width property."""
     val = clean_input("fixed_width (bool = True/False) (press return to skip): ",
                       ignore_empty=True, dtype=bool)
     if val == "" or val == []:
@@ -127,7 +110,7 @@ def get_fixed_width(dialect):
 
 
 def get_header_rows(dialect):
-    """Get number of rows considered as the header"""
+    """Get number of rows considered as the header."""
     val = clean_input("header_rows (int) (press return to skip): ",
                       ignore_empty=True, dtype=int)
     if val == "" or val == []:
@@ -137,42 +120,47 @@ def get_header_rows(dialect):
 
 
 def create_json():
-    '''
+    """
     Creates datapackage.JSON script.
     http://specs.frictionlessdata.io/data-packages/#descriptor-datapackagejson
     Takes input from user via command line.
 
     Usage: retriever new_json
-    '''
+    """
     contents = {}
-    tableUrls = {}
+    tableurls = {}
 
+    invalid_name = True
     script_exists = True
-    while script_exists:
+    while script_exists or invalid_name:
         contents['name'] = clean_input("name (a short unique identifier; only lowercase letters and - allowed): ")
+        invalid_name = re.compile(r'[^a-z-]').search(contents['name'])
+        if invalid_name:
+            print("name can only contain lowercase letters and -")
+            continue
         script_exists = contents['name'].lower() in short_names
         if script_exists:
-            print("Dataset already available. Check the list or try a different shortname")
+            print("Dataset already available. Check the list or try a different name")
 
     contents['title'] = clean_input("title: ", ignore_empty=True)
     contents['description'] = clean_input("description: ", ignore_empty=True)
     contents['citation'] = clean_input("citation: ", ignore_empty=True)
     contents['homepage'] = clean_input("homepage (for the entire dataset): ", ignore_empty=True)
     contents['keywords'] = clean_input("keywords (separated by ';'): ",
-                                        split_char=';', ignore_empty=True)
+                                       split_char=';', ignore_empty=True)
     contents['resources'] = []
     contents['retriever'] = "True"
     contents['retriever_minimum_version'] = "2.0.dev"
-    contents['encoding'] = clean_input("encoding: ", ignore_empty = True)
-    if is_empty(clean_input("encoding: ", ignore_empty = True)) : contents['encoding'] = ENCODING
-    contents['version'] = "1.0.0";
+    contents['encoding'] = clean_input("encoding: ", ignore_empty=True)
+    if is_empty(clean_input("encoding: ", ignore_empty=True)): contents['encoding'] = ENCODING
+    contents['version'] = "1.0.0"
 
     # Add tables -
     while True:
-        addTable = clean_input("\nAdd Table? (y/N): ")
-        if addTable.lower() in ["n", "no"]:
+        addtable = clean_input("\nAdd Table? (y/N): ")
+        if addtable.lower() in ["n", "no"]:
             break
-        elif addTable.lower() not in ["y", "yes"]:
+        elif addtable.lower() not in ["y", "yes"]:
             print("Not a valid option\n")
             continue
         else:
@@ -180,7 +168,7 @@ def create_json():
             table['name'] = clean_input("table-name: ")
             table['url'] = clean_input("table-url: ")
             table['dialect'] = {}
-            tableUrls[table['name']] = table['url']
+            tableurls[table['name']] = table['url']
 
             # get table properties (dialect)
             # refer retriever.lib.table.Table
@@ -189,8 +177,6 @@ def create_json():
             get_delimiter(table['dialect'])
             get_do_not_bulk_insert(table['dialect'])
             get_contains_pk(table['dialect'])
-            get_escape_single_quotes(table['dialect'])
-            get_escape_double_quotes(table['dialect'])
             get_fixed_width(table['dialect'])
             get_header_rows(table['dialect'])
 
@@ -201,14 +187,14 @@ def create_json():
             while True:
                 # get column list (optional)
                 try:
-                    col_list = clean_input("", split_char = ',', ignore_empty = True)
+                    col_list = clean_input("", split_char=',', ignore_empty=True)
                     if col_list == []:
                         break
                     elif type(col_list) != list:
                         raise Exception
 
                     col_list = [c.strip() for c in col_list]
-                    col_obj = {}    # dict to store column data
+                    col_obj = {}  # dict to store column data
                     col_obj["name"] = col_list[0]
                     col_obj["type"] = col_list[1]
 
@@ -235,9 +221,14 @@ def create_json():
                 table['schema']['ct_column'] = ct_column
                 table['schema']['ct_names'] = ct_names
 
-            contents['resources'].append(table)  
-    contents['urls'] = tableUrls
+            contents['resources'].append(table)
+    give_message = clean_input(
+        "Would you like to add a Message? (y,N): ", ignore_empty=True)
+    if give_message.lower() in ["y", "yes"]:
+        contents['message'] = clean_input("Provide your Message: ", ignore_empty=True)
+    contents['urls'] = tableurls
     file_name = contents['name'] + ".json"
+    file_name = file_name.replace('-', '_')
     with open(os.path.join(HOME_DIR, 'scripts', file_name), 'w') as output_file:
         json_str = json.dumps(contents, output_file, sort_keys=True, indent=4,
                               separators=(',', ': '))
@@ -247,9 +238,9 @@ def create_json():
 
 
 def edit_dict(obj, tabwidth=0):
-    '''
+    """
     Recursive helper function for edit_json() to edit a datapackage.JSON script file.
-    '''
+    """
     for (key, val) in obj.items():
         print('\n' + "  " * tabwidth + "->" + key + " (", type(val), ") :\n")
         if type(val) == list:
@@ -397,22 +388,23 @@ def edit_dict(obj, tabwidth=0):
 
 
 def edit_json(json_file):
-    '''
-    Edits existing datapackage.JSON script.
+    """
+    Edit existing datapackage.JSON script.
 
     Usage: retriever edit_json <script_name>
-    Note: Name of script is the dataset shortname.
-    '''
+    Note: Name of script is the dataset name.
+    """
     try:
         contents = json.load(
             open(os.path.join(HOME_DIR, 'scripts', json_file), 'r'))
-    except FileNotFoundError:
+    except (IOError, OSError):
         print("Script not found.")
         return
 
     edit_dict(contents, 1)
 
     file_name = contents['name'] + ".json"
+    file_name = file_name.replace('-', '_')
     with open(os.path.join(HOME_DIR, 'scripts', file_name), 'w') as output_file:
         json_str = json.dumps(contents, output_file, sort_keys=True, indent=4,
                               separators=(',', ': '))
@@ -420,3 +412,24 @@ def edit_json(json_file):
         print("\nScript written to " +
               os.path.join(HOME_DIR, 'scripts', file_name))
         output_file.close()
+
+
+def delete_json(json_file):
+    try:
+        # delete scripts from home directory
+        if os.path.exists(os.path.join(HOME_DIR, 'scripts', json_file)):
+            os.remove(os.path.join(HOME_DIR, 'scripts', json_file))
+
+        [os.remove(x) for x in glob.glob(os.path.join(HOME_DIR, 'scripts', json_file[:-4] + 'py*'))]
+
+        # delete scripts from current directory if exists
+        if os.path.exists(os.path.join(os.getcwd(), 'scripts', json_file)):
+            os.remove(os.path.join(os.getcwd(), 'scripts', json_file))
+
+        [os.remove(x) for x in glob.glob(os.path.join(os.getcwd(), 'scripts', json_file[:-4] + 'py*'))]
+    except OSError:
+        print("Couldn't delete Script.")
+
+
+def get_script_filename(shortname):
+    return shortname.replace('-', '_') + '.json'

@@ -1,0 +1,21 @@
+{
+    "citation": "Peter S. Petraitis and Nicholas Vidargas. 2006. Marine intertidal organisms found in experimental clearings on sheltered shores in the Gulf of Maine, USA. Ecology 87:796 Frederick F. Knowlton, and Charles Stoddart. 2005. Mammal abundance indices in the northern portion of the Great Basin, 1962-1993. Ecology 86:3130.",
+    "description": "Experimental clearings in macroalgal stands were established in 1996 to determine if mussel beds and macroalgal stands on protected intertidal shores of New England represent alternative community states",
+    "homepage": "https://figshare.com/articles/Data_Paper_Data_Paper/3526004",
+    "name": "macroalgal_communities",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "Mammal_abundance",
+            "schema": {},
+            "url": "https://ndownloader.figshare.com/files/5596982"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.0-dev",
+    "version": "1.0.0",
+    "title": "species data on densities and percent cover in the 60 experimental plots from 1996 to 2002",
+    "urls": {
+        "Mammal_abundance": "https://ndownloader.figshare.com/files/5596982"
+    }
+}

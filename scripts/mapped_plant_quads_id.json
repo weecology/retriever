@@ -1,7 +1,7 @@
 {
     "citation": "Luke Zachmann, Corey Moffet, and Peter Adler. 2010. Mapped quadrats in sagebrush steppe:long-term data for analyzing demographic rates and plant-plant interactions. Ecology 91:3427.",
     "description": "This data set consists of 26 permanent 1-m2 quadrats located on sagebrush steppe in eastern Idaho, USA.",
-    "homepage": "http://esapubs.org/archive/ecol/E091/243/",
+    "homepage": "https://figshare.com/articles/Data_Paper_Data_Paper/3550215",
     "keywords": [
         "plants",
         "local-scale",
@@ -14,49 +14,49 @@
             "dialect": {},
             "name": "density",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E091/243/allrecords_density.csv"
+            "url": "https://ndownloader.figshare.com/files/5617443"
         },
         {
             "dialect": {},
             "name": "cover",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E091/243/allrecords_cover.csv"
+            "url": "https://ndownloader.figshare.com/files/5617446"
         },
         {
             "dialect": {},
             "name": "quad_info",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E091/243/quad_info.csv"
+            "url": "https://ndownloader.figshare.com/files/5617452"
         },
         {
             "dialect": {},
             "name": "grazing",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E091/243/grazing_info.csv"
+            "url": "https://ndownloader.figshare.com/files/5617455"
         },
         {
             "dialect": {},
             "name": "quad_inventory",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E091/243/quad_inventory.csv"
+            "url": "https://ndownloader.figshare.com/files/5617458"
         },
         {
             "dialect": {},
             "name": "species",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E091/243/species_list.csv"
+            "url": "https://ndownloader.figshare.com/files/5617461"
         },
         {
             "dialect": {},
             "name": "taxonomy",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E091/243/taxonomic_grouping.csv"
+            "url": "https://ndownloader.figshare.com/files/5617464"
         },
         {
             "dialect": {},
             "name": "counts",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E091/243/annuals_counts_v3.csv"
+            "url": "https://ndownloader.figshare.com/files/5617476"
         },
         {
             "dialect": {
@@ -109,7 +109,7 @@
             },
             "name": "monthly_mean_temp",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E091/243/monthly_mean_temp.csv"
+            "url": "https://ndownloader.figshare.com/files/5617467"
         },
         {
             "dialect": {
@@ -162,7 +162,7 @@
             },
             "name": "monthly_ppt",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E091/243/total_monthly_ppt.csv"
+            "url": "https://ndownloader.figshare.com/files/5617470"
         },
         {
             "dialect": {
@@ -215,24 +215,24 @@
             },
             "name": "monthly_sno",
             "schema": {},
-            "url": "http://esapubs.org/archive/ecol/E091/243/total_monthly_sno.csv"
+            "url": "https://ndownloader.figshare.com/files/5617473"
         }
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Sagebrush steppe mapped plant quadrats (Zachmann et al. 2010)",
     "urls": {
-        "counts": "http://esapubs.org/archive/ecol/E091/243/annuals_counts_v3.csv",
-        "cover": "http://esapubs.org/archive/ecol/E091/243/allrecords_cover.csv",
-        "density": "http://esapubs.org/archive/ecol/E091/243/allrecords_density.csv",
-        "grazing": "http://esapubs.org/archive/ecol/E091/243/grazing_info.csv",
-        "monthly_mean_temp": "http://esapubs.org/archive/ecol/E091/243/monthly_mean_temp.csv",
-        "monthly_ppt": "http://esapubs.org/archive/ecol/E091/243/total_monthly_ppt.csv",
-        "monthly_sno": "http://esapubs.org/archive/ecol/E091/243/total_monthly_sno.csv",
-        "quad_info": "http://esapubs.org/archive/ecol/E091/243/quad_info.csv",
-        "quad_inventory": "http://esapubs.org/archive/ecol/E091/243/quad_inventory.csv",
-        "species": "http://esapubs.org/archive/ecol/E091/243/species_list.csv",
-        "taxonomy": "http://esapubs.org/archive/ecol/E091/243/taxonomic_grouping.csv"
+        "counts": "https://ndownloader.figshare.com/files/5617476",
+        "cover": "https://ndownloader.figshare.com/files/5617446",
+        "density": "https://ndownloader.figshare.com/files/5617443",
+        "grazing": "https://ndownloader.figshare.com/files/5617455",
+        "monthly_mean_temp": "https://ndownloader.figshare.com/files/5617467",
+        "monthly_ppt": "https://ndownloader.figshare.com/files/5617470",
+        "monthly_sno": "https://ndownloader.figshare.com/files/5617473",
+        "quad_info": "https://ndownloader.figshare.com/files/5617452",
+        "quad_inventory": "https://ndownloader.figshare.com/files/5617458",
+        "species": "https://ndownloader.figshare.com/files/5617461",
+        "taxonomy": "https://ndownloader.figshare.com/files/5617464"
     },
-    "version": "1.1.1"
+    "version": "1.2.0"
 }

@@ -1,6 +1,5 @@
 #retriever
 """Retriever script for Zanne et al. Global wood density database.
-
 """
 from builtins import range
 
@@ -8,22 +7,26 @@ import sys
 import os
 import xlrd
 from imp import reload
-
 from retriever.lib.templates import Script
 from retriever.lib.models import Table
 from retriever.lib.excel import Excel
-from retriever import open_fr, open_fw, open_csvw, to_str
-from retriever.lib.defaults import HOME_DIR
+from pkg_resources import parse_version
+try:
+    from retriever.lib.defaults import VERSION
+    from retriever.lib.scripts import open_fw, open_csvw, to_str
+except ImportError:
+    from retriever import HOME_DIR, open_fr, open_fw, open_csvw, to_str, VERSION
+
 
 class main(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
-        self.name = "Global wood density database - Zanne et al. 2009"
-        self.shortname = "wood-density"
+        self.title = "Global wood density database - Zanne et al. 2009"
+        self.name = "wood-density"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.2.1'
+        self.version = '1.3.2'
         self.urls = {"GWDD": "http://datadryad.org/bitstream/handle/10255/dryad.235/GlobalWoodDensityDatabase.xls?sequence=1"}
-        self.tags = ["Taxon > Plants", "Spatial Scale > Global",
+        self.keywords = ["Taxon > Plants", "Spatial Scale > Global",
                      "Data Type > Observational"]
         self.ref = "http://datadryad.org/resource/doi:10.5061/dryad.234"
         self.description = "A collection  and collation of data on the major wood functional traits, including the largest wood density database to date (8412 taxa), mechanical strength measures and anatomical features, as well as clade-specific features such as secondary chemistry."
@@ -37,6 +40,11 @@ class main(Script):
         1. Notify the main address of correspondence (Gaby Lopez-Gonzalo) if you plan to use the database in a publication.
         2. Provide recognition of the efforts of this group in the assembly of the data by using the citation for the database above.
         3. Recognize that these data were assembled by the group for various analyses and research questions. If any of these uses overlap with your interests, you recognize that group has precedence in addressing these questions."""
+
+        if parse_version(VERSION) <= parse_version("2.0.0"):
+            self.shortname = self.name
+            self.name = self.title
+            self.tags = self.keywords
 
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
