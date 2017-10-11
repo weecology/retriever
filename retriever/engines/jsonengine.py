@@ -7,7 +7,7 @@ from collections import OrderedDict
 from retriever.lib.defaults import DATA_DIR
 from retriever.lib.dummy import DummyConnection
 from retriever.lib.models import Engine
-from retriever.lib.scripts import open_fw, open_fr
+from retriever.lib.defualts_fn import open_fr, open_fw
 from retriever.lib.tools import json2csv, sort_csv
 
 

@@ -43,7 +43,10 @@ def check_for_updates(quiet=False):
         # create script directory if not available
         if not os.path.isdir(SCRIPT_WRITE_PATH):
             os.makedirs(SCRIPT_WRITE_PATH)
-
+        pkg = os.path.join(os.path.abspath(SCRIPT_WRITE_PATH),
+                           "datapackages.yml")
+        pkg_url = "https://raw.githubusercontent.com/weecology/retriever/master/scripts/datapackages.yml"
+        urllib.request.urlretrieve(pkg_url, "datapackages.yml")
         if not quiet:
             print("Downloading scripts...")
             _update_progressbar(0.0 / float(total_script_count))

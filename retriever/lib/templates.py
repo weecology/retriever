@@ -4,11 +4,8 @@ functions available for inheritance by the scripts or datasets.
 """
 from __future__ import print_function
 
-import shutil
-
-from retriever.lib.models import *
 from retriever.engines import choose_engine
-from retriever.lib.defaults import DATA_DIR
+from retriever.lib.models import *
 
 
 class Script(object):
@@ -50,7 +47,7 @@ class Script(object):
             desc += "\n" + self.reference_url()
         return desc
 
-    def download(self, engine=None, debug=False):
+    def download(self, engine=None, debug=False,):
         """Generic function to prepare for installation or download."""
         self.engine = self.checkengine(engine)
         self.engine.debug = debug
@@ -105,57 +102,32 @@ class BasicTextTemplate(Script):
 
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
+        for key in kwargs:
+            setattr(self, key, kwargs[key])
 
-    def download(self, engine=None, debug=False):
+    def download(self, engine=None, debug=False, ):
         """Defines the download processes for scripts that utilize the default
         pre processing steps provided by the retriever."""
         Script.download(self, engine, debug)
+        # make file name mandatory for simplicity
 
-        for key in list(self.urls.keys()):
-            if key not in list(self.tables.keys()):
-                self.tables[key] = Table(key, cleanup=Cleanup(correct_invalid_value,
-                                                              missing_values=[-999]))
+        for i_table, table_obj in self.tables.items():
 
-        for key, value in list(self.urls.items()):
-            self.engine.auto_create_table(self.tables[key], url=value)
-            self.engine.insert_data_from_url(value)
-            self.tables[key].record_id = 0
-        self.print_message()
-        return self.engine
+            url = table_obj.url
+            if hasattr(self, "archived"):
+                files = [table_obj.path]
+                zips = self.archived
+                self.engine.download_files_from_archive(url=url,
+                                                        filenames=files,
+                                                        filetype=zips)
 
-    def reference_url(self):
-        if self.ref:
-            return self.ref
-        else:
-            if len(self.urls) == 1:
-                return '/'.join(self.urls[list(self.urls.keys())[0]].split('/')[0:-1]) + '/'
-
-    def print_message(self):
-        if self.message:
-            print(self.message)
-
-
-class DownloadOnlyTemplate(Script):
-    """Script template for non-tabular data that are only for download."""
-
-    def __init__(self, **kwargs):
-        Script.__init__(self, **kwargs)
-
-    def download(self, engine=None, debug=False):
-        if engine.name != "Download Only":
-            raise Exception(
-                "This dataset contains only non-tabular data files, "
-                "and can only be used with the 'download only' engine."
-                "\nTry 'retriever download [dataset name] instead.")
-        Script.download(self, engine, debug)
-
-        for filename, url in self.urls.items():
-            self.engine.download_file(url, filename)
-            if os.path.exists(self.engine.format_filename(filename)):
-                shutil.copy(self.engine.format_filename(filename), DATA_DIR)
+                self.engine.auto_create_table(table_obj, filename=table_obj.path)
+                self.engine.insert_data_from_file(self.engine.format_filename(table_obj.path))
+                self.tables[i_table].record_id = 0
             else:
-                print("{} was not downloaded".format(filename))
-                print("A file with the same name may be in your working directory")
+                self.engine.auto_create_table(table_obj, url=url)
+                self.engine.insert_data_from_url(url)
+                self.tables[i_table].record_id = 0
 
 
 class HtmlTableTemplate(Script):
@@ -164,7 +136,7 @@ class HtmlTableTemplate(Script):
     pass
 
 
-TEMPLATES = [
-    ("Basic Text", BasicTextTemplate),
-    ("HTML Table", HtmlTableTemplate),
-]
+TEMPLATES = {
+    "default": BasicTextTemplate,
+    "html_table": HtmlTableTemplate
+}
