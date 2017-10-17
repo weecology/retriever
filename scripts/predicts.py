@@ -45,7 +45,7 @@ class main(Script):
         filename = "database.csv"
         tablename = "predicts_main"
 
-        table = Table(str(tablename), delimiter=',')
+        table = Table(**{"names":str(tablename), "delimiter" : ','})
         table.columns = [("Source_ID", ("char",)),
                          ("Reference", ("char",)),
                          ("Study_number", ("int",)),

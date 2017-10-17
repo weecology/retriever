@@ -7,8 +7,18 @@ from os.path import join, isfile, getmtime, exists
 
 from pkg_resources import parse_version
 
-from retriever.lib.compile import compile_json
 from retriever.lib.defaults import SCRIPT_SEARCH_PATHS, VERSION, ENCODING
+from retriever.lib.compile import compile_json
+
+
+def check_retriever_minimum_version(module):
+    mod_ver = module.retriever_minimum_version
+    m = module.name
+    if not parse_version(VERSION) >= parse_version("{}".format(mod_ver)):
+        print("{} is supported by Retriever version ""{}".format(m, mod_ver))
+        print("Current version is {}".format(VERSION))
+        return False
+    return True
 
 
 def MODULE_LIST(force_compile=False):
@@ -26,11 +36,25 @@ def MODULE_LIST(force_compile=False):
                             join(search_path, file)))) or force_compile)]
         for script in to_compile:
             script_name = '.'.join(script.split('.')[:-1])
-            compile_json(join(search_path, script_name))
+            if script_name not in loaded_scripts:
+                compiled_script = compile_json(join(search_path, script_name))
+                if compiled_script:
+                    if hasattr(compiled_script, "retriever_minimum_version") \
+                            and not check_retriever_minimum_version(
+                                compiled_script):
+                        continue
+                    setattr(compiled_script, "_file", os.path.join(search_path, script))
+                    setattr(compiled_script, "_name", script_name)
+                    modules.append(compiled_script)
+                    loaded_scripts.append(script_name)
 
         files = [file for file in os.listdir(search_path)
                  if file[-3:] == ".py" and file[0] != "_" and
-                 '#retriever' in ' '.join(open(join(search_path, file), 'r').readlines()[:2]).lower()]
+                 ('#retriever' in
+                  ' '.join(open(join(search_path, file), 'r').readlines()[:2]).lower()
+                  or '# retriever' in
+                  ' '.join(open(join(search_path, file), 'r').readlines()[:2]).lower())
+                 ]
 
         for script in files:
             script_name = '.'.join(script.split('.')[:-1])
@@ -39,27 +63,26 @@ def MODULE_LIST(force_compile=False):
                 file, pathname, desc = imp.find_module(script_name, [search_path])
                 try:
                     new_module = imp.load_module(script_name, file, pathname, desc)
-                    if hasattr(new_module.SCRIPT, "retriever_minimum_version"):
+                    if hasattr(new_module, "retriever_minimum_version"):
                         # a script with retriever_minimum_version should be loaded
                         # only if its compliant with the version of the retriever
-                        if not parse_version(VERSION) >= parse_version("{}".format(
-                                new_module.SCRIPT.retriever_minimum_version)):
-                            print("{} is supported by Retriever version "
-                                  "{}".format(script_name, new_module.SCRIPT.retriever_minimum_version))
-                            print("Current version is {}".format(VERSION))
+                        if not check_retriever_minimum_version(new_module):
                             continue
                     # if the script wasn't found in an early search path
                     # make sure it works and then add it
                     new_module.SCRIPT.download
-                    modules.append(new_module)
+                    setattr(new_module.SCRIPT, "_file", os.path.join(search_path, script))
+                    setattr(new_module.SCRIPT, "_name", script_name)
+                    modules.append(new_module.SCRIPT)
                 except Exception as e:
-                    sys.stderr.write("Failed to load script: %s (%s)\nException: %s \n" % (
-                        script_name, search_path, str(e)))
+                    sys.stderr.write("Failed to load script: {} ({})\n"
+                                     "Exception: {} \n"
+                                     .format(script_name, search_path, str(e)))
     return modules
 
 
 def SCRIPT_LIST(force_compile=False):
-    return [module.SCRIPT for module in MODULE_LIST(force_compile)]
+    return [module for module in MODULE_LIST(force_compile)]
 
 
 def get_script(dataset):
@@ -123,5 +146,4 @@ def to_str(object, object_encoding=sys.stdout):
     if sys.version_info >= (3, 0, 0):
         enc = object_encoding.encoding
         return str(object).encode(enc, errors='backslashreplace').decode("latin-1")
-    else:
-        return object
+    return object

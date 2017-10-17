@@ -19,19 +19,19 @@ def download(dataset, path='./', quiet=False, subdir=False, debug=False):
     }
     engine = choose_engine(args)
 
-    scripts = name_matches(script_list, args['dataset'])
-    if scripts:
-        for script in scripts:
-            print("=> Downloading", script.name)
-            try:
-                script.download(engine, debug=debug)
-                script.engine.final_cleanup()
-            except Exception as e:
-                print(e)
-                if debug:
-                    raise
-    else:
-        message = "The dataset \"{}\" isn't currently available in the Retriever. " \
-                  "Run retriever.datasets() to see a list of currently " \
-                  "available datasets".format(args['dataset'])
-        raise ValueError(message)
+    # scripts = name_matches(script_list, args['dataset'])
+    # if scripts:
+    #     for script in scripts:
+    #         print("=> Downloading", script.name)
+    #         try:
+    #             script.download(engine, debug=debug)
+    #             script.engine.final_cleanup()
+    #         except Exception as e:
+    #             print(e)
+    #             if debug:
+    #                 raise
+    # else:
+    #     message = "The dataset \"{}\" isn't currently available in the Retriever. " \
+    #               "Run retriever.datasets() to see a list of currently " \
+    #               "available datasets".format(args['dataset'])
+    #     raise ValueError(message)
