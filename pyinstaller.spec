@@ -5,7 +5,7 @@ import distutils.util
 platform = distutils.util.get_platform()
 block_cipher = None
 
-a = Analysis(['__main__.py'],
+a = Analysis([os.path.normpath('retriever/__main__.py')],
              pathex=['.', 'lib','engines', 'scripts'],
              binaries=[],
              datas=[],
@@ -18,16 +18,18 @@ a = Analysis(['__main__.py'],
              win_private_assemblies=False,
              cipher=block_cipher)
 
-a.pure += [('retriever.engines.mysql','engines/mysql.py','PYMODULE'),
-           ('retriever.engines.postgres','engines/postgres.py', 'PYMODULE'),
-           ('retriever.engines.sqlite','engines/sqlite.py', 'PYMODULE'),
-           ('retriever.engines.msaccess','engines/msaccess.py', 'PYMODULE'),
-           ('retriever.engines.csvengine','engines/csvengine.py', 'PYMODULE'),
-           ('retriever.engines.download_only','engines/download_only.py', 'PYMODULE'),
-           ('retriever.engines.jsonengine','engines/jsonengine.py', 'PYMODULE'),
-           ('retriever.engines.xmlengine','engines/xmlengine.py', 'PYMODULE'),
-           ('retriever.lib.templates', 'lib/templates.py', 'PYMODULE'),
-           ('retriever.lib.excel', 'lib/excel.py', 'PYMODULE')]
+a.pure += [('retriever.engines.mysql','retriever/engines/mysql.py','PYMODULE'),
+           ('retriever.engines.postgres','retriever/engines/postgres.py', 'PYMODULE'),
+           ('retriever.engines.sqlite','retriever/engines/sqlite.py', 'PYMODULE'),
+           ('retriever.engines.msaccess','retriever/engines/msaccess.py', 'PYMODULE'),
+           ('retriever.engines.csvengine','retriever/engines/csvengine.py', 'PYMODULE'),
+           ('retriever.engines.download_only','retriever/engines/download_only.py', 'PYMODULE'),
+           ('retriever.engines.jsonengine','retriever/engines/jsonengine.py', 'PYMODULE'),
+           ('retriever.engines.xmlengine','retriever/engines/xmlengine.py', 'PYMODULE'),
+           ('retriever.lib.templates', 'retriever/lib/templates.py', 'PYMODULE'),
+           ('retriever.lib.excel', 'retriever/lib/excel.py', 'PYMODULE'),
+           ('retriever.lib.dummy', 'retriever/lib/dummy.py', 'PYMODULE')
+           ]
 
 pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)

@@ -5,12 +5,12 @@ import os
 import platform
 
 from pkg_resources import parse_version
-from setuptools import setup
+from setuptools import setup, find_packages
 
 current_platform = platform.system().lower()
 extra_includes = []
 if current_platform == "windows":
-    extra_includes = ["pypyodbc"]
+    extra_includes += ["pypyodbc"]
 
 if os.path.exists(".git/hooks"):  # check if we are in git repo
     os.system("cp hooks/pre-commit .git/hooks/pre-commit")
@@ -24,13 +24,6 @@ with open(os.path.join("retriever", "_version.py"), "w") as version_file:
 
 def clean_version(v):
     return parse_version(v).__repr__().lstrip("<Version('").rstrip("')>")
-
-
-packages = [
-    'retriever.lib',
-    'retriever.engines',
-    'retriever',
-]
 
 includes = [
                'xlrd',
@@ -63,10 +56,13 @@ setup(name='retriever',
                    'Programming Language :: Python',
                    'Programming Language :: Python :: 2',
                    'Programming Language :: Python :: 3', ],
-      packages=packages,
-      package_dir={
-          'retriever': 'retriever'
-      },
+      packages=find_packages(
+          exclude=['hooks',
+                   'docs',
+                   'tests',
+                   'scripts',
+                   'docker',
+                   ".cache"]),
       entry_points={
           'console_scripts': [
               'retriever = retriever.__main__:main',
@@ -77,9 +73,6 @@ setup(name='retriever',
           'future',
           'argcomplete'
       ],
-
-      # py2app flags
-      app=['__main__.py'],
       data_files=[('', ['CITATION'])],
       setup_requires=[],
       )
