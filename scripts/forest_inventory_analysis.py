@@ -15,7 +15,7 @@ try:
     from retriever.lib.defaults import VERSION
     from retriever.lib.scripts import open_fr, open_fw
 except ImportError:
-    from retriever import open_fr, open_fw, VERSION
+    from retriever.lib.scripts import open_fr, open_fw, VERSION
 
 
 class main(Script):
@@ -24,7 +24,7 @@ class main(Script):
         self.title = "Forest Inventory and Analysis"
         self.name = "forest-inventory-analysis"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.4.1'
+        self.version = '1.4.2'
         self.ref = "http://fia.fs.fed.us/"
         self.urls = {"main": "https://apps.fs.usda.gov/fia/datamart/CSV/",
                      'species': 'https://apps.fs.usda.gov/fia/datamart/CSV/REF_SPECIES.csv'}

@@ -19,8 +19,7 @@ try:
     from retriever.lib.scripts import open_fr, open_fw
     from retriever.lib.defaults import VERSION
 except ImportError:
-    from retriever import open_fr, open_fw, VERSION
-
+    from retriever.lib.scripts import open_fr, open_fw, VERSION
 
 class main(Script):
     def __init__(self, **kwargs):
@@ -32,7 +31,7 @@ class main(Script):
         self.ref = "http://www.pwrc.usgs.gov/BBS/"
         self.keywords = ["birds", "continental-scale"]
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.4.1'
+        self.version = '1.4.2'
         self.urls = {
                      "counts": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/",
                      "routes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/Routes.zip",

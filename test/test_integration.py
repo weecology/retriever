@@ -370,14 +370,8 @@ def setup_module():
     for test in tests:
         if not os.path.exists(os.path.join(HOME_DIR, "raw_data", test['name'])):
             os.makedirs(os.path.join(HOME_DIR, "raw_data", test['name']))
-        rd_path = os.path.join(HOME_DIR,
-                               "raw_data", test['name'], test['name'] + '.txt')
-        create_file(test['raw_data'], rd_path)
-
-        path_js = os.path.join(HOME_DIR, "scripts", test['name'] + '.json')
-        with open(path_js, 'w') as js:
-            json.dump(test['script'], js, indent=2)
-        compile_json(os.path.join(HOME_DIR, "scripts", test['name']))
+        create_file(test['raw_data'], os.path.join(HOME_DIR, "raw_data", test['name'], test['name'] + '.txt'))
+        create_file(test['script'], os.path.join(HOME_DIR, "scripts", test['name'] + '.json'))
 
 
 def teardown_module():
@@ -385,7 +379,6 @@ def teardown_module():
     for test in tests:
         shutil.rmtree(os.path.join(HOME_DIR, "raw_data", test['name']))
         os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.json'))
-        os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.py'))
         os.system("rm -r *{}".format(test['name']))
         os.system("rm testdb.sqlite")
 
@@ -399,9 +392,9 @@ def get_output_as_csv(dataset, engines, tmpdir, db):
     # we don't have to change to the main source directory in order
     # to have the scripts loaded
     script_module = get_script_module(dataset["name"])
-    script_module.SCRIPT.download(engines)
-    script_module.SCRIPT.engine.final_cleanup()
-    script_module.SCRIPT.engine.to_csv()
+    script_module.download(engines)
+    script_module.engine.final_cleanup()
+    script_module.engine.to_csv()
     # get filename and append .csv
     csv_file = engines.opts['table_name'].format(db=db, table=dataset["name"])
     # csv engine already has the .csv extension
@@ -413,10 +406,8 @@ def get_output_as_csv(dataset, engines, tmpdir, db):
 
 
 def get_script_module(script_name):
-    """Load a script module."""
-    file, pathname, desc = imp.find_module(script_name,
-                                           [os.path.join(HOME_DIR, "scripts")])
-    return imp.load_module(script_name, file, pathname, desc)
+    """Load a script module"""
+    return compile_json(os.path.join(HOME_DIR, "scripts", script_name))
 
 
 mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, \

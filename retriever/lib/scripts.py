@@ -7,68 +7,7 @@ from os.path import join, isfile, getmtime, exists
 
 from pkg_resources import parse_version
 
-from retriever.lib.compile import compile_json
 from retriever.lib.defaults import SCRIPT_SEARCH_PATHS, VERSION, ENCODING
-
-
-def MODULE_LIST(force_compile=False):
-    """Load scripts from scripts directory and return list of modules."""
-    modules = []
-    loaded_scripts = []
-
-    for search_path in [search_path for search_path in SCRIPT_SEARCH_PATHS if exists(search_path)]:
-        to_compile = [
-            file for file in os.listdir(search_path) if file[-5:] == ".json" and
-            file[0] != "_" and (
-                (not isfile(join(search_path, file[:-5] + '.py'))) or (
-                    isfile(join(search_path, file[:-5] + '.py')) and (
-                        getmtime(join(search_path, file[:-5] + '.py')) < getmtime(
-                            join(search_path, file)))) or force_compile)]
-        for script in to_compile:
-            script_name = '.'.join(script.split('.')[:-1])
-            compile_json(join(search_path, script_name))
-
-        files = [file for file in os.listdir(search_path)
-                 if file[-3:] == ".py" and file[0] != "_" and
-                 '#retriever' in ' '.join(open(join(search_path, file), 'r').readlines()[:2]).lower()]
-
-        for script in files:
-            script_name = '.'.join(script.split('.')[:-1])
-            if script_name not in loaded_scripts:
-                loaded_scripts.append(script_name)
-                file, pathname, desc = imp.find_module(script_name, [search_path])
-                try:
-                    new_module = imp.load_module(script_name, file, pathname, desc)
-                    if hasattr(new_module.SCRIPT, "retriever_minimum_version"):
-                        # a script with retriever_minimum_version should be loaded
-                        # only if its compliant with the version of the retriever
-                        if not parse_version(VERSION) >= parse_version("{}".format(
-                                new_module.SCRIPT.retriever_minimum_version)):
-                            print("{} is supported by Retriever version "
-                                  "{}".format(script_name, new_module.SCRIPT.retriever_minimum_version))
-                            print("Current version is {}".format(VERSION))
-                            continue
-                    # if the script wasn't found in an early search path
-                    # make sure it works and then add it
-                    new_module.SCRIPT.download
-                    modules.append(new_module)
-                except Exception as e:
-                    sys.stderr.write("Failed to load script: %s (%s)\nException: %s \n" % (
-                        script_name, search_path, str(e)))
-    return modules
-
-
-def SCRIPT_LIST(force_compile=False):
-    return [module.SCRIPT for module in MODULE_LIST(force_compile)]
-
-
-def get_script(dataset):
-    """Return the script for a named dataset."""
-    scripts = {script.name: script for script in SCRIPT_LIST()}
-    if dataset in scripts:
-        return scripts[dataset]
-    else:
-        raise KeyError("No dataset named: {}".format(dataset))
 
 
 def open_fr(file_name, encoding=ENCODING, encode=True):
@@ -125,3 +64,91 @@ def to_str(object, object_encoding=sys.stdout):
         return str(object).encode(enc, errors='backslashreplace').decode("latin-1")
     else:
         return object
+
+def sort_csv(filename):
+    """Sort CSV rows minus the header and return the file.
+
+    Function is used for only testing and can handle the file of the size.
+    """
+    filename = os.path.normpath(filename)
+    input_file = open_fr(filename)
+    csv_reader_infile = csv.reader(input_file, escapechar="\\")
+    #  write the data to a temporary file and sort it
+    temp_path = os.path.normpath("tempfile")
+    temp_file = open_fw(temp_path)
+
+    csv_writer = open_csvw(temp_file)
+    i = 0
+    for row in csv_reader_infile:
+        if i == 0:
+            # The first entry is the header line
+            infields = row
+            i += 1
+        else:
+            csv_writer.writerow(row)
+    input_file.close()
+    temp_file.close()
+
+    # sort the temp file
+    sorted_txt = sort_file(temp_path)
+    tmp = open_fr(sorted_txt)
+    in_txt = csv.reader(tmp, delimiter=',', escapechar="\\")
+    csv_file = open_fw(filename)
+    csv_writer = open_csvw(csv_file)
+    csv_writer.writerow(infields)
+    csv_writer.writerows(in_txt)
+    tmp.close()
+    csv_file.close()
+    os.remove(os.path.normpath(temp_path))
+    return filename
+
+def json2csv(input_file, output_file=None, header_values=None):
+    """Convert Json file to CSV.
+
+    Function is used for only testing and can handle the file of the size.
+    """
+    file_out = open_fr(input_file, encode=False)
+    # set output file name and write header
+    if output_file is None:
+        output_file = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
+    csv_out = open_fw(output_file, encode=False)
+    if os.name == 'nt':
+        outfile = csv.DictWriter(csv_out, dialect='excel', escapechar="\\", lineterminator='\n',
+                                 fieldnames=header_values)
+    else:
+        outfile = csv.DictWriter(csv_out, dialect='excel', escapechar="\\", fieldnames=header_values)
+    raw_data = json.loads(file_out.read())
+    outfile.writeheader()
+
+    for item in raw_data:
+        outfile.writerow(item)
+    file_out.close()
+    os.system("rm -r {}".format(input_file))
+    return output_file
+
+
+def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
+    """Convert xml to csv.
+
+    Function is used for only testing and can handle the file of the size.
+    """
+    file_output = open_fr(input_file, encode=False)
+    # set output file name and write header
+    if outputfile is None:
+        outputfile = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
+    csv_out = open_fw(outputfile)
+    if os.name == 'nt':
+        csv_writer = csv.writer(csv_out, dialect='excel', escapechar='\\', lineterminator='\n')
+    else:
+        csv_writer = csv.writer(csv_out, dialect='excel', escapechar='\\')
+
+    v = file_output.read()
+    csv_writer.writerow(header_values)
+    tree = ET.parse(newfile(v))
+    root = tree.getroot()
+    for rows in root.findall(row_tag):
+        x = [name.text for name in header_values for name in rows.findall(name)]
+        csv_writer.writerow(x)
+    file_output.close()
+    os.system("rm -r {}".format(input_file))
+    return outputfile

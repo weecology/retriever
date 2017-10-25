@@ -1,7 +1,5 @@
 from __future__ import absolute_import
-from __future__ import print_function
-
-from retriever.lib.scripts import MODULE_LIST
+from retriever.lib.compile import MODULE_LIST
 
 
 def compile():

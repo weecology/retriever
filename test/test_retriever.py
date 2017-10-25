@@ -19,14 +19,15 @@ from retriever.lib.table import Table
 from retriever.lib.templates import BasicTextTemplate
 from retriever.lib.cleanup import correct_invalid_value
 from retriever.lib.tools import getmd5
-from retriever.lib.tools import xml2csv
-from retriever.lib.tools import json2csv
+from retriever.lib.scripts import xml2csv
+from retriever.lib.scripts import json2csv
 from retriever.lib.tools import sort_file
-from retriever.lib.tools import sort_csv
+from retriever.lib.scripts import sort_csv
 from retriever.lib.tools import create_file
 from retriever.lib.tools import file_2list
 from retriever.lib.datapackage import clean_input, is_empty
 from retriever.lib.compile import add_dialect, add_schema
+from retriever.lib.cleanup import Cleanup
 
 # Create simple engine fixture
 test_engine = Engine()
@@ -35,7 +36,7 @@ test_engine.script = BasicTextTemplate(tables={'test': test_engine.table},
                                        name='test')
 test_engine.opts = {'database_name': '{db}_abc'}
 HOMEDIR = os.path.expanduser('~')
-file_location = os.path.dirname(os.path.realpath(__file__))
+file_location = os.path.dirname(os.path.realpath(_file))
 retriever_root_dir = os.path.abspath(os.path.join(file_location, os.pardir))
 
 
@@ -414,8 +415,8 @@ def test_add_dialect():
     table['dialect']['dummy_key'] = 'dummy_value'
 
     result = {}
-    result['cleanup'] = 'Cleanup(correct_invalid_value, missing_values=\x00)'
-    result['delimiter'] = "'\t'"
+    result['cleanup'] = Cleanup(correct_invalid_value, missing_values='\x00')
+    result['delimiter'] = '\t'
     result['dummy_key'] = 'dummy_value'
 
     add_dialect(table_dict, table)

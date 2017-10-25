@@ -6,8 +6,7 @@ import shutil
 
 from retriever.lib.defaults import DATA_DIR
 from retriever.lib.dummy import DummyConnection
-from retriever.lib.engine import filename_from_url
-from retriever.lib.models import Engine
+from retriever.lib.engine import filename_from_url, Engine
 
 
 class engine(Engine):

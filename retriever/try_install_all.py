@@ -13,9 +13,9 @@ from __future__ import print_function
 import os
 import sys
 from imp import reload
-
-from retriever.engines import engine_list, choose_engine
-from retriever.lib.scripts import MODULE_LIST, SCRIPT_LIST
+from retriever.lib.tools import choose_engine
+from retriever.lib.compile import MODULE_LIST, SCRIPT_LIST
+from retriever import ENGINE_LIST
 
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
@@ -88,18 +88,18 @@ for engine in engine_list:
 errors = []
 for module in MODULE_LIST:
     for (key, value) in list(TEST_ENGINES.items()):
-        if module.SCRIPT.name.lower() not in IGNORE:
+        if module.name.lower() not in IGNORE:
             if value != None:
-                print("==>", module.__name__, value.name, "..........", module.SCRIPT.name)
+                print("==>", module._name, value.name, "..........", module.name)
                 try:
-                    module.SCRIPT.download(value)
+                    module.download(value)
                 except KeyboardInterrupt:
                     pass
                 except Exception as e:
                     print("ERROR.")
-                    errors.append((key, module.__name__, e))
+                    errors.append((key, module._name, e))
             else:
-                errors.append((key, "No connection detected......" + module.SCRIPT.name))
+                errors.append((key, "No connection detected......" + module.name))
 print('')
 if errors:
     print("Engine, Dataset, Error")

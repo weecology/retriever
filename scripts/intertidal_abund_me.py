@@ -6,7 +6,7 @@ try:
     from retriever.lib.scripts import open_fr, open_fw
     from retriever.lib.defaults import VERSION
 except ImportError:
-    from retriever import open_fr, open_fw, VERSION
+    from retriever.lib.scripts import open_fr, open_fw, VERSION
 
 
 class main(Script):
@@ -18,7 +18,7 @@ class main(Script):
         self.ref="https://figshare.com/collections/DENSITIES_AND_COVER_DATA_FOR_INTERTIDAL_ORGANISMS_IN_THE_GULF_OF_MAINE_USA_FROM_2003_TO_2007/3300200"
         self.description="The data set provides access to data on densities and percent cover in the 60 experimental plots from 2003 to 2007 and to update data from 1996 to 2002 that are already published in Ecological Archives.It includes densities of mussels, an herbivorous limpet, herbivorous snails, a predatory snail, a barnacle , and fucoid algae and percent cover by mussels, barnacles, fucoids, and other sessile organisms."
         self.retriever_minimum_version='2.0.dev'
-        self.version='1.5.1'
+        self.version='1.5.2'
         self.urls={"main": "https://ndownloader.figshare.com/files/5600831"}
         self.cleanup_func_table = Cleanup(correct_invalid_value, missing_values=[-999.9])
 

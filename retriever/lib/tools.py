@@ -16,10 +16,11 @@ import platform
 import shutil
 import warnings
 
+from retriever.lib.scripts import open_fr, open_fw, open_csvw
 from hashlib import md5
 from io import StringIO as newfile
 from retriever.lib.defaults import HOME_DIR, ENCODING
-from retriever.lib.scripts import MODULE_LIST
+from retriever.lib.compile import MODULE_LIST
 from retriever.lib.models import *
 import xml.etree.ElementTree as ET
 
@@ -116,58 +117,6 @@ def reset_retriever(scope="all", ask_permission=True):
                 shutil.rmtree(os.path.join(path, 'scripts'))
 
 
-def json2csv(input_file, output_file=None, header_values=None):
-    """Convert Json file to CSV.
-
-    Function is used for only testing and can handle the file of the size.
-    """
-    file_out = open_fr(input_file, encode=False)
-    # set output file name and write header
-    if output_file is None:
-        output_file = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
-    csv_out = open_fw(output_file, encode=False)
-    if os.name == 'nt':
-        outfile = csv.DictWriter(csv_out, dialect='excel', escapechar="\\", lineterminator='\n',
-                                 fieldnames=header_values)
-    else:
-        outfile = csv.DictWriter(csv_out, dialect='excel', escapechar="\\", fieldnames=header_values)
-    raw_data = json.loads(file_out.read())
-    outfile.writeheader()
-
-    for item in raw_data:
-        outfile.writerow(item)
-    file_out.close()
-    os.system("rm -r {}".format(input_file))
-    return output_file
-
-
-def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
-    """Convert xml to csv.
-
-    Function is used for only testing and can handle the file of the size.
-    """
-    file_output = open_fr(input_file, encode=False)
-    # set output file name and write header
-    if outputfile is None:
-        outputfile = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
-    csv_out = open_fw(outputfile)
-    if os.name == 'nt':
-        csv_writer = csv.writer(csv_out, dialect='excel', escapechar='\\', lineterminator='\n')
-    else:
-        csv_writer = csv.writer(csv_out, dialect='excel', escapechar='\\')
-
-    v = file_output.read()
-    csv_writer.writerow(header_values)
-    tree = ET.parse(newfile(v))
-    root = tree.getroot()
-    for rows in root.findall(row_tag):
-        x = [name.text for name in header_values for name in rows.findall(name)]
-        csv_writer.writerow(x)
-    file_output.close()
-    os.system("rm -r {}".format(input_file))
-    return outputfile
-
-
 def getmd5(data, data_type='lines'):
     """Get MD5 of a data source."""
     checksum = md5()
@@ -220,44 +169,6 @@ def sort_file(file_path):
     return file_path
 
 
-def sort_csv(filename):
-    """Sort CSV rows minus the header and return the file.
-
-    Function is used for only testing and can handle the file of the size.
-    """
-    filename = os.path.normpath(filename)
-    input_file = open_fr(filename)
-    csv_reader_infile = csv.reader(input_file, escapechar="\\")
-    #  write the data to a temporary file and sort it
-    temp_path = os.path.normpath("tempfile")
-    temp_file = open_fw(temp_path)
-
-    csv_writer = open_csvw(temp_file)
-    i = 0
-    for row in csv_reader_infile:
-        if i == 0:
-            # The first entry is the header line
-            infields = row
-            i += 1
-        else:
-            csv_writer.writerow(row)
-    input_file.close()
-    temp_file.close()
-
-    # sort the temp file
-    sorted_txt = sort_file(temp_path)
-    tmp = open_fr(sorted_txt)
-    in_txt = csv.reader(tmp, delimiter=',', escapechar="\\")
-    csv_file = open_fw(filename)
-    csv_writer = open_csvw(csv_file)
-    csv_writer.writerow(infields)
-    csv_writer.writerows(in_txt)
-    tmp.close()
-    csv_file.close()
-    os.remove(os.path.normpath(temp_path))
-    return filename
-
-
 def create_file(data, output='output_file'):
     """Write lines to file from a list."""
     output_file = os.path.normpath(output)
@@ -288,14 +199,14 @@ def get_module_version():
     modules = MODULE_LIST()
     scripts = []
     for module in modules:
-        if module.SCRIPT.public:
-            if os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.json') and module.SCRIPT.version:
-                module_name = module.__name__ + '.json'
-                scripts.append(','.join([module_name, str(module.SCRIPT.version)]))
-            elif os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.py') and \
-                    not os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.json'):
-                module_name = module.__name__ + '.py'
-                scripts.append(','.join([module_name, str(module.SCRIPT.version)]))
+        if module.public:
+            if os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.json') and module.version:
+                module_name = module._name + '.json'
+                scripts.append(','.join([module_name, str(module.version)]))
+            elif os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.py') and \
+                    not os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.json'):
+                module_name = module._name + '.py'
+                scripts.append(','.join([module_name, str(module.version)]))
 
     scripts = sorted(scripts, key=str.lower)
     return scripts

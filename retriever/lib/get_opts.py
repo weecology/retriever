@@ -1,22 +1,23 @@
 import argparse
 import os
+from retriever.lib.defaults import VERSION
+from retriever.lib.compile import MODULE_LIST
+from retriever.engines import engine_list
+import argcomplete
 
 import argcomplete
 from argcomplete.completers import ChoicesCompleter
 
-from retriever.engines import engine_list
-from retriever.lib.defaults import VERSION
-from retriever.lib.scripts import MODULE_LIST
 
 module_list = MODULE_LIST()
-script_list = [module.SCRIPT.name for module in module_list]
-json_list = [module.SCRIPT.name for module in module_list
-             if os.path.isfile('.'.join(module.__file__.split('.')[:-1]) + '.json')]
+script_list = [module.name for module in module_list]
+json_list = [module.name for module in module_list
+             if os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.json')]
 
 keywords_list = set()
 for module in module_list:
-    if hasattr(module.SCRIPT, "keywords"):
-        keywords_list = keywords_list | set(module.SCRIPT.keywords)
+    if hasattr(module, "keywords"):
+        keywords_list = keywords_list | set(module.keywords)
 
 parser = argparse.ArgumentParser(prog="retriever")
 parser.add_argument('-v', '--version', action='version', version=VERSION)
@@ -62,6 +63,7 @@ download_parser.add_argument('dataset', help='dataset name').completer = Choices
 ls_parser.add_argument('-l', help='verbose list of datasets containing following keywords '
                                   '(lists all when no keywords are specified)',
                        nargs=1).completer = ChoicesCompleter(list(keywords_list))
+ls_parser.add_argument('--debug', dest='debugScript', help='debug a certain script', action='store')
 delete_json_parser.add_argument('dataset', help='dataset name', choices=json_list)
 # retriever Install {Engine} ..
 # retriever download [options]

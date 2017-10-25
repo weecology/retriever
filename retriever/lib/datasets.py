@@ -1,4 +1,4 @@
-from retriever.lib.scripts import SCRIPT_LIST, get_script
+from retriever.lib.compile import SCRIPT_LIST, get_script
 
 
 def datasets(arg_keyword=None):

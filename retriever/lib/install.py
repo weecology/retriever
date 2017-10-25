@@ -5,7 +5,7 @@ import os
 
 from retriever.engines import choose_engine
 from retriever.lib.defaults import DATA_DIR
-from retriever.lib.scripts import SCRIPT_LIST
+from retriever.lib.compile import SCRIPT_LIST
 from retriever.lib.tools import name_matches
 
 

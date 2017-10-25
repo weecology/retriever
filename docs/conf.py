@@ -6,7 +6,7 @@ from builtins import str
 from imp import reload
 
 from retriever.lib.defaults import VERSION, COPYRIGHT
-from retriever.lib.scripts import SCRIPT_LIST
+from retriever.lib.compile import SCRIPT_LIST
 
 # sys removes the setdefaultencoding method at startup; reload to get it back
 reload(sys)

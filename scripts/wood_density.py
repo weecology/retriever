@@ -1,6 +1,5 @@
 #retriever
 """Retriever script for Zanne et al. Global wood density database.
-
 """
 from builtins import range
 
@@ -25,7 +24,7 @@ class main(Script):
         self.title = "Global wood density database - Zanne et al. 2009"
         self.name = "wood-density"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.3.1'
+        self.version = '1.3.2'
         self.urls = {"GWDD": "http://datadryad.org/bitstream/handle/10255/dryad.235/GlobalWoodDensityDatabase.xls?sequence=1"}
         self.keywords = ["Taxon > Plants", "Spatial Scale > Global",
                      "Data Type > Observational"]

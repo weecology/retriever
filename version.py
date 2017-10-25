@@ -2,28 +2,33 @@
 from __future__ import absolute_import
 
 import os
-
 from retriever.lib.defaults import VERSION
-from retriever.lib.tools import get_module_version
+from retriever.lib.compile import MODULE_LIST
 
 
-def write_version_file(scripts):
-    """The function creates / updates version.txt with the script version numbers."""
-    if os.path.isfile("version.txt"):
-        os.remove("version.txt")
+def get_module_version():
+    """This function gets the version number of the scripts and returns them in array form."""
+    modules = MODULE_LIST()
+    scripts = []
+    for module in modules:
+        if module.public:
+            if os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.json') and module.version:
+                module_name = module._name + '.json'
+                scripts.append(','.join([module_name, str(module.version)]))
+            elif os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.py') and \
+                    not os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.json'):
+                module_name = module._name + '.py'
+                scripts.append(','.join([module_name, str(module.version)]))
 
-    with open("version.txt", "w") as version_file:
-        version_file.write(VERSION)
-        for script in scripts:
-            version_file.write('\n' + script)
+    scripts = sorted(scripts, key = str.lower)
+    return scripts
 
+scripts = get_module_version()
 
-def update_version_file():
-    """Update version.txt."""
-    scripts = get_module_version()
-    write_version_file(scripts)
-    print("Version.txt updated.")
+if os.path.isfile("version.txt"):
+    os.remove("version.txt")
 
-
-if __name__ == '__main__':
-    update_version_file()
+with open("version.txt", "w") as version_file:
+    version_file.write(VERSION)
+    for script in scripts:
+        version_file.write('\n' + script)

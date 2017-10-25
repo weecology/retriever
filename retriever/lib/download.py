@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 from retriever.engines import choose_engine
-from retriever.lib.scripts import SCRIPT_LIST
+from retriever.lib.compile import SCRIPT_LIST
 from retriever.lib.tools import name_matches
 
 script_list = SCRIPT_LIST()

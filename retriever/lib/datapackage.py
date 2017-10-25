@@ -6,9 +6,8 @@ import os
 import re
 from builtins import input
 from time import sleep
-
+from retriever.lib.compile import SCRIPT_LIST
 from retriever.lib.defaults import HOME_DIR, ENCODING
-from retriever.lib.scripts import SCRIPT_LIST
 
 short_names = [script.name.lower() for script in SCRIPT_LIST()]
 

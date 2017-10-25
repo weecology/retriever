@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 import imp
 import io
 import os
@@ -34,7 +32,7 @@ else:
     os_password = ""
 
 mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, csv_engine, download_engine, json_engine, xml_engine = engine_list
-file_location = os.path.dirname(os.path.realpath(__file__))
+file_location = os.path.dirname(os.path.realpath(_file))
 retriever_root_dir = os.path.abspath(os.path.join(file_location, os.pardir))
 working_script_dir = os.path.abspath(os.path.join(retriever_root_dir, "scripts"))
 HOMEDIR = os.path.expanduser('~')
@@ -66,7 +64,7 @@ def get_csv_md5(dataset, engine, tmpdir, install_function, config):
     workdir.chdir()
     script_module = get_script_module(dataset)
     install_function(dataset.replace("_", "-"), **config)
-    engine_obj = script_module.SCRIPT.checkengine(engine)
+    engine_obj = script_module.checkengine(engine)
     engine_obj.to_csv()
     os.system("rm -r scripts") # need to remove scripts before checking md5 on dir
     current_md5 = getmd5(data=str(workdir), data_type='dir')

@@ -10,6 +10,8 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import os
+from os.path import join, exists
+import platform
 import sys
 from builtins import input
 from imp import reload
@@ -17,10 +19,10 @@ from imp import reload
 from retriever.engines import engine_list, choose_engine
 from retriever.lib.datapackage import create_json, edit_json, delete_json, get_script_filename
 from retriever.lib.datasets import datasets, dataset_names, license
-from retriever.lib.defaults import sample_script, CITATION, ENCODING
+from retriever.lib.defaults import *
 from retriever.lib.get_opts import parser
 from retriever.lib.repository import check_for_updates
-from retriever.lib.scripts import SCRIPT_LIST
+from retriever.lib.compile import SCRIPT_LIST, compile_json
 from retriever.lib.tools import name_matches, reset_retriever
 
 encoding = ENCODING.lower()
@@ -28,7 +30,6 @@ encoding = ENCODING.lower()
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding(encoding)
-
 
 def main():
     """This function launches the Data Retriever."""
@@ -40,9 +41,9 @@ def main():
     else:
         # otherwise, parse them
 
-        script_list = SCRIPT_LIST()
-
         args = parser.parse_args()
+
+        script_list = SCRIPT_LIST()
 
         if args.command == "install" and not args.engine:
             parser.parse_args(['install', '-h'])
@@ -122,6 +123,17 @@ def main():
             return
 
         if args.command == 'ls':
+
+            if args.debugScript:
+                #convert from shortname to title or script name since it can't find some of em now
+                script = [script for script in script_list if script.name.find(args.debugScript) != -1]
+                if script:
+                    if script[0]._file[-5:] == '.json':
+                        compile_json(script[0]._file[:-5], True)
+                        return
+                    raise Exception("File must be a json file to debug")
+                raise Exception("File not found")
+
             # If scripts have never been downloaded there is nothing to list
             if not script_list:
                 print("No scripts are currently available. Updating scripts now...")
@@ -147,16 +159,13 @@ def main():
 
         engine = choose_engine(args.__dict__)
 
-        if hasattr(args, 'debug') and args.debug:
+        if hasattr(args, 'debug'):
+            if args.not_cached:
+                engine.use_cache = False
             debug = True
         else:
-            debug = False
-            sys.tracebacklimit = 0
-
-        if hasattr(args, 'debug') and args.not_cached:
-            engine.use_cache = False
-        else:
             engine.use_cache = True
+            debug = False
 
         if args.dataset is not None:
             scripts = name_matches(script_list, args.dataset)

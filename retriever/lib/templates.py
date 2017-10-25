@@ -5,7 +5,7 @@ functions available for inheritance by the scripts or datasets.
 from __future__ import print_function
 
 import shutil
-
+from retriever.lib.defaults import DATA_DIR
 from retriever.lib.models import *
 from retriever.engines import choose_engine
 from retriever.lib.defaults import DATA_DIR
@@ -164,7 +164,7 @@ class HtmlTableTemplate(Script):
     pass
 
 
-TEMPLATES = [
-    ("Basic Text", BasicTextTemplate),
-    ("HTML Table", HtmlTableTemplate),
-]
+TEMPLATES = {
+   "default": BasicTextTemplate,
+   "html_table": HtmlTableTemplate
+}
