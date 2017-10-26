@@ -16,6 +16,10 @@ if os.path.exists(".git/hooks"):  # check if we are in git repo
     os.system("cp hooks/pre-commit .git/hooks/pre-commit")
     os.system("chmod +x .git/hooks/pre-commit")
 
+app_data = "~/.retriever/scripts"
+if os.path.exists(app_data):
+    os.system("rm -r {}".format(app_data))
+
 __version__ = 'v2.1.0'
 with open(os.path.join("retriever", "_version.py"), "w") as version_file:
     version_file.write("__version__ = " + "'" + __version__ + "'\n")
@@ -105,7 +109,7 @@ try:
     from retriever.compile import compile
     from retriever.lib.repository import check_for_updates
 
-    compile()
     check_for_updates(False)
+    compile()
 except:
     pass

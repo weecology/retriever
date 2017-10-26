@@ -17,7 +17,7 @@ from imp import reload
 from retriever.engines import engine_list, choose_engine
 from retriever.lib.datapackage import create_json, edit_json, delete_json, get_script_filename
 from retriever.lib.datasets import datasets, dataset_names, license
-from retriever.lib.defaults import sample_script, CITATION, ENCODING
+from retriever.lib.defaults import sample_script, CITATION, ENCODING, SCRIPT_SEARCH_PATHS
 from retriever.lib.get_opts import parser
 from retriever.lib.repository import check_for_updates
 from retriever.lib.scripts import SCRIPT_LIST
@@ -40,6 +40,10 @@ def main():
     else:
         # otherwise, parse them
 
+        if not os.path.isdir(SCRIPT_SEARCH_PATHS[1]) and not \
+                [f for f in os.listdir(SCRIPT_SEARCH_PATHS[-1])
+                 if os.path.exists(SCRIPT_SEARCH_PATHS[-1])]:
+            check_for_updates()
         script_list = SCRIPT_LIST()
 
         args = parser.parse_args()

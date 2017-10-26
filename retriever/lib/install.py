@@ -7,6 +7,7 @@ from retriever.engines import choose_engine
 from retriever.lib.defaults import DATA_DIR
 from retriever.lib.scripts import SCRIPT_LIST
 from retriever.lib.tools import name_matches
+from retriever.lib.repository import check_for_updates
 
 
 def _install(args, use_cache, debug):
@@ -15,6 +16,9 @@ def _install(args, use_cache, debug):
     engine.use_cache = use_cache
 
     script_list = SCRIPT_LIST()
+    if not script_list:
+        check_for_updates()
+        script_list = SCRIPT_LIST()
     data_sets_scripts = name_matches(script_list, args['dataset'])
     if data_sets_scripts:
         for data_sets_script in data_sets_scripts:
