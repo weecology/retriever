@@ -2,7 +2,6 @@
 
 ## Major changes
 - Add Python interface
-- Adopting the Frictionless Data specification standards
 - Add Retriever to conda
 - Auto complete of Retriever commands on Unix systems
 
@@ -10,11 +9,11 @@
 
 - Add license to datasets
 - Change the structure of raw data from string to list
-- USe precise on travis from trusty
 - Add testing on any modified dataset
 - Improve memory usage in cross-tab processing
 - Add capabilitiy for datasets to use custom Encoding
-- Test regression using python interface
+- Use new Python interface for regression testing
+- Use Frictionless Data specification terminology for internals
 
 ## New datasets
 - Add ant dataset and weather data to the portal dataset
