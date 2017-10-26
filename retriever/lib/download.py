@@ -1,11 +1,13 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
+import os
+
 from retriever.engines import choose_engine
+from retriever.lib.defaults import DATA_DIR, SCRIPT_WRITE_PATH
 from retriever.lib.scripts import SCRIPT_LIST
 from retriever.lib.tools import name_matches
-
-script_list = SCRIPT_LIST()
+from retriever.lib.repository import check_for_updates
 
 
 def download(dataset, path='./', quiet=False, subdir=False, debug=False):
@@ -18,7 +20,10 @@ def download(dataset, path='./', quiet=False, subdir=False, debug=False):
         'quiet': quiet
     }
     engine = choose_engine(args)
-
+    script_list = SCRIPT_LIST()
+    if not script_list or not os.listdir(SCRIPT_WRITE_PATH):
+        check_for_updates()
+        script_list = SCRIPT_LIST(force_compile=False)
     scripts = name_matches(script_list, args['dataset'])
     if scripts:
         for script in scripts:
