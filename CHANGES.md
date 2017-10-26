@@ -1,3 +1,55 @@
+# v2.1.0
+
+## Major changes
+- Add Python interface
+- Adopting the Frictionless Data specification standards
+- Add Retriever to conda
+- Auto complete of Retriever commands on Unix systems
+
+## Minor changes
+
+- Add license to datasets
+- Change the structure of raw data from string to list
+- USe precise on travis from trusty
+- Add testing on any modified dataset
+- Improve memory usage in cross-tab processing
+- Add capabilitiy for datasets to use custom Encoding
+- Test regression using python interface
+
+## New datasets
+- Add ant dataset and weather data to the portal dataset
+- NYC TreesCount
+- PREDICTS
+- aquatic_animal_excretion
+- biodiversity_response
+- bird_migration_data
+- chytr_disease_distr
+- croche_vegetation_data
+- dicerandra_frutescens
+- flensburg_food_web
+- great_basin_mammal_abundance
+- macroalgal_communities
+- macrocystis_variation
+- marine_recruitment_data
+- mediter_basin_plant_traits
+- nematode_traits
+- ngreatplains-flowering-dates
+- portal-dev
+- portal
+- predator_prey_body_ratio
+- predicts
+- socean_diet_data
+- species_exctinction_rates
+- streamflow_conditions
+- tree_canopy_geometries
+- turtle_offspring_nesting
+- Add vertnet individual datasets
+  vertnet_amphibians
+  vertnet_birds
+  vertnet_fishes
+  vertnet_mammals
+  vertnet_reptiles
+
 # v2.0.0
 
 ## Major changes

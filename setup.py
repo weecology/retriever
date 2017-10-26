@@ -16,7 +16,7 @@ if os.path.exists(".git/hooks"):  # check if we are in git repo
     os.system("cp hooks/pre-commit .git/hooks/pre-commit")
     os.system("chmod +x .git/hooks/pre-commit")
 
-__version__ = 'v2.1.dev'
+__version__ = 'v2.1.0'
 with open(os.path.join("retriever", "_version.py"), "w") as version_file:
     version_file.write("__version__ = " + "'" + __version__ + "'\n")
     version_file.close()
