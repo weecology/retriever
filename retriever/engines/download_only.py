@@ -119,7 +119,7 @@ keep_methods = {'table_exists',
                 'auto_create_table',
                 'insert_data_from_url',
                 }
-remove_methods = ['insert_data_from_file', 'create_db']
+remove_methods = ['insert_data_from_file', 'create_db', "create_table"]
 for name, method in methods:
     if (name not in keep_methods and
                 'download' not in name and
