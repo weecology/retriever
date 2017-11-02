@@ -7,8 +7,8 @@ from collections import OrderedDict
 from retriever.lib.defaults import DATA_DIR
 from retriever.lib.dummy import DummyConnection
 from retriever.lib.models import Engine
-from retriever.lib.defualts_fn import open_fr, open_fw
-from retriever.lib.tools import json2csv, sort_csv
+from retriever.lib.tools import open_fr, open_fw
+from retriever.lib.engine_tools import json2csv, sort_csv
 
 
 class engine(Engine):

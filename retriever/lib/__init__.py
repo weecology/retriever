@@ -11,7 +11,7 @@ from .install import install_postgres
 from .install import install_sqlite
 from .install import install_xml
 from .repository import check_for_updates
-from .tools import reset_retriever
+from .engine_tools import reset_retriever
 
 __all__ = [
     'check_for_updates',

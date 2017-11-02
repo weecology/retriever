@@ -25,7 +25,7 @@ reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding(encoding)
 import pytest
-from retriever.lib.tools import getmd5
+from retriever.lib.engine_tools import getmd5
 from retriever.engines import engine_list
 
 # Set postgres password, Appveyor service needs the password given

@@ -19,8 +19,8 @@ import pytest
 from retriever.lib.compile import compile_json
 from retriever.lib.defaults import HOME_DIR
 from retriever.engines import engine_list
-from retriever.lib.tools import file_2list
-from retriever.lib.tools import create_file
+from retriever.lib.engine_tools import file_2list
+from retriever.lib.engine_tools import create_file
 
 # Set postgres password, Appveyor service needs the password given
 # The Travis service obtains the password from the config file.

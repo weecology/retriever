@@ -14,7 +14,7 @@ from retriever.lib.excel import Excel
 from pkg_resources import parse_version
 try:
     from retriever.lib.defaults import VERSION
-    from retriever.lib.scripts import open_fw, open_csvw, to_str
+    from retriever.lib.tools import open_fw, open_csvw, to_str
 except ImportError:
     from retriever import HOME_DIR, open_fr, open_fw, open_csvw, to_str, VERSION
 

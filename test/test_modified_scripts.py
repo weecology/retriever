@@ -17,7 +17,7 @@ from distutils.version import LooseVersion
 from retriever.engines import choose_engine, engine_list
 from retriever.lib.defaults import ENCODING
 from retriever.lib.scripts import MODULE_LIST, SCRIPT_LIST
-from retriever.lib.tools import get_module_version
+from retriever.lib.engine_tools import get_module_version
 
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):

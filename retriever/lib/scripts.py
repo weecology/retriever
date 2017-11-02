@@ -2,10 +2,10 @@ from __future__ import print_function
 
 from future import standard_library
 
+from retriever.lib.tools import open_fr
+
 standard_library.install_aliases()
-import csv
 import imp
-import io
 import os
 import sys
 import urllib.request
@@ -15,7 +15,7 @@ from os.path import join, isfile, getmtime, exists, abspath
 
 from pkg_resources import parse_version
 
-from retriever.lib.defaults import SCRIPT_SEARCH_PATHS, VERSION, ENCODING, SCRIPT_WRITE_PATH
+from retriever.lib.defaults import SCRIPT_SEARCH_PATHS, VERSION, SCRIPT_WRITE_PATH
 from retriever.lib.compile import compile_json
 
 
@@ -39,11 +39,7 @@ def MODULE_LIST(force_compile=False):
     for search_path in [search_path for search_path in SCRIPT_SEARCH_PATHS if exists(search_path)]:
         to_compile = [
             file for file in os.listdir(search_path) if file[-5:] == ".json" and
-            file[0] != "_" and (
-                (not isfile(join(search_path, file[:-5] + '.py'))) or (
-                    isfile(join(search_path, file[:-5] + '.py')) and (
-                        getmtime(join(search_path, file[:-5] + '.py')) < getmtime(
-                            join(search_path, file)))) or force_compile)]
+            file[0] != "_"]
 
         datapackages_file = join(abspath(search_path), "datapackages.yml")
         if exists(datapackages_file):
@@ -116,57 +112,3 @@ def get_script(dataset):
         return scripts[dataset]
     else:
         raise KeyError("No dataset named: {}".format(dataset))
-
-
-def open_fr(file_name, encoding=ENCODING, encode=True):
-    """Open file for reading respecting Python version and OS differences.
-
-    Sets newline to Linux line endings on Windows and Python 3
-    When encode=False does not set encoding on nix and Python 3 to keep as bytes
-    """
-    if sys.version_info >= (3, 0, 0):
-        if os.name == 'nt':
-            file_obj = io.open(file_name, 'r', newline='', encoding=encoding)
-        else:
-            if encode:
-                file_obj = io.open(file_name, "r", encoding=encoding)
-            else:
-                file_obj = io.open(file_name, "r")
-    else:
-        file_obj = io.open(file_name, "r", encoding=encoding)
-    return file_obj
-
-
-def open_fw(file_name, encoding=ENCODING, encode=True):
-    """Open file for writing respecting Python version and OS differences.
-
-    Sets newline to Linux line endings on Python 3
-    When encode=False does not set encoding on nix and Python 3 to keep as bytes
-    """
-    if sys.version_info >= (3, 0, 0):
-        if encode:
-            file_obj = io.open(file_name, 'w', newline='', encoding=encoding)
-        else:
-            file_obj = io.open(file_name, 'w', newline='')
-    else:
-        file_obj = io.open(file_name, 'wb')
-    return file_obj
-
-
-def open_csvw(csv_file, encode=True):
-    """Open a csv writer forcing the use of Linux line endings on Windows.
-
-    Also sets dialect to 'excel' and escape characters to '\\'
-    """
-    if os.name == 'nt':
-        csv_writer = csv.writer(csv_file, dialect='excel', escapechar='\\', lineterminator='\n')
-    else:
-        csv_writer = csv.writer(csv_file, dialect='excel', escapechar='\\')
-    return csv_writer
-
-
-def to_str(object, object_encoding=sys.stdout):
-    if sys.version_info >= (3, 0, 0):
-        enc = object_encoding.encoding
-        return str(object).encode(enc, errors='backslashreplace').decode("latin-1")
-    return object
