@@ -1,7 +1,7 @@
 ![Retriever logo](http://i.imgur.com/se7TtrK.png)
 
 
-[![Build Status](https://travis-ci.org/weecology/retriever.png)](https://travis-ci.org/weecology/retriever)
+[![Build Status](https://travis-ci.org/weecology/retriever.svg?branch=master)](https://travis-ci.org/weecology/retriever)
 [![Build Status (windows)](https://ci.appveyor.com/api/projects/status/qetgo4jxa5769qtb/branch/master?svg=true)](https://ci.appveyor.com/project/ethanwhite/retriever/branch/master)
 [![Research software impact](http://depsy.org/api/package/pypi/retriever/badge.svg)](http://depsy.org/package/python/retriever)
 [![codecov.io](https://codecov.io/github/weecology/retriever/coverage.svg?branch=master)](https://codecov.io/github/weecology/retriever?branch=master)
