@@ -1,7 +1,7 @@
 ---
 title: 'Retriever: Data Retrieval Tool'
 tags:
-  - data retrieval, dataset, python, data, data science, datasets
+  - data retrieval, data processing, python, data, data science, datasets
 authors:
  - name: Henry Kironde
    orcid: 0000-0001-7105-5808
@@ -69,7 +69,7 @@ bibliography: paper.bib
 
 # Summary
 
-The Data Retriever automates the first steps in the data analysis workflow by downloading, cleaning, and standardizing tabular datasets, and importing them into relational databases, flat files, or programming languages (Morris and White 2013). The automation of this process reduces the time for a user to get most large datasets up and running by hours to days.The retriever uses a plugin infrastructure for both datasets and storage backends. New datasets that are relatively well structured can be added adding a JSON file following the Frictionless Data tabular data metadata package standard (frictionlessdata 2017). More complex datasets can be added using a Python script to handle complex data cleaning and merging tasks and then defining the metadata associated with the cleaned tables. New storage backends can be added by overloading a general class with details for storing the data in new file formats or database management systems. The retriever has both a Python API and a command line interface. An R package that wraps the command line interface and a Julia package that wraps the Python API are also available.
+The Data Retriever automates the first steps in the data analysis workflow by downloading, cleaning, and standardizing tabular datasets, and importing them into relational databases, flat files, or programming languages [@Morris2013]. The automation of this process reduces the time for a user to get most large datasets up and running by hours to days.The retriever uses a plugin infrastructure for both datasets and storage backends. New datasets that are relatively well structured can be added adding a JSON file following the Frictionless Data tabular data metadata package standard [@frictionlessdata_specs]. More complex datasets can be added using a Python script to handle complex data cleaning and merging tasks and then defining the metadata associated with the cleaned tables. New storage backends can be added by overloading a general class with details for storing the data in new file formats or database management systems. The retriever has both a Python API and a command line interface. An R package that wraps the command line interface and a Julia package that wraps the Python API are also available.
 
 The 2.0 and 2.1 releases add extensive new functionality. This includes the Python API, the use of the Frictionless Data metadata standard, Python 3 support, JSON and XML backends, and autocompletion for the command line interface.
 
