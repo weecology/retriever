@@ -18,6 +18,7 @@ from pkg_resources import parse_version
 from retriever.lib.defaults import SCRIPT_SEARCH_PATHS, VERSION, SCRIPT_WRITE_PATH
 from retriever.lib.compile import compile_json
 
+global_temp_scripts = {}
 
 def check_retriever_minimum_version(module):
     mod_ver = module.retriever_minimum_version
@@ -31,6 +32,9 @@ def check_retriever_minimum_version(module):
 
 def MODULE_LIST(force_compile=False):
     """Load scripts from scripts directory and return list of modules."""
+    if not force_compile and global_temp_scripts:
+        return global_temp_scripts._getScripts()
+
     modules = []
     loaded_scripts = []
     if not os.path.isdir(SCRIPT_WRITE_PATH):
@@ -112,3 +116,12 @@ def get_script(dataset):
         return scripts[dataset]
     else:
         raise KeyError("No dataset named: {}".format(dataset))
+
+class Singleton_scripts:
+    def __init__(self):
+        self._shared_scripts = SCRIPT_LIST()
+
+    def _getScripts(self):
+        return self._shared_scripts
+
+global_temp_scripts = Singleton_scripts()
