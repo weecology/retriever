@@ -3,7 +3,7 @@ title: 'Retriever: Data Retrieval Tool'
 tags:
   - data retrieval, data processing, python, data, data science, datasets
 authors:
- - name: Henry Kironde
+ - name: Henry Senyondo
    orcid: 0000-0001-7105-5808
    affiliation: 1
  - name: Benjamin D. Morris
