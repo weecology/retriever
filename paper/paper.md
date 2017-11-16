@@ -38,8 +38,6 @@ authors:
  - name: Kevinkumar Amipara
    orcid: 0000-0001-5021-2018
    affiliation: 9
- - name : Prabh Simran Singh Baweja
-   orcid: 0000-0003-3997-4470
  - name: Ethan P. White
    orcid: 0000-0001-6728-7745
    affiliation: 1, 2
