@@ -25,6 +25,7 @@ authors:
    affiliation: 4
  - name: Deborah Gertrude Digges
    orcid: 0000-0002-7840-5054
+   affiliation: 10
  - name: Kapil Kumar
    orcid: 0000-0002-2292-1033
    affiliation: 7
@@ -61,6 +62,8 @@ affiliations:
    index: 8
  - name: Sardar Vallabhbhai National Institute of Technology, Surat
    index: 9
+ - name: PES Institute of Technology, Bengaluru
+   index: 10
 
 
 date: 16 September 2017 
