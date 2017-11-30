@@ -93,9 +93,15 @@ config_path = os.path.join(HOME_DIR, 'connections.config')
 def reset_retriever(scope="all", ask_permission=True):
     """Remove stored information on scripts, data, and connections."""
     warning_messages = {
-        'all': "\nThis will remove existing scripts, cached data, and information on database connections. \nSpecifically it will remove the scripts and raw_data folders and the connections.config file in {}. \nDo you want to proceed? (y/N)\n",
-        'scripts': "\nThis will remove existing scripts. \nSpecifically it will remove the scripts folder in {}.\nDo you want to proceed? (y/N)\n",
-        'data': "\nThis will remove raw data cached by the Retriever. \nSpecifically it will remove the raw_data folder in {}. \nDo you want to proceed? (y/N)\n"
+        'all': "\nThis will remove existing scripts, cached data, and information on database connections." 
+               +"\nSpecifically it will remove the scripts and raw_data folders and the connections.config file in {}."
+               +"\nDo you want to proceed? (y/N)\n",
+        'scripts': "\nThis will remove existing scripts."
+                   +"\nSpecifically it will remove the scripts folder in {}." 
+                   +"\nDo you want to proceed? (y/N)\n",
+        'data': "\nThis will remove raw data cached by the Retriever." 
+                +"\nSpecifically it will remove the raw_data folder in {}."
+                +"\nDo you want to proceed? (y/N)\n"
     }
 
     path = os.path.normpath(HOME_DIR)

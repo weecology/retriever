@@ -59,3 +59,4 @@ def to_str(object, object_encoding=sys.stdout):
         enc = object_encoding.encoding
         return str(object).encode(enc, errors='backslashreplace').decode("latin-1")
     return object
+    

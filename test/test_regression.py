@@ -173,19 +173,3 @@ def test_download_regression(dataset, expected):
     download(dataset, "raw_data/{0}".format(dataset))
     current_md5 = getmd5(data="raw_data/{0}".format(dataset), data_type='dir')
     assert current_md5 == expected
-
-
-# def test_scripts():
-#     """Test if all datasets are working well.
-#
-#     The dataset list is in the version.txt and includes one extra line for the version
-#
-#     """
-#     os.chdir(retriever_root_dir)
-#     input_file = "version.txt"
-#     if sys.version_info >= (3, 0, 0):
-#         input_obj = io.open(input_file, 'rU')
-#     else:
-#         input_obj = io.open(input_file, encoding=ENCODING)
-#     abs_list = [line.strip() for line in input_obj.readlines()]
-#     assert len([data_set for data_set in datasets()]) == len(abs_list) - 1
