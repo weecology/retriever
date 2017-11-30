@@ -25,6 +25,7 @@ def compile_json(json_file, debug=False):
     """
     json_object = OrderedDict()
     json_file = str(json_file) + ".json"
+    pp = pprint.PrettyPrinter(indent=1)
 
     try:
         json_object = json.load(open(json_file, "r"))
@@ -67,6 +68,14 @@ def compile_json(json_file, debug=False):
         for table_name, table_spec in temp_tables["tables"].items():
             json_object["tables"][table_name] = myTables[temp_tables["tables"][table_name]["format"]](**table_spec)
         json_object.pop("resources", None)
+
+        if debug:
+            pprint_objects = json_object
+
+            for item in pprint_objects["tables"]:
+                pprint_objects["tables"][item] = json_object["tables"][item].__dict__
+            print("Values being passed to template: ")
+            pp.pprint(pprint_objects)
 
         return TEMPLATES["default"](**json_object)
     return None
