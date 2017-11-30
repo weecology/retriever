@@ -53,11 +53,11 @@ def compile_json(json_file, debug=False):
 
             rspec = set(spec_list)
             if not rspec.intersection(resource_item.keys()) == rspec:
-                raise ValueError("Check either {} fields in  Package {}".format(rspec, json_file))
+                return
 
             for spec in spec_list:
                 if not resource_item[spec]:
-                    raise ValueError("Check either {} for missing values.\n Package {}".format(rspec, json_file))
+                    return
 
         json_object["tables"] = {}
         temp_tables = {}
