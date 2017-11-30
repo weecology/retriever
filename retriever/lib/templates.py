@@ -47,7 +47,7 @@ class Script(object):
             desc += "\n" + self.reference_url()
         return desc
 
-    def download(self, engine=None, debug=False,):
+    def download(self, engine=None, debug=False):
         """Generic function to prepare for installation or download."""
         self.engine = self.checkengine(engine)
         self.engine.debug = debug
@@ -105,7 +105,7 @@ class BasicTextTemplate(Script):
         for key in kwargs:
             setattr(self, key, kwargs[key])
 
-    def download(self, engine=None, debug=False, ):
+    def download(self, engine=None, debug=False):
         """Defines the download processes for scripts that utilize the default
         pre processing steps provided by the retriever."""
         Script.download(self, engine, debug)

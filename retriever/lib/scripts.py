@@ -56,7 +56,9 @@ def MODULE_LIST(force_compile=False):
                     for line in file_obj:
                         if line.strip():
                             script_url = line.split(": ")
-                            urllib.request.urlretrieve(script_url[1], join(SCRIPT_WRITE_PATH,  str(script_url[0]).replace("-","_") + ".json"))
+                            json_file_name = str(script_url[0]).replace("-","_") + ".json"
+                            json_file_path = join(SCRIPT_WRITE_PATH, json_file_name)
+                            urllib.request.urlretrieve(script_url[1], json_file_path)
 
         for script in to_compile:
             script_name = '.'.join(script.split('.')[:-1])
