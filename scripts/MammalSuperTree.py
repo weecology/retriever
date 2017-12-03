@@ -1,7 +1,7 @@
 #retriever
 from pkg_resources import parse_version
 
-SCRIPT_VER = "1.2.2"
+SCRIPT_VER = "1.2.3"
 try:
     from retriever.lib.defaults import VERSION
 except ImportError:

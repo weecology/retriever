@@ -17,7 +17,7 @@ class main(Script):
         self.title = "A database on the life history traits of the Northwest European flora" 
         self.name = "plant-life-hist-eu"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.4.1'
+        self.version = '1.4.2'
         self.ref = "http://www.uni-oldenburg.de/en/biology/landeco/research/projects/leda/"
         self.urls = {
             "Age_of_first_flowering": "http://www.uni-oldenburg.de/fileadmin/user_upload/biologie/ag/landeco/download/LEDA/Data_files/age_of_first_flowering.txt",
