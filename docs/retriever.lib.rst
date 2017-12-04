@@ -68,14 +68,6 @@ retriever.lib.get_opts module
     :undoc-members:
     :show-inheritance:
 
-retriever.lib.parse_script_to_json module
------------------------------------------
-
-.. automodule:: retriever.lib.parse_script_to_json
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 retriever.lib.repository module
 -------------------------------
 
