@@ -11,7 +11,7 @@ from retriever.lib.cleanup import *
 
 
 class TableMain(object):
-    """Refactor table moddule since raster, vector and tabular data
+    """Refactor table module since raster, vector and tabular data
 
     all have some common table features
     """

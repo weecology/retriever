@@ -24,19 +24,19 @@ user to get most large datasets up and running by hours, and in some cases days.
 
 If you have Python installed you can install the current release using either `pip`:
 
-```
+```bash
 pip install retriever
 ```
 
 or `conda` after adding the `conda-forge` channel (`conda config --add channels conda-forge`):
 
-```
+```bash
 conda install retriever
 ```
 
 Depending on your system configuration this may require `sudo` for `pip`:
 
-```
+```bash
 sudo pip install retriever
 ```
 

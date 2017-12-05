@@ -129,7 +129,6 @@ def main():
         if args.command == 'ls':
 
             if args.debugScript:
-                #convert from shortname to title or script name since it can't find some of em now
                 script = [script for script in script_list if script.name.find(args.debugScript) != -1]
                 if script:
                     if script[0]._file[-5:] == '.json':

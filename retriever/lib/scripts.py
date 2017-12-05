@@ -23,9 +23,11 @@ global_temp_scripts = {}
 def check_retriever_minimum_version(module):
     mod_ver = module.retriever_minimum_version
     m = module.name
-    if not parse_version(VERSION) >= parse_version("{}".format(mod_ver)):
+    if not hasattr(module, "retriever_minimum_version"):
+        return False
+    if parse_version(VERSION) < parse_version("{}".format(mod_ver)):
         print("{} is supported by Retriever version ""{}".format(m, mod_ver))
-        print("Current version is {}".format(VERSION))
+        print("Your current version is {}".format(VERSION))
         return False
     return True
 
@@ -50,7 +52,7 @@ def MODULE_LIST(force_compile=False):
             try:
                 file_obj = open(datapackages_file)
             except IOError:
-                print('{} file cant be read'.format(datapackages_file))
+                print('{} file cannot be read'.format(datapackages_file))
             else:
                 with file_obj:
                     for line in file_obj:
@@ -65,9 +67,7 @@ def MODULE_LIST(force_compile=False):
             if script_name not in loaded_scripts:
                 compiled_script = compile_json(join(search_path, script_name))
                 if compiled_script:
-                    if hasattr(compiled_script, "retriever_minimum_version") \
-                            and not check_retriever_minimum_version(
-                                compiled_script):
+                    if not check_retriever_minimum_version(compiled_script):
                         continue
                     setattr(compiled_script, "_file", os.path.join(search_path, script))
                     setattr(compiled_script, "_name", script_name)
@@ -119,11 +119,11 @@ def get_script(dataset):
     else:
         raise KeyError("No dataset named: {}".format(dataset))
 
-class Singleton_scripts:
+class StoredScripts:
     def __init__(self):
         self._shared_scripts = SCRIPT_LIST()
 
     def _getScripts(self):
         return self._shared_scripts
 
-global_temp_scripts = Singleton_scripts()
+global_temp_scripts = StoredScripts()
