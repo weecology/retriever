@@ -1,7 +1,8 @@
 from __future__ import absolute_import
 from __future__ import print_function
-
+from imp import reload
 import sys
+import sphinx_rtd_theme
 from builtins import str
 from imp import reload
 
@@ -36,13 +37,14 @@ for script_num, script in enumerate(script_list, start=1):
         reference_link = list(script.urls.values())[0].rpartition('/')[0]
     else:
         reference_link = ""
-    datasetfile.write("| " + str(script_num) + ". **{}** "
-                                               "\n\n| **name:**    {}"
-                                               "\n| **reference:**    {}"
-                                               "\n| **citation:**    {}"
-                                               "\n| **description:**   {}"
-                                               "\n\n\n".format(script.title, script.name, reference_link,
-                                                               script.citation, script.description))
+        
+    title = str(script_num) + ". **{}**\n".format(script.title)
+    datasetfile.write(title)
+    datasetfile.write("~" * len(title) + "\n\n")
+    datasetfile.write(":name: {}\n\n".format(script.name))
+    datasetfile.write(":reference:  `{}`\n\n".format(reference_link))
+    datasetfile.write(":citation: {}\n\n".format(script.citation))
+    datasetfile.write(":description:  {}\n\n".format(script.description))
 datasetfile.close()
 
 needs_sphinx = '1.3'
@@ -97,7 +99,7 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'classic'
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -105,7 +107,7 @@ html_theme = 'classic'
 # html_theme_options = {}
 
 # Add any paths that contain custom themes here, relative to this directory.
-# html_theme_path = []
+html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".

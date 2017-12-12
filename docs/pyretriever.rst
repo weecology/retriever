@@ -133,7 +133,7 @@ Install Datasets
 
 Retriever supports installation of datasets into 7 major databases and file formats.
 
-.. code-block::
+.. code-block:: python
 
   csv
   json
@@ -174,7 +174,7 @@ There are separate functions for installing into each of the 7 backends:
 
 A description of default parameters mentioned above:
 
-.. code-block::
+.. code-block:: python
 
   compile   (Bool): Setting True recompiles scripts upon installation.
 
