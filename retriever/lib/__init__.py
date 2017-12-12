@@ -1,5 +1,4 @@
-"""retriever.lib contains th
- core Data Retriever modules."""
+"""retriever.lib contains the core Data Retriever modules."""
 
 from .datasets import datasets
 from .datasets import dataset_names

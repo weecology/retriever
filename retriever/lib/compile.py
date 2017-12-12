@@ -52,13 +52,8 @@ def compile_json(json_file, debug=False):
 
             # Check for required resource fields
             spec_list = ["name", "url"]
-
-            rspec = set(spec_list)
-            if not rspec.intersection(resource_item.keys()) == rspec:
-                return
-
             for spec in spec_list:
-                if not resource_item[spec]:
+                if not resource_item.get(spec, None):
                     return
 
         json_object["tables"] = {}
