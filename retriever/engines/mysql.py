@@ -51,8 +51,8 @@ class engine(Engine):
     def insert_data_from_file(self, filename):
         """Call MySQL "LOAD DATA LOCAL INFILE" statement to perform a bulk insert."""
 
-        mysql_set_autocommit_off = """SET autocommit=0; SET UNIQUE_CHECKS=0; SET FOREIGN_KEY_CHECKS=0; SET sql_log_bin=0;"""
-        mysql_set_autocommit_on = """SET GLOBAL innodb_flush_log_at_trx_commit=1; COMMIT; SET autocommit=1; SET unique_checks=1; SET foreign_key_checks=1;"""
+        mysql_set_autocommit_off = """SET autocommit=0;"""
+        mysql_set_autocommit_on = """SET autocommit=1;"""
 
         self.get_cursor()
         ct = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
@@ -65,19 +65,21 @@ class engine(Engine):
 
             columns = self.table.get_insert_columns()
             statement = """
+BEGIN;
 LOAD DATA LOCAL INFILE '""" + filename.replace("\\", "\\\\") + """'
 INTO TABLE """ + self.table_name() + """
 FIELDS TERMINATED BY '""" + self.table.delimiter + """'
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\\n'
 IGNORE """ + str(self.table.header_rows) + """ LINES
-(""" + columns + ")"
+(""" + columns + "); COMMIT;"
             try:
                 self.cursor.execute(mysql_set_autocommit_off)
                 self.cursor.execute(statement)
 
                 self.cursor.execute(mysql_set_autocommit_on)
             except Exception as e:
+                self.cursor.execute("ROLLBACK;")
                 self.disconnect()  # If the execute fails the database connection can get hung up
                 self.cursor.execute(mysql_set_autocommit_on)
                 return Engine.insert_data_from_file(self, filename)
