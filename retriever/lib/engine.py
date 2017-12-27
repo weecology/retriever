@@ -136,7 +136,7 @@ class Engine(object):
         real_line_length = 0
         for values in lines:
             initial_cols = len(self.table.columns) - \
-                (3 if hasattr(self.table, "ct_names") else 2)
+                           (3 if hasattr(self.table, "ct_names") else 2)
             # add one if auto increment is not set to get the right initial columns
             if not self.table.columns[0][1][0] == "pk-auto":
                 initial_cols += 1
@@ -412,7 +412,7 @@ class Engine(object):
             print("\nDownloading " + filename + "...")
             try:
                 urlretrieve(url, path, reporthook=reporthook)
-            except:
+            except ImportError:
                 # For some urls lacking filenames urlretrieve from the future
                 # package seems to fail. This issue occurred in the PlantTaxonomy
                 # script. If this happens, fall back to the standard Python 2 version.
