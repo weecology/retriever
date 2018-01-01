@@ -44,7 +44,7 @@ class Engine(object):
     use_cache = True
     debug = False
     warnings = []
-    _metaclass_ = ABCMeta
+    __metaclass__ = ABCMeta
 
     def connect(self, force_reconnect=False):
         if force_reconnect:
