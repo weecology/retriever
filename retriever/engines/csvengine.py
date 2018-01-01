@@ -29,7 +29,8 @@ class engine(Engine):
 
     def create_db(self):
         """Override create_db since there is no database just a CSV file"""
-        return None
+        raise NotImplementedError
+
 
     def create_table(self):
         """Create the table by creating an empty csv file"""
