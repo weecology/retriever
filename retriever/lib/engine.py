@@ -662,7 +662,7 @@ class Engine(object):
     
     
     def set_engine_encoding(self):
-        raise NotImplementedError
+        pass
 
     def set_table_delimiter(self, file_path):
         dataset_file = open_fr(file_path)
