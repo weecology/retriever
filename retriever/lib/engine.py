@@ -10,7 +10,7 @@ from builtins import input
 from builtins import zip
 from builtins import next
 from builtins import str
-from abc import ABCMeta, abstractmethod
+from abc import abstractmethod
 import sys
 import os
 import getpass
