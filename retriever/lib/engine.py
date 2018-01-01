@@ -10,6 +10,7 @@ from builtins import input
 from builtins import zip
 from builtins import next
 from builtins import str
+from abc import ABCMeta, abstractmethod
 import sys
 import os
 import getpass
@@ -43,6 +44,7 @@ class Engine(object):
     use_cache = True
     debug = False
     warnings = []
+    _metaclass_ = ABCMeta
 
     def connect(self, force_reconnect=False):
         if force_reconnect:
@@ -657,9 +659,10 @@ class Engine(object):
         if self.debug:
             print(insert_stmt)
         return insert_stmt
-
+    
+    @abstractmethod
     def set_engine_encoding(self):
-        raise NotImplementedError
+        pass
 
     def set_table_delimiter(self, file_path):
         dataset_file = open_fr(file_path)
