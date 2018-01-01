@@ -10,7 +10,6 @@ from builtins import input
 from builtins import zip
 from builtins import next
 from builtins import str
-from abc import ABCMeta, abstractmethod
 import sys
 import os
 import getpass
@@ -28,7 +27,6 @@ from retriever.lib.warning import Warning
 
 
 class Engine(object):
-    __metaclass__ = ABCMeta
     """A generic database system. Specific database platforms will inherit
     from this class."""
 
@@ -64,11 +62,11 @@ class Engine(object):
             self._connection = None
             self._cursor = None
     
-    @abstractmethod
+    
     def get_connection(self):
         """This method should be overloaded by specific implementations
         of Engine."""
-        pass
+        raise NotImplementedError
 
     def add_to_table(self, data_source):
         """This function adds data to a table from one or more lines specified
@@ -662,9 +660,9 @@ class Engine(object):
             print(insert_stmt)
         return insert_stmt
     
-    @abstractmethod
+    
     def set_engine_encoding(self):
-        pass
+        raise NotImplementedError
 
     def set_table_delimiter(self, file_path):
         dataset_file = open_fr(file_path)
