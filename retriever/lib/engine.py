@@ -28,6 +28,7 @@ from retriever.lib.warning import Warning
 
 
 class Engine(object):
+    __metaclass__ = ABCMeta
     """A generic database system. Specific database platforms will inherit
     from this class."""
 
@@ -44,7 +45,7 @@ class Engine(object):
     use_cache = True
     debug = False
     warnings = []
-    __metaclass__ = ABCMeta
+    
 
     def connect(self, force_reconnect=False):
         if force_reconnect:
