@@ -44,7 +44,7 @@ class Engine(object):
     use_cache = True
     debug = False
     warnings = []
-    
+    __metaclass__ = ABCMeta
 
     def connect(self, force_reconnect=False):
         if force_reconnect:
@@ -62,7 +62,8 @@ class Engine(object):
             self.connection.close()
             self._connection = None
             self._cursor = None
-
+    
+    @abstractmethod
     def get_connection(self):
         """This method should be overloaded by specific implementations
         of Engine."""
