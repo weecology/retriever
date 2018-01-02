@@ -44,7 +44,6 @@ class Engine(object):
     debug = False
     warnings = []
     
-
     def connect(self, force_reconnect=False):
         if force_reconnect:
             self.disconnect()
@@ -61,7 +60,6 @@ class Engine(object):
             self.connection.close()
             self._connection = None
             self._cursor = None
-    
     
     def get_connection(self):
         """This method should be overloaded by specific implementations
