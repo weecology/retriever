@@ -658,7 +658,6 @@ class Engine(object):
             print(insert_stmt)
         return insert_stmt
     
-    
     def set_engine_encoding(self):
         pass
 
