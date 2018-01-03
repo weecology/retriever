@@ -1,26 +1,33 @@
 from retriever.lib.scripts import SCRIPT_LIST, get_script
 
 
-def datasets(arg_keyword=None):
-    """Return list of all available datasets."""
+def datasets(keywords=None, licenses=None):
+    """Search all datasets by keywords and licenses."""
     script_list = SCRIPT_LIST()
 
-    all_scripts = []
+    if not keywords and not licenses:
+        return sorted(script_list, key=lambda s: s.name.lower())
 
+    result_scripts = set()
+    if licenses:
+        licenses = [l.lower() for l in licenses]
     for script in script_list:
         if script.name:
-            if arg_keyword:
-                keywords = script.title + ',' + script.name
+            if licenses:
+                script_license = script.licenses[0]['name']
+                if script_license and script_license.lower() in licenses:
+                    result_scripts.add(script)
+                    continue
+            if keywords:
+                script_keywords = script.title + ' ' + script.name
                 if script.keywords:
-                    keywords = keywords + ',' + ','.join(script.keywords)
-                if keywords.lower().find(arg_keyword.lower()) != -1:
-                    all_scripts.append(script)
-            else:
-                all_scripts.append(script)
-
-    all_scripts = sorted(all_scripts, key=lambda s: s.name.lower())
-
-    return all_scripts
+                    script_keywords = script_keywords + ' ' + '-'.join(script.keywords)
+                script_keywords = script_keywords.lower()
+                for k in keywords:
+                    if script_keywords.find(k.lower()) != -1:
+                        result_scripts.add(script)
+                        break
+    return sorted(list(result_scripts), key=lambda s: s.name.lower())
 
 
 def dataset_names():
@@ -37,3 +44,9 @@ def dataset_names():
 def license(dataset):
     """Get the license for a dataset."""
     return get_script(dataset).licenses[0]['name']
+
+
+def dataset_licenses():
+    """Return set with all available licenses."""
+    return set([
+        str(script.licenses[0]['name']).lower() for script in SCRIPT_LIST()])
