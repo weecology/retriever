@@ -62,7 +62,7 @@ class Engine(object):
             self._cursor = None
 
     def get_connection(self):
-        """This method should be overidden by specific implementations
+        """This method should be overridden by specific implementations
         of Engine."""
         raise NotImplementedError
 
