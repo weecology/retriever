@@ -23,6 +23,7 @@ class engine(Engine):
         "char": "VARCHAR",
         "bool": "BIT",
     }
+    insert_limit = 400
     required_opts = [("file",
                       "Enter the filename of your Access database",
                       os.path.join(DATA_DIR, "access.mdb"),
