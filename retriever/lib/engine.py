@@ -43,7 +43,7 @@ class Engine(object):
     use_cache = True
     debug = False
     warnings = []
-    
+
     def connect(self, force_reconnect=False):
         if force_reconnect:
             self.disconnect()
@@ -60,7 +60,7 @@ class Engine(object):
             self.connection.close()
             self._connection = None
             self._cursor = None
-    
+
     def get_connection(self):
         """This method should be overridden by specific implementations
         of Engine."""
@@ -657,7 +657,7 @@ class Engine(object):
         if self.debug:
             print(insert_stmt)
         return insert_stmt
-    
+
     def set_engine_encoding(self):
         pass
 
