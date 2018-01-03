@@ -20,7 +20,7 @@ class engine(Engine):
         "char": "TEXT",
         "bool": "INTEGER",
     }
-    insert_limit = 2000
+    insert_limit = 400
     required_opts = [
         ("table_name",
          "Format of table name",
