@@ -20,7 +20,7 @@ class engine(Engine):
         "bool": "INTEGER",
     }
     placeholder = "?"
-    insert_limit = SQLITE_MAX_COLUMN
+    insert_limit = 2000
     required_opts = [("file",
                       "Enter the filename of your SQLite database",
                       os.path.join(DATA_DIR, "sqlite.db"),
