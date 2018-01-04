@@ -151,7 +151,7 @@ Fork the https://github.com/conda-forge/staged-recipes repository.
     
 Make a new folder in recipes for your package and name it meta.yml as this 
 https://github.com/conda-forge/staged-recipes/pull/3307/files. 
-    
+
 You can Look at the example recipe, read the documentation or refer to the FAQs 
 section for more help.
     
