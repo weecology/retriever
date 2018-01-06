@@ -23,7 +23,7 @@ class engine(Engine):
     }
     max_int = 4294967295
     placeholder = "%s"
-    insert_limit = 900
+    insert_limit = 1000
     required_opts = [("user",
                       "Enter your MySQL username",
                       "root"),
