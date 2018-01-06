@@ -20,7 +20,7 @@ class engine(Engine):
     }
     max_int = 2147483647
     placeholder = "%s"
-    insert_limit = 1600
+    insert_limit = 1000
     required_opts = [("user",
                       "Enter your PostgreSQL username",
                       "postgres"),
