@@ -20,7 +20,7 @@ import csv
 import re
 import time
 from urllib.request import urlretrieve
-from retriever.lib.scripts import open_fr, open_fw, open_csvw
+from retriever.lib.tools import open_fr, open_fw, open_csvw
 from retriever.lib.defaults import DATA_SEARCH_PATHS, DATA_WRITE_PATH
 from retriever.lib.cleanup import no_cleanup
 from retriever.lib.warning import Warning
@@ -683,7 +683,7 @@ class Engine(object):
 
     def to_csv(self):
         # Due to Cyclic imports we can not move this import to the top
-        from retriever.lib.tools import sort_csv
+        from retriever.lib.engine_tools import sort_csv
         for _ in list(self.script.urls.keys()):
             table_name = self.table_name()
             csv_file_output = os.path.normpath(table_name + '.csv')

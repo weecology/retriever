@@ -10,24 +10,109 @@ from functools import reduce
 from retriever.lib.cleanup import *
 
 
-class Table(object):
-    """Information about a database table."""
+class Dataset(object):
+    """Dataset generic properties"""
 
-    def __init__(self, name, **kwargs):
+    def __init__(self, name=None, url=None):
         self.name = name
-        self.pk = True
-        self.contains_pk = False
-        self.delimiter = None
-        self.header_rows = 1
-        self.column_names_row = 1
-        self.fixed_width = False
-        self.cleanup = Cleanup()
-        self.record_id = 0
-        self.columns = []
-        self.replace_columns = []
-        self.cleaned_columns = False
-        for key, item in list(kwargs.items()):
-            setattr(self, key, item[0] if isinstance(item, tuple) else item)
+        self.url = url
+
+
+class TabularDataset(Dataset):
+    """Tabular database table."""
+
+    def __init__(self, name=None, url=None, pk=True,
+                 contains_pk=False, delimiter=None,
+                 header_rows=1, column_names_row=1,
+                 fixed_width=False, cleanup=Cleanup(),
+                 record_id=0,
+                 columns=[],
+                 replace_columns=[],
+                 missingValues=None,
+                 cleaned_columns=False, **kwargs):
+
+        self.name = name
+        self.url = url
+        self.pk = pk
+        self.contains_pk = contains_pk
+        self.delimiter = delimiter
+        self.header_rows = header_rows
+        self.column_names_row = column_names_row
+        self.fixed_width = fixed_width
+        self.cleanup = cleanup
+        self.record_id = record_id
+        self.columns = columns
+        self.replace_columns = replace_columns
+        self.missingValues = missingValues
+        self.cleaned_columns = cleaned_columns
+
+        for key in kwargs:
+            if hasattr(self, key):
+                self.key = kwargs[key]
+            else:
+                setattr(self, key, kwargs[key])
+
+        if hasattr(self, 'schema'):
+            self.add_schema()
+        if hasattr(self, 'dialect'):
+            self.add_dialect()
+
+        Dataset.__init__(self, self.name, self.url)
+
+    def add_dialect(self):
+        for key, val in self.dialect.items():
+            if key == "missingValues":
+                if self.dialect["missingValues"]:
+                    self.missingValues = self.dialect["missingValues"]
+                    self.cleanup = Cleanup(correct_invalid_value, missingValues=self.missingValues)
+            elif key == "delimiter":
+                self.delimiter = str(self.dialect["delimiter"])
+            else:
+                setattr(self, key, self.dialect[key])
+
+    def add_schema(self):
+        spec_data_types = {
+            # Dict to map retriever and frictionless data types.
+            # spec types not defined, default to char
+            "integer": "int",
+            "object": "bigint",
+            "number": "double",
+            "string": "char",
+            "boolean": "bool",
+            "year": "int",
+            # Retriever specific data types
+            "auto": "auto",
+            "int": "int",
+            "bigint": "bigint",
+            "double": "double",
+            "decimal": "decimal",
+            "char": "char",
+            "bool": "bool",
+            "skip": "skip"
+        }
+
+        for key in self.schema:
+            if key == "fields":
+                column_list = []
+                for obj in self.schema["fields"]:
+                    type = None
+                    if str(obj["type"]).startswith("pk-") or str(obj["type"]).startswith("ct-"):
+                        type = obj["type"]
+                    else:
+                        type = spec_data_types.get(obj["type"],"char")
+
+                    if "size" in obj:
+                        column_list.append((obj["name"],
+                                            (type,
+                                             obj["size"])))
+                    else:
+                        column_list.append((obj["name"],
+                                            (type,)))
+                self.columns = column_list
+            elif key == "ct_column":
+                setattr(self, key, "'" + self.schema[key] + "'")
+            else:
+                setattr(self, key, self.schema[key])
 
     def auto_get_columns(self, header):
         """Get column names from the header row.
@@ -169,3 +254,52 @@ class Table(object):
                     columns.append(column[1][0])
 
         return columns
+
+
+class RasterDataset(Dataset):
+    """Raster table implementation"""
+    def __init__(self, **kwargs):
+        self.name = None
+        self.group = None
+        self.relative_path = 0
+        self.resolution = None
+        self.resolution_units = None
+        self.dimensions = None
+        self.noDataValue = None
+        self.geoTransform = None
+        self.parameter = None
+        self.extent = None
+        for key in kwargs:
+            if hasattr(self, key):
+                self.key = kwargs[key]
+            else:
+                setattr(self, key, kwargs[key])
+
+
+class VectorDataset(Dataset):
+    """Vector table implementation"""
+
+    def __init__(self, name=None, **kwargs):
+        self.name = name
+        self.pk = None
+        self.contains_pk = False
+        self.feature_count = 0
+        self.attributes = []
+        self.attributes_dict = {}
+        self.fields_dict = {}
+        self.extent = {}
+        self.saptialref = None
+
+        for key in kwargs:
+            if hasattr(self, key):
+                self.key = kwargs[key]
+            else:
+                setattr(self, key, kwargs[key])
+
+
+
+myTables = {
+    "vector": VectorDataset,
+    "raster": RasterDataset,
+    "tabular": TabularDataset,
+}
