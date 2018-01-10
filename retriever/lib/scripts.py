@@ -22,10 +22,12 @@ from retriever.lib.load_json import read_json
 def check_retriever_minimum_version(module):
     mod_ver = module.retriever_minimum_version
     m = module.name
-    if not parse_version(VERSION) >= parse_version("{}".format(mod_ver)):
-        print("{} is supported by Retriever version ""{}".format(m, mod_ver))
-        print("Current version is {}".format(VERSION))
-        return False
+
+    if hasattr(module, "retriever_minimum_version"):
+        if not parse_version(VERSION) >= parse_version("{}".format(mod_ver)):
+            print("{} is supported by Retriever version ""{}".format(m, mod_ver))
+            print("Current version is {}".format(VERSION))
+            return False
     return True
 
 
@@ -50,9 +52,7 @@ def MODULE_LIST(force_compile=False):
             if script_name not in loaded_scripts:
                 read_script = read_json(join(search_path, script_name))
                 if read_script:
-                    if hasattr(read_script, "retriever_minimum_version") \
-                            and not check_retriever_minimum_version(
-                                read_script):
+                    if not check_retriever_minimum_version(read_script):
                         continue
                     setattr(read_script, "_file", os.path.join(search_path, script))
                     setattr(read_script, "_name", script_name)

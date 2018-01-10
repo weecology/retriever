@@ -58,5 +58,4 @@ def to_str(object, object_encoding=sys.stdout):
     if sys.version_info >= (3, 0, 0):
         enc = object_encoding.encoding
         return str(object).encode(enc, errors='backslashreplace').decode("latin-1")
-    return object
-    
+    return object   
