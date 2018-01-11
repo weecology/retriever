@@ -1,0 +1,77 @@
+{
+    "citation": "",
+    "description": "Different airports data.",
+    "encoding": "ISO-8859-1",
+    "homepage": "http://ourairports.com/data/",
+    "keywords": [
+        "airports",
+        "frequencies",
+        "runways",
+        "navaids",
+        "countries",
+        "regions"
+    ],
+    "name": "airports",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "airports",
+            "schema": {
+                "fields": []
+            },
+            "url": "http://ourairports.com/data/airports.csv"
+        },
+        {
+            "dialect": {},
+            "name": "airport_frequencies",
+            "schema": {
+                "fields": []
+            },
+            "url": "http://ourairports.com/data/airport-frequencies.csv"
+        },
+        {
+            "dialect": {},
+            "name": "runways",
+            "schema": {
+                "fields": []
+            },
+            "url": "http://ourairports.com/data/runways.csv"
+        },
+        {
+            "dialect": {},
+            "name": "navaids",
+            "schema": {
+                "fields": []
+            },
+            "url": "http://ourairports.com/data/navaids.csv"
+        },
+        {
+            "dialect": {},
+            "name": "countries",
+            "schema": {
+                "fields": []
+            },
+            "url": "http://ourairports.com/data/countries.csv"
+        },
+        {
+            "dialect": {},
+            "name": "regions",
+            "schema": {
+                "fields": []
+            },
+            "url": "http://ourairports.com/data/regions.csv"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.dev",
+    "title": "Airports",
+    "urls": {
+        "airport_frequencies": "http://ourairports.com/data/airport-frequencies.csv",
+        "airports": "http://ourairports.com/data/airports.csv",
+        "countries": "http://ourairports.com/data/countries.csv",
+        "navaids": "http://ourairports.com/data/navaids.csv",
+        "regions": "http://ourairports.com/data/regions.csv",
+        "runways": "http://ourairports.com/data/runways.csv"
+    },
+    "version": "1.0.0"
+}
