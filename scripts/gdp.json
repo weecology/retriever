@@ -1,338 +1,45 @@
 {
-    "citation": "NA",
-    "description": "Country, regional and world GDP in current US Dollars ($). Regional means collections of countries e.g. Europe & Central Asia. Data is sourced from the World Bank and turned into a standard normalized CSV.",
-    "encoding": "UTF-8",
-    "homepage": "https://github.com/datasets/gdp/blob/master",
-    "keywords": [
-        "GDP",
-        "World",
-        "Gross Domestic Product",
-        "Time Series"
-    ],
-    "name": "gdp",
-    "resources": [
-        {
-            "dialect": {
-                "do_not_bulk_insert": "False"
-            },
-            "name": "gdp",
-            "schema": {
-                "fields": [
+  "citation": "NA",
+  "description": "Country, regional and world GDP in current US Dollars ($). Regional means collections of countries e.g. Europe & Central Asia. Data is sourced from the World Bank and turned into a standard normalized CSV.",
+  "encoding": "UTF-8",
+  "homepage": "https://github.com/datasets/gdp/blob/master",
+  "keywords": [
+    "GDP",
+    "World",
+    "Gross Domestic Product",
+    "Time Series"
+  ],
+  "name": "gdp",
+  "resources": [
+    {
+      "dialect": {
+        "do_not_bulk_insert": "False"
+      },
+      "name": "gdp",
+      "schema": {
+        "fields": [
           {
             "name": "Country Name",
             "type": "char"
           },
           {
-            
             "name": "Country Code",
             "type": "char"
           },
           {
-            "name": "Year 1961",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1962",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1963",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1964",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1965",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1966",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1967",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1968",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1969",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1970",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1971",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1972",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1973",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1974",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1975",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1976",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1977",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1978",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1979",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1980",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1981",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1982",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1983",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1984",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1985",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1986",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1987",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1988",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1989",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1990",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1991",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1991",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1992",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1993",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1994",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1995",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1996",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1997",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1998",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 1999",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 2000",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 2001",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 2002",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 2003",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 2004",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 2004",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 2005",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 2006",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 2007",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 2008",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 2009",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 2010",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 2011",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 2012",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 2013",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 2014",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 2015",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 2016",
-            "type": "double"
-          },
-          {
-            
-            "name": "Year 2017",
+            "name": "Year Value",
             "type": "double"
           }
-          
-          
-]
-            },
-            "url": "http://api.worldbank.org/indicator/NY.GDP.MKTP.CD?format=csv"
-        }
-    ],
-    "retriever": "True",
-    "retriever_minimum_version": "2.0.dev",
-    "title": "GDP Data",
-    "urls": {
-        "gdp": "http://api.worldbank.org/indicator/NY.GDP.MKTP.CD?format=csv"
-    },
-    "version": "1.0.0"
+        ]
+      },
+      "url": "http://api.worldbank.org/indicator/NY.GDP.MKTP.CD?format=csv"
+    }
+  ],
+  "retriever": "True",
+  "retriever_minimum_version": "2.0.dev",
+  "title": "GDP Data",
+  "urls": {
+    "gdp": "http://api.worldbank.org/indicator/NY.GDP.MKTP.CD?format=csv"
+  },
+  "version": "1.0.0"
 }
