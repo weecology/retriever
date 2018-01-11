@@ -26,6 +26,8 @@ forest_inventory_analysis.py,1.4.1
 forest_plots_michigan.json,1.2.0
 forest_plots_wghats.py,1.3.1
 fray_jorge_ecology.json,1.4.1
+gdp.json,1.0.0
+gdp.py,1.0.0
 gentry_forest_transects.py,1.4.1
 great_basin_mammal_abundance.json,1.0.0
 home_ranges.json,1.1.1
