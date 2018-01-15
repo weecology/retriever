@@ -12,6 +12,7 @@ import pprint
 from collections import OrderedDict
 from retriever.lib.templates import TEMPLATES
 from retriever.lib.models import myTables
+from retriever.lib.tools import open_fr
 
 if sys.version_info[0] < 3:
     from codecs import open
@@ -23,7 +24,7 @@ def read_json(json_file, debug=False):
     json_file = str(json_file) + ".json"
 
     try:
-        json_object = json.load(open(json_file, "r"))
+        json_object = json.load(open_fr(json_file))
     except ValueError:
         pass
     if type(json_object) is dict and "resources" in json_object.keys():
