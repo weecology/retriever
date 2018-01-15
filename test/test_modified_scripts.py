@@ -165,8 +165,8 @@ def install_modified():
     return errors
 
 
-def test_install_modified():
-    assert install_modified() == []
+# def test_install_modified():
+#     assert install_modified() == []
 
 
 def main():
