@@ -39,13 +39,7 @@ def MODULE_LIST(force_compile=False):
         os.makedirs(SCRIPT_WRITE_PATH)
 
     for search_path in [search_path for search_path in SCRIPT_SEARCH_PATHS if exists(search_path)]:
-        data_packages = [
-            file for file in os.listdir(search_path) if file[-5:] == ".json" and
-            file[0] != "_" and (
-                (not isfile(join(search_path, file[:-5] + '.py'))) or (
-                    isfile(join(search_path, file[:-5] + '.py')) and (
-                        getmtime(join(search_path, file[:-5] + '.py')) < getmtime(
-                            join(search_path, file)))) or force_compile)]
+        data_packages = [file for file in os.listdir(search_path) if file.endswith(".json")]
 
         for script in data_packages:
             script_name = '.'.join(script.split('.')[:-1])
@@ -62,8 +56,6 @@ def MODULE_LIST(force_compile=False):
         files = [file for file in os.listdir(search_path)
                  if file[-3:] == ".py" and file[0] != "_" and
                  ('#retriever' in
-                  ' '.join(open(join(search_path, file), 'r').readlines()[:2]).lower()
-                  or '# retriever' in
                   ' '.join(open(join(search_path, file), 'r').readlines()[:2]).lower())
                  ]
 
@@ -81,10 +73,10 @@ def MODULE_LIST(force_compile=False):
                             continue
                     # if the script wasn't found in an early search path
                     # make sure it works and then add it
-                    new_module.SCRIPT.download
-                    setattr(new_module.SCRIPT, "_file", os.path.join(search_path, script))
-                    setattr(new_module.SCRIPT, "_name", script_name)
-                    modules.append(new_module.SCRIPT)
+                    new_module.download
+                    setattr(new_module, "_file", os.path.join(search_path, script))
+                    setattr(new_module, "_name", script_name)
+                    modules.append(new_module)
                 except Exception as e:
                     sys.stderr.write("Failed to load script: {} ({})\n"
                                      "Exception: {} \n"

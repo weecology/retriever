@@ -99,7 +99,7 @@ class TabularDataset(Dataset):
                     if str(obj["type"]).startswith("pk-") or str(obj["type"]).startswith("ct-"):
                         type = obj["type"]
                     else:
-                        type = spec_data_types.get(obj["type"],"char")
+                        type = spec_data_types.get(obj["type"], "char")
 
                     if "size" in obj:
                         column_list.append((obj["name"],

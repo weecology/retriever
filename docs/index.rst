@@ -18,7 +18,7 @@ Contents:
    developer.rst
    code_of_conduct.rst
    rdataretriever.rst
-   datasets.rst
+   datasets_list.rst
    modules.rst
    pyretriever.rst
 

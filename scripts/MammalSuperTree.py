@@ -25,7 +25,7 @@ if parse_version(VERSION) <= parse_version("2.0.0"):
                 'mammal_super_tree_fritz2009.tre': 'http://onlinelibrary.wiley.com/store/10.1111/j.1461-0248.2009.01307.x/asset/supinfo/ELE_1307_sm_SA1.tre?v=1&s=366b28651a9b5d1a3148ef9a8620f8aa31a7df44'}
 else:
     from retriever.lib.templates import Script
-    from retriever.lib.models import TabularDataset
+    from retriever.lib.models import Table
 
 
     class main(Script):
@@ -41,7 +41,7 @@ else:
             self.urls = {
                 'mammal_super_tree_fritz2009.tre': 'http://onlinelibrary.wiley.com/store/10.1111/j.1461-0248.2009.01307.x/asset/supinfo/ELE_1307_sm_SA1.tre?v=1&s=366b28651a9b5d1a3148ef9a8620f8aa31a7df44'}
             self.downlaod_only = True
-            self.tables = {'trees': TabularDataset("trees")}
+            self.tables = {'trees': Table("trees")}
 
         def download(self, engine=None, debug=False, ):
             if engine.name != "Download Only":

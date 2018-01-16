@@ -12,6 +12,7 @@ import pprint
 from collections import OrderedDict
 from retriever.lib.templates import TEMPLATES
 from retriever.lib.models import myTables
+from retriever.lib.tools import open_fr
 
 if sys.version_info[0] < 3:
     from codecs import open
@@ -23,7 +24,7 @@ def read_json(json_file, debug=False):
     json_file = str(json_file) + ".json"
 
     try:
-        json_object = json.load(open(json_file, "r"))
+        json_object = json.load(open_fr(json_file))
     except ValueError:
         pass
     if type(json_object) is dict and "resources" in json_object.keys():
@@ -48,8 +49,9 @@ def read_json(json_file, debug=False):
             spec_list = ["name", "url"]
 
             rspec = set(spec_list)
-            if not rspec.intersection(resource_item.keys()) == rspec:
-                raise ValueError("Check either {} fields in  Package {}".format(rspec, json_file))
+            if not rspec.issubset(resource_item.keys()):
+                raise ValueError("One of the required attributes is missing from the {} dataset script.\
+                    Make sure it has all of the following attributes: {}".format(json_file, rspec))
 
             for spec in spec_list:
                 if not resource_item[spec]:
