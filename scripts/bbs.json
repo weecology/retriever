@@ -8,13 +8,13 @@
     "NLCD",
     "BCR"
   ],
-  "name": "bbs",
+  "name": "bbs0",
   "resources": [],
   "retriever": "True",
   "retriever_minimum_version": "2.0.dev",
   "title": "BBS Data",
   "urls": {
-    "bbs": "http://esapubs.org/archive/ecol/E093/215/BBS_NLCD_200_m_buffer.txt",
+    "bbs0": "http://esapubs.org/archive/ecol/E093/215/BBS_NLCD_200_m_buffer.txt",
     "bbs1": "http://esapubs.org/archive/ecol/E093/215/BBS_NLCD_400_m_buffer.txt",
     "bbs2": "http://esapubs.org/archive/ecol/E093/215/BBS_NLCD_5_km_buffer.txt",
     "bbs3": "http://esapubs.org/archive/ecol/E093/215/BBS_NLCD_10_km_buffer.txt",
