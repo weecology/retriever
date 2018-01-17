@@ -168,7 +168,6 @@ To make changes or updates to your current package, you should make another pull
 Documentation
 =============
 
-
 We are using `Sphinx`_ and `Read the Docs`_. for the documentation.
 Sphinx uses reStructuredText as its markup language.
 Source Code documentation is automatically included after committing to the master.
