@@ -62,9 +62,9 @@ class Engine(object):
             self._cursor = None
 
     def get_connection(self):
-        """This method should be overloaded by specific implementations
+        """This method should be overridden by specific implementations
         of Engine."""
-        pass
+        raise NotImplementedError
 
     def add_to_table(self, data_source):
         """This function adds data to a table from one or more lines specified
