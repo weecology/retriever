@@ -144,6 +144,26 @@ Pull requests submitted to the repository will automatically be tested using
 these systems and results reported in the ``checks`` section of the pull request
 page.
 
+Creating or Updating a Conda Release
+====================================
+
+Fork the  conda-forge `staged-recipes repository <https://github.com/conda-forge/staged-recipes>`_.
+
+Make a new folder for your package in the recipes folder and create a new file 
+in it called meta.yml. 
+See the retriever `example <https://github.com/conda-forge/staged-recipes/pull/3307/files>`_ . 
+
+You can look at the example recipe, read the documentation, or refer to the FAQ 
+section for more help.
+    
+Open a pull request. Your package will be tested on Windows, Mac and Linux.
+    
+When your pull request is merged, a new repository called a feedstock will be created 
+in the github conda-forge organization, and your package will automatically 
+be uploaded and begin to build. Once complete, the package will be available on conda-forge.
+    
+
+To make changes or updates to your current package, you should make another pull request to your meta.yml file.
 
 Documentation
 =============
@@ -155,7 +175,7 @@ Other documentation (not source code) files are added as new reStructuredText in
 
 In case you want to change the organization of the Documentation, please refer to `Sphinx`_
 
-**update Documentation**
+**Update Documentation**
 
 The documetation is automatically updated for changes with in modules.
 However, the documentation should be updated after addition of new modules in the engines or lib directory.
