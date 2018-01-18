@@ -1,199 +1,77 @@
+from __future__ import division
+from __future__ import print_function
+
+from future import standard_library
+
+standard_library.install_aliases()
+from builtins import zip
+from builtins import str
 import json
 import sys
-from builtins import str
+import pprint
+from collections import OrderedDict
+from retriever.lib.templates import TEMPLATES
+from retriever.lib.models import myTables
+from retriever.lib.tools import open_fr
 
 if sys.version_info[0] < 3:
     from codecs import open
 
-script_templates = {
-    "default": """#retriever
-from retriever.lib.templates import BasicTextTemplate
-from retriever.lib.models import Table, Cleanup, correct_invalid_value
 
-SCRIPT = BasicTextTemplate(%s)""",
-
-    "html_table": """#retriever
-from retriever.lib.templates import HtmlTableTemplate
-from retriever.lib.models import Table, Cleanup, correct_invalid_value
-
-SCRIPT = HtmlTableTemplate(%s)""",
-}
-
-
-def add_dialect(table_dict, table):
-    """
-    Reads dialect key of JSON script and extracts key-value pairs to store them
-    in python script
-
-    Contains properties such 'missingValues', delimiter', etc
-    """
-    for (key, val) in table['dialect'].items():
-        # dialect related key-value pairs
-        # copied as is
-        if key == "missingValues":
-            table_dict[
-                'cleanup'] = "Cleanup(correct_invalid_value, missing_values=" + str(val) + ")"
-
-        elif key == "delimiter":
-            table_dict[key] = "'" + str(val) + "'"
-        else:
-            table_dict[key] = val
-
-
-def add_schema(table_dict, table):
-    """
-    Reads schema key of JSON script and extracts values to store them in
-    python script
-
-    Contains properties related to table schema, such as 'fields' and cross-tab
-    column name ('ct_column').
-    """
-    for (key, val) in table['schema'].items():
-        # schema related key-value pairs
-
-        if key == "fields":
-            # fields = columns of the table
-
-            # list of column tuples
-            column_list = []
-            for obj in val:
-                # fields is a collection of JSON objects
-                # (similar to a list of dicts in python)
-
-                if "size" in obj:
-                    column_list.append((obj["name"],
-                                        (obj["type"], obj["size"])))
-                else:
-                    column_list.append((obj["name"],
-                                        (obj["type"],)))
-
-            table_dict["columns"] = column_list
-
-        elif key == "ct_column":
-            table_dict[key] = "'" + val + "'"
-
-        else:
-            table_dict[key] = val
-
-
-def compile_json(json_file):
+def compile_json(json_file, debug=False):
     """
     Function to compile JSON script files to python scripts
     The scripts are created with `retriever new_json <script_name>` using
     command line
     """
-    json_object = {}
-    source_encoding = "latin-1"
+    json_object = OrderedDict()
+    json_file = str(json_file) + ".json"
+    pp = pprint.PrettyPrinter(indent=1)
+
     try:
-        json_object = json.load(open(json_file + ".json", "r"))
+        json_object = json.load(open_fr(json_file))
     except ValueError:
         pass
-    if type(json_object) is not dict:
-        return
-    if "retriever" not in json_object.keys():
-        # Compile only files that have retriever key
-        return
+    if type(json_object) is dict and "resources" in json_object.keys():
 
-    values = {}
-    values['urls'] = {}
+        # Note::formats described by frictionlessdata data may need to change
+        tabular_formats = ["csv", "tab"]
+        vector_formats = ["shp", "kmz"]
+        raster_formats = ["tif","tiff" "bil", ".hdr", "h5","hdf5", "hr", "image"]
 
-    keys_to_ignore = ["template"]
+        for resource_item in json_object["resources"]:
+            if "format" in resource_item:
+                if resource_item["format"] in tabular_formats:
+                    resource_item["format"] = "tabular"
+                elif resource_item["format"] in vector_formats:
+                    resource_item["format"] = "vector"
+                elif resource_item["format"] in raster_formats:
+                    resource_item["format"] = "raster"
+            else:
+                resource_item["format"] = "tabular"
 
-    for (key, value) in json_object.items():
+            # Check for required resource fields
+            spec_list = ["name", "url"]
+            for spec in spec_list:
+                if not resource_item.get(spec, None):
+                    return
 
-        if key == "title":
-            values["title"] = "\"" + str(value) + "\""
+        json_object["tables"] = {}
+        temp_tables = {}
+        table_names = [item["name"] for item in json_object["resources"]]
+        temp_tables["tables"] = dict(zip(table_names, json_object["resources"]))
 
-        elif key == "name":
-            values["name"] = "\"" + str(value) + "\""
+        for table_name, table_spec in temp_tables["tables"].items():
+            json_object["tables"][table_name] = myTables[temp_tables["tables"][table_name]["format"]](**table_spec)
+        json_object.pop("resources", None)
 
-        elif key == "description":
-            values["description"] = "\"" + str(value) + "\""
+        if debug:
+            pprint_objects = json_object
 
-        elif key == "addendum":
-            values["addendum"] = "\"" + str(value) + "\""
+            for item in pprint_objects["tables"]:
+                pprint_objects["tables"][item] = json_object["tables"][item].__dict__
+            print("Values being passed to template: ")
+            pp.pprint(pprint_objects)
 
-        elif key == "homepage":
-            values["ref"] = "\"" + str(value) + "\""
-
-        elif key == "citation":
-            values["citation"] = "\"" + str(value) + "\""
-
-        elif key == "licenses":
-            values["licenses"] = value
-
-        elif key == "keywords":
-            values["keywords"] = value
-
-        elif key == "version":
-            values["version"] = "\"" + str(value) + "\""
-
-        elif key == "encoding":
-            values["encoding"] = "\"" + str(value) + "\""
-            # Adding the key 'encoding'
-            source_encoding = str(value)
-
-        elif key == "retriever_minimum_version":
-            values["retriever_minimum_version"] = "\"" + str(value) + "\""
-
-        elif key == "message":
-            values["message"] = "\"" + str(value) + "\""
-
-        elif key == "resources":
-            # Array of table objects
-            tables = {}
-            for table in value:
-                # Maintain a dict for table keys and values
-                table_dict = {}
-
-                try:
-                    values['urls'][table['name']] = table['url']
-                except Exception as e:
-                    print(e, "\nError in reading table: " + table)
-                    continue
-
-                if table["schema"] == {} and table["dialect"] == {}:
-                    continue
-
-                for (t_key, t_val) in table.items():
-
-                    if t_key == "dialect":
-                        add_dialect(table_dict, table)
-
-                    elif t_key == "schema":
-                        add_schema(table_dict, table)
-
-                tables[table["name"]] = table_dict
-
-        else:
-            values[key] = value
-
-    # Create a Table object string using the tables dict
-    table_desc = "{"
-    for (key, value) in tables.items():
-        table_desc += "'" + key + "': Table('" + key + "', "
-        table_desc += ','.join([key + "=" + str(value)
-                                for key, value, in value.items()])
-        table_desc += "),"
-    if table_desc != '{':
-        table_desc = table_desc[:-1]
-    table_desc += "}"
-
-    values["tables"] = table_desc
-
-    script_desc = []
-    for key, value in values.items():
-        if key not in keys_to_ignore:
-            script_desc.append(key + "=" + str(value))
-    script_desc = (',\n' + ' ' * 27).join(script_desc)
-
-    if 'template' in values.keys():
-        template = values["template"]
-    else:
-        template = "default"
-    script_contents = (script_templates[template] % script_desc)
-
-    new_script = open(json_file + '.py', 'w', encoding='utf-8')
-    new_script.write('# -*- coding: {}  -*-\n'.format(source_encoding.lower()))
-    new_script.write(script_contents)
-    new_script.close()
+        return TEMPLATES["default"](**json_object)
+    return None

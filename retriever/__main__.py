@@ -15,13 +15,14 @@ from builtins import input
 from imp import reload
 
 from retriever.engines import engine_list, choose_engine
+from retriever.lib.compile import compile_json
 from retriever.lib.datapackage import create_json, edit_json, delete_json, get_script_filename
 from retriever.lib.datasets import datasets, dataset_names, license
 from retriever.lib.defaults import sample_script, CITATION, ENCODING, SCRIPT_SEARCH_PATHS
 from retriever.lib.get_opts import parser
 from retriever.lib.repository import check_for_updates
 from retriever.lib.scripts import SCRIPT_LIST
-from retriever.lib.tools import name_matches, reset_retriever
+from retriever.lib.engine_tools import name_matches, reset_retriever
 
 encoding = ENCODING.lower()
 # sys removes the setdefaultencoding method at startup; reload to get it back
@@ -126,6 +127,17 @@ def main():
             return
 
         if args.command == 'ls':
+
+            if args.debugScript:
+                script = [script for script in script_list if script.name.find(args.debugScript) != -1]
+                if script:
+                    if script[0]._file[-5:] == '.json':
+                        compile_json(script[0]._file[:-5], True)
+                        return
+                    raise Exception("File must be a json file to debug")
+                raise Exception("File not found")
+
+
             # If scripts have never been downloaded there is nothing to list
             if not script_list:
                 print("No scripts are currently available. Updating scripts now...")

@@ -18,21 +18,21 @@ from retriever.lib.engine import Engine
 from retriever.lib.table import Table
 from retriever.lib.templates import BasicTextTemplate
 from retriever.lib.cleanup import correct_invalid_value
-from retriever.lib.tools import getmd5
-from retriever.lib.tools import xml2csv
-from retriever.lib.tools import json2csv
-from retriever.lib.tools import sort_file
-from retriever.lib.tools import sort_csv
-from retriever.lib.tools import create_file
-from retriever.lib.tools import file_2list
+from retriever.lib.engine_tools import getmd5
+from retriever.lib.engine_tools import xml2csv
+from retriever.lib.engine_tools import json2csv
+from retriever.lib.engine_tools import sort_file
+from retriever.lib.engine_tools import sort_csv
+from retriever.lib.engine_tools import create_file
+from retriever.lib.engine_tools import file_2list
 from retriever.lib.datapackage import clean_input, is_empty
-from retriever.lib.compile import add_dialect, add_schema
+from retriever.lib.cleanup import Cleanup
+
 
 # Create simple engine fixture
 test_engine = Engine()
-test_engine.table = Table("test")
-test_engine.script = BasicTextTemplate(tables={'test': test_engine.table},
-                                       name='test')
+test_engine.table = Table(**{"name":"test"})
+test_engine.script = BasicTextTemplate(**{"tables": test_engine.table, "name":"test"})
 test_engine.opts = {'database_name': '{db}_abc'}
 HOMEDIR = os.path.expanduser('~')
 file_location = os.path.dirname(os.path.realpath(__file__))
@@ -115,12 +115,12 @@ def test_auto_get_delimiter_semicolon():
 
 def test_correct_invalid_value_string():
     assert \
-        correct_invalid_value('NA', {'missing_values': ['NA', '-999']}) is None
+        correct_invalid_value('NA', {'missingValues': ['NA', '-999']}) is None
 
 
 def test_correct_invalid_value_number():
     assert \
-        correct_invalid_value(-999, {'missing_values': ['NA', '-999']}) is None
+        correct_invalid_value(-999, {'missingValues': ['NA', '-999']}) is None
 
 
 def test_correct_invalid_value_exception():
@@ -403,45 +403,3 @@ def test_clean_input_not_bool(monkeypatch):
     monkeypatch.setattr('retriever.lib.datapackage.input', mock_input)
     assert clean_input("", dtype=bool) == "True"
 
-
-def test_add_dialect():
-    """Test adding values from dialect key to python script."""
-    table = {}
-    table['dialect'] = {}
-    table_dict = {}
-    table['dialect']['missingValues'] = '\0'
-    table['dialect']['delimiter'] = '\t'
-    table['dialect']['dummy_key'] = 'dummy_value'
-
-    result = {}
-    result['cleanup'] = 'Cleanup(correct_invalid_value, missing_values=\x00)'
-    result['delimiter'] = "'\t'"
-    result['dummy_key'] = 'dummy_value'
-
-    add_dialect(table_dict, table)
-    assert table_dict == result
-
-
-def test_add_schema():
-    """Test adding values from schema key to python script."""
-    table = {}
-    table['schema'] = {}
-    table_dict = {}
-    table['schema']['fields'] = []
-    table['schema']['fields'].append({'name': 'col1', 'type': 'int'})
-    table['schema']['fields'].append(
-        {'name': 'col2', 'type': 'char', 'size': 20})
-    table['schema']['ct_column'] = 'ct_column'
-    table['schema']['ct_names'] = ['ct1', 'ct2', 'ct3', 'ct4']
-    table['schema']['dummy_key'] = 'dummy_value'
-
-    result = {}
-    result['columns'] = []
-    result['columns'].append(('col1', ('int',)))
-    result['columns'].append(('col2', ('char', 20)))
-    result['ct_column'] = "'ct_column'"
-    result['ct_names'] = ['ct1', 'ct2', 'ct3', 'ct4']
-    result['dummy_key'] = 'dummy_value'
-
-    add_schema(table_dict, table)
-    assert table_dict == result

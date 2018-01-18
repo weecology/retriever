@@ -2,7 +2,6 @@
 # """Integrations tests for Data Retriever"""
 from __future__ import print_function
 
-import imp
 import json
 import os
 import shutil
@@ -20,8 +19,8 @@ import pytest
 from retriever.lib.compile import compile_json
 from retriever.lib.defaults import HOME_DIR
 from retriever.engines import engine_list
-from retriever.lib.tools import file_2list
-from retriever.lib.tools import create_file
+from retriever.lib.engine_tools import file_2list
+from retriever.lib.engine_tools import create_file
 
 # Set postgres password, Appveyor service needs the password given
 # The Travis service obtains the password from the config file.
@@ -29,6 +28,10 @@ if os.name == "nt":
     os_password = "Password12!"
 else:
     os_password = ""
+
+
+mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, \
+csv_engine, download_engine, json_engine, xml_engine = engine_list
 
 simple_csv = {
     'name': 'simple_csv',
@@ -385,9 +388,13 @@ def teardown_module():
     for test in tests:
         shutil.rmtree(os.path.join(HOME_DIR, "raw_data", test['name']))
         os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.json'))
-        os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.py'))
         os.system("rm -r *{}".format(test['name']))
         os.system("rm testdb.sqlite")
+
+
+def get_script_module(script_name):
+    """Load a script module."""
+    return compile_json(os.path.join(HOME_DIR, "scripts", script_name))
 
 
 def get_output_as_csv(dataset, engines, tmpdir, db):
@@ -399,9 +406,9 @@ def get_output_as_csv(dataset, engines, tmpdir, db):
     # we don't have to change to the main source directory in order
     # to have the scripts loaded
     script_module = get_script_module(dataset["name"])
-    script_module.SCRIPT.download(engines)
-    script_module.SCRIPT.engine.final_cleanup()
-    script_module.SCRIPT.engine.to_csv()
+    script_module.download(engines)
+    script_module.engine.final_cleanup()
+    script_module.engine.to_csv()
     # get filename and append .csv
     csv_file = engines.opts['table_name'].format(db=db, table=dataset["name"])
     # csv engine already has the .csv extension
@@ -410,17 +417,6 @@ def get_output_as_csv(dataset, engines, tmpdir, db):
     obs_out = file_2list(csv_file)
     os.chdir(retriever_root_dir)
     return obs_out
-
-
-def get_script_module(script_name):
-    """Load a script module."""
-    file, pathname, desc = imp.find_module(script_name,
-                                           [os.path.join(HOME_DIR, "scripts")])
-    return imp.load_module(script_name, file, pathname, desc)
-
-
-mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, \
-csv_engine, download_engine, json_engine, xml_engine = engine_list
 
 
 @pytest.mark.parametrize("dataset, expected", test_parameters)
