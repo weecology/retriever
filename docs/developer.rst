@@ -147,19 +147,19 @@ page.
 Updating conda-forge retriever-feedstock
 ========================================
 
-For improving the retriever recipe as well as for building a new package version, it is required to fork this repository https://github.com/conda-forge/retriever-feedstock and submit a PR. 
+For improving the retriever recipe as well as for building a new package version, please fork `this repository <https://github.com/conda-forge/retriever-feedstock>`_ and submit a PR. 
 
-Once the submission has been made, the changes will be executed across appropriate platforms to give the reviewer a chance to confirm that the changes made should result in a successful build.
+Once submitted, the changes will be executed across the appropriate platforms to ensure a successful build.
 
-After merging of your PR, the recipe will be re-constructed and uploaded autonomously to the conda-forge channel, whereupon the built packages will be available for everyone to install and use from the channel. 
+After merging your PR, the recipe will be re-constructed and uploaded autonomously to the conda-forge channel. The built packages should now be available for everyone to install and use from the channel.
 
-All branches in the conda-forge/retriever-feedstock are built and the created packages are uploaded dynamically, so PRs should be based on branches in forks and branches in the main repository shall be used to build distinct package versions only.
+All branches in the conda-forge/retriever-feedstock are created and uploaded dynamically, so PRs should be based on branches in forks. Branches in the main repository shall be used to build distinct package versions only.
 
 For producing a uniquely identifiable distribution:
 
- If the version of a package is not being increamented, then the build/number can be added or increased .
- If the version of a package is not being increamented, then remember to return the build/number back to 0.
-
+ If the version of a package is not being incremented, then the build/number can be added or increased .
+ If the version of a package is not being incremented, then remember to return the build/number back to 0.
+ 
 Creating or Updating a Conda Release
 ====================================
 
