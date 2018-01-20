@@ -1,36 +1,63 @@
+from __future__ import print_function
+
+from future import standard_library
+
+standard_library.install_aliases()
 import csv
 import imp
 import io
 import os
 import sys
-from os.path import join, isfile, getmtime, exists
+import urllib.request
+import urllib.parse
+import urllib.error
+from os.path import join, isfile, getmtime, exists, abspath
 
 from pkg_resources import parse_version
 
-from retriever.lib.compile import compile_json
-from retriever.lib.defaults import SCRIPT_SEARCH_PATHS, VERSION, ENCODING
+from retriever.lib.defaults import SCRIPT_SEARCH_PATHS, VERSION, ENCODING, SCRIPT_WRITE_PATH
+from retriever.lib.load_json import read_json
+
+
+def check_retriever_minimum_version(module):
+    mod_ver = module.retriever_minimum_version
+    m = module.name
+
+    if hasattr(module, "retriever_minimum_version"):
+        if not parse_version(VERSION) >= parse_version("{}".format(mod_ver)):
+            print("{} is supported by Retriever version ""{}".format(m, mod_ver))
+            print("Current version is {}".format(VERSION))
+            return False
+    return True
 
 
 def MODULE_LIST(force_compile=False):
     """Load scripts from scripts directory and return list of modules."""
     modules = []
     loaded_scripts = []
+    if not os.path.isdir(SCRIPT_WRITE_PATH):
+        os.makedirs(SCRIPT_WRITE_PATH)
 
     for search_path in [search_path for search_path in SCRIPT_SEARCH_PATHS if exists(search_path)]:
-        to_compile = [
-            file for file in os.listdir(search_path) if file[-5:] == ".json" and
-            file[0] != "_" and (
-                (not isfile(join(search_path, file[:-5] + '.py'))) or (
-                    isfile(join(search_path, file[:-5] + '.py')) and (
-                        getmtime(join(search_path, file[:-5] + '.py')) < getmtime(
-                            join(search_path, file)))) or force_compile)]
-        for script in to_compile:
+        data_packages = [file for file in os.listdir(search_path) if file.endswith(".json")]
+
+        for script in data_packages:
             script_name = '.'.join(script.split('.')[:-1])
-            compile_json(join(search_path, script_name))
+            if script_name not in loaded_scripts:
+                read_script = read_json(join(search_path, script_name))
+                if read_script:
+                    if not check_retriever_minimum_version(read_script):
+                        continue
+                    setattr(read_script, "_file", os.path.join(search_path, script))
+                    setattr(read_script, "_name", script_name)
+                    modules.append(read_script)
+                    loaded_scripts.append(script_name)
 
         files = [file for file in os.listdir(search_path)
                  if file[-3:] == ".py" and file[0] != "_" and
-                 '#retriever' in ' '.join(open(join(search_path, file), 'r').readlines()[:2]).lower()]
+                 ('#retriever' in
+                  ' '.join(open(join(search_path, file), 'r').readlines()[:2]).lower())
+                 ]
 
         for script in files:
             script_name = '.'.join(script.split('.')[:-1])
@@ -39,27 +66,26 @@ def MODULE_LIST(force_compile=False):
                 file, pathname, desc = imp.find_module(script_name, [search_path])
                 try:
                     new_module = imp.load_module(script_name, file, pathname, desc)
-                    if hasattr(new_module.SCRIPT, "retriever_minimum_version"):
+                    if hasattr(new_module, "retriever_minimum_version"):
                         # a script with retriever_minimum_version should be loaded
                         # only if its compliant with the version of the retriever
-                        if not parse_version(VERSION) >= parse_version("{}".format(
-                                new_module.SCRIPT.retriever_minimum_version)):
-                            print("{} is supported by Retriever version "
-                                  "{}".format(script_name, new_module.SCRIPT.retriever_minimum_version))
-                            print("Current version is {}".format(VERSION))
+                        if not check_retriever_minimum_version(new_module):
                             continue
                     # if the script wasn't found in an early search path
                     # make sure it works and then add it
-                    new_module.SCRIPT.download
+                    new_module.download
+                    setattr(new_module, "_file", os.path.join(search_path, script))
+                    setattr(new_module, "_name", script_name)
                     modules.append(new_module)
                 except Exception as e:
-                    sys.stderr.write("Failed to load script: %s (%s)\nException: %s \n" % (
-                        script_name, search_path, str(e)))
+                    sys.stderr.write("Failed to load script: {} ({})\n"
+                                     "Exception: {} \n"
+                                     .format(script_name, search_path, str(e)))
     return modules
 
 
 def SCRIPT_LIST(force_compile=False):
-    return [module.SCRIPT for module in MODULE_LIST(force_compile)]
+    return [module for module in MODULE_LIST(force_compile)]
 
 
 def get_script(dataset):
@@ -110,7 +136,6 @@ def open_csvw(csv_file, encode=True):
     """Open a csv writer forcing the use of Linux line endings on Windows.
 
     Also sets dialect to 'excel' and escape characters to '\\'
-
     """
     if os.name == 'nt':
         csv_writer = csv.writer(csv_file, dialect='excel', escapechar='\\', lineterminator='\n')
@@ -123,5 +148,4 @@ def to_str(object, object_encoding=sys.stdout):
     if sys.version_info >= (3, 0, 0):
         enc = object_encoding.encoding
         return str(object).encode(enc, errors='backslashreplace').decode("latin-1")
-    else:
-        return object
+    return object
