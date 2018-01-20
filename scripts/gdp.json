@@ -1,0 +1,49 @@
+{
+  "citation": "NA",
+  "description": "Country, regional and world GDP in current US Dollars ($). Regional means collections of countries e.g. Europe & Central Asia. Data is sourced from the World Bank and turned into a standard normalized CSV.",
+  "encoding": "UTF-8",
+  "homepage": "https://github.com/datasets/gdp/blob/master",
+  "keywords": [
+    "GDP",
+    "World",
+    "Gross Domestic Product",
+    "Time Series"
+  ],
+  "name": "gdp",
+  "resources": [
+    {
+      "dialect": {
+        "do_not_bulk_insert": "False"
+      },
+      "name": "gdp",
+      "schema": {
+        "fields": [
+          {
+            "name": "Country Name",
+            "type": "char"
+          },
+          {
+            "name": "Country Code",
+            "type": "char"
+          },
+          {
+            "name": "Year",
+            "type": "double"
+          },
+          {
+            "name": "Value",
+            "type": "double"
+          }
+        ]
+      },
+      "url": "https://raw.githubusercontent.com/datasets/gdp/master/data/gdp.csv"
+    }
+  ],
+  "retriever": "True",
+  "retriever_minimum_version": "2.0.dev",
+  "title": "GDP Data",
+  "urls": {
+    "gdp": "https://raw.githubusercontent.com/datasets/gdp/master/data/gdp.csv"
+  },
+  "version": "1.0.0"
+}
