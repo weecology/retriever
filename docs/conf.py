@@ -8,6 +8,7 @@ from imp import reload
 
 from retriever.lib.defaults import VERSION, COPYRIGHT
 from retriever.lib.scripts import SCRIPT_LIST
+from retriever.lib.tools import open_fw
 
 # sys removes the setdefaultencoding method at startup; reload to get it back
 reload(sys)
@@ -16,7 +17,7 @@ if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding('latin-1')
 
 # Create the .rst file for the available datasets
-datasetfile = open("datasets.rst", "w")
+datasetfile = open_fw("datasets_list.rst")
 datasetfile_title = """
 ==================
 Datasets Available
@@ -36,7 +37,7 @@ for script_num, script in enumerate(script_list, start=1):
     elif bool(script.urls.values()):
         reference_link = list(script.urls.values())[0].rpartition('/')[0]
     else:
-        reference_link = ""
+        reference_link = " "
         
     title = str(script_num) + ". **{}**\n".format(script.title)
     datasetfile.write(title)

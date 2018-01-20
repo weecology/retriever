@@ -1,0 +1,397 @@
+{
+    "citation": "",
+    "description": "Dataset containing information on all airports on ourairports.com",
+    "encoding": "ISO-8859-1",
+    "homepage": "http://ourairports.com/data/",
+    "keywords": [
+        "airports",
+        "aeroplanes",
+        "airplanes",
+        "frequencies",
+        "runways",
+        "navaids",
+        "countries",
+        "regions"
+    ],
+    "name": "airports",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "airports",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "id",
+                        "type": "int"
+                    },
+                    {
+                        "name": "ident",
+                        "type": "char"
+                    },
+                    {
+                        "name": "type",
+                        "type": "char"
+                    },
+                    {
+                        "name": "name",
+                        "type": "char"
+                    },
+                    {
+                        "name": "latitude_deg",
+                        "type": "double"
+                    },
+                    {
+                        "name": "longitude_deg",
+                        "type": "double"
+                    },
+                    {
+                        "name": "elevation_ft",
+                        "type": "int"
+                    },
+                    {
+                        "name": "continent",
+                        "type": "char"
+                    },
+                    {
+                        "name": "iso_country",
+                        "type": "char"
+                    },
+                    {
+                        "name": "iso_region",
+                        "type": "char"
+                    },
+                    {
+                        "name": "municipality",
+                        "type": "char"
+                    },
+                    {
+                        "name": "scheduled_service",
+                        "type": "char"
+                    },
+                    {
+                        "name": "gps_code",
+                        "type": "char"
+                    },
+                    {
+                        "name": "iata_code",
+                        "type": "char"
+                    },
+                    {
+                        "name": "local_code",
+                        "type": "char"
+                    },
+                    {
+                        "name": "home_link",
+                        "type": "char"
+                    },
+                    {
+                        "name": "wikipedia_link",
+                        "type": "char"
+                    },
+                    {
+                        "name": "keywords",
+                        "type": "char"
+                    }
+                ]
+            },
+            "url": "http://ourairports.com/data/airports.csv"
+        },
+        {
+            "dialect": {},
+            "name": "airport_frequencies",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "id",
+                        "type": "int"
+                    },
+                    {
+                        "name": "airport_ref",
+                        "type": "int"
+                    },
+                    {
+                        "name": "airport_ident",
+                        "type": "char"
+                    },
+                    {
+                        "name": "type",
+                        "type": "char"
+                    },
+                    {
+                        "name": "description",
+                        "type": "char"
+                    },
+                    {
+                        "name": "frequency_mhz",
+                        "type": "double"
+                    }
+                ]
+            },
+            "url": "http://ourairports.com/data/airport-frequencies.csv"
+        },
+        {
+            "dialect": {},
+            "name": "runways",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "id",
+                        "type": "int"
+                    },
+                    {
+                        "name": "airport_ref",
+                        "type": "int"
+                    },
+                    {
+                        "name": "airport_ident",
+                        "type": "char"
+                    },
+                    {
+                        "name": "length_ft",
+                        "type": "int"
+                    },
+                    {
+                        "name": "width_ft",
+                        "type": "int"
+                    },
+                    {
+                        "name": "surface",
+                        "type": "char"
+                    },
+                    {
+                        "name": "lighted",
+                        "type": "int"
+                    },
+                    {
+                        "name": "closed",
+                        "type": "int"
+                    },
+                    {
+                        "name": "le_ident",
+                        "type": "char"
+                    },
+                    {
+                        "name": "le_latitude_deg",
+                        "type": "double"
+                    },
+                    {
+                        "name": "le_longitude_deg",
+                        "type": "double"
+                    },
+                    {
+                        "name": "le_elevation_ft",
+                        "type": "int"
+                    },
+                    {
+                        "name": "le_heading_degT",
+                        "type": "double"
+                    },
+                    {
+                        "name": "le_displaced_threshold_ft",
+                        "type": "int"
+                    },
+                    {
+                        "name": "he_ident",
+                        "type": "char"
+                    },
+                    {
+                        "name": "he_latitude_deg",
+                        "type": "double"
+                    },
+                    {
+                        "name": "he_longitude_deg",
+                        "type": "double"
+                    },
+                    {
+                        "name": "he_elevation_ft",
+                        "type": "int"
+                    },
+                    {
+                        "name": "he_heading_degT",
+                        "type": "double"
+                    },
+                    {
+                        "name": "he_displaced_threshold_ft",
+                        "type": "int"
+                    }
+                ]
+            },
+            "url": "http://ourairports.com/data/runways.csv"
+        },
+        {
+            "dialect": {},
+            "name": "navaids",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "id",
+                        "type": "int"
+                    },
+                    {
+                        "name": "filename",
+                        "type": "char"
+                    },
+                    {
+                        "name": "ident",
+                        "type": "char"
+                    },
+                    {
+                        "name": "name",
+                        "type": "char"
+                    },
+                    {
+                        "name": "type",
+                        "type": "char"
+                    },
+                    {
+                        "name": "frequency_khz",
+                        "type": "int"
+                    },
+                    {
+                        "name": "latitude_deg",
+                        "type": "double"
+                    },
+                    {
+                        "name": "longitude_deg",
+                        "type": "double"
+                    },
+                    {
+                        "name": "elevation_ft",
+                        "type": "int"
+                    },
+                    {
+                        "name": "iso_country",
+                        "type": "char"
+                    },
+                    {
+                        "name": "dme_frequency_khz",
+                        "type": "int"
+                    },
+                    {
+                        "name": "dme_channel",
+                        "type": "char"
+                    },
+                    {
+                        "name": "dme_latitude_deg",
+                        "type": "double"
+                    },
+                    {
+                        "name": "dme_longitude_deg",
+                        "type": "double"
+                    },
+                    {
+                        "name": "dme_elevation_ft",
+                        "type": "int"
+                    },
+                    {
+                        "name": "slaved_variation_deg",
+                        "type": "double"
+                    },
+                    {
+                        "name": "magnetic_variation_deg",
+                        "type": "double"
+                    },
+                    {
+                        "name": "usageType",
+                        "type": "char"
+                    },
+                    {
+                        "name": "power",
+                        "type": "char"
+                    },
+                    {
+                        "name": "associated_airport",
+                        "type": "char"
+                    }
+                ]
+            },
+            "url": "http://ourairports.com/data/navaids.csv"
+        },
+        {
+            "dialect": {},
+            "name": "countries",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "id",
+                        "type": "int"
+                    },
+                    {
+                        "name": "code",
+                        "type": "char"
+                    },
+                    {
+                        "name": "name",
+                        "type": "char"
+                    },
+                    {
+                        "name": "continent",
+                        "type": "char"
+                    },
+                    {
+                        "name": "wikipedia_link",
+                        "type": "char"
+                    },
+                    {
+                        "name": "keywords",
+                        "type": "char"
+                    }
+                ]
+            },
+            "url": "http://ourairports.com/data/countries.csv"
+        },
+        {
+            "dialect": {},
+            "name": "regions",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "id",
+                        "type": "int"
+                    },
+                    {
+                        "name": "code",
+                        "type": "char"
+                    },
+                    {
+                        "name": "local_code",
+                        "type": "char"
+                    },
+                    {
+                        "name": "name",
+                        "type": "char"
+                    },
+                    {
+                        "name": "continent",
+                        "type": "char"
+                    },
+                    {
+                        "name": "iso_country",
+                        "type": "char"
+                    },
+                    {
+                        "name": "wikipedia_link",
+                        "type": "char"
+                    },
+                    {
+                        "name": "keywords",
+                        "type": "char"
+                    }
+                ]
+            },
+            "url": "http://ourairports.com/data/regions.csv"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.dev",
+    "title": "Dataset containing information on all airports on ouraiports.com",
+    "urls": {
+        "airport_frequencies": "http://ourairports.com/data/airport-frequencies.csv",
+        "airports": "http://ourairports.com/data/airports.csv",
+        "countries": "http://ourairports.com/data/countries.csv",
+        "navaids": "http://ourairports.com/data/navaids.csv",
+        "regions": "http://ourairports.com/data/regions.csv",
+        "runways": "http://ourairports.com/data/runways.csv"
+    },
+    "version": "1.0.0"
+}

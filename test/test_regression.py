@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 
-import imp
 import io
 import os
 import shutil
@@ -16,6 +15,9 @@ from retriever import install_postgres
 from retriever import install_sqlite
 from retriever import install_xml
 from retriever.lib.defaults import ENCODING
+from retriever.lib.defaults import HOME_DIR
+from retriever.lib.load_json import read_json
+
 
 encoding = ENCODING.lower()
 
@@ -23,7 +25,7 @@ reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding(encoding)
 import pytest
-from retriever.lib.tools import getmd5
+from retriever.lib.engine_tools import getmd5
 from retriever.engines import engine_list
 
 # Set postgres password, Appveyor service needs the password given
@@ -53,26 +55,6 @@ db_md5 = [
 ]
 
 
-def get_script_module(script_name):
-    """Load a script module from the scripts directory in the retriever."""
-    file, pathname, desc = imp.find_module(script_name, [working_script_dir])
-    return imp.load_module(script_name, file, pathname, desc)
-
-
-def get_csv_md5(dataset, engine, tmpdir, install_function, config):
-    workdir = tmpdir.mkdtemp()
-    os.system("cp -r {} {}/".format(os.path.join(retriever_root_dir, 'scripts'),
-                                             os.path.join(str(workdir), 'scripts')))
-    workdir.chdir()
-    script_module = get_script_module(dataset)
-    install_function(dataset.replace("_", "-"), **config)
-    engine_obj = script_module.SCRIPT.checkengine(engine)
-    engine_obj.to_csv()
-    os.system("rm -r scripts") # need to remove scripts before checking md5 on dir
-    current_md5 = getmd5(data=str(workdir), data_type='dir')
-    return current_md5
-
-
 def setup_module():
     """Update retriever scripts and cd to test directory to find data."""
     os.chdir(retriever_root_dir)
@@ -85,6 +67,24 @@ def teardown_module():
     os.system("rm -r output*")
     shutil.rmtree(os.path.join(retriever_root_dir, "raw_data"))
     os.system("rm testdb.sqlite")
+
+
+def get_script_module(script_name):
+    """Load a script module"""
+    return read_json(os.path.join(retriever_root_dir, "scripts", script_name))
+
+
+def get_csv_md5(dataset, engine, tmpdir, install_function, config):
+    workdir = tmpdir.mkdtemp()
+    os.system("cp -r {} {}/".format(os.path.join(retriever_root_dir, 'scripts'), os.path.join(str(workdir), 'scripts')))
+    workdir.chdir()
+    script_module = get_script_module(dataset)
+    install_function(dataset.replace("_", "-"), **config)
+    engine_obj = script_module.checkengine(engine)
+    engine_obj.to_csv()
+    os.system("rm -r scripts") # need to remove scripts before checking md5 on dir
+    current_md5 = getmd5(data=str(workdir), data_type='dir')
+    return current_md5
 
 
 @pytest.mark.parametrize("dataset, expected", db_md5)
@@ -167,25 +167,9 @@ def test_csv_regression(dataset, expected, tmpdir):
 
 
 @pytest.mark.parametrize("dataset, expected", download_md5)
-def test_download_regression(dataset, expected, tmpdir):
+def test_download_regression(dataset, expected):
     """Test download regression."""
     os.chdir(retriever_root_dir)
     download(dataset, "raw_data/{0}".format(dataset))
     current_md5 = getmd5(data="raw_data/{0}".format(dataset), data_type='dir')
     assert current_md5 == expected
-
-
-def test_scripts():
-    """Test if all datasets are working well.
-
-    The dataset list is in the version.txt and includes one extra line for the version
-
-    """
-    os.chdir(retriever_root_dir)
-    input_file = "version.txt"
-    if sys.version_info >= (3, 0, 0):
-        input_obj = io.open(input_file, 'rU')
-    else:
-        input_obj = io.open(input_file, encoding=ENCODING)
-    abs_list = [line.strip() for line in input_obj.readlines()]
-    assert len([data_set for data_set in datasets()]) == len(abs_list) - 1
