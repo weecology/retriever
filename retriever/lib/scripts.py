@@ -66,17 +66,17 @@ def MODULE_LIST(force_compile=False):
                 file, pathname, desc = imp.find_module(script_name, [search_path])
                 try:
                     new_module = imp.load_module(script_name, file, pathname, desc)
-                    if hasattr(new_module, "retriever_minimum_version"):
+                    if hasattr(new_module.SCRIPT, "retriever_minimum_version"):
                         # a script with retriever_minimum_version should be loaded
                         # only if its compliant with the version of the retriever
-                        if not check_retriever_minimum_version(new_module):
+                        if not check_retriever_minimum_version(new_module.SCRIPT):
                             continue
                     # if the script wasn't found in an early search path
                     # make sure it works and then add it
-                    new_module.download
-                    setattr(new_module, "_file", os.path.join(search_path, script))
-                    setattr(new_module, "_name", script_name)
-                    modules.append(new_module)
+                    new_module.SCRIPT.download
+                    setattr(new_module.SCRIPT, "_file", os.path.join(search_path, script))
+                    setattr(new_module.SCRIPT, "_name", script_name)
+                    modules.append(new_module.SCRIPT)
                 except Exception as e:
                     sys.stderr.write("Failed to load script: {} ({})\n"
                                      "Exception: {} \n"
