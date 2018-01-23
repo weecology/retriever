@@ -132,21 +132,30 @@ def main():
                 check_for_updates(False)
                 print("\n\nScripts downloaded.\n")
 
-            if args.l is None:
-                all_scripts = datasets()
+            if args.l is None and args.k is None:
+                all_scripts = dataset_names()
                 print("Available datasets : {}\n".format(len(all_scripts)))
                 from retriever import lscolumns
-                lscolumns.printls(dataset_names())
+                lscolumns.printls(all_scripts)
             else:
-                all_scripts = datasets(args.l[0])
-                print("Available datasets : {}\n".format(len(all_scripts)))
-                count = 1
-                for script in all_scripts:
-                    print("{}. {}".format(count, script.title))
-                    print(script.name)
-                    print(script.keywords)
-                    print()
-                    count += 1
+                param_licenses = args.l if args.l else None
+                keywords = args.k if args.k else None
+
+                # search
+                searched_scripts = datasets(keywords, param_licenses)
+                if not searched_scripts:
+                    print("No available datasets found")
+                else:
+                    print("Available datasets : {}\n".format(len(searched_scripts)))
+                    count = 1
+                    for script in searched_scripts:
+                        print("{}. {}\n{}\n{}\n{}\n".format(
+                                count, script.title,
+                                script.name,
+                                script.keywords,
+                                str(script.licenses[0]['name'])
+                        ))
+                        count += 1
             return
 
         engine = choose_engine(args.__dict__)

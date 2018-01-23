@@ -13,10 +13,16 @@ script_list = [module.name for module in module_list]
 json_list = [module.name for module in module_list
              if os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.json')]
 
-keywords_list = set()
+# set of all possible licenses for ls completion
+licenses_options = set()
+keywords_options = set()
 for module in module_list:
     if hasattr(module, "keywords"):
-        keywords_list = keywords_list | set(module.keywords)
+        keywords_options = keywords_options | set(module.keywords)
+    if hasattr(module, "licenses"):
+        if module.licenses[0]['name']:
+            licenses_options = licenses_options | set([module.licenses[0]['name']])
+
 
 parser = argparse.ArgumentParser(prog="retriever")
 parser.add_argument('-v', '--version', action='version', version=VERSION)
@@ -59,9 +65,12 @@ install_parser.add_argument('--compile', help='force re-compile of script before
 install_parser.add_argument('--debug', help='run in debug mode', action='store_true')
 install_parser.add_argument('--not-cached', help='overwrites local cache of raw data', action='store_true')
 download_parser.add_argument('dataset', help='dataset name').completer = ChoicesCompleter(script_list)
-ls_parser.add_argument('-l', help='verbose list of datasets containing following keywords '
-                                  '(lists all when no keywords are specified)',
-                       nargs=1).completer = ChoicesCompleter(list(keywords_list))
+ls_parser.add_argument('-l', help='search datasets with specific license(s)',
+                       nargs='+').completer = ChoicesCompleter(list(licenses_options))
+ls_parser.add_argument('-k', help='search datasets with keyword(s)',
+                       nargs='+').completer = ChoicesCompleter(list(keywords_options))
+
+
 delete_json_parser.add_argument('dataset', help='dataset name', choices=json_list)
 # retriever Install {Engine} ..
 # retriever download [options]
