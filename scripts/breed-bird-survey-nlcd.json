@@ -1,0 +1,30 @@
+{
+  "citation": "Michael F. Small, Joseph A. Veech, and Jennifer L. R. Jensen. 2012. Local landscape composition and configuration around North American Breeding Bird Survey routes. Ecology 93:2298.",
+  "description": "Landcover data for all North American Breeding Bird Survey routes from the 2006 National Land Cover Database at buffers from 200 m to 10 km..",
+  "encoding": "UTF-8",
+  "homepage": "https://figshare.com/articles/Data_Paper_Data_Paper/3554424",
+  "keywords": [
+    "BBL",
+    "NLCD",
+    "BCR"
+  ],
+  "name": "breed-bird-survey-nlcd",
+  "resources": [],
+  "retriever": "True",
+  "retriever_minimum_version": "2.0.dev",
+  "title": "Breed-Bird-Survey-nlcd Data ",
+  "urls": {
+    "bbs": "https://ndownloader.figshare.com/files/5623479",
+    "bbs1": "https://ndownloader.figshare.com/files/5623482",
+    "bbs2": "https://ndownloader.figshare.com/files/5623491",
+    "bbs3": "https://ndownloader.figshare.com/files/5623494",
+    "bbs4": "https://ndownloader.figshare.com/files/5623497",
+    "bbs5": "https://ndownloader.figshare.com/files/5623500",
+    "bbs6": "https://ndownloader.figshare.com/files/5623506",
+    "bbs7": "https://ndownloader.figshare.com/files/5623509",
+    "bbs8": "https://ndownloader.figshare.com/files/5623512",
+    "bbs9": "https://ndownloader.figshare.com/files/5623485",
+    "bbs10": "https://ndownloader.figshare.com/files/5623488"
+  },
+  "version": "1.0.0"
+}
