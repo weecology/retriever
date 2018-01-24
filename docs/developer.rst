@@ -144,9 +144,9 @@ Pull requests submitted to the repository will automatically be tested using
 these systems and results reported in the ``checks`` section of the pull request
 page.
 
-Updating conda-forge retriever-feedstock
-========================================
-
+To update the confa-forge retriever-feedstock, please reference the updating retriever-feedstock 
+section from the 'conda-forge/retriever-feedstock <https://github.com/conda-forge/retriever-feedstock>'_ repository: 
+"
 For improving the retriever recipe as well as for building a new package version, please fork `this repository <https://github.com/conda-forge/retriever-feedstock>`_ and submit a PR. 
 
 Once submitted, the changes will be executed across the appropriate platforms to ensure a successful build.
@@ -158,8 +158,9 @@ All branches in the conda-forge/retriever-feedstock are created and uploaded dyn
 For producing a uniquely identifiable distribution:
 
  If the version of a package is not being incremented, then the build/number can be added or increased .
- If the version of a package is not being incremented, then remember to return the build/number back to 0.
- 
+ If the version of a package is being incremented, then remember to return the build/number back to 0.
+"
+
 Creating or Updating a Conda Release
 ====================================
 
