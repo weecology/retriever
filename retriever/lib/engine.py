@@ -471,8 +471,7 @@ class Engine(object):
                     archive = tarfile.open(filename, 'r')
                     open_archive_file = archive.extractfile(filename)
 
-                fileloc = self.format_filename(os.path.join(archivebase,
-                                                            os.path.basename(filename)))
+                fileloc = self.format_filename(os.path.join(archivebase, filename))
 
                 unzipped_file = open(fileloc, 'wb')
                 for line in open_archive_file:
