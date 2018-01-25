@@ -29,6 +29,7 @@ script:
 
 # database setup
 before_script:
+  - travis_terminate 0
   - sqlite3 --version
   - psql -c 'create database testdb;' -U postgres
 

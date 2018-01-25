@@ -117,10 +117,17 @@ class BasicTextTemplate(Script):
             if hasattr(self, "archived"):
                 files = [table_obj.path]
                 archive_type = self.archived
+                keep_in_dir = False
+                archivename = None
+                if hasattr(self, "keep_in_dir"):
+                    keep_in_dir = self.keep_in_dir
+                if hasattr(self, "archivename"):
+                    archivename = self.archivename
                 self.engine.download_files_from_archive(url=url,
                                                         filenames=files,
-                                                        filetype=archive_type)
-
+                                                        filetype=archive_type,
+                                                        keep_in_dir= keep_in_dir,
+                                                        archivename=archivename)
                 self.engine.auto_create_table(table_obj, filename=table_obj.path)
                 self.engine.insert_data_from_file(self.engine.format_filename(table_obj.path))
             else:

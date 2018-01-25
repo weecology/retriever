@@ -1,17 +1,16 @@
 {
-  "citation": "NA", 
+  "citation": "NA",
   "description": "The ND-GAIN Country Index summarizes a country's vulnerability to climate change and other global challenges in combination with its readiness to improve resilience. It aims to help governments, businesses and communities better prioritize investments for a more efficient response to the immediate global challenges ahead.",
-   "homepage": "http://index.gain.org/",
-   "encoding": "UTF-8",
+  "homepage": "http://index.gain.org/",
+  "encoding": "UTF-8",
   "keywords": [
     "ND-Gain"
   ],
   "name": "nd-gain",
-  
   "archived": "zip",
   "resources": [
     {
-      "path": "resources/trends/",
+      "path": "resources/trends/gain.csv",
       "dialect": {
         "delimiter": ","
       },
@@ -34,65 +33,124 @@
             "name": "Sign",
             "type": "double"
           }
-          
         ]
       },
-      "name": "trends_readiness",
+      "url": "https://gain-new.crc.nd.edu/assets/gain/files/resources-2017-03-10-14h04.zip"
+    },
+
+        {
+      "path": "resources/gain/gain.csv",
+      "dialect": {
+        "delimiter": ",",
+         "header_rows": 1
+      },
+      "name": "gain_gain",
       "schema": {
         "fields": [
-          {
-            "name": "IS03",
-            "type": "char"
-          },
-          {
-            "name": "Name",
-            "type": "char"
-          },
-          {
-            "name": "Standard",
-            "type": "double"
-          },
-          {
-            "name": "Sign",
-            "type": "double"
-          }
-          
+            {
+              "name": "ISO3",
+              "type": "char"
+            },
+            {
+              "name": "year_Name",
+              "type": "char"
+            },
+            {
+              "name": "year_1995",
+              "type": "char"
+            },
+            {
+              "name": "year_1996",
+              "type": "char"
+            },
+            {
+              "name": "year_1997",
+              "type": "char"
+            },
+            {
+              "name": "year_1998",
+              "type": "char"
+            },
+            {
+              "name": "year_1999",
+              "type": "char"
+            },
+            {
+              "name": "year_2000",
+              "type": "char"
+            },
+            {
+              "name": "year_2001",
+              "type": "char"
+            },
+            {
+              "name": "year_2002",
+              "type": "char"
+            },
+            {
+              "name": "year_2003",
+              "type": "char"
+            },
+            {
+              "name": "year_2004",
+              "type": "char"
+            },
+            {
+              "name": "year_2005",
+              "type": "char"
+            },
+            {
+              "name": "year_2006",
+              "type": "char"
+            },
+            {
+              "name": "year_2007",
+              "type": "char"
+            },
+            {
+              "name": "year_2008",
+              "type": "char"
+            },
+            {
+              "name": "year_2009",
+              "type": "char"
+            },
+            {
+              "name": "year_2010",
+              "type": "char"
+            },
+            {
+              "name": "year_2011",
+              "type": "char"
+            },
+            {
+              "name": "year_2012",
+              "type": "char"
+            },
+            {
+              "name": "year_2013",
+              "type": "char"
+            },
+            {
+              "name": "year_2014",
+              "type": "char"
+            },
+            {
+              "name": "year_2015",
+              "type": "char"
+            },
+            {
+              "name": "year_2016",
+              "type": "char"
+            }
+
         ]
       },
-      
-      "name": "trends_vulnerability",
-      "schema": {
-        "fields": [
-          {
-            "name": "IS03",
-            "type": "char"
-          },
-          {
-            "name": "Name",
-            "type": "char"
-          },
-          {
-            "name": "Standard",
-            "type": "double"
-          },
-          {
-            "name": "Sign",
-            "type": "double"
-          }
-          
-        ]
-      },
-      
-      
-      "url":"https://gain-new.crc.nd.edu/assets/gain/files/resources-2017-03-10-14h04.zip"
-              
+      "url": "https://gain-new.crc.nd.edu/assets/gain/files/resources-2017-03-10-14h04.zip"
     }
   ],
   "retriever": "True",
   "retriever_minimum_version": "2.0.dev",
   "title": "ND-Gain",
-  "urls": {
-        "trends_gain":"https://gain-new.crc.nd.edu/assets/gain/files/resources-2017-03-10-14h04.zip"
-    },
   "version": "1.0.0"
-} 
+}
