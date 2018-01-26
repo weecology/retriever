@@ -3,7 +3,7 @@ abalone_age.json,1.2.1
 airports.json,1.0.0
 amniote_life_hist.py,2.0.2
 antarctic_breed_bird.json,1.2.1
-aquatic_animal_excretion.py,1.1.1
+aquatic_animal_excretion.json,1.2.1
 bioclim.py,1.2.1
 biodiversity_response.json,1.0.1
 biomass_allometry_db.py,1.4.2
