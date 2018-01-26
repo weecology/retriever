@@ -80,7 +80,7 @@ class Engine(object):
 
         total = self.table.record_id + real_line_length
         count_iter = 1
-        insert_limit = 400
+        insert_limit = self.insert_limit
         types = self.table.get_column_datatypes()
         multiple_values = []
         for line in real_lines:
