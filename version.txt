@@ -1,15 +1,16 @@
 v2.1.dev
 abalone_age.json,1.2.1
 airports.json,1.0.0
-amniote_life_hist.py,2.0.2
+amniote_life_hist.py,2.0.3
 antarctic_breed_bird.json,1.2.1
 aquatic_animal_excretion.py,1.1.1
 bioclim.py,1.2.1
 biodiversity_response.json,1.0.1
-biomass_allometry_db.py,1.4.2
+biomass_allometry_db.py,1.4.3
 bird_migration_data.json,1.0.1
 bird_size.json,1.2.2
 breast_cancer_wi.json,1.2.1
+breed-bird-survey-nlcd.json,1.0.0
 breed_bird_survey.py,1.4.2
 breed_bird_survey_50stop.py,1.4.2
 butterfly_population_network.json,1.2.1
@@ -20,7 +21,7 @@ croche_vegetation_data.json,1.0.1
 dicerandra_frutescens.json,1.0.1
 elton_traits.json,1.2.0
 fish_parasite_hosts.json,1.2.0
-flensburg_food_web.py,1.0.2
+flensburg_food_web.py,1.0.3
 forest_biomass_china.json,1.2.0
 forest_fires_portugal.json,1.1.3
 forest_inventory_analysis.py,1.4.2
@@ -28,7 +29,7 @@ forest_plots_michigan.json,1.2.0
 forest_plots_wghats.py,1.3.1
 fray_jorge_ecology.json,1.4.1
 gdp.json,1.0.0
-gentry_forest_transects.py,1.4.1
+gentry_forest_transects.py,1.4.2
 great_basin_mammal_abundance.json,1.0.0
 home_ranges.json,1.1.1
 intertidal_abund_me.py,1.5.2
