@@ -9,22 +9,891 @@
     "BCR"
   ],
   "name": "breed-bird-survey-nlcd",
-  "resources": [],
+  "archived": "zip",
+  "resources": [
+    {
+      "path": "Configuration_metrics_10_km_buffer.txt",
+      "dialect": {
+        "delimiter": ",",
+        "header_rows": 1
+      },
+      "name": "Configuration_metrics_10_km_buffer",
+      "schema": {
+        "fields": [
+          {
+            "name": "RT. NO.",
+            "type": "double"
+          },
+          {
+            "name": "BCR",
+            "type": "double"
+          },
+          {
+            "name": "State",
+            "type": "char"
+          },
+          {
+            "name": "RT. NAME",
+            "type": "char"
+          },
+          {
+            "name": "Patch Density",
+            "type": "double"
+          },
+          {
+            "name": "Largest Patch Index",
+            "type": "double"
+          },
+          {
+            "name": "Aggregation Index",
+            "type": "double"
+          }
+        ]
+      },
+      "url": "https://ndownloader.figshare.com/articles/3554424/versions/1"
+    },
+    {
+      "path": "Configuration_metrics_5_km_buffer.txt",
+      "dialect": {
+        "delimiter": ",",
+        "header_rows": 1
+      },
+      "name": "Configuration_metrics_5_km_buffer",
+      "schema": {
+        "fields": [
+          {
+            "name": "RT. NO.",
+            "type": "double"
+          },
+          {
+            "name": "BCR",
+            "type": "double"
+          },
+          {
+            "name": "State",
+            "type": "char"
+          },
+          {
+            "name": "RT. NAME",
+            "type": "char"
+          },
+          {
+            "name": "Patch Density",
+            "type": "double"
+          },
+          {
+            "name": "Largest Patch Index",
+            "type": "double"
+          },
+          {
+            "name": "Aggregation Index",
+            "type": "double"
+          }
+        ]
+      },
+      "url": "https://ndownloader.figshare.com/articles/3554424/versions/1"
+    },
+    {
+      "path": "Configuration_metrics_2_km_buffer.txt",
+      "dialect": {
+        "delimiter": ",",
+        "header_rows": 1
+      },
+      "name": "Configuration_metrics_2_km_buffer",
+      "schema": {
+        "fields": [
+          {
+            "name": "RT. NO.",
+            "type": "double"
+          },
+          {
+            "name": "BCR",
+            "type": "double"
+          },
+          {
+            "name": "State",
+            "type": "char"
+          },
+          {
+            "name": "RT. NAME",
+            "type": "char"
+          },
+          {
+            "name": "Patch Density",
+            "type": "double"
+          },
+          {
+            "name": "Largest Patch Index",
+            "type": "double"
+          },
+          {
+            "name": "Aggregation Index",
+            "type": "double"
+          }
+        ]
+      },
+      "url": "https://ndownloader.figshare.com/articles/3554424/versions/1"
+    },
+    {
+      "path": "Configuration_metrics_400_m_buffer.txt",
+      "dialect": {
+        "delimiter": ",",
+        "header_rows": 1
+      },
+      "name": "Configuration_metrics_400_m_buffer",
+      "schema": {
+        "fields": [
+          {
+            "name": "RT. NO.",
+            "type": "double"
+          },
+          {
+            "name": "BCR",
+            "type": "double"
+          },
+          {
+            "name": "State",
+            "type": "char"
+          },
+          {
+            "name": "RT. NAME",
+            "type": "char"
+          },
+          {
+            "name": "Patch Density",
+            "type": "double"
+          },
+          {
+            "name": "Largest Patch Index",
+            "type": "double"
+          },
+          {
+            "name": "Aggregation Index",
+            "type": "double"
+          }
+        ]
+      },
+      "url": "https://ndownloader.figshare.com/articles/3554424/versions/1"
+    },
+    {
+      "path": "All_BCRs_whole.txt",
+      "dialect": {
+        "delimiter": ",",
+        "header_rows": 1
+      },
+      "name": "All_BCRs_whole",
+      "schema": {
+        "fields": [
+          {
+            "name": "BCR",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 0",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 11",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 12",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 21",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 22",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 23",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 24",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 31",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 41",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 42",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 43",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 52",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 71",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 81",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 82",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 90",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 95",
+            "type": "double"
+          }
+        ]
+      },
+      "url": "https://ndownloader.figshare.com/articles/3554424/versions/1"
+    },
+    {
+      "path": "BBS_NLCD_10_km_buffer.txt",
+      "dialect": {
+        "delimiter": ",",
+        "header_rows": 1
+      },
+      "name": "BBS_NLCD_10_km_buffer",
+      "schema": {
+        "fields": [
+          {
+            "name": "RT. No.",
+            "type": "double"
+          },
+          {
+            "name": "BCR",
+            "type": "double"
+          },
+          {
+            "name": "State",
+            "type": "char"
+          },
+          {
+            "name": "RT. NAME",
+            "type": "char"
+          },
+          {
+            "name": "RT. LENG",
+            "type": "char"
+          },
+          {
+            "name": "NLCD 0",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 11",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 12",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 21",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 22",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 23",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 24",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 31",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 41",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 42",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 43",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 52",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 71",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 81",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 82",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 90",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 95",
+            "type": "double"
+          },
+          {
+            "name": "SUM",
+            "type": "double"
+          }
+        ]
+      },
+      "url": "https://ndownloader.figshare.com/articles/3554424/versions/1"
+    },
+    {
+      "path": "BBS_NLCD_5_km_buffer.txt",
+      "dialect": {
+        "delimiter": ",",
+        "header_rows": 1
+      },
+      "name": "BBS_NLCD_5_km_buffer",
+      "schema": {
+        "fields": [
+          {
+            "name": "RT. No.",
+            "type": "double"
+          },
+          {
+            "name": "BCR",
+            "type": "double"
+          },
+          {
+            "name": "State",
+            "type": "char"
+          },
+          {
+            "name": "RT. NAME",
+            "type": "char"
+          },
+          {
+            "name": "RT. LENG",
+            "type": "char"
+          },
+          {
+            "name": "NLCD 0",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 11",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 12",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 21",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 22",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 23",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 24",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 31",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 41",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 42",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 43",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 52",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 71",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 81",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 82",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 90",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 95",
+            "type": "double"
+          },
+          {
+            "name": "SUM",
+            "type": "double"
+          }
+        ]
+      },
+      "url": "https://ndownloader.figshare.com/articles/3554424/versions/1"
+    },
+    {
+      "path": "BBS_NLCD_2_km_buffer.txt",
+      "dialect": {
+        "delimiter": ",",
+        "header_rows": 1
+      },
+      "name": "BBS_NLCD_2_km_buffer",
+      "schema": {
+        "fields": [
+          {
+            "name": "RT. No.",
+            "type": "double"
+          },
+          {
+            "name": "BCR",
+            "type": "double"
+          },
+          {
+            "name": "State",
+            "type": "char"
+          },
+          {
+            "name": "RT. NAME",
+            "type": "char"
+          },
+          {
+            "name": "RT. LENG",
+            "type": "char"
+          },
+          {
+            "name": "NLCD 0",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 11",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 12",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 21",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 22",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 23",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 24",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 31",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 41",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 42",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 43",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 52",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 71",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 81",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 82",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 90",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 95",
+            "type": "double"
+          },
+          {
+            "name": "SUM",
+            "type": "double"
+          }
+        ]
+      },
+      "url": "https://ndownloader.figshare.com/articles/3554424/versions/1"
+    },
+    {
+      "path": "BBS_NLCD_1_km_buffer.txt",
+      "dialect": {
+        "delimiter": ",",
+        "header_rows": 1
+      },
+      "name": "BBS_NLCD_1_km_buffer",
+      "schema": {
+        "fields": [
+          {
+            "name": "RT. No.",
+            "type": "double"
+          },
+          {
+            "name": "BCR",
+            "type": "double"
+          },
+          {
+            "name": "State",
+            "type": "char"
+          },
+          {
+            "name": "RT. NAME",
+            "type": "char"
+          },
+          {
+            "name": "RT. LENG",
+            "type": "char"
+          },
+          {
+            "name": "NLCD 0",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 11",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 12",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 21",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 22",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 23",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 24",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 31",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 41",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 42",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 43",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 52",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 71",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 81",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 82",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 90",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 95",
+            "type": "double"
+          },
+          {
+            "name": "SUM",
+            "type": "double"
+          }
+        ]
+      },
+      "url": "https://ndownloader.figshare.com/articles/3554424/versions/1"
+    },
+    {
+      "path": "BBS_NLCD_200_m_buffer.txt",
+      "dialect": {
+        "delimiter": ",",
+        "header_rows": 1
+      },
+      "name": "BBS_NLCD_200_m_buffer",
+      "schema": {
+        "fields": [
+          {
+            "name": "RT. No.",
+            "type": "double"
+          },
+          {
+            "name": "BCR",
+            "type": "double"
+          },
+          {
+            "name": "State",
+            "type": "char"
+          },
+          {
+            "name": "RT. NAME",
+            "type": "char"
+          },
+          {
+            "name": "RT. LENG",
+            "type": "char"
+          },
+          {
+            "name": "NLCD 0",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 11",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 12",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 21",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 22",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 23",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 24",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 31",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 41",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 42",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 43",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 52",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 71",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 81",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 82",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 90",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 95",
+            "type": "double"
+          },
+          {
+            "name": "SUM",
+            "type": "double"
+          }
+        ]
+      },
+      "url": "https://ndownloader.figshare.com/articles/3554424/versions/1"
+    },
+    {
+      "path": "BBS_NLCD_400_m_buffer.txt",
+      "dialect": {
+        "delimiter": ",",
+        "header_rows": 1
+      },
+      "name": "BBS_NLCD_400_m_buffer",
+      "schema": {
+        "fields": [
+          {
+            "name": "RT. No.",
+            "type": "double"
+          },
+          {
+            "name": "BCR",
+            "type": "double"
+          },
+          {
+            "name": "State",
+            "type": "char"
+          },
+          {
+            "name": "RT. NAME",
+            "type": "char"
+          },
+          {
+            "name": "RT. LENG",
+            "type": "char"
+          },
+          {
+            "name": "NLCD 0",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 11",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 12",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 21",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 22",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 23",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 24",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 31",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 41",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 42",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 43",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 52",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 71",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 81",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 82",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 90",
+            "type": "double"
+          },
+          {
+            "name": "NLCD 95",
+            "type": "double"
+          },
+          {
+            "name": "SUM",
+            "type": "double"
+          }
+        ]
+      },
+      "url": "https://ndownloader.figshare.com/articles/3554424/versions/1"
+    }
+  ],
   "retriever": "True",
   "retriever_minimum_version": "2.0.dev",
   "title": "Breed-Bird-Survey-nlcd Data ",
-  "urls": {
-    "bbs": "https://ndownloader.figshare.com/files/5623479",
-    "bbs1": "https://ndownloader.figshare.com/files/5623482",
-    "bbs2": "https://ndownloader.figshare.com/files/5623491",
-    "bbs3": "https://ndownloader.figshare.com/files/5623494",
-    "bbs4": "https://ndownloader.figshare.com/files/5623497",
-    "bbs5": "https://ndownloader.figshare.com/files/5623500",
-    "bbs6": "https://ndownloader.figshare.com/files/5623506",
-    "bbs7": "https://ndownloader.figshare.com/files/5623509",
-    "bbs8": "https://ndownloader.figshare.com/files/5623512",
-    "bbs9": "https://ndownloader.figshare.com/files/5623485",
-    "bbs10": "https://ndownloader.figshare.com/files/5623488"
-  },
+  "urls": {},
   "version": "1.0.0"
 }
