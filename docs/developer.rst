@@ -144,23 +144,6 @@ Pull requests submitted to the repository will automatically be tested using
 these systems and results reported in the ``checks`` section of the pull request
 page.
 
-To update the confa-forge retriever-feedstock, please reference the updating retriever-feedstock 
-section from the 'conda-forge/retriever-feedstock <https://github.com/conda-forge/retriever-feedstock>'_ repository: 
-"
-For improving the retriever recipe as well as for building a new package version, please fork `this repository <https://github.com/conda-forge/retriever-feedstock>`_ and submit a PR. 
-
-Once submitted, the changes will be executed across the appropriate platforms to ensure a successful build.
-
-After merging your PR, the recipe will be re-constructed and uploaded autonomously to the conda-forge channel. The built packages should now be available for everyone to install and use from the channel.
-
-All branches in the conda-forge/retriever-feedstock are created and uploaded dynamically, so PRs should be based on branches in forks. Branches in the main repository shall be used to build distinct package versions only.
-
-For producing a uniquely identifiable distribution:
-
- If the version of a package is not being incremented, then the build/number can be added or increased .
- If the version of a package is being incremented, then remember to return the build/number back to 0.
-"
-
 Creating or Updating a Conda Release
 ====================================
 
@@ -181,6 +164,13 @@ be uploaded and begin to build. Once complete, the package will be available on 
     
 
 To make changes or updates to your current package, you should make another pull request to your meta.yml file.
+
+All branches in the conda-forge/retriever-feedstock are created and uploaded dynamically, so PRs should be based on branches in forks. Branches in the main repository shall be used to build distinct package versions only.
+
+For producing a uniquely identifiable distribution:
+
+ If the version of a package is not being incremented, then the build/number can be added or increased .
+ If the version of a package is being incremented, then remember to return the build/number back to 0.
 
 Documentation
 =============
