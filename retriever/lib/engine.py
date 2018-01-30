@@ -432,19 +432,17 @@ class Engine(object):
         else:
             archivename = self.format_filename(filename_from_url(url))
 
+        archivebase = ''
         if keep_in_dir:
             archivebase = os.path.splitext(os.path.basename(archivename))[0]
             archivedir = os.path.join(DATA_WRITE_PATH, archivebase)
             archivedir = archivedir.format(dataset=self.script.name)
             if not os.path.exists(archivedir):
                 os.makedirs(archivedir)
-        else:
-            archivebase = ''
+
         for filename in filenames:
-            if self.find_file(os.path.join(archivebase, filename)):
-                # Use local copy
-                pass
-            else:
+            if not self.find_file(os.path.join(archivebase, filename)):
+                # if no local copy, download the data
                 self.create_raw_data_dir()
                 if not downloaded:
                     self.download_file(url, archivename)
@@ -472,6 +470,9 @@ class Engine(object):
                     open_archive_file = archive.extractfile(filename)
 
                 fileloc = self.format_filename(os.path.join(archivebase, filename))
+                fileloc = os.path.normpath(fileloc)
+                if not os.path.exists(os.path.dirname(fileloc)):
+                    os.makedirs(os.path.dirname(fileloc))
 
                 unzipped_file = open(fileloc, 'wb')
                 for line in open_archive_file:
