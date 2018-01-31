@@ -1,4 +1,5 @@
 {
+
   "citation": "Myhrvold, N.P., Baldridge, E., Chan, B., Sivam, D., Freeman, D.L. and Ernest, S.M., 2015. An amniote life-history database to perform comparative analyses with birds, mammals, and reptiles:Ecological Archives E096-269. Ecology, 96(11), pp.3109-000.",
   "description": "Compilation of life history traits for birds, mammals, and reptiles.",
   "homepage": "https://figshare.com/collections/An_amniote_life-history_database_to_perform_comparative_analyses_with_birds_mammals_and_reptiles/3308127",
@@ -10,10 +11,64 @@
   "licenses": [{"name": "CC0-1.0"}],
   "resources": [
       {
-          "dialect": {},
-          "name": "data",
-          "schema": {},
-          "url": "https://ndownloader.figshare.com/files/8067269"
+        "dialect": {
+          "missingValues": [
+              -999
+          ]
+        },
+        "name": "main",
+        "schema": {
+
+          "field" : [
+
+          {
+            "name": "record_id",
+            "type": "pk-auto"
+          },
+          {
+            "name": "class",
+            "type": "char",
+            "size": "20"
+          },
+          {
+            "name": "order",
+            "type": "char",
+            "size": "20"
+          },
+          {
+            "name": "family",
+            "type": "char",
+            "size": "20"
+          },
+          {
+            "name": "genus",
+            "type": "char",
+            "size": "20"
+          },
+          {
+            "name": "species",
+            "type": "char",
+            "size": "50"
+          },
+          {
+            "name": "subspecies",
+            "type": "char",
+            "size": "20"
+          },
+          {
+            "name": "common_name",
+            "type": "char",
+            "size": "400"
+          },
+          {
+            "name": "reference",
+            "type": "ct-char"
+          },
+        ]
+
+      },
+
+        "url": "https://ndownloader.figshare.com/files/8067269"
       }
   ],
   "retriever": "True",
