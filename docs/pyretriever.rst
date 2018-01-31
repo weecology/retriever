@@ -59,6 +59,15 @@ From these objects, we can access the available Script's attributes.
 
   >>> for dataset in rt.datasets():
         print(dataset.name)
+        
+  abalone-age
+  airports
+  amniote-life-hist
+  antarctic-breed-bird
+  aquatic-animal-excretion
+  .
+  .
+
 
 There are a lot of different attributes provided in the Scripts class. Some notably useful ones are:
 
