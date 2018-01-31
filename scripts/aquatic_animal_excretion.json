@@ -1,0 +1,164 @@
+{
+  "citation": "Vanni, M. J., McIntyre, P. B., Allen, D., Arnott, D. L., Benstead, J. P., Berg, D. J., Brabrand, Å., Brosse, S., Bukaveckas, P. A., Caliman, A., Capps, K. A., Carneiro, L. S., Chadwick, N. E., Christian, A. D., Clarke, A., Conroy, J. D., Cross, W. F., Culver, D. A., Dalton, C. M., Devine, J. A., Domine, L. M., Evans-White, M. A., Faafeng, B. A., Flecker, A. S., Gido, K. B., Godinot, C., Guariento, R. D., Haertel-Borer, S., Hall, R. O., Henry, R., Herwig, B. R., Hicks, B. J., Higgins, K. A., Hood, J. M., Hopton, M. E., Ikeda, T., James, W. F., Jansen, H. M., Johnson, C. R., Koch, B. J., Lamberti, G. A., Lessard-Pilon, S., Maerz, J. C., Mather, M. E., McManamay, R. A., Milanovich, J. R., Morgan, D. K. J., Moslemi, J. M., Naddafi, R., Nilssen, J. P., Pagano, M., Pilati, A., Post, D. M., Roopin, M., Rugenski, A. T., Schaus, M. H., Shostell, J., Small, G. E., Solomon, C. T., Sterrett, S. C., Strand, O., Tarvainen, M., Taylor, J. M., Torres-Gerald, L. E., Turner, C. B., Urabe, J., Uye, S.-I., Ventelä, A.-M., Villeger, S., Whiles, M. R., Wilhelm, F. M., Wilson, H. F., Xenopoulos, M. A. and Zimmer, K. D. (2017), A global database of nitrogen and phosphorus excretion rates of aquatic animals. Ecology. Accepted Author Manuscript. doi:10.1002/ecy.1792",
+  "description": "Dataset containing the nutrient cycling rates of individual animals.",
+  "homepage": "http://onlinelibrary.wiley.com/doi/10.1002/ecy.1792/abstract",
+  "keywords": [
+    "Aquatic"
+  ],
+  "name": "aquatic-animal-excretion",
+  "resources": [
+      {
+        "dialect": {},
+        "name": "aquatic_animals",
+        "schema": {
+          "fields" :
+          [
+            {
+              "name": "index",
+              "type": "pk-int"
+            },
+            {
+              "name": "sourcenumber",
+              "type": "int"
+            },
+            {
+              "name": "sourcename",
+              "type": "char"
+            },
+            {
+              "name": "speciesname",
+              "type": "char"
+            },
+            {
+              "name": "speciescode",
+              "type": "char"
+            },
+            {
+              "name": "invert/vert",
+              "type": "char"
+            },
+            {
+              "name": "phylum",
+              "type": "char"
+            },
+            {
+              "name": "class",
+              "type": "char"
+            },
+            {
+              "name": "order",
+              "type": "char"
+            },
+            {
+              "name": "family",
+              "type": "char"
+            },
+            {
+              "name": "trophicgild",
+              "type": "char"
+            },
+            {
+              "name": "drymass",
+              "type": "double"
+            },
+            {
+              "name": "logdrymass",
+              "type": "double"
+            },
+            {
+              "name": "ecosystemtype",
+              "type": "char"
+            },
+            {
+              "name": "energysource",
+              "type": "char"
+            },
+            {
+              "name": "habitat",
+              "type": "char"
+            },
+            {
+              "name": "residentecosystem",
+              "type": "char"
+            },
+            {
+              "name": "temperature",
+              "type": "double"
+            },
+            {
+              "name": "nexcretionrate",
+              "type": "double"
+            },
+            {
+              "name": "pexcretionrate",
+              "type": "double"
+            },
+            {
+              "name": "lognexcretionrate",
+              "type": "double"
+            },
+            {
+              "name": "logpexcretionrate",
+              "type": "double"
+            },
+            {
+              "name": "incubationtime",
+              "type": "double"
+            },
+            {
+              "name": "nform",
+              "type": "char"
+            },
+            {
+              "name": "pform",
+              "type": "char"
+            },
+            {
+              "name": "bodyc",
+              "type": "double"
+            },
+            {
+              "name": "bodyn",
+              "type": "double"
+            },
+            {
+              "name": "bodyp",
+              "type": "double"
+            },
+            {
+              "name": "bodyc:n",
+              "type": "double"
+            },
+            {
+              "name": "bodyc:p",
+              "type": "double"
+            },
+            {
+              "name": "bodyn:p",
+              "type": "double"
+            },
+            {
+              "name": "bodydatasource",
+              "type": "char"
+            },
+            {
+              "name": "datasource",
+              "type": "char"
+            },
+            {
+              "name": "dataproviders",
+              "type": "char"
+            }
+          ]
+
+        },
+        "url": "http://onlinelibrary.wiley.com/store/10.1002/ecy.1792/asset/supinfo/ecy1792-sup-0001-DataS1.zip?v=1&s=3a9094a807bbc2d03ba43045d2b72782bfb348ef"
+      }
+  ],
+  "retriever_minimum_version": "2.0.dev",
+  "title": "Aquatic Animal Excretion",
+  "urls": {
+      "aquatic_animals": "http://onlinelibrary.wiley.com/store/10.1002/ecy.1792/asset/supinfo/ecy1792-sup-0001-DataS1.zip?v=1&s=3a9094a807bbc2d03ba43045d2b72782bfb348ef"
+  },
+  "version": "1.1.1"
+}
