@@ -94,6 +94,10 @@ If there are no scripts available, or you want to update scripts to the latest v
 .. code-block:: python
 
   >>> rt.check_for_updates()
+  
+  Downloading scripts...
+  Download Progress: [####################] 100.00%
+  The retriever is up-to-date
 
 
 Downloading recipes for all datasets can take a while depending on the internet connection.
