@@ -19,8 +19,7 @@
         "name": "main",
         "schema": {
 
-          "field" : [
-
+          "fields" : [
           {
             "name": "record_id",
             "type": "pk-auto"
@@ -63,9 +62,8 @@
           {
             "name": "reference",
             "type": "ct-char"
-          },
+          }
         ]
-
       },
 
         "url": "https://ndownloader.figshare.com/files/8067269"
