@@ -55,11 +55,11 @@ simple_csv = {
 }
 
 comma_delimeter_csv = {
-    'name': 'simple_csv',
+    'name': 'comma_delimeter_csv',
     'raw_data': ['a,b,c',
                  '1,2,3',
                  '4,5,6'],
-    'script': {"name": "simple_csv",
+    'script': {"name": "comma_delimeter_csv",
                "resources": [
                    {"dialect": {
                        "delimiter": ",",
@@ -79,14 +79,13 @@ comma_delimeter_csv = {
 }
 
 tab_delimeter_csv = {
-    'name': 'simple_csv',
-    'raw_data': ['a,b,c',
-                 '1,2,3',
-                 '4,5,6'],
-    'script': {"name": "simple_csv",
+    'name': 'tab_delimeter_csv',
+    'raw_data': ['a    b    c',
+                 '1    2    3',
+                 '4    5    6'],
+    'script': {"name": "tab_delimeter_csv",
                "resources": [
                    {"dialect": {
-                      "delimiter": "    ",
                       "do_not_bulk_insert": "True"
                    },
                     "name": "simple_csv",
@@ -99,7 +98,7 @@ tab_delimeter_csv = {
                "urls":
                    {"simple_csv": "http://example.com/simple_csv.txt"}
                },
-    'expect_out': ['a,b,c', '1,2,3', '4,5,6']
+    'expect_out': ['a   b   c', '1   2   3', '4   5   6']
 }
 
 data_no_header = {
