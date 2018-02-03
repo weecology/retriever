@@ -51,14 +51,7 @@ The function returns a list of all the currently available scripts.
    'wine-quality']
 
 
-For more detailed description of the scripts installed in retriever ``datasets`` function can be used.
-
-.. code-block:: python
-
-  >>> for dataset in rt.datasets():
-        print(dataset)
-        
-This function returns a list objects of ``Scripts`` class.
+For more detailed description of the scripts installed in retriever ``datasets`` function can be used. This function returns a list objects of ``Scripts`` class.
 From these objects, we can access the available Script's attributes as follows.
 
 .. code-block:: python
