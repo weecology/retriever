@@ -165,7 +165,6 @@ csv_latin1_encoding = {
     'expect_out': [u'a,b,c', u'1,2,4Löve', u'4,5,6']
 }
 
-
 autopk_csv = {
     'name': 'autopk_csv',
     'raw_data': ['a,b,c',
