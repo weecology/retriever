@@ -80,9 +80,9 @@ comma_delimeter_csv = {
 
 tab_delimeter_csv = {
     'name': 'tab_delimeter_csv',
-    'raw_data': ['a b   c',
-                 '1 2   3',
-                 '4 5   6'],
+    'raw_data': ['a    b    c',
+                 '1    2    3',
+                 '4    5    6'],
     'script': {"name": "tab_delimeter_csv",
                "resources": [
                    {"dialect": {
