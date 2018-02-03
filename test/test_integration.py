@@ -65,7 +65,7 @@ comma_delimeter_csv = {
                        "delimiter": ",",
                        "do_not_bulk_insert": "True"
                    },
-                    "name": "simple_csv",
+                    "name": "comma_delimeter_csv",
                     "schema": {},
                     "url": "http://example.com/comma_delimeter_csv.txt"}
                ],
@@ -88,7 +88,7 @@ tab_delimeter_csv = {
                    {"dialect": {
                       "do_not_bulk_insert": "True"
                    },
-                    "name": "simple_csv",
+                    "name": "tab_delimeter_csv",
                     "schema": {},
                     "url": "http://example.com/tab_delimeter_csv.txt"}
                ],
