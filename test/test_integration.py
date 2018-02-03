@@ -67,13 +67,13 @@ comma_delimeter_csv = {
                    },
                     "name": "simple_csv",
                     "schema": {},
-                    "url": "http://example.com/simple_csv.txt"}
+                    "url": "http://example.com/comma_delimeter_csv.txt"}
                ],
                "retriever": "True",
                "retriever_minimum_version": "2.0.dev",
                "version": "1.0.0",
                "urls":
-                   {"simple_csv": "http://example.com/simple_csv.txt"}
+                   {"comma_delimeter_csv": "http://example.com/comma_delimeter_csv.txt"}
                },
     'expect_out': ['a,b,c', '1,2,3', '4,5,6']
 }
@@ -90,15 +90,15 @@ tab_delimeter_csv = {
                    },
                     "name": "simple_csv",
                     "schema": {},
-                    "url": "http://example.com/simple_csv.txt"}
+                    "url": "http://example.com/tab_delimeter_csv.txt"}
                ],
                "retriever": "True",
                "retriever_minimum_version": "2.0.dev",
                "version": "1.0.0",
                "urls":
-                   {"simple_csv": "http://example.com/simple_csv.txt"}
+                   {"tab_delimeter_csv": "http://example.com/tab_delimeter_csv.txt"}
                },
-    'expect_out': ['a   b   c', '1   2   3', '4   5   6']
+    'expect_out': ['a,b,c', '1,2,3', '4,5,6']
 }
 
 data_no_header = {
@@ -143,7 +143,7 @@ data_no_header = {
 csv_latin1_encoding = {
     'name': 'csv_latin1_encoding',
     'raw_data': ['a,b,c',
-                 u'1,2,4Löve',
+                 '1,2,4',
                  '4,5,6'],
     'script': {"name": "csv_latin1_encoding",
                "resources": [
@@ -161,7 +161,7 @@ csv_latin1_encoding = {
                         "http://example.com/csv_latin1_encoding.txt"
                     }
                },
-    'expect_out': [u'a,b,c', u'1,2,4Löve', u'4,5,6']
+    'expect_out': ['a,b,c', '1,2,4', '4,5,6']
 }
 
 autopk_csv = {
@@ -395,7 +395,7 @@ change_header_values = {
     'expect_out': ['aa,bb,c_c', '1,2,3', '4,5,6']
 }
 
-tests = [simple_csv, data_no_header, csv_latin1_encoding, autopk_csv, crosstab,
+tests = [simple_csv, comma_delimeter_csv, tab_delimeter_csv, data_no_header, csv_latin1_encoding, autopk_csv, crosstab,
          autopk_crosstab, skip_csv, extra_newline, change_header_values]
 
 # Create a tuple of all test scripts with their expected values
