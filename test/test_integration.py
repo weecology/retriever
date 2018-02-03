@@ -86,7 +86,6 @@ tab_delimeter_csv = {
     'script': {"name": "tab_delimeter_csv",
                "resources": [
                    {"dialect": {
-                       "delimiter": "    ",
                       "do_not_bulk_insert": "True"
                    },
                     "name": "tab_delimeter_csv",
