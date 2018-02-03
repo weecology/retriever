@@ -80,9 +80,9 @@ comma_delimeter_csv = {
 
 tab_delimeter_csv = {
     'name': 'tab_delimeter_csv',
-    'raw_data': ['a    b    c',
-                 '1    2    3',
-                 '4    5    6'],
+    'raw_data': ['a   b   c',
+                 '1   2   3',
+                 '4   5   6'],
     'script': {"name": "tab_delimeter_csv",
                "resources": [
                    {"dialect": {
@@ -98,7 +98,7 @@ tab_delimeter_csv = {
                "urls":
                    {"tab_delimeter_csv": "http://example.com/tab_delimeter_csv.txt"}
                },
-    'expect_out': ['a,b,c', '1,2,3', '4,5,6']
+    'expect_out': ['a   b   c', '1   2   3', '4   5   6']
 }
 
 data_no_header = {
