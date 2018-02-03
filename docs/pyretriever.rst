@@ -57,18 +57,7 @@ For more detailed description of the scripts installed in retriever ``datasets``
 
   >>> for dataset in rt.datasets():
         print(dataset)
-
-Output:
-
-.. code-block:: python
-
-  abalone-age
-  http://archive.ics.uci.edu/ml/datasets/Abalone
-  airports
-  http://ourairports.com/data/
-  .
-  .
-  
+        
 This function returns a list objects of ``Scripts`` class.
 From these objects, we can access the available Script's attributes as follows.
 
