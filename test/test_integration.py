@@ -102,7 +102,6 @@ tab_delimeter_csv = {
     'expect_out': ['a,b,c', '1,2,3', '4,5,6']
 }
 
-
 data_no_header = {
     'name': 'data_no_header',
     'raw_data': ['1,2,3',
