@@ -144,7 +144,7 @@ data_no_header = {
 csv_latin1_encoding = {
     'name': 'csv_latin1_encoding',
     'raw_data': ['a,b,c',
-                u'1,2,4Löve',
+                 u'1,2,4Löve',
                  '4,5,6'],
     'script': {"name": "csv_latin1_encoding",
                "resources": [
