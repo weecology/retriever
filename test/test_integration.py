@@ -98,7 +98,7 @@ tab_delimeter_csv = {
                "urls":
                    {"tab_delimeter_csv": "http://example.com/tab_delimeter_csv.txt"}
                },
-    'expect_out': ['a   b   c', '1   2   3', '4   5   6']
+    'expect_out': ['a,b,c', '1,2,3', '4,5,6']
 }
 
 data_no_header = {
