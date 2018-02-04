@@ -2,7 +2,6 @@
 # """Integrations tests for Data Retriever"""
 from __future__ import print_function
 
-import imp
 import json
 import os
 import shutil
@@ -17,11 +16,11 @@ reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding(encoding)
 import pytest
-from retriever.lib.compile import compile_json
+from retriever.lib.load_json import read_json
 from retriever.lib.defaults import HOME_DIR
 from retriever.engines import engine_list
-from retriever.lib.tools import file_2list
-from retriever.lib.tools import create_file
+from retriever.lib.engine_tools import file_2list
+from retriever.lib.engine_tools import create_file
 
 # Set postgres password, Appveyor service needs the password given
 # The Travis service obtains the password from the config file.
@@ -29,6 +28,10 @@ if os.name == "nt":
     os_password = "Password12!"
 else:
     os_password = ""
+
+
+mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, \
+csv_engine, download_engine, json_engine, xml_engine = engine_list
 
 simple_csv = {
     'name': 'simple_csv',
@@ -47,6 +50,54 @@ simple_csv = {
                "version": "1.0.0",
                "urls":
                    {"simple_csv": "http://example.com/simple_csv.txt"}
+               },
+    'expect_out': ['a,b,c', '1,2,3', '4,5,6']
+}
+
+comma_delimeter_csv = {
+    'name': 'comma_delimeter_csv',
+    'raw_data': ['a,b,c',
+                 '1,2,3',
+                 '4,5,6'],
+    'script': {"name": "comma_delimeter_csv",
+               "resources": [
+                   {"dialect": {
+                       "delimiter": ",",
+                       "do_not_bulk_insert": "True"
+                   },
+                    "name": "comma_delimeter_csv",
+                    "schema": {},
+                    "url": "http://example.com/comma_delimeter_csv.txt"}
+               ],
+               "retriever": "True",
+               "retriever_minimum_version": "2.0.dev",
+               "version": "1.0.0",
+               "urls":
+                   {"comma_delimeter_csv": "http://example.com/comma_delimeter_csv.txt"}
+               },
+    'expect_out': ['a,b,c', '1,2,3', '4,5,6']
+}
+
+tab_delimeter_csv = {
+    'name': 'tab_delimeter_csv',
+    'raw_data': ['a	b	c',
+                 '1	2	3',
+                 '4	5	6'],
+    'script': {"name": "tab_delimeter_csv",
+               "resources": [
+                   {"dialect": {
+                      "delimiter": "\t",
+                      "do_not_bulk_insert": "True"
+                   },
+                    "name": "tab_delimeter_csv",
+                    "schema": {},
+                    "url": "http://example.com/tab_delimeter_csv.txt"}
+               ],
+               "retriever": "True",
+               "retriever_minimum_version": "2.0.dev",
+               "version": "1.0.0",
+               "urls":
+                   {"tab_delimeter_csv": "http://example.com/tab_delimeter_csv.txt"}
                },
     'expect_out': ['a,b,c', '1,2,3', '4,5,6']
 }
@@ -345,7 +396,7 @@ change_header_values = {
     'expect_out': ['aa,bb,c_c', '1,2,3', '4,5,6']
 }
 
-tests = [simple_csv, data_no_header, csv_latin1_encoding, autopk_csv, crosstab,
+tests = [simple_csv, comma_delimeter_csv, tab_delimeter_csv, data_no_header, csv_latin1_encoding, autopk_csv, crosstab,
          autopk_crosstab, skip_csv, extra_newline, change_header_values]
 
 # Create a tuple of all test scripts with their expected values
@@ -377,7 +428,7 @@ def setup_module():
         path_js = os.path.join(HOME_DIR, "scripts", test['name'] + '.json')
         with open(path_js, 'w') as js:
             json.dump(test['script'], js, indent=2)
-        compile_json(os.path.join(HOME_DIR, "scripts", test['name']))
+        read_json(os.path.join(HOME_DIR, "scripts", test['name']))
 
 
 def teardown_module():
@@ -385,9 +436,13 @@ def teardown_module():
     for test in tests:
         shutil.rmtree(os.path.join(HOME_DIR, "raw_data", test['name']))
         os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.json'))
-        os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.py'))
         os.system("rm -r *{}".format(test['name']))
         os.system("rm testdb.sqlite")
+
+
+def get_script_module(script_name):
+    """Load a script module."""
+    return read_json(os.path.join(HOME_DIR, "scripts", script_name))
 
 
 def get_output_as_csv(dataset, engines, tmpdir, db):
@@ -399,9 +454,9 @@ def get_output_as_csv(dataset, engines, tmpdir, db):
     # we don't have to change to the main source directory in order
     # to have the scripts loaded
     script_module = get_script_module(dataset["name"])
-    script_module.SCRIPT.download(engines)
-    script_module.SCRIPT.engine.final_cleanup()
-    script_module.SCRIPT.engine.to_csv()
+    script_module.download(engines)
+    script_module.engine.final_cleanup()
+    script_module.engine.to_csv()
     # get filename and append .csv
     csv_file = engines.opts['table_name'].format(db=db, table=dataset["name"])
     # csv engine already has the .csv extension
@@ -410,17 +465,6 @@ def get_output_as_csv(dataset, engines, tmpdir, db):
     obs_out = file_2list(csv_file)
     os.chdir(retriever_root_dir)
     return obs_out
-
-
-def get_script_module(script_name):
-    """Load a script module."""
-    file, pathname, desc = imp.find_module(script_name,
-                                           [os.path.join(HOME_DIR, "scripts")])
-    return imp.load_module(script_name, file, pathname, desc)
-
-
-mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, \
-csv_engine, download_engine, json_engine, xml_engine = engine_list
 
 
 @pytest.mark.parametrize("dataset, expected", test_parameters)
