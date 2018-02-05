@@ -15,12 +15,11 @@ class main(Script):
         self.title="Food web including metazoan parasites for a brackish shallow water ecosystem in Germany and Denmark"
         self.citation="C. Dieter Zander, Neri Josten, Kim C. Detloff, Robert Poulin, John P. McLaughlin, and David W. Thieltges. 2011. Food web including metazoan parasites for a brackish shallow water ecosystem in Germany and Denmark. Ecology 92:2007."
         self.name="flensburg-food-web"
-        self.shortname="flensburg-food-web"
         self.ref="https://figshare.com/articles/Full_Archive/3552066"
         self.description="This data is of a food web for the Flensburg Fjord, a brackish shallow water inlet on the Baltic Sea, between Germany and Denmark."
         self.keywords = []
         self.retriever_minimum_version='2.0.dev'
-        self.version='1.0.2'
+        self.version='1.0.3'
         self.urls={"zip": "https://ndownloader.figshare.com/files/5620326"}
         self.cleanup_func_table = Cleanup(correct_invalid_value, missing_values=[''])
 

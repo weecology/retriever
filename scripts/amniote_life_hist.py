@@ -17,7 +17,7 @@ class main(Script):
         self.title = "Amniote life History database"
         self.name = "amniote-life-hist"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '2.0.2'
+        self.version = '2.0.3'
         self.ref = "https://figshare.com/collections/An_amniote_life-history_database_to_perform_comparative_" \
                    "analyses_with_birds_mammals_and_reptiles/3308127"
         self.urls = {"data": "https://ndownloader.figshare.com/files/8067269"}
@@ -66,9 +66,14 @@ class main(Script):
         table_main.ct_column = ct_column
         table_main.ct_names = ct_names
         table_main.columns = columns
-        engine.auto_create_table(table_main,
-                                 filename="Amniote_Database_Aug_2015.csv")
-        engine.insert_data_from_file(engine.format_filename("Amniote_Database_Aug_2015.csv"))
+        if parse_version(VERSION).__str__() >= parse_version("2.1.dev").__str__():
+            engine.auto_create_table(table_main,
+                                     filename="Data_Files/Amniote_Database_Aug_2015.csv")
+            engine.insert_data_from_file(engine.format_filename("Data_Files/Amniote_Database_Aug_2015.csv"))
+        else:
+            engine.auto_create_table(table_main,
+                                     filename="Amniote_Database_Aug_2015.csv")
+            engine.insert_data_from_file(engine.format_filename("Amniote_Database_Aug_2015.csv"))
 
         # Create table reference from Amniote_Database_References_Aug_2015.csv
         reference_columns = [
@@ -80,9 +85,14 @@ class main(Script):
         table_references.ct_column = ct_column
         table_references.ct_names = ct_names
         table_references.columns = reference_columns
-        engine.auto_create_table(table_references,
-                                 filename="Amniote_Database_References_Aug_2015.csv")
-        engine.insert_data_from_file(engine.format_filename("Amniote_Database_References_Aug_2015.csv"))
+        if parse_version(VERSION).__str__() >= parse_version("2.1.dev").__str__():
+            engine.auto_create_table(table_references,
+                                     filename="Data_Files/Amniote_Database_References_Aug_2015.csv")
+            engine.insert_data_from_file(engine.format_filename("Data_Files/Amniote_Database_References_Aug_2015.csv"))
+        else:
+            engine.auto_create_table(table_references,
+                                     filename="Amniote_Database_References_Aug_2015.csv")
+            engine.insert_data_from_file(engine.format_filename("Amniote_Database_References_Aug_2015.csv"))
 
         # Create table Range
         # This table has different values for headers from the above tables.
@@ -117,9 +127,14 @@ class main(Script):
         table_range.ct_column = ct_column
         table_range.ct_names = range_ct_names
         table_range.columns = range_columns
-        engine.auto_create_table(table_range,
-                                 filename="Amniote_Range_Count_Aug_2015.csv")
-        engine.insert_data_from_file(engine.format_filename("Amniote_Range_Count_Aug_2015.csv"))
+        if parse_version(VERSION).__str__() >= parse_version("2.1.dev").__str__():
+            engine.auto_create_table(table_range,
+                                     filename="Data_Files/Amniote_Range_Count_Aug_2015.csv")
+            engine.insert_data_from_file(engine.format_filename("Data_Files/Amniote_Range_Count_Aug_2015.csv"))
+        else:
+            engine.auto_create_table(table_range,
+                                     filename="Amniote_Range_Count_Aug_2015.csv")
+            engine.insert_data_from_file(engine.format_filename("Amniote_Range_Count_Aug_2015.csv"))
 
 
 SCRIPT = main()

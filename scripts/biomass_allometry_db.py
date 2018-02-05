@@ -1,9 +1,11 @@
 #retriever
 
 """Retriever script for direct download of data data"""
+from pkg_resources import parse_version
+
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 from retriever.lib.templates import Script
-from pkg_resources import parse_version
+
 try:
     from retriever.lib.defaults import VERSION
 except ImportError:
@@ -21,7 +23,7 @@ class main(Script):
         self.licenses = [{"name": "CC0-1.0"}]
         self.keywords = ['plants', 'observational']
         self.retriever_minimum_version = "2.0.dev"
-        self.version = "1.4.2"
+        self.version = "1.4.3"
         self.description = "The data set is a Biomass and allometry database (BAAD) for woody plants containing 259634 measurements collected in 176 different studies from 21084 individuals across 678 species."
         
         if parse_version(VERSION) <= parse_version("2.0.0"):
@@ -44,13 +46,23 @@ class main(Script):
         engine.download_files_from_archive(self.urls["BAAD"], file_names)
 
         # creating data from baad_data.csv
-        engine.auto_create_table(Table("data", cleanup=self.cleanup_func_table),
-                                 filename="baad_data.csv")
-        engine.insert_data_from_file(engine.format_filename("baad_data.csv"))
+        if parse_version(VERSION).__str__() >= parse_version("2.1.dev").__str__():
+            engine.auto_create_table(Table("data", cleanup=self.cleanup_func_table),
+                                     filename="baad_data/baad_data.csv")
+            engine.insert_data_from_file(engine.format_filename("baad_data/baad_data.csv"))
+        else:
+            engine.auto_create_table(Table("data", cleanup=self.cleanup_func_table),
+                                     filename="baad_data.csv")
+            engine.insert_data_from_file(engine.format_filename("baad_data.csv"))
 
         # creating methods from baad_methods.csv
-        engine.auto_create_table(Table("methods", cleanup=self.cleanup_func_table),
-                                 filename="baad_methods.csv")
-        engine.insert_data_from_file(engine.format_filename("baad_methods.csv"))
+        if parse_version(VERSION).__str__() >= parse_version("2.1.dev").__str__():
+            engine.auto_create_table(Table("methods", cleanup=self.cleanup_func_table),
+                                     filename="baad_data/baad_methods.csv")
+            engine.insert_data_from_file(engine.format_filename("baad_data/baad_methods.csv"))
+        else:
+            engine.auto_create_table(Table("methods", cleanup=self.cleanup_func_table),
+                                     filename="baad_methods.csv")
+            engine.insert_data_from_file(engine.format_filename("baad_methods.csv"))
 
 SCRIPT = main()
