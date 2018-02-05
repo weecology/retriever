@@ -1,7 +1,10 @@
 import os
+import sys
 from builtins import range
 
-from retriever.lib.defaults import DATA_DIR
+import pandas as pd
+from retriever.lib.defaults import DATA_DIR, SCRIPT_WRITE_PATH
+from retriever.lib.engine_tools import name_matches
 from retriever.lib.models import Engine, no_cleanup
 
 
@@ -106,3 +109,33 @@ class engine(Engine):
         import sqlite3 as dbapi
         self.get_input()
         return dbapi.connect(self.opts["file"])
+
+
+    @staticmethod
+    def fetch_tables(dataset, file= os.path.join(DATA_DIR, 'sqlite.db'),
+                table_name=None):
+        """Return sqlite dataset as list of pandas dataframe."""
+        import sqlite3
+        
+        con = sqlite3.connect(file)
+        cursor = con.cursor()
+        # select specific table name either all scripts in a dataset
+        if table_name:
+            sql = "SELECT name FROM sqlite_master WHERE type='table' AND name = '{}';".format(table_name)
+        else:
+            from retriever.lib.scripts import SCRIPT_LIST, get_script
+
+            dataset_tables = [
+                "'"  + dataset.replace('-', '_') +'_' + table.replace('-', '_') + "'"
+                for table in  get_script(dataset).tables.keys()]
+            
+            dataset_tables = '('+','.join(dataset_tables) + ')'
+            sql = """SELECT name FROM sqlite_master WHERE type='table'
+                    AND name IN {};""".format(dataset_tables)
+        
+        cursor.execute(sql)
+        tables = [table[0] for table in cursor.fetchall()]
+        data = {table:pd.read_sql_query("SELECT * FROM {};".format(table), con)
+            for table in tables
+        }
+        return data

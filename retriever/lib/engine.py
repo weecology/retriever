@@ -22,7 +22,7 @@ import time
 from tqdm import tqdm
 from urllib.request import urlretrieve
 from retriever.lib.tools import open_fr, open_fw, open_csvw
-from retriever.lib.defaults import DATA_SEARCH_PATHS, DATA_WRITE_PATH
+from retriever.lib.defaults import DATA_SEARCH_PATHS, DATA_WRITE_PATH, DATA_DIR
 from retriever.lib.cleanup import no_cleanup
 from retriever.lib.warning import Warning
 
@@ -744,6 +744,13 @@ class Engine(object):
             pos += width
         return values
 
+    def fetch_tables(self, dataset, file= os.path.join(DATA_DIR, 'sqlite.db'),
+                   table_name='{db}_{table}',
+                   debug=False, use_cache=True):
+        """This can be overriden to return the tables of sqlite db
+        as pandas data frame. Return False by default. 
+        """
+        return False
 
 def skip_rows(rows, source):
     """Skip over the header lines by reading them before processing."""

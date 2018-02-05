@@ -8,3 +8,4 @@ sphinx_py3doc_enhanced_theme
 sphinxcontrib-napoleon
 sphinx_rtd_theme
 tqdm
+pandas
