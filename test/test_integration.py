@@ -54,6 +54,54 @@ simple_csv = {
     'expect_out': ['a,b,c', '1,2,3', '4,5,6']
 }
 
+comma_delimeter_csv = {
+    'name': 'comma_delimeter_csv',
+    'raw_data': ['a,b,c',
+                 '1,2,3',
+                 '4,5,6'],
+    'script': {"name": "comma_delimeter_csv",
+               "resources": [
+                   {"dialect": {
+                       "delimiter": ",",
+                       "do_not_bulk_insert": "True"
+                   },
+                    "name": "comma_delimeter_csv",
+                    "schema": {},
+                    "url": "http://example.com/comma_delimeter_csv.txt"}
+               ],
+               "retriever": "True",
+               "retriever_minimum_version": "2.0.dev",
+               "version": "1.0.0",
+               "urls":
+                   {"comma_delimeter_csv": "http://example.com/comma_delimeter_csv.txt"}
+               },
+    'expect_out': ['a,b,c', '1,2,3', '4,5,6']
+}
+
+tab_delimeter_csv = {
+    'name': 'tab_delimeter_csv',
+    'raw_data': ['a	b	c',
+                 '1	2	3',
+                 '4	5	6'],
+    'script': {"name": "tab_delimeter_csv",
+               "resources": [
+                   {"dialect": {
+                      "delimiter": "\t",
+                      "do_not_bulk_insert": "True"
+                   },
+                    "name": "tab_delimeter_csv",
+                    "schema": {},
+                    "url": "http://example.com/tab_delimeter_csv.txt"}
+               ],
+               "retriever": "True",
+               "retriever_minimum_version": "2.0.dev",
+               "version": "1.0.0",
+               "urls":
+                   {"tab_delimeter_csv": "http://example.com/tab_delimeter_csv.txt"}
+               },
+    'expect_out': ['a,b,c', '1,2,3', '4,5,6']
+}
+
 data_no_header = {
     'name': 'data_no_header',
     'raw_data': ['1,2,3',
@@ -348,7 +396,7 @@ change_header_values = {
     'expect_out': ['aa,bb,c_c', '1,2,3', '4,5,6']
 }
 
-tests = [simple_csv, data_no_header, csv_latin1_encoding, autopk_csv, crosstab,
+tests = [simple_csv, comma_delimeter_csv, tab_delimeter_csv, data_no_header, csv_latin1_encoding, autopk_csv, crosstab,
          autopk_crosstab, skip_csv, extra_newline, change_header_values]
 
 # Create a tuple of all test scripts with their expected values
