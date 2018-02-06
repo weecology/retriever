@@ -72,15 +72,15 @@ def name_matches(scripts, arg):
             return [script]
 
     for script in scripts:
-        max_ratio = max([difflib.SequenceMatcher(None, arg, factor).ratio() for factor in
-                         (script.name.lower(), script.title.lower(), script.filename.lower())] +
-                        [difflib.SequenceMatcher(None, arg, factor).ratio() for factor in
-                         [keyword.strip().lower() for keywordset in script.keywords for keyword in keywordset]]
-                        )
-        matches.append((script, max_ratio))
-    matches = [m for m in sorted(matches, key=lambda m: m[1], reverse=True) if m[1] > 0.6]
-    return [match[0] for match in matches]
+        script_match_ratio = difflib.SequenceMatcher(None, script.name, arg).ratio()
+        if  script_match_ratio >.53:
+            matches.append((script.name, script_match_ratio))
 
+    matches.sort(key=lambda x: -x[1])
+
+    print("\nThe dataset \"{}\" isn't currently available in the Retriever.".format(arg))
+    if matches:
+        print("Did you mean: \n\t{}".format("\n\t".join([i[0] for i in matches])))
 
 def final_cleanup(engine):
     """Perform final cleanup operations after all scripts have run."""
