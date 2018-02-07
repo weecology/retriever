@@ -54,6 +54,54 @@ simple_csv = {
     'expect_out': ['a,b,c', '1,2,3', '4,5,6']
 }
 
+comma_delimiter = {
+    'name': 'comma_delimiter',
+    'raw_data': ['a,b,c',
+                 '1,2,3',
+                 '4,5,6'],
+    'script': {"name": "comma_delimiter",
+               "resources": [
+                   {"dialect": {
+                       "delimiter": ",",
+                       "do_not_bulk_insert": "True"
+                   },
+                    "name": "comma_delimiter",
+                    "schema": {},
+                    "url": "http://example.com/comma_delimiter.txt"}
+               ],
+               "retriever": "True",
+               "retriever_minimum_version": "2.0.dev",
+               "version": "1.0.0",
+               "urls":
+                   {"comma_delimiter": "http://example.com/comma_delimiter.txt"}
+               },
+    'expect_out': ['a,b,c', '1,2,3', '4,5,6']
+}
+
+tab_delimiter = {
+    'name': 'tab_delimiter',
+    'raw_data': ['a	b	c',
+                 '1	2	3',
+                 '4	5	6'],
+    'script': {"name": "tab_delimiter",
+               "resources": [
+                   {"dialect": {
+                      "delimiter": "\t",
+                      "do_not_bulk_insert": "True"
+                   },
+                    "name": "tab_delimiter",
+                    "schema": {},
+                    "url": "http://example.com/tab_delimiter.txt"}
+               ],
+               "retriever": "True",
+               "retriever_minimum_version": "2.0.dev",
+               "version": "1.0.0",
+               "urls":
+                   {"tab_delimiter": "http://example.com/tab_delimiter.txt"}
+               },
+    'expect_out': ['a,b,c', '1,2,3', '4,5,6']
+}
+
 data_no_header = {
     'name': 'data_no_header',
     'raw_data': ['1,2,3',
@@ -348,7 +396,7 @@ change_header_values = {
     'expect_out': ['aa,bb,c_c', '1,2,3', '4,5,6']
 }
 
-tests = [simple_csv, data_no_header, csv_latin1_encoding, autopk_csv, crosstab,
+tests = [simple_csv, comma_delimiter, tab_delimiter, data_no_header, csv_latin1_encoding, autopk_csv, crosstab,
          autopk_crosstab, skip_csv, extra_newline, change_header_values]
 
 # Create a tuple of all test scripts with their expected values
