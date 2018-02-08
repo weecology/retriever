@@ -71,13 +71,13 @@ There are a lot of different attributes provided in the Scripts class. Some nota
 
 .. code-block:: python
 
-  name
-  citation
-  description
-  keywords
-  title
-  urls
-  version
+  - name
+  - citation
+  - description
+  - keywords
+  - title
+  - urls
+  - version
 
 You can add more datasets locally by yourself.
 `Adding dataset <http://retriever.readthedocs.io/en/latest/scripts.html>`_ documentation.
@@ -163,13 +163,13 @@ Retriever supports installation of datasets into 7 major databases and file form
 
 .. code-block:: python
 
-  csv
-  json
-  msaccess
-  mysql
-  postgres
-  sqlite
-  xml
+  - csv
+  - json
+  - msaccess
+  - mysql
+  - postgres
+  - sqlite
+  - xml
 
 
 There are separate functions for installing into each of the 7 backends:
