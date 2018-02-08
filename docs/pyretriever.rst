@@ -51,7 +51,7 @@ The function returns a list of all the currently available scripts.
    'wine-quality']
 
 
-For more detailed description of the scripts installed in retriever ``datasets`` function can be used. This function returns a list objects of ``Scripts`` class.
+For a more detailed description of the scripts installed in retriever, the ``datasets`` function can be used. This function returns a list of ``Scripts`` objects.
 From these objects, we can access the available Script's attributes as follows.
 
 .. code-block:: python
@@ -71,13 +71,13 @@ There are a lot of different attributes provided in the Scripts class. Some nota
 
 .. code-block:: python
 
-  1. name
-  2. citation
-  3. description
-  4. keywords
-  5. title
-  6. urls
-  7. version
+  name
+  citation
+  description
+  keywords
+  title
+  urls
+  version
 
 You can add more datasets locally by yourself.
 `Adding dataset <http://retriever.readthedocs.io/en/latest/scripts.html>`_ documentation.
@@ -110,7 +110,6 @@ To directly download datasets without cleaning them use the ``download`` functio
   def download(dataset, path='./', quiet=False, subdir=False, debug=False):
 
 A simple download for the ``iris`` dataset can be done using the following.
-The downloaded files would be located at your current working directory by default.
 
 .. code-block:: python
 
@@ -125,7 +124,8 @@ Output:
   Downloading bezdekIris.data...
   100%  0 seconds Copying bezdekIris.data
 
-We could change to a download location of our choice using the ``path`` parameter.
+The files will be downloaded into your current working directory by default.
+You can change the default download location by using the ``path`` parameter.
 Here, we are downloading the ``NPN`` dataset to our ``Desktop`` directory
 
 .. code-block:: python
@@ -216,19 +216,19 @@ A description of default parameters mentioned above:
 
   password      (String): Specify password for database. For postgres, mysql users.
 
-  port             (Int): Specify the port number for installtion. For postgres, mysql users.
+  port             (Int): Specify the port number for installation. For postgres, mysql users.
 
   quiet           (Bool): Setting True minimizes the console output.
 
   table_name    (String): Specify the table name to install.
 
-  use_cache       (Bool): Setting False reinstall scripts if it is already installed.
+  use_cache       (Bool): Setting False reinstalls scripts even if they are already installed.
 
-  user          (String): Specify the user_name. For postgres, mysql users.
+  user          (String): Specify the username. For postgres, mysql users.
   
 Examples to Installing Datasets:
 
-Here, we are installing the CSV file to the dataset ``wine-composition`` to our current-working directory.
+Here, we are installing the dataset wine-composition as a CSV file in our current-working directory.
 
 .. code-block:: python
 
@@ -241,7 +241,7 @@ Here, we are installing the CSV file to the dataset ``wine-composition`` to our 
 
 The installed file is called ``wine_composition_WineComposition.csv``
 
-Similarly, we can download the JSON file to any available dataset as follows:
+Similarly, we can download any available dataset as a JSON file:
 
 .. code-block:: python
 
@@ -251,5 +251,4 @@ Similarly, we can download the JSON file to any available dataset as follows:
 
   Progress: 178/178 rows inserted into ./wine_composition_WineComposition.json totaling 17
 
-The JSON file to the dataset ``wine-composition`` called ``wine_composition_WineComposition.json``
-was installed at current-working directory.
+The wine-composition dataset is now installed as a JSON file called wine_composition_WineComposition.json in our current-working directory.
