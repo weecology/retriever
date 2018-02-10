@@ -251,4 +251,4 @@ Similarly, we can download any available dataset as a JSON file:
 
   Progress: 178/178 rows inserted into ./wine_composition_WineComposition.json totaling 17
 
-The wine-composition dataset is now installed as a JSON file called wine_composition_WineComposition.json in our current-working directory.
+The wine-composition dataset is now installed as a JSON file called wine_composition_WineComposition.json in our current working directory.
