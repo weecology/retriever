@@ -228,7 +228,7 @@ A description of default parameters mentioned above:
   
 Examples to Installing Datasets:
 
-Here, we are installing the dataset wine-composition as a CSV file in our current-working directory.
+Here, we are installing the dataset wine-composition as a CSV file in our current working directory.
 
 .. code-block:: python
 
