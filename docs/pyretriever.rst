@@ -27,7 +27,7 @@ Importing retriever
 
   >>> import retriever
 
-In this tutorial, the module will be referred as ``rt``.
+In this tutorial, the module will be referred to as ``rt``.
 
 .. code-block:: python
 
@@ -51,9 +51,8 @@ The function returns a list of all the currently available scripts.
    'wine-quality']
 
 
-For more detailed description of the scripts installed in retriever ``datasets`` function can be used.
-This function returns a list objects of ``Scripts`` class.
-From these objects, we can access the available Script's attributes.
+For a more detailed description of the scripts installed in retriever, the ``datasets`` function can be used. This function returns a list of ``Scripts`` objects.
+From these objects, we can access the available Script's attributes as follows.
 
 .. code-block:: python
 
@@ -68,18 +67,17 @@ From these objects, we can access the available Script's attributes.
   .
   .
 
-
 There are a lot of different attributes provided in the Scripts class. Some notably useful ones are:
 
 .. code-block:: python
 
-  name
-  citation
-  description
-  keywords
-  title
-  urls
-  version
+  - name
+  - citation
+  - description
+  - keywords
+  - title
+  - urls
+  - version
 
 You can add more datasets locally by yourself.
 `Adding dataset <http://retriever.readthedocs.io/en/latest/scripts.html>`_ documentation.
@@ -111,7 +109,7 @@ To directly download datasets without cleaning them use the ``download`` functio
 
   def download(dataset, path='./', quiet=False, subdir=False, debug=False):
 
-A simple download for the ``iris`` dataset can be done using.
+A simple download for the ``iris`` dataset can be done using the following.
 
 .. code-block:: python
 
@@ -126,9 +124,26 @@ Output:
   Downloading bezdekIris.data...
   100%  0 seconds Copying bezdekIris.data
 
+The files will be downloaded into your current working directory by default.
+You can change the default download location by using the ``path`` parameter.
+Here, we are downloading the ``NPN`` dataset to our ``Desktop`` directory
 
-This downloads the dataset in your current working directory.
-You can control where the dataset is downloaded using the ``path`` parameter.
+.. code-block:: python
+
+  >>> rt.download("NPN","/Users/username/Desktop")
+
+Output:
+
+.. code-block:: python
+
+  => Downloading NPN
+
+  Downloading 2009-01-01.xml...
+  11  MBB
+  Downloading 2009-04-02.xml...
+  42  MBB
+  .
+  .
 
 
 .. code-block:: python
@@ -148,13 +163,13 @@ Retriever supports installation of datasets into 7 major databases and file form
 
 .. code-block:: python
 
-  csv
-  json
-  msaccess
-  mysql
-  postgres
-  sqlite
-  xml
+  - csv
+  - json
+  - msaccess
+  - mysql
+  - postgres
+  - sqlite
+  - xml
 
 
 There are separate functions for installing into each of the 7 backends:
@@ -189,24 +204,51 @@ A description of default parameters mentioned above:
 
 .. code-block:: python
 
-  compile   (Bool): Setting True recompiles scripts upon installation.
+  compile         (Bool): Setting True recompiles scripts upon installation.
 
-  database_name(String): Specify database name. For postgres, mysql users.
+  database_name (String): Specify database name. For postgres, mysql users.
 
-  debug     (Bool): Setting True helps in debugging in case of errors.
+  debug           (Bool): Setting True helps in debugging in case of errors.
 
-  file      (String): Enter file_name for database. For msaccess, sqlite users.
+  file          (String): Enter file_name for database. For msaccess, sqlite users.
 
-  host      (String): Specify host name for database. For postgres, mysql users.
+  host          (String): Specify host name for database. For postgres, mysql users.
 
-  password  (String): Specify password for database. For postgres, mysql users.
+  password      (String): Specify password for database. For postgres, mysql users.
 
-  port      (Int): Specify the port number for installtion. For postgres, mysql users.
+  port             (Int): Specify the port number for installation. For postgres, mysql users.
 
-  quiet     (Bool): Setting True minimizes the console output.
+  quiet           (Bool): Setting True minimizes the console output.
 
-  table_name(String): Specify the table name to install.
+  table_name    (String): Specify the table name to install.
 
-  use_cache (Bool): Setting False reinstall scripts if it is already installed.
+  use_cache       (Bool): Setting False reinstalls scripts even if they are already installed.
 
-  user      (String): Specify the user_name. For postgres, mysql users.
+  user          (String): Specify the username. For postgres, mysql users.
+  
+Examples to Installing Datasets:
+
+Here, we are installing the dataset wine-composition as a CSV file in our current working directory.
+
+.. code-block:: python
+
+  rt.install_csv("wine-composition")
+
+  => Installing wine-composition
+
+  Downloading wine.data...
+  100%  0 seconds Progress: 178/178 rows inserted into ./wine_composition_WineComposition.csv totaling 178
+
+The installed file is called ``wine_composition_WineComposition.csv``
+
+Similarly, we can download any available dataset as a JSON file:
+
+.. code-block:: python
+
+  rt.install_json("wine-composition")
+
+  => Installing wine-composition
+
+  Progress: 178/178 rows inserted into ./wine_composition_WineComposition.json totaling 17
+
+The wine-composition dataset is now installed as a JSON file called wine_composition_WineComposition.json in our current working directory.
