@@ -53,11 +53,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Spatial Population Data Alpine Butterfly - Matter et al 2014",
-    "urls": {
-        "Dispersal": "https://ndownloader.figshare.com/files/5632170",
-        "Landscape": "https://ndownloader.figshare.com/files/5632173",
-        "PopulationAbunMark_Recap": "https://ndownloader.figshare.com/files/5632164",
-        "PopulationAbunTransect": "https://ndownloader.figshare.com/files/5632167"
-    },
-    "version": "1.2.1"
+    "version": "1.2.2"
 }

@@ -19,8 +19,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Mammal Life History Database - Ernest, et al., 2003",
-    "urls": {
-        "species": "https://ndownloader.figshare.com/files/5593334"
-    },
-    "version": "1.2.0"
+    "version": "1.2.1"
 }

@@ -68,8 +68,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Forest fire data for Montesinho natural park in Portugal",
-    "urls": {
-        "data": "http://archive.ics.uci.edu/ml/machine-learning-databases/forest-fires/forestfires.csv"
-    },
-    "version": "1.1.3"
+    "version": "1.1.4"
 }

@@ -194,8 +194,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Bird Body Size and Life History (Lislevand et al. 2007)",
-    "urls": {
-        "species": "https://ndownloader.figshare.com/files/5599229"
-    },
-    "version": "1.2.2"
+    "version": "1.2.3"
 }

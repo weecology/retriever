@@ -23,8 +23,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Phylogeny and metabolic rates in mammals (Ecological Archives 2010)",
-    "urls": {
-        "MetabolicRate": "https://ndownloader.figshare.com/files/5616942"
-    },
-    "version": "1.2.0"
+    "version": "1.2.1"
 }

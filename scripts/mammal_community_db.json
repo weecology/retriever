@@ -44,12 +44,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Mammal Community DataBase (Thibault et al. 2011)",
-    "urls": {
-        "communities": "https://ndownloader.figshare.com/files/5620542",
-        "references": "https://ndownloader.figshare.com/files/5620545",
-        "sites": "https://ndownloader.figshare.com/files/5620548",
-        "species": "https://ndownloader.figshare.com/files/5620551",
-        "trapping": "https://ndownloader.figshare.com/files/5620554"
-    },
-    "version": "1.2.0"
+    "version": "1.2.1"
 }

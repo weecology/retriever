@@ -32,11 +32,6 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.0-dev",
-    "version": "1.0.0",
-    "title": "The data was used to investigate patterns and causes of variation in NPP by the giant kelp, Macrocystis pyrifera, which is believed to be one of the fastest growing autotrophs on earth.",
-    "urls": {
-        "density": "https://ndownloader.figshare.com/files/5601734",
-        "fronds": "https://ndownloader.figshare.com/files/5601737",
-        "production": "https://ndownloader.figshare.com/files/5601731"
-    }
+    "version": "1.0.1",
+    "title": "The data was used to investigate patterns and causes of variation in NPP by the giant kelp, Macrocystis pyrifera, which is believed to be one of the fastest growing autotrophs on earth."
 }

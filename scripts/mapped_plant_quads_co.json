@@ -94,15 +94,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Shortgrass steppe mapped plants quads - Chu et al. 2013",
-    "urls": {
-        "allrecords_cover": "https://ndownloader.figshare.com/files/5626701",
-        "allrecords_density": "https://ndownloader.figshare.com/files/5626698",
-        "daily_climate": "https://ndownloader.figshare.com/files/5626716",
-        "quad_info": "https://ndownloader.figshare.com/files/5626710",
-        "quad_inventory": "https://ndownloader.figshare.com/files/5626707",
-        "quad_stocking_rate": "https://ndownloader.figshare.com/files/5626713",
-        "species_list": "https://ndownloader.figshare.com/files/5626719",
-        "species_name_changes": "https://ndownloader.figshare.com/files/5626722"
-    },
-    "version": "1.2.0"
+    "version": "1.2.1"
 }

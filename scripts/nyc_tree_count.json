@@ -191,8 +191,5 @@
     "retriever":"True",
     "retriever_minimum_version":"2.0.dev",
     "title":"New York City TreesCount",
-    "urls":{
-        "main":"https://data.cityofnewyork.us/api/views/5rq2-4hqu/rows.csv?accessType=DOWNLOAD"
-    },
-    "version":"1.0.0"
+    "version":"1.0.1"
   }

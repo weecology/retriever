@@ -18,8 +18,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Antarctic Site Inventory breeding bird survey data, 1994-2013",
-    "urls": {
-        "species": "https://ndownloader.figshare.com/files/5628465"
-    },
-    "version": "1.2.1"
+    "version": "1.2.2"
 }

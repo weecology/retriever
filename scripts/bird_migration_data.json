@@ -23,10 +23,6 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.0-dev",
-    "version": "1.0.1",
-    "title": "A database on visible diurnal spring migration of birds",
-    "urls": {
-        "BirdMigration": "https://ndownloader.figshare.com/files/5620119",
-        "observations": "https://ndownloader.figshare.com/files/5620122"
-    }
+    "version": "1.0.2",
+    "title": "A database on visible diurnal spring migration of birds"
 }

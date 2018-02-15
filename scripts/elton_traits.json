@@ -37,11 +37,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Foraging attributes for birds and mammals (Wilman, et al., 2014)",
-    "urls": {
-        "BirdCitations": "https://ndownloader.figshare.com/files/5631087",
-        "BirdFuncDat": "https://ndownloader.figshare.com/files/5631081",
-        "MammCitations": "https://ndownloader.figshare.com/files/5631090",
-        "MammFuncDat": "https://ndownloader.figshare.com/files/5631084"
-    },
-    "version": "1.2.0"
+    "version": "1.2.1"
 }
