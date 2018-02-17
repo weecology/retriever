@@ -52,7 +52,7 @@ db_md5 = [
     # ('mt_st_helens_veg', '0'),
     ('bird_size', '98dcfdca19d729c90ee1c6db5221b775'),
     ('mammal_masses', '6fec0fc63007a4040d9bbc5cfcd9953e'),
-    ('portal', 'aaa2b66a3a77efe416e3555c444f4e2e')
+    ('portal', 'e193ae84cef71ea8260c1d45b6d4d91f')
 ]
 
 
