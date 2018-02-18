@@ -69,6 +69,7 @@ ls_parser.add_argument('-l', help='search datasets with specific license(s)',
                        nargs='+').completer = ChoicesCompleter(list(licenses_options))
 ls_parser.add_argument('-k', help='search datasets with keyword(s)',
                        nargs='+').completer = ChoicesCompleter(list(keywords_options))
+ls_parser.add_argument('-v', help='verbose list of all datasets', nargs='*', default=False)
 
 
 delete_json_parser.add_argument('dataset', help='dataset name', choices=json_list)
