@@ -145,7 +145,6 @@ def get_grid_files():
 def install_grid(file_name):
 
     file_name = file_name.strip('.asc')
-    print(file_name)
 
     file_type = 'asc'
     convert_to = 'csv'
@@ -153,8 +152,11 @@ def install_grid(file_name):
     '''Will overwrite/update file if it already exists'''
 
     if(os.path.exists('{}.{}'.format(file_name,convert_to))):
-        print("Overwriting previous changes...")
+        print('{}.{} already exists. Updating..'.format(file_name,convert_to))
         open('{}.{}'.format(file_name,convert_to), 'w').close()
+    else:
+        print('Installing {}.{}'.format(file_name,convert_to))
+
 
     file = open("{}.{}".format(file_name,convert_to),'a')
 
@@ -165,7 +167,6 @@ def install_grid(file_name):
 
     n_row = linecache.getline('{}.{}'.format(file_name,file_type),2).split(' ')
     n_row = int(n_row[1])
-    print(n_row)
 
     xllcenter = linecache.getline('{}.{}'.format(file_name,file_type),3).split(' ')
     xllcenter = xllcenter[1]
@@ -181,10 +182,11 @@ def install_grid(file_name):
 
     results = []
 
-    for i in range(7,n_row+7):
+    print("Inserting data..")
+
+    for i in tqdm(range(7,n_row+7)):
 
         each_line = linecache.getline('{}.{}'.format(file_name,file_type),i).split(' ')
-        print("Entering row",(i-6))
         results.append(list(map(int, each_line)))
 
     print("Creating CSV..")
@@ -192,7 +194,9 @@ def install_grid(file_name):
     data_frame = pd.DataFrame(results)
     data_frame.to_csv(file, header=False, index=False)
 
-    print("Done")
+    location = os.path.abspath('{}.{}'.format(file_name,convert_to))
+
+    print("Successful. PATH: {}\n".format(location))
 
     file.close()
 
@@ -201,7 +205,6 @@ def install_grid(file_name):
 def process_grid():
 
     files = get_grid_files()
-    print(files)
     for file in files:
         install_grid(file)
 
@@ -209,4 +212,4 @@ if __name__=='__main__':
 
     process_grid()
 
-    # insert for TIFF 
+    # insert for TIFF
