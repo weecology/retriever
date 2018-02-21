@@ -16,9 +16,6 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.0-dev",
-    "version": "1.0.0",
-    "title": "Effects of biodiversity on the functioning of ecosystems:A summary of 164 experimental manipulations of species richness",
-    "urls": {
-        "richness": "https://ndownloader.figshare.com/files/5603117"
-    }
+    "version": "1.0.1",
+    "title": "Effects of biodiversity on the functioning of ecosystems:A summary of 164 experimental manipulations of species richness"
 }

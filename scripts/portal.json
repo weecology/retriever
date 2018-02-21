@@ -180,10 +180,5 @@
     "retriever_minimum_version": "2.0.dev",
     "scan_lines": "40000",
     "title": "Portal Project Data (Ernest et al. 2009)",
-    "urls": {
-        "main": "https://ndownloader.figshare.com/files/5603981",
-        "plots": "https://ndownloader.figshare.com/files/3299474",
-        "species": "https://ndownloader.figshare.com/files/3299483"
-    },
-    "version": "1.2.0"
+    "version": "1.2.1"
 }

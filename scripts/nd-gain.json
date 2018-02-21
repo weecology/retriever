@@ -22990,8 +22990,5 @@
   "retriever": "True",
   "retriever_minimum_version": "2.1.dev",
   "title": "ND-Gain",
-  "urls": {
-    "trends_gain": "https://gain-new.crc.nd.edu/assets/gain/files/resources-2017-03-10-14h04.zip"
-  },
-  "version": "1.0.0"
+  "version": "1.0.1"
 }

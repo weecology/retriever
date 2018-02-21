@@ -73,13 +73,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Biovolumes for freshwater phytoplankton - Colin et al. 2014",
-    "urls": {
-        "bvd_genus_ag": "https://ndownloader.figshare.com/files/5632140",
-        "bvd_genus_raw": "https://ndownloader.figshare.com/files/5632143",
-        "bvd_raw": "https://ndownloader.figshare.com/files/5632146",
-        "bvd_species_ag": "https://ndownloader.figshare.com/files/5632149",
-        "bvd_species_raw": "https://ndownloader.figshare.com/files/5632152",
-        "taxa_table": "https://ndownloader.figshare.com/files/5632155"
-    },
-    "version": "1.2.0"
+    "version": "1.2.1"
 }

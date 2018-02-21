@@ -130,9 +130,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Wine Quality",
-    "urls": {
-        "red": "http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv",
-        "white": "http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv"
-    },
-    "version": "1.1.1"
+    "version": "1.1.2"
 }

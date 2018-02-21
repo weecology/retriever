@@ -122,9 +122,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Poker Hand dataset",
-    "urls": {
-        "testing": "http://archive.ics.uci.edu/ml/machine-learning-databases/poker/poker-hand-testing.data",
-        "training": "http://archive.ics.uci.edu/ml/machine-learning-databases/poker/poker-hand-training-true.data"
-    },
-    "version": "1.2.1"
+    "version": "1.2.2"
 }

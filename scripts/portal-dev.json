@@ -646,22 +646,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Portal Project Data (Ernest et al. 2016)",
-    "urls": {
-        "rodent": "https://raw.githubusercontent.com/weecology/PortalData/master/Rodents/Portal_rodent.csv",
-        "rodent_species" : "https://raw.githubusercontent.com/weecology/PortalData/master/Rodents/Portal_rodent_species.csv",
-        "rodent_trapping" : "https://raw.githubusercontent.com/weecology/PortalData/master/Rodents/Portal_rodent_trapping.csv",
-        "rodent_datanotes" : "https://raw.githubusercontent.com/weecology/PortalData/master/Rodents/Portal_rodent_datanotes.csv",
-        "plots": "https://raw.githubusercontent.com/weecology/PortalData/master/SiteandMethods/Portal_plots.csv",
-        "ant_bait":"https://raw.githubusercontent.com/weecology/PortalData/master/Ants/Portal_ant_bait.csv",
-        "ant_colony":"https://raw.githubusercontent.com/weecology/PortalData/master/Ants/Portal_ant_colony.csv",
-        "ant_dataflags":"https://raw.githubusercontent.com/weecology/PortalData/master/Ants/Portal_ant_dataflags.csv",
-        "ant_species":"https://raw.githubusercontent.com/weecology/PortalData/master/Ants/Portal_ant_species.csv",
-        "plant_quadrats":"https://raw.githubusercontent.com/weecology/PortalData/master/Plants/Portal_plant_quadrats.csv",
-        "plant_census_dates":"https://raw.githubusercontent.com/weecology/PortalData/master/Plants/Portal_plant_census_dates.csv",
-        "plant_censuses":"https://raw.githubusercontent.com/weecology/PortalData/master/Plants/Portal_plant_censuses.csv",
-        "plant_species":"https://raw.githubusercontent.com/weecology/PortalData/master/Plants/Portal_plant_species.csv",
-        "weather_19801989":"https://raw.githubusercontent.com/weecology/PortalData/master/Weather/Portal_weather_19801989.csv",
-        "weather":"https://raw.githubusercontent.com/weecology/PortalData/master/Weather/Portal_weather.csv"
-    },
-    "version": "1.0.2"
+    "version": "1.0.3"
 }

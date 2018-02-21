@@ -22,10 +22,6 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.0-dev",
-    "version": "1.0.0",
-    "title": "Nematode traits and environmental constraints in 200 soil systems",
-    "urls": {
-        "Dutchagroecosystems": "https://ndownloader.figshare.com/files/5620302",
-        "Trait": "https://ndownloader.figshare.com/files/5620305"
-    }
+    "version": "1.0.1",
+    "title": "Nematode traits and environmental constraints in 200 soil systems"
 }

@@ -26,10 +26,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Mapped plant quadrat time-series from Montana (Anderson et al. 2011)",
-    "urls": {
-        "allrecords_cover": "https://ndownloader.figshare.com/files/5619447",
-        "allrecords_density": "https://ndownloader.figshare.com/files/5619444",
-        "species_list": "https://ndownloader.figshare.com/files/5619456"
-    },
-    "version": "1.2.0"
+    "version": "1.2.1"
 }

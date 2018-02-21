@@ -56,8 +56,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Abalone Age and Size Data",
-    "urls": {
-        "data": "http://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data"
-    },
-    "version": "1.2.1"
+    "version": "1.2.2"
 }

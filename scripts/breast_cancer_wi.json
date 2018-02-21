@@ -196,10 +196,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Wisconsin Breast Cancer Database",
-    "urls": {
-        "breastCancerWisconsin": "http://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/breast-cancer-wisconsin.data",
-        "wdbc": "http://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/wdbc.data",
-        "wpbc": "http://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/wpbc.data"
-    },
-    "version": "1.2.1"
+    "version": "1.2.2"
 }

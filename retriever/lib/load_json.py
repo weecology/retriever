@@ -65,6 +65,7 @@ def read_json(json_file, debug=False):
         for table_name, table_spec in temp_tables["tables"].items():
             json_object["tables"][table_name] = myTables[temp_tables["tables"][table_name]["format"]](**table_spec)
         json_object.pop("resources", None)
+        json_object["urls"] = {table: json_object["tables"][table].url for table in json_object["tables"]}
 
         return TEMPLATES["default"](**json_object)
     return None

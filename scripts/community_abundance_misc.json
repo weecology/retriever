@@ -26,10 +26,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Miscellaneous Abundance Database (figshare 2012)",
-    "urls": {
-        "citations": "http://files.figshare.com/2023506/Citations_table_abundances.csv",
-        "main": "http://files.figshare.com/2023547/Species_abundances.csv",
-        "sites": "http://files.figshare.com/2023504/Sites_table_abundances.csv"
-    },
-    "version": "1.0.2"
+    "version": "1.0.3"
 }

@@ -96,8 +96,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Fish parasite host ecological characteristics (Strona, et al., 2013)",
-    "urls": {
-        "host_characteristics": "https://ndownloader.figshare.com/files/5624799"
-    },
-    "version": "1.2.0"
+    "version": "1.2.1"
 }

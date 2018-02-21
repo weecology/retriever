@@ -13,9 +13,6 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.0-dev",
-    "version": "1.0.0",
-    "title": "species data on densities and percent cover in the 60 experimental plots from 1996 to 2002",
-    "urls": {
-        "Mammal_abundance": "https://ndownloader.figshare.com/files/5596982"
-    }
+    "version": "1.0.1",
+    "title": "species data on densities and percent cover in the 60 experimental plots from 1996 to 2002"
 }
