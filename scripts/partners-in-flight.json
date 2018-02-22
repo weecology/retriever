@@ -1,0 +1,1231 @@
+{
+  "citation": "Partners in Flight. 2017. Avian Conservation Assessment Database, version 2017. Available at http://pif.birdconservancy.org/ACAD. Accessed on 19.2.2018",
+  "description": "The Partners in Flight (PIF) Species Assessment Database is now the Avian Conservation Assessment Database, Whereas the Species Assessment Database contained information only on landbirds in Canada, USA and Mexico, the Avian Conservation Assessment Database contains assessment data for all North American birds from Canada to Panama.",
+  "homepage": "http://rmbo.org/pifassessment/Database.aspx",
+  "keywords": [
+    "Bird",
+    "Flight"
+  ],
+  "name": "partners-in-flight",
+  "resources": [
+    {
+      "dialect": {
+        "header_rows": 1
+      },
+      "name": "Global_2017_Canada",
+      "schema": {
+        "fields": [
+          {
+            "name": "AOS_57",
+            "type": "double"
+          },
+          {
+            "name": "Common Name",
+            "type": "char"
+          },
+          {
+            "name": "Scientific Name",
+            "type": "char"
+          },
+          {
+            "name": "group",
+            "type": "char"
+          },
+          {
+            "name": "order",
+            "type": "char"
+          },
+          {
+            "name": "family",
+            "type": "char"
+          },
+          {
+            "name": "taxonomic notes",
+            "type": "char"
+          },
+          {
+            "name": "Canada",
+            "type": "double"
+          },
+          {
+            "name": "USA",
+            "type": "double"
+          },
+          {
+            "name": "Mexico",
+            "type": "double"
+          },
+          {
+            "name": "C America",
+            "type": "double"
+          },
+          {
+            "name": "Mig Status",
+            "type": "char"
+          },
+          {
+            "name": "Introduced",
+            "type": "double"
+          },
+          {
+            "name": "Nonbreeding only",
+            "type": "char"
+          },
+          {
+            "name": "Extinct",
+            "type": "char"
+          },
+          {
+            "name": "PS-g",
+            "type": "double"
+          },
+          {
+            "name": "Global Pop Size",
+            "type": "double"
+          },
+          {
+            "name": "PS-g_s",
+            "type": "char"
+          },
+          {
+            "name": "PS-g_com",
+            "type": "char"
+          },
+          {
+            "name": "pGL_WH",
+            "type": "double"
+          },
+          {
+            "name": "Pop Size_US-Ca",
+            "type": "double"
+          },
+          {
+            "name": "Pop Size_US-Ca_s",
+            "type": "char"
+          },
+          {
+            "name": "% Breeding Pop in US & Canada",
+            "type": "char"
+          },
+          {
+            "name": "BD-g",
+            "type": "double"
+          },
+          {
+            "name": "BD area",
+            "type": "double"
+          },
+          {
+            "name": "BD-g_s",
+            "type": "char"
+          },
+          {
+            "name": "BD-g_com",
+            "type": "char"
+          },
+          {
+            "name": "ND-g",
+            "type": "double"
+          },
+          {
+            "name": "ND area",
+            "type": "double"
+          },
+          {
+            "name": "ND-g_s",
+            "type": "char"
+          },
+          {
+            "name": "ND-g_com",
+            "type": "char"
+          },
+          {
+            "name": "TB-c",
+            "type": "double"
+          },
+          {
+            "name": "TB-c_s",
+            "type": "char"
+          },
+          {
+            "name": "TB-c_com",
+            "type": "char"
+          },
+          {
+            "name": "TN-c",
+            "type": "double"
+          },
+          {
+            "name": "TN-c_s",
+            "type": "char"
+          },
+          {
+            "name": "TN-c_com",
+            "type": "char"
+          },
+          {
+            "name": "PT-c",
+            "type": "double"
+          },
+          {
+            "name": "annual % change",
+            "type": "double"
+          },
+          {
+            "name": "PT-c_s",
+            "type": "char"
+          },
+          {
+            "name": "PT-c_com",
+            "type": "char"
+          },
+          {
+            "name": "Pop Change",
+            "type": "char"
+          },
+          {
+            "name": "BBS Half-Life",
+            "type": "double"
+          },
+          {
+            "name": "CCSb",
+            "type": "double"
+          },
+          {
+            "name": "CCSn",
+            "type": "double"
+          },
+          {
+            "name": "CCSmax",
+            "type": "double"
+          },
+          {
+            "name": "T-max",
+            "type": "double"
+          },
+          {
+            "name": "D-max",
+            "type": "double"
+          },
+          {
+            "name": "PS-g + D-max",
+            "type": "double"
+          },
+          {
+            "name": "PT-c + T-max",
+            "type": "double"
+          },
+          {
+            "name": "Red",
+            "type": "char"
+          },
+          {
+            "name": "D Yel2",
+            "type": "char"
+          },
+          {
+            "name": "CBSD",
+            "type": "char"
+          },
+          {
+            "name": "Continental Concern",
+            "type": "char"
+          },
+          {
+            "name": "Primary Breeding Habitat",
+            "type": "char"
+          },
+          {
+            "name": "Breeding Habitat Description",
+            "type": "char"
+          },
+          {
+            "name": "Primary Winter Habitat",
+            "type": "char"
+          },
+          {
+            "name": "Winter Habitat Description",
+            "type": "char"
+          },
+          {
+            "name": "Major Habitat_C America",
+            "type": "char"
+          },
+          {
+            "name": "Primary Habitats_PIF16",
+            "type": "char"
+          },
+          {
+            "name": "Primary Breeding Habitat_PIF16",
+            "type": "char"
+          },
+          {
+            "name": "Primary Wintering Geography",
+            "type": "char"
+          },
+          {
+            "name": "IUCN Red List 2016",
+            "type": "char"
+          }
+        ]
+      },
+      "url": "http://pif.birdconservancy.org/ACAD/ajax/download.aspx?list=Glo&regions=CAN,&concern=true"
+    },
+    {
+      "dialect": {
+        "header_rows": 1
+      },
+      "name": "Global_2017_United_States",
+      "schema": {
+        "fields": [
+          {
+            "name": "AOS_57",
+            "type": "double"
+          },
+          {
+            "name": "Common Name",
+            "type": "char"
+          },
+          {
+            "name": "Scientific Name",
+            "type": "char"
+          },
+          {
+            "name": "group",
+            "type": "char"
+          },
+          {
+            "name": "order",
+            "type": "char"
+          },
+          {
+            "name": "family",
+            "type": "char"
+          },
+          {
+            "name": "taxonomic notes",
+            "type": "char"
+          },
+          {
+            "name": "Canada",
+            "type": "double"
+          },
+          {
+            "name": "USA",
+            "type": "double"
+          },
+          {
+            "name": "Mexico",
+            "type": "double"
+          },
+          {
+            "name": "C America",
+            "type": "double"
+          },
+          {
+            "name": "Mig Status",
+            "type": "char"
+          },
+          {
+            "name": "Introduced",
+            "type": "double"
+          },
+          {
+            "name": "Nonbreeding only",
+            "type": "char"
+          },
+          {
+            "name": "Extinct",
+            "type": "char"
+          },
+          {
+            "name": "PS-g",
+            "type": "double"
+          },
+          {
+            "name": "Global Pop Size",
+            "type": "double"
+          },
+          {
+            "name": "PS-g_s",
+            "type": "char"
+          },
+          {
+            "name": "PS-g_com",
+            "type": "char"
+          },
+          {
+            "name": "pGL_WH",
+            "type": "double"
+          },
+          {
+            "name": "Pop Size_US-Ca",
+            "type": "double"
+          },
+          {
+            "name": "Pop Size_US-Ca_s",
+            "type": "char"
+          },
+          {
+            "name": "% Breeding Pop in US & Canada",
+            "type": "char"
+          },
+          {
+            "name": "BD-g",
+            "type": "double"
+          },
+          {
+            "name": "BD area",
+            "type": "double"
+          },
+          {
+            "name": "BD-g_s",
+            "type": "char"
+          },
+          {
+            "name": "BD-g_com",
+            "type": "char"
+          },
+          {
+            "name": "ND-g",
+            "type": "double"
+          },
+          {
+            "name": "ND area",
+            "type": "double"
+          },
+          {
+            "name": "ND-g_s",
+            "type": "char"
+          },
+          {
+            "name": "ND-g_com",
+            "type": "char"
+          },
+          {
+            "name": "TB-c",
+            "type": "double"
+          },
+          {
+            "name": "TB-c_s",
+            "type": "char"
+          },
+          {
+            "name": "TB-c_com",
+            "type": "char"
+          },
+          {
+            "name": "TN-c",
+            "type": "double"
+          },
+          {
+            "name": "TN-c_s",
+            "type": "char"
+          },
+          {
+            "name": "TN-c_com",
+            "type": "char"
+          },
+          {
+            "name": "PT-c",
+            "type": "double"
+          },
+          {
+            "name": "annual % change",
+            "type": "double"
+          },
+          {
+            "name": "PT-c_s",
+            "type": "char"
+          },
+          {
+            "name": "PT-c_com",
+            "type": "char"
+          },
+          {
+            "name": "Pop Change",
+            "type": "char"
+          },
+          {
+            "name": "BBS Half-Life",
+            "type": "double"
+          },
+          {
+            "name": "CCSb",
+            "type": "double"
+          },
+          {
+            "name": "CCSn",
+            "type": "double"
+          },
+          {
+            "name": "CCSmax",
+            "type": "double"
+          },
+          {
+            "name": "T-max",
+            "type": "double"
+          },
+          {
+            "name": "D-max",
+            "type": "double"
+          },
+          {
+            "name": "PS-g + D-max",
+            "type": "double"
+          },
+          {
+            "name": "PT-c + T-max",
+            "type": "double"
+          },
+          {
+            "name": "Red",
+            "type": "char"
+          },
+          {
+            "name": "D Yel2",
+            "type": "char"
+          },
+          {
+            "name": "CBSD",
+            "type": "char"
+          },
+          {
+            "name": "Continental Concern",
+            "type": "char"
+          },
+          {
+            "name": "Primary Breeding Habitat",
+            "type": "char"
+          },
+          {
+            "name": "Breeding Habitat Description",
+            "type": "char"
+          },
+          {
+            "name": "Primary Winter Habitat",
+            "type": "char"
+          },
+          {
+            "name": "Winter Habitat Description",
+            "type": "char"
+          },
+          {
+            "name": "Major Habitat_C America",
+            "type": "char"
+          },
+          {
+            "name": "Primary Habitats_PIF16",
+            "type": "char"
+          },
+          {
+            "name": "Primary Breeding Habitat_PIF16",
+            "type": "char"
+          },
+          {
+            "name": "Primary Wintering Geography",
+            "type": "char"
+          },
+          {
+            "name": "IUCN Red List 2016",
+            "type": "char"
+          }
+        ]
+      },
+      "url": "http://pif.birdconservancy.org/ACAD/ajax/download.aspx?list=Glo&regions=US,&concern=true"
+    },
+    {
+      "dialect": {
+        "header_rows": 1
+      },
+      "name": "Global_2017_MEXICO",
+      "schema": {
+        "fields": [
+          {
+            "name": "AOS_57",
+            "type": "double"
+          },
+          {
+            "name": "Common Name",
+            "type": "char"
+          },
+          {
+            "name": "Scientific Name",
+            "type": "char"
+          },
+          {
+            "name": "group",
+            "type": "char"
+          },
+          {
+            "name": "order",
+            "type": "char"
+          },
+          {
+            "name": "family",
+            "type": "char"
+          },
+          {
+            "name": "taxonomic notes",
+            "type": "char"
+          },
+          {
+            "name": "Canada",
+            "type": "double"
+          },
+          {
+            "name": "USA",
+            "type": "double"
+          },
+          {
+            "name": "Mexico",
+            "type": "double"
+          },
+          {
+            "name": "C America",
+            "type": "double"
+          },
+          {
+            "name": "Mig Status",
+            "type": "char"
+          },
+          {
+            "name": "Introduced",
+            "type": "double"
+          },
+          {
+            "name": "Nonbreeding only",
+            "type": "char"
+          },
+          {
+            "name": "Extinct",
+            "type": "char"
+          },
+          {
+            "name": "PS-g",
+            "type": "double"
+          },
+          {
+            "name": "Global Pop Size",
+            "type": "double"
+          },
+          {
+            "name": "PS-g_s",
+            "type": "char"
+          },
+          {
+            "name": "PS-g_com",
+            "type": "char"
+          },
+          {
+            "name": "pGL_WH",
+            "type": "double"
+          },
+          {
+            "name": "Pop Size_US-Ca",
+            "type": "double"
+          },
+          {
+            "name": "Pop Size_US-Ca_s",
+            "type": "char"
+          },
+          {
+            "name": "% Breeding Pop in US & Canada",
+            "type": "char"
+          },
+          {
+            "name": "BD-g",
+            "type": "double"
+          },
+          {
+            "name": "BD area",
+            "type": "double"
+          },
+          {
+            "name": "BD-g_s",
+            "type": "char"
+          },
+          {
+            "name": "BD-g_com",
+            "type": "char"
+          },
+          {
+            "name": "ND-g",
+            "type": "double"
+          },
+          {
+            "name": "ND area",
+            "type": "double"
+          },
+          {
+            "name": "ND-g_s",
+            "type": "char"
+          },
+          {
+            "name": "ND-g_com",
+            "type": "char"
+          },
+          {
+            "name": "TB-c",
+            "type": "double"
+          },
+          {
+            "name": "TB-c_s",
+            "type": "char"
+          },
+          {
+            "name": "TB-c_com",
+            "type": "char"
+          },
+          {
+            "name": "TN-c",
+            "type": "double"
+          },
+          {
+            "name": "TN-c_s",
+            "type": "char"
+          },
+          {
+            "name": "TN-c_com",
+            "type": "char"
+          },
+          {
+            "name": "PT-c",
+            "type": "double"
+          },
+          {
+            "name": "annual % change",
+            "type": "double"
+          },
+          {
+            "name": "PT-c_s",
+            "type": "char"
+          },
+          {
+            "name": "PT-c_com",
+            "type": "char"
+          },
+          {
+            "name": "Pop Change",
+            "type": "char"
+          },
+          {
+            "name": "BBS Half-Life",
+            "type": "double"
+          },
+          {
+            "name": "CCSb",
+            "type": "double"
+          },
+          {
+            "name": "CCSn",
+            "type": "double"
+          },
+          {
+            "name": "CCSmax",
+            "type": "double"
+          },
+          {
+            "name": "T-max",
+            "type": "double"
+          },
+          {
+            "name": "D-max",
+            "type": "double"
+          },
+          {
+            "name": "PS-g + D-max",
+            "type": "double"
+          },
+          {
+            "name": "PT-c + T-max",
+            "type": "double"
+          },
+          {
+            "name": "Red",
+            "type": "char"
+          },
+          {
+            "name": "D Yel2",
+            "type": "char"
+          },
+          {
+            "name": "CBSD",
+            "type": "char"
+          },
+          {
+            "name": "Continental Concern",
+            "type": "char"
+          },
+          {
+            "name": "Primary Breeding Habitat",
+            "type": "char"
+          },
+          {
+            "name": "Breeding Habitat Description",
+            "type": "char"
+          },
+          {
+            "name": "Primary Winter Habitat",
+            "type": "char"
+          },
+          {
+            "name": "Winter Habitat Description",
+            "type": "char"
+          },
+          {
+            "name": "Major Habitat_C America",
+            "type": "char"
+          },
+          {
+            "name": "Primary Habitats_PIF16",
+            "type": "char"
+          },
+          {
+            "name": "Primary Breeding Habitat_PIF16",
+            "type": "char"
+          },
+          {
+            "name": "Primary Wintering Geography",
+            "type": "char"
+          },
+          {
+            "name": "IUCN Red List 2016",
+            "type": "char"
+          }          
+        ]
+      },
+      "url": "http://pif.birdconservancy.org/ACAD/ajax/download.aspx?list=Glo&regions=MX,&concern=true"
+    },
+    {
+      "dialect": {
+        "header_rows": 1
+      },
+      "name": "Global_2017_CAM",
+      "schema": {
+        "fields": [
+          {
+            "name": "AOS_57",
+            "type": "double"
+          },
+          {
+            "name": "Common Name",
+            "type": "char"
+          },
+          {
+            "name": "Scientific Name",
+            "type": "char"
+          },
+          {
+            "name": "group",
+            "type": "char"
+          },
+          {
+            "name": "order",
+            "type": "char"
+          },
+          {
+            "name": "family",
+            "type": "char"
+          },
+          {
+            "name": "taxonomic notes",
+            "type": "char"
+          },
+          {
+            "name": "Canada",
+            "type": "double"
+          },
+          {
+            "name": "USA",
+            "type": "double"
+          },
+          {
+            "name": "Mexico",
+            "type": "double"
+          },
+          {
+            "name": "C America",
+            "type": "double"
+          },
+          {
+            "name": "Mig Status",
+            "type": "char"
+          },
+          {
+            "name": "Introduced",
+            "type": "double"
+          },
+          {
+            "name": "Nonbreeding only",
+            "type": "char"
+          },
+          {
+            "name": "Extinct",
+            "type": "char"
+          },
+          {
+            "name": "PS-g",
+            "type": "double"
+          },
+          {
+            "name": "Global Pop Size",
+            "type": "double"
+          },
+          {
+            "name": "PS-g_s",
+            "type": "char"
+          },
+          {
+            "name": "PS-g_com",
+            "type": "char"
+          },
+          {
+            "name": "pGL_WH",
+            "type": "double"
+          },
+          {
+            "name": "Pop Size_US-Ca",
+            "type": "double"
+          },
+          {
+            "name": "Pop Size_US-Ca_s",
+            "type": "char"
+          },
+          {
+            "name": "% Breeding Pop in US & Canada",
+            "type": "char"
+          },
+          {
+            "name": "BD-g",
+            "type": "double"
+          },
+          {
+            "name": "BD area",
+            "type": "double"
+          },
+          {
+            "name": "BD-g_s",
+            "type": "char"
+          },
+          {
+            "name": "BD-g_com",
+            "type": "char"
+          },
+          {
+            "name": "ND-g",
+            "type": "double"
+          },
+          {
+            "name": "ND area",
+            "type": "double"
+          },
+          {
+            "name": "ND-g_s",
+            "type": "char"
+          },
+          {
+            "name": "ND-g_com",
+            "type": "char"
+          },
+          {
+            "name": "TB-c",
+            "type": "double"
+          },
+          {
+            "name": "TB-c_s",
+            "type": "char"
+          },
+          {
+            "name": "TB-c_com",
+            "type": "char"
+          },
+          {
+            "name": "TN-c",
+            "type": "double"
+          },
+          {
+            "name": "TN-c_s",
+            "type": "char"
+          },
+          {
+            "name": "TN-c_com",
+            "type": "char"
+          },
+          {
+            "name": "PT-c",
+            "type": "double"
+          },
+          {
+            "name": "annual % change",
+            "type": "double"
+          },
+          {
+            "name": "PT-c_s",
+            "type": "char"
+          },
+          {
+            "name": "PT-c_com",
+            "type": "char"
+          },
+          {
+            "name": "Pop Change",
+            "type": "char"
+          },
+          {
+            "name": "BBS Half-Life",
+            "type": "double"
+          },
+          {
+            "name": "CCSb",
+            "type": "double"
+          },
+          {
+            "name": "CCSn",
+            "type": "double"
+          },
+          {
+            "name": "CCSmax",
+            "type": "double"
+          },
+          {
+            "name": "T-max",
+            "type": "double"
+          },
+          {
+            "name": "D-max",
+            "type": "double"
+          },
+          {
+            "name": "PS-g + D-max",
+            "type": "double"
+          },
+          {
+            "name": "PT-c + T-max",
+            "type": "double"
+          },
+          {
+            "name": "Red",
+            "type": "char"
+          },
+          {
+            "name": "R Yel1",
+            "type": "char"
+          },
+          {
+            "name": "D Yel2",
+            "type": "char"
+          },
+          {
+            "name": "CBSD",
+            "type": "char"
+          },
+          {
+            "name": "Continental Concern",
+            "type": "char"
+          },
+          {
+            "name": "Primary Breeding Habitat",
+            "type": "char"
+          },
+          {
+            "name": "Breeding Habitat Description",
+            "type": "char"
+          },
+          {
+            "name": "Primary Winter Habitat",
+            "type": "char"
+          },
+          {
+            "name": "Winter Habitat Description",
+            "type": "char"
+          },
+          {
+            "name": "Major Habitat_C America",
+            "type": "char"
+          },
+          {
+            "name": "Primary Habitats_PIF16",
+            "type": "char"
+          },
+          {
+            "name": "Primary Breeding Habitat_PIF16",
+            "type": "char"
+          },
+          {
+            "name": "Primary Wintering Geography",
+            "type": "char"
+          },
+          {
+            "name": "IUCN Red List 2016",
+            "type": "char"
+          }
+        ]
+      },
+      "url": "http://pif.birdconservancy.org/ACAD/ajax/download.aspx?list=Glo&regions=CAM,&concern=true"
+    },
+    {
+      "dialect": {
+        "header_rows": 1
+      },
+      "name": "PIF_2012_BCR_all",
+      "schema": {
+        "fields": [
+          {
+            "name": "ID",
+            "type": "double"
+          },
+          {
+            "name": "BCR",
+            "type": "double"
+          },
+          {
+            "name": "AOU_52",
+            "type": "double"
+          },
+          {
+            "name": "CommonName",
+            "type": "char"
+          },
+          {
+            "name": "ScientificName",
+            "type": "char"
+          },
+          {
+            "name": "Introduced",
+            "type": "char"
+          },
+          {
+            "name": "BD-g",
+            "type": "double"
+          },
+          {
+            "name": "BD-g_s",
+            "type": "char"
+          },
+          {
+            "name": "BD-g Area",
+            "type": "char"
+          },
+          {
+            "name": "BD-g_com",
+            "type": "char"
+          },
+          {
+            "name": "GlobalPopEst",
+            "type": "double"
+          },
+          {
+            "name": "PS-g",
+            "type": "char"
+          },
+          {
+            "name": "PS-g_s",
+            "type": "char"
+          },
+          {
+            "name": "PS-g_com1",
+            "type": "char"
+          },
+          {
+            "name": "PS-g_com2",
+            "type": "char"
+          },
+          {
+            "name": "PS-g_com3",
+            "type": "char"
+          },
+          {
+            "name": "PT-r",
+            "type": "double"
+          },
+          {
+            "name": "PT-r_s",
+            "type": "char"
+          },
+          {
+            "name": "PT-r_com",
+            "type": "char"
+          },
+          {
+            "name": "TB-r",
+            "type": "double"
+          },
+          {
+            "name": "TB-r_s",
+            "type": "char"
+          },
+          {
+            "name": "TB-r_com",
+            "type": "char"
+          },
+          {
+            "name": "RD-b",
+            "type": "double"
+          },
+          {
+            "name": "RD-b_s",
+            "type": "char"
+          },
+          {
+            "name": "RD-b_com",
+            "type": "char"
+          },
+          {
+            "name": "pPop",
+            "type": "double"
+          },
+          {
+            "name": "pPop_s",
+            "type": "char"
+          },
+          {
+            "name": "SubstShared",
+            "type": "char"
+          },
+          {
+            "name": "RCS-b",
+            "type": "double"
+          },
+          {
+            "name": "RC",
+            "type": "char"
+          },
+          {
+            "name": "UCC",
+            "type": "char"
+          },
+          {
+            "name": "TNC",
+            "type": "char"
+          },
+          {
+            "name": "TNC-group",
+            "type": "char"
+          },
+          {
+            "name": "CBSD",
+            "type": "char"
+          },
+          {
+            "name": "Action",
+            "type": "char"
+          },
+          {
+            "name": "RS",
+            "type": "char"
+          },
+          {
+            "name": "UCS",
+            "type": "char"
+          }
+        ]
+      },
+      "url": "http://pif.birdconservancy.org/ACAD/ajax/download.aspx?list=BCR&BCR=all&concern=false"
+    }
+  ],
+  "retriever": "True",
+  "retriever_minimum_version": "2.1.dev",
+  "title": "Partners_In_Flight_Species_Assessment_Data",
+  "version": "1.0.0"
+}
