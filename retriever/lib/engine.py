@@ -411,6 +411,7 @@ class Engine(object):
             self.create_raw_data_dir()
             print("\nDownloading " + filename + "...")
             try:
+                # https://stackoverflow.com/questions/34692009/download-image-from-url-using-python-urllib-but-receiving-http-error-403-forbid
                 import urllib.request
                 opener=urllib.request.build_opener()
                 opener.addheaders=[('User-Agent','Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1941.0 Safari/537.36')]
