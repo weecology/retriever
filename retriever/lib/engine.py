@@ -411,7 +411,11 @@ class Engine(object):
             self.create_raw_data_dir()
             print("\nDownloading " + filename + "...")
             try:
-                urlretrieve(url, path, reporthook=reporthook)
+                import urllib.request
+                opener=urllib.request.build_opener()
+                opener.addheaders=[('User-Agent','Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1941.0 Safari/537.36')]
+                urllib.request.install_opener(opener)
+                urllib.request.urlretrieve(url, path, reporthook=reporthook)
             except ImportError:
                 # For some urls lacking filenames urlretrieve from the future
                 # package seems to fail. This issue occurred in the PlantTaxonomy
