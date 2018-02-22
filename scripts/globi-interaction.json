@@ -7,10 +7,10 @@
     "target"
   ],
   "name": "globi_interaction",
-  "archived": "gzip",
+  "archived": "gz",
   "resources": [
     {
-      "path": "interactions.tsv/data",
+      "path": "interactions.tsv/interactions.tsv",
       "dialect": {
         "header_rows": 1
       },
