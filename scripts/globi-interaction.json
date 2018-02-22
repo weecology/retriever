@@ -1,0 +1,233 @@
+{
+  "citation": "NA",
+  "description": "GloBI contains code to normalize and integrate existing species-interaction datasets and export the resulting integrated interaction dataset.",
+  "homepage": "https://github.com/jhpoelen/eol-globi-data/wiki",
+  "keywords": [
+    "source",
+    "target"
+  ],
+  "name": "globi_interaction",
+  "archived": "gzip",
+  "resources": [
+    {
+      "path": "interactions.tsv/data",
+      "dialect": {
+        "header_rows": 1
+      },
+      "name": "interactions",
+      "schema": {
+        "fields": [
+          {
+            "name": "sourceTaxonId",
+            "type": "char"
+          },
+          {
+            "name": "sourceTaxonIds",
+            "type": "char"
+          },
+          {
+            "name": "sourceTaxonName",
+            "type": "char"
+          },
+          {
+            "name": "sourceTaxonRank",
+            "type": "char"
+          },
+          {
+            "name": "sourceTaxonPathNames",
+            "type": "char"
+          },
+          {
+            "name": "sourceTaxonPathIds",
+            "type": "char"
+          },
+          {
+            "name": "sourceTaxonPathRankNames",
+            "type": "char"
+          },
+          {
+            "name": "sourceId",
+            "type": "char"
+          },
+          {
+            "name": "sourceOccurrenceId",
+            "type": "char"
+          },
+          {
+            "name": "sourceCatalogNumber",
+            "type": "char"
+          },
+          {
+            "name": "sourceBasisOfRecordId",
+            "type": "char"
+          },
+          {
+            "name": "sourceBasisOfRecordName",
+            "type": "char"
+          },
+          {
+            "name": "sourceLifeStageId",
+            "type": "char"
+          },
+          {
+            "name": "sourceLifeStageName",
+            "type": "char"
+          },
+          {
+            "name": "sourceBodyPartId",
+            "type": "char"
+          },
+          {
+            "name": "sourceBodyPartName",
+            "type": "char"
+          },
+          {
+            "name": "sourcePhysiologicalStateId",
+            "type": "char"
+          },
+          {
+            "name": "sourcePhysiologicalStateName",
+            "type": "char"
+          },
+          {
+            "name": "interactionTypeName",
+            "type": "char"
+          },
+          {
+            "name": "interactionTypeId",
+            "type": "char"
+          },
+          {
+            "name": "targetTaxonId",
+            "type": "char"
+          },
+          {
+            "name": "targetTaxonIds",
+            "type": "char"
+          },
+          {
+            "name": "targetTaxonName",
+            "type": "char"
+          },
+          {
+            "name": "targetTaxonRank",
+            "type": "char"
+          },
+          {
+            "name": "targetTaxonPathNames",
+            "type": "char"
+          },
+          {
+            "name": "targetTaxonPathIds",
+            "type": "char"
+          },
+          {
+            "name": "targetTaxonPathRankNames",
+            "type": "char"
+          },
+          {
+            "name": "targetId",
+            "type": "char"
+          },
+          {
+            "name": "targetOccurrenceId",
+            "type": "char"
+          },
+          {
+            "name": "targetCatalogNumber",
+            "type": "double"
+          },
+          {
+            "name": "targetBasisOfRecordId",
+            "type": "char"
+          },
+          {
+            "name": "targetBasisOfRecordName",
+            "type": "char"
+          },
+          {
+            "name": "targetLifeStageId",
+            "type": "char"
+          },
+          {
+            "name": "targetLifeStageName",
+            "type": "char"
+          },
+          {
+            "name": "targetBodyPartId",
+            "type": "char"
+          },
+          {
+            "name": "targetBodyPartName",
+            "type": "char"
+          },
+          {
+            "name": "targetPhysiologicalStateId",
+            "type": "char"
+          },
+          {
+            "name": "targetPhysiologicalStateName",
+            "type": "char"
+          },
+          {
+            "name": "decimalLatitude",
+            "type": "double"
+          },
+          {
+            "name": "decimalLongitude",
+            "type": "double"
+          },
+          {
+            "name": "localityId",
+            "type": "char"
+          },
+          {
+            "name": "localityName",
+            "type": "char"
+          },
+          {
+            "name": "eventDateUnixEpoch",
+            "type": "char"
+          },
+          {
+            "name": "referenceCitation",
+            "type": "char"
+          },
+          {
+            "name": "referenceDoi",
+            "type": "char"
+          },
+          {
+            "name": "referenceUrl",
+            "type": "char"
+          },
+          {
+            "name": "sourceCitation",
+            "type": "char"
+          },
+          {
+            "name": "sourceNamespace",
+            "type": "char"
+          },
+          {
+            "name": "sourceArchiveURI",
+            "type": "char"
+          },
+          {
+            "name": "sourceDOI",
+            "type": "char"
+          },
+          {
+            "name": "sourceLastSeenAtUnixEpoch",
+            "type": "char"
+          }       
+          ]
+      },
+      "url": "https://depot.globalbioticinteractions.org/snapshot/target/data/tsv/interactions.tsv.gz"
+    }
+ ],
+  "retriever": "True",
+  "retriever_minimum_version": "2.1.dev",
+  "title": "Globi_interaction_data",
+  "version": "1.0.0"
+}
