@@ -1,7 +1,6 @@
 {
     "citation": "OurAirports.com, Megginson Technologies Ltd.",
     "description": "Dataset containing information on all airports on ourairports.com",
-    "encoding": "ISO-8859-1",
     "homepage": "http://ourairports.com/data/",
     "keywords": [
         "airports",
@@ -385,5 +384,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Dataset containing information on all airports on ouraiports.com",
-    "version": "1.0.2"
+    "version": "1.0.3"
 }
