@@ -101,16 +101,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Sonoran Desert Lab perennials vegetation plots",
-    "urls": {
-        "Count1906": "https://ndownloader.figshare.com/files/5625342",
-        "Photo_info": "https://ndownloader.figshare.com/files/5625354",
-        "Plot_corners": "https://ndownloader.figshare.com/files/5625333",
-        "Plots": "https://ndownloader.figshare.com/files/5625330",
-        "SMCover": "https://ndownloader.figshare.com/files/5625345",
-        "SMDensity": "https://ndownloader.figshare.com/files/5625348",
-        "Seedling_counts": "https://ndownloader.figshare.com/files/5625339",
-        "Species": "https://ndownloader.figshare.com/files/5625336",
-        "Stake_info": "https://ndownloader.figshare.com/files/5625351"
-    },
-    "version": "1.2.0"
+    "version": "1.2.1"
 }

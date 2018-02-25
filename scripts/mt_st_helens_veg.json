@@ -159,11 +159,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Mount St. Helens vegetation recovery plots (del Moral 2010)",
-    "urls": {
-        "plots": "https://ndownloader.figshare.com/files/5613792",
-        "species": "https://ndownloader.figshare.com/files/5613789",
-        "species_plot_year": "https://ndownloader.figshare.com/files/5613783",
-        "structure_plot_year": "https://ndownloader.figshare.com/files/5613786"
-    },
-    "version": "1.2.1"
+    "version": "1.2.2"
 }

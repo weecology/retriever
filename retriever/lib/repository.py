@@ -10,6 +10,7 @@ import urllib.request
 import urllib.parse
 import urllib.error
 import imp
+from tqdm import tqdm
 from pkg_resources import parse_version
 from retriever.lib.defaults import REPOSITORY, SCRIPT_WRITE_PATH, HOME_DIR
 from retriever.lib.models import file_exists
@@ -44,10 +45,7 @@ def check_for_updates(quiet=False):
         if not os.path.isdir(SCRIPT_WRITE_PATH):
             os.makedirs(SCRIPT_WRITE_PATH)
 
-        if not quiet:
-            print("Downloading scripts...")
-            _update_progressbar(0.0 / float(total_script_count))
-        for index, script in enumerate(scripts):
+        for script in tqdm(scripts, unit='files', desc='Downloading scripts'):
             script_name = script[0]
             if len(script) > 1:
                 script_version = script[1]
@@ -75,30 +73,5 @@ def check_for_updates(quiet=False):
                 except Exception as e:
                     print(e)
                     pass
-            if not quiet:
-                _update_progressbar(float(index + 1) / float(total_script_count))
     except:
         raise
-    if not quiet:
-        print("\nThe retriever is up-to-date")
-
-
-def _update_progressbar(progress):
-    """Show progressbar.
-
-    Takes a number between 0 and 1 to indicate progress from 0 to 100%.
-    And set the bar_length according to the console size
-    """
-    try:
-        rows, columns = os.popen('stty size', 'r').read().split()
-        bar_length = int(columns) - 35
-        if not bar_length > 1:
-            bar_length = 20
-    except:
-        # Default value if determination of console size fails
-        bar_length = 20
-    block = int(round(bar_length * progress))
-    text = "\rDownload Progress: [{0}] {1:.2f}%".format(
-        "#" * block + "-" * (bar_length - block), progress * 100)
-    sys.stdout.write(text)
-    sys.stdout.flush()

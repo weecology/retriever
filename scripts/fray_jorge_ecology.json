@@ -348,15 +348,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Fray Jorge community ecology database (Kelt et al. 2013)",
-    "urls": {
-        "annuals": "https://ndownloader.figshare.com/files/5625378",
-        "mammals": "https://ndownloader.figshare.com/files/5625372",
-        "perennials": "https://ndownloader.figshare.com/files/5625381",
-        "precip": "https://ndownloader.figshare.com/files/5625396",
-        "seeds8902": "https://ndownloader.figshare.com/files/5625384",
-        "seeds03051": "https://ndownloader.figshare.com/files/5625387",
-        "seeds03052": "https://ndownloader.figshare.com/files/5625390"
-
-    },
-    "version": "1.4.1"
+    "version": "1.4.2"
 }

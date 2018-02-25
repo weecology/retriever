@@ -75,7 +75,8 @@ setup(name='retriever',
       install_requires=[
           'xlrd',
           'future',
-          'argcomplete'
+          'argcomplete',
+          'tqdm'
       ],
       data_files=[('', ['CITATION'])],
       setup_requires=[],

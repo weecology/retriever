@@ -14,9 +14,6 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.0-dev",
-    "version": "1.0.1",
-    "title": "The distribution and host range of the pandemic disease chytridiomycosis in Australia, spanning surveys from 1956-2007.",
-    "urls": {
-        "Chytridiomycosis_data": "https://ndownloader.figshare.com/files/5613237"
-    }
+    "version": "1.0.2",
+    "title": "The distribution and host range of the pandemic disease chytridiomycosis in Australia, spanning surveys from 1956-2007."
 }

@@ -46,14 +46,6 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.0-dev",
-    "version": "1.0.0",
-    "title": "3-D maps of tree canopy geometries at leaf scale",
-    "urls": {
-        "Apple": "https://ndownloader.figshare.com/files/5602697",
-        "Mango1": "https://ndownloader.figshare.com/files/5602703",
-        "Mango2": "https://ndownloader.figshare.com/files/5602706",
-        "Rubber1": "https://ndownloader.figshare.com/files/5602709",
-        "Rubber2": "https://ndownloader.figshare.com/files/5602712",
-        "Walnut": "https://ndownloader.figshare.com/files/5602715"
-    }
+    "version": "1.0.1",
+    "title": "3-D maps of tree canopy geometries at leaf scale"
 }

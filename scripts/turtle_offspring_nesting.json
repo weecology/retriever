@@ -1,9 +1,17 @@
 {
-    "citation": "Lisa E. Schwanz, Rachel M. Bowden, Ricky-John Spencer, and Fredric J. Janzen. 2009. Nesting ecology and offspring recruitment in a long-lived turtle. Ecology 90:1709.",
-    "description": "",
+    "citation": "Lisa E. Schwanz, Rachel M. Bowden, Ricky-John Spencer, and Fredric J. Janzen. 2009. Nesting ecology and offspring recruitment in a long-lived turtle. Ecology 90:1709. [https://doi.org/10.6084/m9.figshare.3531323.v1]",
+    "description": "Valuable empirical resource for exploring important facets of nesting ecology and hatchling recruitment in a wild population of a long-lived species.",
     "homepage": "https://figshare.com/articles/Data_Paper_Data_Paper/3531323",
     "keywords": [
-        "Taxon > Animals"
+        "Taxon > Animals",
+        "demography",
+        "early life stages",
+        "fluctuating environments",
+        "maternal effects",
+        "nesting behavior",
+        "predation",
+        "temperature dependent sex determination",
+        "turtles"
     ],
     "name": "turtle-offspring-nesting",
     "resources": [
@@ -51,9 +59,6 @@
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.0-dev",
-    "version": "1.0.0",
-    "title": "Nesting ecology and offspring recruitment in a long-lived turtle",
-    "urls": {
-        "species": "https://ndownloader.figshare.com/files/5604044"
-    }
+    "version": "1.0.2",
+    "title": "Nesting ecology and offspring recruitment in a long-lived turtle"
 }

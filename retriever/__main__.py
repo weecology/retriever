@@ -20,7 +20,7 @@ from retriever.lib.datasets import datasets, dataset_names, license
 from retriever.lib.defaults import sample_script, CITATION, ENCODING, SCRIPT_SEARCH_PATHS
 from retriever.lib.get_opts import parser
 from retriever.lib.repository import check_for_updates
-from retriever.lib.scripts import SCRIPT_LIST
+from retriever.lib.scripts import SCRIPT_LIST, get_script
 from retriever.lib.engine_tools import name_matches, reset_retriever
 
 encoding = ENCODING.lower()
@@ -131,12 +131,33 @@ def main():
                 print("No scripts are currently available. Updating scripts now...")
                 check_for_updates(False)
                 print("\n\nScripts downloaded.\n")
-
-            if args.l is None and args.k is None:
+            if not (args.l or args.k or (type(args.v) is list)):
                 all_scripts = dataset_names()
                 print("Available datasets : {}\n".format(len(all_scripts)))
                 from retriever import lscolumns
                 lscolumns.printls(all_scripts)
+            
+            elif type(args.v) is list:
+                if args.v:
+                    try:
+                        all_scripts = [get_script(dataset) for dataset in args.v]
+                    except KeyError:
+                        all_scripts = []
+                        print("Dataset(s) is not found.")
+                else:
+                    all_scripts = datasets()
+                count = 1
+                for script in all_scripts:
+                    print("{}. {}\n{}\n{}\n{}\n".format(
+                        count, script.title,
+                        script.name,
+                        script.keywords,
+                        script.description,
+                        str(script.licenses[0]['name']),
+                        script.citation
+                    ))
+                    count += 1
+ 
             else:
                 param_licenses = args.l if args.l else None
                 keywords = args.k if args.k else None

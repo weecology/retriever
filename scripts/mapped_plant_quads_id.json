@@ -221,18 +221,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Sagebrush steppe mapped plant quadrats (Zachmann et al. 2010)",
-    "urls": {
-        "counts": "https://ndownloader.figshare.com/files/5617476",
-        "cover": "https://ndownloader.figshare.com/files/5617446",
-        "density": "https://ndownloader.figshare.com/files/5617443",
-        "grazing": "https://ndownloader.figshare.com/files/5617455",
-        "monthly_mean_temp": "https://ndownloader.figshare.com/files/5617467",
-        "monthly_ppt": "https://ndownloader.figshare.com/files/5617470",
-        "monthly_sno": "https://ndownloader.figshare.com/files/5617473",
-        "quad_info": "https://ndownloader.figshare.com/files/5617452",
-        "quad_inventory": "https://ndownloader.figshare.com/files/5617458",
-        "species": "https://ndownloader.figshare.com/files/5617461",
-        "taxonomy": "https://ndownloader.figshare.com/files/5617464"
-    },
-    "version": "1.2.0"
+    "version": "1.2.1"
 }

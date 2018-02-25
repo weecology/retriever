@@ -154,13 +154,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Mapped plant quadrat time-series from Kansas (Adler et al. 2007)",
-    "urls": {
-        "main": "https://ndownloader.figshare.com/files/5599934",
-        "monthly_ppt": "https://ndownloader.figshare.com/files/5599949",
-        "monthly_temp": "https://ndownloader.figshare.com/files/5599946",
-        "quadrat_info": "https://ndownloader.figshare.com/files/5599937",
-        "quadrat_inventory": "https://ndownloader.figshare.com/files/5599940",
-        "species": "https://ndownloader.figshare.com/files/5599943"
-    },
-    "version": "1.2.0"
+    "version": "1.2.1"
 }

@@ -1,7 +1,6 @@
 {
-    "citation": "",
+    "citation": "OurAirports.com, Megginson Technologies Ltd.",
     "description": "Dataset containing information on all airports on ourairports.com",
-    "encoding": "ISO-8859-1",
     "homepage": "http://ourairports.com/data/",
     "keywords": [
         "airports",
@@ -385,13 +384,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Dataset containing information on all airports on ouraiports.com",
-    "urls": {
-        "airport_frequencies": "http://ourairports.com/data/airport-frequencies.csv",
-        "airports": "http://ourairports.com/data/airports.csv",
-        "countries": "http://ourairports.com/data/countries.csv",
-        "navaids": "http://ourairports.com/data/navaids.csv",
-        "regions": "http://ourairports.com/data/regions.csv",
-        "runways": "http://ourairports.com/data/runways.csv"
-    },
-    "version": "1.0.0"
+    "version": "1.0.3"
 }

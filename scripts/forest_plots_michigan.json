@@ -154,13 +154,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Michigan forest canopy dynamics plots - Woods et al. 2009",
-    "urls": {
-        "all_plots_1935_1948": "https://ndownloader.figshare.com/files/5608016",
-        "all_plots_1974_1980": "https://ndownloader.figshare.com/files/5608019",
-        "sampling_history": "https://ndownloader.figshare.com/files/5608031",
-        "species_codes": "https://ndownloader.figshare.com/files/5608028",
-        "swamp": "https://ndownloader.figshare.com/files/5608025",
-        "upland_plots_1989_2007": "https://ndownloader.figshare.com/files/5608022"
-    },
-    "version": "1.2.0"
+    "version": "1.2.1"
 }

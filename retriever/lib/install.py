@@ -22,7 +22,6 @@ def _install(args, use_cache, debug):
     data_sets_scripts = name_matches(script_list, args['dataset'])
     if data_sets_scripts:
         for data_sets_script in data_sets_scripts:
-            print("=> Installing", data_sets_script.name)
             try:
                 data_sets_script.download(engine, debug=debug)
                 data_sets_script.engine.final_cleanup()

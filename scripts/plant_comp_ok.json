@@ -50,13 +50,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Vascular plant composition - McGlinn, et al., 2010",
-    "urls": {
-        "climate": "https://ndownloader.figshare.com/files/5613450",
-        "cover": "https://ndownloader.figshare.com/files/5613438",
-        "environment": "https://ndownloader.figshare.com/files/5613447",
-        "pres": "https://ndownloader.figshare.com/files/5613435",
-        "richness": "https://ndownloader.figshare.com/files/5613441",
-        "species": "https://ndownloader.figshare.com/files/5613444"
-    },
-    "version": "1.2.0"
+    "version": "1.2.1"
 }

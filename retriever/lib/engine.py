@@ -19,6 +19,7 @@ import tarfile
 import csv
 import re
 import time
+from tqdm import tqdm
 from urllib.request import urlretrieve
 from retriever.lib.tools import open_fr, open_fw, open_csvw
 from retriever.lib.defaults import DATA_SEARCH_PATHS, DATA_WRITE_PATH
@@ -83,6 +84,9 @@ class Engine(object):
         insert_limit = self.insert_limit
         types = self.table.get_column_datatypes()
         multiple_values = []
+        progbar = tqdm(desc='Installing {}'.format(self.table_name()),
+                   total=real_line_length,
+                   unit='rows')
         for line in real_lines:
             if line:
                 # Only process non empty lines
@@ -119,17 +123,16 @@ class Engine(object):
                         self.executemany(insert_stmt, multiple_values, commit=False)
                         prompt = "Progress: {}/{} rows inserted into {} totaling {}:".format(
                             count_iter, real_line_length, self.table_name(), total)
-                        sys.stdout.write(prompt + "\b" * len(prompt))
-                        sys.stdout.flush()
                     except:
                         print(insert_stmt)
                         raise
                     multiple_values = []
                 else:
                     multiple_values.append(cleanvalues)
+            progbar.update()
             count_iter += 1
+        progbar.close()
         self.connection.commit()
-        print("\n")
 
     def get_ct_line_length(self, lines):
         """Returns the number of real lines for cross-tab data"""
@@ -349,7 +352,6 @@ class Engine(object):
     def create_table(self):
         """Create new database table based on settings supplied in Table
         object engine.table."""
-        print("Creating table " + self.table_name() + "...")
 
         # Try to drop the table if it exists; this may cause an exception if it
         # doesn't exist, so ignore exceptions
@@ -409,18 +411,23 @@ class Engine(object):
         if not self.find_file(filename) or not self.use_cache:
             path = self.format_filename(filename)
             self.create_raw_data_dir()
-            print("\nDownloading " + filename + "...")
+            progbar = tqdm(unit='B',
+                           unit_scale=True,
+                           unit_divisor=1024,
+                           miniters=1,
+                           desc='Downloading {}'.format(filename))
             try:
-                urlretrieve(url, path, reporthook=reporthook)
+                urlretrieve(url, path, reporthook=reporthook(progbar))
             except ImportError:
                 # For some urls lacking filenames urlretrieve from the future
                 # package seems to fail. This issue occurred in the PlantTaxonomy
                 # script. If this happens, fall back to the standard Python 2 version.
                 from urllib import urlretrieve as py2urlretrieve
-                py2urlretrieve(url, path, reporthook=reporthook)
+                py2urlretrieve(url, path, reporthook=reporthook(progbar))
             finally:
                 # Download is complete, set to prevent repeated downloads
                 self.use_cache = True
+                progbar.close()
 
     def download_files_from_archive(self, url, filenames, filetype="zip",
                                     keep_in_dir=False, archivename=None):
@@ -769,32 +776,12 @@ def gen_from_source(source):
     return source
 
 
-def reporthook(count, block_size, total_size):
-    """Generate the progress bar.
-
-    Uses file size to calculate the percentage of file size downloaded.
-    If the total_size of the file being downloaded is not in the header,
-    provide progress as size of bytes downloaded in either KB, MB and GB.
-    """
-    progress_size = int(count * block_size)
-    if total_size != -1:
-        global start_time
-        if count == 0:
-            start_time = time.time()
-            return
-        duration = time.time() - start_time
-        if duration != 0:
-            speed = int(progress_size / (1024 * duration))
-            percent = min(int(count * block_size * 100 / total_size), 100)
-            sys.stdout.write("\r%2d%%  %d seconds " % (percent, duration))
-            sys.stdout.flush()
-    else:
-        if 1000 >= progress_size / 1000:
-            sys.stdout.write("\r%d  KB" % (progress_size / 1000))
-            sys.stdout.flush()
-        elif 1000000 >= progress_size / 1000000:
-            sys.stdout.write("\r%d  MB" % (progress_size / 1000000))
-            sys.stdout.flush()
-        elif 1000000000 >= progress_size / 1000000000:
-            sys.stdout.write("\r%d  GB" % (progress_size / 1000000000))
-            sys.stdout.flush()
+def reporthook(tqdm_inst):
+    """tqdm wrapper to generate progress bar for urlretriever"""
+    last_block = [0]
+    def update_to(count=1, block_size=1, total_size=None):
+        if total_size is not None:
+            tqdm_inst.total = total_size
+        tqdm_inst.update((count - last_block[0]) * block_size)
+        last_block[0] = count
+    return update_to
