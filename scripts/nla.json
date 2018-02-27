@@ -1779,7 +1779,7 @@
             "type": "double"
           },
           {
-            "name": "NOINNTAX",
+            "name": "NOINPIND",
             "type": "double"
           },
           {
@@ -1843,7 +1843,7 @@
             "type": "double"
           },
           {
-            "name": "",
+            "name": "ORTHNTAX",
             "type": "double"
           },
           {
