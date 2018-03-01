@@ -1,0 +1,103 @@
+{
+  "citation": "Engemann, K., Sandel, B., Boyle, B. L., Enquist, B. J., Jorgensen, P. M., Kattge, J., McGill, B. J., Morueta-Holme, N., Peet, R. K., Spencer, N. J., Violle, C., Wiser, S. K. and Svenning, J. .-C. (2016), A plant growth form dataset for the New World. Ecology. Accepted Author Manuscript. doi:10.1002/ecy.1569",
+  "description": "This dataset provides growth form classifications for 67,413 vascular plant species from North, Central, and South America.",
+  "homepage": "http://onlinelibrary.wiley.com/doi/10.1002/ecy.1569/full",
+  "keywords": [
+    "Taxon",
+    "Plants"
+  ],
+  "name": "plant_growth_form_dataset",
+  "archived": "zip",
+  "resources": [
+    {
+      "path": "DataS1/GrowthForm_Final.txt",
+      "dialect": {
+        "header_rows": 1,
+        "delimeter":"\t"
+      },
+      "name": "GrowthForm_Final",
+      "schema": {
+        "fields": [
+          {
+            "name": "FAMILY_STD",
+            "type": "char"
+          },
+          {
+            "name": "SPECIES_STD",
+            "type": "char"
+          },
+          {
+            "name": "GROWTHFORM_STD",
+            "type": "char"
+          },
+          {
+            "name": "GROWTHFORM_DIV",
+            "type": "char"
+          },
+          {
+            "name": "ID",
+            "type": "char"
+          },
+          {
+            "name": "CONSENSUS",
+            "type": "double"
+          },
+          {
+            "name": "SOURCES",
+            "type": "double"
+          }
+        ]
+      },
+      "url": "http://onlinelibrary.wiley.com/store/10.1002/ecy.1569/asset/supinfo/ecy1569-sup-0001-DataS1.zip?v=1&s=219c74fa85bfe6738e649bedd844f40428351802"
+    },
+    {
+      "path": "DataS1/GrowthForm_Initial.txt",
+      "dialect": {
+        "header_rows": 1,
+        "delimeter":"\t"
+      },
+      "name": "GrowthForm_Initial",
+      "schema": {
+        "fields": [
+          {
+            "name": "FAMILY_ORG",
+            "type": "char"
+          },
+          {
+            "name": "FAMILY_STD",
+            "type": "char"
+          },
+          {
+            "name": "SPECIES_ORG",
+            "type": "char"
+          },
+          {
+            "name": "SPECIES_STD",
+            "type": "char"
+          },
+          {
+            "name": "GROWTHFORM_ORG",
+            "type": "char"
+          },
+          {
+            "name": "GROWTHFORM_STD",
+            "type": "char"
+          },
+          {
+            "name": "ID",
+            "type": "char"
+          },
+          {
+            "name": "REFERENCE",
+            "type": "char"
+          }
+        ]
+      },
+      "url": "http://onlinelibrary.wiley.com/store/10.1002/ecy.1569/asset/supinfo/ecy1569-sup-0001-DataS1.zip?v=1&s=219c74fa85bfe6738e649bedd844f40428351802"
+    }
+  ],
+  "retriever": "True",
+  "retriever_minimum_version": "2.1.dev",
+  "title": "Globi_interaction_data",
+  "version": "1.0.0"
+}

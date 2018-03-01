@@ -60,6 +60,7 @@ nyc_tree_count.json,1.0.1
 pantheria.py,1.3.2
 phytoplankton_size.json,1.2.1
 plant_comp_ok.json,1.2.1
+plant-growth.json,1.0.0
 plant_life_hist_eu.py,1.4.2
 plant_occur_oosting.json,1.2.1
 plant_taxonomy_us.json,1.1.3
