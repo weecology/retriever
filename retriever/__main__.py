@@ -12,7 +12,6 @@ from __future__ import print_function
 import os
 import sys
 from builtins import input
-from imp import reload
 
 from retriever.engines import engine_list, choose_engine
 from retriever.lib.datapackage import create_json, edit_json, delete_json, get_script_filename
@@ -22,12 +21,6 @@ from retriever.lib.get_opts import parser
 from retriever.lib.repository import check_for_updates
 from retriever.lib.scripts import SCRIPT_LIST, get_script
 from retriever.lib.engine_tools import name_matches, reset_retriever
-
-encoding = ENCODING.lower()
-# sys removes the setdefaultencoding method at startup; reload to get it back
-reload(sys)
-if hasattr(sys, 'setdefaultencoding'):
-    sys.setdefaultencoding(encoding)
 
 
 def main():
@@ -135,7 +128,7 @@ def main():
                 print("Available datasets : {}\n".format(len(all_scripts)))
                 from retriever import lscolumns
                 lscolumns.printls(all_scripts)
-            
+
             elif type(args.v) is list:
                 if args.v:
                     try:
@@ -156,7 +149,7 @@ def main():
                         script.citation
                     ))
                     count += 1
- 
+
             else:
                 param_licenses = args.l if args.l else None
                 keywords = args.k if args.k else None
@@ -170,10 +163,10 @@ def main():
                     count = 1
                     for script in searched_scripts:
                         print("{}. {}\n{}\n{}\n{}\n".format(
-                                count, script.title,
-                                script.name,
-                                script.keywords,
-                                str(script.licenses[0]['name'])
+                            count, script.title,
+                            script.name,
+                            script.keywords,
+                            str(script.licenses[0]['name'])
                         ))
                         count += 1
             return
