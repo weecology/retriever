@@ -15,7 +15,7 @@
     "name": "airports",
     "resources": [
         {
-            "dialect": {},
+            "dialect": {"do_not_bulk_insert": "True"},
             "name": "airports",
             "schema": {
                 "fields": [
@@ -96,7 +96,7 @@
             "url": "http://ourairports.com/data/airports.csv"
         },
         {
-            "dialect": {},
+            "dialect": {"do_not_bulk_insert": "True"},
             "name": "airport_frequencies",
             "schema": {
                 "fields": [
@@ -218,7 +218,7 @@
             "url": "http://ourairports.com/data/runways.csv"
         },
         {
-            "dialect": {},
+            "dialect": {"do_not_bulk_insert": "True"},
             "name": "navaids",
             "schema": {
                 "fields": [
@@ -307,7 +307,7 @@
             "url": "http://ourairports.com/data/navaids.csv"
         },
         {
-            "dialect": {},
+            "dialect": {"do_not_bulk_insert": "True"},
             "name": "countries",
             "schema": {
                 "fields": [
@@ -340,7 +340,7 @@
             "url": "http://ourairports.com/data/countries.csv"
         },
         {
-            "dialect": {},
+            "dialect": {"do_not_bulk_insert": "True"},
             "name": "regions",
             "schema": {
                 "fields": [
@@ -384,5 +384,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Dataset containing information on all airports on ouraiports.com",
-    "version": "1.0.3"
+    "version": "1.0.4"
 }

@@ -18,7 +18,6 @@ from retriever.lib.defaults import ENCODING
 from retriever.lib.defaults import HOME_DIR
 from retriever.lib.load_json import read_json
 
-
 encoding = ENCODING.lower()
 
 reload(sys)
@@ -51,7 +50,8 @@ download_md5 = [
 db_md5 = [
     # ('mt_st_helens_veg', '0'),
     ('bird_size', '98dcfdca19d729c90ee1c6db5221b775'),
-    ('mammal_masses', '6fec0fc63007a4040d9bbc5cfcd9953e')
+    ('mammal_masses', '6fec0fc63007a4040d9bbc5cfcd9953e'),
+    ('airports', '314f64a86966da16640bee66fd8308a6')
 ]
 
 
@@ -82,7 +82,7 @@ def get_csv_md5(dataset, engine, tmpdir, install_function, config):
     install_function(dataset.replace("_", "-"), **config)
     engine_obj = script_module.checkengine(engine)
     engine_obj.to_csv()
-    os.system("rm -r scripts") # need to remove scripts before checking md5 on dir
+    os.system("rm -r scripts")  # need to remove scripts before checking md5 on dir
     current_md5 = getmd5(data=str(workdir), data_type='dir')
     return current_md5
 
