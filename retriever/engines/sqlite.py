@@ -1,4 +1,5 @@
 import os
+import logging
 from builtins import range
 
 from retriever.lib.defaults import DATA_DIR
@@ -85,7 +86,8 @@ class engine(Engine):
                         self.cursor.executemany(bulk_insert_statement, data_chunk_split)
                         data_chunk = data_file.readlines(chunk_size)
                 self.connection.commit()
-            except:
+            except Exception as e:
+                logging.error(e)
                 self.connection.rollback()
                 return Engine.insert_data_from_file(self, filename)
         else:

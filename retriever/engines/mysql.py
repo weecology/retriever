@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import os
+import logging
 from builtins import str
 
 from retriever.lib.defaults import ENCODING
@@ -80,6 +81,7 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
 
                 self.cursor.execute(mysql_set_autocommit_on)
             except Exception as e:
+                logging.error(e)
                 self.cursor.execute("ROLLBACK;")
                 self.disconnect()  # If the execute fails the database connection can get hung up
                 self.cursor.execute(mysql_set_autocommit_on)

@@ -2,6 +2,7 @@ from __future__ import print_function
 
 import os
 import platform
+import logging
 from builtins import str
 
 from retriever.lib.defaults import DATA_DIR
@@ -44,7 +45,8 @@ class engine(Engine):
                 length = int(converted.split('(')[1].split(')')[0].split(',')[0])
                 if length > 255:
                     converted = "TEXT"
-            except:
+            except Exception as e:
+                logging.error(e)
                 pass
         return converted
 
@@ -122,6 +124,7 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
             try:
                 self.execute(statement)
             except:
+                logging.info("Couldn't bulk insert. Trying manual insert.")
                 print("Couldn't bulk insert. Trying manual insert.")
                 self.connection.rollback()
 
@@ -151,6 +154,7 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
         """Gets the db connection."""
         current_platform = platform.system().lower()
         if current_platform != "windows":
+            logging.error("MS Access can only be used in Windows.")
             raise Exception("MS Access can only be used in Windows.")
         import pypyodbc as dbapi
         self.get_input()

@@ -3,6 +3,7 @@ from __future__ import print_function
 import inspect
 import os
 import shutil
+import logging
 
 from retriever.lib.defaults import DATA_DIR
 from retriever.lib.dummy import DummyConnection
@@ -59,6 +60,7 @@ class engine(Engine):
                         try:
                             shutil.copy(file_name, dest_path)
                         except:
+                            logging.error("Couldn't copy file to %s" % dest_path)
                             print("Couldn't copy file to %s" % dest_path)
                     else:
                         try:
@@ -66,6 +68,7 @@ class engine(Engine):
                             os.makedirs(dest_path)
                             shutil.copy(file_name, dest_path)
                         except:
+                            logging.error("Couldn't create directory %s" % dest_path)
                             print("Couldn't create directory %s" % dest_path)
         self.all_files = set()
 

@@ -1,4 +1,5 @@
 import os
+import logging
 
 from retriever.lib.defaults import DATA_DIR
 from retriever.lib.dummy import DummyConnection
@@ -61,7 +62,8 @@ class engine(Engine):
         try:
             if len(v) > 1 and v[0] == v[-1] == "'":
                 v = '"%s"' % v[1:-1]
-        except:
+        except Exception as e:
+            logging.error(e)
             pass
         return v
 

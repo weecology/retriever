@@ -1,6 +1,7 @@
 """Engine for writing data to a JSON file"""
 import json
 import os
+import logging
 from builtins import zip
 from collections import OrderedDict
 
@@ -78,7 +79,8 @@ class engine(Engine):
         try:
             if len(v) > 1 and v[0] == v[-1] == "'":
                 v = '"%s"' % v[1:-1]
-        except:
+        except Exception as e:
+            logging.info(e)
             pass
         return v
 

@@ -1,4 +1,5 @@
 import os
+import logging
 
 from retriever.lib.defaults import ENCODING
 from retriever.lib.models import Engine, no_cleanup
@@ -52,7 +53,8 @@ class engine(Engine):
         """Create Engine database."""
         try:
             Engine.create_db(self)
-        except:
+        except Exception as e:
+            logging.error(e)
             self.connection.rollback()
             pass
 
@@ -87,7 +89,8 @@ CSV HEADER;"""
                 self.execute("BEGIN")
                 self.execute(statement)
                 self.execute("COMMIT")
-            except:
+            except Exception as e:
+                logging.error(e)
                 self.connection.rollback()
                 return Engine.insert_data_from_file(self, filename)
         else:
@@ -118,7 +121,8 @@ CSV HEADER;"""
                     return "TRUE"
                 elif int(value) == 0:
                     return "FALSE"
-            except:
+            except Exception as e:
+                logging.error(e)
                 pass
         return Engine.format_insert_value(self, value, datatype)
 
