@@ -11,6 +11,7 @@ from __future__ import print_function
 
 import os
 import sys
+import logging
 from builtins import input
 from imp import reload
 
@@ -31,7 +32,13 @@ if hasattr(sys, 'setdefaultencoding'):
 
 
 def main():
-    """This function launches the Data Retriever."""
+    """This function launches the Data Retriever."""  
+    logging.basicConfig(
+        format="%(asctime)s [%(levelname)-5.5s] [%(filename)s:%(lineno)s - %(funcName)3s() ] %(message)s",
+        handlers=[
+            logging.FileHandler("retriever.log"),
+        ])
+    sys.argv[1:] = [arg.lower() for arg in sys.argv[1:]]
     if len(sys.argv) == 1:
         # if no command line args are passed, show the help options
         parser.parse_args(['-h'])
@@ -135,12 +142,12 @@ def main():
                 print("Available datasets : {}\n".format(len(all_scripts)))
                 from retriever import lscolumns
                 lscolumns.printls(all_scripts)
-            
             elif type(args.v) is list:
                 if args.v:
                     try:
                         all_scripts = [get_script(dataset) for dataset in args.v]
                     except KeyError:
+                        logging.error('Dataset(s) is not found.')
                         all_scripts = []
                         print("Dataset(s) is not found.")
                 else:
@@ -156,7 +163,6 @@ def main():
                         script.citation
                     ))
                     count += 1
- 
             else:
                 param_licenses = args.l if args.l else None
                 keywords = args.k if args.k else None
@@ -194,6 +200,7 @@ def main():
         if args.dataset is not None:
             scripts = name_matches(script_list, args.dataset)
         else:
+            logging.info('No dataset specified')
             raise Exception("no dataset specified.")
         if scripts:
             for dataset in scripts:
@@ -202,15 +209,16 @@ def main():
                     dataset.download(engine, debug=debug)
                     dataset.engine.final_cleanup()
                 except KeyboardInterrupt:
+                    logging.error('Installing operation canceled by user')
                     pass
                 except Exception as e:
+                    logging.error(e)
                     print(e)
                     if debug:
                         raise
             print("Done!")
         else:
             print("Run 'retriever ls' to see a list of currently available datasets.")
-
 
 if __name__ == "__main__":
     main()
