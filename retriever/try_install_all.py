@@ -12,6 +12,7 @@ from __future__ import print_function
 
 import os
 import sys
+import logging
 from imp import reload
 
 from retriever.engines import engine_list, choose_engine
@@ -94,9 +95,11 @@ for module in MODULE_LIST:
                 try:
                     module.SCRIPT.download(value)
                 except KeyboardInterrupt:
+                    logging.error('KeyboardInterrupt')
                     pass
                 except Exception as e:
                     print("ERROR.")
+                    logging.info(e)
                     errors.append((key, module.__name__, e))
             else:
                 errors.append((key, "No connection detected......" + module.SCRIPT.name))

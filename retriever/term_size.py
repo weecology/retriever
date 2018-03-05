@@ -1,5 +1,5 @@
 import os
-
+import logging
 
 def get_terminal_size():
     env = os.environ
@@ -11,7 +11,8 @@ def get_terminal_size():
             import struct
             cr = struct.unpack('hh', fcntl.ioctl(fd, termios.TIOCGWINSZ,
                                                  '1234'))
-        except:
+        except Exception as e:
+            logging.error(e)
             return
         return cr
 
