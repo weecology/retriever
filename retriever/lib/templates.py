@@ -2,6 +2,7 @@
 The Module defines generic dataset properties and models the
 functions available for inheritance by the scripts or datasets.
 """
+import logging
 from __future__ import print_function
 
 from retriever.engines import choose_engine
@@ -88,7 +89,8 @@ class Script(object):
                 if not term.upper() in search_string:
                     return False
             return True
-        except:
+        except Exception as e:
+            logging.error(e)
             return False
 
 

@@ -10,6 +10,7 @@ import urllib.request
 import urllib.parse
 import urllib.error
 import imp
+import logging
 from tqdm import tqdm
 from pkg_resources import parse_version
 from retriever.lib.defaults import REPOSITORY, SCRIPT_WRITE_PATH, HOME_DIR
@@ -20,7 +21,8 @@ def _download_from_repository(filepath, newpath, repo=REPOSITORY):
     """Download latest version of a file from the repository."""
     try:
         urllib.request.urlretrieve(repo + filepath, newpath)
-    except:
+    except Exception as e:
+        logging.error(e)
         raise
 
 
@@ -63,7 +65,8 @@ def check_for_updates(quiet=False):
                 new_module = imp.load_module(script_name, file_object, pathname, desc)
                 m = str(new_module.SCRIPT.version)
                 need_to_download = parse_version(str(script_version)) > parse_version(m)
-            except:
+            except Exception as e:
+                logging.error(e)
                 pass
             if need_to_download:
                 try:
@@ -71,7 +74,9 @@ def check_for_updates(quiet=False):
                     _download_from_repository("scripts/" + script_name,
                                               os.path.normpath(os.path.join(SCRIPT_WRITE_PATH, script_name)))
                 except Exception as e:
+                    logging.error(e)
                     print(e)
                     pass
-    except:
+    except Exception as e:
+        logging.error(e)
         raise

@@ -1,3 +1,4 @@
+import logging
 from builtins import object
 
 
@@ -7,6 +8,7 @@ def floatable(value):
         float(value)
         return True
     except ValueError:
+        logging.error("Can't convert value to float")
         return False
 
 
@@ -18,7 +20,8 @@ def correct_invalid_value(value, args):
         if float(value) in [float(item) for item in args["missingValues"] if floatable(item)]:
             return None
         return value
-    except:
+    except Exception as e:
+        logging.error(e)
         return value
 
 

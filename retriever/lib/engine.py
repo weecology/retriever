@@ -19,6 +19,7 @@ import tarfile
 import csv
 import re
 import time
+import logging
 from tqdm import tqdm
 from urllib.request import urlretrieve
 from retriever.lib.tools import open_fr, open_fw, open_csvw
@@ -100,6 +101,7 @@ class Engine(object):
                                                             types[n])
                                    for n in range(len(linevalues))]
                 except Exception as e:
+                    logging.error(e)
                     self.warning('Exception in line %s: %s' % (self.table.record_id, e))
                     continue
 
@@ -111,7 +113,8 @@ class Engine(object):
                     multiple_values.append(cleanvalues)
                     try:
                         insert_stmt = self.insert_statement(multiple_values)
-                    except:
+                    except Exception as e:
+                        logging.error(e)
                         if self.debug:
                             print(types)
                         if self.debug:
@@ -123,7 +126,8 @@ class Engine(object):
                         self.executemany(insert_stmt, multiple_values, commit=False)
                         prompt = "Progress: {}/{} rows inserted into {} totaling {}:".format(
                             count_iter, real_line_length, self.table_name(), total)
-                    except:
+                    except Exception as e:
+                        logging.error(e)
                         print(insert_stmt)
                         raise
                     multiple_values = []
@@ -241,19 +245,22 @@ class Engine(object):
                                     val = int(val)
                                     if column_types[i][0] == 'int' and hasattr(self, 'max_int') and val > self.max_int:
                                         column_types[i] = ['bigint', ]
-                                except:
+                                except Exception as e:
+                                    logging.error(e)
                                     column_types[i] = ['double', ]
                             if column_types[i][0] == 'double':
                                 try:
                                     val = float(val)
                                     if "e" in str(val) or ("." in str(val) and len(str(val).split(".")[1]) > 10):
                                         column_types[i] = ["decimal", "50,30"]
-                                except:
+                                except Exception as e:
+                                    loggng.error(e)
                                     column_types[i] = ['char', max_lengths[i]]
                             if column_types[i][0] == 'char':
                                 if len(str(val)) + 100 > column_types[i][1]:
                                     column_types[i][1] = max_lengths[i]
                     except IndexError:
+                        logging.error('Index error')
                         pass
 
         for i in range(len(columns)):
@@ -331,9 +338,11 @@ class Engine(object):
             try:
                 self.execute(create_stmt)
             except Exception as e:
+                logging.error(e)
                 try:
                     self.connection.rollback()
-                except:
+                except Exception as e:
+                    logging.error(e)
                     pass
                 print("Couldn't create database (%s). Trying to continue anyway." % e)
 
@@ -357,7 +366,8 @@ class Engine(object):
         # doesn't exist, so ignore exceptions
         try:
             self.execute(self.drop_statement("TABLE", self.table_name()))
-        except:
+        except Exception as e:
+            logging.error(e)
             pass
 
         create_stmt = self.create_table_statement()
@@ -366,9 +376,11 @@ class Engine(object):
         try:
             self.execute(create_stmt)
         except Exception as e:
+            logging.error(e)
             try:
                 self.connection.rollback()
-            except:
+            except Exception as e:
+                logging.error(e)
                 pass
             print("Couldn't create table (%s). Trying to continue anyway." % e)
 
@@ -399,10 +411,12 @@ class Engine(object):
             try:
                 name = self.script.name
             except AttributeError:
+                logging.error('Attribute error')
                 name = "{db}"
         try:
             db_name = self.opts["database_name"].format(db=name)
         except KeyError:
+            logging.error('Key error')
             db_name = name
         return db_name.replace('-', '_')
 
@@ -424,6 +438,7 @@ class Engine(object):
                 # script. If this happens, fall back to the standard Python 2 version.
                 from urllib import urlretrieve as py2urlretrieve
                 py2urlretrieve(url, path, reporthook=reporthook(progbar))
+                logging.error('Import error')
             finally:
                 # Download is complete, set to prevent repeated downloads
                 self.use_cache = True
@@ -467,6 +482,7 @@ class Engine(object):
                             archive.getinfo(filename).file_size += (2 ** 64) - 1
                         open_archive_file = archive.open(filename, 'r')
                     except zipfile.BadZipFile as e:
+                        logging.error(e)
                         print("\n{0} can't be extracted, may be corrupt \n{1}".format(filename, e))
 
                 elif filetype == 'gz':
@@ -571,7 +587,8 @@ class Engine(object):
                 try:
                     decimals = float(str(strvalue))
                     return decimals
-                except:
+                except Exception as e:
+                    logging.error(e)
                     return None
             else:
                 return None

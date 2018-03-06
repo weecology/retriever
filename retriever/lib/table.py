@@ -5,6 +5,7 @@ standard_library.install_aliases()
 import csv
 import io
 import sys
+import logging
 from functools import reduce
 
 from retriever.lib.cleanup import *
@@ -209,6 +210,7 @@ class TabularDataset(Dataset):
                     linevalues.append(value)
             except:
                 # too many values for columns; ignore
+                logging.error('too many values for columns')
                 pass
             column += 1
 

@@ -15,6 +15,7 @@ import json
 import platform
 import shutil
 import warnings
+import logging
 
 from hashlib import md5
 from io import StringIO as newfile
@@ -46,6 +47,7 @@ def create_home_dir():
                     pw = pwd.getpwnam(os.getenv("SUDO_USER"))
                     os.chown(dir, pw.pw_uid, pw.pw_gid)
             except OSError:
+                logging.error("OSError, retriever lacks permission to access the ~/.retriever/ directory")
                 print("The Retriever lacks permission to access the ~/.retriever/ directory.")
                 raise
 
@@ -62,6 +64,7 @@ def name_matches(scripts, arg):
     matches = []
 
     if not arg:
+        logging.error('Value error, no dataset name specified')
         raise ValueError("No dataset name specified")
 
     if arg == 'all':

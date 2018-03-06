@@ -9,6 +9,7 @@ from builtins import str
 import json
 import sys
 import pprint
+import logging
 from collections import OrderedDict
 from retriever.lib.templates import TEMPLATES
 from retriever.lib.models import myTables
@@ -26,6 +27,7 @@ def read_json(json_file, debug=False):
     try:
         json_object = json.load(open_fr(json_file))
     except ValueError:
+        logging.error('Value error')
         pass
     if type(json_object) is dict and "resources" in json_object.keys():
 
@@ -50,11 +52,13 @@ def read_json(json_file, debug=False):
 
             rspec = set(spec_list)
             if not rspec.issubset(resource_item.keys()):
+                logging.error("One of the required attributes is missing")
                 raise ValueError("One of the required attributes is missing from the {} dataset script.\
                     Make sure it has all of the following attributes: {}".format(json_file, rspec))
 
             for spec in spec_list:
                 if not resource_item[spec]:
+                    logging.error("missing value")
                     raise ValueError("Check either {} for missing values.\n Package {}".format(rspec, json_file))
 
         json_object["tables"] = {}

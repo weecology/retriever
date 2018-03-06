@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import os
+import logging
 
 from retriever.engines import choose_engine
 from retriever.lib.defaults import DATA_DIR, SCRIPT_WRITE_PATH
@@ -26,12 +27,14 @@ def _install(args, use_cache, debug):
                 data_sets_script.download(engine, debug=debug)
                 data_sets_script.engine.final_cleanup()
             except Exception as e:
+                logging.error(e)
                 print(e)
                 if debug:
                     raise
     else:
         message = "Run retriever.datasets()to list the currently available " \
                   "datasets."
+        logging.error('Value error')
         raise ValueError(message)
 
 

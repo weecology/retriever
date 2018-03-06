@@ -11,6 +11,7 @@ import sys
 import urllib.request
 import urllib.parse
 import urllib.error
+import logging
 from os.path import join, isfile, getmtime, exists, abspath
 
 from pkg_resources import parse_version
@@ -47,6 +48,7 @@ def MODULE_LIST(force_compile=False):
                 read_script = read_json(join(search_path, script_name))
                 if read_script:
                     if not check_retriever_minimum_version(read_script):
+                        logging.error('scirpt {} is not compaitable with current retriever version'.format(script_name))
                         continue
                     setattr(read_script, "_file", os.path.join(search_path, script))
                     setattr(read_script, "_name", script_name)
@@ -70,6 +72,7 @@ def MODULE_LIST(force_compile=False):
                         # a script with retriever_minimum_version should be loaded
                         # only if its compliant with the version of the retriever
                         if not check_retriever_minimum_version(new_module.SCRIPT):
+                            logging.error('scirpt {} is not compaitable with current retriever version'.format(script_name))
                             continue
                     # if the script wasn't found in an early search path
                     # make sure it works and then add it
@@ -78,6 +81,7 @@ def MODULE_LIST(force_compile=False):
                     setattr(new_module.SCRIPT, "_name", script_name)
                     modules.append(new_module.SCRIPT)
                 except Exception as e:
+                    logging.error(e)
                     sys.stderr.write("Failed to load script: {} ({})\n"
                                      "Exception: {} \n"
                                      .format(script_name, search_path, str(e)))
@@ -94,6 +98,7 @@ def get_script(dataset):
     if dataset in scripts:
         return scripts[dataset]
     else:
+        logging.error("No dataset named: {}".format(dataset))
         raise KeyError("No dataset named: {}".format(dataset))
 
 

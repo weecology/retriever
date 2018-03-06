@@ -4,6 +4,7 @@ import glob
 import json
 import os
 import re
+import logging
 from builtins import input
 from time import sleep
 
@@ -55,6 +56,7 @@ def get_replace_columns(dialect):
             pair = v.split(',')
             dialect['replace_columns'].append((pair[0].strip(), pair[1].strip()))
         except IndexError:
+            logging.error('Index error')
             continue
 
 
@@ -204,7 +206,8 @@ def create_json():
                             raise Exception
                         col_obj["size"] = col_list[2]
                     table["schema"]["fields"].append(col_obj)
-                except:
+                except Exception as e:
+                    logging.error(e)
                     print("Exception occured. Check the input format again.\n")
                     pass
 
@@ -308,6 +311,7 @@ def edit_dict(obj, tabwidth=0):
                     elif selection == '5' or selection == "":
                         pass
                     else:
+                        logging.error('run time error, invalid input')
                         raise RuntimeError("Invalid input!")
 
                 elif isinstance(val, list):
@@ -355,6 +359,7 @@ def edit_dict(obj, tabwidth=0):
                     elif selection == '4' or selection == "":
                         pass
                     else:
+                        logging.error('run time error, invalid input')
                         raise RuntimeError("Invalid input!")
 
                 else:
@@ -382,9 +387,11 @@ def edit_dict(obj, tabwidth=0):
                     elif selection == '3' or selection == "":
                         pass
                     else:
+                        logging.error('run time error, invalid input')
                         raise RuntimeError("Invalid input!")
                 break
             except RuntimeError:
+                logging.error('run time error')
                 continue
 
 
@@ -399,6 +406,7 @@ def edit_json(json_file):
         contents = json.load(
             open(os.path.join(HOME_DIR, 'scripts', json_file), 'r'))
     except (IOError, OSError):
+        logging.error('IOError or OSError. script not found')
         print("Script not found.")
         return
 
@@ -429,6 +437,7 @@ def delete_json(json_file):
 
         [os.remove(x) for x in glob.glob(os.path.join(os.getcwd(), 'scripts', json_file[:-4] + 'py*'))]
     except OSError:
+        logging.error("OSError, couldn't delet script")
         print("Couldn't delete Script.")
 
 
