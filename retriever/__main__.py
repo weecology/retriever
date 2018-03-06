@@ -18,7 +18,7 @@ from imp import reload
 from retriever.engines import engine_list, choose_engine
 from retriever.lib.datapackage import create_json, edit_json, delete_json, get_script_filename
 from retriever.lib.datasets import datasets, dataset_names, license
-from retriever.lib.defaults import sample_script, CITATION, ENCODING, SCRIPT_SEARCH_PATHS
+from retriever.lib.defaults import sample_script, CITATION, ENCODING, SCRIPT_SEARCH_PATHS, LOGS_PATH
 from retriever.lib.get_opts import parser
 from retriever.lib.repository import check_for_updates
 from retriever.lib.scripts import SCRIPT_LIST, get_script
@@ -36,9 +36,8 @@ def main():
     logging.basicConfig(
         format="%(asctime)s [%(levelname)-5.5s] [%(filename)s:%(lineno)s - %(funcName)3s() ] %(message)s",
         handlers=[
-            logging.FileHandler("retriever.log"),
+            logging.FileHandler(LOGS_PATH),
         ])
-    sys.argv[1:] = [arg.lower() for arg in sys.argv[1:]]
     if len(sys.argv) == 1:
         # if no command line args are passed, show the help options
         parser.parse_args(['-h'])

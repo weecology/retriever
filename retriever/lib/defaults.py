@@ -61,3 +61,5 @@ http://doi.org/doi:10.1371/journal.pone.0065848
   doi={10.1371/journal.pone.0065848}
 }
 """
+
+LOGS_PATH='retriever.log'
