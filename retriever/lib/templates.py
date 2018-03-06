@@ -2,9 +2,9 @@
 The Module defines generic dataset properties and models the
 functions available for inheritance by the scripts or datasets.
 """
-import logging
-from __future__ import print_function
 
+from __future__ import print_function
+import logging
 from retriever.engines import choose_engine
 from retriever.lib.models import *
 

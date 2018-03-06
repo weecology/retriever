@@ -254,7 +254,7 @@ class Engine(object):
                                     if "e" in str(val) or ("." in str(val) and len(str(val).split(".")[1]) > 10):
                                         column_types[i] = ["decimal", "50,30"]
                                 except Exception as e:
-                                    loggng.error(e)
+                                    logging.error(e)
                                     column_types[i] = ['char', max_lengths[i]]
                             if column_types[i][0] == 'char':
                                 if len(str(val)) + 100 > column_types[i][1]:
