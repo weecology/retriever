@@ -73,25 +73,25 @@ class main(Script):
                                           filename="Growthform_Sch.txt")
             self.engine.insert_data_from_file(engine.format_filename("Growthform_Sch.txt"))
 
-            # process DataS1/GrowthForm_Initial.txt
-            if parse_version(VERSION).__str__() >= parse_version("2.1.dev").__str__():
-                self.engine.auto_create_table(Table('GrowthForm_Initial', delimiter="\t"),
-                                              filename="DataS1/GrowthForm_Initial.txt")
-                self.engine.insert_data_from_file(engine.format_filename("DataS1/GrowthForm_Initial.txt"))
-            else:
-                self.engine.auto_create_table(Table('GrowthForm_Initial', delimiter="\t"),
-                                              filename="GrowthForm_Initial.txt")
-                self.engine.insert_data_from_file(engine.format_filename("GrowthForm_Initial.txt"))
+        # process DataS1/GrowthForm_Initial.txt
+        if parse_version(VERSION).__str__() >= parse_version("2.1.dev").__str__():
+            self.engine.auto_create_table(Table('GrowthForm_Initial', delimiter="\t"),
+                                          filename="DataS1/GrowthForm_Initial.txt")
+            self.engine.insert_data_from_file(engine.format_filename("DataS1/GrowthForm_Initial.txt"))
+        else:
+            self.engine.auto_create_table(Table('GrowthForm_Initial', delimiter="\t"),
+                                          filename="GrowthForm_Initial.txt")
+            self.engine.insert_data_from_file(engine.format_filename("GrowthForm_Initial.txt"))
 
-            # process DataS1/GrowthForm_Final.txt
-            if parse_version(VERSION).__str__() >= parse_version("2.1.dev").__str__():
-                self.engine.auto_create_table(Table('GrowthForm_Final', delimiter="\t"),
-                                              filename="DataS1/GrowthForm_Final.txt")
-                self.engine.insert_data_from_file(engine.format_filename("DataS1/GrowthForm_Final.txt"))
-            else:
-                self.engine.auto_create_table(Table('GrowthForm_Final', delimiter="\t"),
-                                              filename="GrowthForm_Final.txt")
-                self.engine.insert_data_from_file(engine.format_filename("GrowthForm_Final.txt"))
+        # process DataS1/GrowthForm_Final.txt
+        if parse_version(VERSION).__str__() >= parse_version("2.1.dev").__str__():
+            self.engine.auto_create_table(Table('GrowthForm_Final', delimiter="\t"),
+                                          filename="DataS1/GrowthForm_Final.txt")
+            self.engine.insert_data_from_file(engine.format_filename("DataS1/GrowthForm_Final.txt"))
+        else:
+            self.engine.auto_create_table(Table('GrowthForm_Final', delimiter="\t"),
+                                          filename="GrowthForm_Final.txt")
+            self.engine.insert_data_from_file(engine.format_filename("GrowthForm_Final.txt"))
 
 
 SCRIPT = main()
