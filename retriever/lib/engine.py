@@ -22,9 +22,16 @@ import time
 from tqdm import tqdm
 from urllib.request import urlretrieve
 from retriever.lib.tools import open_fr, open_fw, open_csvw
-from retriever.lib.defaults import DATA_SEARCH_PATHS, DATA_WRITE_PATH
+from retriever.lib.defaults import DATA_SEARCH_PATHS, DATA_WRITE_PATH, ENCODING
 from retriever.lib.cleanup import no_cleanup
 from retriever.lib.warning import Warning
+from imp import reload
+
+encoding = ENCODING.lower()
+# sys removes the setdefaultencoding method at startup; reload to get it back
+reload(sys)
+if hasattr(sys, 'setdefaultencoding'):
+    sys.setdefaultencoding(encoding)
 
 
 class Engine(object):
@@ -85,8 +92,8 @@ class Engine(object):
         types = self.table.get_column_datatypes()
         multiple_values = []
         progbar = tqdm(desc='Installing {}'.format(self.table_name()),
-                   total=real_line_length,
-                   unit='rows')
+                       total=real_line_length,
+                       unit='rows')
         for line in real_lines:
             if line:
                 # Only process non empty lines
@@ -779,9 +786,11 @@ def gen_from_source(source):
 def reporthook(tqdm_inst):
     """tqdm wrapper to generate progress bar for urlretriever"""
     last_block = [0]
+
     def update_to(count=1, block_size=1, total_size=None):
         if total_size is not None:
             tqdm_inst.total = total_size
         tqdm_inst.update((count - last_block[0]) * block_size)
         last_block[0] = count
+
     return update_to
