@@ -165,7 +165,8 @@ class TabularDataset(Dataset):
             "table": "tables",
             "update": "updates",
             "date": "record_date",
-            "index": "indices"
+            "index": "indices",
+            "repeat": "repeats"
         }
         for x in (")", "\n", "\r", '"', "'"):
             replace_dict[x] = ''
