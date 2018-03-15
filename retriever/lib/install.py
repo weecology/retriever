@@ -18,7 +18,7 @@ def _install(args, use_cache, debug):
     script_list = SCRIPT_LIST()
     if not script_list or not os.listdir(SCRIPT_WRITE_PATH):
         check_for_updates()
-        script_list = SCRIPT_LIST(force_compile=False)
+        script_list = SCRIPT_LIST()
     data_sets_scripts = name_matches(script_list, args['dataset'])
     if data_sets_scripts:
         for data_sets_script in data_sets_scripts:

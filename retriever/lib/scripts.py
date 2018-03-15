@@ -18,6 +18,7 @@ from pkg_resources import parse_version
 from retriever.lib.defaults import SCRIPT_SEARCH_PATHS, VERSION, ENCODING, SCRIPT_WRITE_PATH
 from retriever.lib.load_json import read_json
 
+global_script_list= {}
 
 def check_retriever_minimum_version(module):
     mod_ver = module.retriever_minimum_version
@@ -31,7 +32,7 @@ def check_retriever_minimum_version(module):
     return True
 
 
-def MODULE_LIST(force_compile=False):
+def reload_scripts():
     """Load scripts from scripts directory and return list of modules."""
     modules = []
     loaded_scripts = []
@@ -84,8 +85,10 @@ def MODULE_LIST(force_compile=False):
     return modules
 
 
-def SCRIPT_LIST(force_compile=False):
-    return [module for module in MODULE_LIST(force_compile)]
+def SCRIPT_LIST():
+    if global_script_list:
+        return global_script_list.get_scripts()
+    return reload_scripts()
 
 
 def get_script(dataset):
@@ -149,3 +152,13 @@ def to_str(object, object_encoding=sys.stdout):
         enc = object_encoding.encoding
         return str(object).encode(enc, errors='backslashreplace').decode("latin-1")
     return object
+
+class StoredScripts:
+
+    def __init__(self):
+        self._shared_scripts = SCRIPT_LIST()
+
+    def get_scripts(self):
+        return self._shared_scripts
+
+global_script_list = StoredScripts()
