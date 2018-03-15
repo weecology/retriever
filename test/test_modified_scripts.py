@@ -16,8 +16,8 @@ from imp import reload
 from distutils.version import LooseVersion
 from retriever.engines import choose_engine, engine_list
 from retriever.lib.defaults import ENCODING
-from retriever.lib.scripts import MODULE_LIST, SCRIPT_LIST
-from retriever.lib.engine_tools import get_module_version
+from retriever.lib.scripts import SCRIPT_LIST
+from retriever.lib.engine_tools import get_script_version
 
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
@@ -52,7 +52,7 @@ def get_modified_scripts():
     os.chdir(retriever_root_dir)
     modified_list = []
     version_file = urllib.request.urlopen("https://raw.githubusercontent.com/weecology/retriever/master/version.txt")
-    local_repo_scripts = get_module_version()  # local repo versions
+    local_repo_scripts = get_script_version()  # local repo versions
 
     upstream_versions = {}
     version_file.readline()
@@ -142,7 +142,7 @@ def install_modified():
                 test_engines[engine.abbreviation] = None
                 pass
 
-    module_list = MODULE_LIST()
+    module_list = SCRIPT_LIST()
     errors = []
     for module in module_list:
         for (key, value) in list(test_engines.items()):

@@ -4,7 +4,7 @@ from __future__ import absolute_import
 import os
 
 from retriever.lib.defaults import VERSION
-from retriever.lib.engine_tools import get_module_version
+from retriever.lib.engine_tools import get_script_version
 
 
 def write_version_file(scripts):
@@ -20,7 +20,7 @@ def write_version_file(scripts):
 
 def update_version_file():
     """Update version.txt."""
-    scripts = get_module_version()
+    scripts = get_script_version()
     write_version_file(scripts)
     print("Version.txt updated.")
 

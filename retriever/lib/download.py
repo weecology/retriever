@@ -23,7 +23,7 @@ def download(dataset, path='./', quiet=False, subdir=False, debug=False):
     script_list = SCRIPT_LIST()
     if not script_list or not os.listdir(SCRIPT_WRITE_PATH):
         check_for_updates()
-        script_list = SCRIPT_LIST(force_compile=False)
+        script_list = SCRIPT_LIST()
     scripts = name_matches(script_list, args['dataset'])
     if scripts:
         for script in scripts:
