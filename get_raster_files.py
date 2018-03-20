@@ -1,11 +1,9 @@
-import sys
 import glob
-import numpy as np
-import sqlite3
-import csv
 import linecache
 import pandas as pd
-import os.path
+import os
+from tqdm import tqdm
+import sys
 
 # Resolve link : https://gis.stackexchange.com/questions/233654/install-gdal-python-binding-on-mac
 
@@ -20,196 +18,241 @@ try:
 except:
     sys.exit('ERROR: cannot find GDAL/OGR modules')
 
+class Raster:
 
-'''Check version of GDAL'''
+    raster_extensions = [".asc",".tif"]
 
-version_num = int(gdal.VersionInfo('VERSION_NUM'))
+    file_grid_locations = []
+    file_grid_names = []
 
-if version_num < 1100000:
-    sys.exit('ERROR: Python bindings of GDAL 1.10 or later required')
+    file_tif_locations = []
+    file_tif_names = []
 
-#
-# HDF5
-#
+    '''Set intial working and target directory'''
 
-'''Function to get files ending with .h5'''
+    working_directory = os.getcwd() + '/'
+    target_directory = working_directory
 
-def get_hdf_file():
+    '''Calling respective functions to update working and target directory'''
 
-    files_hdf = []
-    for file in glob.glob("*.h5"):
-        files_hdf.append(file)
-    return files_hdf
+    def __init__(self):
 
-'''Open HDF files from current working directory'''
+        working_directory = input("Enter FROM Directory [Default => {}]: ".format(self.working_directory))
 
-def open_hdf_file(file_name):
+        if(working_directory==""):
+            working_directory = self.working_directory
 
-    data = gdal.Open(file_name)
-    sub_datasets = data.GetSubDatasets()
+        target_directory = input("Enter TO Directory [Default => {}]: ".format(self.target_directory))
 
-    for sds in sub_datasets:
-        print(list(sds)[0])
-        dataset = gdal.Open(list(sds)[0])
-        geotransform = dataset.GetGeoTransform()
+        if(target_directory==""):
+            target_directory = self.target_directory
 
-        # Check number of rows and columns in HDF dataset
-        band = dataset.GetRasterBand(1)
-        print("rows = %d columns = %d" % (band.YSize, band.XSize))
+        self.set_working_directory(working_directory)
+        self.set_target_directory(target_directory)
 
-        # Check by printing contents of dataset
-        print(dataset.ReadAsArray())
 
-def go_through_hdf_file():
+    def set_target_directory(self,target_directory=working_directory):
 
-    files_hdf = get_hdf_file()
+        try:
 
-    for file in files_hdf:
-        open_hdf_file(file)
+            if(os.path.isdir(target_directory)):
 
-#
-# GeoTIFF
-#
+                self.target_directory = target_directory
 
-'''Function to get files ending with .tif'''
+                if(self.target_directory[-1]!='/'):
+                    self.target_directory = self.target_directory + '/'
 
-def get_tif_file():
+                print('◆ Target Directory: ', self.target_directory)
 
-    files_tif = []
-    for file in glob.glob("*.tif"):
-        files_tif.append(file)
-    return files_tif
+        except:
 
-'''Loads raster data from TIF image into database'''
+            sys.exit("ERROR: No Such Directory")
 
-def load_tif_data(file_name):
 
-    os.system("rasterlite_load -d {}.sqlite -T {} -D . -t".format(file_name,file_name))
-    os.system("rasterlite_load -d {}.sqlite -T {} -D . -v".format(file_name,file_name))
+    def set_working_directory(self,working_directory=working_directory):
 
-'''Create database for TIF format'''
+        try:
 
-def create_tif_db():
+            if(os.path.isdir(working_directory)):
 
-    files_tif = get_tif_file()
+                self.working_directory = working_directory
 
-    for file in files_tif:
+                if(self.working_directory[-1]!='/'):
+                    self.working_directory = self.working_directory + '/'
 
-        file_name = file.strip(".tif")
-        database = ("{}.sqlite".format(file_name))
-        conn = sqlite3.connect(database)
-        curs = conn.cursor()
+                print('◆ Working Directory: ', self.working_directory)
 
-        curs.execute("SELECT InitSpatialMetadata()")
-        curs.fetchall()
+        except:
 
-        load_data(file_name)
+            sys.exit("ERROR: No Such Directory")
 
-        curs.execute("SELECT tbl_name FROM sqlite_master WHERE type='table';")
-        tables = curs.fetchall()
+    '''Fetch ESRI GRID files from selected working directory'''
 
-        os.system("mkdir {}_files".format(file_name))
+    def get_grid_files(self,working_directory=working_directory):
 
-        create_csv(tables, file_name, curs)
+        self.working_directory = working_directory
 
-'''Create CSV files from existing datasets'''
+        for file in glob.glob("{}*.asc".format(working_directory)):
 
-def create_csv(tables, file_name, curs):
+            self.file_grid_locations.append(file)
+            self.file_grid_names.append(os.path.basename(file))
 
-    for i in tables:
-        print('Creating CSV for: ',i[0])
-        curs.execute("SELECT * FROM {};".format(i[0]))
-        ex = curs.fetchall()
-        for row in ex :
-            list = []
-            for j in row:
-                value = str(j)
-                list.append(value)
-            file_data = open('.{}_files/{}.csv'.format(file_name,i[0]), 'a')
-            ex = csv.writer(file_data)
-            ex.writerow(list)
+        print("❖ ESRI GRID (ASCII) List for PATH={}:".format(working_directory))
 
-#
-# ESRI GRID
-#
+        for file in self.file_grid_names:
+            print(">>>",file)
 
-def get_grid_files():
+        return self.file_grid_locations
 
-    files_grid = []
-    for file in glob.glob("*.asc"):
-        files_grid.append(file)
-    return files_grid
+    '''Converting asc files into CSV'''
 
-'''Converting asc files into CSV'''
+    def install_grid(self,file_path):
 
-def install_grid(file_name):
+        file_name = os.path.basename(file_path)
 
-    file_name = file_name.strip('.asc')
+        file_name = file_name.strip('.asc')
 
-    file_type = 'asc'
-    convert_to = 'csv'
+        file_type = 'asc'
+        convert_to = 'csv'
 
-    '''Will overwrite/update file if it already exists'''
+        '''Fetching meta-data for file'''
 
-    if(os.path.exists('{}.{}'.format(file_name,convert_to))):
-        print('{}.{} already exists. Updating..'.format(file_name,convert_to))
-        open('{}.{}'.format(file_name,convert_to), 'w').close()
-    else:
-        print('Installing {}.{}'.format(file_name,convert_to))
+        n_col = linecache.getline('{}.{}'.format(file_name,file_type),1).split(' ')
+        n_col = n_col[1]
 
+        n_row = linecache.getline('{}.{}'.format(file_name,file_type),2).split(' ')
+        n_row = int(n_row[1])
 
-    file = open("{}.{}".format(file_name,convert_to),'a')
+        xllcenter = linecache.getline('{}.{}'.format(file_name,file_type),3).split(' ')
+        xllcenter = xllcenter[1]
 
-    '''Fetching meta-data for file'''
+        yllcenter = linecache.getline('{}.{}'.format(file_name,file_type),4).split(' ')
+        yllcenter = yllcenter[1]
 
-    n_col = linecache.getline('{}.{}'.format(file_name,file_type),1).split(' ')
-    n_col = n_col[1]
+        cellsize = linecache.getline('{}.{}'.format(file_name,file_type),5).split(' ')
+        cellsize = cellsize[1]
 
-    n_row = linecache.getline('{}.{}'.format(file_name,file_type),2).split(' ')
-    n_row = int(n_row[1])
+        NODATA_value = linecache.getline('{}.{}'.format(file_name,file_type),6).split(' ')
+        NODATA_value = NODATA_value[1]
 
-    xllcenter = linecache.getline('{}.{}'.format(file_name,file_type),3).split(' ')
-    xllcenter = xllcenter[1]
 
-    yllcenter = linecache.getline('{}.{}'.format(file_name,file_type),4).split(' ')
-    yllcenter = yllcenter[1]
+        os.chdir(self.target_directory)
 
-    cellsize = linecache.getline('{}.{}'.format(file_name,file_type),5).split(' ')
-    cellsize = cellsize[1]
+        '''Will overwrite/update file if it already exists'''
 
-    NODATA_value = linecache.getline('{}.{}'.format(file_name,file_type),6).split(' ')
-    NODATA_value = NODATA_value[1]
+        if(os.path.exists('{}.{}'.format(file_name,convert_to))):
+            print('{}.{} already exists. Updating..'.format(file_name,convert_to))
+            open('{}.{}'.format(file_name,convert_to), 'w').close()
+        else:
+            print('Installing {}.{}'.format(file_name,convert_to))
 
-    results = []
 
-    print("Inserting data..")
+        file = open("{}.{}".format(file_name,convert_to),'a')
 
-    for i in tqdm(range(7,n_row+7)):
+        results = []
 
-        each_line = linecache.getline('{}.{}'.format(file_name,file_type),i).split(' ')
-        results.append(list(map(int, each_line)))
+        print("Inserting data..")
 
-    print("Creating CSV..")
+        for i in tqdm(range(7,n_row+7)):
 
-    data_frame = pd.DataFrame(results)
-    data_frame.to_csv(file, header=False, index=False)
+            each_line = linecache.getline('{}.{}'.format(file_name,file_type),i).split(' ')
+            results.append(list(map(int, each_line)))
 
-    location = os.path.abspath('{}.{}'.format(file_name,convert_to))
+        print("Creating CSV..")
 
-    print("Successful. PATH: {}\n".format(location))
+        data_frame = pd.DataFrame(results)
+        data_frame.to_csv(file, header=False, index=False)
 
-    file.close()
+        location = os.path.abspath('{}.{}'.format(file_name,convert_to))
 
-'''Interative for installing for all .asc files'''
+        print("Successful. PATH: {}\n".format(location))
 
-def process_grid():
+        os.chdir(self.working_directory)
 
-    files = get_grid_files()
-    for file in files:
-        install_grid(file)
+        file.close()
+
+    '''Interative for installing for all .asc files'''
+
+    def process_grid(self):
+
+        process_iteration = input("◈ Enter file to be processed [Default => all]:")
+
+        if(process_iteration==""):
+            process_iteration = "all"
+
+        if(process_iteration=="all"):
+
+            for file in self.file_grid_locations:
+                self.install_grid(file)
+
+        else:
+
+            file_name = process_iteration
+
+            file_path = self.working_directory + file_name
+
+            if(file_path in self.file_grid_locations):
+                self.install_grid(file_path)
+            else:
+                print("File Not Found")
+
+    '''Fetch GeoTIFF files from selected working directory'''
+
+    def get_tif_files(self,working_directory=working_directory):
+
+        self.working_directory = working_directory
+
+        for file in glob.glob("{}*.tif".format(working_directory)):
+
+            self.file_tif_locations.append(file)
+            self.file_tif_names.append(os.path.basename(file))
+
+        print("GeoTIFF List for PATH={}:".format(working_directory))
+
+        for file in self.file_tif_names:
+            print(">>>",file)
+
+    #Create database for TIF format
+
+    def create_tif_db(self):
+
+        for file in self.file_tif_names:
+
+            file_name = file.strip(".tif")
+
+            database = ("{}{}.sqlite".format(target_directory,file_name))
+            conn = sqlite3.connect(database)
+            curs = conn.cursor()
+
+            curs.execute("SELECT load_extension('mod_rasterlite2')")
+            curs.fetchall()
+
+            curs.execute("SELECT load_extension('mod_sqlite')")
+            curs.fetchall()
+
+            curs.execute("SELECT InitSpatialMetadataMeta(1)")
+            curs.fetchall()
+
+            load_tif_data(self.file_name)
+
+            curs.execute("SELECT tbl_name FROM sqlite_master WHERE type='table';")
+
+            #tables = curs.fetchall()
+
+            #os.system("mkdir {}_files".format(self.file_name))
+
+            #create_csv(tables, self.file_name, curs)
+
+    #Loads raster data from TIF image into database
+
+    def load_tif_data(self,file_name):
+
+        os.system("rasterlite_load -d {}.sqlite -T {} -D . -t".format(file_name,file_name))
+        os.system("rasterlite_load -d {}.sqlite -T {} -D . -v".format(file_name,file_name))
+
 
 if __name__=='__main__':
 
-    process_grid()
-
-    # insert for TIFF
+    r = Raster()
+    r.get_tif_files()
+    #r.get_grid_files()
