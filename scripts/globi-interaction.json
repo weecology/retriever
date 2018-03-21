@@ -1,12 +1,12 @@
 {
-  "citation": "NA",
+  "citation": "Poelen, J.H., Simons, J.D. and Mungall, C.J., 2014. Global biotic interactions: an open infrastructure to share and analyze species-interaction datasets. Ecological Informatics, 24, pp.148-159.",
   "description": "GloBI contains code to normalize and integrate existing species-interaction datasets and export the resulting integrated interaction dataset.",
   "homepage": "https://github.com/jhpoelen/eol-globi-data/wiki",
   "keywords": [
     "source",
     "target"
   ],
-  "name": "globi_interaction",
+  "name": "globi-interaction",
   "archived": "gz",
   "resources": [
     {
@@ -228,6 +228,6 @@
  ],
   "retriever": "True",
   "retriever_minimum_version": "2.1.dev",
-  "title": "Globi_interaction_data",
+  "title": "Global Biotic Interactions (GloBI) data",
   "version": "1.0.0"
 }
