@@ -223,7 +223,7 @@
           }       
           ]
       },
-      "url": "https://depot.globalbioticinteractions.org/snapshot/target/data/tsv/interactions.tsv.gz"
+      "url": "https://s3.amazonaws.com/globi/snapshot/target/data/tsv/interactions.tsv.gz"
     }
  ],
   "retriever": "True",
