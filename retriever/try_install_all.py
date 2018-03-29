@@ -15,7 +15,7 @@ import sys
 from imp import reload
 
 from retriever.engines import engine_list, choose_engine
-from retriever.lib.scripts import MODULE_LIST, SCRIPT_LIST
+from retriever.lib.scripts import SCRIPT_LIST
 
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
@@ -25,7 +25,7 @@ if os.name == "nt":
 else:
     os_password = ""
 
-MODULE_LIST = MODULE_LIST()
+MODULE_LIST = SCRIPT_LIST()
 if len(sys.argv) > 1:
     engine_list = [
         e for e in engine_list

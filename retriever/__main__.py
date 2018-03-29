@@ -19,7 +19,7 @@ from retriever.lib.datasets import datasets, dataset_names, license
 from retriever.lib.defaults import sample_script, CITATION, ENCODING, SCRIPT_SEARCH_PATHS
 from retriever.lib.get_opts import parser
 from retriever.lib.repository import check_for_updates
-from retriever.lib.scripts import SCRIPT_LIST, get_script
+from retriever.lib.scripts import SCRIPT_LIST, reload_scripts, get_script
 from retriever.lib.engine_tools import name_matches, reset_retriever
 
 
@@ -50,7 +50,7 @@ def main():
             parser.parse_args(['-h'])
 
         if hasattr(args, 'compile') and args.compile:
-            script_list = SCRIPT_LIST(force_compile=True)
+            script_list = reload_scripts()
 
         if args.command == 'defaults':
             for engine_item in engine_list:

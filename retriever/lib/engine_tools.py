@@ -289,10 +289,10 @@ def file_2list(input_file):
     return abs_list
 
 
-def get_module_version():
+def get_script_version():
     """This function gets the version number of the scripts and returns them in array form."""
-    from retriever.lib.scripts import MODULE_LIST
-    modules = MODULE_LIST()
+    from retriever.lib.scripts import SCRIPT_LIST
+    modules = SCRIPT_LIST()
     scripts = []
     for module in modules:
         if module.public:
