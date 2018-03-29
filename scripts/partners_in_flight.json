@@ -1227,5 +1227,5 @@
   "retriever": "True",
   "retriever_minimum_version": "2.1.dev",
   "title": "Partners_In_Flight_Species_Assessment_Data",
-  "version": "1.0.0"
+  "version": "1.0.1"
 }
