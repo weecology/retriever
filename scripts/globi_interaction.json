@@ -229,5 +229,5 @@
   "retriever": "True",
   "retriever_minimum_version": "2.1.dev",
   "title": "Global Biotic Interactions (GloBI) data",
-  "version": "1.0.0"
+  "version": "1.0.1"
 }
