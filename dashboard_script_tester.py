@@ -9,75 +9,52 @@ import json
 mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, csv_engine, download_engine, json_engine, xml_engine = engine_list
 
 file_location = os.path.dirname(os.path.realpath(__file__))
-dataset_json_dict = {'encoding': 'ISO-8859-1', 'description': 'Sample dataset for Status Server and Dashboard script.',
-                     'retriever_minimum_version': '2.0.dev', 'version': '1.0.0', 'name': 'sample-dataset',
-                     'homepage': 'https://support.spatialkey.com/spatialkey-sample-csv-data/', 'retriever': 'True',
-                     'title': 'Sample Dataset', 'keywords': ['sample', 'sample-dataset'],
-                     'resources': [{
-                         'url': 'https://raw.githubusercontent.com/apoorvaeternity/sample-dataset/master/original/FL_insurance_sample.csv',
-                         'dialect': {},
-                         'name': 'FL_insurance_sample',
-                         'schema': {
-                             'fields': [
-                                 {
-                                     'type': 'int',
-                                     'name': 'policyID'},
-                                 {
-                                     'type': 'char',
-                                     'name': 'statecode'},
-                                 {
-                                     'type': 'char',
-                                     'name': 'county'},
-                                 {
-                                     'type': 'float',
-                                     'name': 'eq_site_limit'},
-                                 {
-                                     'type': 'float',
-                                     'name': 'hu_site_limit'},
-                                 {
-                                     'type': 'float',
-                                     'name': 'fl_site_limit'},
-                                 {
-                                     'type': 'float',
-                                     'name': 'fr_site_limit'},
-                                 {
-                                     'type': 'float',
-                                     'name': 'tiv_2011'},
-                                 {
-                                     'type': 'float',
-                                     'name': 'tiv_2012'},
-                                 {
-                                     'type': 'float',
-                                     'name': 'eq_site_deductible'},
-                                 {
-                                     'type': 'float',
-                                     'name': 'hu_site_deductible'},
-                                 {
-                                     'type': 'float',
-                                     'name': 'fl_site_deductible'},
-                                 {
-                                     'type': 'float',
-                                     'name': 'fr_site_deductible'},
-                                 {
-                                     'type': 'float',
-                                     'name': 'point_latitude'},
-                                 {
-                                     'type': 'float',
-                                     'name': 'point_longitude'},
-                                 {
-                                     'type': 'char',
-                                     'name': 'line'},
-                                 {
-                                     'type': 'char',
-                                     'name': 'construction'},
-                                 {
-                                     'type': 'int',
-                                     'name': 'point_granularity'}]}}],
-                     'citation': 'https://support.spatialkey.com/spatialkey-sample-csv-data/'}
+dataset_json_dict = {'keywords': ['mammals', 'desert', 'time-series', 'experimental', 'observational'],
+                     'citation': 'S. K. Morgan Ernest, Thomas J. Valone, and James H. Brown. 2009. Long-term monitoring and experimental manipulation of a Chihuahuan Desert ecosystem near Portal, Arizona, USA. Ecology 90:1708.',
+                     'scan_lines': '40000',
+                     'description': 'The data set represents a Desert ecosystems using the composition and abundances of ants, plants, and rodents has occurred continuously on 24 plots. Currently includes only mammal data.',
+                     'retriever_minimum_version': '2.0.dev', 'resources': [
+        {
+            'url': 'https://raw.githubusercontent.com/apoorvaeternity/sample-dataset/master/original/Portal_rodents_19772002.csv',
+            'dialect': {'contains_pk': 'True', 'delimiter': ',', 'missingValues': ['', None]}, 'schema': {
+            'fields': [{'type': 'pk-int', 'name': 'recordid'},
+                       {'type': 'int', 'name': 'mo'},
+                       {'type': 'int', 'name': 'dy'},
+                       {'type': 'int', 'name': 'yr'},
+                       {'type': 'int', 'name': 'period'},
+                       {'type': 'int', 'name': 'plot'},
+                       {'type': 'char', 'size': '9', 'name': 'note1'},
+                       {'type': 'int', 'name': 'stake'},
+                       {'type': 'char', 'size': '9', 'name': 'species'},
+                       {'type': 'char', 'size': '9', 'name': 'sex'},
+                       {'type': 'char', 'size': '9', 'name': 'age'},
+                       {'type': 'char', 'size': '9', 'name': 'reprod'},
+                       {'type': 'char', 'size': '9', 'name': 'testes'},
+                       {'type': 'char', 'size': '9', 'name': 'vagina'},
+                       {'type': 'char', 'size': '9', 'name': 'pregnant'},
+                       {'type': 'char', 'size': '9', 'name': 'nipples'},
+                       {'type': 'char', 'size': '9', 'name': 'lactation'},
+                       {'type': 'int', 'name': 'hfl'},
+                       {'type': 'int', 'name': 'wgt'},
+                       {'type': 'char', 'size': '9', 'name': 'tag'},
+                       {'type': 'char', 'size': '9', 'name': 'note2'},
+                       {'type': 'char', 'size': '9', 'name': 'ltag'},
+                       {'type': 'char', 'size': '9', 'name': 'note3'},
+                       {'type': 'char', 'size': '9', 'name': 'prevrt'},
+                       {'type': 'char', 'size': '9', 'name': 'prevlet'},
+                       {'type': 'char', 'size': '9', 'name': 'nestdir'},
+                       {'type': 'char', 'size': '9', 'name': 'neststk'},
+                       {'type': 'char', 'size': '9', 'name': 'note4'},
+                       {'type': 'char', 'size': '9', 'name': 'note5'}]},
+            'name': 'main'}],
+                     'title': 'Portal Project Data (Ernest et al. 2009)',
+                     'retriever': 'True',
+                     'version': '1.2.1',
+                     'homepage': 'https://figshare.com/articles/Data_Paper_Data_Paper/3531317',
+                     'name': 'sample-dataset'}
 
-precalculated_md5 = '6ee4a2595fd50e4f4b927ac63a01e6c5'
-modified_dataset_url = 'https://raw.githubusercontent.com/apoorvaeternity/sample-dataset/master/modified/FL_insurance_sample.csv'
-
+precalculated_md5 = '9f6c106f696451732fb763b3632bfd48'
+modified_dataset_url = 'https://raw.githubusercontent.com/apoorvaeternity/sample-dataset/master/modified/Portal_rodents_19772002.csv'
 
 try:
     if not os.path.exists(os.path.join(file_location, 'original')):
@@ -99,8 +76,8 @@ try:
     with open(os.path.join(HOME_DIR, 'scripts', 'sample_dataset.json'), "w") as file:
         dataset_json_dict['resources'][0]['url'] = modified_dataset_url
         json.dump(dataset_json_dict, file)
-
-    if get_dataset_md5(dataset) != precalculated_md5:
+    calculated_md5 = get_dataset_md5(dataset)
+    if calculated_md5 != precalculated_md5:
         # If md5 of current dataset doesn't match with current md5 we have to find the diff
         os.chdir(os.path.join(file_location, 'modified'))
         install_sqlite(dataset.name, use_cache=False, file=os.path.join(file_location, 'new_sqlite.db'))
@@ -108,9 +85,9 @@ try:
         engine_obj.to_csv()
         if not os.path.exists(os.path.join(file_location, 'diffs')):
             os.makedirs(os.path.join(file_location, 'diffs'))
-        create_diff(os.path.join(file_location, 'original', 'sample_dataset_FL_insurance_sample.csv'),
-                    os.path.join(file_location, 'modified', 'sample_dataset_FL_insurance_sample.csv'),
-                    os.path.join(file_location, 'diffs', 'sample_dataset_FL_insurance_sample_diff.html'))
+        create_diff(os.path.join(file_location, 'original', 'sample_dataset_main.csv'),
+                    os.path.join(file_location, 'modified', 'sample_dataset_main.csv'),
+                    os.path.join(file_location, 'diffs', 'sample_dataset_main.html'))
         os.remove(os.path.join(file_location, 'new_sqlite.db'))
     os.remove(os.path.join(HOME_DIR, 'scripts', 'sample_dataset.json'))
 except Exception as e:
