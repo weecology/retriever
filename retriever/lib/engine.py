@@ -695,7 +695,7 @@ class Engine(object):
                 dbname = ''
         return self.opts["table_name"].format(db=dbname, table=name)
 
-    def to_csv(self):
+    def to_csv(self, sort=True):
         # Due to Cyclic imports we can not move this import to the top
         from retriever.lib.engine_tools import sort_csv
         for table_n in list(self.script.tables.keys()):
@@ -713,7 +713,8 @@ class Engine(object):
                 csv_writer.writerow(row)
                 row = self.cursor.fetchone()
             csv_file.close()
-            sort_csv(csv_file_output)
+            if sort:
+                sort_csv(csv_file_output)
         self.disconnect()
 
     def warning(self, warning):
