@@ -109,7 +109,7 @@ class engine(Engine):
     def to_csv(self):
         """Export table from xml engine to CSV file."""
         for keys in list(self.script.tables):
-            table_name = self.opts['table_name'].format(db=self.db_name, table=keys)
+            table_name = self.table_name()
             header = self.script.tables[keys].get_insert_columns(join=False, create=True)
             csv_outfile = xml2csv(table_name, header_values=header)
             sort_csv(csv_outfile)
