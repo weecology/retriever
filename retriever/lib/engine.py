@@ -372,6 +372,8 @@ class Engine(object):
             print(create_stmt)
         try:
             self.execute(create_stmt)
+            if self.table.name not in self.script.tables:
+                self.script.tables[self.table.name] = self.table
         except Exception as e:
             try:
                 self.connection.rollback()
