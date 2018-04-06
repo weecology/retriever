@@ -32,9 +32,60 @@ Once it is installed, we will setup PostgreSQL by first running the postgres cli
 
 >>> sudo -u postgres psql
 
-Now, a role will be created using CREATE ROLE. A role is an entity that can own database objects and have database privileges. It can be given CREATEDB and CREATEROLE privileges. For example, the following command creates a role named "newadmin" with password "abcdefgh". It is equipped with privileges of creating a new role and creating a new database.
+Now, a role will be created using CREATE ROLE. A role is an entity that can own database objects and have database privileges. It can be given CREATEDB and CREATEROLE privileges. For example, the following command creates a role named ``newadmin`` with password ``abcdefgh``. It is equipped with privileges of creating a new role and creating a new database.
 
 >>> create role newadmin with createrole createdb login password 'abcdefgh';
+
+Next, exit the PostgreSQL client by the following command:
+
+>>> \q
+
+We will need to change the pg_hba.conf file to indicate that users will authenticate by md5 as opposed to peer authentication. To do this, first open the pg_hba.conf file by running the command:
+
+>>> sudo nano /etc/postgresql/x.x/main/pg_hba.conf
+
+Where x.x is the version installed, in this case x.x = 9.6
+
+Change the line ``local all postgres peer`` to ``local all postgres md5``
+
+Also, change the line ``local all all peer`` to ``local all all md5``
+
+After making these changes, make sure to save the file.
+
+Restart the postgresql client:
+
+>>> sudo service postgresql restart
+
+Now, we will be able to login to the postgres client with the newadmin user that we created by running the following command:
+
+>>> psql -U newadmin -d postgres -h localhost -W
+
+You will be prompted to enter a password, which is ``abcdefgh``. You can create a database (for instance: newdb) with the following command:
+
+>>> createdb -U vmsadmin vms;
+
+You will be again prompted for password.
+
+After the successful setup of PostgreSQL, it can now be used with R API for Retriever.
+
+====================================
+Using PostgreSQL with RDataRetriever
+====================================
+
+While using PostgreSQL as a connection type for ``rdataretriever::install`` function, a file named ``postgres.conn`` is needed. It containns information for establishing connection with the requested DBMS, in this case, PostgreSQL. Default location of the file is the directory, through which RStudio is running. If it saved in some other location, its path needs to be given to the install function.
+In the above example, ``postgres.conn`` will look like below:
+
+
+.. code-block:: python
+
+  host localhost 
+  port 5432 
+  user newadmin
+  password abcdefgh
+
+Assuming it is saved in default directory, ``install`` function for ``airports`` dataset can be executed as follows:
+
+>>> rdataretriever::install('airports',connection = 'postgres')
 
 
 
