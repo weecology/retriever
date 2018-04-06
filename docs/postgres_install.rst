@@ -46,11 +46,7 @@ We will need to change the pg_hba.conf file to indicate that users will authenti
 
 Where x.x is the version installed, in this case x.x = 9.6
 
-Change the line ``local all postgres peer`` to ``local all postgres md5``
-
-Also, change the line ``local all all peer`` to ``local all all md5``
-
-After making these changes, make sure to save the file.
+Change the line ``local all postgres peer`` to ``local all postgres md5``. Also, change the line ``local all all peer`` to ``local all all md5``. After making these changes, make sure to save the file.
 
 Restart the postgresql client:
 
@@ -64,15 +60,13 @@ You will be prompted to enter a password, which is ``abcdefgh``. You can create 
 
 >>> createdb -U vmsadmin vms;
 
-You will be again prompted for password.
-
-After the successful setup of PostgreSQL, it can now be used with R API for Retriever.
+You will be again prompted for password. After the successful setup of PostgreSQL, it can now be used with R API for Retriever.
 
 ====================================
 Using PostgreSQL with RDataRetriever
 ====================================
 
-While using PostgreSQL as a connection type for ``rdataretriever::install`` function, a file named ``postgres.conn`` is needed. It containns information for establishing connection with the requested DBMS, in this case, PostgreSQL. Default location of the file is the directory, through which RStudio is running. If it saved in some other location, its path needs to be given to the install function.
+While using PostgreSQL as a connection type for ``rdataretriever::install`` function, a file named ``postgres.conn`` is needed. It contains information for establishing connection with the requested DBMS, in this case, PostgreSQL. Default location of the file is the directory, through which RStudio is running. If it saved in some other location, its path needs to be given to the install function.
 In the above example, ``postgres.conn`` will look like below:
 
 
