@@ -8,7 +8,7 @@ RDataRetriever supports different DBMS for storing of downloaded datasets throug
 Installation of PostgreSQL in Ubuntu
 ====================================
 
-PostgreSQL installation command differs in the basis of Ubuntu version (Trusty 14.04, Xenial 16.04, Zesty 17.04). The following are the steps:
+PostgreSQL installation command differs on the basis of Ubuntu version (Trusty 14.04, Xenial 16.04, Zesty 17.04). The following are the steps:
 
 - Create the file /etc/apt/sources.list.d/pgdg.list, and add a line for the repository 
 
