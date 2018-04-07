@@ -109,26 +109,15 @@ class engine(Engine):
         self.get_input()
         return dbapi.connect(self.opts["file"])
 
-    def fetch_tables(self, dataset, table_name='{db}_{table}', file=os.path.join(DATA_DIR, 'sqlite.db')):
+    def fetch_tables(self, dataset):
         """Return sqlite dataset as list of pandas dataframe."""
-        self.opts = {"file": file, "table_name": table_name}
+
         connection = self.get_connection()
-        cursor = connection.cursor()
         from retriever.lib.scripts import get_script
-        
-        dataset_tables = [
-            "'" + table_name.format(db=dataset.replace('-', '_'), table=table.replace('-', '_')) + "'"
-            for table in get_script(dataset).tables.keys()
-            ]
-        
+        tables = [ 
+            "'" + self.table_name(dbname=dataset.replace('-', '_'), name=table.replace('-', '_')) + "'"
+            for table in get_script(dataset).tables.keys()]
 
-        dataset_tables = '('+','.join(dataset_tables) + ')'
-        sql = """SELECT name FROM sqlite_master WHERE type='table'
-                AND name IN {};""".format(dataset_tables)
-
-        cursor.execute(sql)
-        tables = [table[0] for table in cursor.fetchall()]
         data = {table: pd.read_sql_query("SELECT * FROM {};".format(table), connection)
                 for table in tables}
-
         return data
