@@ -1,12 +1,12 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
-from retriever.lib.scripts import MODULE_LIST
+from retriever.lib.scripts import reload_scripts
 
 
 def compile():
     print("Compiling retriever scripts...")
-    MODULE_LIST(force_compile=True)
+    reload_scripts()
     print("done.")
 
 

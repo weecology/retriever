@@ -29,6 +29,7 @@ with open(os.path.join("retriever", "_version.py"), "w") as version_file:
 def clean_version(v):
     return parse_version(v).__repr__().lstrip("<Version('").rstrip("')>")
 
+
 includes = [
                'xlrd',
                'future',
@@ -52,6 +53,10 @@ excludes = [
 setup(name='retriever',
       version=clean_version(__version__),
       description='Data Retriever',
+      long_description=('The Data Retriever is a package manager for data. '
+                        'It downloads, cleans, and stores publicly available data, '
+                        'so that analysts spend less time cleaning and managing data, '
+                        'and more time analyzing it.'),
       author='Ben Morris, Shivam Negi, Akash Goel, Andrew Zhang, Henry Senyondo, Ethan White',
       author_email='ethan@weecology.org',
       url='https://github.com/weecology/retriever',

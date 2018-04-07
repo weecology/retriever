@@ -172,7 +172,7 @@ autopk_csv = {
                  '4,5,6'],
     'script': {"name": "autopk_csv",
                "resources": [
-                   {"dialect": {},
+                   {"dialect": {"do_not_bulk_insert": "True"},
                     "name": "autopk_csv",
                     "schema": {
                         "fields": [
@@ -212,7 +212,7 @@ crosstab = {
                  '1,2,2.1,2.2'],
     'script': {"name": "crosstab",
                "resources": [
-                   {"dialect": {},
+                   {"dialect": {"do_not_bulk_insert": "True"},
                     "name": "crosstab",
                     "schema": {
                         "ct_column": "c",
@@ -254,7 +254,7 @@ autopk_crosstab = {
                  '1,2,2.1,2.2'],
     'script': {"name": "autopk_crosstab",
                "resources": [
-                   {"dialect": {},
+                   {"dialect": {"do_not_bulk_insert": "True"},
                     "name": "autopk_crosstab",
                     "schema": {
                         "ct_column": "c",

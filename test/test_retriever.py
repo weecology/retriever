@@ -14,6 +14,7 @@ encoding = ENCODING.lower()
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding(encoding)
+import retriever as rt
 from retriever.lib.engine import Engine
 from retriever.lib.table import TabularDataset
 from retriever.lib.templates import BasicTextTemplate
@@ -135,6 +136,32 @@ def test_create_db_statement():
 def test_database_name():
     """Test creating database name."""
     assert test_engine.database_name() == 'test_abc'
+
+
+def test_datasets():
+    """Check if datasets lookup includes a known value"""
+    datasets = rt.datasets(keywords = ['mammals'])
+    dataset_names = [dataset.name for dataset in datasets]
+    assert 'mammal-masses' in dataset_names
+
+
+def test_datasets_keywords():
+    """Check if datasets lookup on keyword includes a known value"""
+    datasets = rt.datasets(keywords = ['mammals'])
+    dataset_names = [dataset.name for dataset in datasets]
+    assert 'mammal-masses' in dataset_names
+
+
+def test_datasets_licenses():
+    """Check if datasets lookup on license includes a known value"""
+    datasets = rt.datasets(licenses=['CC0-1.0'])
+    dataset_names = [dataset.name for dataset in datasets]
+    assert 'amniote-life-hist' in dataset_names
+
+
+def test_dataset_names():
+    """Check if dataset names lookup includes a known value"""
+    assert 'mammal-masses' in rt.dataset_names()
 
 
 def test_drop_statement():

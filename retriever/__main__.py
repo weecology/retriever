@@ -12,7 +12,6 @@ from __future__ import print_function
 import os
 import sys
 from builtins import input
-from imp import reload
 
 from retriever.engines import engine_list, choose_engine
 from retriever.lib.datapackage import create_json, edit_json, delete_json, get_script_filename
@@ -20,19 +19,12 @@ from retriever.lib.datasets import datasets, dataset_names, license
 from retriever.lib.defaults import sample_script, CITATION, ENCODING, SCRIPT_SEARCH_PATHS
 from retriever.lib.get_opts import parser
 from retriever.lib.repository import check_for_updates
-from retriever.lib.scripts import SCRIPT_LIST, get_script
+from retriever.lib.scripts import SCRIPT_LIST, reload_scripts, get_script
 from retriever.lib.engine_tools import name_matches, reset_retriever
-
-encoding = ENCODING.lower()
-# sys removes the setdefaultencoding method at startup; reload to get it back
-reload(sys)
-if hasattr(sys, 'setdefaultencoding'):
-    sys.setdefaultencoding(encoding)
 
 
 def main():
     """This function launches the Data Retriever."""
-    sys.argv[1:] = [arg.lower() for arg in sys.argv[1:]]
     if len(sys.argv) == 1:
         # if no command line args are passed, show the help options
         parser.parse_args(['-h'])
@@ -58,7 +50,7 @@ def main():
             parser.parse_args(['-h'])
 
         if hasattr(args, 'compile') and args.compile:
-            script_list = SCRIPT_LIST(force_compile=True)
+            script_list = reload_scripts()
 
         if args.command == 'defaults':
             for engine_item in engine_list:
@@ -136,7 +128,7 @@ def main():
                 print("Available datasets : {}\n".format(len(all_scripts)))
                 from retriever import lscolumns
                 lscolumns.printls(all_scripts)
-            
+
             elif type(args.v) is list:
                 if args.v:
                     try:
@@ -157,7 +149,7 @@ def main():
                         script.citation
                     ))
                     count += 1
- 
+
             else:
                 param_licenses = args.l if args.l else None
                 keywords = args.k if args.k else None
@@ -171,10 +163,10 @@ def main():
                     count = 1
                     for script in searched_scripts:
                         print("{}. {}\n{}\n{}\n{}\n".format(
-                                count, script.title,
-                                script.name,
-                                script.keywords,
-                                str(script.licenses[0]['name'])
+                            count, script.title,
+                            script.name,
+                            script.keywords,
+                            str(script.licenses[0]['name'])
                         ))
                         count += 1
             return
