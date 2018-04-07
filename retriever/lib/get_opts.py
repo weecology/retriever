@@ -6,9 +6,9 @@ from argcomplete.completers import ChoicesCompleter
 
 from retriever.engines import engine_list
 from retriever.lib.defaults import VERSION
-from retriever.lib.scripts import MODULE_LIST
+from retriever.lib.scripts import SCRIPT_LIST
 
-module_list = MODULE_LIST()
+module_list = SCRIPT_LIST()
 script_list = [module.name for module in module_list]
 json_list = [module.name for module in module_list
              if os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.json')]
@@ -48,7 +48,7 @@ ls_parser = subparsers.add_parser('ls', help='display a list all available datas
 citation_parser = subparsers.add_parser('citation', help='view citation')
 license_parser = subparsers.add_parser('license', help='view dataset license')
 reset_parser = subparsers.add_parser('reset',
-                                     help='reset retriever: removes configation settings, scripts, and cached data')
+                                     help='reset retriever: removes configuration settings, scripts, and cached data')
 help_parser = subparsers.add_parser('help', help='')
 
 # ..............................................................
