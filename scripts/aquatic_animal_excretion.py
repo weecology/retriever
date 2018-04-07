@@ -20,10 +20,10 @@ class main(Script):
         self.title = "Aquatic Animal Excretion"
         self.name = "aquatic-animal-excretion"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.1.1'
+        self.version = '1.1.2'
         self.ref = "http://onlinelibrary.wiley.com/doi/10.1002/ecy.1792/abstract"
         self.urls = {
-            'aquatic_animals': 'http://onlinelibrary.wiley.com/store/10.1002/ecy.1792/asset/supinfo/ecy1792-sup-0001-DataS1.zip?v=1&s=3a9094a807bbc2d03ba43045d2b72782bfb348ef'
+            'aquatic_animals': 'https://esajournals.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1002%2Fecy.1792&attachmentId=123472854'
         }
         self.citation = "Vanni, M. J., McIntyre, P. B., Allen, D., Arnott, D. L., Benstead, J. P., Berg, D. J., " \
                         "Brabrand, Å., Brosse, S., Bukaveckas, P. A., Caliman, A., Capps, K. A., Carneiro, L. S., " \
@@ -52,9 +52,14 @@ class main(Script):
         Script.download(self, engine, debug)
         engine = self.engine
 
+        filenames = ['Aquatic_animal_excretion_data.csv', 'Aquatic_animal_excretion_variable_descriptions.csv']
+        for file_paths in filenames:
+            if not os.path.isfile(engine.format_filename(file_paths)):
+                engine.download_files_from_archive(self.urls["aquatic_animals"], filenames, filetype="zip")
+
+        # processing Aquatic_animal_excretion_data.csv
         filename = 'Aquatic_animal_excretion_data.csv'
         tablename = 'aquatic_animals'
-
         table = Table(str(tablename), delimiter=',')
         table.columns = [
             ("index", ("pk-int",)),
@@ -91,11 +96,26 @@ class main(Script):
             ("bodydatasource", ("char",)),
             ("datasource", ("char",)),
             ("dataproviders", ("char",))]
-
         engine.table = table
-        if not os.path.isfile(engine.format_filename(filename)):
-            engine.download_files_from_archive(self.urls[tablename], [filename], filetype="zip")
+        engine.create_table()
+        engine.insert_data_from_file(engine.format_filename(str(filename)))
 
+        # processing Aquatic_animal_excretion_variable_descriptions.csv
+        filename = 'Aquatic_animal_excretion_variable_descriptions.csv'
+        tablename = 'variable_descriptions'
+        table = Table(str(tablename), delimiter=',')
+        table.columns = [
+            ("Column", ("char",)),
+            ("Variable", ("char",)),
+            ("Description", ("char",)),
+            ("Data Class", ("char",)),
+            ("Units", ("char",)),
+            ("Minimum_value", ("char",)),
+            ("Maximum_value", ("char",)),
+            ("Possible_values", ("char",)),
+            ("Missing_data_symbol", ("char",)),
+            ("Notes", ("char",))]
+        engine.table = table
         engine.create_table()
         engine.insert_data_from_file(engine.format_filename(str(filename)))
 
