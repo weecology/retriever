@@ -41,7 +41,8 @@ try:
         dataset_to_csv(dataset)
         create_diff(os.path.join(file_location, 'original', 'sample_dataset_main.csv'),
                     os.path.join(file_location, 'modified', 'sample_dataset_main.csv'),
-                    os.path.join(file_location, 'diffs', 'sample_dataset_main.html'))
+                    os.path.join(file_location, 'diffs', 'sample_dataset_main.html'),
+                    context=True,numlines=1)
         os.remove(os.path.join(file_location, 'new_sqlite.db'))
 except Exception as e:
     print("Error", e)

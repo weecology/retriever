@@ -136,7 +136,7 @@ def get_dataset_md5(dataset):
     return current_md5
 
 
-def create_diff(csv1, csv2, diff_file):
+def create_diff(csv1, csv2, diff_file, context, numlines):
     """
         Parameters
         ----------
@@ -154,7 +154,7 @@ def create_diff(csv1, csv2, diff_file):
     """
     html_diff = HtmlDiff()
     with open(csv1, 'r') as file1, open(csv2, 'r') as file2, open(diff_file, 'w') as file3:
-        file3.writelines(html_diff.make_file(file1, file2))
+        file3.writelines(html_diff.make_file(file1, file2, context=context, numlines= numlines))
 
 
 def create_json(path="dataset_details.json"):
