@@ -11,8 +11,6 @@ def fetch(dataset, file=os.path.join(DATA_DIR, 'sqlite.db'),
     """Import a dataset into pandas data frames"""
 
     install_sqlite(dataset, file=file, table_name=table_name)
-
-
-    df = engine.fetch_tables(dataset, table_name, file=file)
+    df = engine().fetch_tables(dataset, table_name, file=file)
 
     return df
