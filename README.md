@@ -69,7 +69,7 @@ database management systems:
 
 Either use pip to install directly from GitHub:
 
-```
+```shell
 pip install git+https://git@github.com/weecology/retriever.git
 ```
 
@@ -87,7 +87,8 @@ Using the Command Line
 After installing, run `retriever update` to download all of the available dataset scripts.
 To see the full list of command line options and datasets run `retriever --help`.
 The output will look like this:
-```
+
+```shell
 usage: retriever [-h] [-v] [-q]
                  {download,install,defaults,update,new,new_json,edit_json,delete_json,ls,citation,reset,help}
                  ...
@@ -117,7 +118,7 @@ optional arguments:
 
 To install datasets, use `retriever install`:
 
-```
+```shell
 usage: retriever install [-h] [--compile] [--debug]
                          {mysql,postgres,sqlite,msaccess,csv,json,xml} ...
 
@@ -141,33 +142,41 @@ optional arguments:
 
 ### Examples
 
-```
 These examples are using the [*Iris* flower dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set).
 More exapmles can be found in the Data Retriever documentation.
 
 Using Install
 
-  retriever install -h   (gives install options)
+```shell
+retriever install -h   (gives install options)
+```
 
 Using specific database engine, retriever install {Engine}
 
-  retriever install mysql -h     (gives install mysql options)
-  retriever install mysql --user myuser --password ******** --host localhost --port 8888 --database_name testdbase iris
-
+```shell
+retriever install mysql -h     (gives install mysql options)
+retriever install mysql --user myuser --password ******** --host localhost --port 8888 --database_name testdbase iris
+```
 install data into an sqlite database named iris.db you would use:
 
-  retriever install sqlite iris -f iris.db
+```shell
+retriever install sqlite iris -f iris.db
+```
 
 Using download
 
-  retriever download -h    (gives you help options)
-  retriever download iris
-  retriever download iris --path C:\Users\Documents
+```shell
+retriever download -h    (gives you help options)
+retriever download iris
+retriever download iris --path C:\Users\Documents
+```
 
 Using citation
-  retriever citation   (citation of the retriever engine)
-  retriever citation iris  (citation for the iris data)
-  ```
+
+```shell
+retriever citation   (citation of the retriever engine)
+retriever citation iris  (citation for the iris data)
+```
 
 Website
 -------
