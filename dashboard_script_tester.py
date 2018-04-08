@@ -3,6 +3,7 @@ from retriever import datasets
 from retriever.engines import engine_list
 from status_dashboard import get_dataset_md5, create_diff
 import os
+import shutil
 
 mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, csv_engine, download_engine, json_engine, xml_engine = engine_list
 file_location = os.path.dirname(os.path.realpath(__file__))
@@ -34,15 +35,19 @@ try:
     os.remove(os.path.join(file_location, 'new_sqlite.db'))
     setattr(dataset.tables['main'], 'url', modified_dataset_url)
     calculated_md5 = get_dataset_md5(dataset)
-
     if calculated_md5 != precalculated_md5:
         # If md5 of current dataset doesn't match with current md5 we have to find the diff
         os.chdir(os.path.join(file_location, 'modified'))
         dataset_to_csv(dataset)
-        create_diff(os.path.join(file_location, 'original', 'sample_dataset_main.csv'),
-                    os.path.join(file_location, 'modified', 'sample_dataset_main.csv'),
-                    os.path.join(file_location, 'diffs', 'sample_dataset_main.html'),
+        for keys in dataset.tables:
+            file_name = '{}_{}'.format(dataset.name.replace('-','_'), keys)
+            create_diff(os.path.join(file_location, 'original', '{}.csv'.format(file_name)),
+                    os.path.join(file_location, 'modified', '{}.csv'.format(file_name)),
+                    os.path.join(file_location, 'diffs', '{}.html'.format(file_name)),
                     context=True,numlines=1)
+            shutil.move(os.path.join(file_location, 'modified','{}.csv'.format(file_name)),
+                        os.path.join(file_location, 'original', '{}.csv'.format(file_name)))
+
         os.remove(os.path.join(file_location, 'new_sqlite.db'))
 except Exception as e:
     print("Error", e)
