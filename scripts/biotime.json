@@ -11,19 +11,271 @@
         {
             "dialect": {},
             "name": "citations",
-            "schema": {},
+            "schema": {
+                "fields" : [
+                    {
+                        "name": "study_id",
+                        "type": "int"
+                    },
+                    {
+                        "name": "citation_line",
+                        "type": "char"
+                    }
+                ]
+            },
             "url": "https://zenodo.org/record/1095628/files/BioTIMECitations_06_12_2017.csv"
         },
         {
             "dialect": {},
             "name": "metadata",
-            "schema": {},
+            "schema": {
+                "fields" : [
+                    {
+                        "name": "study_id",
+                        "type": "char"
+                    },
+                    {
+                        "name": "realm",
+                        "type": "char"
+                    },
+                    {
+                        "name": "climate",
+                        "type": "char"
+                    },
+                    {
+                        "name": "general_treat",
+                        "type": "char"
+                    },
+                    {
+                        "name": "treatment",
+                        "type": "char"
+                    },
+                    {
+                        "name": "treat_comments",
+                        "type": "char"
+                    },
+                    {
+                        "name": "treat_date",
+                        "type": "char"
+                    },
+                    {
+                        "name": "habitat",
+                        "type": "char"
+                    },
+                    {
+                        "name": "protected_area",
+                        "type": "char"
+                    },
+                    {
+                        "name": "biome_map",
+                        "type": "char"
+                    },
+                    {
+                        "name": "taxa",
+                        "type": "char"
+                    },
+                    {
+                        "name": "organisms",
+                        "type": "char"
+                    },
+                    {
+                        "name": "title",
+                        "type": "char"
+                    },
+                    {
+                        "name": "ab_bio",
+                        "type": "char"
+                    },
+                    {
+                        "name": "has_plot",
+                        "type": "char"
+                    },
+                    {
+                        "name": "data_points",
+                        "type": "char"
+                    },
+                    {
+                        "name": "start_year",
+                        "type": "char"
+                    },
+                    {
+                        "name": "end_year",
+                        "type": "char"
+                    },
+                    {
+                        "name": "cent_lat",
+                        "type": "double"
+                    },
+                    {
+                        "name": "cent_long",
+                        "type": "double"
+                    },
+                    {
+                        "name": "number_of_species",
+                        "type": "char"
+                    },
+                    {
+                        "name": "number_of_samples",
+                        "type": "char"
+                    },
+                    {
+                        "name": "number_lat_long",
+                        "type": "char"
+                    },
+                    {
+                        "name": "total",
+                        "type": "char"
+                    },
+                    {
+                        "name": "grain_size_text",
+                        "type": "char"
+                    },
+                    {
+                        "name": "grain_sq_km",
+                        "type": "double"
+                    },
+                    {
+                        "name": "area_sq_km",
+                        "type": "double"
+                    },
+                    {
+                        "name": "contact_1",
+                        "type": "char"
+                    },
+                    {
+                        "name": "contact_2",
+                        "type": "char"
+                    },
+                    {
+                        "name": "cont_1_mail",
+                        "type": "char"
+                    },
+                    {
+                        "name": "cont_2_mail",
+                        "type": "char"
+                    },
+                    {
+                        "name": "license",
+                        "type": "char"
+                    },
+                    {
+                        "name": "web_link",
+                        "type": "char"
+                    },
+                    {
+                        "name": "data_source",
+                        "type": "char"
+                    },
+                    {
+                        "name": "methods",
+                        "type": "char"
+                    },
+                    {
+                        "name": "summary_methods",
+                        "type": "char"
+                    },
+                    {
+                        "name": "link_id",
+                        "type": "char"
+                    },
+                    {
+                        "name": "comments",
+                        "type": "char"
+                    },
+                    {
+                        "name": "date_study_added",
+                        "type": "char"
+                    },
+                    {
+                        "name": "abundance_type",
+                        "type": "char"
+                    },
+                    {
+                        "name": "biomass_type",
+                        "type": "char"
+                    },
+                    {
+                        "name": "sample_desc_name",
+                        "type": "char"
+                    }
+                ]
+            },
             "url": "https://zenodo.org/record/1095628/files/BioTIMEMetadata_06_12_2017.csv"
         },
         {
             "dialect": {},
             "name": "query",
-            "schema": {},
+            "schema": {
+                "fields" : [
+                    {
+                        "name": "study_id",
+                        "type": "int"
+                    },
+                    {
+                        "name": "day",
+                        "size": "10",
+                        "type": "char"
+                    },
+                    {
+                        "name": "month",
+                        "size": "10",
+                        "type": "char"
+                    },
+                    {
+                        "name": "year",
+                        "size": "10",
+                        "type": "char"
+                    },
+                    {
+                        "name": "sample_desc",
+                        "size": "30",
+                        "type": "char"
+                    },
+                    {
+                        "name": "plot",
+                        "size": "30",
+                        "type": "char"
+                    },
+                    {
+                        "name": "id_species",
+                        "size": "20",
+                        "type": "char"
+                    },
+                    {
+                        "name": "latitude",
+                        "type": "double"
+                    },
+                    {
+                        "name": "longitude",
+                        "type": "double"
+                    },
+                    {
+                        "name": "sum_abundance",
+                        "size": "30",
+                        "type": "char"
+                    },
+                    {
+                        "name": "sum_biomas",
+                        "size": "30",
+                        "type": "char"
+                    },
+                    {
+                        "name": "genus",
+                        "size": "30",
+                        "type": "char"
+                    },
+                    {
+                        "name": "species",
+                        "size": "30",
+                        "type": "char"
+                    },
+                    {
+                        "name": "genus_species",
+                        "size": "30",
+                        "type": "char"
+                    }
+                ]
+            },
             "url": "https://zenodo.org/record/1095628/files/BioTIMEQuery_06_12_2017.csv"
         }
     ],
