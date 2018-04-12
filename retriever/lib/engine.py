@@ -19,12 +19,15 @@ import tarfile
 import csv
 import re
 import time
+import requests
+from math import ceil
 from tqdm import tqdm
-from urllib.request import urlretrieve
 from retriever.lib.tools import open_fr, open_fw, open_csvw
 from retriever.lib.defaults import DATA_SEARCH_PATHS, DATA_WRITE_PATH, ENCODING
 from retriever.lib.cleanup import no_cleanup
 from retriever.lib.warning import Warning
+from urllib.request import urlretrieve
+from requests.exceptions import InvalidSchema
 from imp import reload
 
 encoding = ENCODING.lower()
@@ -425,18 +428,22 @@ class Engine(object):
                            unit_divisor=1024,
                            miniters=1,
                            desc='Downloading {}'.format(filename))
+            
             try:
+                requests.get(url, allow_redirects=True, 
+                                  stream=True,
+                                  headers={'user-agent':'Weecology/Data-Retriever \
+                                            Package Manager: http://www.data-retriever.org/'},
+                                  hooks={'response': reporthook(progbar, path)})
+
+            except InvalidSchema:
                 urlretrieve(url, path, reporthook=reporthook(progbar))
-            except ImportError:
-                # For some urls lacking filenames urlretrieve from the future
-                # package seems to fail. This issue occurred in the PlantTaxonomy
-                # script. If this happens, fall back to the standard Python 2 version.
-                from urllib import urlretrieve as py2urlretrieve
-                py2urlretrieve(url, path, reporthook=reporthook(progbar))
-            finally:
-                # Download is complete, set to prevent repeated downloads
-                self.use_cache = True
-                progbar.close()
+
+            self.use_cache = True
+            progbar.close()
+
+    def supported_raster(self, path, ext=None):
+        raise "Not supported"
 
     def download_files_from_archive(self, url, filenames, filetype="zip",
                                     keep_in_dir=False, archivename=None):
@@ -785,8 +792,7 @@ def gen_from_source(source):
         source = gen(*args)
     return source
 
-
-def reporthook(tqdm_inst):
+def reporthook(tqdm_inst, filename=None):
     """tqdm wrapper to generate progress bar for urlretriever"""
     last_block = [0]
 
@@ -796,4 +802,15 @@ def reporthook(tqdm_inst):
         tqdm_inst.update((count - last_block[0]) * block_size)
         last_block[0] = count
 
-    return update_to
+    def update_rto(r, *args, **kwargs):
+        if r.headers.get('Transfer-Encoding', None) != 'chunked':
+            total_size = int(r.headers['content-length'])
+            tqdm_inst.total= ceil(total_size//(2*1024))
+
+        with open(filename, 'wb') as f:
+                for chunk in r.iter_content(2*1024):
+                    f.write(chunk)
+                    tqdm_inst.update(1)
+        f.close()
+
+    return update_rto if filename else update_to

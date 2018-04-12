@@ -10,8 +10,8 @@ biomass_allometry_db.py,1.4.3
 bird_migration_data.json,1.0.2
 bird_size.json,1.2.3
 breast_cancer_wi.json,1.2.2
-breed_bird_survey.py,1.4.2
-breed_bird_survey_50stop.py,1.4.2
+breed_bird_survey.py,1.4.3
+breed_bird_survey_50stop.py,1.4.3
 breed_bird_survey_nlcd.json,1.0.2
 butterfly_population_network.json,1.2.2
 car_eval.json,1.1.2
@@ -71,7 +71,7 @@ portal_dev.json,1.0.4
 predator_prey_body_ratio.json,1.0.1
 predator_prey_size_marine.py,2.0.1
 predicts.py,1.0.1
-prism_climate.py,1.2.1
+prism_climate.py,1.2.2
 socean_diet_data.py,1.0.2
 species_exctinction_rates.json,1.0.1
 streamflow_conditions.json,1.0.1
