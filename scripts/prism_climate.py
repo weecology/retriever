@@ -5,7 +5,7 @@ from future import standard_library
 standard_library.install_aliases()
 from builtins import range
 from retriever.lib.templates import Script
-import urllib.request, urllib.parse, urllib.error
+import requests
 from pkg_resources import parse_version
 try:
     from retriever.lib.defaults import VERSION
@@ -19,7 +19,7 @@ class main(Script):
         self.title = "PRISM Climate Data"
         self.name = "prism-climate"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.2.1'
+        self.version = '1.2.2'
         self.ref = "http://prism.oregonstate.edu/"
         self.urls = {"climate": "http://services.nacse.org/prism/data/public/4km/"}
         self.description = "The PRISM data set represents climate observations from a wide range of monitoring networks, applies sophisticated quality control measures, and develops spatial climate datasets to reveal short- and long-term climate patterns. "
@@ -57,7 +57,7 @@ class main(Script):
             for year in years:
                 for month in months:
                     file_names = self.get_file_names(clim_var, mval, year, month)
-                    file_url = urllib.parse.urljoin(self.urls["climate"], "{}/{}{}".format(clim_var, year, month))
+                    file_url = requests.compat.urljoin(self.urls["climate"], "{}/{}{}".format(clim_var, year, month))
                     archivename = "PRISM_{}_stable_4km{}_{}{}_bil.zip".format(clim_var, mval, year, month)
                     self.engine.download_files_from_archive(file_url, file_names, archivename=archivename, keep_in_dir=True)
                     self.engine.register_files(file_names)

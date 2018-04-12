@@ -71,7 +71,7 @@ portal_dev.json,1.0.4
 predator_prey_body_ratio.json,1.0.1
 predator_prey_size_marine.py,2.0.1
 predicts.py,1.0.1
-prism_climate.py,1.2.1
+prism_climate.py,1.2.2
 socean_diet_data.py,1.0.2
 species_exctinction_rates.json,1.0.1
 streamflow_conditions.json,1.0.1

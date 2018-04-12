@@ -4,6 +4,7 @@ argcomplete
 PyMySQL>=0.4
 psycopg2>=2.0
 numpydoc
+requests
 sphinx_py3doc_enhanced_theme
 sphinxcontrib-napoleon
 sphinx_rtd_theme
