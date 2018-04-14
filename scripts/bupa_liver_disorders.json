@@ -1,0 +1,63 @@
+{
+    "citation": "Richard S. Forsyth, 8 Grosvenor Avenue, Mapperley Park , Nottingham NG3 5DX, 0602-621676",
+    "description": "The first 5 variables are all blood tests which are thought to be sensitive to liver disorders that might arise from excessive alcohol consumption. Each line in the dataset constitutes the record of a single male individual. The 7th field (selector) has been widely misinterpreted in the past as a dependent variable representing presence or absence of a liver disorder. This is incorrect. The 7th field was created by BUPA researchers as a train/test selector. It is not suitable as a dependent variable for classification. The dataset does not contain any variable representing presence or absence of a liver disorder.",
+    "homepage": "https://archive.ics.uci.edu/ml/datasets/Liver+Disorders",
+    "keywords": [
+        "bupa", "liver", "disorder", "alcohol", "consumption"
+    ],
+    "name": "bupa_liver_disorders",
+    "resources": [
+        {
+            "dialect": {
+                "header_rows": 0
+            },
+            "name": "bupa",
+            "schema": {
+
+              "fields": [
+
+                {
+                  "name": "mcv",
+                  "type": "int"
+                },
+
+                {
+                  "name": "alkphos",
+                  "type": "int"
+                },
+
+                {
+                  "name": "sgpt",
+                  "type": "int"
+                },
+
+                {
+                  "name": "sqot",
+                  "type": "int"
+                },
+
+                {
+                  "name": "gammagt",
+                  "type": "int"
+                },
+
+                {
+                  "name": "drinks",
+                  "type": "int"
+                },
+
+                {
+                  "name": "selector",
+                  "type": "int"
+                }
+              ]
+            },
+
+            "url": "https://archive.ics.uci.edu/ml/machine-learning-databases/liver-disorders/bupa.data"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.0-dev",
+    "version": "1.0.0",
+    "title": "BUPA liver disorders"
+}
