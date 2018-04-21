@@ -1,0 +1,18 @@
+{
+    "airports": {
+        "last_modified": "Wed, 21 Mar 2018 07:53:29 GMT", 
+        "md5": "7ca95550f285fb7af8a065f50fc3d1bc"
+    }, 
+    "bird-size": {
+        "last_modified": "Fri, 05 Aug 2016 05:09:52 GMT", 
+        "md5": "98dcfdca19d729c90ee1c6db5221b775"
+    }, 
+    "mammal-masses": {
+        "last_modified": "Fri, 05 Aug 2016 00:26:35 GMT", 
+        "md5": "6fec0fc63007a4040d9bbc5cfcd9953e"
+    }, 
+    "portal": {
+        "last_modified": "Fri, 05 Aug 2016 10:01:09 GMT", 
+        "md5": "aaa2b66a3a77efe416e3555c444f4e2e"
+    }
+}
