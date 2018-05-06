@@ -39,20 +39,23 @@ class Engine(object):
     """A generic database system. Specific database platforms will inherit
     from this class."""
 
-    name = ""
-    instructions = "Enter your database connection information:"
-    db = None
-    table = None
     _connection = None
     _cursor = None
-    datatypes = []
-    required_opts = []
-    pkformat = "%s PRIMARY KEY %s "
-    script = None
-    use_cache = True
+    datatypes = None
+    db = None
     debug = False
-    warnings = []
+    insert_limit = 1000
+    instructions = "Enter your database connection information:"
+    max_int = None
+    name = ""
+    opts = None
+    pkformat = "%s PRIMARY KEY %s "
     placeholder = None
+    required_opts = []
+    script = None
+    table = None
+    use_cache = True
+    warnings = []
 
     def connect(self, force_reconnect=False):
         if force_reconnect:
@@ -77,12 +80,15 @@ class Engine(object):
         raise NotImplementedError
 
     def add_to_table(self, data_source):
-        """This function adds data to a table from one or more lines specified
+        """Adds data to a table from one or more lines specified
         in engine.table.source."""
         if self.table.columns[-1][1][0][:3] == "ct-":
             # cross-tab data
-            real_line_length = self.get_ct_line_length(gen_from_source(data_source))
-            real_lines = self.get_ct_data(gen_from_source(data_source))
+            real_line_length = self.get_ct_line_length(
+                gen_from_source(data_source))
+
+            real_lines = self.get_ct_data(
+                gen_from_source(data_source))
         else:
             real_lines = gen_from_source(data_source)
             len_source = gen_from_source(data_source)
@@ -93,54 +99,64 @@ class Engine(object):
         insert_limit = self.insert_limit
         types = self.table.get_column_datatypes()
         multiple_values = []
-        progbar = tqdm(desc='Installing {}'.format(self.table_name()),
-                       total=real_line_length,
-                       unit='rows')
+        progress_bar = tqdm(
+            desc='Installing {}'.format(self.table_name()),
+            total=total,
+            unit='rows')
+
+        line_values = None
         for line in real_lines:
             if line:
                 # Only process non empty lines
                 self.table.record_id += 1
-                linevalues = self.table.values_from_line(line)
+                line_values = self.table.values_from_line(line)
                 # Build insert statement with the correct number of values
                 try:
-                    cleanvalues = [self.format_insert_value(self.table.cleanup.function
-                                                            (linevalues[n],
-                                                             self.table.cleanup.args),
-                                                            types[n])
-                                   for n in range(len(linevalues))]
+                    clean_values = [
+                        self.format_insert_value(
+                            self.table.cleanup.function(
+                                line_values[n],
+                                self.table.cleanup.args),
+                            types[n])
+                        for n in range(len(line_values))
+                        ]
                 except Exception as e:
-                    self.warning('Exception in line %s: %s' % (self.table.record_id, e))
+                    self.warning(
+                        'Exception in line {}: {}'
+                        .format(self.table.record_id, e))
                     continue
 
             if line or count_iter == real_line_length:
                 if count_iter % insert_limit == 0 or count_iter == real_line_length:
                     # Add values to the list multiple_values
-                    # if multiple_values list is full or we reached the last value in real_line_length
+                    # if multiple_values list is full
+                    # or we reached the last value in real_line_length
                     # execute the values in multiple_values
-                    multiple_values.append(cleanvalues)
+                    multiple_values.append(clean_values)
                     try:
                         insert_stmt = self.insert_statement(multiple_values)
                     except:
                         if self.debug:
                             print(types)
                         if self.debug:
-                            print(linevalues)
+                            print(line_values)
                         if self.debug:
-                            print(cleanvalues)
+                            print(clean_values)
                         raise
                     try:
                         self.executemany(insert_stmt, multiple_values, commit=False)
-                        prompt = "Progress: {}/{} rows inserted into {} totaling {}:".format(
-                            count_iter, real_line_length, self.table_name(), total)
+                        # prompt_temp = "Progress: {}/{} rows inserted into {} totaling {}:"
+                        # prompt = prompt_temp.format(
+                        #     count_iter, real_line_length, self.table_name(), total)
                     except:
                         print(insert_stmt)
                         raise
                     multiple_values = []
                 else:
-                    multiple_values.append(cleanvalues)
-            progbar.update()
+                    multiple_values.append(clean_values)
+            progress_bar.update()
             count_iter += 1
-        progbar.close()
+        progress_bar.close()
         self.connection.commit()
 
     def get_ct_line_length(self, lines):
@@ -149,11 +165,12 @@ class Engine(object):
         for values in lines:
             initial_cols = len(self.table.columns) - \
                            (3 if hasattr(self.table, "ct_names") else 2)
-            # add one if auto increment is not set to get the right initial columns
+            # add one if auto increment is not
+            # set to get the right initial columns
             if not self.table.columns[0][1][0] == "pk-auto":
                 initial_cols += 1
             rest = values[initial_cols:]
-            real_line_length = real_line_length + len(rest)
+            real_line_length += len(rest)
 
         return real_line_length
 
@@ -209,7 +226,7 @@ class Engine(object):
 
         if self.table.columns[-1][1][0][:3] == "ct-" \
                 and hasattr(self.table, "ct_names") \
-                and not self.table.ct_column in [c[0] for c in self.table.columns]:
+                and self.table.ct_column not in [c[0] for c in self.table.columns]:
             self.table.columns = self.table.columns[:-1] + \
                                  [(self.table.ct_column, ("char", 50))] + \
                                  [self.table.columns[-1]]
@@ -229,7 +246,8 @@ class Engine(object):
         # set default column data types as int
         column_types = [('int',)] * len(columns)
         max_lengths = [0] * len(columns)
-
+        if column_values:
+            pass  # remove this value
         # Check the values for each column to determine data type
         for values in lines_to_scan:
             if values:
@@ -241,14 +259,16 @@ class Engine(object):
                             val = self.table.cleanup.function(
                                 val, self.table.cleanup.args)
 
-                        if val is not None and val.strip() is not '':
+                        if val and val.strip():
                             if len(str(val)) + 100 > max_lengths[i]:
                                 max_lengths[i] = len(str(val)) + 100
 
                             if column_types[i][0] in ('int', 'bigint'):
                                 try:
                                     val = int(val)
-                                    if column_types[i][0] == 'int' and hasattr(self, 'max_int') and val > self.max_int:
+                                    if column_types[i][0] == 'int' and \
+                                            hasattr(self, 'max_int') and \
+                                            val > self.max_int:
                                         column_types[i] = ['bigint', ]
                                 except:
                                     column_types[i] = ['double', ]
@@ -297,35 +317,35 @@ class Engine(object):
         """
         # get the type from the dataset variables
         key = datatype[0]
-        thispk = False
+        this_pk = False
         if key[0:3] == "pk-":
             key = key[3:]
-            thispk = True
+            this_pk = True
         elif key[0:3] == "ct-":
             key = key[3:]
 
         # format the dataset type to match engine specific type
-        thistype = ""
+        this_type = ""
         if key in list(self.datatypes.keys()):
-            thistype = self.datatypes[key]
-            if isinstance(thistype, tuple):
+            this_type = self.datatypes[key]
+            if isinstance(this_type, tuple):
                 if datatype[0] == 'pk-auto':
                     pass
                 elif len(datatype) > 1:
-                    thistype = thistype[1] + "(" + str(datatype[1]) + ")"
+                    this_type = this_type[1] + "(" + str(datatype[1]) + ")"
                 else:
-                    thistype = thistype[0]
+                    this_type = this_type[0]
             else:
                 if len(datatype) > 1:
-                    thistype += "(" + str(datatype[1]) + ")"
+                    this_type += "(" + str(datatype[1]) + ")"
 
         # set the PRIMARY KEY
-        if thispk:
-            if isinstance(thistype, tuple):
-                thistype = self.pkformat % thistype
+        if this_pk:
+            if isinstance(this_type, tuple):
+                this_type = self.pkformat % this_type
             else:
-                thistype = self.pkformat % (thistype, "")
-        return thistype
+                this_type = self.pkformat % (this_type, "")
+        return this_type
 
     def create_db(self):
         """Create a new database based on settings supplied in Database object
@@ -366,7 +386,7 @@ class Engine(object):
         # doesn't exist, so ignore exceptions
         try:
             self.execute(self.drop_statement("TABLE", self.table_name()))
-        except:
+        except Exception as e:
             pass
 
         create_stmt = self.create_table_statement()
@@ -456,7 +476,6 @@ class Engine(object):
         elif archive_type == 'zip':
             try:
                 archive = zipfile.ZipFile(archive_name)
-                file_names = archive.namelist()
                 file_names = [paths.filename for paths in archive.infolist()
                               if not paths.filename.endswith('/')]
                 for file_name in file_names:

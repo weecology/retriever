@@ -19,22 +19,16 @@ def get_gzip_filename(gzip_file):
     magic = gf.read(2)
     if magic != '\037\213':
         raise IOError('This is not a gzipped file')
-    method, flag, mtime = struct.unpack("<BBIxx", gf.read(8))
+    _, flag, _ = struct.unpack("<BBIxx", gf.read(8))
     if not flag & FNAME:
-        # If FNAME is set,
-        # an original file name is present, terminated by a zero byte.
-        # The name must consist of ISO 8859-1 (LATIN-1)
-        # Not stored in the header, use the filename sans .gz
         gf.seek(pos)
         fname = gzip_file.name
         if fname.endswith('.gz'):
             fname = fname[:-3]
         return fname, size
-
     if flag & FEXTRA:
         # Read & discard the extra field, if present
         gf.read(struct.unpack("<H", gf.read(2)))
-
     # Read a null-terminated string containing the filename
     f_name = []
     while True:
@@ -42,7 +36,6 @@ def get_gzip_filename(gzip_file):
         if not null__string or null__string == '\000':
             break
         f_name.append(null__string)
-
     gf.seek(pos)
     return ''.join(f_name), size
 
