@@ -51,6 +51,7 @@ class Engine(object):
     use_cache = True
     debug = False
     warnings = []
+    placeholder = None
 
     def connect(self, force_reconnect=False):
         if force_reconnect:
