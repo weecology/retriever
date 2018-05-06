@@ -664,8 +664,8 @@ class Engine(object):
             for i in range(columncount - row_length):
                 row.append(self.format_insert_value(None, types[row_length + i]))
 
-        insert_stmt = "INSERT INTO " + self.table_name()
-        insert_stmt += " (" + columns + ")"
+        insert_stmt = "INSERT INTO {table}".format(table=self.table_name())
+        insert_stmt += " ( {columns} )".format(columns=columns)
         insert_stmt += " VALUES ("
         for i in range(0, columncount):
             insert_stmt += "{}, ".format(self.placeholder)
