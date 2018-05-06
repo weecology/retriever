@@ -4,12 +4,7 @@ from __future__ import print_function
 from future import standard_library
 
 standard_library.install_aliases()
-from builtins import object
-from builtins import range
-from builtins import input
-from builtins import zip
-from builtins import next
-from builtins import str
+from builtins import object, range, input, zip, next, str
 import sys
 import os
 import getpass
@@ -135,7 +130,7 @@ class Engine(object):
                     multiple_values.append(clean_values)
                     try:
                         insert_stmt = self.insert_statement(multiple_values)
-                    except:
+                    except Exception as _ :
                         if self.debug:
                             print(types)
                         if self.debug:
@@ -270,14 +265,14 @@ class Engine(object):
                                             hasattr(self, 'max_int') and \
                                             val > self.max_int:
                                         column_types[i] = ['bigint', ]
-                                except:
+                                except Exception as _:
                                     column_types[i] = ['double', ]
                             if column_types[i][0] == 'double':
                                 try:
                                     val = float(val)
                                     if "e" in str(val) or ("." in str(val) and len(str(val).split(".")[1]) > 10):
                                         column_types[i] = ["decimal", "50,30"]
-                                except:
+                                except Exception as _:
                                     column_types[i] = ['char', max_lengths[i]]
                             if column_types[i][0] == 'char':
                                 if len(str(val)) + 100 > column_types[i][1]:
@@ -362,7 +357,7 @@ class Engine(object):
             except Exception as e:
                 try:
                     self.connection.rollback()
-                except:
+                except Exception as _:
                     pass
                 print("Couldn't create database (%s). Trying to continue anyway." % e)
 
@@ -386,7 +381,7 @@ class Engine(object):
         # doesn't exist, so ignore exceptions
         try:
             self.execute(self.drop_statement("TABLE", self.table_name()))
-        except Exception as e:
+        except Exception as _:
             pass
 
         create_stmt = self.create_table_statement()
@@ -399,7 +394,7 @@ class Engine(object):
         except Exception as e:
             try:
                 self.connection.rollback()
-            except:
+            except Exception as _:
                 pass
             print("Couldn't create table (%s). Trying to continue anyway." % e)
 
@@ -485,7 +480,7 @@ class Engine(object):
                 archive.close()
                 return file_names
             except zipfile.BadZipFile as e:
-                print("file can't be extracted, may be corrupt ")
+                print("file can't be extracted, may be corrupt ", e)
 
         elif archive_type == 'gz':
             # gzip archives can only contain a single file
@@ -631,7 +626,7 @@ class Engine(object):
                 try:
                     decimals = float(str(strvalue))
                     return decimals
-                except:
+                except Exception as _:
                     return None
             else:
                 return None
@@ -733,7 +728,7 @@ class Engine(object):
         self.auto_get_delimiter(dataset_file.readline())
         dataset_file.close()
 
-    def table_exists(self, dbname, tablename):
+    def table_exists(self, dbname=None, tablename=None):
         """This can be overridden to return True if a table exists. It
         returns False by default."""
         return False
