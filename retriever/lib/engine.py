@@ -612,31 +612,26 @@ class Engine(object):
         missing_values = ("null", "none")
         if strvalue.lower() in missing_values:
             return None
-        elif datatype in ("int", "bigint", "bool"):
+        if datatype in ("int", "bigint", "bool"):
             if strvalue:
                 intvalue = strvalue.split('.')[0]
                 if intvalue:
                     return int(intvalue)
-                else:
-                    return None
-            else:
                 return None
-        elif datatype in ("double", "decimal"):
+            return None
+        if datatype in ("double", "decimal"):
             if strvalue.strip():
                 try:
                     decimals = float(str(strvalue))
                     return decimals
                 except Exception as _:
                     return None
-            else:
-                return None
-        elif datatype == "char":
+            return None
+        if datatype == "char":
             if strvalue.lower() in missing_values:
                 return None
-            else:
-                return strvalue
-        else:
-            return None
+            return strvalue
+        return None
 
     def get_cursor(self):
         """Get db cursor."""
