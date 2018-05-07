@@ -36,14 +36,11 @@ class Engine(object):
 
     _connection = None
     _cursor = None
-    datatypes = None
+    datatypes = []
     db = None
     debug = False
-    insert_limit = 1000
     instructions = "Enter your database connection information:"
-    max_int = None
     name = ""
-    opts = None
     pkformat = "%s PRIMARY KEY %s "
     placeholder = None
     required_opts = []
@@ -561,11 +558,6 @@ class Engine(object):
         if commit:
             self.connection.commit()
 
-    def exists(self, script):
-        """Check to see if the given table exists."""
-        return all([self.table_exists(script.name, key)
-                    for key in list(script.urls.keys()) if key])
-
     def final_cleanup(self):
         """Close the database connection."""
         if self.warnings:
@@ -722,11 +714,6 @@ class Engine(object):
         dataset_file = open_fr(file_path)
         self.auto_get_delimiter(dataset_file.readline())
         dataset_file.close()
-
-    def table_exists(self, dbname=None, tablename=None):
-        """This can be overridden to return True if a table exists. It
-        returns False by default."""
-        return False
 
     def table_name(self, name=None, dbname=None):
         """Return full tablename."""
