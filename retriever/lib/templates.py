@@ -72,11 +72,6 @@ class Script(object):
         engine.script = self
         return engine
 
-    def exists(self, engine=None):
-        if engine:
-            return engine.exists(self)
-        else:
-            return False
 
     def matches_terms(self, terms):
         try:
