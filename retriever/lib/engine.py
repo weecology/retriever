@@ -18,7 +18,6 @@ import gzip
 import tarfile
 import csv
 import re
-import time
 import requests
 from math import ceil
 from tqdm import tqdm
@@ -430,20 +429,17 @@ class Engine(object):
                            desc='Downloading {}'.format(filename))
             
             try:
-                requests.get(url, allow_redirects=True, 
-                                  stream=True,
-                                  headers={'user-agent':'Weecology/Data-Retriever \
+                requests.get(url, allow_redirects=True,
+                             stream=True,
+                             headers={'user-agent': 'Weecology/Data-Retriever \
                                             Package Manager: http://www.data-retriever.org/'},
-                                  hooks={'response': reporthook(progbar, path)})
+                             hooks={'response': reporthook(progbar, path)})
 
             except InvalidSchema:
                 urlretrieve(url, path, reporthook=reporthook(progbar))
 
             self.use_cache = True
             progbar.close()
-
-    def supported_raster(self, path, ext=None):
-        raise "Not supported"
 
     def download_files_from_archive(self, url, filenames, filetype="zip",
                                     keep_in_dir=False, archivename=None):
@@ -791,6 +787,7 @@ def gen_from_source(source):
         gen, args = source
         source = gen(*args)
     return source
+
 
 def reporthook(tqdm_inst, filename=None):
     """tqdm wrapper to generate progress bar for urlretriever"""
