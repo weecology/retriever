@@ -6,9 +6,7 @@ from future import standard_library
 standard_library.install_aliases()
 import os
 import sys
-import urllib.request
-import urllib.parse
-import urllib.error
+import requests
 import imp
 from tqdm import tqdm
 from pkg_resources import parse_version
@@ -19,7 +17,11 @@ from retriever.lib.models import file_exists
 def _download_from_repository(filepath, newpath, repo=REPOSITORY):
     """Download latest version of a file from the repository."""
     try:
-        urllib.request.urlretrieve(repo + filepath, newpath)
+        r = requests.get(repo + filepath, allow_redirects=True, stream=True)
+        with open(newpath, 'wb') as f:
+            for chunk in r.iter_content(chunk_size=1024):
+                f.write(chunk)
+        r.close()
     except:
         raise
 
@@ -31,13 +33,13 @@ def check_for_updates(quiet=False):
     """
     try:
         # open version.txt for current release branch and get script versions
-        version_file = urllib.request.urlopen(REPOSITORY + "version.txt")
-        version_file.readline()
+        version_file = requests.get(REPOSITORY + "version.txt").text
+        version_file = version_file.splitlines()[1:]
 
         # read scripts from the repository and the checksums from the version.txt
         scripts = []
         for line in version_file:
-            scripts.append(line.decode().strip('\n').split(','))
+            scripts.append(line.strip('\n').split(','))
 
         total_script_count = len(scripts)
 

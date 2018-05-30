@@ -10,7 +10,6 @@ standard_library.install_aliases()
 from builtins import range
 
 import os
-import urllib.request, urllib.parse, urllib.error
 import zipfile
 from decimal import Decimal
 from retriever.lib.templates import Script

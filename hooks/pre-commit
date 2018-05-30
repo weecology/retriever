@@ -9,14 +9,14 @@ import os
 import re
 import sys
 import subprocess
-import urllib.request
+import requests
 
 pattern = re.compile(r'[."]version[\'"\s":=]+(\d+\.\d+.\d+)')
 version_dict = {}
-version_file = urllib.request.urlopen(
-    "https://raw.githubusercontent.com/weecology/retriever/master/version.txt")
-version_file.readline()
 
+version_file = requests.get(
+    "https://raw.githubusercontent.com/weecology/retriever/master/version.txt").text
+version_file = version_file.splitlines()[1:]
 
 def to_string(value):
     if sys.version_info >= (3, 0, 0):
@@ -26,7 +26,7 @@ def to_string(value):
 
 
 for line in version_file:
-    key, value = to_string(line).split(",")
+    key, value = line.split(",")
     version_dict[key] = value
 
 
