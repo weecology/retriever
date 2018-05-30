@@ -49,6 +49,7 @@ class Engine(object):
     datatypes = []
     required_opts = []
     pkformat = "%s PRIMARY KEY %s "
+    placeholder = None
     script = None
     use_cache = True
     debug = False
