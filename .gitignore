@@ -5,6 +5,8 @@ connections.config
 sqlite.db*
 retriever.egg-info
 apidocs
-.DS_Store
+*.DS_Store
 .cache/*
-scripts/*.py
+scripts/*.pyc
+.idea*
+*_pycache_
