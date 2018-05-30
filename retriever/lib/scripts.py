@@ -8,9 +8,6 @@ import imp
 import io
 import os
 import sys
-import urllib.request
-import urllib.parse
-import urllib.error
 from os.path import join, isfile, getmtime, exists, abspath
 
 from pkg_resources import parse_version

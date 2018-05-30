@@ -9,9 +9,7 @@ from future import standard_library
 standard_library.install_aliases()
 import os
 import sys
-import urllib.request
-import urllib.parse
-import urllib.error
+import requests
 from imp import reload
 from distutils.version import LooseVersion
 from retriever.engines import choose_engine, engine_list
@@ -38,26 +36,18 @@ def setup_module():
     """
     os.chdir(retriever_root_dir)
 
-
-def to_string(value_to_str):
-    if sys.version_info >= (3, 0, 0):
-        return value_to_str.decode("UTF-8")
-    else:
-        return value_to_str
-
-
 def get_modified_scripts():
     """Get modified script list, using version.txt in repo and master upstream"""
 
     os.chdir(retriever_root_dir)
     modified_list = []
-    version_file = urllib.request.urlopen("https://raw.githubusercontent.com/weecology/retriever/master/version.txt")
+    version_file = requests.get("https://raw.githubusercontent.com/weecology/retriever/master/version.txt")
     local_repo_scripts = get_script_version()  # local repo versions
 
     upstream_versions = {}
-    version_file.readline()
-    for line in version_file.readlines():
-        master_script_name, master_script_version = to_string(line).lower().strip().split(",")
+    version_file = version_file.text.splitlines()[1:]
+    for line in version_file:
+        master_script_name, master_script_version = line.lower().strip().split(",")
         upstream_versions[master_script_name] = master_script_version
 
     for item in local_repo_scripts:

@@ -1,9 +1,6 @@
 #retriever
-"""Retriever script for Alwyn H. Gentry Forest Transect Dataset
+"""Retriever script for Alwyn H. Gentry Forest Transect Dataset"""
 
-"""
-from __future__ import print_function
-# from __future__ import unicode_literals
 from builtins import str
 from builtins import range
 
@@ -29,7 +26,7 @@ class main(Script):
         self.title = "Alwyn H. Gentry Forest Transect Dataset"
         self.name = "gentry-forest-transects"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.4.2'
+        self.version = '1.4.3'
         self.urls = {"stems": "http://www.mobot.org/mobot/gentry/123/all_Excel.zip",
                      "sites": "https://ndownloader.figshare.com/files/5515373",
                      "species": "",
@@ -74,7 +71,6 @@ U.S.A. """
         lines = []
         tax = []
         for filename in filelist:
-            print("Extracting data from " + filename + "...")
             book = xlrd.open_workbook(self.engine.format_filename(filename))
             sh = book.sheet_by_index(0)
             rows = sh.nrows
@@ -130,7 +126,8 @@ U.S.A. """
                         this_line["stems"] = [row[c]
                                               for c in cn["stems"]
                                               if not Excel.empty_cell(row[c])]
-                        this_line["site"] = filename[0:-4]
+                        site_code, _ = os.path.splitext(os.path.basename(filename))
+                        this_line["site"] = site_code
 
                         # Manually correct CEDRAL data, which has a single line
                         # that is shifted by one to the left starting at Liana
@@ -166,17 +163,11 @@ U.S.A. """
         tax_count = 0
 
         # Get all unique families/genera/species
-        print("\n")
         for group in tax:
             if not (group in unique_tax):
                 unique_tax.append(group)
                 tax_count += 1
                 tax_dict[group[0:3]] = tax_count
-                if tax_count % 10 == 0:
-                    msg = "Generating taxonomic groups: " + str(tax_count) + " / " + str(TAX_GROUPS)
-                    sys.stdout.flush()
-                    sys.stdout.write(msg + "\b" * len(msg))
-        print("\n")
         # Create species table
         table = Table("species", delimiter=",")
         table.columns=[("species_id"            ,   ("pk-int",)    ),

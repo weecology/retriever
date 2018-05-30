@@ -88,8 +88,7 @@ class engine(Engine):
     def to_csv(self):
         """Export sorted version of CSV file"""
         for keys in self.script.tables:
-            table_name = self.opts['table_name'].format(db=self.db_name, table=keys)
-            sort_csv(table_name)
+            sort_csv(self.table_name())
 
     def get_connection(self):
         """Gets the db connection."""

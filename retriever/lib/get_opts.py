@@ -9,20 +9,31 @@ from retriever.lib.defaults import VERSION
 from retriever.lib.scripts import SCRIPT_LIST
 
 module_list = SCRIPT_LIST()
-script_list = [module.name for module in module_list]
-json_list = [module.name for module in module_list
-             if os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.json')]
+script_list = []
+json_list = []
+keywords_list = []
+licenses_list = []
 
-# set of all possible licenses for ls completion
-licenses_options = set()
-keywords_options = set()
 for module in module_list:
-    if hasattr(module, "keywords"):
-        keywords_options = keywords_options | set(module.keywords)
-    if hasattr(module, "licenses"):
-        if module.licenses[0]['name']:
-            licenses_options = licenses_options | set([module.licenses[0]['name']])
+    script_list.append(module.name)
+    if os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.json'):
+        json_list.append(module.name)
 
+    if hasattr(module, "keywords"):
+        # Add list of keywords to keywords_list
+        if module.keywords:
+            keywords_list += module.keywords
+
+    if hasattr(module, "licenses"):
+        # Append string to list of licenses_list
+        if module.licenses:
+            for dict_items in module.licenses:
+                if dict_items['name']:
+                    licenses_list.append(dict_items['name'])
+
+# set of all possible licenses and keywords
+licenses_options = set(licenses_list)
+keywords_options = set(keywords_list)
 
 parser = argparse.ArgumentParser(prog="retriever")
 parser.add_argument('-v', '--version', action='version', version=VERSION)
@@ -70,7 +81,6 @@ ls_parser.add_argument('-l', help='search datasets with specific license(s)',
 ls_parser.add_argument('-k', help='search datasets with keyword(s)',
                        nargs='+').completer = ChoicesCompleter(list(keywords_options))
 ls_parser.add_argument('-v', help='verbose list of all datasets', nargs='*', default=False)
-
 
 delete_json_parser.add_argument('dataset', help='dataset name', choices=json_list)
 # retriever Install {Engine} ..
