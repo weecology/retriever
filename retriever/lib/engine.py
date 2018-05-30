@@ -130,9 +130,9 @@ class Engine(object):
                             print(cleanvalues)
                         raise
                     try:
-                        self.executemany(insert_stmt, multiple_values, commit=False)
-                        prompt = "Progress: {}/{} rows inserted into {} totaling {}:".format(
-                            count_iter, real_line_length, self.table_name(), total)
+                        self.executemany(insert_stmt,
+                                         multiple_values,
+                                         commit=False)
                     except:
                         print(insert_stmt)
                         raise
@@ -502,10 +502,11 @@ class Engine(object):
                 if 'archive' in locals():
                     archive.close()
 
-    def drop_statement(self, objecttype, objectname):
+    def drop_statement(self, object_type, object_name):
         """Return drop table or database SQL statement."""
-        dropstatement = "DROP %s IF EXISTS %s" % (objecttype, objectname)
-        return dropstatement
+        if self:
+            drop_statement = "DROP %s IF EXISTS %s" % (object_type, object_name)
+        return drop_statement
 
     def execute(self, statement, commit=True):
         """Execute given statement."""
@@ -518,11 +519,6 @@ class Engine(object):
         self.cursor.executemany(statement, values)
         if commit:
             self.connection.commit()
-
-    def exists(self, script):
-        """Check to see if the given table exists."""
-        return all([self.table_exists(script.name, key)
-                    for key in list(script.urls.keys()) if key])
 
     def final_cleanup(self):
         """Close the database connection."""
@@ -685,11 +681,6 @@ class Engine(object):
         dataset_file = open_fr(file_path)
         self.auto_get_delimiter(dataset_file.readline())
         dataset_file.close()
-
-    def table_exists(self, dbname, tablename):
-        """This can be overridden to return True if a table exists. It
-        returns False by default."""
-        return False
 
     def table_name(self, name=None, dbname=None):
         """Return full tablename."""

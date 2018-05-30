@@ -72,12 +72,6 @@ class Script(object):
         engine.script = self
         return engine
 
-    def exists(self, engine=None):
-        if engine:
-            return engine.exists(self)
-        else:
-            return False
-
     def matches_terms(self, terms):
         try:
             search_string = ' '.join([self.name,
@@ -129,7 +123,8 @@ class BasicTextTemplate(Script):
                                                         keep_in_dir=keep_in_dir,
                                                         archivename=archivename)
                 self.engine.auto_create_table(table_obj, filename=table_obj.path)
-                self.engine.insert_data_from_file(self.engine.format_filename(table_obj.path))
+                self.engine.insert_data_from_file(self.engine.format_filename(
+                    table_obj.path))
             else:
                 self.engine.auto_create_table(table_obj, url=url)
                 self.engine.insert_data_from_url(url)
