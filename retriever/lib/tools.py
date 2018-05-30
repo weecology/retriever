@@ -1,10 +1,9 @@
 import csv
-import imp
 import io
 import os
 import sys
 
-from retriever.lib.defaults import  ENCODING
+from retriever.lib.defaults import ENCODING
 
 
 def open_fr(file_name, encoding=ENCODING, encode=True):
@@ -58,4 +57,11 @@ def to_str(object, object_encoding=sys.stdout):
     if sys.version_info >= (3, 0, 0):
         enc = object_encoding.encoding
         return str(object).encode(enc, errors='backslashreplace').decode("latin-1")
-    return object   
+    return object
+
+
+def walk_relative_path(dir_name):
+    """Return relative paths of files in the directory"""
+    return [os.path.join(os.path.relpath(dir_, dir_name), file_name)
+            for dir_, _, files in os.walk(dir_name, topdown=False)
+            for file_name in files]
