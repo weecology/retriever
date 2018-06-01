@@ -2,15 +2,17 @@
 
 """Retriever script for direct download of data data"""
 from __future__ import print_function
+
 from builtins import str
 from future import standard_library
 
 standard_library.install_aliases()
 
 import os
-from retriever.lib.models import Table, Cleanup, correct_invalid_value
+from retriever.lib.models import Table
 from retriever.lib.templates import Script
 from pkg_resources import parse_version
+
 try:
     from retriever.lib.defaults import VERSION
 except ImportError:
@@ -23,14 +25,18 @@ class main(Script):
         self.title = "PREDICTS Database"
         self.name = "predicts"
         self.ref = "http://data.nhm.ac.uk/dataset/902f084d-ce3f-429f-a6a5-23162c73fdf7"
-        self.urls = {"PREDICTS": "http://data.nhm.ac.uk/dataset/the-2016-release-of-the-predicts-database/"
-                                 "resource/78dac1a9-6aa0-4dcb-9750-50df04f8ca6e/download"}
-        self.citation = "Lawrence N Hudson; Tim Newbold; Sara Contu; Samantha L L Hill et al. (2016). Dataset: " \
-                        "The 2016 release of the PREDICTS database. http://dx.doi.org/10.5519/0066354"
+        self.urls = {
+            "PREDICTS": "http://data.nhm.ac.uk/dataset/the-2016-release-of-the-predicts-database/"
+                        "resource/78dac1a9-6aa0-4dcb-9750-50df04f8ca6e/download"}
+        self.citation = "Lawrence N Hudson; Tim Newbold; Sara Contu; " \
+                        "Samantha L L Hill et al. (2016). Dataset: " \
+                        "The 2016 release of the PREDICTS database. " \
+                        "http://dx.doi.org/10.5519/0066354"
         self.keywords = ['biodiversity', 'anthropogenic pressures']
         self.retriever_minimum_version = "2.0.dev"
-        self.version = "1.0.1"
-        self.description = "A dataset of 3,250,404 measurements, collated from 26,114 sampling locations in 94 " \
+        self.version = "1.0.3"
+        self.description = "A dataset of 3,250,404 measurements, " \
+                           "collated from 26,114 sampling locations in 94 " \
                            "countries and representing 47,044 species."
 
         if parse_version(VERSION) <= parse_version("2.0.0"):
@@ -41,10 +47,8 @@ class main(Script):
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
         engine = self.engine
-
         filename = "database.csv"
         tablename = "predicts_main"
-
         table = Table(str(tablename), delimiter=',')
         table.columns = [("Source_ID", ("char",)),
                          ("Reference", ("char",)),
@@ -115,11 +119,13 @@ class main(Script):
                          ("Higher_taxon", ("char",)),
                          ("Measurement", ("double",)),
                          ("Effort_corrected_measurement", ("double",))]
-
         engine.table = table
         if not os.path.isfile(engine.format_filename(filename)):
-            engine.download_files_from_archive(self.urls["PREDICTS"], [filename], filetype="zip",
-                                               archivename="download.zip")
+            engine.download_files_from_archive(self.urls["PREDICTS"],
+                                               [filename],
+                                               "zip",
+                                               False,
+                                               "download.zip")
         engine.create_table()
         engine.insert_data_from_file(engine.format_filename(str(filename)))
 

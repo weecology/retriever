@@ -2,12 +2,14 @@
 #retriever
 
 """Retriever script for direct download of vertnet-amphibians data"""
-from builtins import str
 import os
+
+from builtins import str
+from pkg_resources import parse_version
 
 from retriever.lib.models import Table
 from retriever.lib.templates import Script
-from pkg_resources import parse_version
+
 try:
     from retriever.lib.defaults import VERSION
 except ImportError:
@@ -20,7 +22,7 @@ class main(Script):
         self.title = "Aquatic Animal Excretion"
         self.name = "aquatic-animal-excretion"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.1.2'
+        self.version = '1.1.3'
         self.ref = "http://onlinelibrary.wiley.com/doi/10.1002/ecy.1792/abstract"
         self.urls = {
             'aquatic_animals': 'https://esajournals.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1002%2Fecy.1792&attachmentId=123472854'
@@ -51,11 +53,12 @@ class main(Script):
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
         engine = self.engine
-
-        filenames = ['Aquatic_animal_excretion_data.csv', 'Aquatic_animal_excretion_variable_descriptions.csv']
+        filenames = ['Aquatic_animal_excretion_data.csv',
+                     'Aquatic_animal_excretion_variable_descriptions.csv']
         for file_paths in filenames:
             if not os.path.isfile(engine.format_filename(file_paths)):
-                engine.download_files_from_archive(self.urls["aquatic_animals"], filenames, filetype="zip")
+                url = self.urls["aquatic_animals"]
+                engine.download_files_from_archive(url, filenames, "zip")
 
         # processing Aquatic_animal_excretion_data.csv
         filename = 'Aquatic_animal_excretion_data.csv'

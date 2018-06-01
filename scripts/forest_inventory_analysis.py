@@ -3,7 +3,9 @@
 
 """
 from __future__ import print_function
+
 from future import standard_library
+
 standard_library.install_aliases()
 
 import os
@@ -11,12 +13,14 @@ import os
 from retriever.lib.templates import Script
 from retriever.lib.models import Table
 from pkg_resources import parse_version
+
 try:
     from retriever.lib.defaults import VERSION
+
     try:
-      from retriever.lib.tools import open_fr, open_fw
+        from retriever.lib.tools import open_fr, open_fw
     except ImportError:
-      from retriever.lib.scripts import open_fr, open_fw
+        from retriever.lib.scripts import open_fr, open_fw
 except ImportError:
     from retriever import open_fr, open_fw, VERSION
 
@@ -27,7 +31,7 @@ class main(Script):
         self.title = "Forest Inventory and Analysis"
         self.name = "forest-inventory-analysis"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.4.2'
+        self.version = '1.4.3'
         self.ref = "http://fia.fs.fed.us/"
         self.urls = {"main": "https://apps.fs.usda.gov/fia/datamart/CSV/",
                      'species': 'https://apps.fs.usda.gov/fia/datamart/CSV/REF_SPECIES.csv'}
@@ -35,7 +39,7 @@ class main(Script):
         self.citation = "DATEOFDOWNLOAD. Forest Inventory and Analysis Database, St. Paul, MN: U.S. Department of Agriculture, Forest Service, Northern Research Station. [Available only on internet: http://apps.fs.fed.us/fiadb-downloads/datamart.html]"
         self.description = """WARNING: This dataset requires downloading many large files and will probably take several hours to finish installing."""
         self.addendum = """This dataset requires downloading many large files - please be patient."""
-        
+
         if parse_version(VERSION) <= parse_version("2.0.0"):
             self.shortname = self.name
             self.name = self.title
@@ -65,12 +69,17 @@ class main(Script):
                       ('VA', 1998), ('WA', 2002), ('WV', 2004), ('WI', 2000),
                       ('WY', 2000), ('PR', 2001)]
 
-        tablelist = ["SURVEY", "PLOT", "COND", "SUBPLOT", "SUBP_COND", "TREE", "SEEDLING"]
+        tablelist = ["SURVEY", "PLOT",
+                     "COND", "SUBPLOT",
+                     "SUBP_COND", "TREE",
+                     "SEEDLING"]
 
         for table in tablelist:
             for state, year in stateslist:
-                engine.download_files_from_archive(self.urls["main"] + state + "_" + table + ".ZIP",
-                                                   [state + "_" + table + ".csv"])
+
+                engine.download_files_from_archive(
+                    self.urls["main"] + state + "_" + table + ".ZIP",
+                    [state + "_" + table + ".csv"])
 
         for table in tablelist:
             print("Scanning data for table %s..." % table)
@@ -93,14 +102,11 @@ class main(Script):
                         prep_file.write(line)
             prep_file.close()
             engine.auto_create_table(Table(table), filename=prep_file_name)
-
             engine.insert_data_from_file(engine.format_filename(prep_file_name))
-
             try:
                 os.remove(engine.format_filename(prep_file_name))
             except:
                 pass
-
         return engine
 
 

@@ -2,11 +2,14 @@
 #retriever
 
 """Retriever script for direct download of vertnet-reptiles data"""
+import os
+
 from builtins import str
+from pkg_resources import parse_version
+
 from retriever.lib.models import Table
 from retriever.lib.templates import Script
-import os
-from pkg_resources import parse_version
+
 try:
     from retriever.lib.defaults import VERSION
 except ImportError:
@@ -19,7 +22,7 @@ class main(Script):
         self.title = "Vertnet Reptiles"
         self.name = "vertnet-reptiles"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.1.1'
+        self.version = '1.1.2'
         self.ref = "http://vertnet.org/resources/datatoolscode.html"
         self.urls = {
             'reptiles': 'https://de.iplantcollaborative.org/anon-files//iplant/home/shared/commons_repo/curated/Vertnet_Reptilia_Sep2016/VertNet_Reptilia_Sept2016.zip'
@@ -240,7 +243,10 @@ class main(Script):
 
         engine.table = table
         if not os.path.isfile(engine.format_filename(filename)):
-            engine.download_files_from_archive(self.urls[tablename], [filename], filetype="zip", archivename="vertnet_latest_" + str(tablename))
+            engine.download_files_from_archive(self.urls[tablename],
+                                               [filename],
+                                               "zip",
+                                               "vertnet_latest_" + str(tablename))
         engine.create_table()
         engine.insert_data_from_file(engine.format_filename(str(filename)))
 
