@@ -15,12 +15,14 @@ from retriever.lib.models import Table
 from pkg_resources import parse_version
 import xml.etree.ElementTree as ET
 import datetime
+
 try:
     from retriever.lib.defaults import VERSION, DATA_WRITE_PATH
+
     try:
-      from retriever.lib.tools import open_fw, open_csvw
+        from retriever.lib.tools import open_fw, open_csvw
     except ImportError:
-      from retriever.lib.scripts import open_fw, open_csvw
+        from retriever.lib.scripts import open_fw, open_csvw
 except ImportError:
     from retriever import open_fw, open_csvw, DATA_WRITE_PATH, VERSION
 
@@ -31,7 +33,7 @@ class main(Script):
         self.title = "USA National Phenology Network"
         self.name = "NPN"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '2.1.2'
+        self.version = '2.1.3'
         self.ref = "http://www.usanpn.org/results/data"
         self.keywords = ["Data Type > Phenology", "Spatial Scale > Continental"]
         self.description = "The data set was collected via Nature's Notebook phenology observation program (2009-present), and (2) Lilac and honeysuckle data (1955-present)"
@@ -123,7 +125,7 @@ class main(Script):
             file_read = ""
             fname = DATA_WRITE_PATH.strip('{dataset}') + 'NPN/' + xml_file_name
             with open(fname, 'r') as fp1:
-              file_read = fp1.read()
+                file_read = fp1.read()
 
             root = ET.fromstring(file_read)
 
@@ -143,5 +145,6 @@ class main(Script):
         for data_file in csv_files:
             engine.insert_data_from_file(engine.find_file(data_file))
         return engine
+
 
 SCRIPT = main()

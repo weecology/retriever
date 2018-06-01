@@ -1,15 +1,18 @@
 #retriever
 """Data Retriever script LEDA dataset"""
 from builtins import str
+from pkg_resources import parse_version
+
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 from retriever.lib.templates import Script
-from pkg_resources import parse_version
+
 try:
     from retriever.lib.defaults import VERSION
+
     try:
-      from retriever.lib.tools import open_fr, open_fw
+        from retriever.lib.tools import open_fr, open_fw
     except ImportError:
-      from retriever.lib.scripts import open_fr, open_fw
+        from retriever.lib.scripts import open_fr, open_fw
 except ImportError:
     from retriever import HOME_DIR, open_fr, open_fw, VERSION
 
@@ -17,10 +20,10 @@ except ImportError:
 class main(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
-        self.title = "A database on the life history traits of the Northwest European flora" 
+        self.title = "A database on the life history traits of the Northwest European flora"
         self.name = "plant-life-hist-eu"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.4.2'
+        self.version = '1.4.3'
         self.ref = "http://www.uni-oldenburg.de/en/biology/landeco/research/projects/leda/"
         self.urls = {
             "Age_of_first_flowering": "http://www.uni-oldenburg.de/fileadmin/user_upload/biologie/ag/landeco/download/LEDA/Data_files/age_of_first_flowering.txt",

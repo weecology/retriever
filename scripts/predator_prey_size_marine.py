@@ -5,6 +5,7 @@ from pkg_resources import parse_version
 
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 from retriever.lib.templates import Script
+
 try:
     from retriever.lib.defaults import VERSION
 except ImportError:
@@ -17,7 +18,7 @@ class main(Script):
         self.title = "Marine Predator and Prey Body Sizes - Barnes et al. 2008"
         self.name = "predator-prey-size-marine"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '2.0.1'
+        self.version = '2.0.2'
         self.ref = "https://figshare.com/collections/PREDATOR_AND_PREY_BODY_SIZES_IN_MARINE_FOOD_WEBS/3300257"
         self.urls = {"data": "https://ndownloader.figshare.com/files/5601029"}
         self.citation = "C. Barnes, D. M. Bethea, R. D. Brodeur, J. Spitz, V. Ridoux, C. Pusineri, B. C. Chase, " \
@@ -38,15 +39,17 @@ class main(Script):
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
         engine = self.engine
+        filename = "Predator_and_prey_body_sizes_in_marine_food_webs_vsn4.txt"
         engine.download_files_from_archive(self.urls["data"],
-                                           ["Predator_and_prey_body_sizes_in_marine_food_webs_vsn4.txt"],
+                                           [filename],
                                            filetype="zip")
 
         # Create table Species
+
         engine.auto_create_table(Table('main', cleanup=self.cleanup_func_table),
-                                 filename="Predator_and_prey_body_sizes_in_marine_food_webs_vsn4.txt")
+                                 filename=filename)
         engine.insert_data_from_file(
-            engine.format_filename("Predator_and_prey_body_sizes_in_marine_food_webs_vsn4.txt"))
+            engine.format_filename(filename))
 
 
 SCRIPT = main()
