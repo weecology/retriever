@@ -81,7 +81,8 @@ setup(name='retriever',
           'xlrd',
           'future',
           'argcomplete',
-          'tqdm'
+          'tqdm',
+          'requests'
       ],
       data_files=[('', ['CITATION'])],
       setup_requires=[],
