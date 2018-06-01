@@ -2,11 +2,14 @@
 #retriever
 
 """Retriever script for direct download of vertnet data"""
+import os
+
 from builtins import str
+from pkg_resources import parse_version
+
 from retriever.lib.models import Table
 from retriever.lib.templates import Script
-import os
-from pkg_resources import parse_version
+
 try:
     from retriever.lib.defaults import VERSION
 except ImportError:
@@ -19,15 +22,14 @@ class main(Script):
         self.title = "vertnet:"
         self.name = "vertnet"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.4.1'
+        self.version = '1.4.2'
         self.ref = "http://vertnet.org/resources/datatoolscode.html"
         self.urls = {
-                    'amphibians': 'https://de.iplantcollaborative.org/anon-files//iplant/home/shared/commons_repo/curated/Vertnet_Amphibia_Sep2016/VertNet_Amphibia_Sept2016.zip',
-                    'birds': 'https://de.iplantcollaborative.org/anon-files//iplant/home/shared/commons_repo/curated/Vertnet_Aves_Sep2016/VertNet_Aves_Sept2016.zip',
-                    'fishes': 'https://de.iplantcollaborative.org/anon-files//iplant/home/shared/commons_repo/curated/Vertnet_Fishes_Sep2016/VertNet_Fishes_Sept2016.zip',
-                    'mammals': 'https://de.iplantcollaborative.org/anon-files//iplant/home/shared/commons_repo/curated/Vertnet_Mammalia_Sep2016/VertNet_Mammalia_Sept2016.zip',
-                    'reptiles': 'https://de.iplantcollaborative.org/anon-files//iplant/home/shared/commons_repo/curated/Vertnet_Reptilia_Sep2016/VertNet_Reptilia_Sept2016.zip'
-        }
+            'amphibians': 'https://de.iplantcollaborative.org/anon-files//iplant/home/shared/commons_repo/curated/Vertnet_Amphibia_Sep2016/VertNet_Amphibia_Sept2016.zip',
+            'birds': 'https://de.iplantcollaborative.org/anon-files//iplant/home/shared/commons_repo/curated/Vertnet_Aves_Sep2016/VertNet_Aves_Sept2016.zip',
+            'fishes': 'https://de.iplantcollaborative.org/anon-files//iplant/home/shared/commons_repo/curated/Vertnet_Fishes_Sep2016/VertNet_Fishes_Sept2016.zip',
+            'mammals': 'https://de.iplantcollaborative.org/anon-files//iplant/home/shared/commons_repo/curated/Vertnet_Mammalia_Sep2016/VertNet_Mammalia_Sept2016.zip',
+            'reptiles': 'https://de.iplantcollaborative.org/anon-files//iplant/home/shared/commons_repo/curated/Vertnet_Reptilia_Sep2016/VertNet_Reptilia_Sept2016.zip'}
         self.description = " "
         self.keywords = ['Taxon > animals']
 
@@ -40,16 +42,16 @@ class main(Script):
         Script.download(self, engine, debug)
         engine = self.engine
 
-        file_names = [ ('vertnet_latest_amphibians.csv','amphibians'),
-                        ('vertnet_latest_birds.csv','birds'),
-                        ('vertnet_latest_fishes.csv','fishes'),
-                        ('vertnet_latest_mammals.csv','mammals'),
-                        ('vertnet_latest_reptiles.csv','reptiles')
+        file_names = [('vertnet_latest_amphibians.csv', 'amphibians'),
+                      ('vertnet_latest_birds.csv', 'birds'),
+                      ('vertnet_latest_fishes.csv', 'fishes'),
+                      ('vertnet_latest_mammals.csv', 'mammals'),
+                      ('vertnet_latest_reptiles.csv', 'reptiles')
                       ]
 
-        for(filename,tablename) in file_names:
+        for (filename, tablename) in file_names:
 
-            table = Table(str(tablename) , delimiter=',' )
+            table = Table(str(tablename), delimiter=',')
             # all tables in vertnet data have same field names
             table.columns = [   ("record_id", ("pk-auto",)),
                                 ("beginrecord", ("char",)),
@@ -249,8 +251,15 @@ class main(Script):
 
             engine.table = table
             if not os.path.isfile(engine.format_filename(filename)):
-                engine.download_files_from_archive(self.urls[tablename], [filename], filetype="zip", archivename="vertnet_latest_" + str(tablename))
+                engine.download_files_from_archive(
+                    self.urls[tablename],
+                    [filename],
+                    "zip",
+                    False,
+                    "vertnet_latest_" + str(tablename))
+
             engine.create_table()
             engine.insert_data_from_file(engine.format_filename(str(filename)))
+
 
 SCRIPT = main()

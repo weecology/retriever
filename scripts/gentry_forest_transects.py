@@ -26,7 +26,7 @@ class main(Script):
         self.title = "Alwyn H. Gentry Forest Transect Dataset"
         self.name = "gentry-forest-transects"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.4.3'
+        self.version = '1.4.4'
         self.urls = {"stems": "http://www.mobot.org/mobot/gentry/123/all_Excel.zip",
                      "sites": "https://ndownloader.figshare.com/files/5515373",
                      "species": "",
@@ -57,11 +57,11 @@ U.S.A. """
         local_zip = zipfile.ZipFile(self.engine.format_filename("all_Excel.zip"))
         filelist = local_zip.namelist()
         local_zip.close()
-        self.engine.download_files_from_archive(self.urls["stems"], filelist)
 
         if parse_version(VERSION).__str__() < parse_version("2.1.dev").__str__():
             filelist = [os.path.basename(filename) for filename in filelist]
 
+        self.engine.download_files_from_archive(self.urls["stems"], filelist)
         # Currently all_Excel.zip is missing CURUYUQU.xls
         # Download it separately and add it to the file list
         if not self.engine.find_file('CURUYUQU.xls'):

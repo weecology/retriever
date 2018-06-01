@@ -1,9 +1,11 @@
 # -*- coding: UTF-8 -*-
 #retriever
 
+from pkg_resources import parse_version
+
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 from retriever.lib.templates import Script
-from pkg_resources import parse_version
+
 try:
     from retriever.lib.defaults import VERSION
 except ImportError:
@@ -11,12 +13,13 @@ except ImportError:
 
 
 class main(Script):
+
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
         self.title = "Pantheria (Jones et al. 2009)"
         self.name = "pantheria"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.3.2'
+        self.version = '1.3.3'
         self.ref = "https://figshare.com/collections/PanTHERIA_a_species-level_database_of_life_history_ecology_" \
                    "and_geography_of_extant_and_recently_extinct_mammals/3301274"
         self.urls = {"data": "https://ndownloader.figshare.com/files/5604752"}
@@ -45,13 +48,13 @@ class main(Script):
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
         engine = self.engine
-        engine.download_files_from_archive(self.urls["data"], ["PanTHERIA_1-0_WR05_Aug2008.txt"],
-                                           filetype="zip")
-
+        file_name = "PanTHERIA_1-0_WR05_Aug2008.txt"
+        engine.download_files_from_archive(self.urls["data"], [file_name], "zip")
         # Create table Species
-        engine.auto_create_table(Table('species', cleanup=self.cleanup_func_table),
-                                 filename="PanTHERIA_1-0_WR05_Aug2008.txt")
-        engine.insert_data_from_file(engine.format_filename("PanTHERIA_1-0_WR05_Aug2008.txt"))
+        engine.auto_create_table(Table('species',
+                                       cleanup=self.cleanup_func_table),
+                                 filename=file_name)
+        engine.insert_data_from_file(engine.format_filename(file_name))
 
 
 SCRIPT = main()

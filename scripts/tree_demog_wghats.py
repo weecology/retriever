@@ -1,9 +1,11 @@
 # -*- coding: UTF-8 -*-
 #retriever
 
+from pkg_resources import parse_version
+
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 from retriever.lib.templates import Script
-from pkg_resources import parse_version
+
 try:
     from retriever.lib.defaults import VERSION
 except ImportError:
@@ -16,7 +18,7 @@ class main(Script):
         self.title = "Tree demography in Western Ghats, India - Pelissier et al. 2011"
         self.name = "tree-demog-wghats"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.3.1'
+        self.version = '1.3.2'
         self.ref = "https://figshare.com/collections/Tree_demography_in_an_undisturbed_" \
                    "Dipterocarp_permanent_sample_plot_at_Uppangala_Western_Ghats_of_India/3304026"
         self.urls = {"data": "https://ndownloader.figshare.com/files/5619033"}
@@ -32,25 +34,32 @@ class main(Script):
             self.shortname = self.name
             self.name = self.title
             self.tags = self.keywords
-            self.cleanup_func_table = Cleanup(correct_invalid_value, nulls=['NA'])
+            self.cleanup_func_table = Cleanup(
+                correct_invalid_value, nulls=['NA'])
         else:
-            self.cleanup_func_table = Cleanup(correct_invalid_value, missing_values=['NA'])
+            self.cleanup_func_table = Cleanup(
+                correct_invalid_value, missing_values=['NA'])
 
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
         engine = self.engine
-        engine.download_files_from_archive(self.urls["data"], ["UPSP_Demo_data.txt", "UPSP_Species_list2.txt"],
+        engine.download_files_from_archive(self.urls["data"],
+                                           ["UPSP_Demo_data.txt",
+                                            "UPSP_Species_list2.txt"],
                                            filetype="zip")
-
         # Create table sp_list(Species)
-        engine.auto_create_table(Table('sp_list', cleanup=self.cleanup_func_table),
-                                 filename="UPSP_Species_list2.txt")
-        engine.insert_data_from_file(engine.format_filename("UPSP_Species_list2.txt"))
+        filename = "UPSP_Species_list2.txt"
+        engine.auto_create_table(
+            Table('sp_list', cleanup=self.cleanup_func_table),
+            filename=filename)
+        engine.insert_data_from_file(engine.format_filename(filename))
 
         # Create table ind_loc_girth
-        engine.auto_create_table(Table('ind_loc_girth', cleanup=self.cleanup_func_table),
-                                 filename="UPSP_Demo_data.txt")
-        engine.insert_data_from_file(engine.format_filename("UPSP_Demo_data.txt"))
+        filename = "UPSP_Demo_data.txt"
+        engine.auto_create_table(
+            Table('ind_loc_girth', cleanup=self.cleanup_func_table),
+            filename=filename)
+        engine.insert_data_from_file(engine.format_filename(filename))
 
 
 SCRIPT = main()
