@@ -488,23 +488,22 @@ class Engine(object):
                 file_names = self.extract_gz(archive_full_path, archive_dir)
             return file_names
 
-        if file_names:
-            archive_downloaded = False
-            for file_name in file_names:
-                archive_full_path = self.format_filename(archive_name)
-                if not self.find_file(os.path.join(archive_dir, file_name)):
-                    # if no local copy, download the data
-                    self.create_raw_data_dir()
-                    if not archive_downloaded:
-                        self.download_file(url, archive_name)
-                        archive_downloaded = True
-                    if archive_type == 'zip':
-                        self.extract_zip(archive_full_path, archive_dir, file_name)
-                    elif archive_type == 'gz':
-                        self.extract_gz(archive_full_path, archive_dir, file_name)
-                    elif archive_type == 'tar' or archive_type == 'tar.gz':
-                        self.extract_tar(archive_full_path, archive_dir, archive_type, file_name)
-            return file_names
+        archive_downloaded = False
+        for file_name in file_names:
+            archive_full_path = self.format_filename(archive_name)
+            if not self.find_file(os.path.join(archive_dir, file_name)):
+                # if no local copy, download the data
+                self.create_raw_data_dir()
+                if not archive_downloaded:
+                    self.download_file(url, archive_name)
+                    archive_downloaded = True
+                if archive_type == 'zip':
+                    self.extract_zip(archive_full_path, archive_dir, file_name)
+                elif archive_type == 'gz':
+                    self.extract_gz(archive_full_path, archive_dir, file_name)
+                elif archive_type == 'tar' or archive_type == 'tar.gz':
+                    self.extract_tar(archive_full_path, archive_dir, archive_type, file_name)
+        return file_names
 
     def drop_statement(self, object_type, object_name):
         """Return drop table or database SQL statement."""
