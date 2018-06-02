@@ -14,6 +14,7 @@ breast_cancer_wi.json,1.2.2
 breed_bird_survey.py,1.4.4
 breed_bird_survey_50stop.py,1.4.4
 breed_bird_survey_nlcd.json,1.0.2
+bupa_liver_disorders.json,1.0.0
 butterfly_population_network.json,1.2.2
 car_eval.json,1.1.2
 chytr_disease_distr.json,1.0.2
