@@ -1,5 +1,21 @@
 import os
+import sys
 from builtins import range
+import gdal
+import ogr
+
+#sys.path.insert(0,"/Library/Frameworks/GDAL.framework/Versions/2.2/Python/3.6/site-packages")
+
+"""Importing GDAL/OGR module from OSGEO (suppports only Python2)"""
+
+# try:
+#     import gdal, ogr
+#     print(gdal.__version__)
+#     #gdal.UseExceptions()
+
+# except:
+#     sys.exit("ERROR: OSGeo not installed... \
+#     \nDownload from here => http://trac.osgeo.org/gdal/wiki/DownloadingGdalBinaries")
 
 from retriever.lib.defaults import DATA_DIR
 from retriever.lib.models import Engine, no_cleanup
@@ -30,13 +46,65 @@ class engine(Engine):
                       "{db}_{table}"),
                      ]
 
+    file_name = None
+
+    def auto_create_table(self, table, url=None, filename=None, pk=None):
+
+        if table.dataset_type == "RasterDataset":
+
+            self.table = table
+            if url and not filename:
+                filename = Engine.filename_from_url(url)
+
+            if url and not self.find_file(filename):
+                # If the file doesn't exist, download it
+                self.download_file(url, filename)
+
+            file_path = self.find_file(filename)
+            filename, file_extension = os.path.splitext(os.path.basename(file_path))
+            self.file_name = filename
+
+        else:
+            Engine.auto_create_table(self, table, url, filename, pk)
+
+
+    def supported_raster(self, path, ext=None):
+        path = os.path.normpath(os.path.abspath(path))
+        if ext:
+            raster_extensions = ext
+        else:
+            raster_extensions = ['.gif', '.img', '.bil',
+                                 '.jpg', '.tif', '.tiff', '.hdf', '.l1b']
+
+        return [os.path.normpath(os.path.join(root, names))
+                for root, _, files in os.walk(path, topdown=False)
+                for names in files
+                if os.path.splitext(names)[1] in raster_extensions]
+
+    def insert_raster(self, path=None, srid=4326):
+
+        if not path:
+            path = Engine.format_data_dir(self)
+
+        df = gdal.Open(path)
+
+        for band in range(1,df.RasterCount+1):
+
+            os.system("gdal_translate -b {} -of XYZ {} {}.csv \
+                    -co ADD_HEADER_LINE=YES".format(band, path, path))
+
+            os.system("ogr2ogr -update -append -f SQLite sqlite.db \
+                    -nln {}_band_{} {}.csv -dsco METADATA=NO \
+                    -dsco INIT_WITH_EPSG=NO".format(self.file_name,band, path))
+
+            os.system("rm {}.csv".format(path))
+
     def create_db(self):
         """Don't create database for SQLite
 
         SQLite doesn't create databases. Each database is a file and needs a separate
         connection. This overloads`create_db` to do nothing in this case.
         """
-        return None
 
     def get_bulk_insert_statement(self):
         """Get insert statement for bulk inserts
@@ -44,6 +112,7 @@ class engine(Engine):
         This places ?'s instead of the actual values so that executemany() can
         operate as designed
         """
+
         columns = self.table.get_insert_columns()
         column_count = len(self.table.get_insert_columns(False))
         insert_stmt = "INSERT INTO " + self.table_name()
@@ -92,6 +161,7 @@ class engine(Engine):
             return Engine.insert_data_from_file(self, filename)
 
     def table_exists(self, dbname, tablename):
+
         """Determine if the table already exists in the database."""
         if not hasattr(self, 'existing_table_names'):
             self.cursor.execute(
