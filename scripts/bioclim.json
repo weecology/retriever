@@ -1,0 +1,378 @@
+{
+    "name": "bioclim",
+    "url": "http://biogeo.ucdavis.edu/data/climate/worldclim/1_4/grid/cur/bio_2-5m_bil.zip",
+    "title": "Bioclim 2.5 Minute Climate Data",
+    "ref":"http://worldclim.org/bioclim",
+    "driver": "EHdr",
+    "archived": "zip",
+    "extract_all": "True",
+    "description": "Bioclimatic variables that are derived from the monthly temperature and rainfall values in order to generate more biologically meaningful variables.",
+    "licenses": [],
+    "keywords": [
+        "climate",
+        "spatial-data",
+        "global"
+    ],
+    "citation": "Hijmans, R.J., S.E. Cameron, J.L. Parra, P.G. Jones and A. Jarvis, 2005. Very high resolution interpolated climate surfaces for global land areas. International Journal of Climatology 25: 1965-1978.",
+    "version": "1.3.0",
+    "homepage": "http://worldclim.org/bioclim",
+    "colums": 8640,
+    "rows": 3600,
+    "datum": "--Coordinate Reference System",
+    "projection": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]]",
+    "file_size": "--size of file on disk",
+    "group_count": "--Number of groups in the dataset if applicable",
+    "dataset_count": "--The number of individual datasets",
+    "transform": {
+        "xOrigin": -180.00000000000335,
+        "pixelWidth": 0.041666666666667,
+        "rotation_2": 0.0,
+        "yOrigin": 90.00000000000003,
+        "rotation_4": 0.0,
+        "pixelHeight": -0.041666666666667
+    },
+    "resources": [
+        {
+            "extensions": ["bil", "hdr"],
+            "format": "raster",
+            "name": "bio1",
+            "path":"bio1.bil",
+            "other_paths": "bio1.hdr",
+            "no_data_value": -9999.0,
+            "min": -272.0,
+            "max": 312.0,
+            "scale": 1.0,
+            "color_table": null,
+            "statistics": {
+                "minimum": -272.0,
+                "maximum": 312.0,
+                "mean": 81.1423446407,
+                "stddev": 148.2358307206
+            }
+        },
+        {
+            "extensions": ["bil", "hdr"],
+            "format": "raster",
+            "name": "bio2",
+            "path":"bio2.bil",
+            "other_paths": "bio2.hdr",
+            "no_data_value": -9999.0,
+            "min": 35.0,
+            "max": 201.0,
+            "scale": null,
+            "color_table": null,
+            "statistics": {
+                "minimum": 35.0,
+                "maximum": 201.0,
+                "mean": 111.3137813742,
+                "stddev": 31.1924240643
+            }
+        },
+        {
+            "extensions": ["bil", "hdr"],
+            "format": "raster",
+            "name": "bio3",
+            "path":"bio3.bil",
+            "other_paths": "bio3.hdr",
+            "no_data_value": -9999.0,
+            "min": 8.0,
+            "max": 96.0,
+            "scale": null,
+            "color_table": null,
+            "statistics": {
+                "minimum": 8.0,
+                "maximum": 96.0,
+                "mean": 38.1909194293,
+                "stddev": 20.6229968212
+            }
+        },
+        {
+            "extensions": ["bil", "hdr"],
+            "format": "raster",
+            "name": "bio4",
+            "path":"bio4.bil",
+            "other_paths": "bio4.hdr",
+            "no_data_value": -9999.0,
+            "min": 126.0,
+            "max": 22688.0,
+            "scale": null,
+            "color_table": null,
+            "statistics": {
+                "minimum": 126.0,
+                "maximum": 22688.0,
+                "mean": 8325.4594810062,
+                "stddev": 5202.9501339511
+            }
+        },
+        {
+            "extensions": ["bil", "hdr"],
+            "format": "raster",
+            "name": "bio5",
+            "path":"bio5.bil",
+            "other_paths": "bio5.hdr",
+            "no_data_value": -9999.0,
+            "min": -57.0,
+            "max": 489.0,
+            "scale": null,
+            "color_table": null,
+            "statistics": {
+                "minimum": -57.0,
+                "maximum": 489.0,
+                "mean": 258.0117989397,
+                "stddev": 103.3555072124
+            }
+        },
+        {
+            "extensions": ["bil", "hdr"],
+            "format": "raster",
+            "name": "bio6",
+            "path":"bio6.bil",
+            "other_paths": "bio6.hdr",
+            "no_data_value": -9999.0,
+            "min": -540.0,
+            "max": 258.0,
+            "scale": null,
+            "color_table": null,
+            "statistics": {
+                "minimum": -540.0,
+                "maximum": 258.0,
+                "mean": -91.1103825354,
+                "stddev": 199.7325078865
+            }
+        },
+        {
+            "extensions": ["bil", "hdr"],
+            "format": "raster",
+            "name": "bio7",
+            "path":"bio7.bil",
+            "other_paths": "bio7.hdr",
+            "no_data_value": -9999.0,
+            "min": 55.0,
+            "max": 723.0,
+            "scale": 1.0,
+            "color_table": null,
+            "statistics": {
+                "minimum": 55.0,
+                "maximum": 723.0,
+                "mean": 349.1221814751,
+                "stddev": 137.6100767535
+            }
+        },
+        {
+            "extensions": ["bil", "hdr"],
+            "format": "raster",
+            "name": "bio8",
+            "path":"bio8.bil",
+            "other_paths": "bio8.hdr",
+            "no_data_value": -9999.0,
+            "min": -278.0,
+            "max": 376.0,
+            "scale": null,
+            "color_table": null,
+            "statistics": {
+                "minimum": -278.0,
+                "maximum": 376.0,
+                "mean": 152.698580875,
+                "stddev": 105.6714606395
+            }
+        },
+        {
+            "extensions": ["bil", "hdr"],
+            "format": "raster",
+            "name": "bio9",
+            "path":"bio9.bil",
+            "other_paths": "bio9.hdr",
+            "no_data_value": -9999.0,
+            "min": -444.0,
+            "max": 359.0,
+            "scale": null,
+            "color_table": null,
+            "statistics": {
+                "minimum": -444.0,
+                "maximum": 359.0,
+                "mean": 23.1203172853,
+                "stddev": 205.3246881407
+            }
+        },
+        {
+            "extensions": ["bil", "hdr"],
+            "format": "raster",
+            "name": "bio10",
+            "path":"bio10.bil",
+            "other_paths": "bio10.hdr",
+            "no_data_value": -9999.0,
+            "min": -93.0,
+            "max": 379.0,
+            "scale": null,
+            "color_table": null,
+            "statistics": {
+                "minimum": -93.0,
+                "maximum": 379.0,
+                "mean": 185.8916636771,
+                "stddev": 96.6372495705
+            }
+        },
+        {
+            "extensions": ["bil", "hdr"],
+            "format": "raster",
+            "name": "bio11",
+            "path":"bio11.bil",
+            "other_paths": "bio11.hdr",
+            "no_data_value": -9999.0,
+            "min": -483.0,
+            "max": 284.0,
+            "scale": null,
+            "color_table": null,
+            "statistics": {
+                "minimum": -483.0,
+                "maximum": 284.0,
+                "mean": -26.0723814459,
+                "stddev": 204.0535023337
+            }
+        },
+        {
+            "extensions": ["bil", "hdr"],
+            "format": "raster",
+            "name": "bio12",
+            "path":"bio12.bil",
+            "other_paths": "bio12.hdr",
+            "no_data_value": -9999.0,
+            "min": 0.0,
+            "max": 7755.0,
+            "scale": null,
+            "color_table": null,
+            "statistics": {
+                "minimum": 0.0,
+                "maximum": 7755.0,
+                "mean": 706.0575843536,
+                "stddev": 686.7474951418
+            }
+        },
+        {
+            "extensions": ["bil", "hdr"],
+            "format": "raster",
+            "name": "bio13",
+            "path":"bio13.bil",
+            "other_paths": "bio13.hdr",
+            "no_data_value": -9999.0,
+            "min": 0.0,
+            "max": 1754.0,
+            "scale": null,
+            "color_table": null,
+            "statistics": {
+                "minimum": 0.0,
+                "maximum": 1754.0,
+                "mean": 117.0114331648,
+                "stddev": 111.8238177054
+            }
+        },
+        {
+            "extensions": ["bil", "hdr"],
+            "format": "raster",
+            "name": "bio14",
+            "path":"bio14.bil",
+            "other_paths": "bio14.hdr",
+            "no_data_value": -9999.0,
+            "min": 0.0,
+            "max": 531.0,
+            "scale": null,
+            "color_table": null,
+            "statistics": {
+                "minimum": 0.0,
+                "maximum": 531.0,
+                "mean": 20.8258784138,
+                "stddev": 31.5631378018
+            }
+        },
+        {
+            "extensions": ["bil", "hdr"],
+            "format": "raster",
+            "name": "bio15",
+            "path":"bio15.bil",
+            "other_paths": "bio15.hdr",
+            "no_data_value": -9999.0,
+            "min": 0.0,
+            "max": 226.0,
+            "scale": null,
+            "color_table": null,
+            "statistics": {
+                "minimum": 0.0,
+                "maximum": 226.0,
+                "mean": 60.577849821,
+                "stddev": 33.8519132641
+            }
+        },
+        {
+            "extensions": ["bil", "hdr"],
+            "format": "raster",
+            "name": "bio16",
+            "path":"bio16.bil",
+            "other_paths": "bio16.hdr",
+            "no_data_value": -9999.0,
+            "min": 0.0,
+            "max": 3775.0,
+            "scale": null,
+            "color_table": null,
+            "statistics": {
+                "minimum": 0.0,
+                "maximum": 3775.0,
+                "mean": 310.0698877942,
+                "stddev": 298.2048615665
+            }
+        },
+        {
+            "extensions": ["bil", "hdr"],
+            "format": "raster",
+            "name": "bio17",
+            "path":"bio17.bil",
+            "other_paths": "bio17.hdr",
+            "no_data_value": -9999.0,
+            "min": 0.0,
+            "max": 1679.0,
+            "scale": null,
+            "color_table": null,
+            "statistics": {
+                "minimum": 0.0,
+                "maximum": 1679.0,
+                "mean": 73.2157885296,
+                "stddev": 104.8631860123
+            }
+        },
+        {
+            "extensions": ["bil", "hdr"],
+            "format": "raster",
+            "name": "bio18",
+            "path":"bio18.bil",
+            "other_paths": "bio18.hdr",
+            "no_data_value": -9999.0,
+            "min": 0.0,
+            "max": 2774.0,
+            "scale": null,
+            "color_table": null,
+            "statistics": {
+                "minimum": 0.0,
+                "maximum": 2774.0,
+                "mean": 209.3278391199,
+                "stddev": 187.4854915373
+            }
+        },
+        {
+            "extensions": ["bil", "hdr"],
+            "format": "raster",
+            "name": "bio19",
+            "path":"bio19.bil",
+            "other_paths": "bio19.hdr",
+            "no_data_value": -9999.0,
+            "min": 0.0,
+            "max": 3247.0,
+            "scale": null,
+            "color_table": null,
+            "statistics": {
+                "minimum": 0.0,
+                "maximum": 3247.0,
+                "mean": 128.3177542153,
+                "stddev": 207.9307881983
+            }
+        }
+    ]
+}
