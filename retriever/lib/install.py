@@ -68,7 +68,7 @@ def install_mysql(dataset, user='root', password='', host='localhost',
 
 def install_postgres(dataset, user='postgres', password='',
                      host='localhost', port=5432, database='postgres',
-                     database_name='{db}', table_name='{db}.{table}',
+                     database_name='{db}', table_name='{db}.{table}', bbox=[],
                      debug=False, use_cache=True):
     """Install datasets into postgres."""
     args = {
@@ -81,7 +81,8 @@ def install_postgres(dataset, user='postgres', password='',
         'port': port,
         'password': password,
         'table_name': table_name,
-        'user': user
+        'user': user,
+        'bbox': bbox
     }
     _install(args, use_cache, debug)
 

@@ -45,7 +45,7 @@ class TabularDataset(Dataset):
         self.replace_columns = replace_columns
         self.missingValues = missingValues
         self.cleaned_columns = cleaned_columns
-
+        self.dataset_type = "TabularDataset"
         for key in kwargs:
             if hasattr(self, key):
                 self.key = kwargs[key]
@@ -259,8 +259,8 @@ class TabularDataset(Dataset):
 
 class RasterDataset(Dataset):
     """Raster table implementation"""
-    def __init__(self, **kwargs):
-        self.name = None
+    def __init__(self, name=None, url=None, dataset_type="RasterDataset", **kwargs):
+        self.name = name
         self.group = None
         self.relative_path = 0
         self.resolution = None
@@ -270,11 +270,14 @@ class RasterDataset(Dataset):
         self.geoTransform = None
         self.parameter = None
         self.extent = None
+        self.dataset_type = dataset_type
         for key in kwargs:
-            if hasattr(self, key):
-                self.key = kwargs[key]
-            else:
-                setattr(self, key, kwargs[key])
+            setattr(self, key, kwargs[key])
+
+
+    def get_srid(self, path):
+        # read file and return srid if available
+        return None
 
 
 class VectorDataset(Dataset):
@@ -290,7 +293,7 @@ class VectorDataset(Dataset):
         self.fields_dict = {}
         self.extent = {}
         self.saptialref = None
-
+        self.dataset_type = "VectorDataset"
         for key in kwargs:
             if hasattr(self, key):
                 self.key = kwargs[key]
