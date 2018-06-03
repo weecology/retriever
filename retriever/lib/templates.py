@@ -107,27 +107,48 @@ class BasicTextTemplate(Script):
 
         for i_table, table_obj in self.tables.items():
 
-            url = table_obj.url
+            # if the table has no url, use the script's url
+            if hasattr(table_obj, "url"):
+                url = table_obj.url
+            elif self.url:
+                url = self.url
+
             if hasattr(self, "archived"):
-                files = [table_obj.path]
+                if hasattr(self, "extract_all"):
+                    if self.extract_all:
+                        files = None
+                else:
+                    files = [table_obj.path]
                 archive_type = self.archived
                 keep_in_dir = False
-                archivename = None
+                archive_name = None
                 if hasattr(self, "keep_in_dir"):
                     keep_in_dir = self.keep_in_dir
-                if hasattr(self, "archivename"):
-                    archivename = self.archivename
+                if hasattr(self, "archive_name"):
+                    archive_name = self.archive_name
                 self.engine.download_files_from_archive(url=url,
                                                         file_names=files,
-                                                        filetype=archive_type,
+                                                        archive_type=archive_type,
                                                         keep_in_dir=keep_in_dir,
-                                                        archivename=archivename)
+                                                        archive_name=archive_name)
+
                 self.engine.auto_create_table(table_obj, filename=table_obj.path)
-                self.engine.insert_data_from_file(self.engine.format_filename(
-                    table_obj.path))
             else:
                 self.engine.auto_create_table(table_obj, url=url)
-                self.engine.insert_data_from_url(url)
+
+            if hasattr(table_obj, "dataset_type"):
+                if table_obj.dataset_type == "RasterDataset":
+                    self.engine.insert_raster(self.engine.format_filename(table_obj.path))
+                    continue
+                elif table_obj.dataset_type == "VectorDataset":
+                    self.engine.insert_vector(self.engine.format_filename(table_obj.path))
+                    continue
+                elif hasattr(self, "archived"):
+                    # assume tabular
+                    self.engine.insert_data_from_file(self.engine.format_filename(table_obj.path))
+                    continue
+                else:
+                    self.engine.insert_data_from_url(url)
 
 
 class HtmlTableTemplate(Script):

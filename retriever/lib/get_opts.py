@@ -76,6 +76,10 @@ install_parser.add_argument('--compile', help='force re-compile of script before
 install_parser.add_argument('--debug', help='run in debug mode', action='store_true')
 install_parser.add_argument('--not-cached', help='overwrites local cache of raw data', action='store_true')
 download_parser.add_argument('dataset', help='dataset name').completer = ChoicesCompleter(script_list)
+download_parser.add_argument('-b', '--bbox', nargs=4,
+                             help='Set bounding box xmin, ymin, xmax, ymax',
+                             required=False)
+
 ls_parser.add_argument('-l', help='search datasets with specific license(s)',
                        nargs='+').completer = ChoicesCompleter(list(licenses_options))
 ls_parser.add_argument('-k', help='search datasets with keyword(s)',
@@ -93,6 +97,9 @@ for engine in engine_list:
     else:
         engine_parser = install_subparsers.add_parser(engine.abbreviation, help=engine.name)
         engine_parser.add_argument('dataset', help='dataset name').completer = ChoicesCompleter(script_list)
+        engine_parser.add_argument('-b', '--bbox', nargs=4,
+                                   help='Set bounding box xmin, ymin, xmax, ymax',
+                                   required=False)
 
     abbreviations = set('h')
 
