@@ -3,6 +3,7 @@ import sys
 from builtins import range
 import gdal
 import ogr
+import csv
 
 #sys.path.insert(0,"/Library/Frameworks/GDAL.framework/Versions/2.2/Python/3.6/site-packages")
 
@@ -98,6 +99,61 @@ class engine(Engine):
                     -dsco INIT_WITH_EPSG=NO".format(self.file_name,band, path))
 
             os.system("rm {}.csv".format(path))
+
+    def insert_vector(self,path=None, srid=4326):
+
+        if not path:
+            path = Engine.format_data_dir(self)
+
+        os.system("ogr2ogr -overwrite -progress -f csv '{}/{}' '{}'.shp".format(path, self.file_name, path))
+
+        conn = dbapi.connect("sqlite.db")
+        conn.text_factory = str #allow utf-8 data to be stored
+        cur = conn.cursor()
+
+        file = "{}/{}/{}.csv".format(path,self.file_name,self.file_name)
+
+        with open(file,"r") as f:
+            reader = csv.reader(f)
+            header = True
+            for row in reader:
+            if header:
+                # gather column names from the first row of the csv
+                header = False
+
+                sql = "DROP TABLE IF EXISTS {}".format(self.file_name)
+                cur.execute(sql)
+
+                list = list(str(column) for column in row)
+                separator = ", "
+                head = separator.join(list)
+
+                sql = "CREATE TABLE {} ({})".format(self.file_name, head)
+                cur.execute(sql)
+
+                for column in row:
+                    if column.lower().endswith("_id"):
+                        index = "{}__{}".format(self.file_name, column)
+                        sql = "CREATE INDEX {} on {} ({})".format( index, self.file_name, column )
+                        c.execute(sql)
+
+                list = list("?" for column in row)
+                separator = ", "
+                head = separator.join(list)
+
+                insertsql = "INSERT INTO {} VALUES ({})".format(self.file_name, head)
+
+                rowlen = len(row)
+                
+            else:
+                # skip lines that don't have the right number of columns
+                if len(row) == rowlen:
+                    c.execute(insertsql, row)
+
+        conn.commit()
+
+        c.close()
+        conn.close()
 
     def create_db(self):
         """Don't create database for SQLite
