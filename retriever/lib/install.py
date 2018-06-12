@@ -16,7 +16,7 @@ def _install(args, use_cache, debug):
     engine.use_cache = use_cache
 
     script_list = SCRIPT_LIST()
-    if not script_list or not os.listdir(SCRIPT_WRITE_PATH):
+    if not (script_list or os.listdir(SCRIPT_WRITE_PATH)):
         check_for_updates()
         script_list = SCRIPT_LIST()
     data_sets_scripts = name_matches(script_list, args['dataset'])
@@ -33,6 +33,7 @@ def _install(args, use_cache, debug):
         message = "Run retriever.datasets()to list the currently available " \
                   "datasets."
         raise ValueError(message)
+    return engine
 
 
 def install_csv(dataset,
@@ -45,7 +46,7 @@ def install_csv(dataset,
         'engine': 'csv',
         'table_name': table_name
     }
-    _install(args, use_cache, debug)
+    return _install(args, use_cache, debug)
 
 
 def install_mysql(dataset, user='root', password='', host='localhost',
@@ -63,12 +64,12 @@ def install_mysql(dataset, user='root', password='', host='localhost',
         'table_name': table_name,
         'user': user
     }
-    _install(args, use_cache, debug)
+    return _install(args, use_cache, debug)
 
 
 def install_postgres(dataset, user='postgres', password='',
                      host='localhost', port=5432, database='postgres',
-                     database_name='{db}', table_name='{db}.{table}',
+                     database_name='{db}', table_name='{db}.{table}', bbox=[],
                      debug=False, use_cache=True):
     """Install datasets into postgres."""
     args = {
@@ -81,12 +82,13 @@ def install_postgres(dataset, user='postgres', password='',
         'port': port,
         'password': password,
         'table_name': table_name,
-        'user': user
+        'user': user,
+        'bbox': bbox
     }
-    _install(args, use_cache, debug)
+    return _install(args, use_cache, debug)
 
 
-def install_sqlite(dataset, file= os.path.join(DATA_DIR, 'sqlite.db'),
+def install_sqlite(dataset, file=os.path.join(DATA_DIR, 'sqlite.db'),
                    table_name='{db}_{table}',
                    debug=False, use_cache=True):
     """Install datasets into sqlite."""
@@ -97,7 +99,7 @@ def install_sqlite(dataset, file= os.path.join(DATA_DIR, 'sqlite.db'),
         'file': file,
         'table_name': table_name
     }
-    _install(args, use_cache, debug)
+    return _install(args, use_cache, debug)
 
 
 def install_msaccess(dataset, file=os.path.join(DATA_DIR, 'access.mdb'),
@@ -111,7 +113,7 @@ def install_msaccess(dataset, file=os.path.join(DATA_DIR, 'access.mdb'),
         'file': file,
         'table_name': table_name
     }
-    _install(args, use_cache, debug)
+    return _install(args, use_cache, debug)
 
 
 def install_json(dataset,
@@ -124,7 +126,7 @@ def install_json(dataset,
         'engine': 'json',
         'table_name': table_name
     }
-    _install(args, use_cache, debug)
+    return _install(args, use_cache, debug)
 
 
 def install_xml(dataset,
@@ -137,4 +139,4 @@ def install_xml(dataset,
         'engine': 'xml',
         'table_name': table_name
     }
-    _install(args, use_cache, debug)
+    return _install(args, use_cache, debug)

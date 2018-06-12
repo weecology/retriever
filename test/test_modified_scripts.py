@@ -36,6 +36,7 @@ def setup_module():
     """
     os.chdir(retriever_root_dir)
 
+
 def get_modified_scripts():
     """Get modified script list, using version.txt in repo and master upstream"""
 
@@ -128,7 +129,7 @@ def install_modified():
             try:
                 opts = engine_test[engine.abbreviation]
                 test_engines[engine.abbreviation] = choose_engine(opts)
-            except:
+            except BaseException:
                 test_engines[engine.abbreviation] = None
                 pass
 

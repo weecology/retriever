@@ -82,6 +82,7 @@ def name_matches(scripts, arg):
     if matches:
         print("Did you mean: \n\t{}".format("\n\t".join([i[0] for i in matches])))
 
+
 def final_cleanup(engine):
     """Perform final cleanup operations after all scripts have run."""
     pass
@@ -93,13 +94,13 @@ config_path = os.path.join(HOME_DIR, 'connections.config')
 def reset_retriever(scope="all", ask_permission=True):
     """Remove stored information on scripts, data, and connections."""
     warning_messages = {
-        'all': "\nThis will remove existing scripts, cached data, and information on database connections." 
+        'all': "\nThis will remove existing scripts, cached data, and information on database connections."
                +"\nSpecifically it will remove the scripts and raw_data folders and the connections.config file in {}."
                +"\nDo you want to proceed? (y/N)\n",
         'scripts': "\nThis will remove existing scripts."
-                   +"\nSpecifically it will remove the scripts folder in {}." 
+                   +"\nSpecifically it will remove the scripts folder in {}."
                    +"\nDo you want to proceed? (y/N)\n",
-        'data': "\nThis will remove raw data cached by the Retriever." 
+        'data': "\nThis will remove raw data cached by the Retriever."
                 +"\nSpecifically it will remove the raw_data folder in {}."
                 +"\nDo you want to proceed? (y/N)\n"
     }
@@ -179,7 +180,7 @@ def getmd5(data, data_type='lines'):
     checksum = md5()
     if data_type == 'lines':
         for line in data:
-            if type(line) == bytes:
+            if isinstance(line, bytes):
                 checksum.update(line)
             else:
                 checksum.update(str(line).encode())
@@ -188,7 +189,11 @@ def getmd5(data, data_type='lines'):
     if data_type == 'file':
         files = [os.path.normpath(data)]
     if data_type == 'dir':
-        for root, directories, filenames in os.walk(os.path.normpath(data)):
+        directory_path = os.path.normpath(data)
+        if not os.path.exists(directory_path):
+            raise ("Path not found", directory_path)
+        for root, directories, filenames in os.walk(
+                os.path.normpath(directory_path)):
             for filename in sorted(filenames):
                 files.append(os.path.normpath(os.path.join(root, filename)))
     for file_path in files:
@@ -202,7 +207,7 @@ def getmd5(data, data_type='lines'):
             input_file = io.open(file_path, encoding=ENCODING)
 
         for line in input_file:
-            if type(line) == bytes:
+            if isinstance(line, bytes):
                 checksum.update(line)
             else:
                 checksum.update(str(line).encode())
