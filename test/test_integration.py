@@ -29,7 +29,6 @@ if os.name == "nt":
 else:
     os_password = ""
 
-
 mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, \
 csv_engine, download_engine, json_engine, xml_engine = engine_list
 
@@ -396,8 +395,18 @@ change_header_values = {
     'expect_out': ['aa,bb,c_c', '1,2,3', '4,5,6']
 }
 
-tests = [simple_csv, comma_delimiter, tab_delimiter, data_no_header, csv_latin1_encoding, autopk_csv, crosstab,
-         autopk_crosstab, skip_csv, extra_newline, change_header_values]
+tests = [
+    simple_csv,
+    comma_delimiter,
+    tab_delimiter,
+    data_no_header,
+    csv_latin1_encoding,
+    autopk_csv,
+    crosstab,
+    autopk_crosstab,
+    skip_csv,
+    extra_newline,
+    change_header_values]
 
 # Create a tuple of all test scripts with their expected values
 test_parameters = [(test, test['expect_out']) for test in tests]
@@ -438,6 +447,7 @@ def teardown_module():
         os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.json'))
         os.system("rm -r *{}".format(test['name']))
         os.system("rm testdb.sqlite")
+    os.system("rm -r  .pytest_cache")
 
 
 def get_script_module(script_name):
@@ -454,6 +464,7 @@ def get_output_as_csv(dataset, engines, tmpdir, db):
     # we don't have to change to the main source directory in order
     # to have the scripts loaded
     script_module = get_script_module(dataset["name"])
+    engines.script_table_registry = {}
     script_module.download(engines)
     script_module.engine.final_cleanup()
     script_module.engine.to_csv()
@@ -476,7 +487,10 @@ def test_csv_integration(dataset, expected, tmpdir):
 @pytest.mark.parametrize("dataset, expected", test_parameters)
 def test_sqlite_integration(dataset, expected, tmpdir):
     dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb.sqlite'))
-    sqlite_engine.opts = {'engine': 'sqlite', 'file': dbfile, 'table_name': '{db}_{table}'}
+    sqlite_engine.opts = {
+        'engine': 'sqlite',
+        'file': dbfile,
+        'table_name': '{db}_{table}'}
     os.system("rm testdb.sqlite")
     assert get_output_as_csv(dataset, sqlite_engine, tmpdir, dataset["name"]) == expected
 
@@ -514,6 +528,12 @@ def test_postgres_integration(dataset, expected, tmpdir):
 def test_mysql_integration(dataset, expected, tmpdir):
     """Check for mysql regression."""
     os.system('mysql -u travis -Bse "DROP DATABASE IF EXISTS testdb"')
-    mysql_engine.opts = {'engine': 'mysql', 'user': 'travis', 'password': '', 'host': 'localhost', 'port': 3306,
-                         'database_name': 'testdb', 'table_name': '{db}.{table}'}
+    mysql_engine.opts = {
+        'engine': 'mysql',
+        'user': 'travis',
+        'password': '',
+        'host': 'localhost',
+        'port': 3306,
+        'database_name': 'testdb',
+        'table_name': '{db}.{table}'}
     assert get_output_as_csv(dataset, mysql_engine, tmpdir, db=mysql_engine.opts['database_name']) == expected

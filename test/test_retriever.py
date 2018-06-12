@@ -30,7 +30,8 @@ from retriever.lib.datapackage import clean_input, is_empty
 # Create simple engine fixture
 test_engine = Engine()
 test_engine.table = TabularDataset(**{"name": "test"})
-test_engine.script = BasicTextTemplate(**{"tables": test_engine.table, "name": "test"})
+test_engine.script = BasicTextTemplate(
+    **{"tables": test_engine.table, "name": "test"})
 test_engine.opts = {'database_name': '{db}_abc'}
 
 # Main paths
@@ -52,7 +53,7 @@ achive_gz = raw_dir_files.format(file_name='sample.gz')
 # Setup urls for downloading raw data from the test/raw_data directory
 
 achive_url = """file://{loc}/raw_data/""" \
-                 .format(loc=file_location) + '{file_path}'
+    .format(loc=file_location) + '{file_path}'
 
 zip_url = os.path.normpath(achive_url.format(file_path='sample_zip.zip'))
 tar_url = os.path.normpath(achive_url.format(file_path='sample_tar.tar'))
@@ -199,9 +200,8 @@ def test_download_archive_gz_known():
 
     from a gzipped file to the .retriever/data  dir"""
     setup_functions()
-    files = test_engine.download_files_from_archive(url=gz_url,
-                                                    file_names=['test/sample_tar.csv'],
-                                                    archive_type='gz')
+    files = test_engine.download_files_from_archive(
+        url=gz_url, file_names=['test/sample_tar.csv'], archive_type='gz')
     r_path = os.path.normpath(
         os.path.join(HOMEDIR, '.retriever/raw_data/test/test/sample_tar.csv'))
     assert r_path == test_engine.find_file('test/sample_tar.csv')
@@ -451,7 +451,7 @@ def test_format_data_dir():
     test_engine.script.name = "TestName"
     r_path = '.retriever/raw_data/TestName'
     assert os.path.normpath(test_engine.format_data_dir()) == \
-           os.path.normpath(os.path.join(HOMEDIR, r_path))
+        os.path.normpath(os.path.join(HOMEDIR, r_path))
 
 
 def test_format_filename():
@@ -459,7 +459,7 @@ def test_format_filename():
     test_engine.script.name = "TestName"
     r_path = '.retriever/raw_data/TestName/testfile.csv'
     assert os.path.normpath(test_engine.format_filename('testfile.csv')) == \
-           os.path.normpath(os.path.join(HOMEDIR, r_path))
+        os.path.normpath(os.path.join(HOMEDIR, r_path))
 
 
 def test_format_insert_value_int():
@@ -655,7 +655,7 @@ def test_clean_input_not_empty_list(monkeypatch):
 
     monkeypatch.setattr('retriever.lib.datapackage.input', mock_input)
     assert clean_input("", ignore_empty=True, split_char=',', dtype=None) == \
-           ["1", "2", "3"]
+        ["1", "2", "3"]
 
 
 def test_clean_input_bool(monkeypatch):
