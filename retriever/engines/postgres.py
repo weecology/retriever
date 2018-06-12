@@ -56,7 +56,7 @@ class engine(Engine):
 
             file_path = self.find_file(filename)
             if file_path:
-                filename, file_extension = os.path.splitext(os.path.basename(file_path))
+                filename, _ = os.path.splitext(os.path.basename(file_path))
 
                 self.create_table()
         else:
@@ -70,7 +70,7 @@ class engine(Engine):
         """Create Engine database."""
         try:
             Engine.create_db(self)
-        except:
+        except BaseException:
             self.connection.rollback()
             pass
 
@@ -87,7 +87,7 @@ class engine(Engine):
                 if self.execute("SELECT PostGIS_full_version();") or \
                         self.execute("SELECT PostGIS_version()"):
                     pass
-            except:
+            except BaseException:
                 print("Make sure you have Postgis\n"
                       "And CREATE EXTENSION postgis, postgis_topology")
                 raise
@@ -121,7 +121,7 @@ CSV HEADER;"""
                 self.execute("BEGIN")
                 self.execute(statement)
                 self.execute("COMMIT")
-            except:
+            except BaseException:
                 self.connection.rollback()
                 return Engine.insert_data_from_file(self, filename)
         else:
@@ -157,7 +157,7 @@ CSV HEADER;"""
          """
         if not path:
             path = Engine.format_data_dir(self)
-        raster_sql = "raster2pgsql -I -s {SRID} {path} -F -t 100x100 {SCHEMA_DBTABLE}".format(
+        raster_sql = "raster2pgsql -M -d -I -s {SRID} {path} -F -t 100x100 {SCHEMA_DBTABLE}".format(
             SRID=srid,
             path=path, SCHEMA_DBTABLE=self.table_name())
 
@@ -198,16 +198,6 @@ CSV HEADER;"""
         print(raster_sql + cmd_string)
         os.system(raster_sql + cmd_string)
 
-    def table_exists(self, dbname, tablename):
-        """Check to see if the given table exists."""
-        if not hasattr(self, 'existing_table_names'):
-            self.cursor.execute(
-                "SELECT schemaname, tablename FROM pg_tables WHERE schemaname NOT LIKE 'pg_%';")
-            self.existing_table_names = set()
-            for schema, table in self.cursor:
-                self.existing_table_names.add((schema.lower(), table.lower()))
-        return (dbname.lower(), tablename.lower()) in self.existing_table_names
-
     def format_insert_value(self, value, datatype):
         """Format value for an insert statement."""
         if datatype == "bool":
@@ -216,7 +206,7 @@ CSV HEADER;"""
                     return "TRUE"
                 elif int(value) == 0:
                     return "FALSE"
-            except:
+            except BaseException:
                 pass
         return Engine.format_insert_value(self, value, datatype)
 

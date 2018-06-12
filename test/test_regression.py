@@ -26,6 +26,7 @@ reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding(encoding)
 import pytest
+from collections import OrderedDict
 from retriever.lib.engine_tools import getmd5
 from retriever.engines import engine_list
 
@@ -36,7 +37,8 @@ if os.name == "nt":
 else:
     os_password = ""
 
-mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, csv_engine, download_engine, json_engine, xml_engine = engine_list
+mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, \
+csv_engine, download_engine, json_engine, xml_engine = engine_list
 file_location = os.path.dirname(os.path.realpath(__file__))
 retriever_root_dir = os.path.abspath(os.path.join(file_location, os.pardir))
 working_script_dir = os.path.abspath(os.path.join(retriever_root_dir, "scripts"))
@@ -75,8 +77,9 @@ def teardown_module():
 def get_script_module(script_name):
     """Load a script module"""
     if script_name in python_files:
-        file, pathname, desc = imp.find_module(script_name, [working_script_dir])
-        return imp.load_module(script_name+".py", file, pathname, desc)
+        file, pathname, desc = imp.find_module(script_name,
+                                               [working_script_dir])
+        return imp.load_module(script_name + ".py", file, pathname, desc)
     return read_json(os.path.join(retriever_root_dir, "scripts", script_name))
 
 
@@ -84,17 +87,16 @@ def get_csv_md5(dataset, engine, tmpdir, install_function, config):
     workdir = tmpdir.mkdtemp()
     os.system("cp -r {} {}/".format(os.path.join(retriever_root_dir, 'scripts'), os.path.join(str(workdir), 'scripts')))
     workdir.chdir()
-    script_module = get_script_module(dataset)
-    install_function(dataset.replace("_", "-"), **config)
-    if dataset not in python_files:
-        engine_obj = script_module.checkengine(engine)
-        engine_obj.to_csv()
-    else:
-        script_module.SCRIPT.download(engine)
-        script_module.SCRIPT.engine.final_cleanup()
-        script_module.SCRIPT.engine.to_csv()
-    os.system("rm -r scripts") # need to remove scripts before checking md5 on dir
-    current_md5 = getmd5(data=str(workdir), data_type='dir')
+    final_direct = os.getcwd()
+    engine.script_table_registry = {}
+    engine_obj = install_function(dataset.replace("_", "-"), **config)
+    engine_obj.to_csv()
+    engine_obj.script_table_registry = {}
+    engine.script_table_registry = {}
+    # need to remove scripts before checking md5 on dir
+    os.system("rm -r scripts")
+    current_md5 = getmd5(data=final_direct, data_type='dir')
+    os.chdir(retriever_root_dir)
     return current_md5
 
 

@@ -11,6 +11,7 @@ class engine(Engine):
     """Engine instance for writing data to a CSV file."""
     name = "CSV"
     abbreviation = "csv"
+    auto_column_number = 0
     datatypes = {
         "auto": "INTEGER",
         "int": "INTEGER",
@@ -37,13 +38,25 @@ class engine(Engine):
         self.auto_column_number = 1
         self.file = open_fw(self.table_name())
         self.output_file = open_csvw(self.file)
-        self.output_file.writerow([u'{}'.format(val) for val in self.table.get_insert_columns(join=False, create=True)])
+        column_list = self.table.get_insert_columns(join=False, create=True)
+        self.output_file.writerow([u'{}'.format(val) for val in column_list])
         self.table_names.append((self.file, self.table_name()))
+
+        # Register all tables created to enable
+        # testing python files having custom download function
+        if self.script.name not in self.script_table_registry:
+            self.script_table_registry[self.script.name] = []
+        self.script_table_registry[self.script.name].append(
+            (self.table_name(), self.table))
 
     def disconnect(self):
         """Close the last file in the dataset"""
         for output_tuple in self.table_names:
             output_tuple[0].close()
+
+    def disconnect_files(self):
+        """Close each file after being written"""
+        self.file.close()
 
     def execute(self, statement, commit=True):
         """Write a line to the output file"""
@@ -61,7 +74,7 @@ class engine(Engine):
         try:
             if len(v) > 1 and v[0] == v[-1] == "'":
                 v = '"%s"' % v[1:-1]
-        except:
+        except BaseException:
             pass
         return v
 
@@ -87,8 +100,8 @@ class engine(Engine):
 
     def to_csv(self):
         """Export sorted version of CSV file"""
-        for keys in self.script.tables:
-            sort_csv(self.table_name())
+        for table_item in self.script_table_registry[self.script.name]:
+            sort_csv(table_item[0])
 
     def get_connection(self):
         """Gets the db connection."""
