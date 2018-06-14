@@ -5,7 +5,6 @@ from future import standard_library
 
 standard_library.install_aliases()
 import os
-import sys
 import requests
 import imp
 from tqdm import tqdm
@@ -40,8 +39,6 @@ def check_for_updates(quiet=False):
         scripts = []
         for line in version_file:
             scripts.append(line.strip('\n').split(','))
-
-        total_script_count = len(scripts)
 
         # create script directory if not available
         if not os.path.isdir(SCRIPT_WRITE_PATH):

@@ -14,11 +14,12 @@ import difflib
 import json
 import platform
 import shutil
+import subprocess
 import warnings
 
 from hashlib import md5
-from io import StringIO as newfile
-from retriever.lib.defaults import HOME_DIR, ENCODING
+from io import StringIO as NewFile
+from retriever.lib.defaults import HOME_DIR
 
 from retriever.lib.models import *
 import xml.etree.ElementTree as ET
@@ -36,7 +37,9 @@ def create_home_dir():
 
     # create the necessary directory structure for storing scripts/raw_data
     # in the ~/.retriever directory
-    for dir in (HOME_DIR, os.path.join(HOME_DIR, 'raw_data'), os.path.join(HOME_DIR, 'scripts')):
+    required_dirs = [os.path.join(HOME_DIR, dirs)
+                     for dirs in ['', 'raw_data', 'scripts']]
+    for dir in required_dirs:
         if not os.path.exists(dir):
             try:
                 os.makedirs(dir)
@@ -46,7 +49,8 @@ def create_home_dir():
                     pw = pwd.getpwnam(os.getenv("SUDO_USER"))
                     os.chown(dir, pw.pw_uid, pw.pw_gid)
             except OSError:
-                print("The Retriever lacks permission to access the ~/.retriever/ directory.")
+                print("The Retriever lacks permission to "
+                      "access the ~/.retriever/ directory.")
                 raise
 
 
@@ -73,14 +77,16 @@ def name_matches(scripts, arg):
 
     for script in scripts:
         script_match_ratio = difflib.SequenceMatcher(None, script.name, arg).ratio()
-        if  script_match_ratio >.53:
+        if script_match_ratio > .53:
             matches.append((script.name, script_match_ratio))
 
     matches.sort(key=lambda x: -x[1])
 
-    print("\nThe dataset \"{}\" isn't currently available in the Retriever.".format(arg))
+    print("\nThe dataset \"{}\" "
+          "isn't currently available in the Retriever.".format(arg))
     if matches:
-        print("Did you mean: \n\t{}".format("\n\t".join([i[0] for i in matches])))
+        print("Did you mean:"
+              " \n\t{}".format("\n\t".join([i[0] for i in matches])))
 
 
 def final_cleanup(engine):
@@ -94,15 +100,15 @@ config_path = os.path.join(HOME_DIR, 'connections.config')
 def reset_retriever(scope="all", ask_permission=True):
     """Remove stored information on scripts, data, and connections."""
     warning_messages = {
-        'all': "\nThis will remove existing scripts, cached data, and information on database connections."
-               +"\nSpecifically it will remove the scripts and raw_data folders and the connections.config file in {}."
-               +"\nDo you want to proceed? (y/N)\n",
+        'all': "\nThis will remove existing scripts and cached data."
+               "\nSpecifically it will remove the scripts and raw_data folders"
+               "in {}\nDo you want to proceed? (y/N)\n",
         'scripts': "\nThis will remove existing scripts."
-                   +"\nSpecifically it will remove the scripts folder in {}."
-                   +"\nDo you want to proceed? (y/N)\n",
+                   + "\nSpecifically it will remove the scripts folder in {}."
+                   + "\nDo you want to proceed? (y/N)\n",
         'data': "\nThis will remove raw data cached by the Retriever."
-                +"\nSpecifically it will remove the raw_data folder in {}."
-                +"\nDo you want to proceed? (y/N)\n"
+                + "\nSpecifically it will remove the raw_data folder in {}."
+                + "\nDo you want to proceed? (y/N)\n"
     }
 
     path = os.path.normpath(HOME_DIR)
@@ -134,17 +140,19 @@ def json2csv(input_file, output_file=None, header_values=None):
         output_file = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
     csv_out = open_fw(output_file, encode=False)
     if os.name == 'nt':
-        outfile = csv.DictWriter(csv_out, dialect='excel', escapechar="\\", lineterminator='\n',
+        outfile = csv.DictWriter(csv_out, dialect='excel', escapechar="\\",
+                                 lineterminator='\n',
                                  fieldnames=header_values)
     else:
-        outfile = csv.DictWriter(csv_out, dialect='excel', escapechar="\\", fieldnames=header_values)
+        outfile = csv.DictWriter(csv_out, dialect='excel',
+                                 escapechar="\\", fieldnames=header_values)
     raw_data = json.loads(file_out.read())
     outfile.writeheader()
 
     for item in raw_data:
         outfile.writerow(item)
     file_out.close()
-    os.system("rm -r {}".format(input_file))
+    subprocess.call(['rm', '-r', input_file])
     return output_file
 
 
@@ -159,19 +167,20 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
         outputfile = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
     csv_out = open_fw(outputfile)
     if os.name == 'nt':
-        csv_writer = csv.writer(csv_out, dialect='excel', escapechar='\\', lineterminator='\n')
+        csv_writer = csv.writer(csv_out, dialect='excel',
+                                escapechar='\\', lineterminator='\n')
     else:
         csv_writer = csv.writer(csv_out, dialect='excel', escapechar='\\')
 
     v = file_output.read()
     csv_writer.writerow(header_values)
-    tree = ET.parse(newfile(v))
+    tree = ET.parse(NewFile(v))
     root = tree.getroot()
     for rows in root.findall(row_tag):
         x = [name.text for name in header_values for name in rows.findall(name)]
         csv_writer.writerow(x)
     file_output.close()
-    os.system("rm -r {}".format(input_file))
+    subprocess.call(['rm', '-r', input_file])
     return outputfile
 
 
@@ -191,9 +200,8 @@ def getmd5(data, data_type='lines'):
     if data_type == 'dir':
         directory_path = os.path.normpath(data)
         if not os.path.exists(directory_path):
-            raise ("Path not found", directory_path)
-        for root, directories, filenames in os.walk(
-                os.path.normpath(directory_path)):
+            raise "Path not found, {path}".format(path=directory_path)
+        for root, _, filenames in os.walk(os.path.normpath(directory_path)):
             for filename in sorted(filenames):
                 files.append(os.path.normpath(os.path.join(root, filename)))
     for file_path in files:
@@ -297,6 +305,7 @@ def file_2list(input_file):
 def get_script_version():
     """This function gets the version number of the scripts and returns them in array form."""
     from retriever.lib.scripts import SCRIPT_LIST
+
     modules = SCRIPT_LIST()
     scripts = []
     for module in modules:
@@ -319,7 +328,7 @@ def set_proxy():
                "HTTP_PROXY", "HTTPS_PROXY", "FTP_PROXY"]
     for proxy in proxies:
         if os.getenv(proxy):
-            if len(os.environ[proxy]) != 0:
+            if os.environ[proxy]:
                 for i in proxies:
                     os.environ[i] = os.environ[proxy]
                 break

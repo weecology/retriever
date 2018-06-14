@@ -8,14 +8,14 @@ import imp
 import io
 import os
 import sys
-from os.path import join, isfile, getmtime, exists, abspath
+from os.path import join, exists
 
 from pkg_resources import parse_version
 
 from retriever.lib.defaults import SCRIPT_SEARCH_PATHS, VERSION, ENCODING, SCRIPT_WRITE_PATH
 from retriever.lib.load_json import read_json
 
-global_script_list= {}
+global_script_list = {}
 
 
 def check_retriever_minimum_version(module):
@@ -39,7 +39,7 @@ def reload_scripts():
         os.makedirs(SCRIPT_WRITE_PATH)
 
     for search_path in [search_path for search_path in SCRIPT_SEARCH_PATHS if exists(search_path)]:
-        data_packages = [file for file in os.listdir(search_path) if file.endswith(".json")]
+        data_packages = [file_i for file_i in os.listdir(search_path) if file_i.endswith(".json")]
 
         for script in data_packages:
             script_name = '.'.join(script.split('.')[:-1])
@@ -141,7 +141,8 @@ def open_csvw(csv_file, encode=True):
     Also sets dialect to 'excel' and escape characters to '\\'
     """
     if os.name == 'nt':
-        csv_writer = csv.writer(csv_file, dialect='excel', escapechar='\\', lineterminator='\n')
+        csv_writer = csv.writer(csv_file, dialect='excel',
+                                escapechar='\\', lineterminator='\n')
     else:
         csv_writer = csv.writer(csv_file, dialect='excel', escapechar='\\')
     return csv_writer
@@ -155,11 +156,11 @@ def to_str(object, object_encoding=sys.stdout):
 
 
 class StoredScripts:
-
     def __init__(self):
         self._shared_scripts = SCRIPT_LIST()
 
     def get_scripts(self):
         return self._shared_scripts
+
 
 global_script_list = StoredScripts()

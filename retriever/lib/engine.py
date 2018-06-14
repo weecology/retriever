@@ -127,7 +127,7 @@ class Engine(object):
                                 self.table.cleanup.args),
                             types[n])
                         for n in range(len(line_values))
-                    ]
+                        ]
                 except Exception as e:
                     self.warning(
                         'Exception in line {}: {}'
@@ -171,7 +171,7 @@ class Engine(object):
         real_line_length = 0
         for values in lines:
             initial_cols = len(self.table.columns) - \
-                (3 if hasattr(self.table, "ct_names") else 2)
+                           (3 if hasattr(self.table, "ct_names") else 2)
             # add one if auto increment is not
             # set to get the right initial columns
             if not self.table.columns[0][1][0] == "pk-auto":
@@ -185,9 +185,8 @@ class Engine(object):
         """Create cross tab data."""
         for values in lines:
             initial_cols = len(self.table.columns) - \
-                (3 if hasattr(self.table, "ct_names") else 2)
-            # add one if auto increment is not set to get the right initial
-            # columns
+                           (3 if hasattr(self.table, "ct_names") else 2)
+            # add one if auto increment is not set to get the right initial columns
             if not self.table.columns[0][1][0] == "pk-auto":
                 initial_cols += 1
             begin = values[:initial_cols]
@@ -228,17 +227,15 @@ class Engine(object):
                       (self.table.header_rows, self.load_data(file_path)))
 
             lines = gen_from_source(source)
-
-            columns, column_values = self.table.auto_get_columns(header)
-
+            columns, _ = self.table.auto_get_columns(header)
             self.auto_get_datatypes(pk, lines, columns)
 
         if self.table.columns[-1][1][0][:3] == "ct-" \
                 and hasattr(self.table, "ct_names") \
                 and self.table.ct_column not in [c[0] for c in self.table.columns]:
             self.table.columns = self.table.columns[:-1] + \
-                [(self.table.ct_column, ("char", 50))] + \
-                [self.table.columns[-1]]
+                                 [(self.table.ct_column, ("char", 50))] + \
+                                 [self.table.columns[-1]]
 
         self.create_table()
 
@@ -276,7 +273,7 @@ class Engine(object):
                                     val = int(val)
                                     if column_types[i][0] == 'int' and \
                                             hasattr(self, 'max_int') and \
-                                    val > self.max_int:
+                                            val > self.max_int:
                                         column_types[i] = ['bigint', ]
                                 except Exception as _:
                                     column_types[i] = ['double', ]
@@ -292,9 +289,8 @@ class Engine(object):
                                     column_types[i][1] = max_lengths[i]
                     except IndexError:
                         pass
-
-        for i in range(len(columns)):
-            column = columns[i]
+        for i, value in enumerate(columns):
+            column = value
             column[1] = column_types[i]
             if pk == column[0]:
                 column[1][0] = "pk-" + column[1][0]
@@ -372,8 +368,8 @@ class Engine(object):
                     self.connection.rollback()
                 except Exception as _:
                     pass
-                print("Database already exists (%s). "
-                      "Installation will Continue..." % e)
+                print(e)
+                print("Installing into existing database")
 
     def create_db_statement(self):
         """Return SQL statement to create a database."""
@@ -416,8 +412,8 @@ class Engine(object):
                 self.connection.rollback()
             except Exception as _:
                 pass
-            print("Table already exists (%s). "
-                  "Continuing with the installation." % e)
+            print(e)
+            print("Replacing existing table")
 
     def create_table_statement(self):
         """Return SQL statement to create a table."""
@@ -463,7 +459,6 @@ class Engine(object):
                            unit_divisor=1024,
                            miniters=1,
                            desc='Downloading {}'.format(filename))
-
             try:
                 requests.get(url, allow_redirects=True,
                              stream=True,
@@ -521,11 +516,10 @@ class Engine(object):
                 elif archive_type == 'gz':
                     self.extract_gz(archive_full_path, archive_dir, file_name)
                 elif archive_type == 'tar' or archive_type == 'tar.gz':
-                    self.extract_tar(
-                        archive_full_path,
-                        archive_dir,
-                        archive_type,
-                        file_name)
+                    self.extract_tar(archive_full_path,
+                                     archive_dir,
+                                     archive_type,
+                                     file_name)
         return file_names
 
     def drop_statement(self, object_type, object_name):
@@ -535,14 +529,6 @@ class Engine(object):
                 object_type, object_name)
         return drop_statement
 
-    def drop_databse(self):
-        """Drop the database"""
-        try:
-            self.execute(
-                'DROP DATABASE IF EXISTS  {name}',
-                self.database_name())
-        except Exception as _:
-            pass
 
     def execute(self, statement, commit=True):
         """Execute given statement."""
@@ -556,11 +542,8 @@ class Engine(object):
         if commit:
             self.connection.commit()
 
-    def extract_gz(self, archive_path,
-                   archivedir_write_path,
-                   file_name=None,
-                   open_archive_file=None,
-                   archive=None):
+    def extract_gz(self, archive_path, archivedir_write_path, file_name=None,
+                   open_archive_file=None, archive=None):
         """Extract gz files.
 
         Extracts a given file name or all the files in the gz.
@@ -635,8 +618,8 @@ class Engine(object):
                 file_obj = None
                 open_object = True
 
-            for file_name in file_names:
-                self.write_fileobject(archivedir_write_path, file_name,
+            for fname in file_names:
+                self.write_fileobject(archivedir_write_path, fname,
                                       file_obj,
                                       archive,
                                       open_object)
@@ -806,6 +789,9 @@ class Engine(object):
         dataset_file.close()
 
     def supported_raster(self, path, ext=None):
+        """"Spatial data is not currently supported for this database type
+        or file format. PostgreSQL is currently the only supported output
+        for spatial data"""
         if self:
             raise Exception("Not supported")
 
@@ -822,7 +808,7 @@ class Engine(object):
     def to_csv(self, sort=True):
         # Due to Cyclic imports we can not move this import to the top
         from retriever.lib.engine_tools import sort_csv
-        # for table_n in lis
+
         for table_name in self.script_table_registry[self.script.name]:
 
             csv_file_output = os.path.normpath(table_name[0] + '.csv')
@@ -833,7 +819,7 @@ class Engine(object):
             self.cursor.execute("SELECT * FROM  {};".format(table_name[0]))
             row = self.cursor.fetchone()
             column_names = [u'{}'.format(tuple_i[0])
-                        for tuple_i in self.cursor.description]
+                            for tuple_i in self.cursor.description]
             csv_writer.writerow(column_names)
             while row is not None:
                 csv_writer.writerow(row)
@@ -909,7 +895,7 @@ class Engine(object):
 def skip_rows(rows, source):
     """Skip over the header lines by reading them before processing."""
     lines = gen_from_source(source)
-    for i in range(rows):
+    for _ in range(rows):
         next(lines)
     return lines
 

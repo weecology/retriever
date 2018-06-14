@@ -50,10 +50,13 @@ def choose_engine(opts, choice=True):
                     enginename == thisengine.abbreviation):
                 engine = thisengine
     if 'table_name' in opts:
-        if opts['table_name'] and "{table}" not in opts['table_name'] or "{db}" not in opts['table_name']:
+        if opts['table_name'] \
+                and "{table}" not in opts['table_name'] \
+                or "{db}" not in opts['table_name']:
             for opt in engine.required_opts:
                 if opt[0] == 'table_name':
-                    raise Exception('Accepted Table format {fom}'.format(fom=opt[2]))
+                    raise Exception('Accepted Table format '
+                                    '{fom}'.format(fom=opt[2]))
 
     engine.opts = opts
     return engine
