@@ -9,6 +9,7 @@ from retriever.lib.engine_tools import sort_csv
 
 class engine(Engine):
     """Engine instance for writing data to a CSV file."""
+
     name = "CSV"
     abbreviation = "csv"
     auto_column_number = 0
@@ -98,7 +99,7 @@ class engine(Engine):
         tablename = self.table_name(name=tablename, dbname=dbname)
         return os.path.exists(tablename)
 
-    def to_csv(self):
+    def to_csv(self, sort=True):
         """Export sorted version of CSV file"""
         for table_item in self.script_table_registry[self.script.name]:
             sort_csv(table_item[0])

@@ -26,7 +26,7 @@ def get_columns(values, cols):
 
 def printls(values, max_width=None, spacing=2):
     if sys.stdout.isatty() and max_width is None:
-        cols, lines = get_terminal_size()
+        cols, _ = get_terminal_size()
         max_width = cols
 
     if max_width:

@@ -4,7 +4,9 @@ from __future__ import print_function
 
 import json
 import os
+import shlex
 import shutil
+import subprocess
 import sys
 from imp import reload
 
@@ -60,13 +62,10 @@ comma_delimiter = {
                  '4,5,6'],
     'script': {"name": "comma_delimiter",
                "resources": [
-                   {"dialect": {
-                       "delimiter": ",",
-                       "do_not_bulk_insert": "True"
-                   },
-                    "name": "comma_delimiter",
-                    "schema": {},
-                    "url": "http://example.com/comma_delimiter.txt"}
+                   {"dialect": {"delimiter": ",", "do_not_bulk_insert": "True"},
+                   "name": "comma_delimiter",
+                   "schema": {},
+                   "url": "http://example.com/comma_delimiter.txt"}
                ],
                "retriever": "True",
                "retriever_minimum_version": "2.0.dev",
@@ -84,13 +83,10 @@ tab_delimiter = {
                  '4	5	6'],
     'script': {"name": "tab_delimiter",
                "resources": [
-                   {"dialect": {
-                      "delimiter": "\t",
-                      "do_not_bulk_insert": "True"
-                   },
-                    "name": "tab_delimiter",
-                    "schema": {},
-                    "url": "http://example.com/tab_delimiter.txt"}
+                   {"dialect": {"delimiter": "\t", "do_not_bulk_insert": "True" },
+                   "name": "tab_delimiter",
+                   "schema": {},
+                   "url": "http://example.com/tab_delimiter.txt"}
                ],
                "retriever": "True",
                "retriever_minimum_version": "2.0.dev",
@@ -445,9 +441,7 @@ def teardown_module():
     for test in tests:
         shutil.rmtree(os.path.join(HOME_DIR, "raw_data", test['name']))
         os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.json'))
-        os.system("rm -r *{}".format(test['name']))
-        os.system("rm testdb.sqlite")
-    os.system("rm -r  .pytest_cache")
+        subprocess.call(['rm', '-r', test['name']])
 
 
 def get_script_module(script_name):
@@ -491,7 +485,7 @@ def test_sqlite_integration(dataset, expected, tmpdir):
         'engine': 'sqlite',
         'file': dbfile,
         'table_name': '{db}_{table}'}
-    os.system("rm testdb.sqlite")
+    subprocess.call(['rm', '-r', 'testdb.sqlite'])
     assert get_output_as_csv(dataset, sqlite_engine, tmpdir, dataset["name"]) == expected
 
 
@@ -512,9 +506,9 @@ def test_jsonengine_integration(dataset, expected, tmpdir):
 @pytest.mark.parametrize("dataset, expected", test_parameters)
 def test_postgres_integration(dataset, expected, tmpdir):
     """Check for postgres regression."""
-    os.system('psql -U postgres -d testdb -h localhost -c '
-              '"DROP SCHEMA IF EXISTS testschema CASCADE"')
-
+    cmd = 'psql -U postgres -d testdb -h localhost -c ' \
+          '"DROP SCHEMA IF EXISTS testschema CASCADE"'
+    subprocess.call(shlex.split(cmd))
     postgres_engine.opts = {'engine': 'postgres', 'user': 'postgres',
                             'password': os_password, 'host': 'localhost',
                             'port': 5432, 'database': 'testdb',
@@ -527,7 +521,8 @@ def test_postgres_integration(dataset, expected, tmpdir):
 @pytest.mark.parametrize("dataset, expected", test_parameters)
 def test_mysql_integration(dataset, expected, tmpdir):
     """Check for mysql regression."""
-    os.system('mysql -u travis -Bse "DROP DATABASE IF EXISTS testdb"')
+    cmd = 'mysql -u travis -Bse "DROP DATABASE IF EXISTS testdb"'
+    subprocess.call(shlex.split(cmd))
     mysql_engine.opts = {
         'engine': 'mysql',
         'user': 'travis',

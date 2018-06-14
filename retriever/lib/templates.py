@@ -57,11 +57,9 @@ class Script(object):
     def reference_url(self):
         if self.ref:
             return self.ref
-        else:
-            if len(self.urls) == 1:
-                return self.urls[list(self.urls.keys())[0]]
-            else:
-                return None
+        if len(self.urls) == 1:
+            return self.urls[list(self.urls.keys())[0]]
+        return None
 
     def checkengine(self, engine=None):
         """Returns the required engine instance"""
@@ -105,9 +103,9 @@ class BasicTextTemplate(Script):
         Script.download(self, engine, debug)
         # make file name mandatory for simplicity
 
-        for i_table, table_obj in self.tables.items():
+        for _, table_obj in self.tables.items():
             # if the table has no url, use the script's url
-            if hasattr(table_obj, "url"):
+            if hasattr(table_obj, "url") and table_obj.url:
                 url = table_obj.url
             elif self.url:
                 url = self.url

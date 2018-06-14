@@ -49,7 +49,7 @@ class engine(Engine):
         insert_stmt = "INSERT INTO " + self.table_name()
         insert_stmt += " (" + columns + ")"
         insert_stmt += " VALUES ("
-        for i in range(0, column_count):
+        for _ in range(0, column_count):
             insert_stmt += "?, "
         insert_stmt = insert_stmt.rstrip(", ") + ")"
         return insert_stmt
@@ -91,18 +91,9 @@ class engine(Engine):
         else:
             return Engine.insert_data_from_file(self, filename)
 
-    def table_exists(self, dbname, tablename):
-        """Determine if the table already exists in the database."""
-        if not hasattr(self, 'existing_table_names'):
-            self.cursor.execute(
-                "SELECT name FROM sqlite_master WHERE type='table';")
-            self.existing_table_names = set()
-            for line in self.cursor:
-                self.existing_table_names.add(line[0].lower())
-        return self.table_name(name=tablename, dbname=dbname).lower() in self.existing_table_names
-
     def get_connection(self):
         """Get db connection."""
         import sqlite3 as dbapi
+
         self.get_input()
         return dbapi.connect(self.opts["file"])

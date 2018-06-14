@@ -12,6 +12,7 @@ from retriever.lib.models import Engine
 
 class engine(Engine):
     """Engine instance for writing data to a CSV file."""
+
     name = "Download Only"
     abbreviation = "download"
     required_opts = [("path",

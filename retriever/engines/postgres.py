@@ -72,7 +72,6 @@ class engine(Engine):
             Engine.create_db(self)
         except BaseException:
             self.connection.rollback()
-            pass
 
     def create_table(self):
         """Create a table and commit.
@@ -88,8 +87,9 @@ class engine(Engine):
                         self.execute("SELECT PostGIS_version()"):
                     pass
             except BaseException:
-                print("Make sure you have Postgis\n"
-                      "And CREATE EXTENSION postgis, postgis_topology")
+                print("Make sure that you have PostGIS installed\n"
+                      "The open PostgreSQL and run:\n"
+                      "CREATE EXTENSION postgis, postgis_topology;")
                 raise
             return
         Engine.create_table(self)
@@ -142,10 +142,12 @@ CSV HEADER;"""
             raster_extensions = ['.gif', '.img', '.bil',
                                  '.jpg', '.tif', '.tiff', '.hdf', '.l1b']
 
-        return [os.path.normpath(os.path.join(root, names))
-                for root, _, files in os.walk(path, topdown=False)
-                for names in files
-                if os.path.splitext(names)[1] in raster_extensions]
+        gis_files = []
+        for root, _, files in os.walk(path, topdown=False):
+            for names in files:
+                if os.path.splitext(names) in raster_extensions:
+                    gis_files.append(os.path.normpath(os.path.join(root, names)))
+        return gis_files
 
     def insert_raster(self, path=None, srid=4326):
         """Import Raster into Postgis Table
@@ -155,8 +157,10 @@ CSV HEADER;"""
         The sql processed by raster2pgsql is run
          as psql -U postgres -d <gisdb> -f <elev>.sql
          """
+
         if not path:
             path = Engine.format_data_dir(self)
+
         raster_sql = "raster2pgsql -M -d -I -s {SRID} {path} -F -t 100x100 {SCHEMA_DBTABLE}".format(
             SRID=srid,
             path=path, SCHEMA_DBTABLE=self.table_name())
@@ -164,6 +168,7 @@ CSV HEADER;"""
         cmd_string = """ | psql -U {USER} -d {DATABASE}""".format(
             USER=self.opts["user"],
             DATABASE=self.opts["database"])
+
         os.system(raster_sql + cmd_string)
 
     def insert_vector(self, path=None, srid=4326):
@@ -188,15 +193,14 @@ CSV HEADER;"""
          """
         if not path:
             path = Engine.format_data_dir(self)
-        raster_sql = "shp2pgsql -I -s {SRID} {path} {SCHEMA_DBTABLE}".format(
+        vector_sql = "shp2pgsql -I -s {SRID} {path} {SCHEMA_DBTABLE}".format(
             SRID=srid,
             path=path, SCHEMA_DBTABLE=self.table_name())
 
         cmd_string = """ | psql -U {USER} -d {DATABASE}""".format(
             USER=self.opts["user"],
             DATABASE=self.opts["database"])
-        print(raster_sql + cmd_string)
-        os.system(raster_sql + cmd_string)
+        os.system(vector_sql + cmd_string)
 
     def format_insert_value(self, value, datatype):
         """Format value for an insert statement."""
@@ -216,6 +220,7 @@ CSV HEADER;"""
         Please update the encoding lookup table if the required encoding is not present.
         """
         import psycopg2 as dbapi
+
         self.get_input()
         conn = dbapi.connect(host=self.opts["host"],
                              port=int(self.opts["port"]),
@@ -225,10 +230,9 @@ CSV HEADER;"""
         encoding = ENCODING.lower()
         if self.script.encoding:
             encoding = self.script.encoding.lower()
-        encoding_lookup = {
-            'iso-8859-1': 'Latin1',
-            'latin-1': 'Latin1',
-            'utf-8': 'UTF8'}
+        encoding_lookup = {'iso-8859-1': 'Latin1',
+                           'latin-1': 'Latin1',
+                           'utf-8': 'UTF8'}
         db_encoding = encoding_lookup.get(encoding)
         conn.set_client_encoding(db_encoding)
         return conn

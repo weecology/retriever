@@ -9,6 +9,7 @@ from future import standard_library
 standard_library.install_aliases()
 import os
 import sys
+import subprocess
 import requests
 from imp import reload
 from distutils.version import LooseVersion
@@ -88,7 +89,7 @@ def install_modified():
 
     engine_list_install = engine_list
     if os.path.exists("test_modified"):
-        os.system("rm -r test_modified")
+        subprocess.call(['rm', '-r', 'test_modified'])
     os.makedirs("test_modified")
     os.chdir("test_modified")
     dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb.sqlite'))
@@ -152,7 +153,7 @@ def install_modified():
                 else:
                     errors.append((key, "No connection detected......" + module.name))
     os.chdir("..")
-    os.system("rm -r test_modified")
+    subprocess.call(['rm', '-r', 'test_modified'])
     return errors
 
 

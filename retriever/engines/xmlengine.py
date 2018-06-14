@@ -102,21 +102,17 @@ class engine(Engine):
         else:
             newrows = values
 
-        xml_lines = ['\n<row>\n{}</row>'.format(self._format_single_row(keys, line_data))
+        xml_lines = ['\n<row>\n{}</row>' \
+                     ''.format(self._format_single_row(keys, line_data))
                      for line_data in newrows]
         return xml_lines
 
     def _format_single_row(self, keys, line_data):
-        return ''.join(
-            '    <{key}>{value}</{key}>\n'.format(key=key, value=value)
-            for key, value in zip(keys, line_data))
+        row_values = ['    <{key}>{value}</{key}>\n'.format(key=key, value=value)
+            for key, value in zip(keys, line_data)]
+        return ''.join(row_values)
 
-    def table_exists(self, dbname, tablename):
-        """Check to see if the data file currently exists."""
-        tablename = self.table_name(name=tablename, dbname=dbname)
-        return os.path.exists(tablename)
-
-    def to_csv(self):
+    def to_csv(self, sort=True):
         """Export table from xml engine to CSV file."""
         for table_item in self.script_table_registry[self.script.name]:
             header = table_item[1].get_insert_columns(join=False, create=True)

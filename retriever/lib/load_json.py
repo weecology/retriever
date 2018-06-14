@@ -7,7 +7,6 @@ standard_library.install_aliases()
 from builtins import zip
 from builtins import str
 import json
-import sys
 from collections import OrderedDict
 from retriever.lib.templates import TEMPLATES
 from retriever.lib.models import myTables
@@ -53,7 +52,9 @@ def read_json(json_file, debug=False):
         table_names = [item["name"] for item in json_object["resources"]]
         temp_tables["tables"] = dict(zip(table_names, json_object["resources"]))
         for table_name, table_spec in temp_tables["tables"].items():
-            json_object["tables"][table_name] = myTables[temp_tables["tables"][table_name]["format"]](**table_spec)
+            json_object["tables"][table_name] = myTables[
+                temp_tables["tables"][table_name]["format"]
+            ](**table_spec)
         json_object.pop("resources", None)
         return TEMPLATES["default"](**json_object)
     return None

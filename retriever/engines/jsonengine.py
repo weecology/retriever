@@ -13,6 +13,7 @@ from retriever.lib.engine_tools import json2csv, sort_csv
 
 class engine(Engine):
     """Engine instance for writing data to a CSV file."""
+
     name = "JSON"
     abbreviation = "json"
     auto_column_number = 0
@@ -49,7 +50,8 @@ class engine(Engine):
         if self.script.name not in self.script_table_registry:
             self.script_table_registry[self.script.name] = []
         self.script_table_registry[self.script.name].append(
-            (self.table_name(), self.table))
+            (self.table_name(), self.table)
+        )
 
     def disconnect(self):
         """Close out the JSON with a `\\n]}` and close the file.
@@ -110,16 +112,12 @@ class engine(Engine):
             json_dumps.append(json.dumps(write_data, ensure_ascii=False) + ",")
         return json_dumps
 
-        tuples = (zip(keys, [value for value in values]))
-        write_data = OrderedDict(tuples)
-        return json.dumps(write_data, ensure_ascii=False)
-
     def table_exists(self, dbname, tablename):
         """Check to see if the data file currently exists"""
         tablename = self.table_name(name=tablename, dbname=dbname)
         return os.path.exists(tablename)
 
-    def to_csv(self):
+    def to_csv(self, sort=True):
         """Export table from json engine to CSV file"""
         for table_item in self.script_table_registry[self.script.name]:
             header = table_item[1].get_insert_columns(join=False, create=True)
