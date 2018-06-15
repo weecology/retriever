@@ -10,25 +10,25 @@
     "name": "elton-traits",
     "resources": [
         {
-            "dialect": {},
+            "dialect": {"do_not_bulk_insert": "True"},
             "name": "BirdFuncDat",
             "schema": {},
             "url": "https://ndownloader.figshare.com/files/5631081"
         },
         {
-            "dialect": {},
+            "dialect": {"do_not_bulk_insert": "True"},
             "name": "MammFuncDat",
             "schema": {},
             "url": "https://ndownloader.figshare.com/files/5631084"
         },
         {
-            "dialect": {},
+            "dialect": {"do_not_bulk_insert": "True"},
             "name": "BirdCitations",
             "schema": {},
             "url": "https://ndownloader.figshare.com/files/5631087"
         },
         {
-            "dialect": {},
+            "dialect": {"do_not_bulk_insert": "True"},
             "name": "MammCitations",
             "schema": {},
             "url": "https://ndownloader.figshare.com/files/5631090"

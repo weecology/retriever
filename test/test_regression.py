@@ -51,7 +51,8 @@ download_md5 = [
 db_md5 = [
     # ('mt_st_helens_veg', '0'),
     ('bird_size', '98dcfdca19d729c90ee1c6db5221b775'),
-    ('mammal_masses', '6fec0fc63007a4040d9bbc5cfcd9953e')
+    ('mammal_masses', '6fec0fc63007a4040d9bbc5cfcd9953e'),
+    ('forest_plots_michigan', '8d8cd38bf481c4a5b845c4c876966a30')
 ]
 
 
