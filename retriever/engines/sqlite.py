@@ -1,9 +1,10 @@
 import os
 import sys
 from builtins import range
-import gdal
+from osgeo import gdal, gdalconst
 import ogr
 import csv
+import sqlite3
 
 #sys.path.insert(0,"/Library/Frameworks/GDAL.framework/Versions/2.2/Python/3.6/site-packages")
 
@@ -87,18 +88,59 @@ class engine(Engine):
         if not path:
             path = Engine.format_data_dir(self)
 
-        df = gdal.Open(path)
+        # df = gdal.Open(path)
+        #
+        # for band in range(1,df.RasterCount+1):
+        #
+        #     os.system("gdal_translate -b {} -of XYZ {} {}.csv \
+        #             -co ADD_HEADER_LINE=YES".format(band, path, path))
+        #
+        #     os.system("ogr2ogr -update -append -f SQLite sqlite.db \
+        #             -nln {}_band_{} {}.csv -dsco METADATA=NO \
+        #             -dsco INIT_WITH_EPSG=NO".format(self.file_name,band, path))
+        #
+        #     os.system("rm {}.csv".format(path))
 
-        for band in range(1,df.RasterCount+1):
+        data = gdal.OpenShared(path, gdalconst.GA_ReadOnly)
+        GeoTrans = data.GetGeoTransform()
 
-            os.system("gdal_translate -b {} -of XYZ {} {}.csv \
-                    -co ADD_HEADER_LINE=YES".format(band, path, path))
+        ColRange = range(data.RasterXSize)
+        RowRange = range(data.RasterYSize)
 
-            os.system("ogr2ogr -update -append -f SQLite sqlite.db \
-                    -nln {}_band_{} {}.csv -dsco METADATA=NO \
-                    -dsco INIT_WITH_EPSG=NO".format(self.file_name,band, path))
+        for band in range(1, data.RasterCount+1):
 
-            os.system("rm {}.csv".format(path))
+            print("Inserting values to {}_band{}".format(self.file_name, band))
+
+            rBand = data.GetRasterBand(band)
+            nData = rBand.GetNoDataValue()
+
+            if nData == None:
+                nData = -9999
+            else:
+                print("NoData Value: {}".format(nData))
+
+            HalfX = GeoTrans[1] / 2
+            HalfY = GeoTrans[5] / 2
+
+            dest = sqlite3.connect("sqlite.db")
+            cur = dest.cursor()
+
+            create_stmt = "CREATE TABLE IF NOT EXISTS {}_band{} (x INT,y INT,z INT);".format(self.file_name, band)
+            cur.execute(create_stmt)
+
+            for row in RowRange:
+                    RowData = rBand.ReadAsArray(0, row, data.RasterXSize, 1)[0]
+                    for col in ColRange:
+                        if RowData[col] != nData:
+                            if RowData[col] > 0:
+                                X = GeoTrans[0] + ( col * GeoTrans[1] )
+                                Y = GeoTrans[3] + ( row * GeoTrans[5] )
+                                X += HalfX
+                                Y += HalfY
+
+                                insert_stmt = """REPLACE INTO {}_band{}(x, y, z) VALUES(?, ?, ?);""".format(self.file_name, band)
+                                cur.execute(insert_stmt, (int(X), int(Y), int(RowData[col])))
+        cur.close()
 
     def insert_vector(self,path=None, srid=4326):
 
@@ -113,47 +155,47 @@ class engine(Engine):
 
         file = "{}/{}/{}.csv".format(path,self.file_name,self.file_name)
 
-        with open(file,"r") as f:
-            reader = csv.reader(f)
-            header = True
-            for row in reader:
-            if header:
-                # gather column names from the first row of the csv
-                header = False
-
-                sql = "DROP TABLE IF EXISTS {}".format(self.file_name)
-                cur.execute(sql)
-
-                list = list(str(column) for column in row)
-                separator = ", "
-                head = separator.join(list)
-
-                sql = "CREATE TABLE {} ({})".format(self.file_name, head)
-                cur.execute(sql)
-
-                for column in row:
-                    if column.lower().endswith("_id"):
-                        index = "{}__{}".format(self.file_name, column)
-                        sql = "CREATE INDEX {} on {} ({})".format( index, self.file_name, column )
-                        c.execute(sql)
-
-                list = list("?" for column in row)
-                separator = ", "
-                head = separator.join(list)
-
-                insertsql = "INSERT INTO {} VALUES ({})".format(self.file_name, head)
-
-                rowlen = len(row)
-                
-            else:
-                # skip lines that don't have the right number of columns
-                if len(row) == rowlen:
-                    c.execute(insertsql, row)
-
-        conn.commit()
-
-        c.close()
-        conn.close()
+        # with open(file,"r") as f:
+        #     reader = csv.reader(f)
+        #     header = True
+        #     for row in reader:
+        #         if header:
+        #         # gather column names from the first row of the csv
+        #         header = False
+        #
+        #         sql = "DROP TABLE IF EXISTS {}".format(self.file_name)
+        #         cur.execute(sql)
+        #
+        #         list = list(str(column) for column in row)
+        #         separator = ", "
+        #         head = separator.join(list)
+        #
+        #         sql = "CREATE TABLE {} ({})".format(self.file_name, head)
+        #         cur.execute(sql)
+        #
+        #         for column in row:
+        #             if column.lower().endswith("_id"):
+        #                 index = "{}__{}".format(self.file_name, column)
+        #                 sql = "CREATE INDEX {} on {} ({})".format( index, self.file_name, column )
+        #                 c.execute(sql)
+        #
+        #         list = list("?" for column in row)
+        #         separator = ", "
+        #         head = separator.join(list)
+        #
+        #         insertsql = "INSERT INTO {} VALUES ({})".format(self.file_name, head)
+        #
+        #         rowlen = len(row)
+        #
+        #     else:
+        #         # skip lines that don't have the right number of columns
+        #         if len(row) == rowlen:
+        #             c.execute(insertsql, row)
+        #
+        # conn.commit()
+        #
+        # c.close()
+        # conn.close()
 
     def create_db(self):
         """Don't create database for SQLite
