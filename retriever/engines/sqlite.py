@@ -6,6 +6,9 @@ import ogr
 import csv
 import sqlite3
 
+dest = sqlite3.connect("sqlite.db")
+cur = dest.cursor()
+
 #sys.path.insert(0,"/Library/Frameworks/GDAL.framework/Versions/2.2/Python/3.6/site-packages")
 
 """Importing GDAL/OGR module from OSGEO (suppports only Python2)"""
@@ -101,15 +104,16 @@ class engine(Engine):
         #
         #     os.system("rm {}.csv".format(path))
 
+        print("Working with {}".format(path))
+
         data = gdal.OpenShared(path, gdalconst.GA_ReadOnly)
+
         GeoTrans = data.GetGeoTransform()
 
         ColRange = range(data.RasterXSize)
         RowRange = range(data.RasterYSize)
 
         for band in range(1, data.RasterCount+1):
-
-            print("Inserting values to {}_band{}".format(self.file_name, band))
 
             rBand = data.GetRasterBand(band)
             nData = rBand.GetNoDataValue()
@@ -122,11 +126,17 @@ class engine(Engine):
             HalfX = GeoTrans[1] / 2
             HalfY = GeoTrans[5] / 2
 
-            dest = sqlite3.connect("sqlite.db")
-            cur = dest.cursor()
+            sql = "DROP TABLE IF EXISTS {}_band{}".format(self.file_name,band)
+            cur.execute(sql)
 
-            create_stmt = "CREATE TABLE IF NOT EXISTS {}_band{} (x INT,y INT,z INT);".format(self.file_name, band)
+            print("Creating table {}_band{}".format(self.file_name,band))
+
+            create_stmt = "CREATE TABLE {}_band{} (x INT,y INT,z INT);".format(self.file_name, band)
             cur.execute(create_stmt)
+
+            # sys.exit("Done with a table")
+
+            print("Inserting values to {}_band{}".format(self.file_name, band))
 
             for row in RowRange:
                     RowData = rBand.ReadAsArray(0, row, data.RasterXSize, 1)[0]
@@ -138,9 +148,14 @@ class engine(Engine):
                                 X += HalfX
                                 Y += HalfY
 
-                                insert_stmt = """REPLACE INTO {}_band{}(x, y, z) VALUES(?, ?, ?);""".format(self.file_name, band)
+                                insert_stmt = """INSERT INTO {}_band{}(x, y, z) VALUES(?, ?, ?);""".format(self.file_name, band)
                                 cur.execute(insert_stmt, (int(X), int(Y), int(RowData[col])))
-        cur.close()
+
+            dest.commit()
+
+            print("End of insertion to {}_band{}".format(self.file_name, band))
+
+            # sys.exit("Done with a table")
 
     def insert_vector(self,path=None, srid=4326):
 
