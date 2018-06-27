@@ -2,12 +2,9 @@ import os
 import sys
 from builtins import range
 from osgeo import gdal, gdalconst
-import ogr
+from osgeo import ogr
 import csv
 import sqlite3
-
-dest = sqlite3.connect("sqlite.db")
-cur = dest.cursor()
 
 #sys.path.insert(0,"/Library/Frameworks/GDAL.framework/Versions/2.2/Python/3.6/site-packages")
 
@@ -104,6 +101,9 @@ class engine(Engine):
         #
         #     os.system("rm {}.csv".format(path))
 
+        dest = sqlite3.connect("sqlite.db")
+        cur = dest.cursor()
+
         print("Working with {}".format(path))
 
         data = gdal.OpenShared(path, gdalconst.GA_ReadOnly)
@@ -157,18 +157,41 @@ class engine(Engine):
 
             # sys.exit("Done with a table")
 
+            dest.close()
+
     def insert_vector(self,path=None, srid=4326):
 
         if not path:
             path = Engine.format_data_dir(self)
 
-        os.system("ogr2ogr -overwrite -progress -f csv '{}/{}' '{}'.shp".format(path, self.file_name, path))
+        vector_file = ogr.Open(path,0)
+        n_layers = vector_file.GetLayerCount()
 
-        conn = dbapi.connect("sqlite.db")
-        conn.text_factory = str #allow utf-8 data to be stored
-        cur = conn.cursor()
+        for i in range(0,n_layers):
+            shape = vector_file.GetLayer(i)
+            layer_definition = shape.GetLayerDefn()
+            fields = list()
 
-        file = "{}/{}/{}.csv".format(path,self.file_name,self.file_name)
+            for i in range(layer_definition.GetFieldCount()):
+                fields.append(layer_definition.GetFieldDefn(i).GetName())
+
+            field_list = ','.join(fields)
+
+            os.system("ogr2ogr -append -select {} -overwrite \
+            -f 'sqlite' sqlite.db {}".format(field_list, path))
+
+        vector_file.close()
+
+
+        #os.system("ogr2ogr -f 'sqlite' sqlite.db {}".format(path))
+
+        # os.system("ogr2ogr -overwrite -progress -f csv '{}/{}' '{}'.shp".format(path, self.file_name, path))
+        #
+        # conn = dbapi.connect("sqlite.db")
+        # conn.text_factory = str #allow utf-8 data to be stored
+        # cur = conn.cursor()
+        #
+        # file = "{}/{}/{}.csv".format(path,self.file_name,self.file_name)
 
         # with open(file,"r") as f:
         #     reader = csv.reader(f)
