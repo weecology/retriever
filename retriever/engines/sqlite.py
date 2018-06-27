@@ -1,5 +1,23 @@
 import os
+import sys
 from builtins import range
+from osgeo import gdal, gdalconst
+from osgeo import ogr
+import csv
+import sqlite3
+
+#sys.path.insert(0,"/Library/Frameworks/GDAL.framework/Versions/2.2/Python/3.6/site-packages")
+
+"""Importing GDAL/OGR module from OSGEO (suppports only Python2)"""
+
+# try:
+#     import gdal, ogr
+#     print(gdal.__version__)
+#     #gdal.UseExceptions()
+
+# except:
+#     sys.exit("ERROR: OSGeo not installed... \
+#     \nDownload from here => http://trac.osgeo.org/gdal/wiki/DownloadingGdalBinaries")
 
 from retriever.lib.defaults import DATA_DIR
 from retriever.lib.models import Engine, no_cleanup
@@ -30,13 +48,199 @@ class engine(Engine):
                       "{db}_{table}"),
                      ]
 
+    file_name = None
+
+    def auto_create_table(self, table, url=None, filename=None, pk=None):
+
+        if table.dataset_type == "RasterDataset":
+
+            self.table = table
+            if url and not filename:
+                filename = Engine.filename_from_url(url)
+
+            if url and not self.find_file(filename):
+                # If the file doesn't exist, download it
+                self.download_file(url, filename)
+
+            file_path = self.find_file(filename)
+            filename, file_extension = os.path.splitext(os.path.basename(file_path))
+            self.file_name = filename
+
+        else:
+            Engine.auto_create_table(self, table, url, filename, pk)
+
+
+    def supported_raster(self, path, ext=None):
+        path = os.path.normpath(os.path.abspath(path))
+        if ext:
+            raster_extensions = ext
+        else:
+            raster_extensions = ['.gif', '.img', '.bil',
+                                 '.jpg', '.tif', '.tiff', '.hdf', '.l1b']
+
+        return [os.path.normpath(os.path.join(root, names))
+                for root, _, files in os.walk(path, topdown=False)
+                for names in files
+                if os.path.splitext(names)[1] in raster_extensions]
+
+    def insert_raster(self, path=None, srid=4326):
+
+        if not path:
+            path = Engine.format_data_dir(self)
+
+        # df = gdal.Open(path)
+        #
+        # for band in range(1,df.RasterCount+1):
+        #
+        #     os.system("gdal_translate -b {} -of XYZ {} {}.csv \
+        #             -co ADD_HEADER_LINE=YES".format(band, path, path))
+        #
+        #     os.system("ogr2ogr -update -append -f SQLite sqlite.db \
+        #             -nln {}_band_{} {}.csv -dsco METADATA=NO \
+        #             -dsco INIT_WITH_EPSG=NO".format(self.file_name,band, path))
+        #
+        #     os.system("rm {}.csv".format(path))
+
+        dest = sqlite3.connect("sqlite.db")
+        cur = dest.cursor()
+
+        print("Working with {}".format(path))
+
+        data = gdal.OpenShared(path, gdalconst.GA_ReadOnly)
+
+        GeoTrans = data.GetGeoTransform()
+
+        ColRange = range(data.RasterXSize)
+        RowRange = range(data.RasterYSize)
+
+        for band in range(1, data.RasterCount+1):
+
+            rBand = data.GetRasterBand(band)
+            nData = rBand.GetNoDataValue()
+
+            if nData == None:
+                nData = -9999
+            else:
+                print("NoData Value: {}".format(nData))
+
+            HalfX = GeoTrans[1] / 2
+            HalfY = GeoTrans[5] / 2
+
+            sql = "DROP TABLE IF EXISTS {}_band{}".format(self.file_name,band)
+            cur.execute(sql)
+
+            print("Creating table {}_band{}".format(self.file_name,band))
+
+            create_stmt = "CREATE TABLE {}_band{} (x INT,y INT,z INT);".format(self.file_name, band)
+            cur.execute(create_stmt)
+
+            # sys.exit("Done with a table")
+
+            print("Inserting values to {}_band{}".format(self.file_name, band))
+
+            for row in RowRange:
+                    RowData = rBand.ReadAsArray(0, row, data.RasterXSize, 1)[0]
+                    for col in ColRange:
+                        if RowData[col] != nData:
+                            if RowData[col] > 0:
+                                X = GeoTrans[0] + ( col * GeoTrans[1] )
+                                Y = GeoTrans[3] + ( row * GeoTrans[5] )
+                                X += HalfX
+                                Y += HalfY
+
+                                insert_stmt = """INSERT INTO {}_band{}(x, y, z) VALUES(?, ?, ?);""".format(self.file_name, band)
+                                cur.execute(insert_stmt, (int(X), int(Y), int(RowData[col])))
+
+            dest.commit()
+
+            print("End of insertion to {}_band{}".format(self.file_name, band))
+
+            # sys.exit("Done with a table")
+
+            dest.close()
+
+    def insert_vector(self,path=None, srid=4326):
+
+        if not path:
+            path = Engine.format_data_dir(self)
+
+        vector_file = ogr.Open(path,0)
+        n_layers = vector_file.GetLayerCount()
+
+        for i in range(0,n_layers):
+            shape = vector_file.GetLayer(i)
+            layer_definition = shape.GetLayerDefn()
+            fields = list()
+
+            for i in range(layer_definition.GetFieldCount()):
+                fields.append(layer_definition.GetFieldDefn(i).GetName())
+
+            field_list = ','.join(fields)
+
+            os.system("ogr2ogr -append -select {} -overwrite \
+            -f 'sqlite' sqlite.db {}".format(field_list, path))
+
+        vector_file.close()
+
+
+        #os.system("ogr2ogr -f 'sqlite' sqlite.db {}".format(path))
+
+        # os.system("ogr2ogr -overwrite -progress -f csv '{}/{}' '{}'.shp".format(path, self.file_name, path))
+        #
+        # conn = dbapi.connect("sqlite.db")
+        # conn.text_factory = str #allow utf-8 data to be stored
+        # cur = conn.cursor()
+        #
+        # file = "{}/{}/{}.csv".format(path,self.file_name,self.file_name)
+
+        # with open(file,"r") as f:
+        #     reader = csv.reader(f)
+        #     header = True
+        #     for row in reader:
+        #         if header:
+        #         # gather column names from the first row of the csv
+        #         header = False
+        #
+        #         sql = "DROP TABLE IF EXISTS {}".format(self.file_name)
+        #         cur.execute(sql)
+        #
+        #         list = list(str(column) for column in row)
+        #         separator = ", "
+        #         head = separator.join(list)
+        #
+        #         sql = "CREATE TABLE {} ({})".format(self.file_name, head)
+        #         cur.execute(sql)
+        #
+        #         for column in row:
+        #             if column.lower().endswith("_id"):
+        #                 index = "{}__{}".format(self.file_name, column)
+        #                 sql = "CREATE INDEX {} on {} ({})".format( index, self.file_name, column )
+        #                 c.execute(sql)
+        #
+        #         list = list("?" for column in row)
+        #         separator = ", "
+        #         head = separator.join(list)
+        #
+        #         insertsql = "INSERT INTO {} VALUES ({})".format(self.file_name, head)
+        #
+        #         rowlen = len(row)
+        #
+        #     else:
+        #         # skip lines that don't have the right number of columns
+        #         if len(row) == rowlen:
+        #             c.execute(insertsql, row)
+        #
+        # conn.commit()
+        #
+        # c.close()
+        # conn.close()
+
     def create_db(self):
         """Don't create database for SQLite
 
         SQLite doesn't create databases. Each database is a file and needs a separate
         connection. This overloads`create_db` to do nothing in this case.
         """
-        return None
 
     def get_bulk_insert_statement(self):
         """Get insert statement for bulk inserts
@@ -44,6 +248,7 @@ class engine(Engine):
         This places ?'s instead of the actual values so that executemany() can
         operate as designed
         """
+
         columns = self.table.get_insert_columns()
         column_count = len(self.table.get_insert_columns(False))
         insert_stmt = "INSERT INTO " + self.table_name()
@@ -92,6 +297,7 @@ class engine(Engine):
             return Engine.insert_data_from_file(self, filename)
 
     def table_exists(self, dbname, tablename):
+
         """Determine if the table already exists in the database."""
         if not hasattr(self, 'existing_table_names'):
             self.cursor.execute(

@@ -769,6 +769,10 @@ class Engine(object):
         self.auto_get_delimiter(dataset_file.readline())
         dataset_file.close()
 
+    def supported_raster(self, path, ext=None):
+        if self:
+            raise Exception("Not supported")
+
     def table_name(self, name=None, dbname=None):
         """Return full tablename."""
         if not name:
