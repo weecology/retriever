@@ -118,7 +118,7 @@ class BasicTextTemplate(Script):
                 if hasattr(self, "archivename"):
                     archivename = self.archivename
                 self.engine.download_files_from_archive(url=url,
-                                                        filenames=files,
+                                                        file_names=files,
                                                         filetype=archive_type,
                                                         keep_in_dir=keep_in_dir,
                                                         archivename=archivename)
