@@ -56,9 +56,9 @@ build_script:
   # postgres
   - createdb testdb
   # mysql
-  - mysql -e "create database sqlectron;" --user=root
+  - mysql -e "create database testdb;" --user=root
   - mysql -e "CREATE USER 'travis'@'localhost';GRANT ALL PRIVILEGES ON *.* TO 'travis'@'localhost';GRANT FILE ON *.* TO 'travis'@'localhost';" -uroot
-  - mysql -e "SET AUTOCOMMIT = 1;" --user=root
+
   - dir
   - cd C:\projects\retriever
   - "python setup.py install"
