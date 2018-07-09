@@ -7,7 +7,7 @@
     "archived": "zip",
     "extract_all": "True",
     "description": "Bioclimatic variables that are derived from the monthly temperature and rainfall values in order to generate more biologically meaningful variables.",
-    "licenses": [],
+    "licenses": [{"name": "CC-BY-SA"}],
     "keywords": [
         "climate",
         "spatial-data",
