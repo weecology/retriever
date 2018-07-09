@@ -57,11 +57,9 @@ class Script(object):
     def reference_url(self):
         if self.ref:
             return self.ref
-        else:
-            if len(self.urls) == 1:
-                return self.urls[list(self.urls.keys())[0]]
-            else:
-                return None
+        if len(self.urls) == 1:
+            return self.urls[list(self.urls.keys())[0]]
+        return None
 
     def checkengine(self, engine=None):
         """Returns the required engine instance"""
@@ -82,7 +80,7 @@ class Script(object):
                 if not term.upper() in search_string:
                     return False
             return True
-        except:
+        except BaseException:
             return False
 
 
@@ -105,29 +103,57 @@ class BasicTextTemplate(Script):
         Script.download(self, engine, debug)
         # make file name mandatory for simplicity
 
-        for i_table, table_obj in self.tables.items():
+        for _, table_obj in self.tables.items():
+            # if the table has no url, use the script's url
+            if hasattr(table_obj, "url") and table_obj.url:
+                url = table_obj.url
+            elif self.url:
+                url = self.url
 
-            url = table_obj.url
             if hasattr(self, "archived"):
-                files = [table_obj.path]
+                if hasattr(self, "extract_all"):
+                    if self.extract_all:
+                        files = None
+                else:
+                    files = [table_obj.path]
                 archive_type = self.archived
                 keep_in_dir = False
-                archivename = None
+                archive_name = None
                 if hasattr(self, "keep_in_dir"):
                     keep_in_dir = self.keep_in_dir
-                if hasattr(self, "archivename"):
-                    archivename = self.archivename
-                self.engine.download_files_from_archive(url=url,
-                                                        file_names=files,
-                                                        filetype=archive_type,
-                                                        keep_in_dir=keep_in_dir,
-                                                        archivename=archivename)
-                self.engine.auto_create_table(table_obj, filename=table_obj.path)
-                self.engine.insert_data_from_file(self.engine.format_filename(
-                    table_obj.path))
+                if hasattr(self, "archive_name"):
+                    archive_name = self.archive_name
+                self.engine.download_files_from_archive(
+                    url=url,
+                    file_names=files,
+                    archive_type=archive_type,
+                    keep_in_dir=keep_in_dir,
+                    archive_name=archive_name)
+
+                self.engine.auto_create_table(
+                    table_obj, filename=table_obj.path)
             else:
                 self.engine.auto_create_table(table_obj, url=url)
-                self.engine.insert_data_from_url(url)
+
+            if hasattr(table_obj, "dataset_type"):
+                if table_obj.dataset_type == "RasterDataset":
+                    self.engine.insert_raster(
+                        self.engine.format_filename(
+                            table_obj.path))
+                    continue
+                elif table_obj.dataset_type == "VectorDataset":
+                    self.engine.insert_vector(
+                        self.engine.format_filename(
+                            table_obj.path))
+                    continue
+                elif hasattr(self, "archived"):
+                    # assume tabular
+                    self.engine.insert_data_from_file(
+                        self.engine.format_filename(table_obj.path))
+                    continue
+                else:
+                    self.engine.insert_data_from_url(url)
+            self.engine.disconnect_files()
 
 
 class HtmlTableTemplate(Script):

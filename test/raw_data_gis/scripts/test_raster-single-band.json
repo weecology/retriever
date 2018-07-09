@@ -1,0 +1,44 @@
+{
+    "name": "test-raster-single-band",
+    "url": "https://github.com/weecology/retriever/raw/master/test/raw_data_gis/usgstest.zip",
+    "title": "Landsat Washington p047r027_7t20000730_z10_nn30 ",
+    "ref": "https://github.com/cgarrard/osgeopy-code",
+    "driver": "GTiff",
+    "archived": "zip",
+    "description": "Landsat test data",
+    "licenses": [{"name": "CC Tests"}],
+    "keywords": [
+        "spatial-data"
+    ],
+    "citation": "Test citation",
+    "version": "1.0.0",
+    "datum": "4326",
+    "projection": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]]",
+    "transform": {
+        "xOrigin": -0.00000000000,
+        "pixelWidth": 0.000000000,
+        "rotation_2": 0.0,
+        "yOrigin": 0.0000000000000,
+        "rotation_4": 0.0,
+        "pixelHeight": -0.00000000
+    },
+    "resources": [
+        {
+            "extensions": ["tif"],
+            "format": "raster",
+            "name": "single_band",
+            "path":"Landsat/Washington/z10_nn30.tif",
+            "no_data_value": 0,
+            "min": -0.0,
+            "max": 0.0,
+            "scale": 0.0,
+            "color_table": null,
+            "statistics": {
+                "minimum": -0.0,
+                "maximum": 0.0,
+                "mean": 0,
+                "stddev": 0
+            }
+        }
+    ]
+}

@@ -19,6 +19,7 @@ import tarfile
 import csv
 import re
 import requests
+from collections import OrderedDict
 from math import ceil
 from tqdm import tqdm
 from retriever.lib.tools import open_fr, open_fw, open_csvw, walk_relative_path
@@ -55,6 +56,7 @@ class Engine(object):
     table = None
     use_cache = True
     warnings = []
+    script_table_registry = OrderedDict()
 
     def connect(self, force_reconnect=False):
         if force_reconnect:
@@ -72,6 +74,13 @@ class Engine(object):
             self.connection.close()
             self._connection = None
             self._cursor = None
+
+    def disconnect_files(self):
+        """Files systems should override this method.
+
+        Enables commit per file object.
+        """
+        pass
 
     def get_connection(self):
         """This method should be overridden by specific implementations
@@ -122,7 +131,7 @@ class Engine(object):
                 except Exception as e:
                     self.warning(
                         'Exception in line {}: {}'
-                            .format(self.table.record_id, e))
+                        .format(self.table.record_id, e))
                     continue
 
             if line or count_iter == real_line_length:
@@ -146,7 +155,7 @@ class Engine(object):
                         self.executemany(insert_stmt,
                                          multiple_values,
                                          commit=False)
-                    except:
+                    except BaseException:
                         print(insert_stmt)
                         raise
                     multiple_values = []
@@ -175,7 +184,8 @@ class Engine(object):
     def get_ct_data(self, lines):
         """Create cross tab data."""
         for values in lines:
-            initial_cols = len(self.table.columns) - (3 if hasattr(self.table, "ct_names") else 2)
+            initial_cols = len(self.table.columns) - \
+                           (3 if hasattr(self.table, "ct_names") else 2)
             # add one if auto increment is not set to get the right initial columns
             if not self.table.columns[0][1][0] == "pk-auto":
                 initial_cols += 1
@@ -217,9 +227,7 @@ class Engine(object):
                       (self.table.header_rows, self.load_data(file_path)))
 
             lines = gen_from_source(source)
-
-            columns, column_values = self.table.auto_get_columns(header)
-
+            columns, _ = self.table.auto_get_columns(header)
             self.auto_get_datatypes(pk, lines, columns)
 
         if self.table.columns[-1][1][0][:3] == "ct-" \
@@ -265,7 +273,7 @@ class Engine(object):
                                     val = int(val)
                                     if column_types[i][0] == 'int' and \
                                             hasattr(self, 'max_int') and \
-                                                    val > self.max_int:
+                                            val > self.max_int:
                                         column_types[i] = ['bigint', ]
                                 except Exception as _:
                                     column_types[i] = ['double', ]
@@ -281,9 +289,8 @@ class Engine(object):
                                     column_types[i][1] = max_lengths[i]
                     except IndexError:
                         pass
-
-        for i in range(len(columns)):
-            column = columns[i]
+        for i, value in enumerate(columns):
+            column = value
             column[1] = column_types[i]
             if pk == column[0]:
                 column[1][0] = "pk-" + column[1][0]
@@ -361,7 +368,8 @@ class Engine(object):
                     self.connection.rollback()
                 except Exception as _:
                     pass
-                print("Couldn't create database (%s). Trying to continue anyway." % e)
+                print(e)
+                print("Installing into existing database")
 
     def create_db_statement(self):
         """Return SQL statement to create a database."""
@@ -392,6 +400,11 @@ class Engine(object):
             print(create_stmt)
         try:
             self.execute(create_stmt)
+            if self.script.name not in self.script_table_registry:
+                self.script_table_registry[self.script.name] = []
+            self.script_table_registry[self.script.name].append(
+                (self.table_name(), self.table))
+
             if self.table.name not in self.script.tables:
                 self.script.tables[self.table.name] = self.table
         except Exception as e:
@@ -399,7 +412,8 @@ class Engine(object):
                 self.connection.rollback()
             except Exception as _:
                 pass
-            print("Couldn't create table (%s). Trying to continue anyway." % e)
+            print(e)
+            print("Replacing existing table")
 
     def create_table_statement(self):
         """Return SQL statement to create a table."""
@@ -445,7 +459,6 @@ class Engine(object):
                            unit_divisor=1024,
                            miniters=1,
                            desc='Downloading {}'.format(filename))
-
             try:
                 requests.get(url, allow_redirects=True,
                              stream=True,
@@ -481,7 +494,8 @@ class Engine(object):
         if not file_names:
             self.download_file(url, archive_name)
             if archive_type == 'tar' or archive_type == 'tar.gz':
-                file_names = self.extract_tar(archive_full_path, archive_dir, archive_type)
+                file_names = self.extract_tar(
+                    archive_full_path, archive_dir, archive_type)
             elif archive_type == 'zip':
                 file_names = self.extract_zip(archive_full_path, archive_dir)
             elif archive_type == 'gz':
@@ -502,14 +516,19 @@ class Engine(object):
                 elif archive_type == 'gz':
                     self.extract_gz(archive_full_path, archive_dir, file_name)
                 elif archive_type == 'tar' or archive_type == 'tar.gz':
-                    self.extract_tar(archive_full_path, archive_dir, archive_type, file_name)
+                    self.extract_tar(archive_full_path,
+                                     archive_dir,
+                                     archive_type,
+                                     file_name)
         return file_names
 
     def drop_statement(self, object_type, object_name):
         """Return drop table or database SQL statement."""
         if self:
-            drop_statement = "DROP %s IF EXISTS %s" % (object_type, object_name)
+            drop_statement = "DROP %s IF EXISTS %s" % (
+                object_type, object_name)
         return drop_statement
+
 
     def execute(self, statement, commit=True):
         """Execute given statement."""
@@ -523,11 +542,8 @@ class Engine(object):
         if commit:
             self.connection.commit()
 
-    def extract_gz(self, archive_path,
-                   archivedir_write_path,
-                   file_name=None,
-                   open_archive_file=None,
-                   archive=None):
+    def extract_gz(self, archive_path, archivedir_write_path, file_name=None,
+                   open_archive_file=None, archive=None):
         """Extract gz files.
 
         Extracts a given file name or all the files in the gz.
@@ -602,8 +618,8 @@ class Engine(object):
                 file_obj = None
                 open_object = True
 
-            for file_name in file_names:
-                self.write_fileobject(archivedir_write_path, file_name,
+            for fname in file_names:
+                self.write_fileobject(archivedir_write_path, fname,
                                       file_obj,
                                       archive,
                                       open_object)
@@ -649,34 +665,34 @@ class Engine(object):
         4. Obtaining consistent float representations of decimals
         """
         datatype = datatype.split('-')[-1]
-        strvalue = str(value).strip()
+        str_value = str(value).strip()
 
         # Remove any quotes already surrounding the string
         quotes = ["'", '"']
-        if len(strvalue) > 1 and strvalue[0] == strvalue[-1] and strvalue[0] in quotes:
-            strvalue = strvalue[1:-1]
+        if len(str_value) > 1 and str_value[0] == str_value[-1] and str_value[0] in quotes:
+            str_value = str_value[1:-1]
         missing_values = ("null", "none")
-        if strvalue.lower() in missing_values:
+        if str_value.lower() in missing_values:
             return None
         if datatype in ("int", "bigint", "bool"):
-            if strvalue:
-                intvalue = strvalue.split('.')[0]
+            if str_value:
+                intvalue = str_value.split('.')[0]
                 if intvalue:
                     return int(intvalue)
                 return None
             return None
         if datatype in ("double", "decimal"):
-            if strvalue.strip():
+            if str_value.strip():
                 try:
-                    decimals = float(str(strvalue))
+                    decimals = float(str(str_value))
                     return decimals
                 except Exception as _:
                     return None
             return None
         if datatype == "char":
-            if strvalue.lower() in missing_values:
+            if str_value.lower() in missing_values:
                 return None
-            return strvalue
+            return str_value
         return None
 
     def get_cursor(self):
@@ -743,17 +759,20 @@ class Engine(object):
         """Return SQL statement to insert a set of values."""
         columns = self.table.get_insert_columns()
         types = self.table.get_column_datatypes()
-        columncount = len(self.table.get_insert_columns(join=False, create=False))
+        column_count = len(
+            self.table.get_insert_columns(
+                join=False, create=False))
         for row in values:
             row_length = len(row)
             # Add None with appropriate value type for empty cells
-            for i in range(columncount - row_length):
-                row.append(self.format_insert_value(None, types[row_length + i]))
+            for i in range(column_count - row_length):
+                row.append(self.format_insert_value(
+                    None, types[row_length + i]))
 
         insert_stmt = "INSERT INTO {table}".format(table=self.table_name())
         insert_stmt += " ( {columns} )".format(columns=columns)
         insert_stmt += " VALUES ("
-        for i in range(0, columncount):
+        for i in range(0, column_count):
             insert_stmt += "{}, ".format(self.placeholder)
         insert_stmt = insert_stmt.rstrip(", ") + ")"
 
@@ -769,6 +788,13 @@ class Engine(object):
         self.auto_get_delimiter(dataset_file.readline())
         dataset_file.close()
 
+    def supported_raster(self, path, ext=None):
+        """"Spatial data is not currently supported for this database type
+        or file format. PostgreSQL is currently the only supported output
+        for spatial data"""
+        if self:
+            raise Exception("Not supported")
+
     def table_name(self, name=None, dbname=None):
         """Return full tablename."""
         if not name:
@@ -782,17 +808,19 @@ class Engine(object):
     def to_csv(self, sort=True):
         # Due to Cyclic imports we can not move this import to the top
         from retriever.lib.engine_tools import sort_csv
-        for table_n in list(self.script.tables.keys()):
-            table_name = self.table_name(name=table_n)
-            csv_file_output = os.path.normpath(table_name + '.csv')
+
+        for table_name in self.script_table_registry[self.script.name]:
+
+            csv_file_output = os.path.normpath(table_name[0] + '.csv')
             csv_file = open_fw(csv_file_output)
             csv_writer = open_csvw(csv_file)
             self.get_cursor()
             self.set_engine_encoding()
-            self.cursor.execute("SELECT * FROM  {};".format(table_name))
+            self.cursor.execute("SELECT * FROM  {};".format(table_name[0]))
             row = self.cursor.fetchone()
-            colnames = [u'{}'.format(tuple_i[0]) for tuple_i in self.cursor.description]
-            csv_writer.writerow(colnames)
+            column_names = [u'{}'.format(tuple_i[0])
+                            for tuple_i in self.cursor.description]
+            csv_writer.writerow(column_names)
             while row is not None:
                 csv_writer.writerow(row)
                 row = self.cursor.fetchone()
@@ -802,7 +830,8 @@ class Engine(object):
         self.disconnect()
 
     def warning(self, warning):
-        new_warning = Warning('%s:%s' % (self.script.name, self.table.name), warning)
+        new_warning = Warning('%s:%s' %
+                              (self.script.name, self.table.name), warning)
         self.warnings.append(new_warning)
 
     def write_fileobject(self, archivedir_write_path,
@@ -849,7 +878,8 @@ class Engine(object):
                 yield self.extract_fixed_width(row)
         else:
             reg = re.compile("\\r\\n|\n|\r")
-            for row in csv.reader(dataset_file, delimiter=self.table.delimiter):
+            for row in csv.reader(dataset_file,
+                                  delimiter=self.table.delimiter):
                 yield [reg.sub(" ", values) for values in row]
 
     def extract_fixed_width(self, line):
@@ -865,7 +895,7 @@ class Engine(object):
 def skip_rows(rows, source):
     """Skip over the header lines by reading them before processing."""
     lines = gen_from_source(source)
-    for i in range(rows):
+    for _ in range(rows):
         next(lines)
     return lines
 
@@ -906,12 +936,12 @@ def reporthook(tqdm_inst, filename=None):
     def update_rto(r, *args, **kwargs):
         if r.headers.get('Transfer-Encoding', None) != 'chunked':
             total_size = int(r.headers['content-length'])
-            tqdm_inst.total= ceil(total_size//(2*1024))
+            tqdm_inst.total = ceil(total_size // (2 * 1024))
 
         with open(filename, 'wb') as f:
-                for chunk in r.iter_content(2*1024):
-                    f.write(chunk)
-                    tqdm_inst.update(1)
+            for chunk in r.iter_content(2 * 1024):
+                f.write(chunk)
+                tqdm_inst.update(1)
         f.close()
 
     return update_rto if filename else update_to

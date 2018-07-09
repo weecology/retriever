@@ -13,8 +13,10 @@ from retriever.lib.engine_tools import json2csv, sort_csv
 
 class engine(Engine):
     """Engine instance for writing data to a CSV file."""
+
     name = "JSON"
     abbreviation = "json"
+    auto_column_number = 0
     datatypes = {
         "auto": "INTEGER",
         "int": "INTEGER",
@@ -42,6 +44,14 @@ class engine(Engine):
         self.output_file.write("[")
         self.table_names.append((self.output_file, self.table_name()))
         self.auto_column_number = 1
+
+        # Register all tables created to enable
+        # testing python files having custom download function
+        if self.script.name not in self.script_table_registry:
+            self.script_table_registry[self.script.name] = []
+        self.script_table_registry[self.script.name].append(
+            (self.table_name(), self.table)
+        )
 
     def disconnect(self):
         """Close out the JSON with a `\\n]}` and close the file.
@@ -78,7 +88,7 @@ class engine(Engine):
         try:
             if len(v) > 1 and v[0] == v[-1] == "'":
                 v = '"%s"' % v[1:-1]
-        except:
+        except BaseException:
             pass
         return v
 
@@ -102,21 +112,16 @@ class engine(Engine):
             json_dumps.append(json.dumps(write_data, ensure_ascii=False) + ",")
         return json_dumps
 
-        tuples = (zip(keys, [value for value in values]))
-        write_data = OrderedDict(tuples)
-        return json.dumps(write_data, ensure_ascii=False)
-
     def table_exists(self, dbname, tablename):
         """Check to see if the data file currently exists"""
         tablename = self.table_name(name=tablename, dbname=dbname)
         return os.path.exists(tablename)
 
-    def to_csv(self):
+    def to_csv(self, sort=True):
         """Export table from json engine to CSV file"""
-        for keys in list(self.script.tables):
-            table_name = self.table_name()
-            header = self.script.tables[keys].get_insert_columns(join=False, create=True)
-            csv_outfile = json2csv(table_name, header_values=header)
+        for table_item in self.script_table_registry[self.script.name]:
+            header = table_item[1].get_insert_columns(join=False, create=True)
+            csv_outfile = json2csv(table_item[0], header_values=header)
             sort_csv(csv_outfile)
 
     def get_connection(self):

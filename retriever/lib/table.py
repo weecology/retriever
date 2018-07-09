@@ -45,7 +45,7 @@ class TabularDataset(Dataset):
         self.replace_columns = replace_columns
         self.missingValues = missingValues
         self.cleaned_columns = cleaned_columns
-
+        self.dataset_type = "TabularDataset"
         for key in kwargs:
             if hasattr(self, key):
                 self.key = kwargs[key]
@@ -60,11 +60,12 @@ class TabularDataset(Dataset):
         Dataset.__init__(self, self.name, self.url)
 
     def add_dialect(self):
-        for key, val in self.dialect.items():
+        for key, _ in self.dialect.items():
             if key == "missingValues":
                 if self.dialect["missingValues"]:
                     self.missingValues = self.dialect["missingValues"]
-                    self.cleanup = Cleanup(correct_invalid_value, missingValues=self.missingValues)
+                    self.cleanup = Cleanup(correct_invalid_value,
+                                           missingValues=self.missingValues)
             elif key == "delimiter":
                 self.delimiter = str(self.dialect["delimiter"])
             else:
@@ -232,7 +233,8 @@ class TabularDataset(Dataset):
         if not self.cleaned_columns:
             column_names = list(self.columns)
             self.columns[:] = []
-            self.columns = [(self.clean_column_name(name[0]), name[1]) for name in column_names]
+            self.columns = [(self.clean_column_name(name[0]), name[1])
+                            for name in column_names]
             self.cleaned_columns = True
         for item in self.columns:
             if not create and item[1][0] == 'pk-auto':
@@ -243,8 +245,7 @@ class TabularDataset(Dataset):
                 columns.append(item[0])
         if join:
             return ", ".join(columns)
-        else:
-            return columns
+        return columns
 
     def get_column_datatypes(self):
         """Get set of column names for insert statements."""
@@ -259,8 +260,9 @@ class TabularDataset(Dataset):
 
 class RasterDataset(Dataset):
     """Raster table implementation"""
-    def __init__(self, **kwargs):
-        self.name = None
+
+    def __init__(self, name=None, url=None, dataset_type="RasterDataset", **kwargs):
+        self.name = name
         self.group = None
         self.relative_path = 0
         self.resolution = None
@@ -270,17 +272,16 @@ class RasterDataset(Dataset):
         self.geoTransform = None
         self.parameter = None
         self.extent = None
+        self.dataset_type = dataset_type
+        self.url = url
         for key in kwargs:
-            if hasattr(self, key):
-                self.key = kwargs[key]
-            else:
-                setattr(self, key, kwargs[key])
-
+            setattr(self, key, kwargs[key])
+        Dataset.__init__(self, self.name, self.url)
 
 class VectorDataset(Dataset):
     """Vector table implementation"""
 
-    def __init__(self, name=None, **kwargs):
+    def __init__(self, name=None, url=None, dataset_type="VectorDataset", **kwargs):
         self.name = name
         self.pk = None
         self.contains_pk = False
@@ -290,14 +291,15 @@ class VectorDataset(Dataset):
         self.fields_dict = {}
         self.extent = {}
         self.saptialref = None
-
+        self.dataset_type = dataset_type
+        self.url = url
         for key in kwargs:
             if hasattr(self, key):
                 self.key = kwargs[key]
             else:
                 setattr(self, key, kwargs[key])
 
-
+        Dataset.__init__(self, self.name, self.url)
 
 myTables = {
     "vector": VectorDataset,

@@ -4,7 +4,9 @@ from __future__ import print_function
 
 import json
 import os
+import shlex
 import shutil
+import subprocess
 import sys
 from imp import reload
 
@@ -28,7 +30,6 @@ if os.name == "nt":
     os_password = "Password12!"
 else:
     os_password = ""
-
 
 mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, \
 csv_engine, download_engine, json_engine, xml_engine = engine_list
@@ -61,13 +62,10 @@ comma_delimiter = {
                  '4,5,6'],
     'script': {"name": "comma_delimiter",
                "resources": [
-                   {"dialect": {
-                       "delimiter": ",",
-                       "do_not_bulk_insert": "True"
-                   },
-                    "name": "comma_delimiter",
-                    "schema": {},
-                    "url": "http://example.com/comma_delimiter.txt"}
+                   {"dialect": {"delimiter": ",", "do_not_bulk_insert": "True"},
+                   "name": "comma_delimiter",
+                   "schema": {},
+                   "url": "http://example.com/comma_delimiter.txt"}
                ],
                "retriever": "True",
                "retriever_minimum_version": "2.0.dev",
@@ -85,13 +83,10 @@ tab_delimiter = {
                  '4	5	6'],
     'script': {"name": "tab_delimiter",
                "resources": [
-                   {"dialect": {
-                      "delimiter": "\t",
-                      "do_not_bulk_insert": "True"
-                   },
-                    "name": "tab_delimiter",
-                    "schema": {},
-                    "url": "http://example.com/tab_delimiter.txt"}
+                   {"dialect": {"delimiter": "\t", "do_not_bulk_insert": "True" },
+                   "name": "tab_delimiter",
+                   "schema": {},
+                   "url": "http://example.com/tab_delimiter.txt"}
                ],
                "retriever": "True",
                "retriever_minimum_version": "2.0.dev",
@@ -396,8 +391,18 @@ change_header_values = {
     'expect_out': ['aa,bb,c_c', '1,2,3', '4,5,6']
 }
 
-tests = [simple_csv, comma_delimiter, tab_delimiter, data_no_header, csv_latin1_encoding, autopk_csv, crosstab,
-         autopk_crosstab, skip_csv, extra_newline, change_header_values]
+tests = [
+    simple_csv,
+    comma_delimiter,
+    tab_delimiter,
+    data_no_header,
+    csv_latin1_encoding,
+    autopk_csv,
+    crosstab,
+    autopk_crosstab,
+    skip_csv,
+    extra_newline,
+    change_header_values]
 
 # Create a tuple of all test scripts with their expected values
 test_parameters = [(test, test['expect_out']) for test in tests]
@@ -436,8 +441,7 @@ def teardown_module():
     for test in tests:
         shutil.rmtree(os.path.join(HOME_DIR, "raw_data", test['name']))
         os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.json'))
-        os.system("rm -r *{}".format(test['name']))
-        os.system("rm testdb.sqlite")
+        subprocess.call(['rm', '-r', test['name']])
 
 
 def get_script_module(script_name):
@@ -454,6 +458,7 @@ def get_output_as_csv(dataset, engines, tmpdir, db):
     # we don't have to change to the main source directory in order
     # to have the scripts loaded
     script_module = get_script_module(dataset["name"])
+    engines.script_table_registry = {}
     script_module.download(engines)
     script_module.engine.final_cleanup()
     script_module.engine.to_csv()
@@ -476,8 +481,11 @@ def test_csv_integration(dataset, expected, tmpdir):
 @pytest.mark.parametrize("dataset, expected", test_parameters)
 def test_sqlite_integration(dataset, expected, tmpdir):
     dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb.sqlite'))
-    sqlite_engine.opts = {'engine': 'sqlite', 'file': dbfile, 'table_name': '{db}_{table}'}
-    os.system("rm testdb.sqlite")
+    sqlite_engine.opts = {
+        'engine': 'sqlite',
+        'file': dbfile,
+        'table_name': '{db}_{table}'}
+    subprocess.call(['rm', '-r', 'testdb.sqlite'])
     assert get_output_as_csv(dataset, sqlite_engine, tmpdir, dataset["name"]) == expected
 
 
@@ -498,9 +506,9 @@ def test_jsonengine_integration(dataset, expected, tmpdir):
 @pytest.mark.parametrize("dataset, expected", test_parameters)
 def test_postgres_integration(dataset, expected, tmpdir):
     """Check for postgres regression."""
-    os.system('psql -U postgres -d testdb -h localhost -c '
-              '"DROP SCHEMA IF EXISTS testschema CASCADE"')
-
+    cmd = 'psql -U postgres -d testdb -h localhost -c ' \
+          '"DROP SCHEMA IF EXISTS testschema CASCADE"'
+    subprocess.call(shlex.split(cmd))
     postgres_engine.opts = {'engine': 'postgres', 'user': 'postgres',
                             'password': os_password, 'host': 'localhost',
                             'port': 5432, 'database': 'testdb',
@@ -513,7 +521,14 @@ def test_postgres_integration(dataset, expected, tmpdir):
 @pytest.mark.parametrize("dataset, expected", test_parameters)
 def test_mysql_integration(dataset, expected, tmpdir):
     """Check for mysql regression."""
-    os.system('mysql -u travis -Bse "DROP DATABASE IF EXISTS testdb"')
-    mysql_engine.opts = {'engine': 'mysql', 'user': 'travis', 'password': '', 'host': 'localhost', 'port': 3306,
-                         'database_name': 'testdb', 'table_name': '{db}.{table}'}
+    cmd = 'mysql -u travis -Bse "DROP DATABASE IF EXISTS testdb"'
+    subprocess.call(shlex.split(cmd))
+    mysql_engine.opts = {
+        'engine': 'mysql',
+        'user': 'travis',
+        'password': '',
+        'host': 'localhost',
+        'port': 3306,
+        'database_name': 'testdb',
+        'table_name': '{db}.{table}'}
     assert get_output_as_csv(dataset, mysql_engine, tmpdir, db=mysql_engine.opts['database_name']) == expected

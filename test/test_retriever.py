@@ -5,6 +5,7 @@ from future import standard_library
 standard_library.install_aliases()
 import os
 import sys
+import subprocess
 from imp import reload
 from retriever.lib.defaults import ENCODING
 
@@ -30,7 +31,8 @@ from retriever.lib.datapackage import clean_input, is_empty
 # Create simple engine fixture
 test_engine = Engine()
 test_engine.table = TabularDataset(**{"name": "test"})
-test_engine.script = BasicTextTemplate(**{"tables": test_engine.table, "name": "test"})
+test_engine.script = BasicTextTemplate(
+    **{"tables": test_engine.table, "name": "test"})
 test_engine.opts = {'database_name': '{db}_abc'}
 
 # Main paths
@@ -52,7 +54,7 @@ achive_gz = raw_dir_files.format(file_name='sample.gz')
 # Setup urls for downloading raw data from the test/raw_data directory
 
 achive_url = """file://{loc}/raw_data/""" \
-                 .format(loc=file_location) + '{file_path}'
+    .format(loc=file_location) + '{file_path}'
 
 zip_url = os.path.normpath(achive_url.format(file_path='sample_zip.zip'))
 tar_url = os.path.normpath(achive_url.format(file_path='sample_tar.tar'))
@@ -63,13 +65,14 @@ gz_url = os.path.normpath(achive_url.format(file_path='sample.gz'))
 def setup_module():
     """"Make sure you are in the main local retriever directory."""
     os.chdir(retriever_root_dir)
-    os.system('cp -r {0} {1}'.format('test/raw_data', retriever_root_dir))
+    subprocess.call(['cp', '-r', 'test/raw_data', retriever_root_dir])
 
 
 def teardown_module():
     """Make sure you are in the main local retriever directory after these tests."""
     os.chdir(retriever_root_dir)
-    os.system('rm -r {0}'.format('raw_data'))
+    subprocess.call(['rm', '-r', 'raw_data'])
+    subprocess.call(['rm', '-r', test_engine.format_data_dir()])
 
 
 def setup_functions():
@@ -80,7 +83,7 @@ def setup_functions():
 def test_auto_get_columns():
     """Basic test of getting column labels from header."""
     test_engine.table.delimiter = ","
-    columns, column_values = test_engine.table.auto_get_columns(
+    columns, _ = test_engine.table.auto_get_columns(
         ['a', 'b', 'c', 'd'])
     assert columns == [['a', None], ['b', None], ['c', None], ['d', None]]
 
@@ -101,7 +104,7 @@ def test_auto_get_datatypes():
 def test_auto_get_columns_extra_whitespace():
     """Test getting column labels from header with extra whitespace."""
     test_engine.table.delimiter = ","
-    columns, column_values = test_engine.table.auto_get_columns(
+    columns, _ = test_engine.table.auto_get_columns(
         ['a', 'b', 'c', 'd  '])
     assert columns == [['a', None], ['b', None], ['c', None], ['d', None]]
 
@@ -109,7 +112,7 @@ def test_auto_get_columns_extra_whitespace():
 def test_auto_get_columns_cleanup():
     """Test of automatically cleaning up column labels from header."""
     test_engine.table.delimiter = ","
-    columns, column_values = test_engine.table.auto_get_columns([
+    columns, _ = test_engine.table.auto_get_columns([
         'a)', 'a\nd', 'b.b', 'c/c', 'd___d', 'group'])
 
     assert columns == [['a', None],
@@ -199,14 +202,12 @@ def test_download_archive_gz_known():
 
     from a gzipped file to the .retriever/data  dir"""
     setup_functions()
-    files = test_engine.download_files_from_archive(url=gz_url,
-                                                    file_names=['test/sample_tar.csv'],
-                                                    archive_type='gz')
+    files = test_engine.download_files_from_archive(
+        url=gz_url, file_names=['test/sample_tar.csv'], archive_type='gz')
     r_path = os.path.normpath(
         os.path.join(HOMEDIR, '.retriever/raw_data/test/test/sample_tar.csv'))
     assert r_path == test_engine.find_file('test/sample_tar.csv')
     assert ['sample_tar.csv'] <= files
-    os.system("rm -r {}".format(test_engine.format_data_dir()))
 
 
 def test_download_archive_gz_unknown():
@@ -220,7 +221,6 @@ def test_download_archive_gz_unknown():
         os.path.join(HOMEDIR, '.retriever/raw_data/test/test/sample_tar.csv'))
     assert r_path == test_engine.find_file('test/sample_tar.csv')
     assert ['sample_tar.csv'] <= files
-    os.system("rm -r {}".format(test_engine.format_data_dir()))
 
 
 def test_download_archive_targz_known():
@@ -235,7 +235,6 @@ def test_download_archive_targz_known():
         os.path.join(HOMEDIR, '.retriever/raw_data/test/test/sample_tar.csv'))
     assert r_path == test_engine.find_file('test/sample_tar.csv')
     assert ['sample_tar.csv'] <= files
-    os.system("rm -r {}".format(test_engine.format_data_dir()))
 
 
 def test_download_archive_targz_unknown():
@@ -249,7 +248,6 @@ def test_download_archive_targz_unknown():
         os.path.join(HOMEDIR, '.retriever/raw_data/test/test/sample_tar.csv'))
     assert r_path == test_engine.find_file('test/sample_tar.csv')
     assert ['sample_tar.csv'] <= files
-    os.system("rm -r {}".format(test_engine.format_data_dir()))
 
 
 def test_download_archive_tar_known():
@@ -265,7 +263,6 @@ def test_download_archive_tar_known():
         os.path.join(HOMEDIR, '.retriever/raw_data/test/test/sample_tar.csv'))
     assert r_path == test_engine.find_file('test/sample_tar.csv')
     assert ['sample_tar.csv'] <= files
-    os.system("rm -r {}".format(test_engine.format_data_dir()))
 
 
 def test_download_archive_tar_unknown():
@@ -279,7 +276,6 @@ def test_download_archive_tar_unknown():
         os.path.join(HOMEDIR, '.retriever/raw_data/test/test/sample_tar.csv'))
     assert r_path == test_engine.find_file('test/sample_tar.csv')
     assert ['sample_tar.csv'] <= files
-    os.system("rm -r {}".format(test_engine.format_data_dir()))
 
 
 def test_download_archive_zip_known():
@@ -294,7 +290,6 @@ def test_download_archive_zip_known():
         os.path.join(HOMEDIR, '.retriever/raw_data/test/sample_zip.csv'))
     assert r_path == test_engine.find_file('sample_zip.csv')
     assert ['sample_zip.csv'] <= files
-    os.system("rm -r {}".format(test_engine.format_data_dir()))
 
 
 def test_download_archive_zip_unkown():
@@ -308,7 +303,6 @@ def test_download_archive_zip_unkown():
         os.path.join(HOMEDIR, '.retriever/raw_data/test/sample_zip.csv'))
     assert r_path == test_engine.find_file('sample_zip.csv')
     assert ['sample_zip.csv'] <= files
-    os.system('rm -r {}'.format(test_engine.format_data_dir()))
 
 
 def test_extract_known_tar():
@@ -322,7 +316,6 @@ def test_extract_known_tar():
     assert ['test/sample_tar.csv'] == expected
     assert os.path.exists(
         raw_dir_files.format(file_name='test/sample_tar.csv'))
-    os.system("rm -r {}".format(test_engine.format_data_dir()))
 
 
 def test_extract_unknown_tar():
@@ -336,7 +329,6 @@ def test_extract_unknown_tar():
     assert ['test/sample_tar.csv'] == expected
     assert os.path.exists(
         raw_dir_files.format(file_name='test/sample_tar.csv'))
-    os.system("rm -r {}".format(test_engine.format_data_dir()))
 
 
 def test_extract_known_zip():
@@ -376,7 +368,6 @@ def test_extract_unknown_targz():
     assert ['test/sample_tar.csv'] == expected
     assert os.path.exists(
         raw_dir_files.format(file_name='test/sample_tar.csv'))
-    os.system("rm -r {}".format(test_engine.format_data_dir()))
 
 
 def test_extract_known_targz():
@@ -390,7 +381,6 @@ def test_extract_known_targz():
     assert ['test/sample_tar.csv'] == expected
     assert os.path.exists(
         raw_dir_files.format(file_name='test/sample_tar.csv'))
-    os.system("rm -r {}".format(test_engine.format_data_dir()))
 
 
 def test_extract_known_gz():
@@ -403,7 +393,6 @@ def test_extract_known_gz():
     assert ['test/sample_tar.csv'] == expected
     assert os.path.exists(
         raw_dir_files.format(file_name='test/sample_tar.csv'))
-    os.system("rm -r {}".format(test_engine.format_data_dir()))
 
 
 def test_extract_unknown_gz():
@@ -418,7 +407,6 @@ def test_extract_unknown_gz():
     assert [os.path.normpath('test/sample_tar.csv')] == expected
     assert os.path.exists(
         raw_dir_files.format(file_name='test/sample_tar.csv'))
-    os.system("rm -r {}".format(test_engine.format_data_dir()))
 
 
 def test_extract_values_fixed_width():
@@ -684,10 +672,11 @@ def test_clean_input_not_bool(monkeypatch):
 
 
 def test_setup_functions():
-    """Test the set up function
+    """Test the set up function.
 
-    function uses teardown_module and setup_module functions"""
-    os.system('rm -r {}'.format(raw_dir_files.format(file_name='')))
-    assert os.path.exists(raw_dir_files.format(file_name="")) == False
+    Function uses teardown_module and setup_module functions."""
+    file_path = raw_dir_files.format(file_name='')
+    subprocess.call(['rm', '-r', file_path])
+    assert os.path.exists(raw_dir_files.format(file_name="")) is False
     setup_functions()
     assert os.path.exists(raw_dir_files.format(file_name=""))

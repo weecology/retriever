@@ -10,6 +10,7 @@ from retriever.lib.models import Engine, no_cleanup
 
 class engine(Engine):
     """Engine instance for Microsoft Access."""
+
     name = "Microsoft Access"
     instructions = "Create a database in Microsoft Access, close Access," \
                    "then \nselect your database file using this dialog."
@@ -52,9 +53,9 @@ class engine(Engine):
         """MS Access doesn't create databases."""
         return None
 
-    def drop_statement(self, objecttype, objectname):
+    def drop_statement(self, object_type, object_name):
         """Returns a drop table or database SQL statement."""
-        dropstatement = "DROP %s %s" % (objecttype, objectname)
+        dropstatement = "DROP %s %s" % (object_type, object_name)
         return dropstatement
 
     def insert_data_from_file(self, filename):
@@ -135,24 +136,13 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
         else:
             return Engine.insert_data_from_file(self, filename)
 
-    def table_exists(self, dbname, tablename):
-        """Determine if the table already exists in the database"""
-        if not hasattr(self, 'existing_table_names'):
-            self.existing_table_names = set()
-            for row in self.cursor.tables():
-                tableinfo = row[2]
-                if not tableinfo.startswith("MSys"):
-                    # ignore system tables
-                    database, table = tableinfo.split()
-                    self.existing_table_names.add((database, table))
-        return self.table_name(name=tablename, dbname=dbname).lower() in self.existing_table_names
-
     def get_connection(self):
         """Gets the db connection."""
         current_platform = platform.system().lower()
         if current_platform != "windows":
             raise Exception("MS Access can only be used in Windows.")
         import pypyodbc as dbapi
+
         self.get_input()
         if not os.path.exists(self.opts['file']) and self.opts['file'].endswith('.mdb'):
             dbapi.win_create_mdb(self.opts['file'])
