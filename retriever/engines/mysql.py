@@ -100,19 +100,32 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
         return (dbname.lower(), tablename.lower()) in self.existing_table_names
 
     def set_engine_encoding(self):
-        """Set MySQL database encoding to match data encoding
+        """Set MySQL database encoding to match data encoding"""
+        db_encoding = self.lookup_encoding()
+        self.execute("SET NAMES '{0}';".format(db_encoding))
 
-           Please update the encoding lookup table if the required encoding is not present.
-        """
+    def lookup_encoding(self):
+        """Convert well known encoding to MySQL syntax
+
+        MySQL has a unique way of representing the encoding.
+        For example, latin-1 becomes latin1 in MySQL.
+        Please update the encoding lookup table if the required
+        encoding is not present."""
         encoding = ENCODING.lower()
         if self.script.encoding:
             encoding = self.script.encoding.lower()
         encoding_lookup = {'iso-8859-1': 'latin1', 'latin-1': 'latin1', 'utf-8': 'utf8'}
         db_encoding = encoding_lookup.get(encoding)
-        self.execute("SET NAMES '{0}';".format(db_encoding))
+        return db_encoding
 
     def get_connection(self):
-        """Get db connection."""
+        """Get db connection.
+
+        PyMySQL has changed the default encoding from latin1 to utf8mb4.
+        https://github.com/PyMySQL/PyMySQL/pull/692/files
+        For PyMySQL to work well on CI infrastructure,
+        connect with the preferred charset
+        """
         args = {'host': self.opts['host'],
                 'port': int(self.opts['port']),
                 'user': self.opts['user'],
@@ -121,4 +134,5 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
         import pymysql.constants.CLIENT as client
         args['client_flag'] = client.LOCAL_FILES
         self.get_input()
-        return dbapi.connect(read_default_file='~/.my.cnf', **args)
+        return dbapi.connect(charset=self.lookup_encoding(),
+                             read_default_file='~/.my.cnf', **args)
