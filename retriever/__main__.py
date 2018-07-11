@@ -1,10 +1,6 @@
-"""Data Retriever Wizard
+"""Data Retriever
 
-Running this module directly will launch the download wizard, allowing the user
-to choose from all scripts.
-
-The main() function can be used for bootstrapping.
-
+This module handles the CLI for the Data retriever.
 """
 from __future__ import absolute_import
 from __future__ import print_function

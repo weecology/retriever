@@ -89,6 +89,11 @@ class engine(Engine):
         return v
 
     def insert_statement(self, values):
+        """Create the insert statement.
+
+        Wrap each data value with column values(key)
+        using _format_single_row <key> value </key>.
+        """
         if not hasattr(self, 'auto_column_number'):
             self.auto_column_number = 1
 
@@ -108,8 +113,9 @@ class engine(Engine):
         return xml_lines
 
     def _format_single_row(self, keys, line_data):
+        """Create an xml string from the keys and line_data values."""
         row_values = ['    <{key}>{value}</{key}>\n'.format(key=key, value=value)
-            for key, value in zip(keys, line_data)]
+                      for key, value in zip(keys, line_data)]
         return ''.join(row_values)
 
     def to_csv(self, sort=True):

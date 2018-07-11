@@ -59,6 +59,7 @@ class Engine(object):
     script_table_registry = OrderedDict()
 
     def connect(self, force_reconnect=False):
+        """Create a connection."""
         if force_reconnect:
             self.disconnect()
 
@@ -70,6 +71,7 @@ class Engine(object):
     connection = property(connect)
 
     def disconnect(self):
+        """Disconnect a connection."""
         if self._connection:
             self.connection.close()
             self._connection = None
@@ -781,9 +783,11 @@ class Engine(object):
         return insert_stmt
 
     def set_engine_encoding(self):
+        """Set up the encoding to be used."""
         pass
 
     def set_table_delimiter(self, file_path):
+        """Get the delimiter from the data file and set it."""
         dataset_file = open_fr(file_path)
         self.auto_get_delimiter(dataset_file.readline())
         dataset_file.close()
@@ -791,12 +795,12 @@ class Engine(object):
     def supported_raster(self, path, ext=None):
         """"Spatial data is not currently supported for this database type
         or file format. PostgreSQL is currently the only supported output
-        for spatial data"""
+        for spatial data."""
         if self:
             raise Exception("Not supported")
 
     def table_name(self, name=None, dbname=None):
-        """Return full tablename."""
+        """Return full table name."""
         if not name:
             name = self.table.name
         if not dbname:
@@ -830,6 +834,7 @@ class Engine(object):
         self.disconnect()
 
     def warning(self, warning):
+        """Create a warning message using the current script and table."""
         new_warning = Warning('%s:%s' %
                               (self.script.name, self.table.name), warning)
         self.warnings.append(new_warning)

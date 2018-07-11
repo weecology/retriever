@@ -19,6 +19,8 @@ global_script_list = {}
 
 
 def check_retriever_minimum_version(module):
+    """Return true if a script's version number is greater
+    than the retriever's version."""
     mod_ver = module.retriever_minimum_version
     m = module.name
 
@@ -86,6 +88,9 @@ def reload_scripts():
 
 
 def SCRIPT_LIST():
+    """Return Loaded scripts.
+
+    Ensure that only one instance of SCRIPTS is created."""
     if global_script_list:
         return global_script_list.get_scripts()
     return reload_scripts()
@@ -149,6 +154,10 @@ def open_csvw(csv_file, encode=True):
 
 
 def to_str(object, object_encoding=sys.stdout):
+    """Convert a Python3 object to a string as in Python2.
+
+    Strings in Python3 are bytes.
+    """
     if sys.version_info >= (3, 0, 0):
         enc = object_encoding.encoding
         return str(object).encode(enc, errors='backslashreplace').decode("latin-1")

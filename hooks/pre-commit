@@ -20,6 +20,11 @@ version_file = version_file.splitlines()[1:]
 
 
 def to_string(value):
+    """Return a string of the value.
+
+    Python3 and Python2 define strings differently
+    Python3's string are bytes.
+    """
     if sys.version_info >= (3, 0, 0):
         return value.decode("UTF-8")
     else:
@@ -32,6 +37,10 @@ for line in version_file:
 
 
 def get_script_version(file_name):
+    """Return a script's version.
+
+    version_dict contains all the scripts and their version numbers.
+    """
     file_name = os.path.basename(file_name)
     return LooseVersion(version_dict[file_name])
 

@@ -43,11 +43,13 @@ def clean_input(prompt="", split_char='', ignore_empty=False, dtype=None):
 
 
 def get_replace_columns(dialect):
-    """Get list of tuples with old and new names for the columns in the table."""
-    val = clean_input("replace_columns (separated by ';', with comma-separated values) (press return to skip): ",
+    """Get the replace values for columns from the user."""
+    val = clean_input("replace_columns (separated by "
+                      "';', with comma-separated values) "
+                      "(press return to skip): ",
                       split_char=';', ignore_empty=True)
     if val == "" or val == []:
-        # return and dont add key to dialect dict if empty val
+        # return and don't add key to dialect dict if empty val
         return
     dialect['replace_columns'] = []
     for v in val:
@@ -432,6 +434,7 @@ def edit_json(json_file):
 
 
 def delete_json(json_file):
+    """Delete the json file from the script write path's directories."""
     try:
         # delete scripts from home directory
         if os.path.exists(os.path.join(HOME_DIR, 'scripts', json_file)):
@@ -446,4 +449,8 @@ def delete_json(json_file):
 
 
 def get_script_filename(shortname):
+    """Return the file name of a script.
+
+    File names have '_' while the script variable names have '-'.
+    """
     return shortname.replace('-', '_') + '.json'
