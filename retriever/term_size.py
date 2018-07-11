@@ -2,6 +2,7 @@ import os
 
 
 def get_terminal_size():
+    """Return the current size of the terminal."""
     env = os.environ
 
     def ioctl_GWINSZ(fd):

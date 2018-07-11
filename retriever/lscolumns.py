@@ -10,6 +10,7 @@ from retriever.term_size import get_terminal_size
 
 
 def get_columns(values, cols):
+    """Returns number of columns to display."""
     columns = []
     col_size = len(values) // cols
     extra = len(values) % cols
@@ -25,6 +26,10 @@ def get_columns(values, cols):
 
 
 def printls(values, max_width=None, spacing=2):
+    """"Customized print for ls values on terminal.
+
+    Use current terminal size to fit the results of ls.
+    """
     if sys.stdout.isatty() and max_width is None:
         cols, _ = get_terminal_size()
         max_width = cols

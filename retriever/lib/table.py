@@ -60,6 +60,12 @@ class TabularDataset(Dataset):
         Dataset.__init__(self, self.name, self.url)
 
     def add_dialect(self):
+        """Initialize dialect table properties.
+
+        These include a table's null or missing values,
+        the delimiter, the function to perform on missing values
+        and any values in the dialect's dict.
+        """
         for key, _ in self.dialect.items():
             if key == "missingValues":
                 if self.dialect["missingValues"]:
@@ -72,6 +78,10 @@ class TabularDataset(Dataset):
                 setattr(self, key, self.dialect[key])
 
     def add_schema(self):
+        """Add a schema to the table object.
+
+        Define the data type for the columns in the table.
+        """
         spec_data_types = {
             # Dict to map retriever and frictionless data types.
             # spec types not defined, default to char
@@ -278,8 +288,9 @@ class RasterDataset(Dataset):
             setattr(self, key, kwargs[key])
         Dataset.__init__(self, self.name, self.url)
 
+
 class VectorDataset(Dataset):
-    """Vector table implementation"""
+    """Vector table implementation."""
 
     def __init__(self, name=None, url=None, dataset_type="VectorDataset", **kwargs):
         self.name = name

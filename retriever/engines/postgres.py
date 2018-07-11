@@ -45,6 +45,13 @@ class engine(Engine):
                      ]
 
     def auto_create_table(self, table, url=None, filename=None, pk=None):
+        """Create a table automatically.
+
+        Overwrites the main Engine class. Identifies the type of table to create.
+        For a Raster or vector (Gis) dataset, create the table from the contents
+        downloaded from the url or from the contents in the filename.
+        Otherwise, use the Engine function for a tabular table.
+        """
         if table.dataset_type in ["RasterDataset", "VectorDataset"]:
             self.table = table
             if url and not filename:
@@ -135,6 +142,11 @@ CSV HEADER;"""
         return statement
 
     def supported_raster(self, path, ext=None):
+        """Return the supported Gis raster files from the path
+
+        Update the extensions after testing if a given
+        raster type is supported by raster2pgsql.
+        """
         path = os.path.normpath(os.path.abspath(path))
         if ext:
             raster_extensions = ext

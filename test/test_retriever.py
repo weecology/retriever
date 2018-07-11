@@ -63,19 +63,30 @@ gz_url = os.path.normpath(achive_url.format(file_path='sample.gz'))
 
 
 def setup_module():
-    """"Make sure you are in the main local retriever directory."""
+    """"Automatically sets up the environment before the module runs.
+
+    Make sure you are in the main local retriever directory.
+    """
     os.chdir(retriever_root_dir)
     subprocess.call(['cp', '-r', 'test/raw_data', retriever_root_dir])
 
 
 def teardown_module():
-    """Make sure you are in the main local retriever directory after these tests."""
+    """Automatically clean up after the module.
+
+    Make sure you are in the main local retriever directory after these tests.
+    """
     os.chdir(retriever_root_dir)
     subprocess.call(['rm', '-r', 'raw_data'])
     subprocess.call(['rm', '-r', test_engine.format_data_dir()])
 
 
 def setup_functions():
+    """Set up function.
+
+    Tests can use the function to clean up before running.
+    Not automatically run.
+    """
     teardown_module()
     setup_module()
 
