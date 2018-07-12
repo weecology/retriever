@@ -23,10 +23,18 @@ To install the development version, use ``devtools``
   # install.packages("devtools")
   library(devtools)
   install_github("ropensci/rdataretriever")
-
+  
 Note: The R package takes advantage of the Data Retriever's command line
 interface, which must be available in the path. This should occur automatically
 when following the installation instructions for the Retriever.
+
+:: 
+  library(rdataretriever)
+  # Set the Retriever's path 
+  rdataretriever::use_RetrieverPath('/home/ubuntu/.local/bin')
+
+The Retriever could be installed in frameworks such as Anaconda or Miniconda and be present in an virtual environment.
+
 
 
 Examples
