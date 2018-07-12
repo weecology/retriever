@@ -29,6 +29,7 @@ interface, which must be available in the path. This should occur automatically
 when following the installation instructions for the Retriever.
 
 :: 
+
   library(rdataretriever)
   # Set the Retriever's path 
   rdataretriever::use_RetrieverPath('/home/ubuntu/.local/bin')
