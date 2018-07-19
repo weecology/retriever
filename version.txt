@@ -59,6 +59,7 @@ nd_gain.json,1.0.3
 nematode_traits.json,1.0.1
 ngreatplains_flowering_dates.json,1.0.2
 nla.json,1.0.0
+noaa_fisheries_trade.py,1.0.0
 npn.py,2.1.3
 nyc_tree_count.json,1.0.1
 pantheria.py,1.3.3
