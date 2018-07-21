@@ -95,9 +95,10 @@ class engine(Engine):
                     pass
             except BaseException:
                 print("Make sure that you have PostGIS installed\n"
-                      "The open PostgreSQL and run:\n"
-                      "CREATE EXTENSION postgis, postgis_topology;")
-                raise
+                      "Open Postgres CLI or GUI(PgAdmin) and run:\n"
+                      "CREATE EXTENSION postgis;\n"
+                      "CREATE EXTENSION postgis_topology;")
+                exit()
             return
         Engine.create_table(self)
         self.connection.commit()
@@ -163,12 +164,11 @@ CSV HEADER;"""
 
     def insert_raster(self, path=None, srid=4326):
         """Import Raster into Postgis Table
-
         Uses raster2pgsql -I -C -s <SRID> <PATH> <SCHEMA>.<DBTABLE>
         | psql -d <DATABASE>
         The sql processed by raster2pgsql is run
-         as psql -U postgres -d <gisdb> -f <elev>.sql
-         """
+        as psql -U postgres -d <gisdb> -f <elev>.sql
+        """
 
         if not path:
             path = Engine.format_data_dir(self)
