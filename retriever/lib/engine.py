@@ -757,6 +757,10 @@ class Engine(object):
             self.download_file(url, filename)
             self.insert_data_from_file(self.find_file(filename))
 
+    def insert_raster(self, path=None, srid=None):
+        """Base function for installing raster data from path"""
+        pass
+
     def insert_statement(self, values):
         """Return SQL statement to insert a set of values."""
         columns = self.table.get_insert_columns()
@@ -781,6 +785,10 @@ class Engine(object):
         if self.debug:
             print(insert_stmt)
         return insert_stmt
+
+    def insert_vector(self, path=None, srid=None):
+        """Base function for installing vector data from path"""
+        pass
 
     def set_engine_encoding(self):
         """Set up the encoding to be used."""
