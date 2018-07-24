@@ -47,7 +47,8 @@ def open_csvw(csv_file, encode=True):
     Also sets dialect to 'excel' and escape characters to '\\'
     """
     if os.name == 'nt':
-        csv_writer = csv.writer(csv_file, dialect='excel', escapechar='\\', lineterminator='\n')
+        csv_writer = csv.writer(csv_file, dialect='excel',
+                                escapechar='\\', lineterminator='\n')
     else:
         csv_writer = csv.writer(csv_file, dialect='excel', escapechar='\\')
     return csv_writer

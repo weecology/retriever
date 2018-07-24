@@ -43,11 +43,13 @@ def clean_input(prompt="", split_char='', ignore_empty=False, dtype=None):
 
 
 def get_replace_columns(dialect):
-    """Get list of tuples with old and new names for the columns in the table."""
-    val = clean_input("replace_columns (separated by ';', with comma-separated values) (press return to skip): ",
+    """Get the replace values for columns from the user."""
+    val = clean_input("replace_columns (separated by "
+                      "';', with comma-separated values) "
+                      "(press return to skip): ",
                       split_char=';', ignore_empty=True)
     if val == "" or val == []:
-        # return and dont add key to dialect dict if empty val
+        # return and don't add key to dialect dict if empty val
         return
     dialect['replace_columns'] = []
     for v in val:
@@ -60,8 +62,11 @@ def get_replace_columns(dialect):
 
 def get_nulls(dialect):
     """Get list of strings that denote missing value in the dataset."""
-    val = clean_input("missing values (separated by ';') (press return to skip): ",
-                      split_char=';', ignore_empty=True)
+    val = clean_input(
+        "missing values (separated by ';') (press return to skip): ",
+        split_char=';',
+        ignore_empty=True
+    )
     if val == "" or val == []:
         # return and dont add key to dialect dict if empty val
         return
@@ -82,8 +87,11 @@ def get_delimiter(dialect):
 
 def get_do_not_bulk_insert(dialect):
     """Set do_not_bulk_insert property."""
-    val = clean_input("do_not_bulk_insert (bool = True/False) (press return to skip): ",
-                      ignore_empty=True, dtype=bool)
+    val = clean_input(
+        "do_not_bulk_insert (bool = True/False) (press return to skip): ",
+        ignore_empty=True,
+        dtype=bool
+    )
     if val == "" or val == []:
         # return and dont add key to dialect dict if empty val
         return
@@ -92,8 +100,11 @@ def get_do_not_bulk_insert(dialect):
 
 def get_contains_pk(dialect):
     """Set contains_pk property."""
-    val = clean_input("contains_pk (bool = True/False) (press return to skip): ",
-                      ignore_empty=True, dtype=bool)
+    val = clean_input(
+        "contains_pk (bool = True/False) (press return to skip): ",
+        ignore_empty=True,
+        dtype=bool
+    )
     if val == "" or val == []:
         # return and dont add key to dialect dict if empty val
         return
@@ -102,8 +113,11 @@ def get_contains_pk(dialect):
 
 def get_fixed_width(dialect):
     """Set fixed_width property."""
-    val = clean_input("fixed_width (bool = True/False) (press return to skip): ",
-                      ignore_empty=True, dtype=bool)
+    val = clean_input(
+        "fixed_width (bool = True/False) (press return to skip): ",
+        ignore_empty=True,
+        dtype=bool
+    )
     if val == "" or val == []:
         # return and dont add key to dialect dict if empty val
         return
@@ -134,7 +148,8 @@ def create_json():
     invalid_name = True
     script_exists = True
     while script_exists or invalid_name:
-        contents['name'] = clean_input("name (a short unique identifier; only lowercase letters and - allowed): ")
+        contents['name'] = clean_input("name (a short unique identifier;"
+                                       " only lowercase letters and - allowed): ")
         invalid_name = re.compile(r'[^a-z-]').search(contents['name'])
         if invalid_name:
             print("name can only contain lowercase letters and -")
@@ -153,7 +168,8 @@ def create_json():
     contents['retriever'] = "True"
     contents['retriever_minimum_version'] = "2.0.dev"
     contents['encoding'] = clean_input("encoding: ", ignore_empty=True)
-    if is_empty(clean_input("encoding: ", ignore_empty=True)): contents['encoding'] = ENCODING
+    if is_empty(clean_input("encoding: ", ignore_empty=True)):
+        contents['encoding'] = ENCODING
     contents['version'] = "1.0.0"
 
     # Add tables -
@@ -189,9 +205,9 @@ def create_json():
                 # get column list (optional)
                 try:
                     col_list = clean_input("", split_char=',', ignore_empty=True)
-                    if col_list == []:
+                    if not col_list:
                         break
-                    elif type(col_list) != list:
+                    if not isinstance(col_list, list):
                         raise Exception
 
                     col_list = [c.strip() for c in col_list]
@@ -242,12 +258,12 @@ def edit_dict(obj, tabwidth=0):
     """
     Recursive helper function for edit_json() to edit a datapackage.JSON script file.
     """
-    for (key, val) in obj.items():
+    for key, val in obj.items():
         print('\n' + "  " * tabwidth + "->" + key + " (", type(val), ") :\n")
-        if type(val) == list:
+        if isinstance(val, list):
             for v in val:
                 print("  " * tabwidth + str(v) + '\n\n')
-        elif type(val) == dict:
+        elif isinstance(val, dict):
             for item in val.items():
                 print("  " * tabwidth + str(item) + '\n\n')
         else:
@@ -297,7 +313,8 @@ def edit_dict(obj, tabwidth=0):
 
                     elif selection == '4':
                         do_remove = clean_input(
-                            "Are you sure (completely remove this entry)? (y/n): ")
+                            "Are you sure "
+                            "(completely remove this entry)? (y/n): ")
 
                         if do_remove.lower() in ['y', 'yes']:
                             obj.pop(key)
@@ -343,7 +360,8 @@ def edit_dict(obj, tabwidth=0):
 
                     elif selection == '3':
                         do_remove = clean_input(
-                            "Are you sure (completely remove this entry)? (y/n): ")
+                            "Are you sure "
+                            "(completely remove this entry)? (y/n): ")
 
                         if do_remove.lower() in ['y', 'yes']:
                             obj.pop(key)
@@ -416,21 +434,23 @@ def edit_json(json_file):
 
 
 def delete_json(json_file):
+    """Delete the json file from the script write path's directories."""
     try:
         # delete scripts from home directory
         if os.path.exists(os.path.join(HOME_DIR, 'scripts', json_file)):
             os.remove(os.path.join(HOME_DIR, 'scripts', json_file))
 
-        [os.remove(x) for x in glob.glob(os.path.join(HOME_DIR, 'scripts', json_file[:-4] + 'py*'))]
-
         # delete scripts from current directory if exists
         if os.path.exists(os.path.join(os.getcwd(), 'scripts', json_file)):
             os.remove(os.path.join(os.getcwd(), 'scripts', json_file))
 
-        [os.remove(x) for x in glob.glob(os.path.join(os.getcwd(), 'scripts', json_file[:-4] + 'py*'))]
     except OSError:
         print("Couldn't delete Script.")
 
 
 def get_script_filename(shortname):
+    """Return the file name of a script.
+
+    File names have '_' while the script variable names have '-'.
+    """
     return shortname.replace('-', '_') + '.json'

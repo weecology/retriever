@@ -12,6 +12,7 @@ class engine(Engine):
 
     name = "XML"
     abbreviation = "xml"
+    auto_column_number = 0
     datatypes = {
         "auto": "INTEGER",
         "int": "INTEGER",
@@ -40,6 +41,13 @@ class engine(Engine):
         self.output_file.write(u'\n<root>')
         self.table_names.append((self.output_file, self.table_name()))
         self.auto_column_number = 1
+
+        # Register all tables created to enable
+        # testing python files having custom download function
+        if self.script.name not in self.script_table_registry:
+            self.script_table_registry[self.script.name] = []
+        self.script_table_registry[self.script.name].append(
+            (self.table_name(), self.table))
 
     def disconnect(self):
         """Close out the xml files
@@ -71,16 +79,21 @@ class engine(Engine):
     def format_insert_value(self, value, datatype):
         """Format value for an insert statement."""
         v = Engine.format_insert_value(self, value, datatype)
-        if v == None:
+        if v is None:
             return ""
         try:
             if len(v) > 1 and v[0] == v[-1] == "'":
                 v = '"%s"' % v[1:-1]
-        except:
+        except BaseException:
             pass
         return v
 
     def insert_statement(self, values):
+        """Create the insert statement.
+
+        Wrap each data value with column values(key)
+        using _format_single_row <key> value </key>.
+        """
         if not hasattr(self, 'auto_column_number'):
             self.auto_column_number = 1
 
@@ -94,24 +107,22 @@ class engine(Engine):
         else:
             newrows = values
 
-        xml_lines = ['\n<row>\n{}</row>'.format(self._format_single_row(keys, line_data)) for line_data in newrows]
+        xml_lines = ['\n<row>\n{}</row>' \
+                     ''.format(self._format_single_row(keys, line_data))
+                     for line_data in newrows]
         return xml_lines
 
     def _format_single_row(self, keys, line_data):
-        return ''.join(
-            '    <{key}>{value}</{key}>\n'.format(key=key, value=value) for key, value in zip(keys, line_data))
+        """Create an xml string from the keys and line_data values."""
+        row_values = ['    <{key}>{value}</{key}>\n'.format(key=key, value=value)
+                      for key, value in zip(keys, line_data)]
+        return ''.join(row_values)
 
-    def table_exists(self, dbname, tablename):
-        """Check to see if the data file currently exists."""
-        tablename = self.table_name(name=tablename, dbname=dbname)
-        return os.path.exists(tablename)
-
-    def to_csv(self):
+    def to_csv(self, sort=True):
         """Export table from xml engine to CSV file."""
-        for keys in list(self.script.tables):
-            table_name = self.table_name()
-            header = self.script.tables[keys].get_insert_columns(join=False, create=True)
-            csv_outfile = xml2csv(table_name, header_values=header)
+        for table_item in self.script_table_registry[self.script.name]:
+            header = table_item[1].get_insert_columns(join=False, create=True)
+            csv_outfile = xml2csv(table_item[0], header_values=header)
             sort_csv(csv_outfile)
 
     def get_connection(self):

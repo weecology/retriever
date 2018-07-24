@@ -1,0 +1,1213 @@
+{
+    "name": "harvard-forest",
+    "title": "The ph_ownership_history dataset",
+    "description": "ph_ownership_history",
+    "format": "vector",
+    "spatial_ref": "4326",
+    "citation": "Hall B. 2017. Historical GIS Data for Harvard Forest Properties from 1908 to Present. Harvard Forest Data Archive: HF110.",
+    "license": [{"name": "CC BY-ND"}],
+    "driver_name": "ESRI Shapefile",
+    "keywords": [
+        "harvard forest",
+        "spatial-data"
+    ],
+    "url": "FILL",
+    "ref": "http://harvardforest.fas.harvard.edu/",
+    "version": "1.0.0",
+    "retriever": "True",
+    "retriever_minimum_version": "2.1.dev",
+    "extract_all": "True",
+    "archived": "zip",
+    "resources": [
+        {
+            "name": "1938_hurricane_damage",
+            "path": "Harvard_Forest_Properties_GIS_Layers/1938_hurricane_damage.shp",
+            "url": "http://harvardforest.fas.harvard.edu/data/p11/hf110/hf110-01-gis.zip",
+            "geom_type": "Polygon",
+            "extent": {
+                "xMin": 140574.67844324122,
+                "xMax": 145661.38856086845,
+                "yMin": 910910.6810802639,
+                "yMax": 922610.3051484756
+            },
+            "schema": {
+                "fields": [
+                    {
+                        "name": "NOTES",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 30
+                    },
+                    {
+                        "name": "DAMAGE",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 45
+                    }
+                ]
+            }
+        },
+        {
+            "name": "compartments",
+            "path": "Harvard_Forest_Properties_GIS_Layers/compartments.shp",
+            "url": "http://harvardforest.fas.harvard.edu/data/p11/hf110/hf110-01-gis.zip",
+            "geom_type": "Polygon",
+            "extent": {
+                "xMin": 139811.4688113522,
+                "xMax": 145659.76654534097,
+                "yMin": 910914.1978897931,
+                "yMax": 936169.3124719069
+            },
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMPART",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 16
+                    },
+                    {
+                        "name": "ACRES",
+                        "precision": 1,
+                        "type": "Real",
+                        "size": 16
+                    },
+                    {
+                        "name": "Tract",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 20
+                    }
+                ]
+            }
+        },
+        {
+            "name": "hf_gates_smeyer_m",
+            "path": "Harvard_Forest_Properties_GIS_Layers/hf_gates_smeyer_m.shp",
+            "url": "http://harvardforest.fas.harvard.edu/data/p11/hf110/hf110-01-gis.zip",
+            "geom_type": "Point",
+            "extent": {
+                "xMin": 139805.70152884832,
+                "xMax": 145508.5167208311,
+                "yMin": 911391.4213747139,
+                "yMax": 922158.284735352
+            },
+            "schema": {
+                "fields": [
+                    {
+                        "name": "GATE_ID",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 16
+                    },
+                    {
+                        "name": "NAME2003",
+                        "precision": 0,
+                        "type": "Integer64",
+                        "size": 16
+                    }
+                ]
+            }
+        },
+        {
+            "name": "linear_features",
+            "path": "Harvard_Forest_Properties_GIS_Layers/linear_features.shp",
+            "url": "http://harvardforest.fas.harvard.edu/data/p11/hf110/hf110-01-gis.zip",
+            "geom_type": "Line String",
+            "extent": {
+                "xMin": 140557.41546083344,
+                "xMax": 145644.67769699873,
+                "yMin": 910911.0734561103,
+                "yMax": 922632.5106968862
+            },
+            "schema": {
+                "fields": [
+                    {
+                        "name": "TYPE",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 16
+                    },
+                    {
+                        "name": "NOTES",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 45
+                    }
+                ]
+            }
+        },
+        {
+            "name": "silviculture_treatments",
+            "path": "Harvard_Forest_Properties_GIS_Layers/silviculture_treatments.shp",
+            "url": "http://harvardforest.fas.harvard.edu/data/p11/hf110/hf110-01-gis.zip",
+            "geom_type": "Polygon",
+            "extent": {
+                "xMin": 140573.18191691703,
+                "xMax": 145632.85401634814,
+                "yMin": 911248.9483325663,
+                "yMax": 922611.7713744331
+            },
+            "schema": {
+                "fields": [
+                    {
+                        "name": "TREATMENT",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 254
+                    },
+                    {
+                        "name": "NOTES",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 254
+                    }
+                ]
+            }
+        },
+        {
+            "name": "silviculture_treatments_08_21_2010",
+            "path": "Harvard_Forest_Properties_GIS_Layers/silviculture_treatments_08_21_2010.shp",
+            "url": "http://harvardforest.fas.harvard.edu/data/p11/hf110/hf110-01-gis.zip",
+            "geom_type": "Polygon",
+            "extent": {
+                "xMin": 139816.78603245222,
+                "xMax": 145632.85401634814,
+                "yMin": 911057.1226705872,
+                "yMax": 922611.7713744331
+            },
+            "schema": {
+                "fields": [
+                    {
+                        "name": "NOTES",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 254
+                    },
+                    {
+                        "name": "TREATMENT",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 254
+                    },
+                    {
+                        "name": "LINK1",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 254
+                    },
+                    {
+                        "name": "LINK2",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 254
+                    },
+                    {
+                        "name": "LINK3",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 254
+                    },
+                    {
+                        "name": "LINK4",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 254
+                    },
+                    {
+                        "name": "LINK5",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 254
+                    },
+                    {
+                        "name": "LINK6",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 254
+                    },
+                    {
+                        "name": "LINK7",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 254
+                    },
+                    {
+                        "name": "LINK8",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 254
+                    },
+                    {
+                        "name": "LINK9",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 254
+                    },
+                    {
+                        "name": "LINK10",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 254
+                    },
+                    {
+                        "name": "LINK11",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 254
+                    },
+                    {
+                        "name": "LINK12",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 254
+                    },
+                    {
+                        "name": "LINK13",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 254
+                    },
+                    {
+                        "name": "LINK14",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 254
+                    },
+                    {
+                        "name": "LINK15",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 254
+                    }
+                ]
+            }
+        },
+        {
+            "name": "soils",
+            "path": "Harvard_Forest_Properties_GIS_Layers/soils.shp",
+            "url": "http://harvardforest.fas.harvard.edu/data/p11/hf110/hf110-01-gis.zip",
+            "geom_type": "Polygon",
+            "extent": {
+                "xMin": 140574.59551796288,
+                "xMax": 145661.95679829948,
+                "yMin": 910912.8623589422,
+                "yMax": 922610.3051484769
+            },
+            "schema": {
+                "fields": [
+                    {
+                        "name": "TYPE_",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 25
+                    },
+                    {
+                        "name": "NOTES",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 35
+                    },
+                    {
+                        "name": "SIMMONS_SO",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 48
+                    },
+                    {
+                        "name": "MESIC_SOIL",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 34
+                    },
+                    {
+                        "name": "DRAINAGE_C",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 35
+                    }
+                ]
+            }
+        },
+        {
+            "name": "stands_1908_9",
+            "path": "Harvard_Forest_Properties_GIS_Layers/stands_1908_9.shp",
+            "url": "http://harvardforest.fas.harvard.edu/data/p11/hf110/hf110-01-gis.zip",
+            "geom_type": "Polygon",
+            "extent": {
+                "xMin": 141439.7287942783,
+                "xMax": 145634.8917407422,
+                "yMin": 912254.8995078584,
+                "yMax": 922610.3051484759
+            },
+            "schema": {
+                "fields": [
+                    {
+                        "name": "NOTES",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 35
+                    },
+                    {
+                        "name": "AGE",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 16
+                    },
+                    {
+                        "name": "AREAM2",
+                        "precision": 0,
+                        "type": "Integer64",
+                        "size": 16
+                    },
+                    {
+                        "name": "TYPE",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 40
+                    }
+                ]
+            }
+        },
+        {
+            "name": "stands_1912_13",
+            "path": "Harvard_Forest_Properties_GIS_Layers/stands_1912_13.shp",
+            "url": "http://harvardforest.fas.harvard.edu/data/p11/hf110/hf110-01-gis.zip",
+            "geom_type": "Polygon",
+            "extent": {
+                "xMin": 140705.5422134867,
+                "xMax": 145771.55317370617,
+                "yMin": 910911.6036594989,
+                "yMax": 922610.305148496
+            },
+            "schema": {
+                "fields": [
+                    {
+                        "name": "AGE",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 16
+                    },
+                    {
+                        "name": "NOTES",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 35
+                    },
+                    {
+                        "name": "AREAM2",
+                        "precision": 0,
+                        "type": "Integer64",
+                        "size": 16
+                    },
+                    {
+                        "name": "TYPE",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 45
+                    }
+                ]
+            }
+        },
+        {
+            "name": "stands_1919",
+            "path": "Harvard_Forest_Properties_GIS_Layers/stands_1919.shp",
+            "url": "http://harvardforest.fas.harvard.edu/data/p11/hf110/hf110-01-gis.zip",
+            "geom_type": "Polygon",
+            "extent": {
+                "xMin": 140705.54221351925,
+                "xMax": 145661.92838991046,
+                "yMin": 910911.4451592526,
+                "yMax": 922609.8553364166
+            },
+            "schema": {
+                "fields": [
+                    {
+                        "name": "NOTES",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 35
+                    },
+                    {
+                        "name": "AGECLASS",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 16
+                    },
+                    {
+                        "name": "TYPE",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 45
+                    }
+                ]
+            }
+        },
+        {
+            "name": "stands_1923",
+            "path": "Harvard_Forest_Properties_GIS_Layers/stands_1923.shp",
+            "url": "http://harvardforest.fas.harvard.edu/data/p11/hf110/hf110-01-gis.zip",
+            "geom_type": "Polygon",
+            "extent": {
+                "xMin": 140705.54221353345,
+                "xMax": 145660.8003214778,
+                "yMin": 910914.3740847956,
+                "yMax": 922609.8553364192
+            },
+            "schema": {
+                "fields": [
+                    {
+                        "name": "NOTES",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 35
+                    },
+                    {
+                        "name": "TYPE",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 45
+                    }
+                ]
+            }
+        },
+        {
+            "name": "stands_1929_30",
+            "path": "Harvard_Forest_Properties_GIS_Layers/stands_1929_30.shp",
+            "url": "http://harvardforest.fas.harvard.edu/data/p11/hf110/hf110-01-gis.zip",
+            "geom_type": "Polygon",
+            "extent": {
+                "xMin": 140574.67844318802,
+                "xMax": 145662.30205930717,
+                "yMin": 910914.1978898037,
+                "yMax": 922609.8553364194
+            },
+            "schema": {
+                "fields": [
+                    {
+                        "name": "STAND_ID",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 25
+                    },
+                    {
+                        "name": "NOTES",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 35
+                    },
+                    {
+                        "name": "TYPE",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 55
+                    }
+                ]
+            }
+        },
+        {
+            "name": "stands_1937",
+            "path": "Harvard_Forest_Properties_GIS_Layers/stands_1937.shp",
+            "url": "http://harvardforest.fas.harvard.edu/data/p11/hf110/hf110-01-gis.zip",
+            "geom_type": "Polygon",
+            "extent": {
+                "xMin": 140575.0911068966,
+                "xMax": 145672.81823387422,
+                "yMin": 910914.1978898485,
+                "yMax": 922610.3051484837
+            },
+            "schema": {
+                "fields": [
+                    {
+                        "name": "STANDID",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 30
+                    },
+                    {
+                        "name": "TYPE",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 55
+                    },
+                    {
+                        "name": "AGE",
+                        "precision": 0,
+                        "type": "Integer",
+                        "size": 8
+                    },
+                    {
+                        "name": "HALLS_ACRE",
+                        "precision": 1,
+                        "type": "Real",
+                        "size": 16
+                    },
+                    {
+                        "name": "NOTES",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 100
+                    }
+                ]
+            }
+        },
+        {
+            "name": "stands_1947",
+            "path": "Harvard_Forest_Properties_GIS_Layers/stands_1947.shp",
+            "url": "http://harvardforest.fas.harvard.edu/data/p11/hf110/hf110-01-gis.zip",
+            "geom_type": "Polygon",
+            "extent": {
+                "xMin": 140574.67844316384,
+                "xMax": 145661.19114786974,
+                "yMin": 910912.3626859338,
+                "yMax": 922609.8553364119
+            },
+            "schema": {
+                "fields": [
+                    {
+                        "name": "NOTES",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 30
+                    },
+                    {
+                        "name": "STANDNUM",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 16
+                    },
+                    {
+                        "name": "AREAAC",
+                        "precision": 3,
+                        "type": "Real",
+                        "size": 19
+                    },
+                    {
+                        "name": "CDS_ACRE",
+                        "precision": 3,
+                        "type": "Real",
+                        "size": 19
+                    },
+                    {
+                        "name": "MBDFT_AC",
+                        "precision": 3,
+                        "type": "Real",
+                        "size": 19
+                    },
+                    {
+                        "name": "CDS_TOT",
+                        "precision": 3,
+                        "type": "Real",
+                        "size": 19
+                    },
+                    {
+                        "name": "MBDFT_TOT",
+                        "precision": 3,
+                        "type": "Real",
+                        "size": 19
+                    },
+                    {
+                        "name": "TYPE1",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 30
+                    },
+                    {
+                        "name": "HEIGHT1",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 30
+                    },
+                    {
+                        "name": "CROWN1",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 30
+                    },
+                    {
+                        "name": "TYPE2",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 30
+                    },
+                    {
+                        "name": "HEIGHT2",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 30
+                    },
+                    {
+                        "name": "CROWN2",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 30
+                    }
+                ]
+            }
+        },
+        {
+            "name": "stands_1956",
+            "path": "Harvard_Forest_Properties_GIS_Layers/stands_1956.shp",
+            "url": "http://harvardforest.fas.harvard.edu/data/p11/hf110/hf110-01-gis.zip",
+            "geom_type": "Polygon",
+            "extent": {
+                "xMin": 140574.67844316384,
+                "xMax": 145632.85401696217,
+                "yMin": 910914.1978899452,
+                "yMax": 922604.164430484
+            },
+            "schema": {
+                "fields": [
+                    {
+                        "name": "STAND__",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 25
+                    },
+                    {
+                        "name": "SAWLOG_V",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 35
+                    },
+                    {
+                        "name": "NOTES",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 35
+                    },
+                    {
+                        "name": "TYPE",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 65
+                    }
+                ]
+            }
+        },
+        {
+            "name": "stands_1986_93",
+            "path": "Harvard_Forest_Properties_GIS_Layers/stands_1986_93.shp",
+            "url": "http://harvardforest.fas.harvard.edu/data/p11/hf110/hf110-01-gis.zip",
+            "geom_type": "Polygon",
+            "extent": {
+                "xMin": 140574.3442349406,
+                "xMax": 145827.08177488,
+                "yMin": 910912.3626859359,
+                "yMax": 922609.855336408
+            },
+            "schema": {
+                "fields": [
+                    {
+                        "name": "NOTES",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 30
+                    },
+                    {
+                        "name": "TYPE",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 16
+                    },
+                    {
+                        "name": "SIZE",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 16
+                    },
+                    {
+                        "name": "STANDID",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 20
+                    },
+                    {
+                        "name": "ACRES",
+                        "precision": 0,
+                        "type": "Integer",
+                        "size": 9
+                    },
+                    {
+                        "name": "PLOTS",
+                        "precision": 0,
+                        "type": "Integer",
+                        "size": 9
+                    },
+                    {
+                        "name": "FORM",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 9
+                    },
+                    {
+                        "name": "SPEC1",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 9
+                    },
+                    {
+                        "name": "SPEC2",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 9
+                    },
+                    {
+                        "name": "SPEC3",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 9
+                    },
+                    {
+                        "name": "SPEC4",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 9
+                    },
+                    {
+                        "name": "SPEC5",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 9
+                    },
+                    {
+                        "name": "BAREA1",
+                        "precision": 0,
+                        "type": "Integer",
+                        "size": 9
+                    },
+                    {
+                        "name": "BAREA2",
+                        "precision": 0,
+                        "type": "Integer",
+                        "size": 9
+                    },
+                    {
+                        "name": "CUBFT",
+                        "precision": 0,
+                        "type": "Integer",
+                        "size": 9
+                    },
+                    {
+                        "name": "CFSAL",
+                        "precision": 0,
+                        "type": "Integer",
+                        "size": 9
+                    },
+                    {
+                        "name": "BOARDFT",
+                        "precision": 0,
+                        "type": "Integer",
+                        "size": 9
+                    },
+                    {
+                        "name": "CORDS",
+                        "precision": 0,
+                        "type": "Integer",
+                        "size": 9
+                    },
+                    {
+                        "name": "MBFTOT",
+                        "precision": 0,
+                        "type": "Integer",
+                        "size": 9
+                    },
+                    {
+                        "name": "CDSTOT",
+                        "precision": 0,
+                        "type": "Integer",
+                        "size": 9
+                    },
+                    {
+                        "name": "STDERRV",
+                        "precision": 0,
+                        "type": "Integer",
+                        "size": 9
+                    },
+                    {
+                        "name": "STDERRB",
+                        "precision": 0,
+                        "type": "Integer",
+                        "size": 9
+                    },
+                    {
+                        "name": "CLASS",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 16
+                    }
+                ]
+            }
+        },
+        {
+            "name": "tracts",
+            "path": "Harvard_Forest_Properties_GIS_Layers/tracts.shp",
+            "url": "http://harvardforest.fas.harvard.edu/data/p11/hf110/hf110-01-gis.zip",
+            "geom_type": "Polygon",
+            "extent": {
+                "xMin": 139811.4688113522,
+                "xMax": 145659.7665770699,
+                "yMin": 910914.1978890897,
+                "yMax": 936169.3124719069
+            },
+            "schema": {
+                "fields": [
+                    {
+                        "name": "Tract",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 254
+                    },
+                    {
+                        "name": "Cnt_Tract",
+                        "precision": 0,
+                        "type": "Integer",
+                        "size": 9
+                    },
+                    {
+                        "name": "Sum_ACRES",
+                        "precision": 4,
+                        "type": "Real",
+                        "size": 19
+                    }
+                ]
+            }
+        },
+        {
+            "name": "ph_ag_abandonment",
+            "path": "Harvard_Forest_Properties_GIS_Layers/PH_Specific/ph_ag_abandonment.shp",
+            "url": "http://harvardforest.fas.harvard.edu/data/p11/hf110/hf110-01-gis.zip",
+            "geom_type": "Polygon",
+            "extent": {
+                "xMin": 142939.57471894153,
+                "xMax": 145133.43749996566,
+                "yMin": 919779.1875000001,
+                "yMax": 922620.0624999906
+            },
+            "schema": {
+                "fields": [
+                    {
+                        "name": "FIELD_ABAN",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 30
+                    },
+                    {
+                        "name": "NOTES",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 50
+                    },
+                    {
+                        "name": "CUTTING",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 30
+                    }
+                ]
+            }
+        },
+        {
+            "name": "ph_archive_agricultural_references",
+            "path": "Harvard_Forest_Properties_GIS_Layers/PH_Specific/ph_archive_agricultural_references.shp",
+            "url": "http://harvardforest.fas.harvard.edu/data/p11/hf110/hf110-01-gis.zip",
+            "geom_type": "Polygon",
+            "extent": {
+                "xMin": 143057.04354470602,
+                "xMax": 145010.60299754143,
+                "yMin": 919866.8312609808,
+                "yMax": 922609.1763269901
+            },
+            "schema": {
+                "fields": [
+                    {
+                        "name": "CITEID",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 16
+                    },
+                    {
+                        "name": "TYPE",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 20
+                    },
+                    {
+                        "name": "NOTES",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 35
+                    }
+                ]
+            }
+        },
+        {
+            "name": "ph_historical_features",
+            "path": "Harvard_Forest_Properties_GIS_Layers/PH_Specific/ph_historical_features.shp",
+            "url": "http://harvardforest.fas.harvard.edu/data/p11/hf110/hf110-01-gis.zip",
+            "geom_type": "Point",
+            "extent": {
+                "xMin": 143083.03125,
+                "xMax": 144507.515625,
+                "yMin": 919888.0625,
+                "yMax": 921258.8125
+            },
+            "schema": {
+                "fields": [
+                    {
+                        "name": "TYPE",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 25
+                    },
+                    {
+                        "name": "NOTES",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 35
+                    }
+                ]
+            }
+        },
+        {
+            "name": "ph_landuse_history",
+            "path": "Harvard_Forest_Properties_GIS_Layers/PH_Specific/ph_landuse_history.shp",
+            "url": "http://harvardforest.fas.harvard.edu/data/p11/hf110/hf110-01-gis.zip",
+            "geom_type": "Polygon",
+            "extent": {
+                "xMin": 142935.86353681106,
+                "xMax": 145133.4966244351,
+                "yMin": 919779.1874999983,
+                "yMax": 922620.0624999963
+            },
+            "schema": {
+                "fields": [
+                    {
+                        "name": "LANDUSE",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 30
+                    }
+                ]
+            }
+        },
+        {
+            "name": "ph_natural_disturbance2",
+            "path": "Harvard_Forest_Properties_GIS_Layers/PH_Specific/ph_natural_disturbance2.shp",
+            "url": "http://harvardforest.fas.harvard.edu/data/p11/hf110/hf110-01-gis.zip",
+            "geom_type": "Polygon",
+            "extent": {
+                "xMin": 143169.37691066272,
+                "xMax": 145157.3692976199,
+                "yMin": 919830.8120079827,
+                "yMax": 922512.9978323946
+            },
+            "schema": {
+                "fields": [
+                    {
+                        "name": "CITEID",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 16
+                    },
+                    {
+                        "name": "TYPE",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 25
+                    },
+                    {
+                        "name": "NOTES",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 35
+                    },
+                    {
+                        "name": "Type_1",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 254
+                    },
+                    {
+                        "name": "Date",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 254
+                    },
+                    {
+                        "name": "F__acres",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 254
+                    },
+                    {
+                        "name": "reference",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 254
+                    },
+                    {
+                        "name": "notes_1",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 254
+                    }
+                ]
+            }
+        },
+        {
+            "name": "ph_ownership_history",
+            "path": "Harvard_Forest_Properties_GIS_Layers/PH_Specific/ph_ownership_history.shp",
+            "url": "http://harvardforest.fas.harvard.edu/data/p11/hf110/hf110-01-gis.zip",
+            "geom_type": "Polygon",
+            "extent": {
+                "xMin": 142939.03125,
+                "xMax": 145133.34375,
+                "yMin": 919779.1875,
+                "yMax": 922619.5625
+            },
+            "schema": {
+                "fields": [
+                    {
+                        "name": "PARCEL_ID",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 16
+                    },
+                    {
+                        "name": "NOTE",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 75
+                    },
+                    {
+                        "name": "Y1730_1739",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 77
+                    },
+                    {
+                        "name": "Y1740_1749",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 41
+                    },
+                    {
+                        "name": "Y1750_1759",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 70
+                    },
+                    {
+                        "name": "Y1760_1769",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 133
+                    },
+                    {
+                        "name": "Y1770_1779",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 37
+                    },
+                    {
+                        "name": "Y1780_1789",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 61
+                    },
+                    {
+                        "name": "Y1790_1799",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 42
+                    },
+                    {
+                        "name": "Y1800_1809",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 82
+                    },
+                    {
+                        "name": "Y1810_1819",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 59
+                    },
+                    {
+                        "name": "Y1820_1829",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 56
+                    },
+                    {
+                        "name": "Y1830_1839",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 70
+                    },
+                    {
+                        "name": "Y1840_1849",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 46
+                    },
+                    {
+                        "name": "Y1850_1859",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 93
+                    },
+                    {
+                        "name": "Y1860_1869",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 52
+                    },
+                    {
+                        "name": "Y1870_1879",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 22
+                    },
+                    {
+                        "name": "Y1880_1889",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 59
+                    },
+                    {
+                        "name": "Y1890_1899",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 47
+                    },
+                    {
+                        "name": "Y1900_1909",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 50
+                    },
+                    {
+                        "name": "Y1910_1919",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 40
+                    },
+                    {
+                        "name": "Y1920_1929",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 44
+                    },
+                    {
+                        "name": "Y1930_1939",
+                        "precision": 0,
+                        "type": "String",
+                        "size": 68
+                    }
+                ]
+            }
+        }
+    ]
+}

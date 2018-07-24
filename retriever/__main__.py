@@ -1,10 +1,6 @@
-"""Data Retriever Wizard
+"""Data Retriever
 
-Running this module directly will launch the download wizard, allowing the user
-to choose from all scripts.
-
-The main() function can be used for bootstrapping.
-
+This module handles the CLI for the Data retriever.
 """
 from __future__ import absolute_import
 from __future__ import print_function
@@ -16,11 +12,11 @@ from builtins import input
 from retriever.engines import engine_list, choose_engine
 from retriever.lib.datapackage import create_json, edit_json, delete_json, get_script_filename
 from retriever.lib.datasets import datasets, dataset_names, license
-from retriever.lib.defaults import sample_script, CITATION, ENCODING, SCRIPT_SEARCH_PATHS
+from retriever.lib.defaults import sample_script, CITATION, SCRIPT_SEARCH_PATHS
+from retriever.lib.engine_tools import name_matches, reset_retriever
 from retriever.lib.get_opts import parser
 from retriever.lib.repository import check_for_updates
 from retriever.lib.scripts import SCRIPT_LIST, reload_scripts, get_script
-from retriever.lib.engine_tools import name_matches, reset_retriever
 
 
 def main():
@@ -123,13 +119,14 @@ def main():
                 print("No scripts are currently available. Updating scripts now...")
                 check_for_updates(False)
                 print("\n\nScripts downloaded.\n")
-            if not (args.l or args.k or (type(args.v) is list)):
+            if not (args.l or args.k or isinstance(args.v, list)):
                 all_scripts = dataset_names()
                 print("Available datasets : {}\n".format(len(all_scripts)))
                 from retriever import lscolumns
+
                 lscolumns.printls(all_scripts)
 
-            elif type(args.v) is list:
+            elif isinstance(args.v, list):
                 if args.v:
                     try:
                         all_scripts = [get_script(dataset) for dataset in args.v]
@@ -140,14 +137,20 @@ def main():
                     all_scripts = datasets()
                 count = 1
                 for script in all_scripts:
-                    print("{}. {}\n{}\n{}\n{}\n".format(
-                        count, script.title,
-                        script.name,
-                        script.keywords,
-                        script.description,
-                        str(script.licenses[0]['name']),
-                        script.citation
-                    ))
+                    print(
+                        "{count}. {title}\n {name}\n"
+                        "{keywords}\n{description}\n"
+                        "{licenses}\n{citation}\n"
+                        "".format(
+                            count=count,
+                            title=script.title,
+                            name=script.name,
+                            keywords=script.keywords,
+                            description=script.description,
+                            licenses=str(script.licenses[0]['name']),
+                            citation=script.citation,
+                        )
+                    )
                     count += 1
 
             else:
@@ -162,12 +165,16 @@ def main():
                     print("Available datasets : {}\n".format(len(searched_scripts)))
                     count = 1
                     for script in searched_scripts:
-                        print("{}. {}\n{}\n{}\n{}\n".format(
-                            count, script.title,
-                            script.name,
-                            script.keywords,
-                            str(script.licenses[0]['name'])
-                        ))
+                        print(
+                            "{count}. {title}\n{name}\n"
+                            "{keywords}\n{licenses}\n".format(
+                                count=count,
+                                title=script.title,
+                                name=script.name,
+                                keywords=script.keywords,
+                                licenses=str(script.licenses[0]['name']),
+                            )
+                        )
                         count += 1
             return
 

@@ -1,0 +1,50 @@
+{
+    "name": "test-raster-multi-bands",
+    "url": "https://github.com/weecology/retriever/raw/master/test/raw_data_gis/harv_landrgb.zip",
+    "title": "229_HARV_landRGB",
+    "ref": "https://www.neonscience.org/dc-raster-time-series-r",
+    "driver": "GTiff",
+    "archived": "zip",
+    "extract_all": "True",
+    "description": "Data set for tests with 3 bands 229_HARV_landRGB",
+    "licenses": [{"name": "CC Tests"}],
+    "keywords": [
+        "spatial-data"
+    ],
+    "citation": "Test citation",
+    "version": "1.0.0",
+    "colums": 696,
+    "rows": 652,
+    "datum": "4326",
+    "projection": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]]",
+    "file_size": "size of file on disk",
+    "group_count": "Number of groups in the dataset if applicable",
+    "dataset_count": "The number of individual datasets",
+    "transform": {
+        "xOrigin": -0.00000000000,
+        "pixelWidth": 0.000000000,
+        "rotation_2": 0.0,
+        "yOrigin": 0.0000000000000,
+        "rotation_4": 0.0,
+        "pixelHeight": -0.00000000
+    },
+    "resources": [
+        {
+            "extensions": ["tif"],
+            "format": "raster",
+            "name": "multi_band",
+            "path":"229_HARV_landRGB.tif",
+            "no_data_value": -1.7e+308,
+            "min": -0.0,
+            "max": 0.0,
+            "scale": 0.0,
+            "color_table": null,
+            "statistics": {
+                "minimum": -0.0,
+                "maximum": 0.0,
+                "mean": 0,
+                "stddev": 0
+            }
+        }
+    ]
+}

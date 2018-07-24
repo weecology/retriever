@@ -9,6 +9,7 @@ from future import standard_library
 standard_library.install_aliases()
 import os
 import sys
+import subprocess
 import requests
 from imp import reload
 from distutils.version import LooseVersion
@@ -35,6 +36,7 @@ def setup_module():
     and not the .retriever's script directory
     """
     os.chdir(retriever_root_dir)
+
 
 def get_modified_scripts():
     """Get modified script list, using version.txt in repo and master upstream"""
@@ -87,7 +89,7 @@ def install_modified():
 
     engine_list_install = engine_list
     if os.path.exists("test_modified"):
-        os.system("rm -r test_modified")
+        subprocess.call(['rm', '-r', 'test_modified'])
     os.makedirs("test_modified")
     os.chdir("test_modified")
     dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb.sqlite'))
@@ -128,7 +130,7 @@ def install_modified():
             try:
                 opts = engine_test[engine.abbreviation]
                 test_engines[engine.abbreviation] = choose_engine(opts)
-            except:
+            except BaseException:
                 test_engines[engine.abbreviation] = None
                 pass
 
@@ -151,7 +153,7 @@ def install_modified():
                 else:
                     errors.append((key, "No connection detected......" + module.name))
     os.chdir("..")
-    os.system("rm -r test_modified")
+    subprocess.call(['rm', '-r', 'test_modified'])
     return errors
 
 

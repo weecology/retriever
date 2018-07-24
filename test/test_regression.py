@@ -1,12 +1,13 @@
 from __future__ import absolute_import
 
-import io
+import imp
 import os
+import shlex
 import shutil
+import subprocess
 import sys
 from imp import reload
 
-from retriever import datasets
 from retriever import download
 from retriever import install_csv
 from retriever import install_json
@@ -15,9 +16,7 @@ from retriever import install_postgres
 from retriever import install_sqlite
 from retriever import install_xml
 from retriever.lib.defaults import ENCODING
-from retriever.lib.defaults import HOME_DIR
 from retriever.lib.load_json import read_json
-
 
 encoding = ENCODING.lower()
 
@@ -30,17 +29,18 @@ from retriever.engines import engine_list
 
 # Set postgres password, Appveyor service needs the password given
 # The Travis service obtains the password from the config file.
-if os.name == "nt":
-    os_password = "Password12!"
+if os.name == 'nt':
+    os_password = 'Password12!'
 else:
-    os_password = ""
+    os_password = ''
 
-mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, csv_engine, download_engine, json_engine, xml_engine = engine_list
+mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, \
+csv_engine, download_engine, json_engine, xml_engine = engine_list
 file_location = os.path.dirname(os.path.realpath(__file__))
 retriever_root_dir = os.path.abspath(os.path.join(file_location, os.pardir))
 working_script_dir = os.path.abspath(os.path.join(retriever_root_dir, "scripts"))
 HOMEDIR = os.path.expanduser('~')
-script_home = "{}/.retriever/scripts".format(HOMEDIR)
+script_home = '{}/.retriever/scripts'.format(HOMEDIR)
 
 download_md5 = [
     ('mt-st-helens-veg', 'd5782e07241cb3fe9f5b2e1bb804a794'),
@@ -49,47 +49,57 @@ download_md5 = [
 ]
 
 db_md5 = [
-    # ('mt_st_helens_veg', '0'),
+    ('flensburg_food_web', '3f0e3c60b80f0bb9326e33c74076b14c'),
     ('bird_size', '98dcfdca19d729c90ee1c6db5221b775'),
     ('mammal_masses', '6fec0fc63007a4040d9bbc5cfcd9953e')
 ]
+
+python_files = ['flensburg_food_web']
 
 
 def setup_module():
     """Update retriever scripts and cd to test directory to find data."""
     os.chdir(retriever_root_dir)
-    os.system('cp -r {0} {1}'.format("test/raw_data", retriever_root_dir))
+    subprocess.call(['cp', '-r', 'test/raw_data', retriever_root_dir])
 
 
 def teardown_module():
     """Cleanup temporary output files and return to root directory."""
     os.chdir(retriever_root_dir)
-    os.system("rm -r *output*")
-    shutil.rmtree(os.path.join(retriever_root_dir, "raw_data"))
-    os.system("rm testdb.sqlite")
+    shutil.rmtree(os.path.join(retriever_root_dir, 'raw_data'))
+    subprocess.call(['rm', '-r', 'testdb.sqlite'])
 
 
 def get_script_module(script_name):
     """Load a script module"""
-    return read_json(os.path.join(retriever_root_dir, "scripts", script_name))
+    if script_name in python_files:
+        file, pathname, desc = imp.find_module(script_name,
+                                               [working_script_dir])
+        return imp.load_module(script_name + '.py', file, pathname, desc)
+    return read_json(os.path.join(retriever_root_dir, 'scripts', script_name))
 
 
 def get_csv_md5(dataset, engine, tmpdir, install_function, config):
     workdir = tmpdir.mkdtemp()
-    os.system("cp -r {} {}/".format(os.path.join(retriever_root_dir, 'scripts'), os.path.join(str(workdir), 'scripts')))
+    src = os.path.join(retriever_root_dir, 'scripts')
+    dest = os.path.join(str(workdir), 'scripts')
+    subprocess.call(['cp', '-r', src, dest])
     workdir.chdir()
-    script_module = get_script_module(dataset)
-    install_function(dataset.replace("_", "-"), **config)
-    engine_obj = script_module.checkengine(engine)
+    final_direct = os.getcwd()
+    engine.script_table_registry = {}
+    engine_obj = install_function(dataset.replace('_', '-'), **config)
     engine_obj.to_csv()
-    os.system("rm -r scripts") # need to remove scripts before checking md5 on dir
-    current_md5 = getmd5(data=str(workdir), data_type='dir')
+    # need to remove scripts before checking md5 on dir
+    subprocess.call(['rm', '-r', 'scripts'])
+    current_md5 = getmd5(data=final_direct, data_type='dir')
+    os.chdir(retriever_root_dir)
     return current_md5
 
 
 @pytest.mark.parametrize("dataset, expected", db_md5)
 def test_sqlite_regression(dataset, expected, tmpdir):
     """Check for sqlite regression."""
+    subprocess.call(['rm', '-r', 'testdb.sqlite'])
     dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb.sqlite'))
     sqlite_engine.opts = {
         'engine': 'sqlite',
@@ -102,7 +112,9 @@ def test_sqlite_regression(dataset, expected, tmpdir):
 @pytest.mark.parametrize("dataset, expected", db_md5)
 def test_postgres_regression(dataset, expected, tmpdir):
     """Check for postgres regression."""
-    os.system('psql -U postgres -d testdb -h localhost -c "DROP SCHEMA IF EXISTS testschema CASCADE"')
+    cmd = 'psql -U postgres -d testdb -h localhost -c ' \
+          '"DROP SCHEMA IF EXISTS testschema CASCADE"'
+    subprocess.call(shlex.split(cmd))
     postgres_engine.opts = {'engine': 'postgres',
                             'user': 'postgres',
                             'password': os_password,
@@ -122,7 +134,8 @@ def test_postgres_regression(dataset, expected, tmpdir):
 @pytest.mark.parametrize("dataset, expected", db_md5)
 def test_mysql_regression(dataset, expected, tmpdir):
     """Check for mysql regression."""
-    os.system('mysql -u travis -Bse "DROP DATABASE IF EXISTS testdb"')
+    cmd = 'mysql -u travis -Bse "DROP DATABASE IF EXISTS testdb"'
+    subprocess.call(shlex.split(cmd))
     mysql_engine.opts = {'engine': 'mysql',
                          'user': 'travis',
                          'password': '',

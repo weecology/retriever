@@ -1,0 +1,56 @@
+{
+    "name": "test-vector",
+    "title": "The reg2001_s dataset",
+    "description": "Sample Spatial vector data Gis ",
+    "format": "vector",
+    "spatial_ref": "ED50",
+    "citation": "Test citation",
+    "license": [{"name": "CC Tests"}],
+    "driver_name": "ESRI Shapefile",
+    "keywords": [
+        "test"
+    ],
+    "url": "https://github.com/weecology/retriever/raw/master/test/raw_data_gis/regions_shape.zip",
+    "ref": "http://example-test.com/",
+    "version": "1.0.0",
+    "retriever": "True",
+    "retriever_minimum_version": "2.1.dev",
+    "extract_all": "True",
+    "archived": "zip",
+    "resources": [
+        {
+            "name": "reg",
+            "path": "regioni2001/reg2001_s.shp",
+            "url": "https://github.com/weecology/retriever/raw/master/test/raw_data_gis/regions_shape.zip",
+            "geom_type": "Polygon",
+             "extent": {
+                "xMin": 313360.99994548626,
+                "xMax": 1312106.7172662274,
+                "yMin": 3933878.6104726084,
+                "yMax": 220491.203120949
+            },
+            "schema": {
+                "fields": [
+                    {
+                        "Precision": 0,
+                        "name": "COD_REG",
+                        "size": 3,
+                        "type": "Integer"
+                    },
+                    {
+                        "Precision": 0,
+                        "name": "REGIONE",
+                        "size": 80,
+                        "type": "String"
+                    },
+                    {
+                        "Precision": 0,
+                        "name": "POP2001",
+                        "size": 9,
+                        "type": "Integer"
+                    }
+                ]
+            }
+        }
+    ]
+}
