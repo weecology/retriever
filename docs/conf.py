@@ -1,11 +1,17 @@
+# -*- coding: latin-1  -*-
+
 from __future__ import absolute_import
 from __future__ import print_function
-from imp import reload
+
 import sys
-import sphinx_rtd_theme
 from builtins import str
 from imp import reload
 
+import sphinx_rtd_theme
+
+from retriever.lib.defaults import ENCODING
+
+encoding = ENCODING.lower()
 from retriever.lib.defaults import VERSION, COPYRIGHT
 from retriever.lib.scripts import SCRIPT_LIST
 from retriever.lib.tools import open_fw
@@ -13,8 +19,7 @@ from retriever.lib.tools import open_fw
 # sys removes the setdefaultencoding method at startup; reload to get it back
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
-    # set default encoding to latin-1 to decode source text
-    sys.setdefaultencoding('latin-1')
+    sys.setdefaultencoding(encoding)
 
 # Create the .rst file for the available datasets
 datasetfile = open_fw("datasets_list.rst")
@@ -28,6 +33,7 @@ Datasets Available
 script_list = SCRIPT_LIST()
 
 # write the title of dataset rst file
+# ref:http://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html
 datasetfile.write(datasetfile_title)
 
 # get info from the scripts
@@ -38,13 +44,13 @@ for script_num, script in enumerate(script_list, start=1):
         reference_link = list(script.urls.values())[0].rpartition('/')[0]
     else:
         reference_link = " "
-        
-    title = str(script_num) + ". **{}**\n".format(script.title)
+
+    title = str(script_num) + ". **{}**\n".format(script.title.strip())
     datasetfile.write(title)
-    datasetfile.write("~" * len(title) + "\n\n")
+    datasetfile.write("-" * (len(title) - 1) + "\n\n")
     datasetfile.write(":name: {}\n\n".format(script.name))
     datasetfile.write(":reference:  `{}`\n\n".format(reference_link))
-    datasetfile.write(":citation: {}\n\n".format(script.citation))
+    datasetfile.write(":citation: {}\n\n".format((script.citation)))
     datasetfile.write(":description:  {}\n\n".format(script.description))
 datasetfile.close()
 
