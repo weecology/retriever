@@ -9,7 +9,9 @@
     "name": "biotime",
     "resources": [
         {
-            "dialect": {},
+            "dialect": {
+	        "missingValues": ["NA"]
+	    },
             "name": "citations",
             "schema": {
                 "fields" : [
@@ -23,16 +25,18 @@
                     }
                 ]
             },
-            "url": "https://zenodo.org/record/1095628/files/BioTIMECitations_06_12_2017.csv"
+            "url": "https://zenodo.org/record/1211105/files/BioTIMECitations_02_04_2018.csv"
         },
         {
-            "dialect": {},
+            "dialect": {
+	        "missingValues": ["NA"]
+	    },
             "name": "metadata",
             "schema": {
                 "fields" : [
                     {
                         "name": "study_id",
-                        "type": "char"
+                        "type": "int"
                     },
                     {
                         "name": "realm",
@@ -96,11 +100,11 @@
                     },
                     {
                         "name": "start_year",
-                        "type": "char"
+                        "type": "int"
                     },
                     {
                         "name": "end_year",
-                        "type": "char"
+                        "type": "int"
                     },
                     {
                         "name": "cent_lat",
@@ -112,15 +116,15 @@
                     },
                     {
                         "name": "number_of_species",
-                        "type": "char"
+                        "type": "int"
                     },
                     {
                         "name": "number_of_samples",
-                        "type": "char"
+                        "type": "int"
                     },
                     {
                         "name": "number_lat_long",
-                        "type": "char"
+                        "type": "int"
                     },
                     {
                         "name": "total",
@@ -200,46 +204,48 @@
                     }
                 ]
             },
-            "url": "https://zenodo.org/record/1095628/files/BioTIMEMetadata_06_12_2017.csv"
+            "url": "https://zenodo.org/record/1211105/files/BioTIMEMetadata_02_04_2018.csv"
         },
         {
-            "dialect": {},
+            "dialect": {
+	        "missingValues": ["NA"]
+	    },
             "name": "query",
             "schema": {
                 "fields" : [
+		    {
+                        "name": "record_id",
+                        "type": "int"
+                    },
                     {
                         "name": "study_id",
                         "type": "int"
                     },
                     {
                         "name": "day",
-                        "size": "10",
-                        "type": "char"
+                        "type": "int"
                     },
                     {
                         "name": "month",
-                        "size": "10",
-                        "type": "char"
+                        "type": "int"
                     },
                     {
                         "name": "year",
-                        "size": "10",
-                        "type": "char"
+                        "type": "int"
                     },
                     {
                         "name": "sample_desc",
-                        "size": "30",
+                        "size": "500",
                         "type": "char"
                     },
                     {
                         "name": "plot",
-                        "size": "30",
+			"size": "50",
                         "type": "char"
                     },
                     {
                         "name": "id_species",
-                        "size": "20",
-                        "type": "char"
+                        "type": "int"
                     },
                     {
                         "name": "latitude",
@@ -251,36 +257,34 @@
                     },
                     {
                         "name": "sum_abundance",
-                        "size": "30",
-                        "type": "char"
+                        "type": "double"
                     },
                     {
-                        "name": "sum_biomas",
-                        "size": "30",
-                        "type": "char"
+                        "name": "sum_biomass",
+                        "type": "double"
                     },
                     {
                         "name": "genus",
-                        "size": "30",
+                        "size": "50",
                         "type": "char"
                     },
                     {
                         "name": "species",
-                        "size": "30",
+                        "size": "50",
                         "type": "char"
                     },
                     {
                         "name": "genus_species",
-                        "size": "30",
+                        "size": "100",
                         "type": "char"
                     }
                 ]
             },
-            "url": "https://zenodo.org/record/1095628/files/BioTIMEQuery_06_12_2017.csv"
+            "url": "https://zenodo.org/record/1211105/files/BioTIMEQuery02_04_2018.csv"
         }
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.0-dev",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "title": "BioTIME species identities and abundances"
 }
