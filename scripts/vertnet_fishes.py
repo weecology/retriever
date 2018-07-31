@@ -22,7 +22,7 @@ class main(Script):
         self.title = "Vertnet Fishes"
         self.name = "vertnet-fishes"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.1.2'
+        self.version = '1.1.3'
         self.ref = "http://vertnet.org/resources/datatoolscode.html"
         self.urls = {
             'fishes': 'https://de.iplantcollaborative.org/anon-files//iplant/home/shared/commons_repo/curated/Vertnet_Fishes_Sep2016/VertNet_Fishes_Sept2016.zip'
@@ -243,7 +243,7 @@ class main(Script):
 
         engine.table = table
         if not os.path.isfile(engine.format_filename(filename)):
-            engine.download_files_from_archive(self.urls[tablename], [filename], "zip",
+            engine.download_files_from_archive(self.urls[tablename], [filename], "zip", False,
                                                "vertnet_latest_" + str(tablename))
         engine.create_table()
         engine.insert_data_from_file(engine.format_filename(str(filename)))
