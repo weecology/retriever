@@ -49,7 +49,7 @@ class Script(object):
 
     def download(self, engine=None, debug=False):
         """Generic function to prepare for installation or download."""
-        self.engine = self.checkengine(engine)
+        self.engine = engine if isinstance(engine, Engine) else self.checkengine(engine)
         self.engine.debug = debug
         self.engine.db_name = self.name
         self.engine.create_db()
