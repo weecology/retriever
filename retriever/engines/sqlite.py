@@ -1,10 +1,10 @@
 import os
-import sys
 from builtins import range
-from osgeo import gdal, gdalconst
-from osgeo import ogr
-import csv
-import sqlite3
+try:
+    from osgeo import gdal, gdalconst
+    from osgeo import ogr
+except:
+    pass
 from retriever.lib.defaults import DATA_DIR
 from retriever.lib.models import Engine, no_cleanup
 
@@ -36,9 +36,7 @@ class engine(Engine):
 
     file_name = None
 
-
     def auto_create_table(self, table, url=None, filename=None, pk=None):
-
         if table.dataset_type == "RasterDataset":
 
             self.table = table
@@ -56,7 +54,6 @@ class engine(Engine):
         else:
             Engine.auto_create_table(self, table, url, filename, pk)
 
-
     def supported_raster(self, path, ext=None):
         path = os.path.normpath(os.path.abspath(path))
         if ext:
@@ -70,70 +67,48 @@ class engine(Engine):
                 for names in files
                 if os.path.splitext(names)[1] in raster_extensions]
 
-
     def insert_raster(self, path=None, srid=4326):
 
         if not path:
             path = Engine.format_data_dir(self)
-    
-        dest = sqlite3.connect("sqlite.db")
-        cur = dest.cursor()
-
-        print("Working with {}".format(path))
 
         data = gdal.OpenShared(path, gdalconst.GA_ReadOnly)
 
         GeoTrans = data.GetGeoTransform()
-
         ColRange = range(data.RasterXSize)
         RowRange = range(data.RasterYSize)
 
         for band in range(1, data.RasterCount+1):
-
             rBand = data.GetRasterBand(band)
             nData = rBand.GetNoDataValue()
-
-            if nData == None:
+            if not nData:
                 nData = -9999
-            else:
-                print("NoData Value: {}".format(nData))
 
             HalfX = GeoTrans[1] / 2
             HalfY = GeoTrans[5] / 2
 
             sql = "DROP TABLE IF EXISTS {}_band{}".format(self.file_name,band)
-            cur.execute(sql)
+            self.cursor.execute(sql)
 
-            print("Creating table {}_band{}".format(self.file_name,band))
-
-            create_stmt = "CREATE TABLE {}_band{} (x INT,y INT,z INT);".format(self.file_name, band)
-            cur.execute(create_stmt)
-
-            # sys.exit("Done with a table")
-
-            print("Inserting values to {}_band{}".format(self.file_name, band))
+            create_stmt = "CREATE TABLE {}_band{} " \
+                          "(x INT,y INT,z INT);".format(self.file_name, band)
+            self.cursor.execute(create_stmt)
 
             for row in RowRange:
-                    RowData = rBand.ReadAsArray(0, row, data.RasterXSize, 1)[0]
-                    for col in ColRange:
-                        if RowData[col] != nData:
-                            if RowData[col] > 0:
-                                X = GeoTrans[0] + ( col * GeoTrans[1] )
-                                Y = GeoTrans[3] + ( row * GeoTrans[5] )
-                                X += HalfX
-                                Y += HalfY
+                RowData = rBand.ReadAsArray(0, row, data.RasterXSize, 1)[0]
+                for col in ColRange:
+                    if RowData[col] != nData:
+                        if RowData[col] > 0:
+                            X = GeoTrans[0] + (col * GeoTrans[1] )
+                            Y = GeoTrans[3] + (row * GeoTrans[5] )
+                            X += HalfX
+                            Y += HalfY
 
-                                insert_stmt = """INSERT INTO {}_band{}(x, y, z) \
-                                 VALUES(?, ?, ?);""".format(self.file_name, band)
-
-                                cur.execute(insert_stmt, (int(X), int(Y), int(RowData[col])))
-
-            dest.commit()
-
-            print("End of insertion to {}_band{}".format(self.file_name, band))
-
-            dest.close()
-
+                            insert_stmt = """INSERT INTO {}_band{}(x, y, z) \
+                             VALUES(?, ?, ?);""".format(self.file_name, band)
+                            self.cursor.execute(insert_stmt,
+                                                (int(X), int(Y), int(RowData[col])))
+            self.connection.commit()
 
     def insert_vector(self, path=None, srid=4326):
 
@@ -143,7 +118,7 @@ class engine(Engine):
         vector_file = ogr.Open(path,0)
         n_layers = vector_file.GetLayerCount()
 
-        for i in range(0,n_layers):
+        for i in range(0, n_layers):
             shape = vector_file.GetLayer(i)
             layer_definition = shape.GetLayerDefn()
             fields = list()
@@ -152,12 +127,10 @@ class engine(Engine):
                 fields.append(layer_definition.GetFieldDefn(i).GetName())
 
             field_list = ','.join(fields)
-
             os.system("ogr2ogr -append -select {} -overwrite \
             -f 'sqlite' sqlite.db {}".format(field_list, path))
 
         vector_file.close()
-
 
     def create_db(self):
         """Don't create database for SQLite
@@ -165,6 +138,7 @@ class engine(Engine):
         SQLite doesn't create databases. Each database is a file and needs a separate
         connection. This overloads`create_db` to do nothing in this case.
         """
+        return None
 
     def get_bulk_insert_statement(self):
         """Get insert statement for bulk inserts
@@ -172,13 +146,12 @@ class engine(Engine):
         This places ?'s instead of the actual values so that executemany() can
         operate as designed
         """
-
         columns = self.table.get_insert_columns()
         column_count = len(self.table.get_insert_columns(False))
         insert_stmt = "INSERT INTO " + self.table_name()
         insert_stmt += " (" + columns + ")"
         insert_stmt += " VALUES ("
-        for i in range(0, column_count):
+        for _ in range(0, column_count):
             insert_stmt += "?, "
         insert_stmt = insert_stmt.rstrip(", ") + ")"
         return insert_stmt
@@ -220,19 +193,9 @@ class engine(Engine):
         else:
             return Engine.insert_data_from_file(self, filename)
 
-    def table_exists(self, dbname, tablename):
-
-        """Determine if the table already exists in the database."""
-        if not hasattr(self, 'existing_table_names'):
-            self.cursor.execute(
-                "SELECT name FROM sqlite_master WHERE type='table';")
-            self.existing_table_names = set()
-            for line in self.cursor:
-                self.existing_table_names.add(line[0].lower())
-        return self.table_name(name=tablename, dbname=dbname).lower() in self.existing_table_names
-
     def get_connection(self):
         """Get db connection."""
         import sqlite3 as dbapi
+
         self.get_input()
         return dbapi.connect(self.opts["file"])
