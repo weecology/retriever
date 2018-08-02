@@ -22,10 +22,10 @@ class main(Script):
         self.title = "Aquatic Animal Excretion"
         self.name = "aquatic-animal-excretion"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.1.4'
+        self.version = '1.1.5'
         self.ref = "http://onlinelibrary.wiley.com/doi/10.1002/ecy.1792/abstract"
         self.urls = {
-            'aquatic_animals': 'https://esajournals.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1002%2Fecy.1792&attachmentId=123472854'
+            'aquatic_animals': 'https://esajournals.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1002%2Fecy.1792&file=ecy1792-sup-0001-DataS1.zip'
         }
         self.citation = "Vanni, M. J., McIntyre, P. B., Allen, D., Arnott, D. L., Benstead, J. P., Berg, D. J., " \
                         "Brabrand, Å., Brosse, S., Bukaveckas, P. A., Caliman, A., Capps, K. A., Carneiro, L. S., " \
