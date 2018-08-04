@@ -1,6 +1,10 @@
 import os
 from builtins import range
-
+try:
+    from osgeo import gdal, gdalconst
+    from osgeo import ogr
+except:
+    pass
 from retriever.lib.defaults import DATA_DIR
 from retriever.lib.models import Engine, no_cleanup
 
@@ -29,6 +33,104 @@ class engine(Engine):
                       "Format of table name",
                       "{db}_{table}"),
                      ]
+
+    file_name = None
+
+    def auto_create_table(self, table, url=None, filename=None, pk=None):
+        if table.dataset_type == "RasterDataset":
+
+            self.table = table
+            if url and not filename:
+                filename = Engine.filename_from_url(url)
+
+            if url and not self.find_file(filename):
+                # If the file doesn't exist, download it
+                self.download_file(url, filename)
+
+            file_path = self.find_file(filename)
+            filename, file_extension = os.path.splitext(os.path.basename(file_path))
+            self.file_name = filename
+
+        else:
+            Engine.auto_create_table(self, table, url, filename, pk)
+
+    def supported_raster(self, path, ext=None):
+        path = os.path.normpath(os.path.abspath(path))
+        if ext:
+            raster_extensions = ext
+        else:
+            raster_extensions = ['.gif', '.img', '.bil',
+                                 '.jpg', '.tif', '.tiff', '.hdf', '.l1b']
+
+        return [os.path.normpath(os.path.join(root, names))
+                for root, _, files in os.walk(path, topdown=False)
+                for names in files
+                if os.path.splitext(names)[1] in raster_extensions]
+
+    def insert_raster(self, path=None, srid=4326):
+
+        if not path:
+            path = Engine.format_data_dir(self)
+
+        data = gdal.OpenShared(path, gdalconst.GA_ReadOnly)
+
+        GeoTrans = data.GetGeoTransform()
+        ColRange = range(data.RasterXSize)
+        RowRange = range(data.RasterYSize)
+
+        for band in range(1, data.RasterCount+1):
+            rBand = data.GetRasterBand(band)
+            nData = rBand.GetNoDataValue()
+            if not nData:
+                nData = -9999
+
+            HalfX = GeoTrans[1] / 2
+            HalfY = GeoTrans[5] / 2
+
+            sql = "DROP TABLE IF EXISTS {}_band{}".format(self.file_name,band)
+            self.cursor.execute(sql)
+
+            create_stmt = "CREATE TABLE {}_band{} " \
+                          "(x INT,y INT,z INT);".format(self.file_name, band)
+            self.cursor.execute(create_stmt)
+
+            for row in RowRange:
+                RowData = rBand.ReadAsArray(0, row, data.RasterXSize, 1)[0]
+                for col in ColRange:
+                    if RowData[col] != nData:
+                        if RowData[col] > 0:
+                            X = GeoTrans[0] + (col * GeoTrans[1] )
+                            Y = GeoTrans[3] + (row * GeoTrans[5] )
+                            X += HalfX
+                            Y += HalfY
+
+                            insert_stmt = """INSERT INTO {}_band{}(x, y, z) \
+                             VALUES(?, ?, ?);""".format(self.file_name, band)
+                            self.cursor.execute(insert_stmt,
+                                                (int(X), int(Y), int(RowData[col])))
+            self.connection.commit()
+
+    def insert_vector(self, path=None, srid=4326):
+
+        if not path:
+            path = Engine.format_data_dir(self)
+
+        vector_file = ogr.Open(path,0)
+        n_layers = vector_file.GetLayerCount()
+
+        for i in range(0, n_layers):
+            shape = vector_file.GetLayer(i)
+            layer_definition = shape.GetLayerDefn()
+            fields = list()
+
+            for i in range(layer_definition.GetFieldCount()):
+                fields.append(layer_definition.GetFieldDefn(i).GetName())
+
+            field_list = ','.join(fields)
+            os.system("ogr2ogr -append -select {} -overwrite \
+            -f 'sqlite' sqlite.db {}".format(field_list, path))
+
+        vector_file.close()
 
     def create_db(self):
         """Don't create database for SQLite
