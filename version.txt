@@ -3,7 +3,7 @@ abalone_age.json,1.2.2
 airports.json,1.0.3
 amniote_life_hist.py,2.0.4
 antarctic_breed_bird.json,1.2.2
-aquatic_animal_excretion.py,1.1.4
+aquatic_animal_excretion.py,1.1.5
 bioclim.json,1.3.0
 biodiversity_response.json,1.0.2
 biomass_allometry_db.py,1.4.4
@@ -88,9 +88,9 @@ veg_plots_sdl.json,1.2.1
 vertnet.py,1.4.2
 vertnet_amphibians.py,1.1.2
 vertnet_birds.py,1.1.2
-vertnet_fishes.py,1.1.2
-vertnet_mammals.py,1.1.2
-vertnet_reptiles.py,1.1.2
+vertnet_fishes.py,1.1.3
+vertnet_mammals.py,1.1.3
+vertnet_reptiles.py,1.1.3
 wine_composition.json,1.1.1
 wine_quality.json,1.1.2
 wood_density.py,1.3.3
