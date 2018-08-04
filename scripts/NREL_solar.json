@@ -1,0 +1,1363 @@
+{
+    "name" : "NREL-Solar",
+    "title" : "United States Solar Resources",
+    "description" : "These datasets detail the solar resource available in the United States",
+    "format" : "vector",
+    "spatial_ref" : "4326",
+    "citation" : "NREL",
+    "driver_name" : "ESRI Shapefile",
+    "keywords" : [
+        "solar",
+        "energy",
+        "spatial-data"
+    ],
+    "ref" : "https://www.nrel.gov/gis/data-solar.html",
+    "version" : "1.0.0",
+    "retriever" : "True",
+    "retriever_minimum_version" : "2.1.dev",
+    "extract_all" : "True",
+    "archived" : "zip",
+    "resources" : [
+        {
+            "name" : "us9805_dni",
+            "path" : "lower_48_dni_10km/us9805_dni.shp",
+            "url" : "https://www.nrel.gov/gis/assets/data/us9809_dni_updated.zip",
+            "geom_type" : "Polygon",
+            "extent" : {
+                "xMin" : -125.0999999999999943,
+                "xMax" : -66.4999999999999858,
+                "yMin" : 24.2000000000000028,
+                "yMax" : 49.7000000000000028
+            },
+            "schema" : {
+                "fields" : [
+                    {
+                        "name": "ID",
+                        "precision": 0,
+                        "type": "Integer64",
+                        "size": 10
+                    },
+                    {
+                        "name": "GRIDCODE",
+                        "precision": 0,
+                        "type": "Integer64",
+                        "size": 10
+                    },
+                    {
+                        "name": "LON",
+                        "precision": 2,
+                        "type": "Real",
+                        "size": 6
+                    },
+                    {
+                        "name": "LAT",
+                        "precision": 2,
+                        "type": "Real",
+                        "size": 4
+                    },
+                    {
+                        "name": "DNI01",
+                        "precision": 4,
+                        "type": "Real",
+                        "size": 8
+                    },
+                    {
+                        "name": "DNI02",
+                        "precision": 4,
+                        "type": "Real",
+                        "size": 8
+                    },
+                    {
+                        "name": "DNI03",
+                        "precision": 4,
+                        "type": "Real",
+                        "size": 8
+                    },
+                    {
+                        "name": "DNI04",
+                        "precision": 4,
+                        "type": "Real",
+                        "size": 8
+                    },
+                    {
+                        "name": "DNI05",
+                        "precision": 4,
+                        "type": "Real",
+                        "size": 8
+                    },
+                    {
+                        "name": "DNI06",
+                        "precision": 4,
+                        "type": "Real",
+                        "size": 9
+                    },
+                    {
+                        "name": "DNI07",
+                        "precision": 4,
+                        "type": "Real",
+                        "size": 9
+                    },
+                    {
+                        "name": "DNI08",
+                        "precision": 4,
+                        "type": "Real",
+                        "size": 8
+                    },
+                    {
+                        "name": "DNI09",
+                        "precision": 4,
+                        "type": "Real",
+                        "size": 8
+                    },
+                    {
+                        "name": "DNI10",
+                        "precision": 4,
+                        "type": "Real",
+                        "size": 8
+                    },
+                    {
+                        "name": "DNI11",
+                        "precision": 4,
+                        "type": "Real",
+                        "size": 8
+                    },
+                    {
+                        "name": "DNI12",
+                        "precision": 4,
+                        "type": "Real",
+                        "size": 8
+                    },
+                    {
+                        "name": "DNIANN",
+                        "precision": 4,
+                        "type": "Real",
+                        "size": 8
+                    }
+                ]
+            }
+        },
+
+        {
+            "name" : "us9809_ghi_updated",
+            "path" : "us9809_ghi_updated/us9809_ghi_updated.shp",
+            "url" : "https://www.nrel.gov/gis/assets/data/us9809_ghi_updated.zip",
+            "geom_type" : "Polygon",
+            "extent" : {
+                "xMin" : -161.0000000000000000,
+                "xMax" : -66.8999999999999915,
+                "yMin" : 17.9999999999999716,
+                "yMax" : 49.3999999999999773
+            },
+            "schema" : {
+                "fields" : [
+                    {
+                        "name": "ID",
+                        "precision": 0,
+                        "type": "Integer64",
+                        "size": 11
+                    },
+                    {
+                        "name": "GRIDCODE",
+                        "precision": 10,
+                        "type": "Integer64",
+                        "size": 18
+                    },
+                    {
+                        "name": "ANN_GHI",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "JAN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "FEB",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "MAR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "APR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "MAY",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "JUN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "JUL",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "AUG",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "SEP",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "OCT",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "NOV",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DEC",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    }
+                ]
+            }
+        },
+
+        {
+            "name" : "us9809_latilt_updated",
+            "path" : "us9809_latilt_updated/us9809_latilt_updated.shp",
+            "url" : "https://www.nrel.gov/gis/assets/data/us9809_latilt_updated.zip",
+            "geom_type" : "Polygon",
+            "extent" : {
+                "xMin" : -161.0000000000000000,
+                "xMax" : -66.8999999999999915,
+                "yMin" : 17.9999999999999716,
+                "yMax" : 49.3999999999999773
+            },
+            "schema" : {
+                "fields" : [
+                    {
+                        "name": "ID",
+                        "precision": 0,
+                        "type": "Integer64",
+                        "size": 11
+                    },
+                    {
+                        "name": "GRIDCODE",
+                        "precision": 10,
+                        "type": "Integer64",
+                        "size": 18
+                    },
+                    {
+                        "name": "ANN_LATILT",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "JAN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "FEB",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "MAR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "APR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "MAY",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "JUN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "JUL",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "AUG",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "SEP",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "OCT",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "NOV",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DEC",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    }
+                ]
+            }
+        },
+
+        {
+            "name" : "dni_slope_filter_2",
+            "path" : "updated_10km_southwest_us_dni_filtered2percent/dni_slope_filter_2.shp",
+            "url" : "https://www.nrel.gov/gis/assets/data/updated_10km_southwest_us_dni_filtered2percent.zip",
+            "geom_type" : "Polygon",
+            "extent" : {
+                "xMin" : -124.3000136273367104,
+                "xMax" : -79.8847165991388124,
+                "yMin" : 24.5437787375059706,
+                "yMax" : 48.8000157461695210
+            },
+            "schema" : {
+                "fields" : [
+                    {
+                        "name": "ID",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 11
+                    },
+                    {
+                        "name": "AVE_DNI",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "AVE_GHI",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "AVE_LATILT",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_JAN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_FEB",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_MAR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_APR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_JUN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_JUL",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_AUG",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_SEP",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_OCT",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_NOV",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_DEC",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_JAN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_FEB",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_MAR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_APR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_JUN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_JUL",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_AUG",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_SEP",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_AUG",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_NOV",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_DEC",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_JAN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_FEB",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_MAR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_APR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_MAY",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_JUN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_JUL",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_AUG",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_SEP",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_OCT",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_NOV",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_DEC",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    }
+                ]
+            }
+        },
+
+        {
+            "name" : "dni_slope_filter_3",
+            "path" : "updated_10km_southwest_us_dni_filtered3percent/dni_slope_filter_3.shp",
+            "url" : "https://www.nrel.gov/gis/assets/data/updated_10km_southwest_us_dni_filtered3percent.zip",
+            "geom_type" : "Polygon",
+            "extent" : {
+                "xMin" : -124.3000136273367104,
+                "xMax" : -79.8847165991388124,
+                "yMin" : 24.5437787375059706,
+                "yMax" : 48.8000157461695210
+            },
+            "schema" : {
+                "fields" : [
+                    {
+                        "name": "ID",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 11
+                    },
+                    {
+                        "name": "AVE_DNI",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "AVE_GHI",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "AVE_LATILT",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_JAN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_FEB",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_MAR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_APR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_JUN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_JUL",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_AUG",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_SEP",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_OCT",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_NOV",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_DEC",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_JAN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_FEB",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_MAR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_APR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_JUN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_JUL",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_AUG",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_SEP",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_AUG",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_NOV",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_DEC",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_JAN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_FEB",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_MAR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_APR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_MAY",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_JUN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_JUL",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_AUG",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_SEP",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_OCT",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_NOV",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_DEC",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    }
+                ]
+            }
+        },
+
+        {
+            "name" : "dni_slope_filter_4",
+            "path" : "updated_10km_southwest_us_dni_filtered4percent/dni_slope_filter_4.shp",
+            "url" : "https://www.nrel.gov/gis/assets/data/updated_10km_southwest_us_dni_filtered4percent.zip",
+            "geom_type" : "Polygon",
+            "extent" : {
+                "xMin" : -124.3000136273367104,
+                "xMax" : -79.8847165991388124,
+                "yMin" : 24.5437787375059706,
+                "yMax" : 48.8000157461695210
+            },
+            "schema" : {
+                "fields" : [
+                    {
+                        "name": "ID",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 11
+                    },
+                    {
+                        "name": "AVE_DNI",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "AVE_GHI",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "AVE_LATILT",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_JAN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_FEB",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_MAR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_APR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_JUN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_JUL",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_AUG",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_SEP",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_OCT",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_NOV",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_DEC",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_JAN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_FEB",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_MAR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_APR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_JUN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_JUL",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_AUG",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_SEP",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_AUG",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_NOV",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_DEC",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_JAN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_FEB",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_MAR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_APR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_MAY",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_JUN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_JUL",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_AUG",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_SEP",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_OCT",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_NOV",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_DEC",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    }
+                ]
+            }
+        },
+
+        {
+            "name" : "dni_slope_filter_5",
+            "path" : "updated_10km_southwest_us_dni_filtered5percent/dni_slope_filter_5.shp",
+            "url" : "https://www.nrel.gov/gis/assets/data/updated_10km_southwest_us_dni_filtered5percent.zip",
+            "geom_type" : "Polygon",
+            "extent" : {
+                "xMin" : -124.3000136273367104,
+                "xMax" : -79.8847165991388124,
+                "yMin" : 24.5437787375059706,
+                "yMax" : 48.8000157461695210
+            },
+            "schema" : {
+                "fields" : [
+                    {
+                        "name": "ID",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 11
+                    },
+                    {
+                        "name": "AVE_DNI",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "AVE_GHI",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "AVE_LATILT",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_JAN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_FEB",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_MAR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_APR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_JUN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_JUL",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_AUG",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_SEP",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_OCT",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_NOV",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "DNI_DEC",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_JAN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_FEB",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_MAR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_APR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_JUN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_JUL",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_AUG",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_SEP",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_AUG",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_NOV",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "GHI_DEC",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_JAN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_FEB",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_MAR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_APR",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_MAY",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_JUN",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_JUL",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_AUG",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_SEP",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_OCT",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_NOV",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    },
+                    {
+                        "name": "LATILT_DEC",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 18
+                    }
+                ]
+            }
+        },
+
+        {
+            "name" : "TMY3_NSRDB_Boundaries",
+            "path" : "nsrdb_boundary/nsrdb_bndry.shp",
+            "url" : "https://www.nrel.gov/gis/assets/data/nsrdb_boundary.zip",
+            "geom_type" : "Polygon",
+            "extent" : {
+                "xMin" : -2396654.3627019845880568,
+                "xMax" : 2299399.7338130106218159,
+                "yMin" : -1369967.3106101821176708,
+                "yMax" : 1605727.3770726281218231
+            },
+            "schema" : {
+                "fields" : [
+                    {
+                        "name": "ID",
+                        "precision": 0,
+                        "type": "Integer64",
+                        "size": 11
+                    },
+                    {
+                        "name": "USAF",
+                        "precision": 10,
+                        "type": "Real",
+                        "size": 31
+                    }
+                ]
+            }
+        }
+    ]
+}
