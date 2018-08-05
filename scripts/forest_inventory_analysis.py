@@ -31,7 +31,7 @@ class main(Script):
         self.title = "Forest Inventory and Analysis"
         self.name = "forest-inventory-analysis"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.4.3'
+        self.version = '1.4.4'
         self.ref = "http://fia.fs.fed.us/"
         self.urls = {"main": "https://apps.fs.usda.gov/fia/datamart/CSV/",
                      'species': 'https://apps.fs.usda.gov/fia/datamart/CSV/REF_SPECIES.csv'}
@@ -78,7 +78,7 @@ class main(Script):
             for state, year in stateslist:
 
                 engine.download_files_from_archive(
-                    self.urls["main"] + state + "_" + table + ".ZIP",
+                    self.urls["main"] + state + "_" + table + ".zip",
                     [state + "_" + table + ".csv"])
 
         for table in tablelist:
