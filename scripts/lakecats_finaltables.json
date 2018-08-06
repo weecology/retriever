@@ -1,0 +1,2370 @@
+{
+    "archived": "zip",
+    "citation": "Hill, Ryan A., Marc H. Weber, Rick Debbout, Scott G. Leibowitz, Anthony R. Olsen. 2018. The Lake-Catchment (LakeCat) Dataset: characterizing landscape features for lake basins within the conterminous USA. Freshwater Science doi:10.1086/697966.",
+    "description": "This current lakecat dataset has 136 local catchment (Cat) and 136 watershed (Ws) metrics making a total of 272 metrics.",
+    "homepage": "https://www.epa.gov/national-aquatic-resource-surveys/lakecat",
+    "keywords": [
+        "catchment",
+        "watershed",
+        "waterbodies"
+    ],
+    "name": "lakecats-final-tables",
+    "licenses": [{"name": ""}],
+    "resources": [
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "AgMidHiSlopes",
+            "path": "AgMidHiSlopes.csv",
+            "schema": {
+                "fields": [
+                {
+                    "name": "COMID",
+                    "type": "Double"
+                    },
+                    {
+                    "name": "CatAreaSqKm",
+                    "type": "Double"
+                    },
+                    {
+                    "name": "WsAreaSqKm",
+                    "type": "Double"
+                    },
+                    {
+                    "name": "CatPctFull",
+                    "type": "Double"
+                    },
+                    {
+                    "name": "WsPctFull",
+                    "type": "Double"
+                    },
+                    {
+                    "name": "inStreamCat",
+                    "type": "Double"
+                    },
+                    {
+                    "name": "PctAg2006Slp20Cat",
+                    "type": "Double"
+                    },
+                    {
+                    "name": "PctAg2006Slp10Cat",
+                    "type": "Double"
+                    },
+                    {
+                    "name": "PctAg2006Slp20Ws",
+                    "type": "Double"
+                    },
+                    {
+                    "name": "PctAg2006Slp10Ws",
+                    "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/AgMidHiSlopes.zip"
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "AgriculturalNitrogen",
+            "path": "AgriculturalNitrogen.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CBNFCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "FertCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "ManureCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CBNFWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "FertWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "ManureWs",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/AgriculturalNitrogen.zip"
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "BFI",
+            "path": "BFI.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "BFICat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "BFIWs",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/BFI.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "CanalsDitches",
+            "path": "CanalsDitches.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CanalDensCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CanalDensWs",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/CanalsDitches.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "CoalMines",
+            "path": "CoalMines.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CoalMineDensCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CoalMineDensWs",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/CoalMines.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "Dams",
+            "path": "Dams.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "DamDensCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "DamNIDStorCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "DamNrmStorCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "DamDensWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "DamNIDStorWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "DamNrmStorWs",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/Dams.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "Elevation",
+            "path": "Elevation.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "ElevCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "ElevWs",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/Elevation.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "EPA_FRS",
+            "path": "EPA_FRS.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "NPDESDensCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "SuperfundDensCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "TRIDensCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "NPDESDensWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "SuperfundDensWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "TRIDensWs",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/EPA_FRS.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "FirePerimeters",
+            "path": "FirePerimeters.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFire2000Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFire2001Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFire2002Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFire2003Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFire2004Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFire2005Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFire2006Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFire2007Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFire2008Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFire2009Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFire2010Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFire2000Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFire2001Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFire2002Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFire2003Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFire2004Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFire2005Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFire2006Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFire2007Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFire2008Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFire2009Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFire2010Ws",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/FirePerimeters.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "ForestLossByYear0013",
+            "path": "ForestLossByYear0013.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2001Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2002Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2003Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2004Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2005Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2006Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2007Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2008Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2009Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2010Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2011Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2012Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2013Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2001Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2002Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2003Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2004Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2005Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2006Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2007Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2008Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2009Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2010Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2011Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2012Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctFrstLoss2013Ws",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/ForestLossByYear0013.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "GeoChemPhys1",
+            "path": "GeoChemPhys1.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "Al2O3Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CaOCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "Fe2O3Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "K2OCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "MgOCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "Na2OCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "P2O5Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "SCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "SiO2Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "Al2O3Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CaOWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "Fe2O3Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "K2OWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "MgOWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "Na2OWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "P2O5Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "SWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "SiO2Ws",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/GeoChemPhys1.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "GeoChemPhys2",
+            "path": "GeoChemPhys2.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "NCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "NWs",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/GeoChemPhys2.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "GeoChemPhys3",
+            "path": "GeoChemPhys3.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "HydrlCondCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "HydrlCondWs",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/GeoChemPhys3.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "GeoChemPhys4",
+            "path": "GeoChemPhys4.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CompStrgthCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CompStrgthWs",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/GeoChemPhys4.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "ImperviousSurfaces2006",
+            "path": "ImperviousSurfaces2006.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctImp2006Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctImp2006Ws",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/ImperviousSurfaces2006.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "ImperviousSurfaces2011",
+            "path": "ImperviousSurfaces2011.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctImp2011Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctImp2011Ws",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/ImperviousSurfaces2011.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "Kffact",
+            "path": "Kffact.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "AgKffactCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "KffactCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "AgKffactWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "KffactWs",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/Kffact.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "Lithology",
+            "path": "Lithology.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctCarbResidCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctNonCarbResidCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctAlkIntruVolCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctSilicicCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctExtruVolCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctColluvSedCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctGlacTilClayCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctGlacTilLoamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctGlacTilCrsCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctGlacLakeCrsCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctGlacLakeFineCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctHydricCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctEolCrsCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctEolFineCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctSalLakeCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctAlluvCoastCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctCoastCrsCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctWaterCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctCarbResidWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctNonCarbResidWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctAlkIntruVolWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctSilicicWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctExtruVolWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctColluvSedWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctGlacTilClayWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctGlacTilLoamWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctGlacTilCrsWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctGlacLakeCrsWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctGlacLakeFineWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctHydricWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctEolCrsWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctEolFineWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctSalLakeWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctAlluvCoastWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctCoastCrsWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctWaterWs",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/Lithology.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "Mines",
+            "path": "Mines.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "MineDensCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "MineDensWs",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/Mines.zip"
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "NABD",
+            "path": "NABD.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "NABD_DensCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "NABD_NIDStorCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "NABD_NrmStorCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "NABD_DensWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "NABD_NIDStorWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "NABD_NrmStorWs",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/NABD.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "NADP",
+            "path": "NADP.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "InorgNWetDep_2008Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "NH4_2008Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "NO3_2008Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "SN_2008Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "InorgNWetDep_2008Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "NH4_2008Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "NO3_2008Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "SN_2008Ws",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/NADP.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "NLCD2006",
+            "path": "NLCD2006.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctOw2006Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctIce2006Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctUrbOp2006Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctUrbLo2006Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctUrbMd2006Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctUrbHi2006Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctBl2006Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctDecid2006Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctConif2006Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctMxFst2006Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctShrb2006Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctGrs2006Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctHay2006Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctCrop2006Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctWdWet2006Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctHbWet2006Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctOw2006Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctIce2006Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctUrbOp2006Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctUrbLo2006Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctUrbMd2006Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctUrbHi2006Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctBl2006Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctDecid2006Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctConif2006Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctMxFst2006Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctShrb2006Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctGrs2006Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctHay2006Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctCrop2006Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctWdWet2006Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctHbWet2006Ws",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/NLCD2006.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "NLCD2011",
+            "path": "NLCD2011.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctOw2011Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctIce2011Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctUrbOp2011Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctUrbLo2011Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctUrbMd2011Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctUrbHi2011Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctBl2011Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctDecid2011Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctConif2011Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctMxFst2011Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctShrb2011Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctGrs2011Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctHay2011Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctCrop2011Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctWdWet2011Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctHbWet2011Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctOw2011Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctIce2011Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctUrbOp2011Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctUrbLo2011Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctUrbMd2011Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctUrbHi2011Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctBl2011Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctDecid2011Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctConif2011Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctMxFst2011Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctShrb2011Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctGrs2011Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctHay2011Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctCrop2011Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctWdWet2011Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctHbWet2011Ws",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/NLCD2011.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "NonAgIntrodManagVeg",
+            "path": "NonAgIntrodManagVeg.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctNonAgIntrodManagVegCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PctNonAgIntrodManagVegWs",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/NonAgIntrodManagVeg.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "Pesticides97",
+            "path": "Pesticides97.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "Pestic97Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "Pestic97Ws",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/Pesticides97.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "PRISM_0809",
+            "path": "PRISM_0809.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "Precip08Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "Precip09Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "Tmean08Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "Tmean09Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "Precip08Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "Precip09Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "Tmean08Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "Tmean09Ws",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/PRISM_0809.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "PRISM_1981_2010",
+            "path": "PRISM_1981_2010.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "Precip08Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "Precip09Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "Tmean08Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "Tmean09Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "Precip08Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "Precip09Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "Tmean08Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "Tmean09Ws",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/PRISM_1981_2010.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "RoadDensity",
+            "path": "RoadDensity.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "RdDensCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "RdDensWs",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/RoadDensity.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "RoadStreamCrossings",
+            "path": "RoadStreamCrossings.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "RdCrsCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "RdCrsWs",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/RoadStreamCrossings.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "Runoff",
+            "path": "Runoff.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "RunoffCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "RunoffWs",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/Runoff.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "STATSGO_Set1",
+            "path": "STATSGO_Set1.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "ClayCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "SandCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "ClayWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "SandWs",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/STATSGO_Set1.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "STATSGO_Set2",
+            "path": "STATSGO_Set2.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "ClayCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "SandCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "ClayWs",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "SandWs",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/STATSGO_Set2.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "USCensus2010",
+            "path": "USCensus2010.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "HUDen2010Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PopDen2010Cat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "HUDen2010Ws",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "PopDen2010Ws",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/USCensus2010.zip"
+
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "header_rows": 1
+            },
+            "name": "WetIndx",
+            "path": "WetIndx.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "COMID",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsAreaSqKm",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "CatPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "WsPctFull",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "inStreamCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "AvgWetIndxCat",
+                        "type": "Double"
+                    },
+                    {
+                        "name": "AvgWetIndxWs",
+                        "type": "Double"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/LakeCat/FinalTables/WetIndx.zip"
+        }
+    ],
+    "retriever_minimum_version": "2.1.dev",
+    "title": "The LakeCat Dataset",
+    "version": "1.0.0"
+}
