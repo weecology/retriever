@@ -77,7 +77,7 @@ predator_prey_body_ratio.json,1.0.1
 predator_prey_size_marine.py,2.0.2
 predicts.py,1.0.3
 prism_climate.py,1.2.3
-socean_diet_data.py,1.0.3
+socean_diet_data.py,1.0.4
 species_exctinction_rates.json,1.0.1
 streamflow_conditions.json,1.0.1
 tree_canopy_geometries.json,1.0.1
