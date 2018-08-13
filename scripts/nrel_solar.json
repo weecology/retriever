@@ -1,5 +1,5 @@
 {
-    "name" : "NREL-Solar",
+    "name" : "nrel-solar",
     "title" : "United States Solar Resources",
     "description" : "These datasets detail the solar resource available in the United States",
     "format" : "vector",
@@ -16,6 +16,7 @@
     "retriever" : "True",
     "retriever_minimum_version" : "2.1.dev",
     "extract_all" : "True",
+    "keep_in_dir": "True",
     "archived" : "zip",
     "resources" : [
         {
