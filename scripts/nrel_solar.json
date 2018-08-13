@@ -21,8 +21,8 @@
     "resources" : [
         {
             "name" : "us9805_dni",
-            "path" : "us9809_dni_updated/us9805_dni.shp",
-            "url" : "https://www.nrel.gov/gis/assets/data/us9809_dni_updated.zip",
+            "path" : "lower_48_dni_10km/us9805_dni.shp",
+            "url" : "https://www.nrel.gov/gis/assets/data/lower_48_dni_10km.zip",
             "geom_type" : "Polygon",
             "extent" : {
                 "xMin" : -125.0999999999999943,
