@@ -1,0 +1,17 @@
+# -*- coding: latin-1  -*-
+#retriever
+from retriever.lib.templates import BasicTextTemplate
+from retriever.lib.models import Table, Cleanup, correct_invalid_value
+
+SCRIPT = BasicTextTemplate(version="1.0.0",
+                           description="The BioTIME database has species identities and abundances in ecological assemblages through time.",
+                           title="BioTIME species identities and abundances",
+                           citation="Dornelas M, Antão LH, Moyes F, et al. BioTIME: A database of biodiversity time series for the Anthropocene. Global Ecology & Biogeography. 2018; 00:1 - 26. https://doi.org/10.1111/geb.12729.",
+                           name="biotime",
+                           keywords=[u'Time series', u'Anthropocene', u'Global'],
+                           retriever_minimum_version="2.0.0-dev",
+                           tables={'query': Table('query', columns=[(u'study_id', (u'int',)), (u'day', (u'char', u'10')), (u'month', (u'char', u'10')), (u'year', (u'char', u'10')), (u'sample_desc', (u'char', u'30')), (u'plot', (u'char', u'30')), (u'id_species', (u'char', u'20')), (u'latitude', (u'double',)), (u'longitude', (u'double',)), (u'sum_abundance', (u'char', u'30')), (u'sum_biomas', (u'char', u'30')), (u'genus', (u'char', u'30')), (u'species', (u'char', u'30')), (u'genus_species', (u'char', u'30'))]),'citations': Table('citations', columns=[(u'study_id', (u'int',)), (u'citation_line', (u'char',))]),'metadata': Table('metadata', columns=[(u'study_id', (u'char',)), (u'realm', (u'char',)), (u'climate', (u'char',)), (u'general_treat', (u'char',)), (u'treatment', (u'char',)), (u'treat_comments', (u'char',)), (u'treat_date', (u'char',)), (u'habitat', (u'char',)), (u'protected_area', (u'char',)), (u'biome_map', (u'char',)), (u'taxa', (u'char',)), (u'organisms', (u'char',)), (u'title', (u'char',)), (u'ab_bio', (u'char',)), (u'has_plot', (u'char',)), (u'data_points', (u'char',)), (u'start_year', (u'char',)), (u'end_year', (u'char',)), (u'cent_lat', (u'double',)), (u'cent_long', (u'double',)), (u'number_of_species', (u'char',)), (u'number_of_samples', (u'char',)), (u'number_lat_long', (u'char',)), (u'total', (u'char',)), (u'grain_size_text', (u'char',)), (u'grain_sq_km', (u'double',)), (u'area_sq_km', (u'double',)), (u'contact_1', (u'char',)), (u'contact_2', (u'char',)), (u'cont_1_mail', (u'char',)), (u'cont_2_mail', (u'char',)), (u'license', (u'char',)), (u'web_link', (u'char',)), (u'data_source', (u'char',)), (u'methods', (u'char',)), (u'summary_methods', (u'char',)), (u'link_id', (u'char',)), (u'comments', (u'char',)), (u'date_study_added', (u'char',)), (u'abundance_type', (u'char',)), (u'biomass_type', (u'char',)), (u'sample_desc_name', (u'char',))])},
+                           urls={u'query': u'https://zenodo.org/record/1095628/files/BioTIMEQuery_06_12_2017.csv', u'citations': u'https://zenodo.org/record/1095628/files/BioTIMECitations_06_12_2017.csv', u'metadata': u'https://zenodo.org/record/1095628/files/BioTIMEMetadata_06_12_2017.csv'},
+                           licenses=[{u'name': u'CC BY 4.0'}],
+                           ref="https://zenodo.org/record/1095628#.WskN7dPwYyn",
+                           retriever=True)
