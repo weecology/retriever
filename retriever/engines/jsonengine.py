@@ -117,11 +117,13 @@ class engine(Engine):
         tablename = self.table_name(name=tablename, dbname=dbname)
         return os.path.exists(tablename)
 
-    def to_csv(self, sort=True):
+    def to_csv(self, sort=True, path=''):
         """Export table from json engine to CSV file"""
         for table_item in self.script_table_registry[self.script.name]:
             header = table_item[1].get_insert_columns(join=False, create=True)
-            csv_outfile = json2csv(table_item[0], header_values=header)
+            outputfile = os.path.normpath(
+                os.path.join(path, os.path.splitext(os.path.basename(table_item[0]))[0] + '.csv'))
+            csv_outfile = json2csv(table_item[0], output_file=outputfile, header_values=header)
             sort_csv(csv_outfile)
 
     def get_connection(self):

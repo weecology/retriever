@@ -817,13 +817,13 @@ class Engine(object):
                 dbname = ''
         return self.opts["table_name"].format(db=dbname, table=name)
 
-    def to_csv(self, sort=True):
+    def to_csv(self, sort=True, path=''):
         # Due to Cyclic imports we can not move this import to the top
         from retriever.lib.engine_tools import sort_csv
 
         for table_name in self.script_table_registry[self.script.name]:
 
-            csv_file_output = os.path.normpath(table_name[0] + '.csv')
+            csv_file_output = os.path.normpath(os.path.join(path, table_name[0] + '.csv'))
             csv_file = open_fw(csv_file_output)
             csv_writer = open_csvw(csv_file)
             self.get_cursor()
