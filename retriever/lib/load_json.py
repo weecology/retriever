@@ -14,12 +14,33 @@ from retriever.lib.tools import open_fr
 
 
 def read_json(json_file, debug=False):
-    """Read Json dataset package files"""
+    """Read Json dataset package files
+
+    Load each json and get the appropriate encoding for the dataset
+    Reload the json using the encoding to ensure correct character sets
+    """
     json_object = OrderedDict()
+    json_file_encoding = None
     json_file = str(json_file) + ".json"
 
     try:
-        json_object = json.load(open_fr(json_file))
+        file_obj = open_fr(json_file)
+        json_object = json.load(file_obj)
+        if "encoding" in json_object:
+            json_file_encoding = json_object['encoding']
+        file_obj.close()
+    except ValueError:
+        pass
+
+    # Reload json using encoding if available
+    try:
+        if json_file_encoding:
+            file_obj = open_fr(json_file, encoding=json_file_encoding)
+        else:
+            file_obj = open_fr(json_file)
+        json_object = json.load(file_obj)
+        file_obj.close()
+
     except ValueError:
         pass
     if type(json_object) is dict and "resources" in json_object.keys():
