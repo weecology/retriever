@@ -225,8 +225,7 @@ reset()
 
 **Arguments** :
 
-- ``scope`` : Specifies what components to reset.  Options include:  ’scripts’, ’data’, ’connection’ and
-’all’, where ’all’ is the default setting that resets all components.
+- ``scope`` : Specifies what components to reset.  Options include:  ’scripts’, ’data’, ’connection’ and ’all’, where ’all’ is the default setting that resets all components.
 
 **Example** :
 
