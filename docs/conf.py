@@ -1,3 +1,5 @@
+# -*- coding: latin-1  -*-
+
 from __future__ import absolute_import
 from __future__ import print_function
 
@@ -10,6 +12,7 @@ import sphinx_rtd_theme
 from retriever.lib.defaults import ENCODING
 
 encoding = ENCODING.lower()
+
 from retriever.lib.defaults import VERSION, COPYRIGHT
 from retriever.lib.scripts import SCRIPT_LIST
 from retriever.lib.tools import open_fw
@@ -17,12 +20,19 @@ from retriever.lib.tools import open_fw
 # sys removes the setdefaultencoding method at startup; reload to get it back
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
-    sys.setdefaultencoding(encoding)
+    # set default encoding to latin-1 to decode source text
+    sys.setdefaultencoding('latin-1')
+
+
+def to_str(object, object_encoding=encoding):
+    if sys.version_info >= (3, 0, 0):
+        return str(object).encode('UTF-8').decode(encoding)
+    return object
+
 
 # Create the .rst file for the available datasets
 datasetfile = open_fw("datasets_list.rst")
-datasetfile_title = """
-==================
+datasetfile_title = """==================
 Datasets Available
 ==================
 
@@ -34,22 +44,34 @@ script_list = SCRIPT_LIST()
 # ref:http://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html
 datasetfile.write(datasetfile_title)
 
-# get info from the scripts
+# get info from the scripts using specified encoding
 for script_num, script in enumerate(script_list, start=1):
+    reference_link = ''
     if script.ref.strip():
         reference_link = script.ref
-    elif bool(script.urls.values()):
-        reference_link = list(script.urls.values())[0].rpartition('/')[0]
-    else:
-        reference_link = " "
-
+    elif hasattr(script, 'homepage'):
+        reference_link = script.homepage
+    elif not reference_link.strip():
+        if bool(script.urls.values()):
+            reference_link = list(script.urls.values())[0].rpartition('/')[0]
+        else:
+            reference_link = 'Not available'
     title = str(script_num) + ". **{}**\n".format(script.title.strip())
     datasetfile.write(title)
     datasetfile.write("-" * (len(title) - 1) + "\n\n")
+
+    # keep the gap between : {} standard as required by restructuredtext
     datasetfile.write(":name: {}\n\n".format(script.name))
-    datasetfile.write(":reference:  `{}`\n\n".format(reference_link))
-    datasetfile.write(":citation: {}\n\n".format((script.citation)))
-    datasetfile.write(":description:  {}\n\n".format(script.description))
+
+    # Long urls can't render well, embed them in a text(home link)
+    if len(to_str(reference_link)) <= 85:
+        datasetfile.write(":reference: `{}`\n\n".format(reference_link))
+    else:
+        datasetfile.write(":reference: `{s}'s home link <{r}>`_.\n".format(
+            s=script.name, r=to_str(reference_link).rstrip("/")))
+
+    datasetfile.write(":citation: {}\n\n".format(to_str(script.citation, encoding)))
+    datasetfile.write(":description: {}\n\n".format(script.description))
 datasetfile.close()
 
 needs_sphinx = '1.3'
