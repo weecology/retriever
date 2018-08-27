@@ -817,7 +817,7 @@ class Engine(object):
                 dbname = ''
         return self.opts["table_name"].format(db=dbname, table=name)
 
-    def to_csv(self, sort=True, path=''):
+    def to_csv(self, sort=True, path=None):
         # Due to Cyclic imports we can not move this import to the top
         from retriever.lib.engine_tools import sort_csv
 
