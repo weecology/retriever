@@ -110,50 +110,75 @@ class BasicTextTemplate(Script):
             elif self.url:
                 url = self.url
 
+            # Extract compressed source files
             if hasattr(self, "archived"):
-                if hasattr(self, "extract_all"):
-                    if self.extract_all:
-                        files = None
+                self.process_archived_data(table_obj, url)
+
+            # Create tables
+            if hasattr(table_obj, "format") and table_obj.format == "tabular":
+                self.process_tables(table_obj, url)
+            elif hasattr(self.engine, "spatial_support"):
+                if self.engine.spatial_support:
+                    self.process_tables(table_obj, url)
                 else:
-                    files = [table_obj.path]
-                archive_type = self.archived
-                keep_in_dir = False
-                archive_name = None
-                if hasattr(self, "keep_in_dir"):
-                    keep_in_dir = self.keep_in_dir
-                if hasattr(self, "archive_name"):
-                    archive_name = self.archive_name
-                self.engine.download_files_from_archive(
-                    url=url,
-                    file_names=files,
-                    archive_type=archive_type,
-                    keep_in_dir=keep_in_dir,
-                    archive_name=archive_name)
+                    print("Engine {eng} does not support spatial "
+                          "processing".format(eng=self.engine.name))
+                    return
 
-                self.engine.auto_create_table(
-                    table_obj, filename=table_obj.path)
-            else:
-                self.engine.auto_create_table(table_obj, url=url)
-
+            # insert data procedures
             if hasattr(table_obj, "dataset_type"):
-                if table_obj.dataset_type == "RasterDataset":
-                    self.engine.insert_raster(
-                        self.engine.format_filename(
-                            table_obj.path))
+                if table_obj.dataset_type in ["RasterDataset", "VectorDataset"]:
+                    self.process_spatial_insert(table_obj)
                     continue
-                elif table_obj.dataset_type == "VectorDataset":
-                    self.engine.insert_vector(
-                        self.engine.format_filename(
-                            table_obj.path))
-                    continue
-                elif hasattr(self, "archived"):
-                    # assume tabular
-                    self.engine.insert_data_from_file(
-                        self.engine.format_filename(table_obj.path))
-                    continue
-                else:
-                    self.engine.insert_data_from_url(url)
+
+                # assume tabular
+                self.process_tabular_insert(table_obj, url)
             self.engine.disconnect_files()
+
+    def process_tabular_insert(self, table_obj, url):
+        if hasattr(self, "archived"):
+            self.engine.insert_data_from_file(
+                self.engine.format_filename(table_obj.path))
+        else:
+            self.engine.insert_data_from_url(url)
+
+    def process_spatial_insert(self, table_obj):
+        if table_obj.dataset_type == "RasterDataset":
+            self.engine.insert_raster(self.engine.format_filename(table_obj.path))
+        elif table_obj.dataset_type == "VectorDataset":
+            self.engine.insert_vector(self.engine.format_filename(table_obj.path))
+
+    def process_tables(self, table_obj, url):
+        if hasattr(self, "archived"):
+            self.engine.auto_create_table(table_obj, filename=table_obj.path)
+        else:
+            self.engine.auto_create_table(table_obj, url=url)
+
+    def process_archived_data(self, table_obj, url):
+        """Pre-process archived files.
+
+        Extract the files from the archived source based on
+        the specifications. Either extact a single file or the
+        entire files.
+        """
+        archive_type = self.archived
+        keep_in_dir = False
+        archive_name = None
+
+        if hasattr(self, "extract_all"):
+            if self.extract_all:
+                files = None
+        else:
+            files = [table_obj.path]
+        if hasattr(self, "keep_in_dir"):
+            keep_in_dir = self.keep_in_dir
+        if hasattr(self, "archive_name"):
+            archive_name = self.archive_name
+
+        self.engine.download_files_from_archive(url=url, file_names=files,
+                                                archive_type=archive_type,
+                                                keep_in_dir=keep_in_dir,
+                                                archive_name=archive_name)
 
 
 class HtmlTableTemplate(Script):
