@@ -43,6 +43,7 @@ class engine(Engine):
                       "Format of table name",
                       "{db}.{table}"),
                      ]
+    spatial_support = True
 
     def auto_create_table(self, table, url=None, filename=None, pk=None):
         """Create a table automatically.
@@ -99,6 +100,10 @@ class engine(Engine):
                       "CREATE EXTENSION postgis;\n"
                       "CREATE EXTENSION postgis_topology;")
                 exit()
+            try:
+                self.execute(self.drop_statement("TABLE", self.table_name()))
+            except Exception as _:
+                pass
             return
         Engine.create_table(self)
         self.connection.commit()
