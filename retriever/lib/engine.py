@@ -129,11 +129,11 @@ class Engine(object):
                                 self.table.cleanup.args),
                             types[n])
                         for n in range(len(line_values))
-                        ]
+                    ]
                 except Exception as e:
                     self.warning(
                         'Exception in line {}: {}'
-                        .format(self.table.record_id, e))
+                            .format(self.table.record_id, e))
                     continue
 
             if line or count_iter == real_line_length:
@@ -275,7 +275,7 @@ class Engine(object):
                                     val = int(val)
                                     if column_types[i][0] == 'int' and \
                                             hasattr(self, 'max_int') and \
-                                            val > self.max_int:
+                                                    val > self.max_int:
                                         column_types[i] = ['bigint', ]
                                 except Exception as _:
                                     column_types[i] = ['double', ]
@@ -530,7 +530,6 @@ class Engine(object):
             drop_statement = "DROP %s IF EXISTS %s" % (
                 object_type, object_name)
         return drop_statement
-
 
     def execute(self, statement, commit=True):
         """Execute given statement."""
@@ -823,7 +822,8 @@ class Engine(object):
 
         for table_name in self.script_table_registry[self.script.name]:
 
-            csv_file_output = os.path.normpath(os.path.join(path, table_name[0] + '.csv'))
+            csv_file_output = os.path.normpath(os.path.join(path if path else '',
+                                                            table_name[0] + '.csv'))
             csv_file = open_fw(csv_file_output)
             csv_writer = open_csvw(csv_file)
             self.get_cursor()

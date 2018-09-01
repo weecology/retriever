@@ -122,7 +122,7 @@ class engine(Engine):
         for table_item in self.script_table_registry[self.script.name]:
             header = table_item[1].get_insert_columns(join=False, create=True)
             outputfile = os.path.normpath(
-                os.path.join(path, os.path.splitext(os.path.basename(table_item[0]))[0] + '.csv'))
+                os.path.join(path if path else '', os.path.splitext(os.path.basename(table_item[0]))[0] + '.csv'))
             csv_outfile = json2csv(table_item[0], output_file=outputfile, header_values=header)
             sort_csv(csv_outfile)
 
