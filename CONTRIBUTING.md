@@ -19,10 +19,10 @@ branch of your fork and then submit a pull request.
 
 ## Running the tests
 
-We use [nose](https://nose.readthedocs.org/en/latest/) for testing. To run the
+We use [pytest](https://docs.pytest.org/en/latest/) for testing. To run the
 tests first install nose using pip:
 
-`pip install nose`
+`pip install pytest`
 
 Then from the root of the repository install the Retriever:
 
@@ -30,17 +30,9 @@ Then from the root of the repository install the Retriever:
 
 and run the tests:
 
-`nosetests`
+`pytest`
 
-You should see a bunch of output from the Retriever followed by something like:
-
-```
-.....................
-----------------------------------------------------------------------
-Ran 32 tests in 143.621s
-
-OK
-```
+You should see a bunch of output from the Retriever showing the test results.
 
 Tests for MySQL and PostgreSQL require properly configured database management
 systems for testing.
