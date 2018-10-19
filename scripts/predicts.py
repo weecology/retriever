@@ -34,7 +34,7 @@ class main(Script):
                         "http://dx.doi.org/10.5519/0066354"
         self.keywords = ['biodiversity', 'anthropogenic pressures']
         self.retriever_minimum_version = "2.0.dev"
-        self.version = "1.0.3"
+        self.version = "1.0.4"
         self.description = "A dataset of 3,250,404 measurements, " \
                            "collated from 26,114 sampling locations in 94 " \
                            "countries and representing 47,044 species."
@@ -89,7 +89,7 @@ class main(Script):
                          ("Longitude", ("double",)),
                          ("Latitude", ("double",)),
                          ("Country_distance_metres", ("double",)),
-                         ("Country", ("char")),
+                         ("Country", ("char",)),
                          ("UN_subregion", ("char",)),
                          ("UN_region", ("char",)),
                          ("Ecoregion_distance_metres", ("double",)),
