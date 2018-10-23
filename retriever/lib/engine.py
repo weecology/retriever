@@ -53,6 +53,7 @@ class Engine(object):
     placeholder = None
     required_opts = []
     script = None
+    spatial_support = False
     table = None
     use_cache = True
     warnings = []
@@ -530,7 +531,6 @@ class Engine(object):
             drop_statement = "DROP %s IF EXISTS %s" % (
                 object_type, object_name)
         return drop_statement
-
 
     def execute(self, statement, commit=True):
         """Execute given statement."""
