@@ -1,3 +1,41 @@
+# v2.2.0
+
+## Major changes
+
+Using requests package to fetch data.
+Add postgis, a Spatial support for postgres.
+Update ls, include more details about the scripts.
+update license lookup for datasets
+Update keywords lookup for datasets
+Use tqdm for all progress tracking.
+Changed all "-" in JSON files to "_"
+
+## Minor changes
+
+Documention refinement.
+Connect to MySQL using preferred encoding.
+License search and keyword search added.
+Conda_Forge docs
+Add Zenodo badge to link to archive
+Add test for extracting data
+
+## New datasets
+
+Add Noaa Fisheries trade, noaa-fisheries-trade.
+Add Fishery Statistical Collections data, fao-global-capture-product.
+Add bupa liver disorders dataset, bupa-liver-disorders.
+Add GLOBI interactions data. globi-interaction.
+Addition of the National Aquatic Resource Surveys (NARS), nla.
+Addition of partners in flight dataset, partners-in-flight.
+Add the ND-GAIN Country Index. nd-gain.
+Add world GDP in current US Dollars. dgp.
+Add airports dataset, airports.
+Repair aquatic animal excretion.
+Add Biotime dataset. 
+Add lakecats final tables dataset, lakecats-final-tables.
+Add harvard forests data, harvard forests.
+Add USGS elevation data, usgs-elevation.
+
 # v2.1.0
 
 ## Major changes
