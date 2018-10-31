@@ -13,8 +13,6 @@ Contents:
 
    introduction
    scripts
-   macbuild.rst
-   Release.rst
    developer.rst
    code_of_conduct.rst
    rdataretriever.rst
