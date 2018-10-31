@@ -12,13 +12,13 @@ Contents:
    :maxdepth: 2
 
    introduction
+   rdataretriever.rst
+   pyretriever.rst
+   datasets_list.rst
    scripts
    developer.rst
    code_of_conduct.rst
-   rdataretriever.rst
-   datasets_list.rst
    modules.rst
-   pyretriever.rst
 
 
 Indices and tables
