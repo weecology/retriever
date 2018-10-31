@@ -55,5 +55,5 @@ Pypi
 Cleanup
 -------
 
-1. Bump the version numbers in ``__init__.py`` and
-   ``retriever_installer.iss``
+1. Bump the version numbers as needed. The version number are located in the ``setup.py``,
+   ``retriever_installer.iss``, ``version.txt`` and ``retriever/_version.py``

@@ -7,7 +7,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{0467A404-8C83-42A2-8C25-0903FBD14D9C}
 AppName=Data Retriever
-AppVersion=2.1.0
+AppVersion=2.2.0
 AppPublisher=Weecology
 AppPublisherURL=http://data-retriever.org
 AppSupportURL=http://data-retriever.org
