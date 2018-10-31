@@ -1,5 +1,5 @@
-retriever
-=========
+Retriever API
+=============
 
 .. toctree::
    :maxdepth: 4
