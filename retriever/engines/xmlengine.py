@@ -118,11 +118,13 @@ class engine(Engine):
                       for key, value in zip(keys, line_data)]
         return ''.join(row_values)
 
-    def to_csv(self, sort=True):
+    def to_csv(self, sort=True, path=None):
         """Export table from xml engine to CSV file."""
         for table_item in self.script_table_registry[self.script.name]:
             header = table_item[1].get_insert_columns(join=False, create=True)
-            csv_outfile = xml2csv(table_item[0], header_values=header)
+            outputfile = os.path.normpath(
+                os.path.join(path if path else '', os.path.splitext(os.path.basename(table_item[0]))[0] + '.csv'))
+            csv_outfile = xml2csv(table_item[0], outputfile=outputfile, header_values=header)
             sort_csv(csv_outfile)
 
     def get_connection(self):
