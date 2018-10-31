@@ -25,6 +25,10 @@ Start
 Linux
 -----
 
+**Building the DEB package does not work using conda. If conda is your main**
+**Python change `python` in `build.sh` to `/usr/bin/python` or otherwise**
+**Adjust the path to use the system Python.**
+
 1. **Run the tests** (unless you just ran them on the same machine)
 2. Checkout master
 3. Run ``build.sh``
