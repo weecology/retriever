@@ -2,23 +2,23 @@
 
 ## Major changes
 
-Using requests package to read urls.
-Add postgis, a Spatial support for postgres.
-Update ls, include more details about the scripts.
-update license lookup for datasets
-Update keywords lookup for datasets
-Use tqdm for all progress tracking.
-Changed all "-" in JSON files to "_"
-Use Panda to Fetch and return a dataframe of a dataset
+Use requests package to for handling downloads
+Add support for spatial datasets using postGIS and PostgreSQL
+Update ls to include more details about datasets
+Update license lookup for datasets
+Update keyword lookup for datasets
+Use tqdm for cleaner progress tracking
+Add `fetch` function that installs a dataset and returns it as a dictionary of dataframes
 
 ## Minor changes
 
-Documentation refinement.
+Documentation refinement
 Connect to MySQL using preferred encoding.
 License search and keyword search added.
 Conda_Forge docs
 Add Zenodo badge to link to archive
 Add test for extracting data
+Changed all "-" in JSON files to "_"
 
 ## New datasets
 
