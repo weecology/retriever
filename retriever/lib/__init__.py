@@ -12,6 +12,7 @@ from .install import install_sqlite
 from .install import install_xml
 from .repository import check_for_updates
 from .engine_tools import reset_retriever
+from .fetch import fetch
 
 __all__ = [
     'check_for_updates',
@@ -25,5 +26,6 @@ __all__ = [
     'install_sqlite',
     'install_msaccess',
     'install_json',
-    'install_xml'
+    'install_xml',
+    'fetch'
 ]

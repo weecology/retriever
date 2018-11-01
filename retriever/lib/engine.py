@@ -630,6 +630,12 @@ class Engine(object):
             print("\n{0} can't be extracted, "
                   "may be corrupt \n{1}".format(file_name, e))
 
+    def fetch_tables(self, table_names):
+        """This can be overriden to return the tables of sqlite db
+        as pandas data frame. Return False by default.
+        """
+        return False
+
     def final_cleanup(self):
         """Close the database connection."""
         if self.warnings:

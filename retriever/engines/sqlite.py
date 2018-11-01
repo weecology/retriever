@@ -1,4 +1,5 @@
 import os
+import pandas as pd
 from builtins import range
 
 from retriever.lib.defaults import DATA_DIR
@@ -37,6 +38,15 @@ class engine(Engine):
         connection. This overloads`create_db` to do nothing in this case.
         """
         return None
+
+    def fetch_tables(self, dataset, table_names):
+        """Return sqlite dataset as list of pandas dataframe."""
+        connection = self.get_connection()
+        data = {table[len(dataset) + 1:]: pd.read_sql_query("SELECT * "
+                                                            "FROM {};".format(table),
+                                                            connection)
+                for table in table_names}
+        return data
 
     def get_bulk_insert_statement(self):
         """Get insert statement for bulk inserts

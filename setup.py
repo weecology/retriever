@@ -82,7 +82,8 @@ setup(name='retriever',
           'future',
           'argcomplete',
           'tqdm',
-          'requests'
+          'requests',
+          'pandas'
       ],
       data_files=[('', ['CITATION'])],
       setup_requires=[],
