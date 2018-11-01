@@ -11,5 +11,5 @@ def fetch(dataset, file=os.path.join(DATA_DIR, 'sqlite.db'), table_name='{db}_{t
                       for name, _ in res_engine.script_table_registry[dataset]]
     sqlite = engine()
     sqlite.opts = {"file": file, "table_name": table_name}
-    df = sqlite.fetch_tables(db_table_names)
+    df = sqlite.fetch_tables(dataset, db_table_names)
     return df
