@@ -2,17 +2,18 @@
 
 ## Major changes
 
-Using requests package to fetch data.
+Using requests package to read urls.
 Add postgis, a Spatial support for postgres.
 Update ls, include more details about the scripts.
 update license lookup for datasets
 Update keywords lookup for datasets
 Use tqdm for all progress tracking.
 Changed all "-" in JSON files to "_"
+Use Panda to Fetch and return a dataframe of a dataset
 
 ## Minor changes
 
-Documention refinement.
+Documentation refinement.
 Connect to MySQL using preferred encoding.
 License search and keyword search added.
 Conda_Forge docs
