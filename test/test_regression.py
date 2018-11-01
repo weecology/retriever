@@ -59,12 +59,12 @@ db_md5 = [
 # Tuple of (dataset_name, list of dict values corresponding to a table)
 fetch_tests = [
     ('iris',
-     [{'iris_Iris': [[5.1, 3.5, 1.4, 0.2, 'Iris-setosa'],
+     [{'Iris': [[5.1, 3.5, 1.4, 0.2, 'Iris-setosa'],
                      ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'class']]
        }]
      ),
     ('flensburg-food-web',
-     [{'flensburg_food_web_nodes': [
+     [{'nodes': [
          [2, 2, 1, 'Adult', 2.1, 'Carrion', 'Detritus', 'Detritus/Stock', 'Assemblage',
           '', '', '', '', '', None, None, 'Low', '', None, None, None, None, None, None,
           None, None, '', '', None, None, '', None, '', None, None, None, '', '', '',
@@ -79,7 +79,7 @@ fetch_tests = [
           'infraorder', 'superfamily', 'family', 'genus', 'specific_epithet', 'subspecies',
           'node_notes']
      ],
-         'flensburg_food_web_links': [
+         'links': [
              [39, 79, 39, 79, 1, 1, 14, 'Concomitant Predation on Symbionts',
               None, None, None, None, None, None, None,
               None],
