@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 import imp
+import numpy as np
 import os
 import shlex
 import shutil
@@ -9,6 +10,7 @@ import sys
 from imp import reload
 
 from retriever import download
+from retriever import fetch
 from retriever import install_csv
 from retriever import install_json
 from retriever import install_mysql
@@ -52,6 +54,41 @@ db_md5 = [
     ('flensburg_food_web', '3f0e3c60b80f0bb9326e33c74076b14c'),
     ('bird_size', '98dcfdca19d729c90ee1c6db5221b775'),
     ('mammal_masses', '6fec0fc63007a4040d9bbc5cfcd9953e')
+]
+
+# Tuple of (dataset_name, list of dict values corresponding to a table)
+fetch_tests = [
+    ('iris',
+     [{'iris_Iris': [[5.1, 3.5, 1.4, 0.2, 'Iris-setosa'],
+                     ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'class']]
+       }]
+     ),
+    ('flensburg-food-web',
+     [{'flensburg_food_web_nodes': [
+         [2, 2, 1, 'Adult', 2.1, 'Carrion', 'Detritus', 'Detritus/Stock', 'Assemblage',
+          '', '', '', '', '', None, None, 'Low', '', None, None, None, None, None, None,
+          None, None, '', '', None, None, '', None, '', None, None, None, '', '', '',
+          None, None],
+         ['node_id', 'species_id', 'stage_id', 'stage', 'species_stageid', 'workingname',
+          'organismalgroup', 'nodetype', 'resolution', 'resolutionnotes', 'feeding',
+          'lifestylestage', 'lifestylespecies', 'consumerstrategystage', 'system',
+          'habitataffiliation', 'mobility', 'residency', 'nativestatus',
+          'bodysize_g', 'bodysizeestimation', 'bodysizenotes', 'bodysizen',
+          'biomass_kg_ha', 'biomassestimation', 'biomassnotes', 'kingdom', 'phylum',
+          'subphylum', 'superclass', 'class', 'subclass', 'ordered', 'suborder',
+          'infraorder', 'superfamily', 'family', 'genus', 'specific_epithet', 'subspecies',
+          'node_notes']
+     ],
+         'flensburg_food_web_links': [
+             [39, 79, 39, 79, 1, 1, 14, 'Concomitant Predation on Symbionts',
+              None, None, None, None, None, None, None,
+              None],
+             ['consumernodeid', 'resourcenodeid', 'consumerspeciesid', 'resourcespeciesid',
+              'consumerstageid', 'resourcestageid', 'linknumber', 'linktype', 'linkevidence',
+              'linkevidencenotes', 'linkfrequency', 'linkn',
+              'dietfraction', 'consumptionrate', 'vectorfrom', 'preyfrom']
+         ]
+     }])
 ]
 
 python_files = ['flensburg_food_web']
@@ -186,3 +223,18 @@ def test_download_regression(dataset, expected):
     download(dataset, "raw_data/{0}".format(dataset))
     current_md5 = getmd5(data="raw_data/{0}".format(dataset), data_type='dir')
     assert current_md5 == expected
+
+
+# @pytest.mark.parametrize("dataset, expected", fetch_tests)
+def test_fetch():
+    """Test fetch interface"""
+    for dataset, expected in fetch_tests:
+        data_frame = fetch(dataset)
+        for itm in expected:
+            for table_i in itm:
+                expected_data = itm[table_i][0]
+                expected_column_values = itm[table_i][1]
+                column_values = list(data_frame[table_i].dtypes.index)
+                first_row_data = list(data_frame[table_i].iloc[0])
+                assert expected_data == first_row_data
+                assert expected_column_values == column_values
