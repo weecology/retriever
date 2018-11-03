@@ -1334,7 +1334,7 @@
 
         {
             "name" : "TMY3_NSRDB_Boundaries",
-            "path" : "nsrdb_boundary/nsrdb_bndry.shp",
+            "path" : "nsrdb_boundary/nsrdb_boundary/nsrdb_bndry.shp",
             "url" : "https://www.nrel.gov/gis/assets/data/nsrdb_boundary.zip",
             "geom_type" : "Polygon",
             "extent" : {
