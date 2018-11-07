@@ -30,20 +30,27 @@ def clean_version(v):
     return parse_version(v).__repr__().lstrip("<Version('").rstrip("')>")
 
 
-includes = [
-               'xlrd',
-               'future',
-               'argcomplete',
-               'pymysql',
-               'psycopg2',
-               'sqlite3',
-           ] + extra_includes
+includes = ['argcomplete',
+            'future',
+            'pandas',
+            'psycopg2',
+            'xlrd',
+            'pymysql',
+            'requests',
+            'tqdm',
+            'xlrd'] + extra_includes
 
 excludes = [
-    'pyreadline',
+    '.cache',
+    'docker',
+    'docs',
     'doctest',
-    'pickle',
+    'hooks',
     'pdb',
+    'pickle',
+    'pyreadline',
+    'scripts',
+    'tests'
     'pywin', 'pywin.debugger',
     'pywin.debugger.dbgcon',
     'pywin.dialogs', 'pywin.dialogs.list',
@@ -66,25 +73,13 @@ setup(name='retriever',
                    'Programming Language :: Python :: 2',
                    'Programming Language :: Python :: 3', ],
       packages=find_packages(
-          exclude=['hooks',
-                   'docs',
-                   'tests',
-                   'scripts',
-                   'docker',
-                   ".cache"]),
+          exclude=excludes),
       entry_points={
           'console_scripts': [
               'retriever = retriever.__main__:main',
           ],
       },
-      install_requires=[
-          'xlrd',
-          'future',
-          'argcomplete',
-          'tqdm',
-          'requests',
-          'pandas'
-      ],
+      install_requires=includes,
       data_files=[('', ['CITATION'])],
       setup_requires=[],
       )
