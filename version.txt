@@ -1,4 +1,4 @@
-v2.2.0
+v2.2.1.dev
 abalone_age.json,1.2.2
 airports.json,1.0.3
 amniote_life_hist.py,2.0.4
