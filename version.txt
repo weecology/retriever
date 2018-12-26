@@ -35,7 +35,7 @@ gdp.json,1.0.2
 gentry_forest_transects.py,1.4.4
 globi_interaction.json,1.0.2
 great_basin_mammal_abundance.json,1.0.1
-harvard_forests.json,1.0.1
+harvard_forests.json,1.0.2
 home_ranges.json,1.1.2
 intertidal_abund_me.py,1.5.3
 iris.json,1.2.1

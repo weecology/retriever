@@ -13,13 +13,13 @@
     ],
     "url": "FILL",
     "ref": "http://harvardforest.fas.harvard.edu/",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "retriever_minimum_version": "2.1.dev",
     "extract_all": "True",
     "archived": "zip",
     "resources": [
         {
-            "name": "1938_hurricane_damage",
+            "name": "hurricane_damage_1938",
             "path": "Harvard_Forest_Properties_GIS_Layers/1938_hurricane_damage.shp",
             "url": "http://harvardforest.fas.harvard.edu/data/p11/hf110/hf110-01-gis.zip",
             "geom_type": "Polygon",
