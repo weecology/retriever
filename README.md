@@ -178,6 +178,22 @@ retriever citation   (citation of the retriever engine)
 retriever citation iris  (citation for the iris data)
 ```
 
+Spatial Dataset Installation
+----------------------------
+
+**Set up Spatial support**
+
+To set up patial support for Postgres using Postgis please
+refer to the [spatial set-up docs](https://retriever.readthedocs.io/en/latest/spatial_dbms.html).
+
+```shell
+retriever install postgres harvard-forest # Vector data
+retriever install postgres bioclim # Raster data
+# Install only the data of USGS elevation in the given extent
+retriever install postgres usgs-elevation -b -94.98704597353938 39.027001800158615 -94.3599408119917 40.69577051867074
+
+```
+
 Website
 -------
 

@@ -247,7 +247,7 @@ Examples
  # Install the Gentry forest transects dataset into csv files in your working directory
  rdataretriever::install('gentry-forest-transects', 'csv')
  
- # Download the raw Gentry dataset files without any processing to the 
+ # Download the raw Gentry dataset files without any processing to the
  # subdirectory named data
  rdataretriever::download('gentry-forest-transects', './data/')
  
