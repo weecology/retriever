@@ -178,9 +178,12 @@ CSV HEADER;"""
             SRID=srid,
             path=path, SCHEMA_DBTABLE=self.table_name())
 
-        cmd_string = """ | psql -U {USER} -d {DATABASE}""".format(
+        cmd_string = """ | psql -U {USER} -d {DATABASE} --port {PORT} --host {HOST}""".format(
             USER=self.opts["user"],
-            DATABASE=self.opts["database"])
+            DATABASE=self.opts["database"],
+            PORT=self.opts["port"],
+            HOST=self.opts["host"]
+        )
 
         cmd_stmt = raster_sql + cmd_string
         if self.debug:
@@ -213,9 +216,12 @@ CSV HEADER;"""
             SRID=srid,
             path=path, SCHEMA_DBTABLE=self.table_name())
 
-        cmd_string = """ | psql -U {USER} -d {DATABASE}""".format(
+        cmd_string = """ | psql -U {USER} -d {DATABASE} --port {PORT} --host {HOST}""".format(
             USER=self.opts["user"],
-            DATABASE=self.opts["database"])
+            DATABASE=self.opts["database"],
+            PORT=self.opts["port"],
+            HOST=self.opts["host"]
+        )
         cmd_stmt = vector_sql + cmd_string
         if self.debug:
             print(cmd_stmt)
