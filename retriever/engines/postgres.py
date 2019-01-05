@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 from retriever.lib.defaults import ENCODING
 from retriever.lib.models import Engine, no_cleanup
@@ -91,19 +92,14 @@ class engine(Engine):
                 not self.table.dataset_type == "TabularDataset":
             try:
                 # Check if Postgis is installed and EXTENSION are Loaded
-                if self.execute("SELECT PostGIS_full_version();") or \
-                        self.execute("SELECT PostGIS_version()"):
-                    pass
-            except BaseException:
+                self.execute("SELECT PostGIS_full_version();")
+            except BaseException as e:
+                print(e)
                 print("Make sure that you have PostGIS installed\n"
                       "Open Postgres CLI or GUI(PgAdmin) and run:\n"
                       "CREATE EXTENSION postgis;\n"
                       "CREATE EXTENSION postgis_topology;")
                 exit()
-            try:
-                self.execute(self.drop_statement("TABLE", self.table_name()))
-            except Exception as _:
-                pass
             return
         Engine.create_table(self)
         self.connection.commit()
@@ -182,11 +178,17 @@ CSV HEADER;"""
             SRID=srid,
             path=path, SCHEMA_DBTABLE=self.table_name())
 
-        cmd_string = """ | psql -U {USER} -d {DATABASE}""".format(
+        cmd_string = """ | psql -U {USER} -d {DATABASE} --port {PORT} --host {HOST}""".format(
             USER=self.opts["user"],
-            DATABASE=self.opts["database"])
+            DATABASE=self.opts["database"],
+            PORT=self.opts["port"],
+            HOST=self.opts["host"]
+        )
 
-        os.system(raster_sql + cmd_string)
+        cmd_stmt = raster_sql + cmd_string
+        if self.debug:
+            print(cmd_stmt)
+        subprocess.call(cmd_stmt, shell=True, stdout=subprocess.PIPE)
 
     def insert_vector(self, path=None, srid=4326):
         """Import Vector into Postgis Table
@@ -210,14 +212,20 @@ CSV HEADER;"""
          """
         if not path:
             path = Engine.format_data_dir(self)
-        vector_sql = "shp2pgsql -I -s {SRID} {path} {SCHEMA_DBTABLE}".format(
+        vector_sql = "shp2pgsql -d -I -s {SRID} {path} {SCHEMA_DBTABLE}".format(
             SRID=srid,
             path=path, SCHEMA_DBTABLE=self.table_name())
 
-        cmd_string = """ | psql -U {USER} -d {DATABASE}""".format(
+        cmd_string = """ | psql -U {USER} -d {DATABASE} --port {PORT} --host {HOST}""".format(
             USER=self.opts["user"],
-            DATABASE=self.opts["database"])
-        os.system(vector_sql + cmd_string)
+            DATABASE=self.opts["database"],
+            PORT=self.opts["port"],
+            HOST=self.opts["host"]
+        )
+        cmd_stmt = vector_sql + cmd_string
+        if self.debug:
+            print(cmd_stmt)
+        subprocess.call(cmd_stmt, shell=True, stdout=subprocess.PIPE)
 
     def format_insert_value(self, value, datatype):
         """Format value for an insert statement."""

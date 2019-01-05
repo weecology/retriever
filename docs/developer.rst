@@ -101,6 +101,18 @@ modules installed (see ``Setting up servers``). Create the appropriate permissio
 the databases. You can do this by running the following commands in MySQL and
 PostgreSQL and creating the .pgpass file as described below:
 
+Passwordless configuration
+--------------------------
+
+To avoid supplying the passwords when using the tool, use the config files
+`.pgpass` for Postgres and `.my.cnf` for MySQL. The files are kept in the
+HOME directory(~/.pgpass, ~/.my.cnf). Make sure you set the file permissions to 600.
+
+::
+
+  chmod 600 ~/.pgpass
+  chmod 600 ~/.my.cnf
+
 ::
 
   MySQL
@@ -108,7 +120,15 @@ PostgreSQL and creating the .pgpass file as described below:
   mysql -e "CREATE USER 'travis'@'localhost';" -uroot
   mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'travis'@'localhost';" -uroot
   mysql -e "GRANT FILE ON *.* TO 'travis'@'localhost';" -uroot
-  ​
+  Sample  `~.my.cnf` file
+  [client]
+  user="travis"
+  password="Password12!"
+  host="mysqldb"
+  port="3306"
+
+::
+
   PostgreSQL
   ----------
   psql -c "CREATE USER postgres WITH PASSWORD 'Password12!'"
@@ -117,6 +137,9 @@ PostgreSQL and creating the .pgpass file as described below:
   ​
   Create .pgpass in your home directory:
   localhost:*:testdb:postgres:Password12!
+
+
+
 
 To run tests we use pytest.
 From the source top level directory, run
