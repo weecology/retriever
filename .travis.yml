@@ -27,7 +27,7 @@ install:
 # command to run tests using py.test
 
 script:
-  - py.test -k "not test_mysql_integration" -v --cov=retriever
+  - py.test -v --cov=retriever
 
 # database setup
 before_script:
