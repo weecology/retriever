@@ -183,7 +183,7 @@ Spatial Dataset Installation
 
 **Set up Spatial support**
 
-To set up patial support for Postgres using Postgis please
+To set up spatial support for Postgres using Postgis please
 refer to the [spatial set-up docs](https://retriever.readthedocs.io/en/latest/spatial_dbms.html).
 
 ```shell
