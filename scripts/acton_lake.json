@@ -1,0 +1,112 @@
+{
+    "citation": "Michael J Vanni, Maria J Gonzalez, and William H Renwick. 2019. Long term limnological measures in Acton Lake, a southwest Ohio reservoir, and its inflow streams: 1992-2017. Environmental Data Initiative.",
+    "description": "Long-term data collected from Acton Lake and its inflow streams, on a suite of physical, chemical and biological variables investigating how Acton Lake, responds to changes in ecosystem subsidies of detritus (sediments) and nutrients.",
+    "homepage": "https://search.dataone.org/view/https://pasta.lternet.edu/package/metadata/eml/edi/256/1",
+    "keywords": [
+        "lake",
+        "stream",
+        "nutrients",
+        "nitrogen",
+        "phosphorus",
+        "chlorophyll",
+        "LTREB",
+        "long-term",
+        "ecosystem",
+        "ammonium-nitrogen",
+        "nitrate-N",
+        "oxygen",
+        "carbon"
+    ],
+    "name": "acton-lake",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "ActonLakeDepth",
+            "schema": {
+                "fields": [
+                    {"name":"Site","type":"char"},
+                    {"name":"Date","type":"char"},
+                    {"name":"Depth","type":"double"},
+                    {"name":"DissolvedOxygen", "type":"double"},
+                    {"name":"Light", "type":"double"},
+                    {"name":"Temprature", "type":"double"}]
+            },
+            "url": "https://pasta.lternet.edu/package/data/eml/edi/256/1/80ccde946dc44c2e4f349084b5eca251"
+        },
+        {
+            "dialect": {},
+            "name": "ActonLakeIntegrated",
+            "schema": {
+                "fields": [
+                    {"name":"Site","type":"char"},
+                    {"name":"Date","type":"char"},
+                    {"name":"Secchi","type":"double"},
+                    {"name":"LarvalFishDensity","type":"double"},
+                    {"name":"IntegratedSamplingDepth","type":"double"},
+                    {"name":"Chlorophyll_a","type":"double"},
+                    {"name":"SuspendedSolids","type":"double"},
+                    {"name":"NonvolatileSuspendedSolids","type":"double"},
+                    {"name":"ParticulateC","type":"double"},
+                    {"name":"ParticulateN","type":"double"},
+                    {"name":"ParticulateP","type":"double"},
+                    {"name":"TotalNitrogen","type":"double"},
+                    {"name":"TotalPhosphorus","type":"double"},
+                    {"name":"ZooplanktonDepth","type":"double"},
+                    {"name":"TotalZooplankton","type":"double"}
+                ]
+            },
+            "url": "https://pasta.lternet.edu/package/data/eml/edi/256/1/9d22d24338516635a504290fef69fa0b"
+        },
+        {
+            "dialect": {},
+            "name": "StreamDischarge",
+            "schema": {
+                "fields": [
+                    {"name":"Site","type":"char"},
+                    {"name":"DateTime","type":"char"},
+                    {"name":"DischargeHourly","type":"double"}
+                ]
+            },
+            "url": "https://pasta.lternet.edu/package/data/eml/edi/256/1/7bc5a642e46c2b1abfed0c300da69d09"
+        },
+        {
+            "dialect": {},
+            "name": "StreamNutrients",
+            "schema": {
+                "fields": [
+                    {"name":"Site","type":"char"},
+                    {"name":"DateTime","type":"char"},
+                    {"name":"Ammonia","type":"double"},
+                    {"name":"Nitrate","type":"double"},
+                    {"name":"SolubleReactivePhosphorus","type":"double"},
+                    {"name":"SuspendedSolids","type":"double"}
+                ]
+            },
+            "url": "https://pasta.lternet.edu/package/data/eml/edi/256/1/63e0c10806e01e21740377650b89fa0d"
+        },
+        {
+            "dialect": {},
+            "name": "SiteCharacteristics",
+            "schema": {
+                "fields": [
+                    {"name":"Site","type":"char"},
+                    {"name":"SiteDescription","type":"char"},
+                    {"name":"Latitude","type":"double"},
+                    {"name":"Longitude","type":"double"}
+                ]
+            },
+            "url": "https://pasta.lternet.edu/package/data/eml/edi/256/1/0c8f547bcc59b4daade296479381d40e"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.dev",
+    "title": "Long term limnological measures in Acton Lake, database, 1992-2017",
+    "urls": {
+        "ActonLakeDepth": "https://pasta.lternet.edu/package/data/eml/edi/256/1/80ccde946dc44c2e4f349084b5eca251",
+        "ActonLakeIntegrated": "https://pasta.lternet.edu/package/data/eml/edi/256/1/9d22d24338516635a504290fef69fa0b",
+        "SiteCharacteristics": "https://pasta.lternet.edu/package/data/eml/edi/256/1/0c8f547bcc59b4daade296479381d40e",
+        "StreamDischarge": "https://pasta.lternet.edu/package/data/eml/edi/256/1/7bc5a642e46c2b1abfed0c300da69d09",
+        "StreamNutrients": "https://pasta.lternet.edu/package/data/eml/edi/256/1/63e0c10806e01e21740377650b89fa0d"
+    },
+    "version": "1.0.0"
+}
