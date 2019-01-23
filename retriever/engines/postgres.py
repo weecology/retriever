@@ -174,9 +174,10 @@ CSV HEADER;"""
         if not path:
             path = Engine.format_data_dir(self)
 
-        raster_sql = "raster2pgsql -M -d -I -s {SRID} {path} -F -t 100x100 {SCHEMA_DBTABLE}".format(
+        raster_sql = "raster2pgsql -M -d -I -s {SRID} \"{path}\" -F -t 100x100 {SCHEMA_DBTABLE}".format(
             SRID=srid,
-            path=path, SCHEMA_DBTABLE=self.table_name())
+            path=os.path.normpath(path),
+            SCHEMA_DBTABLE=self.table_name())
 
         cmd_string = """ | psql -U {USER} -d {DATABASE} --port {PORT} --host {HOST}""".format(
             USER=self.opts["user"],
@@ -212,9 +213,10 @@ CSV HEADER;"""
          """
         if not path:
             path = Engine.format_data_dir(self)
-        vector_sql = "shp2pgsql -d -I -s {SRID} {path} {SCHEMA_DBTABLE}".format(
+        vector_sql = "shp2pgsql -d -I -s {SRID} \"{path}\ {SCHEMA_DBTABLE}".format(
             SRID=srid,
-            path=path, SCHEMA_DBTABLE=self.table_name())
+            path=os.path.normpath(path),
+            SCHEMA_DBTABLE=self.table_name())
 
         cmd_string = """ | psql -U {USER} -d {DATABASE} --port {PORT} --host {HOST}""".format(
             USER=self.opts["user"],
