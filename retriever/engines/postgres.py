@@ -213,7 +213,7 @@ CSV HEADER;"""
          """
         if not path:
             path = Engine.format_data_dir(self)
-        vector_sql = "shp2pgsql -d -I -s {SRID} \"{path}\ {SCHEMA_DBTABLE}".format(
+        vector_sql = "shp2pgsql -d -I -s {SRID} \"{path}\" {SCHEMA_DBTABLE}".format(
             SRID=srid,
             path=os.path.normpath(path),
             SCHEMA_DBTABLE=self.table_name())
