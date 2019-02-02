@@ -292,7 +292,7 @@ def file_2list(input_file):
     input_file = os.path.normpath(input_file)
 
     if sys.version_info >= (3, 0, 0):
-        input_obj = io.open(input_file, 'rU')
+        input_obj = io.open(input_file, 'r')
     else:
         input_obj = io.open(input_file, encoding=ENCODING)
 
