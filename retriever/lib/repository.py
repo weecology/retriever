@@ -25,7 +25,7 @@ def _download_from_repository(filepath, newpath, repo=REPOSITORY):
         raise
 
 
-def check_for_updates(quiet=False):
+def check_for_updates():
     """Check for updates to datasets.
 
     This updates the HOME_DIR scripts directory with the latest script versions
@@ -42,6 +42,7 @@ def check_for_updates(quiet=False):
 
         # create script directory if not available
         if not os.path.isdir(SCRIPT_WRITE_PATH):
+            print('No scripts are currently available. Creating scripts folder...')
             os.makedirs(SCRIPT_WRITE_PATH)
 
         for script in tqdm(scripts, unit='files', desc='Downloading scripts'):
