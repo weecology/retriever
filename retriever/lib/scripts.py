@@ -14,8 +14,9 @@ from pkg_resources import parse_version
 
 from retriever.lib.defaults import SCRIPT_SEARCH_PATHS, VERSION, ENCODING, SCRIPT_WRITE_PATH
 from retriever.lib.load_json import read_json
+from retriever.lib.repository import check_for_updates
 
-global_script_list = {}
+global_script_list = None
 
 
 def check_retriever_minimum_version(module):
@@ -84,6 +85,8 @@ def reload_scripts():
                     sys.stderr.write("Failed to load script: {} ({})\n"
                                      "Exception: {} \n"
                                      .format(script_name, search_path, str(e)))
+    if global_script_list:
+        global_script_list.set_scripts(modules)
     return modules
 
 
@@ -170,6 +173,9 @@ class StoredScripts:
 
     def get_scripts(self):
         return self._shared_scripts
+
+    def set_scripts(self, script_list):
+        self._shared_scripts = script_list
 
 
 global_script_list = StoredScripts()
