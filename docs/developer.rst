@@ -157,6 +157,9 @@ To run tests on a specific test category add the path of the test module to the 
 
 This will only run test_retriever.py
 
+In case ``py.test`` requests for Password (even after Passwordless configuration), change the owner and group
+from the permissions of the files ``~/.pgpass, ~/.my.cnf``
+
 Continuous Integration
 ^^^^^^^^^^^^^^^^^^^^^^
 
