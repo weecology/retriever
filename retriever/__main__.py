@@ -27,14 +27,15 @@ def main():
 
     else:
         # otherwise, parse them
-
-        if not os.path.isdir(SCRIPT_SEARCH_PATHS[1]) and not \
-                [f for f in os.listdir(SCRIPT_SEARCH_PATHS[-1])
-                 if os.path.exists(SCRIPT_SEARCH_PATHS[-1])]:
-            check_for_updates()
-        script_list = SCRIPT_LIST()
-
         args = parser.parse_args()
+
+        if args.command not in ['reset', 'update'] \
+        and not os.path.isdir(SCRIPT_SEARCH_PATHS[1]) \
+        and not [f for f in os.listdir(SCRIPT_SEARCH_PATHS[-1])
+            if os.path.exists(SCRIPT_SEARCH_PATHS[-1])]:
+                check_for_updates()
+                reload_scripts()
+        script_list = SCRIPT_LIST()
 
         if args.command == "install" and not args.engine:
             parser.parse_args(['install', '-h'])
@@ -57,8 +58,8 @@ def main():
             return
 
         if args.command == 'update':
-            check_for_updates(False)
-            script_list = SCRIPT_LIST()
+            check_for_updates()
+            reload_scripts()
             return
 
         elif args.command == 'citation':
@@ -114,11 +115,7 @@ def main():
             return
 
         if args.command == 'ls':
-            # If scripts have never been downloaded there is nothing to list
-            if not script_list:
-                print("No scripts are currently available. Updating scripts now...")
-                check_for_updates(False)
-                print("\n\nScripts downloaded.\n")
+            # scripts should never be empty because check_for_updates is run on SCRIPT_LIST init
             if not (args.l or args.k or isinstance(args.v, list)):
                 all_scripts = dataset_names()
                 print("Available datasets : {}\n".format(len(all_scripts)))
