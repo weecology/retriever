@@ -29,12 +29,12 @@ def main():
         # otherwise, parse them
         args = parser.parse_args()
 
-        if args.command not in ['reset', 'update'] \
-        and not os.path.isdir(SCRIPT_SEARCH_PATHS[1]) \
-        and not [f for f in os.listdir(SCRIPT_SEARCH_PATHS[-1])
-            if os.path.exists(SCRIPT_SEARCH_PATHS[-1])]:
-                check_for_updates()
-                reload_scripts()
+        if args.command not in ['reset', 'update'] and not \
+                os.path.isdir(SCRIPT_SEARCH_PATHS[1]) and not \
+                [f for f in os.listdir(SCRIPT_SEARCH_PATHS[-1])
+                 if os.path.exists(SCRIPT_SEARCH_PATHS[-1])]:
+            check_for_updates()
+            reload_scripts()
         script_list = SCRIPT_LIST()
 
         if args.command == "install" and not args.engine:
