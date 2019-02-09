@@ -13,12 +13,14 @@ from .install import install_xml
 from .repository import check_for_updates
 from .engine_tools import reset_retriever
 from .fetch import fetch
+from .scripts import reload_scripts
 
 __all__ = [
     'check_for_updates',
     'datasets',
     'dataset_names',
     'download',
+    'reload_scripts',
     'reset_retriever',
     'install_csv',
     'install_mysql',
