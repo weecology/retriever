@@ -8,5 +8,5 @@ requests
 sphinx_py3doc_enhanced_theme
 sphinxcontrib-napoleon
 sphinx_rtd_theme
-tqdm
+tqdm==4.30.0
 pandas
