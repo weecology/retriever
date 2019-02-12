@@ -1,0 +1,215 @@
+{
+    "citation": "",
+    "description": "Long-term population dynamics of individually mapped Sonoran Desert winter annuals from the Desert Laboratory, Tucson AZ",
+    "encoding": "ISO-8859-1",
+    "homepage": "http://www.eebweb.arizona.edu/faculty/venable/LTREB/LTREB%20data.htm",
+    "keywords": [
+        "long-term population dynamics",
+        "demography",
+        "Sonoran Desert",
+        "annual plants",
+        "seed bank"
+    ],
+    "name": "sonoran-desert",
+    "resources": [
+        {
+            "dialect": {
+                "contains_pk": "False",
+                "delimiter": ",",
+                "missingValues": ["."]
+            },
+            "name": "species_per_year",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "species",
+                        "type": "char"
+                    },
+                    {
+                        "name": "year",
+                        "type": "int"
+                    },
+                    {
+                        "name": "germ",
+                        "type": "int"
+                    },
+                    {
+                        "name": "survive",
+                        "type": "int"
+                    },
+                    {
+                        "name": "seedlings_per_m2",
+                        "type": "float"
+                    },
+                    {
+                        "name": "lx",
+                        "type": "float"
+                    },
+                    {
+                        "name": "bx",
+                        "type": "float"
+                    },
+                    {
+                        "name": "lxbx",
+                        "type": "float"
+                    },
+                    {
+                        "name": "seeds_per_m2",
+                        "type": "float"
+                    },
+                    {
+                        "name": "germ_fraction",
+                        "type": "float"
+                    }
+                ]
+            },
+            "url": "http://www.eebweb.arizona.edu/faculty/venable/LTREB/SpeciesByYear.csv"
+        },
+        {
+            "dialect": {
+                "contains_pk": "False",
+                "delimiter": ","
+            },
+            "name": "individual_plant_census_data",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "year",
+                        "type": "int"
+                    },
+                    {
+                        "name": "plot_habitat_replicate",
+                        "type": "char"
+                    },
+                    {
+                        "name": "species",
+                        "type": "char"
+                    },
+                    {
+                        "name": "germ_date",
+                        "type": "date"
+                    },
+                    {
+                        "name": "death_date",
+                        "type": "date"
+                    },
+                    {
+                        "name": "seeds",
+                        "type": "float"
+                    },
+                    {
+                        "name": "plot_group",
+                        "type": "char"
+                    },
+                    {
+                        "name": "x",
+                        "type": "int"
+                    },
+                    {
+                        "name": "y",
+                        "type": "int"
+                    }
+                ]
+            },
+            "url": "http://www.eebweb.arizona.edu/faculty/venable/LTREB/CensusData.csv"
+        },
+        {
+            "dialect": {
+                "contains_pk": "False",
+                "delimiter": ","
+            },
+            "name": "seed_bank",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "year",
+                        "type": "int"
+                    },
+                    {
+                        "name": "plot",
+                        "type": "char"
+                    },
+                    {
+                        "name": "habitat",
+                        "type": "char"
+                    },
+                    {
+                        "name": "replicate",
+                        "type": "int"
+                    },
+                    {
+                        "name": "species",
+                        "type": "char"
+                    },
+                    {
+                        "name": "viable_seeds",
+                        "type": "int"
+                    },
+                    {
+                        "name": "non_viable_seeds",
+                        "type": "int"
+                    }
+                ]
+            },
+            "url": "http://www.eebweb.arizona.edu/faculty/venable/LTREB/SeedBank.csv"
+        },
+        {
+            "dialect": {
+                "delimiter": ",",
+                "missingValues": [""]
+            },
+            "name": "species_list",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "genus",
+                        "type": "char"
+                    },
+                    {
+                        "name": "species",
+                        "type": "char"
+                    },
+                    {
+                        "name": "species_code",
+                        "type": "char"
+                    },
+                    {
+                        "name": "family",
+                        "type": "char"
+                    },
+                    {
+                        "name": "author_citation",
+                        "type": "char"
+                    },
+                    {
+                        "name": "synonym_apg_iii_classification",
+                        "type": "char"
+                    },
+                    {
+                        "name": "is_active_name",
+                        "type": "char"
+                    },
+                    {
+                        "name": "is_present_on_plots",
+                        "type": "char"
+                    },
+                    {
+                        "name": "is_present_in_soil_samples",
+                        "type": "char"
+                    }
+                ]
+            },
+            "url": "http://www.eebweb.arizona.edu/faculty/venable/LTREB/Species_list_2016_2.csv"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.dev",
+    "title": "Long-term population dynamics of individually mapped Sonoran Desert winter annuals from the Desert Laboratory, Tucson AZ",
+    "urls": {
+        "individual_plant_census_data": "http://www.eebweb.arizona.edu/faculty/venable/LTREB/CensusData.csv",
+        "seed_bank": "http://www.eebweb.arizona.edu/faculty/venable/LTREB/SeedBank.csv",
+        "species_list": "http://www.eebweb.arizona.edu/faculty/venable/LTREB/Species_list_2016_2.csv",
+        "species_per_year": "http://www.eebweb.arizona.edu/faculty/venable/LTREB/SpeciesByYear.csv"
+    },
+    "version": "1.0.0"
+}
