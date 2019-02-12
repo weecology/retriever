@@ -55,6 +55,7 @@ new_parser = subparsers.add_parser('new', help='create a new sample retriever sc
 new_json_parser = subparsers.add_parser('new_json', help='CLI to create retriever datapackage.json script')
 edit_json_parser = subparsers.add_parser('edit_json', help='CLI to edit retriever datapackage.json script')
 delete_json_parser = subparsers.add_parser('delete_json', help='CLI to remove retriever datapackage.json script')
+autocreate_parser = subparsers.add_parser('autocreate', help='CLI to automatically create retriever scripts')
 ls_parser = subparsers.add_parser('ls', help='display a list all available dataset scripts')
 citation_parser = subparsers.add_parser('citation', help='view citation')
 license_parser = subparsers.add_parser('license', help='view dataset license')
@@ -87,6 +88,12 @@ ls_parser.add_argument('-k', help='search datasets with keyword(s)',
 ls_parser.add_argument('-v', help='verbose list of all datasets', nargs='*', default=False)
 
 delete_json_parser.add_argument('dataset', help='dataset name', choices=json_list)
+autocreate_parser.add_argument('path', help='path to the data file(s)')
+autocreate_parser.add_argument('-dt', help='datatype for files', nargs='?', default='tabular', choices=['raster', 'vector', 'tabular'])
+autocreate_parser.add_argument('-f', help='turn files into scripts', action='store_true')
+autocreate_parser.add_argument('-d', help='turn a directory and subdirectories into scripts', action='store_true')
+autocreate_parser.add_argument('-o', help='write scripts out to a designated directory', nargs='?', const='')
+autocreate_parser.add_argument('--skip-lines', help='skip a set number of lines before processing data', nargs=1, type=int)
 # retriever Install {Engine} ..
 # retriever download [options]
 install_subparsers = install_parser.add_subparsers(help='engine-specific help', dest='engine')

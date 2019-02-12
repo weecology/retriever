@@ -203,7 +203,7 @@ class Engine(object):
                     name = []
                 yield (begin + name + [item])
 
-    def auto_create_table(self, table, url=None, filename=None, pk=None):
+    def auto_create_table(self, table, url=None, filename=None, pk=None, make=True):
         """Create table automatically by analyzing a data source and
         predicting column names, data types, delimiter, etc."""
         if url and not filename:
@@ -239,7 +239,8 @@ class Engine(object):
             self.table.columns = self.table.columns[:-1] + \
                                  [(self.table.ct_column, ("char", 50))] + \
                                  [self.table.columns[-1]]
-
+        if not make:
+            return self.table
         self.create_table()
 
     def auto_get_datatypes(self, pk, source, columns):
@@ -646,7 +647,7 @@ class Engine(object):
     def find_file(self, filename):
         """Check for an existing datafile."""
         for search_path in DATA_SEARCH_PATHS:
-            search_path = search_path.format(dataset=self.script.name)
+            search_path = search_path.format(dataset=self.script.name) if self.script else search_path
             file_path = os.path.normpath(os.path.join(search_path, filename))
             if file_exists(file_path):
                 return file_path

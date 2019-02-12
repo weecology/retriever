@@ -17,6 +17,7 @@ from retriever.lib.engine_tools import name_matches, reset_retriever
 from retriever.lib.get_opts import parser
 from retriever.lib.repository import check_for_updates
 from retriever.lib.scripts import SCRIPT_LIST, reload_scripts, get_script
+from retriever.lib.create_scripts import create_package
 
 
 def main():
@@ -103,6 +104,13 @@ def main():
             # edit existing JSON script
             json_file = get_script_filename(args.dataset.lower())
             edit_json(json_file)
+            return
+
+        elif args.command == 'autocreate':
+            if sum([args.f, args.d]) == 1:
+                create_package(args.path, args.dt, args.f, args.d, args.o, args.skip_lines)
+            else:
+                print('Please use one and only one of the flags -f -d')
             return
 
         elif args.command == 'delete_json':
