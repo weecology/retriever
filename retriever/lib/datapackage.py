@@ -356,7 +356,8 @@ def edit_dict(obj, tabwidth=0):
                         if del_val not in obj[key]:
                             print("Invalid value: Not found.")
                             continue
-                        print("Removed " + str(obj[key].pop(del_key)))
+                        obj[key].remove(del_val)
+                        print("Removed " + str(del_val))
 
                     elif selection == '3':
                         do_remove = clean_input(
