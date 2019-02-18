@@ -17,7 +17,7 @@ from retriever import install_mysql
 from retriever import install_postgres
 from retriever import install_sqlite
 from retriever import install_xml
-from retriever.lib.defaults import ENCODING
+from retriever.lib.defaults import ENCODING, DATA_DIR
 from retriever.lib.load_json import read_json
 
 encoding = ENCODING.lower()
@@ -141,7 +141,8 @@ def test_sqlite_regression(dataset, expected, tmpdir):
     sqlite_engine.opts = {
         'engine': 'sqlite',
         'file': dbfile,
-        'table_name': '{db}_{table}'}
+        'table_name': '{db}_{table}',
+        'file_dir': DATA_DIR}
     interface_opts = {'file': dbfile}
     assert get_csv_md5(dataset, sqlite_engine, tmpdir, install_sqlite, interface_opts) == expected
 
@@ -191,7 +192,8 @@ def test_xmlengine_regression(dataset, expected, tmpdir):
     """Check for xmlenginee regression."""
     xml_engine.opts = {
         'engine': 'xml',
-        'table_name': '{db}_output_{table}.xml'}
+        'table_name': '{db}_output_{table}.xml',
+        'data_dir': DATA_DIR}
     interface_opts = {'table_name': '{db}_output_{table}.xml'}
     assert get_csv_md5(dataset, xml_engine, tmpdir, install_xml, interface_opts) == expected
 
@@ -201,7 +203,8 @@ def test_jsonengine_regression(dataset, expected, tmpdir):
     """Check for jsonenginee regression."""
     json_engine.opts = {
         'engine': 'json',
-        'table_name': '{db}_output_{table}.json'}
+        'table_name': '{db}_output_{table}.json',
+        'data_dir': DATA_DIR}
     interface_opts = {'table_name': '{db}_output_{table}.json'}
     assert get_csv_md5(dataset, json_engine, tmpdir, install_json, interface_opts) == expected
 
@@ -211,7 +214,8 @@ def test_csv_regression(dataset, expected, tmpdir):
     """Check csv regression."""
     csv_engine.opts = {
         'engine': 'csv',
-        'table_name': '{db}_output_{table}.csv'}
+        'table_name': '{db}_output_{table}.csv',
+        'data_dir': DATA_DIR}
     interface_opts = {'table_name': '{db}_output_{table}.csv'}
     assert get_csv_md5(dataset, csv_engine, tmpdir, install_csv, interface_opts) == expected
 

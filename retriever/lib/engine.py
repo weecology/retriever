@@ -24,7 +24,7 @@ from math import ceil
 from tqdm import tqdm
 from retriever.lib.tools import open_fr, open_fw, open_csvw, walk_relative_path
 from setuptools import archive_util
-from retriever.lib.defaults import DATA_SEARCH_PATHS, DATA_WRITE_PATH, ENCODING
+from retriever.lib.defaults import DATA_DIR, DATA_SEARCH_PATHS, DATA_WRITE_PATH, ENCODING
 from retriever.lib.cleanup import no_cleanup
 from retriever.lib.warning import Warning
 from urllib.request import urlretrieve
@@ -821,7 +821,13 @@ class Engine(object):
             dbname = self.database_name()
             if not dbname:
                 dbname = ''
-        return self.opts["table_name"].format(db=dbname, table=name)
+        table_name = self.opts["table_name"].format(db=dbname, table=name)
+        if self.name not in ["CSV", "JSON", "XML"]:
+            return table_name
+        table_dir = "/".join(table_name.split("/")[:-1])
+        if table_dir == DATA_DIR:
+            table_name = os.path.join(self.opts["data_dir"], table_name.split("/")[-1])
+        return table_name
 
     def to_csv(self, sort=True, path=None):
         # Due to Cyclic imports we can not move this import to the top

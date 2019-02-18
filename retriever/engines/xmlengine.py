@@ -27,6 +27,9 @@ class engine(Engine):
         ("table_name",
          "Format of table name",
          os.path.join(DATA_DIR, "{db}_{table}.xml")),
+        ("data_dir",
+         "Install directory",
+         DATA_DIR),
     ]
     table_names = []
 

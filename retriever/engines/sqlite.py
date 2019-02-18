@@ -29,6 +29,9 @@ class engine(Engine):
                      ("table_name",
                       "Format of table name",
                       "{db}_{table}"),
+                     ("file_dir",
+                      "Install directory",
+                      DATA_DIR),
                      ]
 
     def create_db(self):
@@ -106,4 +109,8 @@ class engine(Engine):
         import sqlite3 as dbapi
 
         self.get_input()
-        return dbapi.connect(self.opts["file"])
+        db_file = self.opts["file"]
+        file_dir = "/".join(db_file.split("/")[:-1])
+        if file_dir == DATA_DIR:
+            db_file = os.path.join(self.opts["file_dir"], db_file.split("/")[-1])
+        return dbapi.connect(db_file)

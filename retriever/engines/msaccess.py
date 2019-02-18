@@ -32,6 +32,9 @@ class engine(Engine):
                      ("table_name",
                       "Format of table name",
                       "[{db} {table}]"),
+                     ("file_dir",
+                      "Install directory",
+                      DATA_DIR),
                      ]
     placeholder = "?"
 
@@ -144,8 +147,12 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
         import pypyodbc as dbapi
 
         self.get_input()
-        if not os.path.exists(self.opts['file']) and self.opts['file'].endswith('.mdb'):
-            dbapi.win_create_mdb(self.opts['file'])
+        ms_file = self.opts["file"]
+        file_dir = "/".join(ms_file.split("/")[:-1])
+        if file_dir == DATA_DIR:
+            ms_file = os.path.join(self.opts["file_dir"], ms_file.split("/")[-1])
+        if not os.path.exists(ms_file) and ms_file.endswith('.mdb'):
+            dbapi.win_create_mdb(ms_file)
         connection_string = ("DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=" +
-                             os.path.abspath(self.opts["file"]).replace("/", "//") + ";")
+                             os.path.abspath(ms_file).replace("/", "//") + ";")
         return dbapi.connect(connection_string, autocommit=False)
