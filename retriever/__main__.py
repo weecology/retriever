@@ -196,6 +196,8 @@ def main():
             for dataset in scripts:
                 print("=> Installing", dataset.name)
                 try:
+                    if not os.path.exists(args.data_dir):
+                        os.makedirs(args.data_dir)
                     dataset.download(engine, debug=debug)
                     dataset.engine.final_cleanup()
                 except KeyboardInterrupt:
