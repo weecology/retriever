@@ -727,6 +727,11 @@ class Engine(object):
                     self.opts[opt[0]] = input(prompt)
             if self.opts[opt[0]] in ["", "default"]:
                 self.opts[opt[0]] = opt[2]
+        if 'data_dir' in self.opts:
+            if self.opts['data_dir'] != DATA_DIR:
+                if not os.path.exists(self.opts['data_dir']):
+                    os.makedirs(self.opts['data_dir'])
+
 
     def insert_data_from_archive(self, url, filenames):
         """Insert data from files located in an online archive. This function
