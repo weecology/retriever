@@ -24,12 +24,11 @@ class engine(Engine):
     insert_limit = 1000
     required_opts = [("file",
                       "Enter the filename of your SQLite database",
-                      os.path.join(DATA_DIR, "sqlite.db"),
-                      ""),
+                      os.path.join(DATA_DIR, "sqlite.db")),
                      ("table_name",
                       "Format of table name",
                       "{db}_{table}"),
-                     ("file_dir",
+                     ("data_dir",
                       "Install directory",
                       DATA_DIR),
                      ]
@@ -109,8 +108,8 @@ class engine(Engine):
         import sqlite3 as dbapi
 
         self.get_input()
-        db_file = self.opts["file"]
-        file_dir = "/".join(db_file.split("/")[:-1])
-        if file_dir == DATA_DIR:
-            db_file = os.path.join(self.opts["file_dir"], db_file.split("/")[-1])
-        return dbapi.connect(db_file)
+        file = self.opts["file"]
+        db_file = self.opts['data_dir']
+        full_path = os.path.join(db_file, file)
+
+        return dbapi.connect(os.path.normpath(full_path))
