@@ -37,7 +37,7 @@ def _install(args, use_cache, debug):
 
 
 def install_csv(dataset,
-                table_name=os.path.join(DATA_DIR, '{db}_{table}.csv'),
+                table_name='{db}_{table}.csv',
                 data_dir=DATA_DIR, debug=False, use_cache=True):
     """Install datasets into csv."""
     args = {
@@ -89,9 +89,9 @@ def install_postgres(dataset, user='postgres', password='',
     return _install(args, use_cache, debug)
 
 
-def install_sqlite(dataset, file=os.path.join(DATA_DIR, 'sqlite.db'),
+def install_sqlite(dataset, file='sqlite.db',
                    table_name='{db}_{table}',
-                   file_dir=DATA_DIR,
+                   data_dir=DATA_DIR,
                    debug=False, use_cache=True):
     """Install datasets into sqlite."""
     args = {
@@ -100,12 +100,12 @@ def install_sqlite(dataset, file=os.path.join(DATA_DIR, 'sqlite.db'),
         'engine': 'sqlite',
         'file': file,
         'table_name': table_name,
-        'file_dir': file_dir
+        'data_dir': data_dir
     }
     return _install(args, use_cache, debug)
 
 
-def install_msaccess(dataset, file=os.path.join(DATA_DIR, 'access.mdb'),
+def install_msaccess(dataset, file='access.mdb',
                      table_name='[{db} {table}]',
                      file_dir=DATA_DIR,
                      debug=False, use_cache=True):
@@ -116,13 +116,13 @@ def install_msaccess(dataset, file=os.path.join(DATA_DIR, 'access.mdb'),
         'engine': 'msaccess',
         'file': file,
         'table_name': table_name,
-        'file_dir': file_dir
+        'data_dir': file_dir
     }
     return _install(args, use_cache, debug)
 
 
 def install_json(dataset,
-                 table_name=os.path.join(DATA_DIR, '{db}_{table}.json'),
+                 table_name='{db}_{table}.json',
                  data_dir=DATA_DIR, debug=False, use_cache=True):
     """Install datasets into json."""
     args = {
@@ -136,7 +136,7 @@ def install_json(dataset,
 
 
 def install_xml(dataset,
-                table_name=os.path.join(DATA_DIR, '{db}_{table}.xml'),
+                table_name='{db}_{table}.xml',
                 data_dir=DATA_DIR, debug=False, use_cache=True):
     """Install datasets into xml."""
     args = {

@@ -136,14 +136,17 @@ def get_csv_md5(dataset, engine, tmpdir, install_function, config):
 @pytest.mark.parametrize("dataset, expected", db_md5)
 def test_sqlite_regression(dataset, expected, tmpdir):
     """Check for sqlite regression."""
-    subprocess.call(['rm', '-r', 'testdb.sqlite'])
-    dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb.sqlite'))
+    dbfile = 'testdb.sqlite'
+    if os.path.exists(dbfile):
+        subprocess.call(['rm', '-r', dbfile])
+    # SQlite should install datasets into a different folder from where .csv are dumped
+    # This avoids having the `testdb.sqlite` being considered for md5 sum
     sqlite_engine.opts = {
         'engine': 'sqlite',
         'file': dbfile,
         'table_name': '{db}_{table}',
-        'file_dir': DATA_DIR}
-    interface_opts = {'file': dbfile}
+        'data_dir': retriever_root_dir}
+    interface_opts = {'file': dbfile, 'data_dir': retriever_root_dir}
     assert get_csv_md5(dataset, sqlite_engine, tmpdir, install_sqlite, interface_opts) == expected
 
 

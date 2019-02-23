@@ -480,12 +480,12 @@ def test_csv_integration(dataset, expected, tmpdir):
 
 @pytest.mark.parametrize("dataset, expected", test_parameters)
 def test_sqlite_integration(dataset, expected, tmpdir):
-    dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb.sqlite'))
+    dbfile = 'testdb.sqlite'
     sqlite_engine.opts = {
         'engine': 'sqlite',
         'file': dbfile,
         'table_name': '{db}_{table}',
-        'file_dir': DATA_DIR}
+        'data_dir': DATA_DIR}
     subprocess.call(['rm', '-r', 'testdb.sqlite'])
     assert get_output_as_csv(dataset, sqlite_engine, tmpdir, dataset["name"]) == expected
 
