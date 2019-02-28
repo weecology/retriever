@@ -70,8 +70,8 @@ citation_parser.add_argument('dataset', help='dataset name', nargs='?', default=
 license_parser.add_argument('dataset', help='dataset name', nargs='?', default=None, choices=script_list + [None])
 new_parser.add_argument('filename', help='new script filename')
 edit_json_parser.add_argument('dataset', help='dataset name', choices=json_list)
-reset_parser.add_argument('scope', help='things to reset: all, scripts, data, or connections',
-                          choices=['all', 'scripts', 'data', 'connections'])
+reset_parser.add_argument('scope', help='things to reset: all, scripts or data').completer = \
+    ChoicesCompleter(script_list + ['all', 'scripts', 'data'])
 install_parser.add_argument('--compile', help='force re-compile of script before downloading', action='store_true')
 install_parser.add_argument('--debug', help='run in debug mode', action='store_true')
 install_parser.add_argument('--not-cached', help='overwrites local cache of raw data', action='store_true')
