@@ -46,10 +46,10 @@ def read_json(json_file, debug=False):
     if type(json_object) is dict and "resources" in json_object.keys():
 
         # Note::formats described by frictionlessdata data may need to change
-        tabular_exts = set(["csv", "tab"])
-        vector_exts = set(["shp", "kmz"])
-        raster_exts = set(["tif", "tiff", "bil",
-                           "hdr", "h5", "hdf5", "hr", "image"])
+        tabular_exts = {"csv", "tab"}
+        vector_exts = {"shp", "kmz"}
+        raster_exts = {"tif", "tiff", "bil",
+                           "hdr", "h5", "hdf5", "hr", "image"}
         for resource_item in json_object["resources"]:
             if "format" not in resource_item:
                 if "format" in json_object:
@@ -68,10 +68,10 @@ def read_json(json_file, debug=False):
                 if "urls" in json_object:
                     json_object["urls"][resource_item["name"]] = resource_item["url"]
 
-        json_object["tables"] = {}
+        json_object["tables"] = OrderedDict()
         temp_tables = {}
         table_names = [item["name"] for item in json_object["resources"]]
-        temp_tables["tables"] = dict(zip(table_names, json_object["resources"]))
+        temp_tables["tables"] = OrderedDict(zip(table_names, json_object["resources"]))
         for table_name, table_spec in temp_tables["tables"].items():
             json_object["tables"][table_name] = myTables[
                 temp_tables["tables"][table_name]["format"]
