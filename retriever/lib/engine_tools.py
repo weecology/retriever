@@ -94,11 +94,8 @@ def final_cleanup(engine):
     pass
 
 
-config_path = os.path.join(HOME_DIR, 'connections.config')
-
-
 def reset_retriever(scope="all", ask_permission=True):
-    """Remove stored information on scripts, data, and connections."""
+    """Remove stored information on scripts and data."""
     warning_messages = {
         'all': "\nThis will remove existing scripts and cached data."
                "\nSpecifically it will remove the scripts and raw_data folders"
@@ -112,21 +109,39 @@ def reset_retriever(scope="all", ask_permission=True):
     }
 
     path = os.path.normpath(HOME_DIR)
-    warn_msg = warning_messages[scope].format(path)
-    if ask_permission:
-        confirm = input(warn_msg)
-        while not (confirm.lower() in ['y', 'n', '']):
-            print("Please enter either y or n.")
-            confirm = input()
+    rw_dir = os.path.normpath(os.path.join(HOME_DIR, 'raw_data'))
+    sc_dir = os.path.normpath(os.path.join(HOME_DIR, 'scripts'))
+    if scope in ['all', 'scripts', 'data']:
+        warn_msg = warning_messages[scope].format(path)
+        if ask_permission:
+            confirm = input(warn_msg)
+            while not (confirm.lower() in ['y', 'n', '']):
+                print("Please enter either y or n.")
+                confirm = input()
+        else:
+            confirm = 'y'
+        if confirm.lower() == 'y':
+            if scope in ['data', 'all']:
+                if os.path.exists(rw_dir):
+                    shutil.rmtree(rw_dir)
+            if scope in ['scripts', 'all']:
+                if os.path.exists(sc_dir):
+                    shutil.rmtree(sc_dir)
     else:
-        confirm = 'y'
-    if confirm.lower() == 'y':
-        if scope in ['data', 'all']:
-            if os.path.exists(os.path.join(path, 'raw_data')):
-                shutil.rmtree(os.path.join(path, 'raw_data'))
-        if scope in ['scripts', 'all']:
-            if os.path.exists(os.path.join(path, 'scripts')):
-                shutil.rmtree(os.path.join(path, 'scripts'))
+        dataset_path = os.path.normpath(os.path.join(rw_dir, scope))
+        if os.path.exists(dataset_path):
+            shutil.rmtree(dataset_path)
+        script = scope.replace('-', '_')
+        script_path_py = os.path.normpath(os.path.join(sc_dir, script + ".py"))
+        script_path_json = os.path.normpath(os.path.join(sc_dir, script + ".json"))
+        if os.path.exists(script_path_py):
+            os.remove(script_path_py)
+            print("successfully removed the script {scp}".format(scp=scope))
+        elif os.path.exists(script_path_json):
+            os.remove(script_path_json)
+            print("successfully removed the script {scp}".format(scp=scope))
+        else:
+            print("can't find script {scp}".format(scp=scope))
 
 
 def json2csv(input_file, output_file=None, header_values=None):
