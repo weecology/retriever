@@ -24,7 +24,7 @@ from math import ceil
 from tqdm import tqdm
 from retriever.lib.tools import open_fr, open_fw, open_csvw, walk_relative_path
 from setuptools import archive_util
-from retriever.lib.defaults import DATA_SEARCH_PATHS, DATA_WRITE_PATH, ENCODING
+from retriever.lib.defaults import DATA_DIR, DATA_SEARCH_PATHS, DATA_WRITE_PATH, ENCODING
 from retriever.lib.cleanup import no_cleanup
 from retriever.lib.warning import Warning
 from urllib.request import urlretrieve
@@ -727,6 +727,11 @@ class Engine(object):
                     self.opts[opt[0]] = input(prompt)
             if self.opts[opt[0]] in ["", "default"]:
                 self.opts[opt[0]] = opt[2]
+        if 'data_dir' in self.opts:
+            if self.opts['data_dir'] != DATA_DIR:
+                if not os.path.exists(self.opts['data_dir']):
+                    os.makedirs(self.opts['data_dir'])
+
 
     def insert_data_from_archive(self, url, filenames):
         """Insert data from files located in an online archive. This function
