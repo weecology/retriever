@@ -30,7 +30,10 @@ class engine(Engine):
     required_opts = [
         ("table_name",
          "Format of table name",
-         os.path.join(DATA_DIR, "{db}_{table}.json")),
+         "{db}_{table}.json"),
+        ("data_dir",
+         "Install directory",
+         DATA_DIR),
     ]
     table_names = []
 
@@ -40,7 +43,7 @@ class engine(Engine):
 
     def create_table(self):
         """Create the table by creating an empty json file"""
-        self.output_file = open_fw(self.table_name())
+        self.output_file = open_fw(os.path.join(self.opts["data_dir"], self.table_name()))
         self.output_file.write("[")
         self.table_names.append((self.output_file, self.table_name()))
         self.auto_column_number = 1
@@ -115,7 +118,9 @@ class engine(Engine):
     def table_exists(self, dbname, tablename):
         """Check to see if the data file currently exists"""
         tablename = self.table_name(name=tablename, dbname=dbname)
-        return os.path.exists(tablename)
+        tabledir = self.opts["data_dir"]
+        table_name = os.path.join(tabledir, tablename)
+        return os.path.exists(table_name)
 
     def to_csv(self, sort=True, path=None):
         """Export table from json engine to CSV file"""
