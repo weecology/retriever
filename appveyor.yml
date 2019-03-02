@@ -14,7 +14,7 @@ environment:
   POSTGRES_PORT: tcp://localhost:5432
   POSTGRES_ENV_POSTGRES_USER: postgres
   POSTGRES_ENV_POSTGRES_PASSWORD: Password12!
-  POSTGRES_ENV_POSTGRES_DB: testdb
+  POSTGRES_ENV_POSTGRES_DB: testdb_retriever
   POSTGRES_PATH: C:\Program Files\PostgreSQL\9.4
   PGUSER: postgres
   PGPASSWORD: Password12!
@@ -46,15 +46,15 @@ install:
   - "%PYTHON%\\python.exe -m  pip --version"
   - "python --version"
   - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
-  - echo localhost:*:testdb:postgres:Password12! > C:\Program Files\PostgreSQL\9.4\pgpass.conf
-  - echo "localhost:*:testdb:postgres:Password12!" > pgpass.conf
-  - echo "localhost:*:testdb:postgres:Password12!" > %userprofile%\pgpass.conf
+  - echo localhost:*:testdb_retriever:postgres:Password12! > C:\Program Files\PostgreSQL\9.4\pgpass.conf
+  - echo "localhost:*:testdb_retriever:postgres:Password12!" > pgpass.conf
+  - echo "localhost:*:testdb_retriever:postgres:Password12!" > %userprofile%\pgpass.conf
   - SET PGPASSFILE=C:\Program Files\PostgreSQL\9.4\pgpass.conf
   - set PGPASSWORD=Password12!
 
 build_script:
   # postgres
-  - createdb testdb
+  - createdb testdb_retriever
   # mysql
   - mysql -e "create database sqlectron;" --user=root
   - mysql -e "CREATE USER 'travis'@'localhost';GRANT ALL PRIVILEGES ON *.* TO 'travis'@'localhost';GRANT FILE ON *.* TO 'travis'@'localhost';" -uroot
