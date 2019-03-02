@@ -32,7 +32,7 @@ script:
 # database setup
 before_script:
   - sqlite3 --version
-  - psql -c 'create database testdb;' -U postgres
+  - psql -c 'create database testdb_retriever;' -U postgres
 
 after_success:
   - codecov
