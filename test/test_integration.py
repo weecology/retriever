@@ -10,7 +10,7 @@ import subprocess
 import sys
 from imp import reload
 
-from retriever.lib.defaults import ENCODING
+from retriever.lib.defaults import ENCODING, DATA_DIR
 
 encoding = ENCODING.lower()
 
@@ -474,17 +474,18 @@ def get_output_as_csv(dataset, engines, tmpdir, db):
 
 @pytest.mark.parametrize("dataset, expected", test_parameters)
 def test_csv_integration(dataset, expected, tmpdir):
-    csv_engine.opts = {'engine': 'csv', 'table_name': '{db}_{table}'}
+    csv_engine.opts = {'engine': 'csv', 'table_name': '{db}_{table}', 'data_dir': DATA_DIR}
     assert get_output_as_csv(dataset, csv_engine, tmpdir, db=dataset["name"]) == expected
 
 
 @pytest.mark.parametrize("dataset, expected", test_parameters)
 def test_sqlite_integration(dataset, expected, tmpdir):
-    dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb.sqlite'))
+    dbfile = 'testdb.sqlite'
     sqlite_engine.opts = {
         'engine': 'sqlite',
         'file': dbfile,
-        'table_name': '{db}_{table}'}
+        'table_name': '{db}_{table}',
+        'data_dir': DATA_DIR}
     subprocess.call(['rm', '-r', 'testdb.sqlite'])
     assert get_output_as_csv(dataset, sqlite_engine, tmpdir, dataset["name"]) == expected
 
@@ -492,14 +493,14 @@ def test_sqlite_integration(dataset, expected, tmpdir):
 @pytest.mark.parametrize("dataset, expected", xml_test_parameters)
 def test_xmlengine_integration(dataset, expected, tmpdir):
     """Check for xmlenginee regression."""
-    xml_engine.opts = {'engine': 'xml', 'table_name': '{db}_{table}'}
+    xml_engine.opts = {'engine': 'xml', 'table_name': '{db}_{table}', 'data_dir': DATA_DIR}
     assert get_output_as_csv(dataset, xml_engine, tmpdir, db=dataset["name"]) == expected
 
 
 @pytest.mark.parametrize("dataset, expected", test_parameters)
 def test_jsonengine_integration(dataset, expected, tmpdir):
     """Check for jsonenginee regression."""
-    json_engine.opts = {'engine': 'json', 'table_name': '{db}_{table}'}
+    json_engine.opts = {'engine': 'json', 'table_name': '{db}_{table}', 'data_dir': DATA_DIR}
     assert get_output_as_csv(dataset, json_engine, tmpdir, db=dataset["name"]) == expected
 
 
