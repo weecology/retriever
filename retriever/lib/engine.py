@@ -371,7 +371,7 @@ class Engine(object):
                     self.connection.rollback()
                 except Exception as _:
                     pass
-                print(e)
+                raise e
                 print("Installing into existing database")
 
     def create_db_statement(self):
