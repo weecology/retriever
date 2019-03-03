@@ -99,14 +99,19 @@ links `Read The Docs`_, `codecov`_, `AppVeyor`_ and  `Travis`_
 To run the tests you will need to have all of the relevant database management systems and associated
 modules installed (see ``Setting up servers``). Create the appropriate permissions for the tests to access
 the databases. You can do this by running the following commands in MySQL and
-PostgreSQL and creating the .pgpass file as described below:
+PostgreSQL and creating the .pgpass(pgpass.conf for Microsoft Windows) file as described below:
 
 Passwordless configuration
 --------------------------
 
 To avoid supplying the passwords when using the tool, use the config files
-`.pgpass` for Postgres and `.my.cnf` for MySQL. The files are kept in the
-HOME directory(~/.pgpass, ~/.my.cnf). Make sure you set the file permissions to 600.
+`.pgpass`(`pgpass.conf` for Microsoft Windows) for Postgres and `.my.cnf`
+for MySQL. The files are kept in the HOME directory(~/.pgpass, ~/.my.cnf).
+Make sure you set the file permissions to 600. For Postgres, on Microsoft
+Windows, entering `%APPDATA%` will take you to `C:\Users\username\AppData\Roaming`.
+In this directory create a new subdirectory named `postgresql`. Then create the
+`pgpass.conf` file inside it. On Microsoft Windows, it is assumed that the file
+is stored in a directory that is secure, so no special permissions check is made.
 
 ::
 
