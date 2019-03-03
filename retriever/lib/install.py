@@ -37,14 +37,15 @@ def _install(args, use_cache, debug):
 
 
 def install_csv(dataset,
-                table_name=os.path.join(DATA_DIR, '{db}_{table}.csv'),
-                debug=False, use_cache=True):
+                table_name='{db}_{table}.csv',
+                data_dir=DATA_DIR, debug=False, use_cache=True):
     """Install datasets into csv."""
     args = {
         'command': 'install',
         'dataset': dataset,
         'engine': 'csv',
-        'table_name': table_name
+        'table_name': table_name,
+        'data_dir': data_dir
     }
     return _install(args, use_cache, debug)
 
@@ -88,8 +89,9 @@ def install_postgres(dataset, user='postgres', password='',
     return _install(args, use_cache, debug)
 
 
-def install_sqlite(dataset, file=os.path.join(DATA_DIR, 'sqlite.db'),
+def install_sqlite(dataset, file='sqlite.db',
                    table_name='{db}_{table}',
+                   data_dir=DATA_DIR,
                    debug=False, use_cache=True):
     """Install datasets into sqlite."""
     args = {
@@ -97,13 +99,15 @@ def install_sqlite(dataset, file=os.path.join(DATA_DIR, 'sqlite.db'),
         'dataset': dataset,
         'engine': 'sqlite',
         'file': file,
-        'table_name': table_name
+        'table_name': table_name,
+        'data_dir': data_dir
     }
     return _install(args, use_cache, debug)
 
 
-def install_msaccess(dataset, file=os.path.join(DATA_DIR, 'access.mdb'),
+def install_msaccess(dataset, file='access.mdb',
                      table_name='[{db} {table}]',
+                     data_dir=DATA_DIR,
                      debug=False, use_cache=True):
     """Install datasets into msaccess."""
     args = {
@@ -111,32 +115,35 @@ def install_msaccess(dataset, file=os.path.join(DATA_DIR, 'access.mdb'),
         'dataset': dataset,
         'engine': 'msaccess',
         'file': file,
-        'table_name': table_name
+        'table_name': table_name,
+        'data_dir': data_dir
     }
     return _install(args, use_cache, debug)
 
 
 def install_json(dataset,
-                 table_name=os.path.join(DATA_DIR, '{db}_{table}.json'),
-                 debug=False, use_cache=True):
+                 table_name='{db}_{table}.json',
+                 data_dir=DATA_DIR, debug=False, use_cache=True):
     """Install datasets into json."""
     args = {
         'command': 'install',
         'dataset': dataset,
         'engine': 'json',
-        'table_name': table_name
+        'table_name': table_name,
+        'data_dir': data_dir
     }
     return _install(args, use_cache, debug)
 
 
 def install_xml(dataset,
-                table_name=os.path.join(DATA_DIR, '{db}_{table}.xml'),
-                debug=False, use_cache=True):
+                table_name='{db}_{table}.xml',
+                data_dir=DATA_DIR, debug=False, use_cache=True):
     """Install datasets into xml."""
     args = {
         'command': 'install',
         'dataset': dataset,
         'engine': 'xml',
-        'table_name': table_name
+        'table_name': table_name,
+        'data_dir': data_dir
     }
     return _install(args, use_cache, debug)
