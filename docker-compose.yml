@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  mysqldb_retriever:
+    image: mysql:5.7
+    container_name: mysqldb_ret_container
+    environment:
+      MYSQL_USER: travis
+      MYSQL_PASSWORD: Password12!
+      MYSQL_ROOT_PASSWORD: Password12!
+      MYSQL_DATABASE: testdb_retriever
+
+  pgdb_retriever:
+    image: mdillon/postgis:9.6-alpine
+    # When using postgres update postgis
+    # docker exec pgdb_container  update-postgis.sh
+    container_name: pgdb_ret_container
+    environment:
+      POSTGRES_DB: testdb_retriever
+      POSTGRES_USER: postgres
+      POSTGRES_PASS: Password12!
+    # Keep data
+    volumes:
+      - ./cli_tools/:/tmp/postgis
+
+  python_retriever:
+    container_name: ret_container
+    image: ret_image
+    command: bash -c "Python --version"
+    environment:
+      # If IN_DOCKER is set, use service names as hosts(travis)
+      # Otherwise use localhost (local tests)
+      "IN_DOCKER" : "true"
+    build: .
+    depends_on:
+      - mysqldb_retriever
+      - pgdb_retriever
+    ports:
+      - 5001:80

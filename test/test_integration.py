@@ -26,10 +26,20 @@ from retriever.lib.engine_tools import create_file
 
 # Set postgres password, Appveyor service needs the password given
 # The Travis service obtains the password from the config file.
+os_password = ""
+pgdb_host = "localhost"
+mysqldb_host = "localhost"
+testdb_retriever = "testdb_retriever"
+testschema = "testschema_retriever"
+
 if os.name == "nt":
     os_password = "Password12!"
-else:
-    os_password = ""
+
+docker_or_travis = os.environ.get("IN_DOCKER")
+if docker_or_travis == "true":
+    os_password = 'Password12!'
+    pgdb_host = "pgdb_retriever"
+    mysqldb_host = "mysqldb_retriever"
 
 mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, \
 csv_engine, download_engine, json_engine, xml_engine = engine_list
@@ -507,13 +517,12 @@ def test_jsonengine_integration(dataset, expected, tmpdir):
 @pytest.mark.parametrize("dataset, expected", test_parameters)
 def test_postgres_integration(dataset, expected, tmpdir):
     """Check for postgres regression."""
-    cmd = 'psql -U postgres -d testdb_retriever -h localhost -c ' \
-          '"DROP SCHEMA IF EXISTS testschema CASCADE"'
+    cmd = 'psql -U postgres -d ' + testdb_retriever +' -h ' + pgdb_host + ' -w -c \"DROP SCHEMA IF EXISTS ' + testschema + ' CASCADE\"'
     subprocess.call(shlex.split(cmd))
     postgres_engine.opts = {'engine': 'postgres', 'user': 'postgres',
-                            'password': os_password, 'host': 'localhost',
-                            'port': 5432, 'database': 'testdb_retriever',
-                            'database_name': 'testschema',
+                            'password': os_password, 'host': pgdb_host,
+                            'port': 5432, 'database': testdb_retriever,
+                            'database_name': testschema,
                             'table_name': '{db}.{table}'}
     assert get_output_as_csv(dataset, postgres_engine, tmpdir,
                              db=postgres_engine.opts['database_name']) == expected
@@ -522,14 +531,14 @@ def test_postgres_integration(dataset, expected, tmpdir):
 @pytest.mark.parametrize("dataset, expected", test_parameters)
 def test_mysql_integration(dataset, expected, tmpdir):
     """Check for mysql regression."""
-    cmd = 'mysql -u travis -Bse "DROP DATABASE IF EXISTS testdb_retriever"'
+    cmd = 'mysql -u travis -Bse "DROP DATABASE IF EXISTS {testdb_retriever}"'.format(testdb_retriever=testdb_retriever)
     subprocess.call(shlex.split(cmd))
     mysql_engine.opts = {
         'engine': 'mysql',
         'user': 'travis',
-        'password': '',
-        'host': 'localhost',
+        'password': os_password,
+        'host': mysqldb_host,
         'port': 3306,
-        'database_name': 'testdb_retriever',
+        'database_name': testdb_retriever,
         'table_name': '{db}.{table}'}
     assert get_output_as_csv(dataset, mysql_engine, tmpdir, db=mysql_engine.opts['database_name']) == expected
