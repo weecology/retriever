@@ -92,7 +92,7 @@ def install_modified():
         subprocess.call(['rm', '-r', 'test_modified'])
     os.makedirs("test_modified")
     os.chdir("test_modified")
-    dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb.sqlite'))
+    dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb_retriever.sqlite'))
     engine_test = {
         "postgres": {'engine': 'postgres',
                      'user': 'postgres',
@@ -108,7 +108,7 @@ def install_modified():
                   'password': '',
                   'host': 'localhost',
                   'port': 3306,
-                  'database_name': 'testdb',
+                  'database_name': 'testdb_retriever',
                   'table_name': '{db}.{table}'},
 
         "xml": {'engine': 'xml',

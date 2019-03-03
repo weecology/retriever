@@ -132,11 +132,11 @@ HOME directory(~/.pgpass, ~/.my.cnf). Make sure you set the file permissions to 
   PostgreSQL
   ----------
   psql -c "CREATE USER postgres WITH PASSWORD 'Password12!'"
-  psql -c 'CREATE DATABASE testdb'
-  psql -c 'GRANT ALL PRIVILEGES ON DATABASE testdb to postgres'
+  psql -c 'CREATE DATABASE testdb_retriever'
+  psql -c 'GRANT ALL PRIVILEGES ON DATABASE testdb_retriever to postgres'
   ​
   Create .pgpass in your home directory:
-  localhost:*:testdb:postgres:Password12!
+  localhost:*:testdb_retriever:postgres:Password12!
 
 
 

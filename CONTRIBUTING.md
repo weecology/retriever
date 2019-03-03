@@ -39,14 +39,14 @@ systems for testing.
 
 ### Postgres setup
 
-Requires that the `postgres` user has permissions on a database named `testdb`
+Requires that the `postgres` user has permissions on a database named `testdb_retriever`
 from `localhost`. This login information should be stored in the [postgreSQL
 password file](http://www.postgresql.org/docs/9.1/static/libpq-pgpass.html).
 
 
 ### MySQL setup
 
-Requires that the `travis` user has permissions on a database named `testdb`
+Requires that the `travis` user has permissions on a database named `testdb_retriever`
 from `localhost`.
 
 
