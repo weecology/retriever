@@ -205,11 +205,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Long-term population dynamics of individually mapped Sonoran Desert winter annuals from the Desert Laboratory, Tucson AZ",
-    "urls": {
-        "individual_plant_census_data": "http://www.eebweb.arizona.edu/faculty/venable/LTREB/CensusData.csv",
-        "seed_bank": "http://www.eebweb.arizona.edu/faculty/venable/LTREB/SeedBank.csv",
-        "species_list": "http://www.eebweb.arizona.edu/faculty/venable/LTREB/Species_list_2016_2.csv",
-        "species_per_year": "http://www.eebweb.arizona.edu/faculty/venable/LTREB/SpeciesByYear.csv"
-    },
     "version": "1.0.0"
 }
