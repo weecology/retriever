@@ -101,12 +101,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Long term limnological measures in Acton Lake, database, 1992-2017",
-    "urls": {
-        "ActonLakeDepth": "https://pasta.lternet.edu/package/data/eml/edi/256/1/80ccde946dc44c2e4f349084b5eca251",
-        "ActonLakeIntegrated": "https://pasta.lternet.edu/package/data/eml/edi/256/1/9d22d24338516635a504290fef69fa0b",
-        "SiteCharacteristics": "https://pasta.lternet.edu/package/data/eml/edi/256/1/0c8f547bcc59b4daade296479381d40e",
-        "StreamDischarge": "https://pasta.lternet.edu/package/data/eml/edi/256/1/7bc5a642e46c2b1abfed0c300da69d09",
-        "StreamNutrients": "https://pasta.lternet.edu/package/data/eml/edi/256/1/63e0c10806e01e21740377650b89fa0d"
-    },
     "version": "1.0.0"
 }
