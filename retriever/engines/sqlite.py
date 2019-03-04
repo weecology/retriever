@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 from builtins import range
+from collections import OrderedDict
 
 from retriever.lib.defaults import DATA_DIR
 from retriever.lib.models import Engine, no_cleanup
@@ -44,10 +45,12 @@ class engine(Engine):
     def fetch_tables(self, dataset, table_names):
         """Return sqlite dataset as list of pandas dataframe."""
         connection = self.get_connection()
-        data = {table[len(dataset) + 1:]: pd.read_sql_query("SELECT * "
-                                                            "FROM {};".format(table),
-                                                            connection)
-                for table in table_names}
+        sql_query = "SELECT * FROM {};"
+        data = OrderedDict({
+                    table[len(dataset) + 1:]
+                    :pd.read_sql_query(sql_query.format(table), connection)
+                    for table in table_names
+               })
         return data
 
     def get_bulk_insert_statement(self):
