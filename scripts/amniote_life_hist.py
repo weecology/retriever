@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-#retriever
+# retriever
 
 from pkg_resources import parse_version
 
@@ -17,84 +17,93 @@ class main(Script):
         Script.__init__(self, **kwargs)
         self.title = "Amniote life History database"
         self.name = "amniote-life-hist"
-        self.retriever_minimum_version = '2.0.dev'
-        self.version = '2.0.4'
-        self.ref = "https://figshare.com/collections/An_amniote_life-history_database_to_perform_comparative_" \
-                   "analyses_with_birds_mammals_and_reptiles/3308127"
+        self.retriever_minimum_version = "2.0.dev"
+        self.version = "2.0.4"
+        self.ref = (
+            "https://figshare.com/collections/An_amniote_life-history_database_to_perform_comparative_"
+            "analyses_with_birds_mammals_and_reptiles/3308127"
+        )
         self.urls = {"data": "https://ndownloader.figshare.com/files/8067269"}
-        self.citation = "Myhrvold, N.P., Baldridge, E., Chan, B., Sivam, D., Freeman, D.L. and Ernest, S.M., 2015. " \
-                        "An amniote life-history database to perform comparative analyses with birds, mammals, " \
-                        "and reptiles:Ecological Archives E096-269. Ecology, 96(11), pp.3109-000."
+        self.citation = (
+            "Myhrvold, N.P., Baldridge, E., Chan, B., Sivam, D., Freeman, D.L. and Ernest, S.M., 2015. "
+            "An amniote life-history database to perform comparative analyses with birds, mammals, "
+            "and reptiles:Ecological Archives E096-269. Ecology, 96(11), pp.3109-000."
+        )
         self.licenses = [{"name": "CC0-1.0"}]
-        self.description = "Compilation of life history traits for birds, mammals, and reptiles."
+        self.description = (
+            "Compilation of life history traits for birds, mammals, and reptiles."
+        )
         self.keywords = ["mammals", "literature-compilation"]
         self.cleanup_func_table = Cleanup(
-            correct_invalid_value, missing_values=['-999'])
+            correct_invalid_value, missing_values=["-999"]
+        )
 
         if parse_version(VERSION) <= parse_version("2.0.0"):
             self.shortname = self.name
             self.name = self.title
             self.tags = self.keywords
-            self.cleanup_func_table = Cleanup(
-                correct_invalid_value, nulls=['-999'])
+            self.cleanup_func_table = Cleanup(correct_invalid_value, nulls=["-999"])
 
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
         engine = self.engine
-        file_names = ["Data_Files/Amniote_Database_Aug_2015.csv",
-                      "Data_Files/Amniote_Database_References_Aug_2015.csv",
-                      "Data_Files/Amniote_Range_Count_Aug_2015.csv"]
-        engine.download_files_from_archive(self.urls["data"],
-                                           file_names,
-                                           "zip")
-        ct_column = 'trait'  # all tables use the same ct_column name
+        file_names = [
+            "Data_Files/Amniote_Database_Aug_2015.csv",
+            "Data_Files/Amniote_Database_References_Aug_2015.csv",
+            "Data_Files/Amniote_Range_Count_Aug_2015.csv",
+        ]
+        engine.download_files_from_archive(self.urls["data"], file_names, "zip")
+        ct_column = "trait"  # all tables use the same ct_column name
 
         # Create tables from Amniote_Database_Aug.csv and Amniote_Database_References_Aug_2015.csv
         # Both reference and main have the same headers
 
         ct_names = [
-            'female_maturity_d',
-            'litter_or_clutch_size_n',
-            'litters_or_clutches_per_y',
-            'adult_body_mass_g',
-            'maximum_longevity_y',
-            'gestation_d',
-            'weaning_d',
-            'birth_or_hatching_weight_g',
-            'weaning_weight_g',
-            'egg_mass_g',
-            'incubation_d',
-            'fledging_age_d',
-            'longevity_y',
-            'male_maturity_d',
-            'inter_litter_or_interbirth_interval_y',
-            'female_body_mass_g',
-            'male_body_mass_g',
-            'no_sex_body_mass_g',
-            'egg_width_mm',
-            'egg_length_mm',
-            'fledging_mass_g',
-            'adult_svl_cm',
-            'male_svl_cm',
-            'female_svl_cm',
-            'birth_or_hatching_svl_cm',
-            'female_svl_at_maturity_cm',
-            'female_body_mass_at_maturity_g',
-            'no_sex_svl_cm',
-            'no_sex_maturity_d']
+            "female_maturity_d",
+            "litter_or_clutch_size_n",
+            "litters_or_clutches_per_y",
+            "adult_body_mass_g",
+            "maximum_longevity_y",
+            "gestation_d",
+            "weaning_d",
+            "birth_or_hatching_weight_g",
+            "weaning_weight_g",
+            "egg_mass_g",
+            "incubation_d",
+            "fledging_age_d",
+            "longevity_y",
+            "male_maturity_d",
+            "inter_litter_or_interbirth_interval_y",
+            "female_body_mass_g",
+            "male_body_mass_g",
+            "no_sex_body_mass_g",
+            "egg_width_mm",
+            "egg_length_mm",
+            "fledging_mass_g",
+            "adult_svl_cm",
+            "male_svl_cm",
+            "female_svl_cm",
+            "birth_or_hatching_svl_cm",
+            "female_svl_at_maturity_cm",
+            "female_body_mass_at_maturity_g",
+            "no_sex_svl_cm",
+            "no_sex_maturity_d",
+        ]
 
         # Create table main from Amniote_Database_Aug_2015.csv
 
         columns = [
-            ('record_id', ('pk-auto',)), ('class', ('char', '20')),
-            ('order', ('char', '20')), ('family', ('char', '20')),
-            ('genus', ('char', '20')), ('species', ('char', '50')),
-            ('subspecies', ('char', '20')), ('common_name', ('char', '400')),
-            ('trait_value', ('ct-double',))]
-        table_main = Table(
-            'main',
-            delimiter=',',
-            cleanup=self.cleanup_func_table)
+            ("record_id", ("pk-auto",)),
+            ("class", ("char", "20")),
+            ("order", ("char", "20")),
+            ("family", ("char", "20")),
+            ("genus", ("char", "20")),
+            ("species", ("char", "50")),
+            ("subspecies", ("char", "20")),
+            ("common_name", ("char", "400")),
+            ("trait_value", ("ct-double",)),
+        ]
+        table_main = Table("main", delimiter=",", cleanup=self.cleanup_func_table)
         table_main.ct_column = ct_column
         table_main.ct_names = ct_names
         table_main.columns = columns
@@ -109,16 +118,20 @@ class main(Script):
 
         # Create table reference from Amniote_Database_References_Aug_2015.csv
         reference_columns = [
-            ('record_id', ('pk-auto',)), ('class', ('char', '20')),
-            ('order', ('char', '20')), ('family', ('char', '20')),
-            ('genus', ('char', '20')), ('species', ('char', '50')),
-            ('subspecies', ('char', '20')), ('common_name', ('char', '400')),
-            ('reference', ('ct-char',))]
+            ("record_id", ("pk-auto",)),
+            ("class", ("char", "20")),
+            ("order", ("char", "20")),
+            ("family", ("char", "20")),
+            ("genus", ("char", "20")),
+            ("species", ("char", "50")),
+            ("subspecies", ("char", "20")),
+            ("common_name", ("char", "400")),
+            ("reference", ("ct-char",)),
+        ]
 
         table_references = Table(
-            'references',
-            delimiter=',',
-            cleanup=self.cleanup_func_table)
+            "references", delimiter=",", cleanup=self.cleanup_func_table
+        )
         table_references.ct_column = ct_column
         table_references.ct_names = ct_names
         table_references.columns = reference_columns
@@ -217,17 +230,21 @@ class main(Script):
             "count_no_sex_svl",
             "min_no_sex_maturity",
             "max_no_sex_maturity",
-            "count_no_sex_maturity"]
+            "count_no_sex_maturity",
+        ]
         range_columns = [
-            ('record_id', ('pk-auto',)), ('classx', ('char', '20')),
-            ('orderx', ('char', '20')), ('familyx', ('char', '20')),
-            ('genus', ('char', '20')), ('species', ('char', '50')),
-            ('subspecies', ('char', '20')),
-            ('common_name', ('char', '400')),
-            ('trait_value', ('ct-double',))]
+            ("record_id", ("pk-auto",)),
+            ("classx", ("char", "20")),
+            ("orderx", ("char", "20")),
+            ("familyx", ("char", "20")),
+            ("genus", ("char", "20")),
+            ("species", ("char", "50")),
+            ("subspecies", ("char", "20")),
+            ("common_name", ("char", "400")),
+            ("trait_value", ("ct-double",)),
+        ]
 
-        table_range = Table('range', delimiter=',',
-                            cleanup=self.cleanup_func_table)
+        table_range = Table("range", delimiter=",", cleanup=self.cleanup_func_table)
         table_range.ct_column = ct_column
         table_range.ct_names = range_ct_names
         table_range.columns = range_columns

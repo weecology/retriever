@@ -15,7 +15,7 @@ def write_version_file(scripts):
     with open("version.txt", "w") as version_file:
         version_file.write(VERSION)
         for script in scripts:
-            version_file.write('\n' + script)
+            version_file.write("\n" + script)
 
 
 def update_version_file():
@@ -25,5 +25,5 @@ def update_version_file():
     print("Version.txt updated.")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     update_version_file()

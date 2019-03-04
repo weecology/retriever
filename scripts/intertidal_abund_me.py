@@ -1,4 +1,4 @@
-#retriever
+# retriever
 from pkg_resources import parse_version
 
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
@@ -19,25 +19,31 @@ class main(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
         self.title = "Gulf of Maine intertidal density/cover (Petraitis et al. 2008)"
-        self.citation = "Peter S. Petraitis, Harrison Liu, and " \
-                        "Erika C. Rhile. 2008. Densities and cover " \
-                        "data for intertidal organisms in the Gulf of " \
-                        "Maine, USA, from 2003 to 2007. Ecology 89:588."
+        self.citation = (
+            "Peter S. Petraitis, Harrison Liu, and "
+            "Erika C. Rhile. 2008. Densities and cover "
+            "data for intertidal organisms in the Gulf of "
+            "Maine, USA, from 2003 to 2007. Ecology 89:588."
+        )
         self.name = "intertidal-abund-me"
         self.ref = "https://figshare.com/collections/DENSITIES_AND_COVER_DATA_FOR_INTERTIDAL_ORGANISMS_IN_THE_GULF_OF_MAINE_USA_FROM_2003_TO_2007/3300200"
-        self.description = "The data on densities and percent cover in the " \
-                           "60 experimental plots from 2003 to 2007 and to " \
-                           "update data from 1996 to 2002 that are already " \
-                           "published in Ecological Archives." \
-                           "Includes densities of mussels, " \
-                           "herbivorous limpet, herbivorous snails, " \
-                           "predatory snail, barnacle , fucoid algae and " \
-                           "percent cover by mussels, barnacles, fucoids, " \
-                           "and other sessile organisms."
-        self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.5.3'
+        self.description = (
+            "The data on densities and percent cover in the "
+            "60 experimental plots from 2003 to 2007 and to "
+            "update data from 1996 to 2002 that are already "
+            "published in Ecological Archives."
+            "Includes densities of mussels, "
+            "herbivorous limpet, herbivorous snails, "
+            "predatory snail, barnacle , fucoid algae and "
+            "percent cover by mussels, barnacles, fucoids, "
+            "and other sessile organisms."
+        )
+        self.retriever_minimum_version = "2.0.dev"
+        self.version = "1.5.3"
         self.urls = {"main": "https://ndownloader.figshare.com/files/5600831"}
-        self.cleanup_func_table = Cleanup(correct_invalid_value, missing_values=[-999.9])
+        self.cleanup_func_table = Cleanup(
+            correct_invalid_value, missing_values=[-999.9]
+        )
 
         if parse_version(VERSION) <= parse_version("2.0.0"):
             self.shortname = self.name

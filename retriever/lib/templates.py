@@ -5,7 +5,6 @@ functions available for inheritance by the scripts or datasets.
 from __future__ import print_function
 
 from retriever.engines import choose_engine
-from retriever.lib.models import *
 
 
 class Script(object):
@@ -15,12 +14,24 @@ class Script(object):
     it's Unique functionality.
     """
 
-    def __init__(self, title="", description="", name="", urls=dict(),
-                 tables=dict(), ref="", public=True, addendum=None,
-                 citation="Not currently available",
-                 licenses=[{'name': None}],
-                 retriever_minimum_version="",
-                 version="", encoding="", message="", **kwargs):
+    def __init__(
+        self,
+        title="",
+        description="",
+        name="",
+        urls=dict(),
+        tables=dict(),
+        ref="",
+        public=True,
+        addendum=None,
+        citation="Not currently available",
+        licenses=[{"name": None}],
+        retriever_minimum_version="",
+        version="",
+        encoding="",
+        message="",
+        **kwargs
+    ):
 
         self.title = title
         self.name = name
@@ -72,9 +83,9 @@ class Script(object):
 
     def matches_terms(self, terms):
         try:
-            search_string = ' '.join([self.name,
-                                      self.description,
-                                      self.name] + self.keywords).upper()
+            search_string = " ".join(
+                [self.name, self.description, self.name] + self.keywords
+            ).upper()
 
             for term in terms:
                 if not term.upper() in search_string:
@@ -121,8 +132,10 @@ class BasicTextTemplate(Script):
                 if self.engine.spatial_support:
                     self.process_tables(table_obj, url)
                 else:
-                    print("Engine {eng} does not support spatial "
-                          "processing".format(eng=self.engine.name))
+                    print(
+                        "Engine {eng} does not support spatial "
+                        "processing".format(eng=self.engine.name)
+                    )
                     return
 
             # insert data procedures
@@ -138,7 +151,8 @@ class BasicTextTemplate(Script):
     def process_tabular_insert(self, table_obj, url):
         if hasattr(self, "archived"):
             self.engine.insert_data_from_file(
-                self.engine.format_filename(table_obj.path))
+                self.engine.format_filename(table_obj.path)
+            )
         else:
             self.engine.insert_data_from_url(url)
 
@@ -175,10 +189,13 @@ class BasicTextTemplate(Script):
         if hasattr(self, "archive_name"):
             archive_name = self.archive_name
 
-        self.engine.download_files_from_archive(url=url, file_names=files,
-                                                archive_type=archive_type,
-                                                keep_in_dir=keep_in_dir,
-                                                archive_name=archive_name)
+        self.engine.download_files_from_archive(
+            url=url,
+            file_names=files,
+            archive_type=archive_type,
+            keep_in_dir=keep_in_dir,
+            archive_name=archive_name,
+        )
 
 
 class HtmlTableTemplate(Script):
@@ -187,7 +204,4 @@ class HtmlTableTemplate(Script):
     pass
 
 
-TEMPLATES = {
-    "default": BasicTextTemplate,
-    "html_table": HtmlTableTemplate
-}
+TEMPLATES = {"default": BasicTextTemplate, "html_table": HtmlTableTemplate}

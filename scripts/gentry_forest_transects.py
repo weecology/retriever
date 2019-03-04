@@ -1,17 +1,17 @@
-#retriever
+# retriever
 """Retriever script for Alwyn H. Gentry Forest Transect Dataset"""
 
 from builtins import str
 from builtins import range
 
 import os
-import sys
 import zipfile
 import xlrd
 from retriever.lib.templates import Script
 from retriever.lib.models import Table
 from retriever.lib.excel import Excel
 from pkg_resources import parse_version
+
 try:
     from retriever.lib.defaults import VERSION
 except ImportError:
@@ -25,12 +25,14 @@ class main(Script):
         Script.__init__(self, **kwargs)
         self.title = "Alwyn H. Gentry Forest Transect Dataset"
         self.name = "gentry-forest-transects"
-        self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.4.4'
-        self.urls = {"stems": "http://www.mobot.org/mobot/gentry/123/all_Excel.zip",
-                     "sites": "https://ndownloader.figshare.com/files/5515373",
-                     "species": "",
-                     "counts": ""}
+        self.retriever_minimum_version = "2.0.dev"
+        self.version = "1.4.4"
+        self.urls = {
+            "stems": "http://www.mobot.org/mobot/gentry/123/all_Excel.zip",
+            "sites": "https://ndownloader.figshare.com/files/5515373",
+            "species": "",
+            "counts": "",
+        }
         self.keywords = ["plants", "global-scale", "observational"]
         self.ref = "http://www.mobot.org/mobot/research/gentry/welcome.shtml"
         self.citation = "Phillips, O. and Miller, J.S., 2002. Global patterns of plant diversity: Alwyn H. Gentry's forest transect data set. Missouri Botanical Press."
@@ -50,7 +52,9 @@ U.S.A. """
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
 
-        self.engine.auto_create_table(Table("sites"), url=self.urls["sites"], filename='gentry_sites.csv')
+        self.engine.auto_create_table(
+            Table("sites"), url=self.urls["sites"], filename="gentry_sites.csv"
+        )
         self.engine.insert_data_from_url(self.urls["sites"])
 
         self.engine.download_file(self.urls["stems"], "all_Excel.zip")
@@ -64,9 +68,12 @@ U.S.A. """
         self.engine.download_files_from_archive(self.urls["stems"], filelist)
         # Currently all_Excel.zip is missing CURUYUQU.xls
         # Download it separately and add it to the file list
-        if not self.engine.find_file('CURUYUQU.xls'):
-            self.engine.download_file("http://www.mobot.org/mobot/gentry/123/samerica/CURUYUQU.xls", "CURUYUQU.xls")
-            filelist.append('CURUYUQU.xls')
+        if not self.engine.find_file("CURUYUQU.xls"):
+            self.engine.download_file(
+                "http://www.mobot.org/mobot/gentry/123/samerica/CURUYUQU.xls",
+                "CURUYUQU.xls",
+            )
+            filelist.append("CURUYUQU.xls")
 
         lines = []
         tax = []
@@ -74,7 +81,7 @@ U.S.A. """
             book = xlrd.open_workbook(self.engine.format_filename(filename))
             sh = book.sheet_by_index(0)
             rows = sh.nrows
-            cn = {'stems': []}
+            cn = {"stems": []}
             n = 0
             for colnum, c in enumerate(sh.row(0)):
                 if not Excel.empty_cell(c):
@@ -100,38 +107,53 @@ U.S.A. """
                         cn[cid] = n
                 n += 1
             # sometimes, a data file does not contain a liana or count column
-            if not "liana" in list(cn.keys()):
+            if "liana" not in list(cn.keys()):
                 cn["liana"] = -1
-            if not "count" in list(cn.keys()):
+            if "count" not in list(cn.keys()):
                 cn["count"] = -1
             for i in range(1, rows):
                 row = sh.row(i)
-                cellcount = len(row)
+                # cellcount = len(row)
                 # make sure the row is real, not just empty cells
                 if not all(Excel.empty_cell(cell) for cell in row):
                     try:
                         this_line = {}
 
                         # get the following information from the appropriate columns
-                        for i in ["line", "family", "genus", "species",
-                                  "liana", "count"]:
+                        for i in [
+                            "line",
+                            "family",
+                            "genus",
+                            "species",
+                            "liana",
+                            "count",
+                        ]:
                             if cn[i] > -1:
                                 if row[cn[i]].ctype != 2:
                                     # if the cell type(ctype) is not a number
-                                    this_line[i] = row[cn[i]].value.lower().strip().replace("\\", "/").replace('"', '')
+                                    this_line[i] = (
+                                        row[cn[i]]
+                                        .value.lower()
+                                        .strip()
+                                        .replace("\\", "/")
+                                        .replace('"', "")
+                                    )
                                 else:
                                     this_line[i] = row[cn[i]].value
-                                if this_line[i] == '`':
+                                if this_line[i] == "`":
                                     this_line[i] = 1
-                        this_line["stems"] = [row[c]
-                                              for c in cn["stems"]
-                                              if not Excel.empty_cell(row[c])]
+                        this_line["stems"] = [
+                            row[c] for c in cn["stems"] if not Excel.empty_cell(row[c])
+                        ]
                         site_code, _ = os.path.splitext(os.path.basename(filename))
                         this_line["site"] = site_code
 
                         # Manually correct CEDRAL data, which has a single line
                         # that is shifted by one to the left starting at Liana
-                        if this_line["site"] == "CEDRAL" and type(this_line["liana"]) == float:
+                        if (
+                            this_line["site"] == "CEDRAL"
+                            and type(this_line["liana"]) == float
+                        ):
                             this_line["liana"] = ""
                             this_line["count"] = 3
                             this_line["stems"] = [2.5, 2.5, 30, 18, 25]
@@ -148,12 +170,16 @@ U.S.A. """
                         else:
                             id_level = "species"
                             full_id = 1
-                        tax.append((this_line["family"],
-                                    this_line["genus"],
-                                    this_line["species"],
-                                    id_level,
-                                    str(full_id)))
-                    except:
+                        tax.append(
+                            (
+                                this_line["family"],
+                                this_line["genus"],
+                                this_line["species"],
+                                id_level,
+                                str(full_id),
+                            )
+                        )
+                    except Exception:
                         raise
                         pass
 
@@ -170,16 +196,20 @@ U.S.A. """
                 tax_dict[group[0:3]] = tax_count
         # Create species table
         table = Table("species", delimiter=",")
-        table.columns=[("species_id"            ,   ("pk-int",)    ),
-                       ("family"                ,   ("char", )    ),
-                       ("genus"                 ,   ("char", )    ),
-                       ("species"               ,   ("char", )    ),
-                       ("id_level"              ,   ("char", 10)    ),
-                       ("full_id"               ,   ("int",)       )]
+        table.columns = [
+            ("species_id", ("pk-int",)),
+            ("family", ("char",)),
+            ("genus", ("char",)),
+            ("species", ("char",)),
+            ("id_level", ("char", 10)),
+            ("full_id", ("int",)),
+        ]
 
-        data = [[str(tax_dict[group[:3]])] + ['"%s"' % g for g in group]
-                for group in unique_tax]
-        table.pk = 'species_id'
+        data = [
+            [str(tax_dict[group[:3]])] + ['"%s"' % g for g in group]
+            for group in unique_tax
+        ]
+        table.pk = "species_id"
         table.contains_pk = True
 
         self.engine.table = table
@@ -188,12 +218,14 @@ U.S.A. """
 
         # Create stems table
         table = Table("stems", delimiter=",")
-        table.columns=[("stem_id"               ,   ("pk-auto",)    ),
-                       ("line"                  ,   ("int",)        ),
-                       ("species_id"            ,   ("int",)        ),
-                       ("site_code"             ,   ("char", 12)    ),
-                       ("liana"                 ,   ("char", 10)    ),
-                       ("stem"                  ,   ("double",)     )]
+        table.columns = [
+            ("stem_id", ("pk-auto",)),
+            ("line", ("int",)),
+            ("species_id", ("int",)),
+            ("site_code", ("char", 12)),
+            ("liana", ("char", 10)),
+            ("stem", ("double",)),
+        ]
         stems = []
         counts = []
         for line in lines:
@@ -201,13 +233,12 @@ U.S.A. """
                 liana = line["liana"]
             except KeyError:
                 liana = ""
-            species_info = [line["line"],
-                            tax_dict[(line["family"],
-                                      line["genus"],
-                                      line["species"])],
-                            line["site"],
-                            liana
-                            ]
+            species_info = [
+                line["line"],
+                tax_dict[(line["family"], line["genus"], line["species"])],
+                line["site"],
+                liana,
+            ]
             try:
                 counts.append([value for value in species_info + [line["count"]]])
             except KeyError:
@@ -223,15 +254,19 @@ U.S.A. """
 
         # Create counts table
         table = Table("counts", delimiter=",", contains_pk=False)
-        table.columns=[("count_id"              ,   ("pk-auto",)    ),
-                       ("line"                  ,   ("int",)        ),
-                       ("species_id"            ,   ("int",)        ),
-                       ("site_code"             ,   ("char", 12)    ),
-                       ("liana"                 ,   ("char", 10)    ),
-                       ("count"                 ,   ("double",)     )]
+        table.columns = [
+            ("count_id", ("pk-auto",)),
+            ("line", ("int",)),
+            ("species_id", ("int",)),
+            ("site_code", ("char", 12)),
+            ("liana", ("char", 10)),
+            ("count", ("double",)),
+        ]
         self.engine.table = table
         self.engine.create_table()
         self.engine.add_to_table(counts)
 
         return self.engine
+
+
 SCRIPT = main()

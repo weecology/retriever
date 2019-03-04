@@ -1,5 +1,5 @@
 # -*- coding: latin-1 -*-
-#retriever
+# retriever
 
 """Retriever script for direct download of vertnet-birds data"""
 import os
@@ -21,15 +21,15 @@ class main(Script):
         Script.__init__(self, **kwargs)
         self.title = "Vertnet Birds"
         self.name = "vertnet-birds"
-        self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.1.2'
+        self.retriever_minimum_version = "2.0.dev"
+        self.version = "1.1.2"
         self.ref = "http://vertnet.org/resources/datatoolscode.html"
         self.urls = {
-            'birds': 'https://de.iplantcollaborative.org/anon-files//iplant/home/shared/commons_repo/curated/Vertnet_Aves_Sep2016/VertNet_Aves_Sept2016.zip'
+            "birds": "https://de.iplantcollaborative.org/anon-files//iplant/home/shared/commons_repo/curated/Vertnet_Aves_Sep2016/VertNet_Aves_Sept2016.zip"
         }
         self.citation = "Bloom, D., Wieczorek J., Russell, L. (2016).  VertNet_Aves_Sept. 2016. CyVerse Data Commons. http://datacommons.cyverse.org/browse/iplant/home/shared/commons_repo/curated/VertNet_Aves_Sep2016"
         self.description = "Compilation of digitized museum records of birds including locations, dates of collection, and some trait data."
-        self.keywords = ['birds']
+        self.keywords = ["birds"]
 
         if parse_version(VERSION) <= parse_version("2.0.0"):
             self.shortname = self.name
@@ -40,10 +40,10 @@ class main(Script):
         Script.download(self, engine, debug)
         engine = self.engine
 
-        filename = 'vertnet_latest_birds.csv'
-        tablename = 'birds'
+        filename = "vertnet_latest_birds.csv"
+        tablename = "birds"
 
-        table = Table(str(tablename), delimiter=',')
+        table = Table(str(tablename), delimiter=",")
         table.columns = [
             ("record_id", ("pk-auto",)),
             ("beginrecord", ("char",)),
@@ -239,12 +239,18 @@ class main(Script):
             ("lengthunitsinferred", ("char",)),
             ("massunitsinferred", ("char",)),
             ("underivedlifestage", ("char",)),
-            ("underivedsex", ("char",))]
+            ("underivedsex", ("char",)),
+        ]
 
         engine.table = table
         if not os.path.isfile(engine.format_filename(filename)):
-            engine.download_files_from_archive(self.urls[tablename], [filename], "zip", False,
-                                               "vertnet_latest_" + str(tablename))
+            engine.download_files_from_archive(
+                self.urls[tablename],
+                [filename],
+                "zip",
+                False,
+                "vertnet_latest_" + str(tablename),
+            )
         engine.create_table()
         engine.insert_data_from_file(engine.format_filename(str(filename)))
 

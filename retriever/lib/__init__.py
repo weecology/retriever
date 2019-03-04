@@ -16,18 +16,18 @@ from .fetch import fetch
 from .scripts import reload_scripts
 
 __all__ = [
-    'check_for_updates',
-    'datasets',
-    'dataset_names',
-    'download',
-    'reload_scripts',
-    'reset_retriever',
-    'install_csv',
-    'install_mysql',
-    'install_postgres',
-    'install_sqlite',
-    'install_msaccess',
-    'install_json',
-    'install_xml',
-    'fetch'
+    "check_for_updates",
+    "datasets",
+    "dataset_names",
+    "download",
+    "reload_scripts",
+    "reset_retriever",
+    "install_csv",
+    "install_mysql",
+    "install_postgres",
+    "install_sqlite",
+    "install_msaccess",
+    "install_json",
+    "install_xml",
+    "fetch",
 ]

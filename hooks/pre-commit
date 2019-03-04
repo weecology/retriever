@@ -2,8 +2,8 @@
 from __future__ import print_function
 
 from future import standard_library
+standard_library.install_aliases()  # noqa
 
-standard_library.install_aliases()
 from distutils.version import LooseVersion
 import os
 import re

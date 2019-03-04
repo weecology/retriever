@@ -19,14 +19,14 @@ from retriever.lib.tools import open_fw
 
 # sys removes the setdefaultencoding method at startup; reload to get it back
 reload(sys)
-if hasattr(sys, 'setdefaultencoding'):
+if hasattr(sys, "setdefaultencoding"):
     # set default encoding to latin-1 to decode source text
-    sys.setdefaultencoding('latin-1')
+    sys.setdefaultencoding("latin-1")
 
 
 def to_str(object, object_encoding=encoding):
     if sys.version_info >= (3, 0, 0):
-        return str(object).encode('UTF-8').decode(encoding)
+        return str(object).encode("UTF-8").decode(encoding)
     return object
 
 
@@ -46,16 +46,16 @@ datasetfile.write(datasetfile_title)
 
 # get info from the scripts using specified encoding
 for script_num, script in enumerate(script_list, start=1):
-    reference_link = ''
+    reference_link = ""
     if script.ref.strip():
         reference_link = script.ref
-    elif hasattr(script, 'homepage'):
+    elif hasattr(script, "homepage"):
         reference_link = script.homepage
     elif not reference_link.strip():
         if bool(script.urls.values()):
-            reference_link = list(script.urls.values())[0].rpartition('/')[0]
+            reference_link = list(script.urls.values())[0].rpartition("/")[0]
         else:
-            reference_link = 'Not available'
+            reference_link = "Not available"
     title = str(script_num) + ". **{}**\n".format(script.title.strip())
     datasetfile.write(title)
     datasetfile.write("-" * (len(title) - 1) + "\n\n")
@@ -67,32 +67,35 @@ for script_num, script in enumerate(script_list, start=1):
     if len(to_str(reference_link)) <= 85:
         datasetfile.write(":reference: `{}`\n\n".format(reference_link))
     else:
-        datasetfile.write(":reference: `{s}'s home link <{r}>`_.\n".format(
-            s=script.name, r=to_str(reference_link).rstrip("/")))
+        datasetfile.write(
+            ":reference: `{s}'s home link <{r}>`_.\n".format(
+                s=script.name, r=to_str(reference_link).rstrip("/")
+            )
+        )
 
     datasetfile.write(":citation: {}\n\n".format(to_str(script.citation, encoding)))
     datasetfile.write(":description: {}\n\n".format(script.description))
 datasetfile.close()
 
-needs_sphinx = '1.3'
+needs_sphinx = "1.3"
 
 # Add any Sphinx extension module names here, as strings.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon']
+extensions = ["sphinx.ext.autodoc", "sphinx.ext.napoleon"]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # The suffix of source filenames.
-source_suffix = '.rst'
+source_suffix = ".rst"
 
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = "index"
 
 # General information about the project.
-project = u'Data Retriever'
+project = u"Data Retriever"
 copyright = COPYRIGHT
 
 version = release = VERSION
@@ -116,7 +119,7 @@ exclude_patterns = []
 # show_authors = False
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = "sphinx"
 
 # A list of ignored prefixes for module index sorting.
 # modindex_common_prefix = []
@@ -126,7 +129,7 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'sphinx_rtd_theme'
+html_theme = "sphinx_rtd_theme"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -206,10 +209,8 @@ html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
     # 'papersize': 'letterpaper',
-
     # The font size ('10pt', '11pt' or '12pt').
     # 'pointsize': '10pt',
-
     # Additional stuff for the LaTeX preamble.
     # 'preamble': '',
 }

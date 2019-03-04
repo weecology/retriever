@@ -24,12 +24,8 @@ class engine(Engine):
     }
     insert_limit = 1000
     required_opts = [
-        ("table_name",
-         "Format of table name",
-         "{db}_{table}.xml"),
-        ("data_dir",
-         "Install directory",
-         DATA_DIR),
+        ("table_name", "Format of table name", "{db}_{table}.xml"),
+        ("data_dir", "Install directory", DATA_DIR),
     ]
     table_names = []
 
@@ -42,7 +38,7 @@ class engine(Engine):
         table_path = os.path.join(self.opts["data_dir"], self.table_name())
         self.output_file = open_fw(table_path)
         self.output_file.write(u'<?xml version="1.0" encoding="UTF-8"?>')
-        self.output_file.write(u'\n<root>')
+        self.output_file.write(u"\n<root>")
         self.table_names.append((self.output_file, table_path))
         self.auto_column_number = 1
 
@@ -51,7 +47,8 @@ class engine(Engine):
         if self.script.name not in self.script_table_registry:
             self.script_table_registry[self.script.name] = []
         self.script_table_registry[self.script.name].append(
-            (self.table_name(), self.table))
+            (self.table_name(), self.table)
+        )
 
     def disconnect(self):
         """Close out the xml files
@@ -65,10 +62,10 @@ class engine(Engine):
                 current_input_file = open_fr(file_name)
                 file_contents = current_input_file.readlines()
                 current_input_file.close()
-                file_contents[-1] = file_contents[-1].strip(',')
+                file_contents[-1] = file_contents[-1].strip(",")
                 current_output_file = open_fw(file_name)
                 current_output_file.writelines(file_contents)
-                current_output_file.write(u'\n</root>')
+                current_output_file.write(u"\n</root>")
                 current_output_file.close()
             self.table_names = []
 
@@ -98,11 +95,11 @@ class engine(Engine):
         Wrap each data value with column values(key)
         using _format_single_row <key> value </key>.
         """
-        if not hasattr(self, 'auto_column_number'):
+        if not hasattr(self, "auto_column_number"):
             self.auto_column_number = 1
 
         keys = self.table.get_insert_columns(join=False, create=True)
-        if self.table.columns[0][1][0][3:] == 'auto':
+        if self.table.columns[0][1][0][3:] == "auto":
             newrows = []
             for rows in values:
                 insert_stmt = [self.auto_column_number] + rows
@@ -111,24 +108,33 @@ class engine(Engine):
         else:
             newrows = values
 
-        xml_lines = ['\n<row>\n{}</row>' \
-                     ''.format(self._format_single_row(keys, line_data))
-                     for line_data in newrows]
+        xml_lines = [
+            "\n<row>\n{}</row>" "".format(self._format_single_row(keys, line_data))
+            for line_data in newrows
+        ]
         return xml_lines
 
     def _format_single_row(self, keys, line_data):
         """Create an xml string from the keys and line_data values."""
-        row_values = ['    <{key}>{value}</{key}>\n'.format(key=key, value=value)
-                      for key, value in zip(keys, line_data)]
-        return ''.join(row_values)
+        row_values = [
+            "    <{key}>{value}</{key}>\n".format(key=key, value=value)
+            for key, value in zip(keys, line_data)
+        ]
+        return "".join(row_values)
 
     def to_csv(self, sort=True, path=None):
         """Export table from xml engine to CSV file."""
         for table_item in self.script_table_registry[self.script.name]:
             header = table_item[1].get_insert_columns(join=False, create=True)
             outputfile = os.path.normpath(
-                os.path.join(path if path else '', os.path.splitext(os.path.basename(table_item[0]))[0] + '.csv'))
-            csv_outfile = xml2csv(table_item[0], outputfile=outputfile, header_values=header)
+                os.path.join(
+                    path if path else "",
+                    os.path.splitext(os.path.basename(table_item[0]))[0] + ".csv",
+                )
+            )
+            csv_outfile = xml2csv(
+                table_item[0], outputfile=outputfile, header_values=header
+            )
             sort_csv(csv_outfile)
 
     def get_connection(self):

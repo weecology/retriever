@@ -1,45 +1,47 @@
 # -*- coding: UTF-8 -*-
-#retriever
+# retriever
 
 from retriever.lib.models import Table
 from retriever.lib.templates import Script
 
 try:
-    from retriever.lib.defaults import VERSION
-
     try:
         from retriever.lib.tools import open_fr, open_fw
     except ImportError:
         from retriever.lib.scripts import open_fr, open_fw
 except ImportError:
-    from retriever import open_fr, open_fw, VERSION
+    from retriever import open_fr, open_fw
 
 
 class main(Script):
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
-        self.title = "Commercial Fisheries Monthly Trade Data by Product, Country/Association"
+        self.title = (
+            "Commercial Fisheries Monthly Trade Data by Product, Country/Association"
+        )
         self.name = "noaa-fisheries-trade"
-        self.retriever_minimum_version = '2.1.dev'
+        self.retriever_minimum_version = "2.1.dev"
         self.urls = {
             "imports": "https://www.st.nmfs.noaa.gov/pls/webpls/trade_prdct_cntry_ind_mth.results?"
-                       "qtype=IMP&qmonthfrom=01&qmonthto=12&qyearfrom=1975&qyearto=2018"
-                       "&qprod_name=%25&qcountry=%25&qsort=COUNTRY&qoutput=ASCII+FILE",
-
+            "qtype=IMP&qmonthfrom=01&qmonthto=12&qyearfrom=1975&qyearto=2018"
+            "&qprod_name=%25&qcountry=%25&qsort=COUNTRY&qoutput=ASCII+FILE",
             "exports": "https://www.st.nmfs.noaa.gov/pls/webpls/trade_prdct_cntry_ind_mth.results?"
-                       "qtype=EXP&qmonthfrom=01&qmonthto=12&qyearfrom=1975&qyearto=2018"
-                       "&qprod_name=%25&qcountry=%25&qsort=COUNTRY&qoutput=ASCII+FILE",
-
+            "qtype=EXP&qmonthfrom=01&qmonthto=12&qyearfrom=1975&qyearto=2018"
+            "&qprod_name=%25&qcountry=%25&qsort=COUNTRY&qoutput=ASCII+FILE",
             "rexport": "https://www.st.nmfs.noaa.gov/pls/webpls/trade_prdct_cntry_ind_mth.results?"
-                       "qtype=REX&qmonthfrom=01&qmonthto=12&qyearfrom=1975&qyearto=2018"
-                       "&qprod_name=%25&qcountry=%25&qsort=COUNTRY&qoutput=ASCII+FILE"
+            "qtype=REX&qmonthfrom=01&qmonthto=12&qyearfrom=1975&qyearto=2018"
+            "&qprod_name=%25&qcountry=%25&qsort=COUNTRY&qoutput=ASCII+FILE",
         }
-        self.version = '1.0.0'
-        self.ref = "https://www.st.nmfs.noaa.gov/commercial-fisheries/foreign-trade/" \
-                   "applications/monthly-product-by-countryassociation"
+        self.version = "1.0.0"
+        self.ref = (
+            "https://www.st.nmfs.noaa.gov/commercial-fisheries/foreign-trade/"
+            "applications/monthly-product-by-countryassociation"
+        )
         self.citation = "No known Citation"
-        self.description = "Commercial Fisheries statistics provides a summary of " \
-                           "commercial fisheries product data by individual country."
+        self.description = (
+            "Commercial Fisheries statistics provides a summary of "
+            "commercial fisheries product data by individual country."
+        )
         self.keywords = ["Fish", "Fisheries"]
 
     def download(self, engine=None, debug=False):
