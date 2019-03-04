@@ -22,13 +22,15 @@ install:
   - pip install pytest-xdist -U
   # Use pytest 3.9.3 version since 3.10.0 has a bug
   - pip install pytest==3.9.3 -U
-
+  - pip install -qq flake8
 
 # command to run tests using py.test
 
 script:
   - py.test -v --cov=retriever
-
+  - flake8 --version
+  - flake8 retriever
+  
 # database setup
 before_script:
   - sqlite3 --version
