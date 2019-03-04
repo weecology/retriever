@@ -29,7 +29,7 @@ install:
 script:
   - py.test -v --cov=retriever
   - flake8 --version
-  - flake8 retriever scripts test
+  - flake8 --ignore=E501 retriever scripts test
   
 # database setup
 before_script:
