@@ -246,3 +246,12 @@ def test_fetch():
                 first_row_data = list(data_frame[table_i].iloc[0])
                 assert expected_data == first_row_data
                 assert expected_column_values == column_values
+
+
+def test_interface_table_registry():
+    # Test if script_table_registry keeps only the latest
+    # table names of the installed data packages in
+    # script_table_registry
+    install_csv("iris")
+    wine_data = fetch("wine-composition")
+    assert "iris" not in wine_data.keys()
