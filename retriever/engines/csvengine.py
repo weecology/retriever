@@ -40,11 +40,12 @@ class engine(Engine):
     def create_table(self):
         """Create the table by creating an empty csv file"""
         self.auto_column_number = 1
-        self.file = open_fw(os.path.join(self.opts["data_dir"], self.table_name()))
+        table_path = os.path.join(self.opts["data_dir"], self.table_name())
+        self.file = open_fw(table_path)
         self.output_file = open_csvw(self.file)
         column_list = self.table.get_insert_columns(join=False, create=True)
         self.output_file.writerow([u'{}'.format(val) for val in column_list])
-        self.table_names.append((self.file, self.table_name()))
+        self.table_names.append((self.file, table_path))
 
         # Register all tables created to enable
         # testing python files having custom download function
