@@ -6,6 +6,8 @@ from builtins import str
 from retriever.lib.defaults import ENCODING
 from retriever.lib.models import Engine, no_cleanup
 
+from retriever.logger import getFileLogger
+logger = getFileLogger(os.path.join(os.pardir, os.pardir, "logs"), "mysql.log")
 
 class engine(Engine):
     """Engine instance for MySQL."""
@@ -80,6 +82,7 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
 
                 self.cursor.execute(mysql_set_autocommit_on)
             except Exception as e:
+                logger.error(str(e))
                 self.cursor.execute("ROLLBACK;")
                 self.disconnect()  # If the execute fails the database connection can get hung up
                 self.cursor.execute(mysql_set_autocommit_on)

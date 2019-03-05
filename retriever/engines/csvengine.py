@@ -6,6 +6,8 @@ from retriever.lib.models import Engine
 from retriever.lib.tools import open_fw, open_csvw
 from retriever.lib.engine_tools import sort_csv
 
+from retriever.logger import getFileLogger
+logger = getFileLogger(os.path.join(os.pardir, os.pardir, "logs"), "csvengine.log")
 
 class engine(Engine):
     """Engine instance for writing data to a CSV file."""
@@ -76,6 +78,7 @@ class engine(Engine):
             if len(v) > 1 and v[0] == v[-1] == "'":
                 v = '"%s"' % v[1:-1]
         except BaseException:
+            logger.error("BaseException")
             pass
         return v
 

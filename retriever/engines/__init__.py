@@ -3,6 +3,9 @@ import os
 
 from retriever.lib.engine import Engine
 
+from retriever.logger import getFileLogger
+logger = getFileLogger(os.path.join(os.pardir, os.pardir, "logs"), "__init__.log")
+
 engines = [
     "mysql",
     "postgres",
@@ -55,6 +58,8 @@ def choose_engine(opts, choice=True):
                 or "{db}" not in opts['table_name']:
             for opt in engine.required_opts:
                 if opt[0] == 'table_name':
+                    logger.critical('Accepted Table format '
+                                    '{fom}'.format(fom=opt[2]))
                     raise Exception('Accepted Table format '
                                     '{fom}'.format(fom=opt[2]))
 

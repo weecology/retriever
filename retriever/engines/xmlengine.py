@@ -6,6 +6,8 @@ from retriever.lib.models import Engine
 from retriever.lib.tools import open_fr, open_fw
 from retriever.lib.engine_tools import xml2csv, sort_csv
 
+from retriever.logger import getFileLogger
+logger = getFileLogger(os.path.join(os.pardir, os.pardir, "logs"), "sqlite.log")
 
 class engine(Engine):
     """Engine instance for writing data to a XML file."""
@@ -84,7 +86,8 @@ class engine(Engine):
         try:
             if len(v) > 1 and v[0] == v[-1] == "'":
                 v = '"%s"' % v[1:-1]
-        except BaseException:
+        except BaseException as e:
+            logger.error(str(e))
             pass
         return v
 

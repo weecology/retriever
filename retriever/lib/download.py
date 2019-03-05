@@ -9,6 +9,8 @@ from retriever.lib.scripts import SCRIPT_LIST
 from retriever.lib.engine_tools import name_matches
 from retriever.lib.repository import check_for_updates
 
+from retriever.logger import getFileLogger
+logger = getFileLogger(os.path.join(os.pardir, os.pardir, "logs"), "download.log")
 
 def download(dataset, path='./', quiet=False, subdir=False, debug=False):
     """Download scripts for retriever."""
@@ -32,6 +34,7 @@ def download(dataset, path='./', quiet=False, subdir=False, debug=False):
                 script.download(engine, debug=debug)
                 script.engine.final_cleanup()
             except Exception as e:
+                logger.error(str(e))
                 print(e)
                 if debug:
                     raise

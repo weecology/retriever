@@ -7,6 +7,8 @@ from builtins import str
 from retriever.lib.defaults import DATA_DIR
 from retriever.lib.models import Engine, no_cleanup
 
+from retriever.logger import getFileLogger
+logger = getFileLogger(os.path.join(os.pardir, os.pardir, "logs"), "msaccess.log")
 
 class engine(Engine):
     """Engine instance for Microsoft Access."""
@@ -45,7 +47,8 @@ class engine(Engine):
                 length = int(converted.split('(')[1].split(')')[0].split(',')[0])
                 if length > 255:
                     converted = "TEXT"
-            except:
+            except Exception as e:
+                logger.error(str(e))
                 pass
         return converted
 
@@ -122,7 +125,8 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
 
             try:
                 self.execute(statement)
-            except:
+            except Exception as e:
+                logger.error(str(e))
                 print("Couldn't bulk insert. Trying manual insert.")
                 self.connection.rollback()
 
@@ -140,7 +144,9 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
         """Gets the db connection."""
         current_platform = platform.system().lower()
         if current_platform != "windows":
-            raise Exception("MS Access can only be used in Windows.")
+            msg = "MS Access can only be used in Windows."
+            logger.error(msg)
+            raise Exception(msg)
         import pypyodbc as dbapi
 
         self.get_input()

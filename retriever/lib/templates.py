@@ -8,6 +8,9 @@ from retriever.engines import choose_engine
 from retriever.lib.models import *
 
 
+from retriever.logger import getFileLogger
+logger = getFileLogger(os.path.join(os.pardir, os.pardir, "logs"), "sqlite.log")
+
 class Script(object):
     """This class defines the properties of a generic dataset.
 
@@ -81,6 +84,7 @@ class Script(object):
                     return False
             return True
         except BaseException:
+            logger.error("BaseException")
             return False
 
 

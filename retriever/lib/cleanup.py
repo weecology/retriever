@@ -1,5 +1,8 @@
 from builtins import object
+import os
 
+from retriever.logger import getFileLogger
+logger = getFileLogger(os.path.join(os.pardir, os.pardir, "logs"), "cleanup.log")
 
 def floatable(value):
     """Check if a value can be converted to a float"""
@@ -20,7 +23,8 @@ def correct_invalid_value(value, args):
                             if floatable(item)]:
             return None
         return value
-    except:
+    except Exception as e:
+        logger.error(str(e))
         return value
 
 

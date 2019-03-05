@@ -5,6 +5,8 @@ from builtins import range
 from retriever.lib.defaults import DATA_DIR
 from retriever.lib.models import Engine, no_cleanup
 
+from retriever.logger import getFileLogger
+logger = getFileLogger(os.path.join(os.pardir, os.pardir, "logs"), "sqlite.log")
 
 class engine(Engine):
     """Engine instance for SQLite."""
@@ -95,7 +97,8 @@ class engine(Engine):
                         self.cursor.executemany(bulk_insert_statement, data_chunk_split)
                         data_chunk = data_file.readlines(chunk_size)
                 self.connection.commit()
-            except:
+            except Exception as e:
+                logger.error(str(e))
                 self.connection.rollback()
                 return Engine.insert_data_from_file(self, filename)
         else:

@@ -18,6 +18,9 @@ from retriever.lib.defaults import ENCODING
 from retriever.lib.scripts import SCRIPT_LIST
 from retriever.lib.engine_tools import get_script_version
 
+from retriever.logger import getFileLogger
+logger = getFileLogger(os.path.join(os.pardir, os.pardir, "logs"), "sqlite.log")
+
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding(ENCODING)
@@ -131,6 +134,7 @@ def install_modified():
                 opts = engine_test[engine.abbreviation]
                 test_engines[engine.abbreviation] = choose_engine(opts)
             except BaseException:
+                logger.error("")
                 test_engines[engine.abbreviation] = None
                 pass
 
@@ -148,6 +152,7 @@ def install_modified():
                     except KeyboardInterrupt:
                         pass
                     except Exception as e:
+                        logger.error(str(e))
                         print("ERROR.")
                         errors.append((key, module._name, e))
                 else:
@@ -164,6 +169,7 @@ def install_modified():
 def main():
     setup_module()
     errors = install_modified()
+    logger.error(str(errors))
     if errors:
         print("Engine, Dataset, Error")
         for error in errors:

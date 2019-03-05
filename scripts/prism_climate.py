@@ -9,6 +9,9 @@ from retriever.lib.templates import Script
 import requests
 from pkg_resources import parse_version
 
+from retriever.logger import getFileLogger
+logger = getFileLogger(os.path.join(os.pardir, os.pardir, "logs"), "prism_climate.log")
+
 try:
     from retriever.lib.defaults import VERSION
 except ImportError:
@@ -58,9 +61,11 @@ class main(Script):
 
     def download(self, engine=None, debug=False):
         if engine.name != "Download Only":
-            raise Exception("The PRISM dataset contains only non-tabular "
-                            "data files, and can only be used with the "
-                            "'download only' engine.")
+            msg =   "The PRISM dataset contains only non-tabular "\
+                    "data files, and can only be used with the "\
+                    "'download only' engine."
+            logger.error(msg)
+            raise Exception(msg)
         Script.download(self, engine, debug)
 
         clim_vars = ['ppt', 'tmax', 'tmean', 'tmin']

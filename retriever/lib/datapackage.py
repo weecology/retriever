@@ -10,6 +10,9 @@ from time import sleep
 from retriever.lib.defaults import HOME_DIR, ENCODING
 from retriever.lib.scripts import SCRIPT_LIST
 
+from retriever.logger import getFileLogger
+logger = getFileLogger(os.path.join(os.pardir, os.pardir, "logs"), "datapackage.log")
+
 short_names = [script.name.lower() for script in SCRIPT_LIST()]
 
 
@@ -208,6 +211,7 @@ def create_json():
                     if not col_list:
                         break
                     if not isinstance(col_list, list):
+                        logger.error("isinstance(col_list, list) is {}".format(isinstance(col_list, list)))
                         raise Exception
 
                     col_list = [c.strip() for c in col_list]
@@ -217,10 +221,12 @@ def create_json():
 
                     if len(col_list) > 2:
                         if type(eval(col_list[2])) != int:
+                            logger.error("type(eval(col_list[2])) != int")
                             raise Exception
                         col_obj["size"] = col_list[2]
                     table["schema"]["fields"].append(col_obj)
                 except:
+                    logger.critical("Check the input format again.")
                     print("Exception occured. Check the input format again.\n")
                     pass
 

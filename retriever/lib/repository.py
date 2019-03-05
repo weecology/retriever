@@ -12,6 +12,8 @@ from pkg_resources import parse_version
 from retriever.lib.defaults import REPOSITORY, SCRIPT_WRITE_PATH, HOME_DIR
 from retriever.lib.models import file_exists
 
+from retriever.logger import getFileLogger
+logger = getFileLogger(os.path.join(os.pardir, os.pardir, "logs"), "repository.log")
 
 def _download_from_repository(filepath, newpath, repo=REPOSITORY):
     """Download latest version of a file from the repository."""
@@ -71,6 +73,7 @@ def check_for_updates():
                     _download_from_repository("scripts/" + script_name,
                                               os.path.normpath(os.path.join(SCRIPT_WRITE_PATH, script_name)))
                 except Exception as e:
+                    logger.error(str(e))
                     print(e)
                     pass
     except:

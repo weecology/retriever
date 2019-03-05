@@ -4,6 +4,8 @@ import subprocess
 from retriever.lib.defaults import ENCODING
 from retriever.lib.models import Engine, no_cleanup
 
+from retriever.logger import getFileLogger
+logger = getFileLogger(os.path.join(os.pardir, os.pardir, "logs"), "postgres.log")
 
 class engine(Engine):
     """Engine instance for PostgreSQL."""
@@ -79,7 +81,8 @@ class engine(Engine):
         """Create Engine database."""
         try:
             Engine.create_db(self)
-        except BaseException:
+        except BaseException as e:
+            logger.error(str(e))
             self.connection.rollback()
 
     def create_table(self):
@@ -94,11 +97,14 @@ class engine(Engine):
                 # Check if Postgis is installed and EXTENSION are Loaded
                 self.execute("SELECT PostGIS_full_version();")
             except BaseException as e:
+                logger.error(str(e))
+                msg = "Make sure that you have PostGIS installed\n"\
+                      "Open Postgres CLI or GUI(PgAdmin) and run:\n"\
+                      "CREATE EXTENSION postgis;\n"\
+                      "CREATE EXTENSION postgis_topology;"
+                logger.info(msg)
                 print(e)
-                print("Make sure that you have PostGIS installed\n"
-                      "Open Postgres CLI or GUI(PgAdmin) and run:\n"
-                      "CREATE EXTENSION postgis;\n"
-                      "CREATE EXTENSION postgis_topology;")
+                print(msg)
                 exit()
             return
         Engine.create_table(self)
@@ -130,7 +136,8 @@ CSV HEADER;"""
                 self.execute("BEGIN")
                 self.execute(statement)
                 self.execute("COMMIT")
-            except BaseException:
+            except BaseException as e:
+                logger.error(str(e))
                 self.connection.rollback()
                 return Engine.insert_data_from_file(self, filename)
         else:
@@ -237,7 +244,8 @@ CSV HEADER;"""
                     return "TRUE"
                 elif int(value) == 0:
                     return "FALSE"
-            except BaseException:
+            except BaseException as e:
+                logger.error(str(e))
                 pass
         return Engine.format_insert_value(self, value, datatype)
 

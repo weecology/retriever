@@ -18,12 +18,15 @@ from retriever.lib.get_opts import parser
 from retriever.lib.repository import check_for_updates
 from retriever.lib.scripts import SCRIPT_LIST, reload_scripts, get_script
 
+from retriever.logger import getFileLogger
+logger = getFileLogger(os.path.join(os.pardir, os.pardir, "logs"), "mysql.log")
 
 def main():
     """This function launches the Data Retriever."""
     if len(sys.argv) == 1:
         # if no command line args are passed, show the help options
         parser.parse_args(['-h'])
+        logger.info("No command line argument passed")
 
     else:
         # otherwise, parse them
@@ -38,18 +41,23 @@ def main():
         script_list = SCRIPT_LIST()
 
         if args.command == "install" and not args.engine:
+            logger.info("Intall arg passed")
             parser.parse_args(['install', '-h'])
 
         if args.quiet:
+            logger.info("Quit arg passed")
             sys.stdout = open(os.devnull, 'w')
 
         if args.command == 'help':
+            logger.info("Help arg passed")
             parser.parse_args(['-h'])
 
         if hasattr(args, 'compile') and args.compile:
+            logger.info("Compile arg passed")
             script_list = reload_scripts()
 
         if args.command == 'defaults':
+            logger.info("Defaults arg pasased")
             for engine_item in engine_list:
                 print("Default options for engine ", engine_item.name)
                 for default_opts in engine_item.required_opts:
@@ -58,11 +66,13 @@ def main():
             return
 
         if args.command == 'update':
+            logger.info("Update arg passed")
             check_for_updates()
             reload_scripts()
             return
 
         elif args.command == 'citation':
+            logger.info("Citation arg passed")
             if args.dataset is None:
                 print("\nCitation for retriever:\n")
                 print(CITATION)
@@ -76,6 +86,7 @@ def main():
             return
 
         elif args.command == 'license':
+            logger.info("License arg passed")
             dataset_license = license(args.dataset)
             if dataset_license:
                 print(dataset_license)
@@ -84,6 +95,7 @@ def main():
             return
 
         elif args.command == 'new':
+            logger.info("New arg passed")
             f = open(args.filename, 'w')
             f.write(sample_script)
             f.close()
@@ -91,21 +103,25 @@ def main():
             return
 
         elif args.command == 'reset':
+            logger.info("reset arg passed")
             reset_retriever(args.scope)
             return
 
         elif args.command == 'new_json':
+            logger.info("new_json arg passed")
             # create new JSON script
             create_json()
             return
 
         elif args.command == 'edit_json':
+            logger.info("edit_json arg passed")
             # edit existing JSON script
             json_file = get_script_filename(args.dataset.lower())
             edit_json(json_file)
             return
 
         elif args.command == 'delete_json':
+            logger.info("delete_json arg passes")
             # delete existing JSON script from home directory and or script directory if exists in current dir
             confirm = input("Really remove " + args.dataset.lower() +
                             " and all its contents? (y/N): ")
@@ -115,6 +131,7 @@ def main():
             return
 
         if args.command == 'ls':
+            logger.info("ls arg passes")
             # scripts should never be empty because check_for_updates is run on SCRIPT_LIST init
             if not (args.l or args.k or isinstance(args.v, list)):
                 all_scripts = dataset_names()
@@ -129,6 +146,7 @@ def main():
                         all_scripts = [get_script(dataset) for dataset in args.v]
                     except KeyError:
                         all_scripts = []
+                        logger.warning("Dataset(s) is not found.")
                         print("Dataset(s) is not found.")
                 else:
                     all_scripts = datasets()
@@ -157,6 +175,7 @@ def main():
                 # search
                 searched_scripts = datasets(keywords, param_licenses)
                 if not searched_scripts:
+                    logger.warning("No available datasets found")
                     print("No available datasets found")
                 else:
                     print("Available datasets : {}\n".format(len(searched_scripts)))
@@ -184,13 +203,16 @@ def main():
             sys.tracebacklimit = 0
 
         if hasattr(args, 'debug') and args.not_cached:
+            logger.info("Engine not using cache")
             engine.use_cache = False
         else:
+            logger.info("Enginer using cache")
             engine.use_cache = True
 
         if args.dataset is not None:
             scripts = name_matches(script_list, args.dataset)
         else:
+            logger.error("no dataset specified")
             raise Exception("no dataset specified.")
         if scripts:
             for dataset in scripts:
@@ -201,6 +223,7 @@ def main():
                 except KeyboardInterrupt:
                     pass
                 except Exception as e:
+                    logger.error(str(e))
                     print(e)
                     if debug:
                         raise

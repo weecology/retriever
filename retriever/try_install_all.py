@@ -17,9 +17,14 @@ from imp import reload
 from retriever.engines import engine_list, choose_engine
 from retriever.lib.scripts import SCRIPT_LIST
 
+from retriever.logger import getFileLogger
+logger = getFileLogger(os.path.join(os.pardir,"logs"),"try_install_all.log")
+logger.debug("Starting logging")
+
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding('latin-1')
+    logger.info("Encoding set to 'latin-1'")
 if os.name == "nt":
     os_password = "Password12!"
 else:
@@ -98,14 +103,20 @@ for module in MODULE_LIST:
                 except KeyboardInterrupt:
                     pass
                 except Exception as e:
+                    logger.error(str(e))
                     print("ERROR.")
                     errors.append((key, module.__name__, e))
             else:
                 errors.append((key, "No connection detected......" + module.SCRIPT.name))
 print('')
+
+
 if errors:
+    logger.error(str(errors))
     print("Engine, Dataset, Error")
     for error in errors:
         print(error)
 else:
+    logger.info("All tests passed")
     print("All tests passed")
+    

@@ -1,5 +1,9 @@
 #retriever
+import os
 from pkg_resources import parse_version
+
+from retriever.logger import getFileLogger
+logger = getFileLogger(os.path.join(os.pardir, os.pardir, "logs"), "cleanup.log")
 
 SCRIPT_VER = "1.2.3"
 try:
@@ -45,8 +49,9 @@ else:
 
         def download(self, engine=None, debug=False, ):
             if engine.name != "Download Only":
-                raise Exception(
-                    "The mammal-super-tree dataset contains only non-tabular data files, and can only be used with the 'download only' engine.")
+                msg = "The mammal-super-tree dataset contains only non-tabular data files, and can only be used with the 'download only' engine."
+                logger.error(msg)
+                raise Exception(msg)
             Script.download(self, engine, debug)
 
 SCRIPT = main()

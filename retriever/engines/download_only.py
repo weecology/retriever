@@ -9,6 +9,8 @@ from retriever.lib.dummy import DummyConnection
 from retriever.lib.engine import filename_from_url
 from retriever.lib.models import Engine
 
+from retriever.logger import getFileLogger
+logger = getFileLogger(os.path.join(os.pardir, os.pardir, "logs"), "download_only.log")
 
 class engine(Engine):
     """Engine instance for writing data to a CSV file."""
@@ -28,7 +30,8 @@ class engine(Engine):
         try:
             tablename = self.table_name(name=tablename, dbname=dbname)
             return os.path.exists(tablename)
-        except:
+        except Exception as e:
+            logger.error(str(e))
             return False
 
     def get_connection(self):
@@ -59,14 +62,16 @@ class engine(Engine):
                     if os.path.isdir(dest_path):
                         try:
                             shutil.copy(file_name, dest_path)
-                        except:
+                        except Exception as e:
+                            logger.error(str(e))
                             print("Couldn't copy file to %s" % dest_path)
                     else:
                         try:
                             print("Creating directory %s" % dest_path)
                             os.makedirs(dest_path)
                             shutil.copy(file_name, dest_path)
-                        except:
+                        except Exception as e:
+                            logger.error(str(e))
                             print("Couldn't create directory %s" % dest_path)
         self.all_files = set()
 

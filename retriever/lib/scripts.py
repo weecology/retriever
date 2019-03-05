@@ -16,6 +16,9 @@ from retriever.lib.defaults import SCRIPT_SEARCH_PATHS, VERSION, ENCODING, SCRIP
 from retriever.lib.load_json import read_json
 from retriever.lib.repository import check_for_updates
 
+from retriever.logger import getFileLogger, logging
+logger = getFileLogger(os.path.join(os.pardir,"logs"), "scripts.log")
+
 global_script_list = None
 
 
@@ -35,6 +38,7 @@ def check_retriever_minimum_version(module):
 
 def reload_scripts():
     """Load scripts from scripts directory and return list of modules."""
+    logger.info("Reloading scripts")
     modules = []
     loaded_files = []
     loaded_scripts = []
@@ -82,6 +86,9 @@ def reload_scripts():
                     setattr(new_module.SCRIPT, "_name", script_name)
                     modules.append(new_module.SCRIPT)
                 except Exception as e:
+                    logging.critical("Failed to load script: {} ({})\n"
+                                     "Exception: {} \n"
+                                     .format(script_name, search_path, str(e)))
                     sys.stderr.write("Failed to load script: {} ({})\n"
                                      "Exception: {} \n"
                                      .format(script_name, search_path, str(e)))
@@ -105,6 +112,7 @@ def get_script(dataset):
     if dataset in scripts:
         return scripts[dataset]
     else:
+        logger.error("No dataset named: {}".format(dataset))
         raise KeyError("No dataset named: {}".format(dataset))
 
 
