@@ -91,6 +91,17 @@ fetch_tests = [
      }])
 ]
 
+fetch_order_tests = [
+    ('acton-lake',
+     ['ActonLakeDepth', 'ActonLakeIntegrated', 'StreamDischarge', 'StreamNutrients',
+      'SiteCharacteristics']
+     ),
+    ('forest-plots-michigan',
+     ['all_plots_1935_1948', 'all_plots_1974_1980', 'swamp', 'species_codes',
+      'upland_plots_1989_2007', 'sampling_history']
+     )
+]
+
 python_files = ['flensburg_food_web']
 
 
@@ -255,3 +266,10 @@ def test_interface_table_registry():
     install_csv("iris")
     wine_data = fetch("wine-composition")
     assert "iris" not in wine_data.keys()
+
+
+@pytest.mark.parametrize("dataset, expected", fetch_order_tests)
+def test_fetch_order(dataset, expected):
+    """Test fetch dataframe order"""
+    data_frame_dict = fetch(dataset)
+    assert list(data_frame_dict.keys()) == expected
