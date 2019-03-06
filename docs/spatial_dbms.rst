@@ -7,7 +7,7 @@ Supporting installation of spatial data into `Postgres DBMS`.
 1. **Install Postgres**
 
   To install `Postgres` from scratch please ref to `Postgres installation`_.
-  For simplicity, use `.pgpass` file to avoid supplying the password every time
+  For simplicity, use `.pgpass` file(`pgpass.conf` file for Microsoft Windows) to avoid supplying the password every time
   as decribed in `Passwordless configuration`_.
 
   After installation, Make sure you have the paths to these tools added to your system's `PATHS`.

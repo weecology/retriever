@@ -100,9 +100,6 @@ table.
       "retriever": "True",
       "retriever_minimum_version": "2.0.dev",
       "title": "Mammal Life History Database - Ernest, et al., 2003"
-      "urls": {
-          "species": "www.exampleurl.com"
-      },
       "version": "1.0.0"
   }
 
@@ -189,14 +186,6 @@ Assuming we want to call our dataset McGlinn2010, below is an example of the scr
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Vascular plant composition - McGlinn, et al., 2010",
-    "urls": {
-        "climate": "http://esapubs.org/archive/ecol/E091/124/TGPP_clim.csv",
-        "cover": "http://esapubs.org/archive/ecol/E091/124/TGPP_cover.csv",
-        "environment": "http://esapubs.org/archive/ecol/E091/124/TGPP_env.csv",
-        "pres": "http://esapubs.org/archive/ecol/E091/124/TGPP_pres.csv",
-        "richness": "http://esapubs.org/archive/ecol/E091/124/TGPP_rich.csv",
-        "species": "http://esapubs.org/archive/ecol/E091/124/TGPP_specodes.csv"
-    }
     ...
 
 Null Values
