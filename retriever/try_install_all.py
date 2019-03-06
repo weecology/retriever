@@ -43,7 +43,7 @@ if os.path.exists("test_all"):
 os.makedirs("test_all")
 os.chdir("test_all")
 
-dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb.sqlite'))
+dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb_retriever.sqlite'))
 
 engine_test = {
     "postgres": {
@@ -62,7 +62,7 @@ engine_test = {
         'password': '',
         'host': 'localhost',
         'port': 3306,
-        'database_name': 'testdb',
+        'database_name': 'testdb_retriever',
         'table_name': '{db}.{table}'
     },
     "xml": {'engine': 'xml', 'table_name': 'output_file_{table}.xml'},

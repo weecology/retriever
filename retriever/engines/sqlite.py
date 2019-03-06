@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 from builtins import range
+from collections import OrderedDict
 
 from retriever.lib.defaults import DATA_DIR
 from retriever.lib.models import Engine, no_cleanup
@@ -26,11 +27,13 @@ class engine(Engine):
     insert_limit = 1000
     required_opts = [("file",
                       "Enter the filename of your SQLite database",
-                      os.path.join(DATA_DIR, "sqlite.db"),
-                      ""),
+                      "sqlite.db"),
                      ("table_name",
                       "Format of table name",
                       "{db}_{table}"),
+                     ("data_dir",
+                      "Install directory",
+                      DATA_DIR),
                      ]
 
     def create_db(self):
@@ -44,10 +47,12 @@ class engine(Engine):
     def fetch_tables(self, dataset, table_names):
         """Return sqlite dataset as list of pandas dataframe."""
         connection = self.get_connection()
-        data = {table[len(dataset) + 1:]: pd.read_sql_query("SELECT * "
-                                                            "FROM {};".format(table),
-                                                            connection)
-                for table in table_names}
+        sql_query = "SELECT * FROM {};"
+        data = OrderedDict([
+                    (table[len(dataset) + 1:],
+                    pd.read_sql_query(sql_query.format(table), connection))
+                    for table in table_names
+               ])
         return data
 
     def get_bulk_insert_statement(self):
@@ -109,4 +114,8 @@ class engine(Engine):
         import sqlite3 as dbapi
 
         self.get_input()
-        return dbapi.connect(self.opts["file"])
+        file = self.opts["file"]
+        db_file = self.opts["data_dir"]
+        full_path = os.path.join(db_file, file)
+
+        return dbapi.connect(os.path.normpath(full_path))

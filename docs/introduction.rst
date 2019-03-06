@@ -250,7 +250,9 @@ management systems. If you want to store connection details they should be
 stored in those files. Make sure to secure these files appropriately.
 
 For postgreSQL, create or modify `~/.pgpass`. This is a file named `.pgpass`
-located in the users home directory. It should take the general form:
+located in the users home directory. On Microsoft Windows, the file is named
+`%APPDATA%\postgresql\pgpass.conf` (where `%APPDATA%` refers to the Application
+Data subdirectory in the user's profile). It should take the general form:
 
 ``hostname:port:database:username:password``
 

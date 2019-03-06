@@ -28,7 +28,10 @@ class engine(Engine):
     required_opts = [
         ("table_name",
          "Format of table name",
-         os.path.join(DATA_DIR, "{db}_{table}.csv")),
+         "{db}_{table}.csv"),
+        ("data_dir",
+         "Install directory",
+         DATA_DIR),
     ]
     table_names = []
 
@@ -39,11 +42,12 @@ class engine(Engine):
     def create_table(self):
         """Create the table by creating an empty csv file"""
         self.auto_column_number = 1
-        self.file = open_fw(self.table_name())
+        table_path = os.path.join(self.opts["data_dir"], self.table_name())
+        self.file = open_fw(table_path)
         self.output_file = open_csvw(self.file)
         column_list = self.table.get_insert_columns(join=False, create=True)
         self.output_file.writerow([u'{}'.format(val) for val in column_list])
-        self.table_names.append((self.file, self.table_name()))
+        self.table_names.append((self.file, table_path))
 
         # Register all tables created to enable
         # testing python files having custom download function
@@ -100,7 +104,9 @@ class engine(Engine):
     def table_exists(self, dbname, tablename):
         """Check to see if the data file currently exists"""
         tablename = self.table_name(name=tablename, dbname=dbname)
-        return os.path.exists(tablename)
+        tabledir = self.opts["data_dir"]
+        table_name = os.path.join(tabledir, tablename)
+        return os.path.exists(table_name)
 
     def to_csv(self, sort=True):
         """Export sorted version of CSV file"""

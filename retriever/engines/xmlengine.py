@@ -28,7 +28,10 @@ class engine(Engine):
     required_opts = [
         ("table_name",
          "Format of table name",
-         os.path.join(DATA_DIR, "{db}_{table}.xml")),
+         "{db}_{table}.xml"),
+        ("data_dir",
+         "Install directory",
+         DATA_DIR),
     ]
     table_names = []
 
@@ -38,10 +41,11 @@ class engine(Engine):
 
     def create_table(self):
         """Create the table by creating an empty XML file."""
-        self.output_file = open_fw(self.table_name())
+        table_path = os.path.join(self.opts["data_dir"], self.table_name())
+        self.output_file = open_fw(table_path)
         self.output_file.write(u'<?xml version="1.0" encoding="UTF-8"?>')
         self.output_file.write(u'\n<root>')
-        self.table_names.append((self.output_file, self.table_name()))
+        self.table_names.append((self.output_file, table_path))
         self.auto_column_number = 1
 
         # Register all tables created to enable
