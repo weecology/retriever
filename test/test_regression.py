@@ -92,9 +92,6 @@ fetch_tests = [
 ]
 
 fetch_order_tests = [
-    ('airports',
-     ['airports', 'airport_frequencies', 'runways', 'navaids', 'countries', 'regions']
-     ),
     ('acton-lake',
      ['ActonLakeDepth', 'ActonLakeIntegrated', 'StreamDischarge', 'StreamNutrients',
       'SiteCharacteristics']
@@ -102,10 +99,6 @@ fetch_order_tests = [
     ('forest-plots-michigan',
      ['all_plots_1935_1948', 'all_plots_1974_1980', 'swamp', 'species_codes',
       'upland_plots_1989_2007', 'sampling_history']
-     ),
-    ('veg-plots-sdl',
-     ['Plots', 'Plot_corners', 'Species', 'Seedling_counts', 'Count1906',
-      'SMCover', 'SMDensity', 'Stake_info', 'Photo_info']
      )
 ]
 
@@ -275,11 +268,8 @@ def test_interface_table_registry():
     assert "iris" not in wine_data.keys()
 
 
-def test_fetch_order():
+@pytest.mark.parametrize("dataset, expected", fetch_order_tests)
+def test_fetch_order(dataset, expected):
     """Test fetch dataframe order"""
-    for dataset, expected in fetch_order_tests:
-        data_frame_dict = fetch(dataset)
-        data_frames = []
-        for name, data_frame in data_frame_dict.items():
-            data_frames.append(name)
-        assert expected == data_frames
+    data_frame_dict = fetch(dataset)
+    assert list(data_frame_dict.keys()) == expected
