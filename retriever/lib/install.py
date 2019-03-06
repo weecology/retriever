@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import os
+from collections import OrderedDict
 
 from retriever.engines import choose_engine
 from retriever.lib.defaults import DATA_DIR, SCRIPT_WRITE_PATH
@@ -23,6 +24,7 @@ def _install(args, use_cache, debug):
     if data_sets_scripts:
         for data_sets_script in data_sets_scripts:
             try:
+                engine.script_table_registry = OrderedDict()
                 data_sets_script.download(engine, debug=debug)
                 data_sets_script.engine.final_cleanup()
             except Exception as e:
