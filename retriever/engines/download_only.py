@@ -15,20 +15,17 @@ class engine(Engine):
 
     name = "Download Only"
     abbreviation = "download"
-    required_opts = [("path",
-                      "File path to copy data files",
-                      "./"),
-                     ("subdir",
-                      "Keep the subdirectories for archived files",
-                      False)
-                     ]
+    required_opts = [
+        ("path", "File path to copy data files", "./"),
+        ("subdir", "Keep the subdirectories for archived files", False),
+    ]
 
     def table_exists(self, dbname, tablename):
         """Checks if the file to be downloaded already exists"""
         try:
             tablename = self.table_name(name=tablename, dbname=dbname)
             return os.path.exists(tablename)
-        except:
+        except Exception:
             return False
 
     def get_connection(self):
@@ -46,27 +43,28 @@ class engine(Engine):
         if hasattr(self, "all_files"):
             for file_name in self.all_files:
                 file_path, file_name_nopath = os.path.split(file_name)
-                subdir = os.path.split(file_path)[1] if self.opts['subdir'] else ''
-                dest_path = os.path.join(self.opts['path'], subdir)
+                subdir = os.path.split(file_path)[1] if self.opts["subdir"] else ""
+                dest_path = os.path.join(self.opts["path"], subdir)
                 if os.path.isfile(os.path.join(dest_path, file_name_nopath)):
                     print("File already exists at specified location")
-                elif os.path.abspath(file_path) == os.path.abspath(os.path.join(DATA_DIR, subdir)):
-                    print("%s is already in the working directory" %
-                          file_name_nopath)
+                elif os.path.abspath(file_path) == os.path.abspath(
+                    os.path.join(DATA_DIR, subdir)
+                ):
+                    print("%s is already in the working directory" % file_name_nopath)
                     print("Keeping existing copy.")
                 else:
                     print("Copying %s from %s" % (file_name_nopath, file_path))
                     if os.path.isdir(dest_path):
                         try:
                             shutil.copy(file_name, dest_path)
-                        except:
+                        except Exception:
                             print("Couldn't copy file to %s" % dest_path)
                     else:
                         try:
                             print("Creating directory %s" % dest_path)
                             os.makedirs(dest_path)
                             shutil.copy(file_name, dest_path)
-                        except:
+                        except Exception:
                             print("Couldn't create directory %s" % dest_path)
         self.all_files = set()
 
@@ -103,8 +101,11 @@ class engine(Engine):
         informed of all of the file names so that it can move them.
 
         """
-        full_filenames = {self.find_file(filename) for filename in filenames
-                          if self.find_file(filename)}
+        full_filenames = {
+            self.find_file(filename)
+            for filename in filenames
+            if self.find_file(filename)
+        }
         self.all_files = self.all_files.union(full_filenames)
 
 
@@ -114,18 +115,21 @@ def dummy_method(self, *args, **kwargs):
 
 
 methods = inspect.getmembers(engine, predicate=inspect.ismethod)
-keep_methods = {'table_exists',
-                'get_connection',
-                'final_cleanup',
-                'auto_create_table',
-                'insert_data_from_url',
-                }
-remove_methods = ['insert_data_from_file', 'create_db', "create_table"]
+keep_methods = {
+    "table_exists",
+    "get_connection",
+    "final_cleanup",
+    "auto_create_table",
+    "insert_data_from_url",
+}
+remove_methods = ["insert_data_from_file", "create_db", "create_table"]
 for name, method in methods:
-    if (name not in keep_methods and
-                'download' not in name and
-                'file' not in name and
-                'dir' not in name):
+    if (
+        name not in keep_methods
+        and "download" not in name
+        and "file" not in name
+        and "dir" not in name
+    ):
         setattr(engine, name, dummy_method)
 for name in remove_methods:
     setattr(engine, name, dummy_method)

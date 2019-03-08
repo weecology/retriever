@@ -22,28 +22,15 @@ class engine(Engine):
     max_int = 2147483647
     placeholder = "%s"
     insert_limit = 1000
-    required_opts = [("user",
-                      "Enter your PostgreSQL username",
-                      "postgres"),
-                     ("password",
-                      "Enter your password",
-                      ""),
-                     ("host",
-                      "Enter your PostgreSQL host",
-                      "localhost"),
-                     ("port",
-                      "Enter your PostgreSQL port",
-                      5432),
-                     ("database",
-                      "Enter your PostgreSQL database name",
-                      "postgres"),
-                     ("database_name",
-                      "Format of schema name",
-                      "{db}"),
-                     ("table_name",
-                      "Format of table name",
-                      "{db}.{table}"),
-                     ]
+    required_opts = [
+        ("user", "Enter your PostgreSQL username", "postgres"),
+        ("password", "Enter your password", ""),
+        ("host", "Enter your PostgreSQL host", "localhost"),
+        ("port", "Enter your PostgreSQL port", 5432),
+        ("database", "Enter your PostgreSQL database name", "postgres"),
+        ("database_name", "Format of schema name", "{db}"),
+        ("table_name", "Format of table name", "{db}.{table}"),
+    ]
     spatial_support = True
 
     def auto_create_table(self, table, url=None, filename=None, pk=None):
@@ -88,17 +75,22 @@ class engine(Engine):
         PostgreSQL needs to commit operations individually.
         Enable PostGis extensions if a script has a non tabular table.
         """
-        if self.table and self.table.dataset_type and \
-                not self.table.dataset_type == "TabularDataset":
+        if (
+            self.table
+            and self.table.dataset_type
+            and not self.table.dataset_type == "TabularDataset"
+        ):
             try:
                 # Check if Postgis is installed and EXTENSION are Loaded
                 self.execute("SELECT PostGIS_full_version();")
             except BaseException as e:
                 print(e)
-                print("Make sure that you have PostGIS installed\n"
-                      "Open Postgres CLI or GUI(PgAdmin) and run:\n"
-                      "CREATE EXTENSION postgis;\n"
-                      "CREATE EXTENSION postgis_topology;")
+                print(
+                    "Make sure that you have PostGIS installed\n"
+                    "Open Postgres CLI or GUI(PgAdmin) and run:\n"
+                    "CREATE EXTENSION postgis;\n"
+                    "CREATE EXTENSION postgis_topology;"
+                )
                 exit()
             return
         Engine.create_table(self)
@@ -114,18 +106,37 @@ class engine(Engine):
         """Use PostgreSQL's "COPY FROM" statement to perform a bulk insert."""
         self.get_cursor()
         ct = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
-        if (([self.table.cleanup.function, self.table.delimiter,
-              self.table.header_rows] == [no_cleanup, ",", 1])
+        if (
+            (
+                [
+                    self.table.cleanup.function,
+                    self.table.delimiter,
+                    self.table.header_rows,
+                ]
+                == [no_cleanup, ",", 1]
+            )
             and not self.table.fixed_width
             and not ct
-            and (not hasattr(self.table, "do_not_bulk_insert") or not self.table.do_not_bulk_insert)):
+            and (
+                not hasattr(self.table, "do_not_bulk_insert")
+                or not self.table.do_not_bulk_insert
+            )
+        ):
             columns = self.table.get_insert_columns()
             filename = os.path.abspath(filename)
-            statement = """
-COPY """ + self.table_name() + " (" + columns + """)
-FROM '""" + filename.replace("\\", "\\\\") + """'
+            statement = (
+                """
+COPY """
+                + self.table_name()
+                + " ("
+                + columns
+                + """)
+FROM '"""
+                + filename.replace("\\", "\\\\")
+                + """'
 WITH DELIMITER ','
 CSV HEADER;"""
+            )
             try:
                 self.execute("BEGIN")
                 self.execute(statement)
@@ -153,8 +164,16 @@ CSV HEADER;"""
         if ext:
             raster_extensions = ext
         else:
-            raster_extensions = ['.gif', '.img', '.bil',
-                                 '.jpg', '.tif', '.tiff', '.hdf', '.l1b']
+            raster_extensions = [
+                ".gif",
+                ".img",
+                ".bil",
+                ".jpg",
+                ".tif",
+                ".tiff",
+                ".hdf",
+                ".l1b",
+            ]
 
         gis_files = []
         for root, _, files in os.walk(path, topdown=False):
@@ -174,16 +193,15 @@ CSV HEADER;"""
         if not path:
             path = Engine.format_data_dir(self)
 
-        raster_sql = "raster2pgsql -M -d -I -s {SRID} \"{path}\" -F -t 100x100 {SCHEMA_DBTABLE}".format(
-            SRID=srid,
-            path=os.path.normpath(path),
-            SCHEMA_DBTABLE=self.table_name())
+        raster_sql = 'raster2pgsql -M -d -I -s {SRID} "{path}" -F -t 100x100 {SCHEMA_DBTABLE}'.format(
+            SRID=srid, path=os.path.normpath(path), SCHEMA_DBTABLE=self.table_name()
+        )
 
         cmd_string = """ | psql -U {USER} -d {DATABASE} --port {PORT} --host {HOST}""".format(
             USER=self.opts["user"],
             DATABASE=self.opts["database"],
             PORT=self.opts["port"],
-            HOST=self.opts["host"]
+            HOST=self.opts["host"],
         )
 
         cmd_stmt = raster_sql + cmd_string
@@ -213,16 +231,15 @@ CSV HEADER;"""
          """
         if not path:
             path = Engine.format_data_dir(self)
-        vector_sql = "shp2pgsql -d -I -s {SRID} \"{path}\" {SCHEMA_DBTABLE}".format(
-            SRID=srid,
-            path=os.path.normpath(path),
-            SCHEMA_DBTABLE=self.table_name())
+        vector_sql = 'shp2pgsql -d -I -s {SRID} "{path}" {SCHEMA_DBTABLE}'.format(
+            SRID=srid, path=os.path.normpath(path), SCHEMA_DBTABLE=self.table_name()
+        )
 
         cmd_string = """ | psql -U {USER} -d {DATABASE} --port {PORT} --host {HOST}""".format(
             USER=self.opts["user"],
             DATABASE=self.opts["database"],
             PORT=self.opts["port"],
-            HOST=self.opts["host"]
+            HOST=self.opts["host"],
         )
         cmd_stmt = vector_sql + cmd_string
         if self.debug:
@@ -249,17 +266,17 @@ CSV HEADER;"""
         import psycopg2 as dbapi
 
         self.get_input()
-        conn = dbapi.connect(host=self.opts["host"],
-                             port=int(self.opts["port"]),
-                             user=self.opts["user"],
-                             password=self.opts["password"],
-                             database=self.opts["database"])
+        conn = dbapi.connect(
+            host=self.opts["host"],
+            port=int(self.opts["port"]),
+            user=self.opts["user"],
+            password=self.opts["password"],
+            database=self.opts["database"],
+        )
         encoding = ENCODING.lower()
         if self.script.encoding:
             encoding = self.script.encoding.lower()
-        encoding_lookup = {'iso-8859-1': 'Latin1',
-                           'latin-1': 'Latin1',
-                           'utf-8': 'UTF8'}
+        encoding_lookup = {"iso-8859-1": "Latin1", "latin-1": "Latin1", "utf-8": "UTF8"}
         db_encoding = encoding_lookup.get(encoding)
         conn.set_client_encoding(db_encoding)
         return conn

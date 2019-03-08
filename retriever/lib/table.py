@@ -1,13 +1,12 @@
 from future import standard_library
-
-standard_library.install_aliases()
+standard_library.install_aliases()  # noqa
 
 import csv
 import io
 import sys
 from functools import reduce
 
-from retriever.lib.cleanup import *
+from retriever.lib.cleanup import Cleanup, correct_invalid_value
 
 
 class Dataset(object):
@@ -21,15 +20,24 @@ class Dataset(object):
 class TabularDataset(Dataset):
     """Tabular database table."""
 
-    def __init__(self, name=None, url=None, pk=True,
-                 contains_pk=False, delimiter=None,
-                 header_rows=1, column_names_row=1,
-                 fixed_width=False, cleanup=Cleanup(),
-                 record_id=0,
-                 columns=[],
-                 replace_columns=[],
-                 missingValues=None,
-                 cleaned_columns=False, **kwargs):
+    def __init__(
+        self,
+        name=None,
+        url=None,
+        pk=True,
+        contains_pk=False,
+        delimiter=None,
+        header_rows=1,
+        column_names_row=1,
+        fixed_width=False,
+        cleanup=Cleanup(),
+        record_id=0,
+        columns=[],
+        replace_columns=[],
+        missingValues=None,
+        cleaned_columns=False,
+        **kwargs
+    ):
 
         self.name = name
         self.url = url
@@ -52,9 +60,9 @@ class TabularDataset(Dataset):
             else:
                 setattr(self, key, kwargs[key])
 
-        if hasattr(self, 'schema'):
+        if hasattr(self, "schema"):
             self.add_schema()
-        if hasattr(self, 'dialect'):
+        if hasattr(self, "dialect"):
             self.add_dialect()
 
         Dataset.__init__(self, self.name, self.url)
@@ -70,8 +78,9 @@ class TabularDataset(Dataset):
             if key == "missingValues":
                 if self.dialect["missingValues"]:
                     self.missingValues = self.dialect["missingValues"]
-                    self.cleanup = Cleanup(correct_invalid_value,
-                                           missingValues=self.missingValues)
+                    self.cleanup = Cleanup(
+                        correct_invalid_value, missingValues=self.missingValues
+                    )
             elif key == "delimiter":
                 self.delimiter = str(self.dialect["delimiter"])
             else:
@@ -99,7 +108,7 @@ class TabularDataset(Dataset):
             "decimal": "decimal",
             "char": "char",
             "bool": "bool",
-            "skip": "skip"
+            "skip": "skip",
         }
 
         for key in self.schema:
@@ -107,18 +116,17 @@ class TabularDataset(Dataset):
                 column_list = []
                 for obj in self.schema["fields"]:
                     type = None
-                    if str(obj["type"]).startswith("pk-") or str(obj["type"]).startswith("ct-"):
+                    if str(obj["type"]).startswith("pk-") or str(
+                        obj["type"]
+                    ).startswith("ct-"):
                         type = obj["type"]
                     else:
                         type = spec_data_types.get(obj["type"], "char")
 
                     if "size" in obj:
-                        column_list.append((obj["name"],
-                                            (type,
-                                             obj["size"])))
+                        column_list.append((obj["name"], (type, obj["size"])))
                     else:
-                        column_list.append((obj["name"],
-                                            (type,)))
+                        column_list.append((obj["name"], (type,)))
                 self.columns = column_list
             elif key == "ct_column":
                 setattr(self, key, "'" + self.schema[key] + "'")
@@ -142,8 +150,9 @@ class TabularDataset(Dataset):
         remove leading whitespaces, replace sql key words, etc.
         """
         column_name = column_name.lower().strip().replace("\n", "")
-        replace_columns = {old.lower(): new.lower()
-                           for old, new in self.replace_columns}
+        replace_columns = {
+            old.lower(): new.lower() for old, new in self.replace_columns
+        }
         column_name = str(replace_columns.get(column_name, column_name).strip())
         replace = [
             ("%", "percent"),
@@ -153,8 +162,10 @@ class TabularDataset(Dataset):
             ("<", "_lthn_"),
             (">", "_gthn_"),
         ]
-        replace += [(x, '') for x in (")", "?", "#", ";" "\n", "\r", '"', "'")]
-        replace += [(x, '_') for x in (" ", "(", "/", ".", "+", "-", "*", ":", "[", "]")]
+        replace += [(x, "") for x in (")", "?", "#", ";" "\n", "\r", '"', "'")]
+        replace += [
+            (x, "_") for x in (" ", "(", "/", ".", "+", "-", "*", ":", "[", "]")
+        ]
 
         column_name = reduce(lambda x, y: x.replace(*y), replace, column_name)
 
@@ -177,14 +188,14 @@ class TabularDataset(Dataset):
             "update": "updates",
             "date": "record_date",
             "index": "indices",
-            "repeat": "repeats", 
-            "system": "systems", 
-            "class": "classes"
+            "repeat": "repeats",
+            "system": "systems",
+            "class": "classes",
         }
         for x in (")", "\n", "\r", '"', "'"):
-            replace_dict[x] = ''
+            replace_dict[x] = ""
         for x in (" ", "(", "/", ".", "-"):
-            replace_dict[x] = '_'
+            replace_dict[x] = "_"
         if column_name in replace_dict:
             column_name = replace_dict[column_name]
         return column_name
@@ -203,7 +214,7 @@ class TabularDataset(Dataset):
 
     def values_from_line(self, line):
         linevalues = []
-        if self.columns[0][1][0] == 'pk-auto':
+        if self.columns[0][1][0] == "pk-auto":
             column = 1
         else:
             column = 0
@@ -221,7 +232,7 @@ class TabularDataset(Dataset):
                 else:
                     # Otherwise, add new value
                     linevalues.append(value)
-            except:
+            except Exception:
                 # too many values for columns; ignore
                 pass
             column += 1
@@ -245,11 +256,12 @@ class TabularDataset(Dataset):
         if not self.cleaned_columns:
             column_names = list(self.columns)
             self.columns[:] = []
-            self.columns = [(self.clean_column_name(name[0]), name[1])
-                            for name in column_names]
+            self.columns = [
+                (self.clean_column_name(name[0]), name[1]) for name in column_names
+            ]
             self.cleaned_columns = True
         for item in self.columns:
-            if not create and item[1][0] == 'pk-auto':
+            if not create and item[1][0] == "pk-auto":
                 # don't include this columns if create=False
                 continue
             thistype = item[1][0]
@@ -314,8 +326,5 @@ class VectorDataset(Dataset):
 
         Dataset.__init__(self, self.name, self.url)
 
-myTables = {
-    "vector": VectorDataset,
-    "raster": RasterDataset,
-    "tabular": TabularDataset,
-}
+
+myTables = {"vector": VectorDataset, "raster": RasterDataset, "tabular": TabularDataset}

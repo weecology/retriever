@@ -20,6 +20,6 @@ class Excel(object):
     @staticmethod
     def cell_value(cell):
         """Return string value of an excel spreadsheet cell."""
-        if (cell.value).__class__.__name__ == 'unicode':
+        if (cell.value).__class__.__name__ == "unicode":
             return (str(cell.value).encode()).strip()
         return str(cell.value).strip()
