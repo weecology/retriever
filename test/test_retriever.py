@@ -105,7 +105,7 @@ def test_auto_get_datatypes():
     The function adds 100 to the auto detected length of column
     """
     test_engine.auto_get_datatypes(None,
-                                   [["�", 'bb', 'L�ve']],
+                                   [["ö", 'bb', 'Löve']],
                                    [['a', None], ['b', None], ['c', None]])
     length = test_engine.table.columns
     assert [length[0][1][1], length[1][1][1], length[2][1][1]] == \

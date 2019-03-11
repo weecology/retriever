@@ -139,7 +139,7 @@ data_no_header = {
 csv_latin1_encoding = {
     'name': 'csv_latin1_encoding',
     'raw_data': ['a,b,c',
-                 u'1,2,4L�ve',
+                 u'1,2,4Löve',
                  '4,5,6'],
     'script': {"name": "csv_latin1_encoding",
                "resources": [
@@ -157,7 +157,7 @@ csv_latin1_encoding = {
                         "http://example.com/csv_latin1_encoding.txt"
                     }
                },
-    'expect_out': [u'a,b,c', u'1,2,4L�ve', u'4,5,6']
+    'expect_out': [u'a,b,c', u'1,2,4Löve', u'4,5,6']
 }
 
 autopk_csv = {
