@@ -1,4 +1,4 @@
-# -*- coding: latin-1 -*-
+# -*- coding: UTF-8 -*-
 #retriever
 
 """Retriever script for direct download of vertnet-amphibians data"""
