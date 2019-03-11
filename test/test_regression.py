@@ -7,6 +7,9 @@ import shlex
 import shutil
 import subprocess
 import sys
+
+import time
+
 from imp import reload
 
 from retriever import download
@@ -65,6 +68,14 @@ db_md5 = [
     ('bird_size', '98dcfdca19d729c90ee1c6db5221b775'),
     ('mammal_masses', '6fec0fc63007a4040d9bbc5cfcd9953e')
 ]
+
+spatial_db_md5 = [
+    ("test-eco-level-four", ["gid", "us_l3code", "na_l3code","na_l2code"], 'd1c01d8046143e9700f5cf92cbd6be3d'),
+    ("test-raster-bio1", ["rid", "filename"], '27e0472ddc2da9fe807bfb48b786a251'),
+    ("test-raster-bio2", ["rid", "filename"], '2983a9f7e099355db2ce2fa312a94cc6'),
+    ("test-us-eco", ["gid", "us_l3code", "na_l3code", "na_l2code"], 'eaab9fa30c745557ff6ba7c116910b45')
+]
+
 
 # Tuple of (dataset_name, list of dict values corresponding to a table)
 fetch_tests = [
@@ -137,7 +148,7 @@ def get_script_module(script_name):
     return read_json(os.path.join(retriever_root_dir, 'scripts', script_name))
 
 
-def get_csv_md5(dataset, engine, tmpdir, install_function, config):
+def get_csv_md5(dataset, engine, tmpdir, install_function, config, cols=None):
     workdir = tmpdir.mkdtemp()
     src = os.path.join(retriever_root_dir, 'scripts')
     dest = os.path.join(str(workdir), 'scripts')
@@ -146,7 +157,8 @@ def get_csv_md5(dataset, engine, tmpdir, install_function, config):
     final_direct = os.getcwd()
     engine.script_table_registry = {}
     engine_obj = install_function(dataset.replace('_', '-'), **config)
-    engine_obj.to_csv()
+    time.sleep(5)
+    engine_obj.to_csv(select_columns=cols)
     # need to remove scripts before checking md5 on dir
     subprocess.call(['rm', '-r', 'scripts'])
     current_md5 = getmd5(data=final_direct, data_type='dir')
@@ -201,13 +213,13 @@ def test_mysql_regression(dataset, expected, tmpdir):
     subprocess.call(shlex.split(cmd))
     mysql_engine.opts = {'engine': 'mysql',
                          'user': 'travis',
-                         'password': os_password,
+                         'password': '',
                          'host': mysqldb_host,
                          'port': 3306,
                          'database_name': testdb_retriever,
                          'table_name': '{db}.{table}'}
     interface_opts = {"user": mysql_engine.opts['user'],
-                      'password': mysql_engine.opts['password'],
+                      # 'password': mysql_engine.opts['password'],
                       'host': mysql_engine.opts['host'],
                       'port': mysql_engine.opts['port'],
                       "database_name": mysql_engine.opts['database_name'],
@@ -286,3 +298,25 @@ def test_fetch_order(dataset, expected):
     """Test fetch dataframe order"""
     data_frame_dict = fetch(dataset)
     assert list(data_frame_dict.keys()) == expected
+
+@pytest.mark.parametrize("dataset, cols, expected", spatial_db_md5)
+def test_postgres_spatial(dataset, cols, expected, tmpdir):
+    """Check for postgres regression."""
+    cmd = 'psql -U postgres -d ' + testdb_retriever + ' -h ' + pgdb_host + ' -w -c \"DROP SCHEMA IF EXISTS ' + testschema + ' CASCADE\"'
+    subprocess.call(shlex.split(cmd))
+    postgres_engine.opts = {'engine': 'postgres',
+                            'user': 'postgres',
+                            'password': os_password,
+                            'host': pgdb_host,
+                            'port': 5432,
+                            'database': testdb_retriever,
+                            'database_name': testschema,
+                            'table_name': '{db}.{table}'}
+    interface_opts = {"user": 'postgres',
+                      # "password": postgres_engine.opts['password'],
+                      'host': postgres_engine.opts['host'],
+                      'port': postgres_engine.opts['port'],
+                      "database": postgres_engine.opts['database'],
+                      "database_name": postgres_engine.opts['database_name'],
+                      "table_name": postgres_engine.opts['table_name']}
+    assert get_csv_md5(dataset, postgres_engine, tmpdir, install_postgres, interface_opts, cols) == expected

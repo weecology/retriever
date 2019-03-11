@@ -66,4 +66,4 @@ build_script:
   - cd C:\projects\retriever
 
 test_script:
-  - py.test -v -k "not test_download_archive"
+  - py.test -v -k "not test_download_archive and not test_postgres_spatial"

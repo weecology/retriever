@@ -828,7 +828,14 @@ class Engine(object):
                 dbname = ''
         return self.opts["table_name"].format(db=dbname, table=name)
 
-    def to_csv(self, sort=True, path=None):
+    def to_csv(self, sort=True, path=None, select_columns=None):
+        """Create a CSV file from the a data store.
+
+        sort flag to create a sorted file,
+        path to write the flag else write to the PWD,
+        select_columns flag is used by large files to select
+        columns data and has SELECT LIMIT 3.
+        """
         # Due to Cyclic imports we can not move this import to the top
         from retriever.lib.engine_tools import sort_csv
 
@@ -840,7 +847,13 @@ class Engine(object):
             csv_writer = open_csvw(csv_file)
             self.get_cursor()
             self.set_engine_encoding()
-            self.cursor.execute("SELECT * FROM  {};".format(table_name[0]))
+            limit = ""
+            cols = "*"
+            if select_columns:
+                limit = "LIMIT 3"
+                cols = ",".join(select_columns)
+            sql_query = "SELECT {cols} FROM  {tab} {limit};"
+            self.cursor.execute(sql_query.format(cols=cols, tab=table_name[0], limit=limit))
             row = self.cursor.fetchone()
             column_names = [u'{}'.format(tuple_i[0])
                             for tuple_i in self.cursor.description]

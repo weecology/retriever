@@ -1,26 +1,23 @@
 cache: packages
 sudo: required
 warnings_are_errors: false
-
-# language: python
-
+services:
+  - docker
+#language: python
 # # We shall remove them since we shall only test with 3. 
 # # No future support for Python2.7 
 # # python:
 # #   - "2.7" 
-# #   - "3.5"
+#    - "3.5"
 
-services:
-  - docker
 
-## database setup
-#before_install:
-#  - docker-compose  run python_retriever
-#
+# database setup
+before_install:
+-  docker-compose run python_retriever > /dev/null
 
 # command to run tests using py.test
 script:
-  - docker-compose run --service-ports python_retriever py.test -v --cov=retriever  || exit 1
+-  docker-compose  run --service-ports python_retriever py.test -v --cov=retriever  || exit 1
 
 after_success:
   - codecov

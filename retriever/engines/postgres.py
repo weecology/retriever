@@ -165,16 +165,19 @@ CSV HEADER;"""
 
     def insert_raster(self, path=None, srid=4326):
         """Import Raster into Postgis Table
-        Uses raster2pgsql -I -C -s <SRID> <PATH> <SCHEMA>.<DBTABLE>
+        Uses raster2pgsql -Y -M -d -I -s <SRID> <PATH> <SCHEMA>.<DBTABLE>
         | psql -d <DATABASE>
         The sql processed by raster2pgsql is run
         as psql -U postgres -d <gisdb> -f <elev>.sql
+        -Y uses COPY to insert data,
+        -M VACUUM table,
+        -d  Drops the table, recreates insert raster data
         """
 
         if not path:
             path = Engine.format_data_dir(self)
 
-        raster_sql = "raster2pgsql -M -d -I -s {SRID} \"{path}\" -F -t 100x100 {SCHEMA_DBTABLE}".format(
+        raster_sql = "raster2pgsql -Y -M -d -I -s {SRID} \"{path}\" -F -t 100x100 {SCHEMA_DBTABLE}".format(
             SRID=srid,
             path=os.path.normpath(path),
             SCHEMA_DBTABLE=self.table_name())
@@ -189,7 +192,14 @@ CSV HEADER;"""
         cmd_stmt = raster_sql + cmd_string
         if self.debug:
             print(cmd_stmt)
+        self.register_tables()
         subprocess.call(cmd_stmt, shell=True, stdout=subprocess.PIPE)
+
+    def register_tables(self):
+        if self.script.name not in self.script_table_registry:
+            self.script_table_registry[self.script.name] = []
+        self.script_table_registry[self.script.name].append(
+            (self.table_name(), self.table))
 
     def insert_vector(self, path=None, srid=4326):
         """Import Vector into Postgis Table
@@ -210,10 +220,12 @@ CSV HEADER;"""
 
         The sql processed by shp2pgsql is run
         as  psql -U postgres -d <DBNAME>>
+        shp2pgsql -c -D -s 4269 -i -I
          """
         if not path:
             path = Engine.format_data_dir(self)
-        vector_sql = "shp2pgsql -d -I -s {SRID} \"{path}\" {SCHEMA_DBTABLE}".format(
+        vector_sql = "shp2pgsql -d -I -W {encd} -s {SRID} \"{path}\" {SCHEMA_DBTABLE}".format(
+            encd=ENCODING,
             SRID=srid,
             path=os.path.normpath(path),
             SCHEMA_DBTABLE=self.table_name())
@@ -227,6 +239,7 @@ CSV HEADER;"""
         cmd_stmt = vector_sql + cmd_string
         if self.debug:
             print(cmd_stmt)
+        self.register_tables()
         subprocess.call(cmd_stmt, shell=True, stdout=subprocess.PIPE)
 
     def format_insert_value(self, value, datatype):

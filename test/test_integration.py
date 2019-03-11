@@ -536,7 +536,7 @@ def test_mysql_integration(dataset, expected, tmpdir):
     mysql_engine.opts = {
         'engine': 'mysql',
         'user': 'travis',
-        'password': os_password,
+        'password': '',
         'host': mysqldb_host,
         'port': 3306,
         'database_name': testdb_retriever,
