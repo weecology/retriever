@@ -193,18 +193,19 @@ def main():
         else:
             raise Exception("no dataset specified.")
         if scripts:
-            for dataset in scripts:
-                print("=> Installing", dataset.name)
-                try:
+            try:
+                for dataset in scripts:
+                    print("=> Installing", dataset.name)
                     dataset.download(engine, debug=debug)
                     dataset.engine.final_cleanup()
-                except KeyboardInterrupt:
-                    pass
-                except Exception as e:
-                    print(e)
-                    if debug:
-                        raise
-            print("Done!")
+                print("Done!")
+            except KeyboardInterrupt:
+                pass
+            except Exception as e:
+                print(e)
+                print("Installation Failed")
+                if debug:
+                    raise
         else:
             print("Run 'retriever ls' to see a list of currently available datasets.")
 

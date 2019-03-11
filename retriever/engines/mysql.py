@@ -134,5 +134,11 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
         import pymysql.constants.CLIENT as client
         args['client_flag'] = client.LOCAL_FILES
         self.get_input()
-        return dbapi.connect(charset=self.lookup_encoding(),
+        try:
+        	return dbapi.connect(charset=self.lookup_encoding(),
                              read_default_file='~/.my.cnf', **args)
+        except dbapi.err.OperationalError as _:
+        	print("Connection with MySQL Failed! Try to restart MySQl Server")
+        except Exception as e:
+        	print(e)
+        

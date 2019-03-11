@@ -249,11 +249,16 @@ CSV HEADER;"""
         import psycopg2 as dbapi
 
         self.get_input()
-        conn = dbapi.connect(host=self.opts["host"],
-                             port=int(self.opts["port"]),
-                             user=self.opts["user"],
-                             password=self.opts["password"],
-                             database=self.opts["database"])
+        try:
+            conn = dbapi.connect(host=self.opts["host"],
+                                 port=int(self.opts["port"]),
+                                 user=self.opts["user"],
+                                 password=self.opts["password"],
+                                 database=self.opts["database"])
+        except dbapi.OperationalError as _:
+            print("Connection with PostgreSQL Failed! Try to restart PostgreSQl Server")
+        except Exception as e:
+            print(e)
         encoding = ENCODING.lower()
         if self.script.encoding:
             encoding = self.script.encoding.lower()
