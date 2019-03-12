@@ -204,7 +204,7 @@ class main(Script):
                         engine.table.cleanup = Cleanup()
                         engine.insert_data_from_archive(
                             self.urls["counts"] + shortstate + ".zip", [shortstate + ".csv"])
-                    except:
+                    except Exception:
                         print(
                             "Failed bulk insert on " +
                             state +
@@ -215,7 +215,7 @@ class main(Script):
                             self.urls["counts"] + shortstate + ".zip",
                             [shortstate + ".csv"])
 
-                except:
+                except Exception:
                     print("There was an error in " + state + ".")
                     raise
 

@@ -44,7 +44,7 @@ class engine(Engine):
         data = OrderedDict(
             [
                 (
-                    table[len(dataset) + 1 :],
+                    table[len(dataset) + 1:],
                     pd.read_sql_query(sql_query.format(table), connection),
                 )
                 for table in table_names

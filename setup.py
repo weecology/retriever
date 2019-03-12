@@ -119,5 +119,5 @@ try:
 
     check_for_updates()
     compile()
-except:
+except Exception:
     pass

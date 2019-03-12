@@ -53,4 +53,5 @@ class main(Script):
                                      filename=os.path.basename(raster_files))
             engine.insert_raster(raster_files)
 
+
 SCRIPT = main()
