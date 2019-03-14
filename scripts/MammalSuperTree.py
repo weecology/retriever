@@ -10,7 +10,6 @@ except ImportError:
 if parse_version(VERSION) <= parse_version("2.0.0"):
     from retriever.lib.templates import DownloadOnlyTemplate
 
-
     class main(DownloadOnlyTemplate):
         def __init__(self, **kwargs):
             DownloadOnlyTemplate.__init__(self, **kwargs)
@@ -26,7 +25,6 @@ if parse_version(VERSION) <= parse_version("2.0.0"):
 else:
     from retriever.lib.templates import Script
     from retriever.lib.models import Table
-
 
     class main(Script):
         def __init__(self, **kwargs):

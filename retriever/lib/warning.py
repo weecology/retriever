@@ -7,4 +7,4 @@ class Warning(object):
         self.warning = warning
 
     def __str__(self):
-        return 'WARNING (%s): %s' % (self.location, self.warning)
+        return "WARNING (%s): %s" % (self.location, self.warning)

@@ -105,7 +105,7 @@ class main(Script):
             engine.insert_data_from_file(engine.format_filename(prep_file_name))
             try:
                 os.remove(engine.format_filename(prep_file_name))
-            except:
+            except Exception:
                 pass
         return engine
 

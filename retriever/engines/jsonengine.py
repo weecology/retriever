@@ -28,12 +28,8 @@ class engine(Engine):
     }
     insert_limit = 1000
     required_opts = [
-        ("table_name",
-         "Format of table name",
-         "{db}_{table}.json"),
-        ("data_dir",
-         "Install directory",
-         DATA_DIR),
+        ("table_name", "Format of table name", "{db}_{table}.json"),
+        ("data_dir", "Install directory", DATA_DIR),
     ]
     table_names = []
 
@@ -69,10 +65,10 @@ class engine(Engine):
                 current_input_file = open_fr(file_name)
                 file_contents = current_input_file.readlines()
                 current_input_file.close()
-                file_contents[-1] = file_contents[-1].strip(',\n')
+                file_contents[-1] = file_contents[-1].strip(",\n")
                 current_output_file = open_fw(file_name)
                 current_output_file.writelines(file_contents)
-                current_output_file.writelines(['\n]'])
+                current_output_file.writelines(["\n]"])
                 current_output_file.close()
             self.table_names = []
 
@@ -87,7 +83,7 @@ class engine(Engine):
     def format_insert_value(self, value, datatype):
         """Formats a value for an insert statement"""
         v = Engine.format_insert_value(self, value, datatype)
-        if v == 'null':
+        if v == "null":
             return ""
         try:
             if len(v) > 1 and v[0] == v[-1] == "'":
@@ -97,11 +93,11 @@ class engine(Engine):
         return v
 
     def insert_statement(self, values):
-        if not hasattr(self, 'auto_column_number'):
+        if not hasattr(self, "auto_column_number"):
             self.auto_column_number = 1
 
         keys = self.table.get_insert_columns(join=False, create=True)
-        if self.table.columns[0][1][0][3:] == 'auto':
+        if self.table.columns[0][1][0][3:] == "auto":
             newrows = []
             for rows in values:
                 insert_stmt = [self.auto_column_number] + rows
@@ -111,7 +107,7 @@ class engine(Engine):
             newrows = values
         json_dumps = []
         for line_data in newrows:
-            tuples = (zip(keys, line_data))
+            tuples = zip(keys, line_data)
             write_data = OrderedDict(tuples)
             json_dumps.append(json.dumps(write_data, ensure_ascii=False) + ",")
         return json_dumps
@@ -128,8 +124,14 @@ class engine(Engine):
         for table_item in self.script_table_registry[self.script.name]:
             header = table_item[1].get_insert_columns(join=False, create=True)
             outputfile = os.path.normpath(
-                os.path.join(path if path else '', os.path.splitext(os.path.basename(table_item[0]))[0] + '.csv'))
-            csv_outfile = json2csv(table_item[0], output_file=outputfile, header_values=header)
+                os.path.join(
+                    path if path else "",
+                    os.path.splitext(os.path.basename(table_item[0]))[0] + ".csv",
+                )
+            )
+            csv_outfile = json2csv(
+                table_item[0], output_file=outputfile, header_values=header
+            )
             sort_csv(csv_outfile)
 
     def get_connection(self):
