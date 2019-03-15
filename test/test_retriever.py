@@ -107,7 +107,7 @@ def test_auto_get_datatypes():
         None, [["ö", 'bb', 'Löve']], [["a", None], ["b", None], ["c", None]]
     )
     length = test_engine.table.columns
-    assert [length[0][1][1], length[1][1][1], length[2][1][1]] == [103, 102, 106]  # [101, 102, 104]  # ToFix!!!
+    assert [length[0][1][1], length[1][1][1], length[2][1][1]] == [101, 102, 104]
 
 
 def test_auto_get_columns_extra_whitespace():
