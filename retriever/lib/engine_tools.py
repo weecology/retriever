@@ -101,7 +101,7 @@ def reset_retriever(scope="all", ask_permission=True):
     """Remove stored information on scripts and data."""
     warning_messages = {
         "all": "\nThis will remove existing scripts and cached data."
-        "\nSpecifically it will remove the scripts and raw_data folders"
+        "\nSpecifically it will remove the scripts and raw_data folders "
         "in {}\nDo you want to proceed? (y/N)\n",
         "scripts": "\nThis will remove existing scripts."
         + "\nSpecifically it will remove the scripts folder in {}."
