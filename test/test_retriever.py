@@ -1,4 +1,4 @@
-# -*- coding: UTF-8  -*-
+# -*- coding: latin-1  -*-
 """Tests for the Data Retriever"""
 from future import standard_library
 standard_library.install_aliases()  # noqa
@@ -104,7 +104,7 @@ def test_auto_get_datatypes():
     The function adds 100 to the auto detected length of column
     """
     test_engine.auto_get_datatypes(
-        None, [["Ã¶", 'bb', 'LÃ¶ve']], [["a", None], ["b", None], ["c", None]]
+        None, [["ö", 'bb', 'Löve']], [["a", None], ["b", None], ["c", None]]
     )
     length = test_engine.table.columns
     assert [length[0][1][1], length[1][1][1], length[2][1][1]] == [101, 102, 104]
