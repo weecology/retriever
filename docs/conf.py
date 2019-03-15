@@ -4,18 +4,14 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import sys
+import sphinx_rtd_theme
 from builtins import str
 from imp import reload
-
-import sphinx_rtd_theme
-
-from retriever.lib.defaults import ENCODING
-
-encoding = ENCODING.lower()
-
-from retriever.lib.defaults import VERSION, COPYRIGHT
+from retriever.lib.defaults import ENCODING, VERSION, COPYRIGHT
 from retriever.lib.scripts import SCRIPT_LIST
 from retriever.lib.tools import open_fw
+
+encoding = ENCODING.lower()
 
 # sys removes the setdefaultencoding method at startup; reload to get it back
 reload(sys)

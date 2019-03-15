@@ -220,7 +220,7 @@ class main(Script):
                         engine.insert_data_from_archive(self.urls["counts"] +
                                                         "Fifty" + part + ".zip",
                                                         ["fifty" + part + ".csv"])
-                    except:
+                    except Exception:
                         print(
                             "Failed bulk insert on " +
                             part +
@@ -231,7 +231,7 @@ class main(Script):
                                                         "Fifty" + part + ".zip",
                                                         ["fifty" + part + ".csv"])
 
-                except:
+                except Exception:
                     print("There was an error in part " + part + ".")
                     raise
 

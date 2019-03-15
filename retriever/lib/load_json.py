@@ -2,8 +2,8 @@ from __future__ import division
 from __future__ import print_function
 
 from future import standard_library
+standard_library.install_aliases()  # noqa
 
-standard_library.install_aliases()
 from builtins import zip
 from builtins import str
 import json
@@ -27,7 +27,7 @@ def read_json(json_file, debug=False):
         file_obj = open_fr(json_file)
         json_object = json.load(file_obj)
         if "encoding" in json_object:
-            json_file_encoding = json_object['encoding']
+            json_file_encoding = json_object["encoding"]
         file_obj.close()
     except ValueError:
         pass
@@ -48,8 +48,7 @@ def read_json(json_file, debug=False):
         # Note::formats described by frictionlessdata data may need to change
         tabular_exts = {"csv", "tab"}
         vector_exts = {"shp", "kmz"}
-        raster_exts = {"tif", "tiff", "bil",
-                           "hdr", "h5", "hdf5", "hr", "image"}
+        raster_exts = {"tif", "tiff", "bil", "hdr", "h5", "hdf5", "hr", "image"}
         for resource_item in json_object["resources"]:
             if "format" not in resource_item:
                 if "format" in json_object:

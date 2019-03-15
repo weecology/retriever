@@ -24,12 +24,8 @@ class engine(Engine):
     }
     insert_limit = 1000
     required_opts = [
-        ("table_name",
-         "Format of table name",
-         "{db}_{table}.csv"),
-        ("data_dir",
-         "Install directory",
-         DATA_DIR),
+        ("table_name", "Format of table name", "{db}_{table}.csv"),
+        ("data_dir", "Install directory", DATA_DIR),
     ]
     table_names = []
 
@@ -44,7 +40,7 @@ class engine(Engine):
         self.file = open_fw(table_path)
         self.output_file = open_csvw(self.file)
         column_list = self.table.get_insert_columns(join=False, create=True)
-        self.output_file.writerow([u'{}'.format(val) for val in column_list])
+        self.output_file.writerow([u"{}".format(val) for val in column_list])
         self.table_names.append((self.file, table_path))
 
         # Register all tables created to enable
@@ -52,7 +48,8 @@ class engine(Engine):
         if self.script.name not in self.script_table_registry:
             self.script_table_registry[self.script.name] = []
         self.script_table_registry[self.script.name].append(
-            (self.table_name(), self.table))
+            (self.table_name(), self.table)
+        )
 
     def disconnect(self):
         """Close the last file in the dataset"""
@@ -74,7 +71,7 @@ class engine(Engine):
     def format_insert_value(self, value, datatype):
         """Formats a value for an insert statement"""
         v = Engine.format_insert_value(self, value, datatype)
-        if v == 'null':
+        if v == "null":
             return ""
         try:
             if len(v) > 1 and v[0] == v[-1] == "'":
@@ -85,10 +82,10 @@ class engine(Engine):
 
     def insert_statement(self, values):
         """Returns a comma delimited row of values"""
-        if not hasattr(self, 'auto_column_number'):
+        if not hasattr(self, "auto_column_number"):
             self.auto_column_number = 1
 
-        if self.table.columns[0][1][0][3:] == 'auto':
+        if self.table.columns[0][1][0][3:] == "auto":
             newrows = []
             for rows in values:
                 insert_stmt = [self.auto_column_number] + rows

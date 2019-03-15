@@ -23,16 +23,11 @@ class engine(Engine):
     }
     placeholder = "?"
     insert_limit = 1000
-    required_opts = [("file",
-                      "Enter the filename of your SQLite database",
-                      "sqlite.db"),
-                     ("table_name",
-                      "Format of table name",
-                      "{db}_{table}"),
-                     ("data_dir",
-                      "Install directory",
-                      DATA_DIR),
-                     ]
+    required_opts = [
+        ("file", "Enter the filename of your SQLite database", "sqlite.db"),
+        ("table_name", "Format of table name", "{db}_{table}"),
+        ("data_dir", "Install directory", DATA_DIR),
+    ]
 
     def create_db(self):
         """Don't create database for SQLite
@@ -46,11 +41,15 @@ class engine(Engine):
         """Return sqlite dataset as list of pandas dataframe."""
         connection = self.get_connection()
         sql_query = "SELECT * FROM {};"
-        data = OrderedDict([
-                    (table[len(dataset) + 1:],
-                    pd.read_sql_query(sql_query.format(table), connection))
-                    for table in table_names
-               ])
+        data = OrderedDict(
+            [
+                (
+                    table[len(dataset) + 1:],
+                    pd.read_sql_query(sql_query.format(table), connection),
+                )
+                for table in table_names
+            ]
+        )
         return data
 
     def get_bulk_insert_statement(self):
@@ -82,25 +81,35 @@ class engine(Engine):
         # Determine if the dataset includes cross-tab data
         crosstab = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
 
-        if (([self.table.cleanup.function, self.table.header_rows] == [no_cleanup, 1])
+        if (
+            ([self.table.cleanup.function, self.table.header_rows] == [no_cleanup, 1])
             and not self.table.fixed_width
             and not crosstab
-            and (not hasattr(self.table, "do_not_bulk_insert") or not self.table.do_not_bulk_insert)):
+            and (
+                not hasattr(self.table, "do_not_bulk_insert")
+                or not self.table.do_not_bulk_insert
+            )
+        ):
             filename = os.path.abspath(filename)
             try:
                 bulk_insert_statement = self.get_bulk_insert_statement()
-                line_endings = set(['\n', '\r', '\r\n'])
-                with open(filename, 'r') as data_file:
+                line_endings = set(["\n", "\r", "\r\n"])
+                with open(filename, "r") as data_file:
                     data_chunk = data_file.readlines(chunk_size)
-                    data_chunk = [line.rstrip('\r\n') for line in data_chunk if line not in line_endings]
-                    del data_chunk[:self.table.header_rows]
+                    data_chunk = [
+                        line.rstrip("\r\n")
+                        for line in data_chunk
+                        if line not in line_endings
+                    ]
+                    del data_chunk[: self.table.header_rows]
                     while data_chunk:
-                        data_chunk_split = [row.split(self.table.delimiter)
-                                            for row in data_chunk]
+                        data_chunk_split = [
+                            row.split(self.table.delimiter) for row in data_chunk
+                        ]
                         self.cursor.executemany(bulk_insert_statement, data_chunk_split)
                         data_chunk = data_file.readlines(chunk_size)
                 self.connection.commit()
-            except:
+            except Exception:
                 self.connection.rollback()
                 return Engine.insert_data_from_file(self, filename)
         else:

@@ -10,21 +10,21 @@ from retriever.lib.engine_tools import name_matches
 from retriever.lib.repository import check_for_updates
 
 
-def download(dataset, path='./', quiet=False, subdir=False, debug=False):
+def download(dataset, path="./", quiet=False, subdir=False, debug=False):
     """Download scripts for retriever."""
     args = {
-        'dataset': dataset,
-        'command': 'download',
-        'path': path,
-        'subdir': subdir,
-        'quiet': quiet
+        "dataset": dataset,
+        "command": "download",
+        "path": path,
+        "subdir": subdir,
+        "quiet": quiet,
     }
     engine = choose_engine(args)
     script_list = SCRIPT_LIST()
     if not script_list or not os.listdir(SCRIPT_WRITE_PATH):
         check_for_updates()
         script_list = SCRIPT_LIST()
-    scripts = name_matches(script_list, args['dataset'])
+    scripts = name_matches(script_list, args["dataset"])
     if scripts:
         for script in scripts:
             print("=> Downloading", script.name)
@@ -36,6 +36,7 @@ def download(dataset, path='./', quiet=False, subdir=False, debug=False):
                 if debug:
                     raise
     else:
-        message = "Run retriever.datasets() to see a list of currently " \
-                  "available datasets."
+        message = (
+            "Run retriever.datasets() to see a list of currently " "available datasets."
+        )
         raise ValueError(message)

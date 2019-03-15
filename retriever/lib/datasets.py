@@ -14,16 +14,18 @@ def datasets(keywords=None, licenses=None):
     for script in script_list:
         if script.name:
             if licenses:
-                script_license = [licence_map['name'].lower()
-                                  for licence_map in script.licenses
-                                  if licence_map['name']]
+                script_license = [
+                    licence_map["name"].lower()
+                    for licence_map in script.licenses
+                    if licence_map["name"]
+                ]
                 if script_license and set(script_license).intersection(set(licenses)):
                     result_scripts.add(script)
                     continue
             if keywords:
-                script_keywords = script.title + ' ' + script.name
+                script_keywords = script.title + " " + script.name
                 if script.keywords:
-                    script_keywords = script_keywords + ' ' + '-'.join(script.keywords)
+                    script_keywords = script_keywords + " " + "-".join(script.keywords)
                 script_keywords = script_keywords.lower()
                 for k in keywords:
                     if script_keywords.find(k.lower()) != -1:
@@ -45,11 +47,12 @@ def dataset_names():
 
 def license(dataset):
     """Get the license for a dataset."""
-    return get_script(dataset).licenses[0]['name']
+    return get_script(dataset).licenses[0]["name"]
 
 
 def dataset_licenses():
     """Return set with all available licenses."""
-    license_values = [str(script.licenses[0]['name']).lower()
-                      for script in SCRIPT_LIST()]
+    license_values = [
+        str(script.licenses[0]["name"]).lower() for script in SCRIPT_LIST()
+    ]
     return set(license_values)

@@ -5,8 +5,8 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 from future import standard_library
+standard_library.install_aliases()  # noqa
 
-standard_library.install_aliases()
 import os
 import sys
 import subprocess
@@ -19,13 +19,13 @@ from retriever.lib.scripts import SCRIPT_LIST
 from retriever.lib.engine_tools import get_script_version
 
 reload(sys)
-if hasattr(sys, 'setdefaultencoding'):
+if hasattr(sys, "setdefaultencoding"):
     sys.setdefaultencoding(ENCODING)
 
 file_location = os.path.dirname(os.path.realpath(__file__))
 retriever_root_dir = os.path.abspath(os.path.join(file_location, os.pardir))
 working_script_dir = os.path.abspath(os.path.join(retriever_root_dir, "scripts"))
-home_dir = os.path.expanduser('~')
+home_dir = os.path.expanduser("~")
 script_home = "{}/.retriever/scripts".format(home_dir)
 
 
@@ -43,7 +43,9 @@ def get_modified_scripts():
 
     os.chdir(retriever_root_dir)
     modified_list = []
-    version_file = requests.get("https://raw.githubusercontent.com/weecology/retriever/master/version.txt")
+    version_file = requests.get(
+        "https://raw.githubusercontent.com/weecology/retriever/master/version.txt"
+    )
     local_repo_scripts = get_script_version()  # local repo versions
 
     upstream_versions = {}
@@ -57,10 +59,10 @@ def get_modified_scripts():
         # check for new scripts or a change in versions for present scripts
         # repo script versions compared with upstream.
         if local_script not in upstream_versions.keys():
-            modified_list.append(os.path.basename(local_script).split('.')[0])
+            modified_list.append(os.path.basename(local_script).split(".")[0])
         else:
             if LooseVersion(local_version) != upstream_versions[local_script]:
-                modified_list.append(os.path.basename(local_script).split('.')[0])
+                modified_list.append(os.path.basename(local_script).split(".")[0])
 
     return modified_list
 
@@ -78,7 +80,7 @@ def install_modified():
         "prism-climate",
         "vertnet",
         "NPN",
-        "mammal-super-tree"
+        "mammal-super-tree",
     ]
     ignore_list = [dataset.lower() for dataset in ignore]
 
@@ -89,39 +91,34 @@ def install_modified():
 
     engine_list_install = engine_list
     if os.path.exists("test_modified"):
-        subprocess.call(['rm', '-r', 'test_modified'])
+        subprocess.call(["rm", "-r", "test_modified"])
     os.makedirs("test_modified")
     os.chdir("test_modified")
-    dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb_retriever.sqlite'))
+    dbfile = os.path.normpath(os.path.join(os.getcwd(), "testdb_retriever.sqlite"))
     engine_test = {
-        "postgres": {'engine': 'postgres',
-                     'user': 'postgres',
-                     'password': os_password,
-                     'host': 'localhost',
-                     'port': 5432,
-                     'database': 'postgres',
-                     'database_name': 'testschema',
-                     'table_name': '{db}.{table}'},
-
-        "mysql": {'engine': 'mysql',
-                  'user': 'travis',
-                  'password': '',
-                  'host': 'localhost',
-                  'port': 3306,
-                  'database_name': 'testdb_retriever',
-                  'table_name': '{db}.{table}'},
-
-        "xml": {'engine': 'xml',
-                'table_name': 'output_file_{table}.xml'},
-
-        "json": {'engine': 'json',
-                 'table_name': 'output_file_{table}.json'},
-
-        "csv": {'engine': 'csv',
-                'table_name': 'output_file_{table}.csv'},
-
-        "sqlite": {'engine': 'sqlite',
-                   'file': dbfile, 'table_name': '{db}_{table}'}
+        "postgres": {
+            "engine": "postgres",
+            "user": "postgres",
+            "password": os_password,
+            "host": "localhost",
+            "port": 5432,
+            "database": "postgres",
+            "database_name": "testschema",
+            "table_name": "{db}.{table}",
+        },
+        "mysql": {
+            "engine": "mysql",
+            "user": "travis",
+            "password": "",
+            "host": "localhost",
+            "port": 3306,
+            "database_name": "testdb_retriever",
+            "table_name": "{db}.{table}",
+        },
+        "xml": {"engine": "xml", "table_name": "output_file_{table}.xml"},
+        "json": {"engine": "json", "table_name": "output_file_{table}.json"},
+        "csv": {"engine": "csv", "table_name": "output_file_{table}.csv"},
+        "sqlite": {"engine": "sqlite", "file": dbfile, "table_name": "{db}_{table}"},
     }
 
     test_engines = {}
@@ -153,7 +150,7 @@ def install_modified():
                 else:
                     errors.append((key, "No connection detected......" + module.name))
     os.chdir("..")
-    subprocess.call(['rm', '-r', 'test_modified'])
+    subprocess.call(["rm", "-r", "test_modified"])
     return errors
 
 

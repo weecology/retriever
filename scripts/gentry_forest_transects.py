@@ -100,9 +100,9 @@ U.S.A. """
                         cn[cid] = n
                 n += 1
             # sometimes, a data file does not contain a liana or count column
-            if not "liana" in list(cn.keys()):
+            if "liana" not in list(cn.keys()):
                 cn["liana"] = -1
-            if not "count" in list(cn.keys()):
+            if "count" not in list(cn.keys()):
                 cn["count"] = -1
             for i in range(1, rows):
                 row = sh.row(i)
@@ -153,7 +153,7 @@ U.S.A. """
                                     this_line["species"],
                                     id_level,
                                     str(full_id)))
-                    except:
+                    except Exception:
                         raise
                         pass
 
@@ -234,4 +234,6 @@ U.S.A. """
         self.engine.add_to_table(counts)
 
         return self.engine
+
+
 SCRIPT = main()
