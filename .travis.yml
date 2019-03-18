@@ -13,7 +13,7 @@ services:
 
 # database setup
 before_install:
--  docker-compose run python_retriever
+-  docker-compose ps
 
 # command to run tests using py.test
 script:

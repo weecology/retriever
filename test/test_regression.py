@@ -329,7 +329,7 @@ def test_postgres_spatial(dataset, cols, expected, tmpdir):
                             'database_name': testschema,
                             'table_name': '{db}.{table}'}
     interface_opts = {"user": 'postgres',
-                      # "password": postgres_engine.opts['password'],
+                      "password": postgres_engine.opts['password'],
                       'host': postgres_engine.opts['host'],
                       'port': postgres_engine.opts['port'],
                       "database": postgres_engine.opts['database'],
