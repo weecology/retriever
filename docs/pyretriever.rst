@@ -180,7 +180,7 @@ There are separate functions for installing into each of the 7 backends:
                 quiet=False, use_cache=True):
 
     def install_json(dataset, table_name=None, compile=False,
-                 debug=False, quiet=False, use_cache=True):
+                 debug=False, quiet=False, use_cache=True, pretty=False):
 
     def install_msaccess(dataset, file=None, table_name=None,
                      compile=False, debug=False, quiet=False, use_cache=True):
@@ -217,6 +217,8 @@ A description of default parameters mentioned above:
   password      (String): Specify password for database. For postgres, mysql users.
 
   port             (Int): Specify the port number for installation. For postgres, mysql users.
+
+  pretty          (Bool): Setting True adds indentation in JSON files.
 
   quiet           (Bool): Setting True minimizes the console output.
 
