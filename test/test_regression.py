@@ -22,7 +22,8 @@ from retriever import install_sqlite
 from retriever import install_xml
 from retriever.lib.defaults import ENCODING, DATA_DIR
 from retriever.lib.load_json import read_json
-
+from retriever.lib.scripts import reload_scripts
+from retriever.lib.defaults import HOME_DIR
 encoding = ENCODING.lower()
 
 reload(sys)
@@ -130,6 +131,16 @@ def setup_module():
     """Update retriever scripts and cd to test directory to find data."""
     os.chdir(retriever_root_dir)
     subprocess.call(['cp', '-r', 'test/raw_data', retriever_root_dir])
+    for tests in spatial_db_md5:
+        test = tests[0]
+        spatial_src = os.path.join(retriever_root_dir, 'test/raw_data_gis', test.replace('-', '_') + '.zip')
+        if not os.path.exists(os.path.join(HOME_DIR, "raw_data", test)):
+            os.makedirs(os.path.join(HOME_DIR, "raw_data", test))
+        rd_path = os.path.join(HOME_DIR, "raw_data", test)
+        subprocess.call(['cp', '-r', spatial_src, rd_path])
+        path_js = os.path.join(retriever_root_dir, 'test/raw_data_gis/scripts', test.replace('-', '_') + '.json')
+        script_dest = os.path.join(HOME_DIR, "scripts")
+        subprocess.call(['cp', '-r', path_js, script_dest])
 
 
 def teardown_module():
@@ -153,6 +164,11 @@ def get_csv_md5(dataset, engine, tmpdir, install_function, config, cols=None):
     src = os.path.join(retriever_root_dir, 'scripts')
     dest = os.path.join(str(workdir), 'scripts')
     subprocess.call(['cp', '-r', src, dest])
+    # Add spatail scripts
+    spatial_src = os.path.join(retriever_root_dir, 'test/raw_data_gis/scripts/')
+    spatial_dest = os.path.join(str(workdir), 'scripts/')
+    subprocess.call(['cp', '-r', spatial_src, spatial_dest])
+    reload_scripts()
     workdir.chdir()
     final_direct = os.getcwd()
     engine.script_table_registry = {}

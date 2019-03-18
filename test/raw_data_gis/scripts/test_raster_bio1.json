@@ -6,7 +6,7 @@
   "keywords": [
     "tests"
   ],
-  "url": "file:///Users/henrykironde/Documents/GitHub/retriever/test/raw_data_gis/test_raster_bio1.zip",
+  "url": "https://github.com/henrykironde/retriever/raw/master/test/raw_data_gis/test_raster_bio1.zip",
   "ref": "N/A",
   "version": "1.0.0",
   "retriever_minimum_version": "2.1.dev",

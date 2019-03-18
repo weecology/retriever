@@ -20,7 +20,7 @@
     {
       "name": "eco_level_four",
       "path": "ecoregion_level_four.shp",
-      "url": "file:///Users/henrykironde/Documents/GitHub/retriever/test/raw_data_gis/test_vector_ecoregion_level_four.zip",
+      "url": "https://github.com/henrykironde/retriever/raw/master/test/raw_data_gis/test_vector_ecoregion_level_four.zip",
       "geom_type": "Polygon",
       "extent": {
         "xMax": -1249755.9583,
