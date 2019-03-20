@@ -125,14 +125,15 @@ def install_msaccess(dataset, file='access.mdb',
 
 def install_json(dataset,
                  table_name='{db}_{table}.json',
-                 data_dir=DATA_DIR, debug=False, use_cache=True):
+                 data_dir=DATA_DIR, debug=False, use_cache=True, pretty=False):
     """Install datasets into json."""
     args = {
         'command': 'install',
         'dataset': dataset,
         'engine': 'json',
         'table_name': table_name,
-        'data_dir': data_dir
+        'data_dir': data_dir,
+        'pretty': pretty
     }
     return _install(args, use_cache, debug)
 
