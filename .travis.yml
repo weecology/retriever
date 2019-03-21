@@ -29,7 +29,11 @@ install:
 script:
   - py.test -v --cov=retriever
   - pip install retriever==2.0.0 -U
+  - rm -rf ~/.retriever/scripts
+  - pwd
+  - ls
   - retriever ls 2>error.log && if [[ -s "error.log" ]]; then exit 1; else echo 0; fi
+  - 
 # database setup
 before_script:
   - sqlite3 --version
