@@ -30,10 +30,10 @@ class main(Script):
         Script.__init__(self, **kwargs)
         self.title = "Commercial Fisheries Monthly Trade Data by Product, Country/Association"
         self.name = "fao-global-capture-product"
-        self.retriever_minimum_version = '2.1.dev'
+        # self.retriever_minimum_version = '2.1.dev'
         self.urls = {
             "capture": "http://www.fao.org/fishery/static/Data/Capture_2018.1.2.zip"}
-        self.version = '1.0.0'
+        self.version = '1.0.1'
         self.ref = "http://www.fao.org/fishery/statistics/global-capture-production/"
         self.citation = "FAO. 2018. FAO yearbook. Fishery and Aquaculture Statistics " \
                         "2016/FAO annuaire. Statistiques des pêches et de l'aquaculture " \

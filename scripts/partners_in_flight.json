@@ -1224,8 +1224,7 @@
       "url": "http://pif.birdconservancy.org/ACAD/ajax/download.aspx?list=BCR&BCR=all&concern=false"
     }
   ],
-  "retriever": "True",
   "retriever_minimum_version": "2.1.dev",
   "title": "Partners_In_Flight_Species_Assessment_Data",
-  "version": "1.0.1"
+  "version": "1.0.2"
 }

@@ -22986,8 +22986,7 @@
       "url": "https://gain-new.crc.nd.edu/assets/gain/files/resources-2017-03-10-14h04.zip"
     }
   ],
-  "retriever": "True",
-  "retriever_minimum_version": "2.1.dev",
+  "retriever_minimum_version": "2.1.0",
   "title": "ND-Gain",
-  "version": "1.0.3"
+  "version": "1.0.4"
 }

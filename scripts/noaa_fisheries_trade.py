@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 #retriever
 
 from retriever.lib.models import Table
@@ -20,7 +19,6 @@ class main(Script):
         Script.__init__(self, **kwargs)
         self.title = "Commercial Fisheries Monthly Trade Data by Product, Country/Association"
         self.name = "noaa-fisheries-trade"
-        self.retriever_minimum_version = '2.1.dev'
         self.urls = {
             "imports": "https://www.st.nmfs.noaa.gov/pls/webpls/trade_prdct_cntry_ind_mth.results?"
                        "qtype=IMP&qmonthfrom=01&qmonthto=12&qyearfrom=1975&qyearto=2018"
@@ -34,7 +32,7 @@ class main(Script):
                        "qtype=REX&qmonthfrom=01&qmonthto=12&qyearfrom=1975&qyearto=2018"
                        "&qprod_name=%25&qcountry=%25&qsort=COUNTRY&qoutput=ASCII+FILE"
         }
-        self.version = '1.0.0'
+        self.version = '1.0.1'
         self.ref = "https://www.st.nmfs.noaa.gov/commercial-fisheries/foreign-trade/" \
                    "applications/monthly-product-by-countryassociation"
         self.citation = "No known Citation"

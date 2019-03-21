@@ -13312,8 +13312,7 @@
       "url": "https://19january2017snapshot.epa.gov/sites/production/files/2016-12/nla2012_zooptaxa_wide_10272015.csv"
     }
   ],
-  "retriever": "True",
   "retriever_minimum_version": "2.1.dev",
   "title": "National_Lakes_Assessment_Data",
-  "version": "1.0.0"
+  "version": "1.0.1"
 }
