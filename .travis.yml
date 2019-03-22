@@ -3,13 +3,6 @@ sudo: required
 warnings_are_errors: false
 services:
   - docker
-#language: python
-# # We shall remove them since we shall only test with 3. 
-# # No future support for Python2.7 
-# # python:
-# #   - "2.7" 
-#    - "3.5"
-
 
 # database setup
 before_install:
