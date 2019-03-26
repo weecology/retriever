@@ -1,0 +1,116 @@
+{
+  "name": "test-us-eco",
+  "title": "Test data sampled from us-eco dataset sample ",
+  "description": "Test data sampled us eco",
+  "format": "vector",
+  "spatial_ref": "NAD83",
+  "citation": "N/A",
+  "license": [],
+  "driver_name": "ESRI Shapefile",
+  "keywords": [
+    "test",
+    "spatial-data"
+  ],
+  "url": "N/A",
+  "ref": "N/A",
+  "version": "1.0.0",
+  "retriever_minimum_version": "2.1.dev",
+  "extract_all": "True",
+  "archived": "zip",
+  "resources": [
+    {
+      "name": "us_eco",
+      "path": "us_eco.shp",
+      "url": "https://github.com/weecology/retriever/blob/master/test/raw_data_gis/test_vector_us_eco.zip",
+      "geom_type": "Polygon",
+      "extent": {
+        "xMax": -1249755.9583,
+        "xMin": -2326014.8337999983,
+        "yMax": 2275268.318900001,
+        "yMin": 1059376.9652000002
+      },
+      "schema": {
+        "fields": [
+          {
+            "name": "US_L3CODE",
+            "precision": 0,
+            "size": 10,
+            "type": "String"
+          },
+          {
+            "name": "US_L3NAME",
+            "precision": 0,
+            "size": 100,
+            "type": "String"
+          },
+          {
+            "name": "NA_L3CODE",
+            "precision": 0,
+            "size": 20,
+            "type": "String"
+          },
+          {
+            "name": "NA_L3NAME",
+            "precision": 0,
+            "size": 100,
+            "type": "String"
+          },
+          {
+            "name": "NA_L2CODE",
+            "precision": 0,
+            "size": 20,
+            "type": "String"
+          },
+          {
+            "name": "NA_L2NAME",
+            "precision": 0,
+            "size": 100,
+            "type": "String"
+          },
+          {
+            "name": "NA_L1CODE",
+            "precision": 0,
+            "size": 20,
+            "type": "String"
+          },
+          {
+            "name": "NA_L1NAME",
+            "precision": 0,
+            "size": 100,
+            "type": "String"
+          },
+          {
+            "name": "STATE_NAME",
+            "precision": 0,
+            "size": 25,
+            "type": "String"
+          },
+          {
+            "name": "EPA_REGION",
+            "precision": 0,
+            "size": 4,
+            "type": "Integer"
+          },
+          {
+            "name": "L3_KEY",
+            "precision": 0,
+            "size": 125,
+            "type": "String"
+          },
+          {
+            "name": "L2_KEY",
+            "precision": 0,
+            "size": 125,
+            "type": "String"
+          },
+          {
+            "name": "L1_KEY",
+            "precision": 0,
+            "size": 125,
+            "type": "String"
+          }
+        ]
+      }
+    }
+  ]
+}

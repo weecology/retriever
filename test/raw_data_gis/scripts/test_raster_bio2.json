@@ -1,0 +1,54 @@
+{
+  "name": "test-raster-bio2",
+  "title": "Test data raster bio2",
+  "description": "Test data sampled from bioclim bio2",
+  "citation": "Test data",
+  "keywords": [
+    "test"
+  ],
+  "url": "https://github.com/weecology/retriever/blob/master/test/raw_data_gis/test_raster_bio2.zip",
+  "ref": "N/A",
+  "version": "1.0.0",
+  "retriever_minimum_version": "2.1.dev",
+  "extract_all": "True",
+  "archived": "zip",
+  "driver": "GTiff",
+  "licenses": [],
+  "colums": 284,
+  "rows": 249,
+  "band_count": 1,
+  "datum": "N/A - Coordinate Reference System",
+  "projection": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]",
+  "file_size": "N/A",
+  "group_count": "N/A",
+  "dataset_count": "N/A",
+  "transform": {
+    "xOrigin": -121.6250000000029,
+    "pixelWidth": 0.041666666666667,
+    "rotation_2": 0,
+    "yOrigin": 42.79166666666632,
+    "rotation_4": 0,
+    "pixelHeight": -0.041666666666667
+  },
+  "resources": [
+    {
+      "name": "raster_bio2",
+      "format": "raster",
+      "path": "test_raster_bio2.tif",
+      "extensions": [
+        "tif"
+      ],
+      "no_data_value": -9999,
+      "min": null,
+      "max": null,
+      "scale": 1,
+      "color_table": null,
+      "statistics": {
+        "minimum": 0,
+        "maximum": 0,
+        "mean": 0,
+        "stddev": -1
+      }
+    }
+  ]
+}
