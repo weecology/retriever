@@ -21,7 +21,7 @@
     {
       "name": "us_eco",
       "path": "us_eco.shp",
-      "url": "https://github.com/weecology/retriever/blob/master/test/raw_data_gis/test_vector_us_eco.zip",
+      "url": "https://github.com/weecology/retriever/raw/master/test/raw_data_gis/test_us_eco.zip",
       "geom_type": "Polygon",
       "extent": {
         "xMax": -1249755.9583,

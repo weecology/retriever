@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  mysqldb_retriever:
+    image: mysql:5.7
+    container_name: mysqldb_ret_container
+    environment:
+      MYSQL_USER: travis
+      MYSQL_PASSWORD: Password12!
+      MYSQL_ROOT_PASSWORD: Password12!
+      MYSQL_DATABASE: testdb_retriever
+
+  pgdb_retriever:
+    image: kartoza/postgis:11.0-2.5
+    volumes:
+      - ./cli_tools/postgis-data:/var/lib/postgresql
+      - ./cli_tools/:/backups
+    container_name: pgdb_ret_container
+    environment:
+      # To create multiple database you can add coma separated databases eg gis,data
+      - POSTGRES_DB=testdb_retriever
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASS=Password12!
+      - ALLOW_IP_RANGE=0.0.0.0/0
+    restart: on-failure
+
+  python_retriever:
+    container_name: ret_container
+    image: ret_image
+    command: bash -c "Python --version"
+    environment:
+      # If IN_DOCKER is set, use service names as hosts(travis)
+      # Otherwise use localhost (local tests)
+      "IN_DOCKER" : "true"
+      "PGUSER" : "postgres"
+      "PGPASSWORD" : "Password12!"
+      "PGDATABASE" : "testdb_retriever"
+      "PGPORT" : "5432"
+      "PGHOST" : "pgdb_retriever"
+    restart: on-failure
+    build: .
+    depends_on:
+      - mysqldb_retriever
+      - pgdb_retriever
+    ports:
+      - 5001:80

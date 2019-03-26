@@ -100,10 +100,6 @@ for engine in engine_list:
         engine_parser.add_argument('-b', '--bbox', nargs=4,
                                    help='Set bounding box xmin, ymin, xmax, ymax',
                                    required=False)
-        if engine.name == "JSON":
-            engine_parser.add_argument('-p', '--pretty',
-                                       help='Add indentation to json file', action='store_true',
-                                       required=False)
 
     abbreviations = set('h')
 
