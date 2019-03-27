@@ -2,6 +2,7 @@
 from __future__ import absolute_import
 
 import os
+import re
 import platform
 
 from pkg_resources import parse_version
@@ -30,6 +31,11 @@ def clean_version(v):
     return parse_version(v).__repr__().lstrip("<Version('").rstrip("')>")
 
 
+def read(*names, **kwargs):
+    return open(
+        os.path.join(os.path.dirname(__file__), *names),
+    ).read()
+
 includes = [
                'xlrd',
                'future',
@@ -50,44 +56,59 @@ excludes = [
     'Tkconstants', 'Tkinter', 'tcl', 'tk'
 ]
 
-setup(name='retriever',
-      version=clean_version(__version__),
-      description='Data Retriever',
-      long_description=('The Data Retriever is a package manager for data. '
-                        'It downloads, cleans, and stores publicly available data, '
-                        'so that analysts spend less time cleaning and managing data, '
-                        'and more time analyzing it.'),
-      author='Ben Morris, Shivam Negi, Akash Goel, Andrew Zhang, Henry Senyondo, Ethan White',
-      author_email='ethan@weecology.org',
-      url='https://github.com/weecology/retriever',
-      classifiers=['Intended Audience :: Science/Research',
-                   'License :: OSI Approved :: MIT License',
-                   'Programming Language :: Python',
-                   'Programming Language :: Python :: 2',
-                   'Programming Language :: Python :: 3', ],
-      packages=find_packages(
-          exclude=['hooks',
-                   'docs',
-                   'tests',
-                   'scripts',
-                   'docker',
-                   ".cache"]),
-      entry_points={
-          'console_scripts': [
-              'retriever = retriever.__main__:main',
-          ],
-      },
-      install_requires=[
-          'xlrd',
-          'future',
-          'argcomplete',
-          'tqdm',
-          'requests',
-          'pandas'
-      ],
-      data_files=[('', ['CITATION'])],
-      setup_requires=[],
-      )
+setup(
+    name='retriever',
+    version=clean_version(__version__),
+    description='Data Retriever',
+    long_description='{a}\n{b}'.format(
+        a=read('README.md'),
+        b=re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGES.md'))
+    ),
+    author='Ben Morris, Shivam Negi, Akash Goel, Andrew Zhang, Henry Senyondo, Ethan White',
+    author_email='ethan@weecology.org',
+    url='https://github.com/weecology/retriever',
+    classifiers=[
+        'Intended Audience :: Science/Research',
+        'License :: OSI Approved :: MIT License'
+        'Operating System :: Microsoft :: Windows',
+        'Operating System :: POSIX',
+        'Operating System :: Unix',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: Implementation :: PyPy',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+        'Topic :: Scientific/Engineering :: GIS',
+        'Topic :: Scientific/Engineering :: Data '
+        'Topic :: Data Processing'
+        'Topic :: Database',
+    ],
+    packages=find_packages(
+        exclude=['hooks',
+                 'docs',
+                 'tests',
+                 'scripts',
+                 'docker',
+                 ".cache"]),
+    entry_points={
+        'console_scripts': [
+            'retriever = retriever.__main__:main',
+        ],
+    },
+    install_requires=[
+        'xlrd',
+        'future',
+        'argcomplete',
+        'tqdm',
+        'requests',
+        'pandas'
+    ],
+    data_files=[('', ['CITATION'])],
+    setup_requires=[],
+)
 
 # windows doesn't have bash. No point in using bash-completion
 if current_platform != "windows":
