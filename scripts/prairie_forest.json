@@ -14,7 +14,7 @@
         {
             "dialect": {
                 "delimiter": ",",
-                "header_rows": １
+                "header_rows": 1
             },
             "name": "plant_biomass_exp1",
             "schema": {
@@ -74,7 +74,7 @@
         {
             "dialect": {
                 "delimiter": ",",
-                "header_rows": １
+                "header_rows": 1
             },
             "name": "plant_species_composition_exp1",
             "schema": {
@@ -818,7 +818,7 @@
         {
             "dialect": {
                 "delimiter": ",",
-                "header_rows": １
+                "header_rows": 1
             },
             "name": "plant_biomass_exp2",
             "schema": {
@@ -874,7 +874,7 @@
         {
             "dialect": {
                 "delimiter": ",",
-                "header_rows": １
+                "header_rows": 1
             },
             "name": "plant_species_composition-exp2",
             "schema": {
