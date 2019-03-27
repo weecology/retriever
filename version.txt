@@ -75,6 +75,7 @@ plant_taxonomy_us.json,1.1.3
 poker_hands.json,1.2.2
 portal.json,1.2.1
 portal_dev.json,1.0.4
+prairie_forest.json,1.0.0
 predator_prey_body_ratio.json,1.0.1
 predator_prey_size_marine.py,2.0.2
 predicts.py,1.0.4
