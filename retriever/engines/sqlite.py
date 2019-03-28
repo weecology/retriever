@@ -53,6 +53,12 @@ class engine(Engine):
                ])
         return data
 
+    def fetch_table(self, table_name):
+        """Return a table from sqlite dataset as pandas dataframe."""
+        connection = self.get_connection()
+        sql_query = "SELECT * FROM {};".format(table_name)
+        return pd.read_sql_query(sql_query, connection)
+
     def get_bulk_insert_statement(self):
         """Get insert statement for bulk inserts
 

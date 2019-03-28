@@ -196,6 +196,18 @@ def main():
             for dataset in scripts:
                 print("=> Installing", dataset.name)
                 try:
+                    if engine.name == "HDF5":
+                        sqlite_opts = {
+                            'command': 'install',
+                            'dataset': dataset,
+                            'engine': 'sqlite',
+                            'file': (args.file.split("."))[0] + ".db",
+                            'table_name': args.table_name,
+                            'data_dir': args.data_dir
+                        }
+                        sqlite_engine = choose_engine(sqlite_opts)
+                        dataset.download(sqlite_engine, debug=debug)
+                        dataset.engine.final_cleanup()
                     dataset.download(engine, debug=debug)
                     dataset.engine.final_cleanup()
                 except KeyboardInterrupt:

@@ -11,7 +11,8 @@ engines = [
     "csvengine",
     "download_only",
     "jsonengine",
-    "xmlengine"
+    "xmlengine",
+    "hdf5"
 ]
 
 engine_module_list = [
