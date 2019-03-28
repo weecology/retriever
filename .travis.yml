@@ -6,11 +6,11 @@ services:
 
 # database setup
 before_install:
--  docker-compose ps
+  - docker-compose ps
 
 # command to run tests using py.test
 script:
--  docker-compose  run --service-ports python_retriever py.test -v --cov=retriever
+  - docker-compose  run --service-ports python_retriever py.test -v --cov=retriever
 
 after_success:
   - codecov
