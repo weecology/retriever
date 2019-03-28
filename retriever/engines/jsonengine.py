@@ -127,7 +127,7 @@ class engine(Engine):
         table_name = os.path.join(tabledir, tablename)
         return os.path.exists(table_name)
 
-    def to_csv(self, sort=True, path=None):
+    def to_csv(self, sort=True, path=None, select_columns=None):
         """Export table from json engine to CSV file"""
         for table_item in self.script_table_registry[self.script.name]:
             header = table_item[1].get_insert_columns(join=False, create=True)

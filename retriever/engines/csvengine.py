@@ -49,10 +49,7 @@ class engine(Engine):
 
         # Register all tables created to enable
         # testing python files having custom download function
-        if self.script.name not in self.script_table_registry:
-            self.script_table_registry[self.script.name] = []
-        self.script_table_registry[self.script.name].append(
-            (self.table_name(), self.table))
+        Engine.register_tables(self)
 
     def disconnect(self):
         """Close the last file in the dataset"""
@@ -105,7 +102,7 @@ class engine(Engine):
         table_name = os.path.join(tabledir, tablename)
         return os.path.exists(table_name)
 
-    def to_csv(self, sort=True):
+    def to_csv(self, sort=True, path=None, select_columns=None):
         """Export sorted version of CSV file"""
         for table_item in self.script_table_registry[self.script.name]:
             sort_csv(table_item[0])

@@ -1,38 +1,16 @@
-sudo: false
-dist: trusty
-language: python
-python:
-  - "2.7"
-  - "3.5"
-addons:
-  postgresql: "9.4"
-  apt:
-    sources:
-      - travis-ci/sqlite3
-    packages:
-      - sqlite3
-
+cache: packages
+sudo: required
+warnings_are_errors: false
 services:
-  - postgresql
-install:
-  - pip install -r requirements.txt
-  - pip install -e .
-  - pip install codecov -U
-  - pip install pytest-cov -U
-  - pip install pytest-xdist -U
-  # Use pytest 3.9.3 version since 3.10.0 has a bug
-  - pip install pytest==3.9.3 -U
-
-
-# command to run tests using py.test
-
-script:
-  - py.test -v --cov=retriever
+  - docker
 
 # database setup
-before_script:
-  - sqlite3 --version
-  - psql -c 'create database testdb_retriever;' -U postgres
+before_install:
+  - docker-compose ps
+
+# command to run tests using py.test
+script:
+  - docker-compose  run --service-ports python_retriever py.test -v --cov=retriever
 
 after_success:
   - codecov
