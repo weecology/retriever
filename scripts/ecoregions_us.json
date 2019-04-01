@@ -1,0 +1,427 @@
+{
+    "name": "ecoregions-us",
+    "title": "Ecoregions of the Conterminous United States",
+    "description": "Ecoregions of the Conterminous United States",
+    "format": "vector",
+    "spatial_ref": "NAD83",
+    "citation": "U.S. Environmental Protection Agency. 2011. Level III ecoregions of the conterminous United States. U.S. EPA, National Health and Environmental Effects Research Laboratory, Corvallis, Oregon, Map scale 1:3,000,000",
+    "version": "1.0.0",
+    "license": [],
+    "driver_name": "ESRI Shapefile",
+    "keywords": [
+    "biota", "Biology", "Conservation", "Ecology", "Ecosystem", "Land",
+    "Natural Resources", "spatial-data"
+    ],
+    "extent": {
+        "xMax": 2258224.8307000003,
+        "xMin": -2356069.457800001,
+        "yMax": 3172577.0456,
+        "yMin": 272048.49569999985
+    },
+    "retriever_minimum_version": "2.2.0",
+    "extract_all": "True",
+    "archived": "zip",
+    "resources": [
+        {
+            "geom_type": "Polygon",
+            "name": "us_eco_level_three",
+            "path": "us_eco_l3.shp",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "US_L3CODE",
+                        "precision": 0,
+                        "size": 10,
+                        "type": "String"
+                    },
+                    {
+                        "name": "US_L3NAME",
+                        "precision": 0,
+                        "size": 100,
+                        "type": "String"
+                    },
+                    {
+                        "name": "NA_L3CODE",
+                        "precision": 0,
+                        "size": 20,
+                        "type": "String"
+                    },
+                    {
+                        "name": "NA_L3NAME",
+                        "precision": 0,
+                        "size": 100,
+                        "type": "String"
+                    },
+                    {
+                        "name": "NA_L2CODE",
+                        "precision": 0,
+                        "size": 20,
+                        "type": "String"
+                    },
+                    {
+                        "name": "NA_L2NAME",
+                        "precision": 0,
+                        "size": 100,
+                        "type": "String"
+                    },
+                    {
+                        "name": "NA_L1CODE",
+                        "precision": 0,
+                        "size": 20,
+                        "type": "String"
+                    },
+                    {
+                        "name": "NA_L1NAME",
+                        "precision": 0,
+                        "size": 100,
+                        "type": "String"
+                    },
+                    {
+                        "name": "L3_KEY",
+                        "precision": 0,
+                        "size": 125,
+                        "type": "String"
+                    },
+                    {
+                        "name": "L2_KEY",
+                        "precision": 0,
+                        "size": 125,
+                        "type": "String"
+                    },
+                    {
+                        "name": "L1_KEY",
+                        "precision": 0,
+                        "size": 125,
+                        "type": "String"
+                    },
+                    {
+                        "name": "Shape_Leng",
+                        "precision": 11,
+                        "size": 19,
+                        "type": "Real"
+                    },
+                    {
+                        "name": "Shape_Area",
+                        "precision": 11,
+                        "size": 19,
+                        "type": "Real"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/Ecoregions/us/us_eco_l3.zip"
+        },
+        {
+            "geom_type": "Polygon",
+            "name": "level_three_state_boundaries",
+            "path": "us_eco_l3_state_boundaries.shp",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "US_L3CODE",
+                        "precision": 0,
+                        "size": 10,
+                        "type": "String"
+                    },
+                    {
+                        "name": "US_L3NAME",
+                        "precision": 0,
+                        "size": 100,
+                        "type": "String"
+                    },
+                    {
+                        "name": "NA_L3CODE",
+                        "precision": 0,
+                        "size": 20,
+                        "type": "String"
+                    },
+                    {
+                        "name": "NA_L3NAME",
+                        "precision": 0,
+                        "size": 100,
+                        "type": "String"
+                    },
+                    {
+                        "name": "NA_L2CODE",
+                        "precision": 0,
+                        "size": 20,
+                        "type": "String"
+                    },
+                    {
+                        "name": "NA_L2NAME",
+                        "precision": 0,
+                        "size": 100,
+                        "type": "String"
+                    },
+                    {
+                        "name": "NA_L1CODE",
+                        "precision": 0,
+                        "size": 20,
+                        "type": "String"
+                    },
+                    {
+                        "name": "NA_L1NAME",
+                        "precision": 0,
+                        "size": 100,
+                        "type": "String"
+                    },
+                    {
+                        "name": "STATE_NAME",
+                        "precision": 0,
+                        "size": 25,
+                        "type": "String"
+                    },
+                    {
+                        "name": "EPA_REGION",
+                        "precision": 0,
+                        "size": 4,
+                        "type": "Integer"
+                    },
+                    {
+                        "name": "L3_KEY",
+                        "precision": 0,
+                        "size": 125,
+                        "type": "String"
+                    },
+                    {
+                        "name": "L2_KEY",
+                        "precision": 0,
+                        "size": 125,
+                        "type": "String"
+                    },
+                    {
+                        "name": "L1_KEY",
+                        "precision": 0,
+                        "size": 125,
+                        "type": "String"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/Ecoregions/us/us_eco_l3_state_boundaries.zip"
+        },
+        {
+            "geom_type": "Polygon",
+            "name": "us_eco_level_four",
+            "path": "us_eco_l4_no_st.shp",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "US_L4CODE",
+                        "precision": 0,
+                        "size": 10,
+                        "type": "String"
+                    },
+                    {
+                        "name": "US_L4NAME",
+                        "precision": 0,
+                        "size": 100,
+                        "type": "String"
+                    },
+                    {
+                        "name": "US_L3CODE",
+                        "precision": 0,
+                        "size": 10,
+                        "type": "String"
+                    },
+                    {
+                        "name": "US_L3NAME",
+                        "precision": 0,
+                        "size": 100,
+                        "type": "String"
+                    },
+                    {
+                        "name": "NA_L3CODE",
+                        "precision": 0,
+                        "size": 20,
+                        "type": "String"
+                    },
+                    {
+                        "name": "NA_L3NAME",
+                        "precision": 0,
+                        "size": 100,
+                        "type": "String"
+                    },
+                    {
+                        "name": "NA_L2CODE",
+                        "precision": 0,
+                        "size": 20,
+                        "type": "String"
+                    },
+                    {
+                        "name": "NA_L2NAME",
+                        "precision": 0,
+                        "size": 100,
+                        "type": "String"
+                    },
+                    {
+                        "name": "NA_L1CODE",
+                        "precision": 0,
+                        "size": 20,
+                        "type": "String"
+                    },
+                    {
+                        "name": "NA_L1NAME",
+                        "precision": 0,
+                        "size": 100,
+                        "type": "String"
+                    },
+                    {
+                        "name": "L4_KEY",
+                        "precision": 0,
+                        "size": 125,
+                        "type": "String"
+                    },
+                    {
+                        "name": "L3_KEY",
+                        "precision": 0,
+                        "size": 125,
+                        "type": "String"
+                    },
+                    {
+                        "name": "L2_KEY",
+                        "precision": 0,
+                        "size": 125,
+                        "type": "String"
+                    },
+                    {
+                        "name": "L1_KEY",
+                        "precision": 0,
+                        "size": 125,
+                        "type": "String"
+                    },
+                    {
+                        "name": "Shape_Leng",
+                        "precision": 11,
+                        "size": 19,
+                        "type": "Real"
+                    },
+                    {
+                        "name": "Shape_Area",
+                        "precision": 11,
+                        "size": 19,
+                        "type": "Real"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/Ecoregions/us/us_eco_l4.zip"
+        },
+        {
+            "geom_type": "Polygon",
+            "path": "us_eco_l4.shp",
+            "name": "level_four_state_boundaries",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "US_L4CODE",
+                        "precision": 0,
+                        "size": 10,
+                        "type": "String"
+                    },
+                    {
+                        "name": "US_L4NAME",
+                        "precision": 0,
+                        "size": 100,
+                        "type": "String"
+                    },
+                    {
+                        "name": "US_L3CODE",
+                        "precision": 0,
+                        "size": 10,
+                        "type": "String"
+                    },
+                    {
+                        "name": "US_L3NAME",
+                        "precision": 0,
+                        "size": 100,
+                        "type": "String"
+                    },
+                    {
+                        "name": "NA_L3CODE",
+                        "precision": 0,
+                        "size": 20,
+                        "type": "String"
+                    },
+                    {
+                        "name": "NA_L3NAME",
+                        "precision": 0,
+                        "size": 100,
+                        "type": "String"
+                    },
+                    {
+                        "name": "NA_L2CODE",
+                        "precision": 0,
+                        "size": 20,
+                        "type": "String"
+                    },
+                    {
+                        "name": "NA_L2NAME",
+                        "precision": 0,
+                        "size": 100,
+                        "type": "String"
+                    },
+                    {
+                        "name": "NA_L1CODE",
+                        "precision": 0,
+                        "size": 20,
+                        "type": "String"
+                    },
+                    {
+                        "name": "NA_L1NAME",
+                        "precision": 0,
+                        "size": 100,
+                        "type": "String"
+                    },
+                    {
+                        "name": "STATE_NAME",
+                        "precision": 0,
+                        "size": 25,
+                        "type": "String"
+                    },
+                    {
+                        "name": "EPA_REGION",
+                        "precision": 0,
+                        "size": 4,
+                        "type": "Integer"
+                    },
+                    {
+                        "name": "L4_KEY",
+                        "precision": 0,
+                        "size": 125,
+                        "type": "String"
+                    },
+                    {
+                        "name": "L3_KEY",
+                        "precision": 0,
+                        "size": 125,
+                        "type": "String"
+                    },
+                    {
+                        "name": "L2_KEY",
+                        "precision": 0,
+                        "size": 125,
+                        "type": "String"
+                    },
+                    {
+                        "name": "L1_KEY",
+                        "precision": 0,
+                        "size": 125,
+                        "type": "String"
+                    },
+                    {
+                        "name": "Shape_Leng",
+                        "precision": 11,
+                        "size": 19,
+                        "type": "Real"
+                    },
+                    {
+                        "name": "Shape_Area",
+                        "precision": 11,
+                        "size": 19,
+                        "type": "Real"
+                    }
+                ]
+            },
+            "url": "ftp://newftp.epa.gov/EPADataCommons/ORD/Ecoregions/us/us_eco_l4_state_boundaries.zip"
+        }
+    ]
+
+}
