@@ -36,6 +36,6 @@ def download(dataset, path='./', quiet=False, subdir=False, debug=False):
                 if debug:
                     raise
     else:
-        message = "Run retriever.datasets() to see a list of currently " \
+        message = "Run retriever.datasets() to see the list of currently " \
                   "available datasets."
         raise ValueError(message)
