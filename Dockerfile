@@ -24,12 +24,12 @@ RUN echo "export PGPASSFILE="~/.pgpass"" >> ~/.profile
 # Add permissions to config files
 RUN chmod 0644 ~/.profile
 
-RUN pip install psycopg2 pymysql > /dev/null
+RUN pip install pymysql
+RUN pip install psycopg2-binary -U
 RUN pip install codecov -U
 RUN pip install pytest-cov -U
 RUN pip install pytest-xdist -U
-# Use pytest 3.9.3 version since 3.10.0 has a bug
-RUN pip install pytest==3.9.3 -U
+RUN pip install pytest
 
 # Install Postgis after Python is setup
 RUN apt-get install -y --force-yes postgis
