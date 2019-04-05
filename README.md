@@ -61,7 +61,7 @@ database management systems:
 
 * PyMySQL (for MySQL)
 * sqlite3 (for SQLite)
-* psycopg2 (for PostgreSQL)
+* psycopg2-binary (for PostgreSQL), previously psycopg2.
 * pyodbc (for MS Access - this option is only available on Windows)
 * Microsoft Access Driver (ODBC for windows)
 

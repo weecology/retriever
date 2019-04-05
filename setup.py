@@ -41,7 +41,7 @@ includes = [
                'future',
                'argcomplete',
                'pymysql',
-               'psycopg2',
+               'psycopg2-binary',
                'sqlite3',
            ] + extra_includes
 

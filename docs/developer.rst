@@ -31,7 +31,7 @@ You will also need the following modules:
 ::
 
   mysqldb (MySQL)
-  psycopg2 (PostgreSQL)
+  psycopg2-binary (PostgreSQL)
   pypyodbc (MS Access)
 
 Style Guide for Python Code
@@ -252,7 +252,7 @@ distribution to other systems.
 
 1. Install the Python 3 Installer (or Python 2 if you have a specific reason for doing so)
    from the `Python download site`_.
-2. Use pip to install any desired optional dependencies ``pip install pymysql psycopg2 pyinstaller pytest``
+2. Use pip to install any desired optional dependencies ``pip install pymysql psycopg2-binary pyinstaller pytest``
    You will need all of these dependencies, for example pyinstaller, if you want to build the Mac App for distribution
 
 Homebrew
@@ -284,7 +284,7 @@ this can be done using a combination of homebrew and pip.
 2. Follow the instructions from ``brew`` for starting MySQL
 3. ``brew install postgresql``
 4. Follow the instructions from ``brew`` for starting Postgres
-5. ``sudo pip install pymysql MySQL-python psycopg2``
+5. ``sudo pip install pymysql MySQL-python psycopg2-binary``
 
 ``MySQL-python`` should be installed in addition to ``pymysql`` for
 building the ``.app`` file since pymysql is not currently working
