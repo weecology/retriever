@@ -74,7 +74,7 @@ with the following packages installed:
 
 -  PyMySQL (for MySQL)
 -  sqlite3 (for SQLite, v3.8 or higher required)
--  psycopg2 (for PostgreSQL)
+-  psycopg2-binary (for PostgreSQL)
 -  pypyodbc (for MS Access)
 
 **Steps to install from source**
