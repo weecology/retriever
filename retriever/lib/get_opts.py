@@ -75,7 +75,8 @@ reset_parser.add_argument('scope', help='things to reset: all, scripts or data')
 install_parser.add_argument('--compile', help='force re-compile of script before downloading', action='store_true')
 install_parser.add_argument('--debug', help='run in debug mode', action='store_true')
 install_parser.add_argument('--not-cached', help='overwrites local cache of raw data', action='store_true')
-download_parser.add_argument('dataset', help='dataset name').completer = ChoicesCompleter(script_list)
+download_parser.add_argument('--debug', help='run in debug mode', action='store_true')
+download_parser.add_argument('--not-cached', help='overwrites local cache of raw data', action='store_true')
 download_parser.add_argument('-b', '--bbox', nargs=4,
                              help='Set bounding box xmin, ymin, xmax, ymax',
                              required=False)
@@ -92,8 +93,9 @@ delete_json_parser.add_argument('dataset', help='dataset name', choices=json_lis
 install_subparsers = install_parser.add_subparsers(help='engine-specific help', dest='engine')
 
 for engine in engine_list:
-    if engine.name == "Download Only":  # skip the Download engine and just add attributes
-        pass
+    if engine.name == "Download Only":
+        # download engine follows, retriever download [dataset]
+        download_parser.add_argument('dataset', help='dataset name').completer = ChoicesCompleter(script_list)
     else:
         engine_parser = install_subparsers.add_parser(engine.abbreviation, help=engine.name)
         engine_parser.add_argument('dataset', help='dataset name').completer = ChoicesCompleter(script_list)
@@ -117,20 +119,11 @@ for engine in engine_list:
             abbreviation = '-%s' % arg_name
 
         if engine.name == "Download Only" or abbreviation == "download":
-            # add attributes to Download::  (download [-h] [--path [PATH]]
-            # [--subdir [SUBDIR]]
-
-            # subdir doesn't take any arguments, if included takes True if excluded takes False
-            if arg_name.lower() == "subdir":
-                download_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help_msg, default=default,
-                                             action='store_true')
-                # parser.add_argument('--foo', action='store_const', const = False)
-            else:
-                # path must take arguments else it takes default "./"
-                download_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help_msg, nargs='?',
-                                             default=default)
+            # add attributes to Download only engine
+            download_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation,
+                                         help=help_msg, nargs='?', default=default)
         else:
-            engine_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation, help=help_msg, nargs='?',
-                                       default=default)
+            engine_parser.add_argument('--%s' % arg_name, '-%s' % abbreviation,
+                                       help=help_msg, nargs='?', default=default)
 
 argcomplete.autocomplete(parser)

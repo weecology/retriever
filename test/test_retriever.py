@@ -441,8 +441,8 @@ def test_find_file_present():
     This enables the data to be in the DATA_SEARCH_PATHS.
     """
     test_engine.script.name = 'bird-size'
-    assert test_engine.find_file('avian_ssd_jan07.txt') == os.path.normpath(
-        'raw_data/bird-size/avian_ssd_jan07.txt')
+    assert test_engine.find_file('5599229') == os.path.normpath(
+        'raw_data/bird-size/5599229')
 
 
 def test_format_data_dir():

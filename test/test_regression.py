@@ -1,21 +1,19 @@
 from __future__ import absolute_import
 
 import imp
-import numpy as np
 import os
 import shlex
 import shutil
 import subprocess
 import sys
-from distutils.dir_util import copy_tree
 import time
-
+from distutils.dir_util import copy_tree
 from imp import reload
 
 import retriever as rt
 from retriever.lib.defaults import ENCODING, DATA_DIR
 from retriever.lib.load_json import read_json
-from retriever.lib.defaults import HOME_DIR
+
 encoding = ENCODING.lower()
 
 reload(sys)
@@ -52,8 +50,8 @@ script_home = '{}/.retriever/scripts/'.format(HOMEDIR)
 script_home = os.path.normpath(script_home)
 
 download_md5 = [
-    ('mt-st-helens-veg', 'd5782e07241cb3fe9f5b2e1bb804a794'),
-    ('bird-size', '45c7507ae945868c71b5179f7682ea9c'),
+    ('mt-st-helens-veg', '99ad58deafb2e5793e25d912b0eaa50c'),
+    ('bird-size', 'dce81ee0f040295cd14c857c18cc3f7e'),
     ('mammal-masses', 'b54b80d0d1959bdea0bb8a59b70fa871')
 ]
 
@@ -64,18 +62,17 @@ db_md5 = [
 ]
 
 spatial_db_md5 = [
-    ("test-eco-level-four", ["gid", "us_l3code", "na_l3code","na_l2code"], 'd1c01d8046143e9700f5cf92cbd6be3d'),
+    ("test-eco-level-four", ["gid", "us_l3code", "na_l3code", "na_l2code"], 'd1c01d8046143e9700f5cf92cbd6be3d'),
     ("test-raster-bio1", ["rid", "filename"], '27e0472ddc2da9fe807bfb48b786a251'),
     ("test-raster-bio2", ["rid", "filename"], '2983a9f7e099355db2ce2fa312a94cc6'),
     ("test-us-eco", ["gid", "us_l3code", "na_l3code", "na_l2code"], 'eaab9fa30c745557ff6ba7c116910b45')
 ]
 
-
 # Tuple of (dataset_name, list of dict values corresponding to a table)
 fetch_tests = [
     ('iris',
      [{'Iris': [[5.1, 3.5, 1.4, 0.2, 'Iris-setosa'],
-                     ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'classes']]
+                ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'classes']]
        }]
      ),
     ('flensburg-food-web',
@@ -263,9 +260,22 @@ def test_csv_regression(dataset, expected, tmpdir):
 def test_download_regression(dataset, expected):
     """Test download regression."""
     os.chdir(retriever_root_dir)
-    rt.download(dataset, "raw_data/{0}".format(dataset))
-    current_md5 = getmd5(data="raw_data/{0}".format(dataset), data_type='dir')
+    base_path = 'test_raw_data'
+    path = os.path.join(base_path, dataset)
+    data_dir = "test_temp"
+    data = os.path.normpath(os.path.join(retriever_root_dir, path, data_dir))
+
+    rt.download(dataset, path=path)
+    current_md5 = getmd5(data=path, data_type='dir')
     assert current_md5 == expected
+    shutil.rmtree(base_path)
+
+    # download using path and sub_dir
+    os.chdir(retriever_root_dir)
+    rt.download(dataset, path=path, sub_dir=data_dir)
+    current_md5 = getmd5(data=data, data_type='dir')
+    assert current_md5 == expected
+    shutil.rmtree(base_path)
 
 
 # @pytest.mark.parametrize("dataset, expected", fetch_tests)

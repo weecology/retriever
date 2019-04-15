@@ -4,7 +4,6 @@ import inspect
 import os
 import shutil
 
-from retriever.lib.defaults import DATA_DIR
 from retriever.lib.dummy import DummyConnection
 from retriever.lib.engine import filename_from_url
 from retriever.lib.models import Engine
@@ -18,9 +17,9 @@ class engine(Engine):
     required_opts = [("path",
                       "File path to copy data files",
                       "./"),
-                     ("subdir",
-                      "Keep the subdirectories for archived files",
-                      False)
+                     ("sub_dir",
+                      "Install directory",
+                      "")
                      ]
 
     def table_exists(self, dbname, tablename):
@@ -37,37 +36,23 @@ class engine(Engine):
         return DummyConnection()
 
     def final_cleanup(self):
-        """Copies downloaded files to desired directory
-
-        Copies the downloaded files into the chosen directory unless files with the same
-        name already exist in the directory.
-
-        """
+        """Copies downloaded files to desired directory"""
         if hasattr(self, "all_files"):
             for file_name in self.all_files:
                 file_path, file_name_nopath = os.path.split(file_name)
-                subdir = os.path.split(file_path)[1] if self.opts['subdir'] else ''
-                dest_path = os.path.join(self.opts['path'], subdir)
+                dest_path = os.path.join(self.opts['path'], self.opts.get('sub_dir', ""))
+                if not os.path.isdir(dest_path):
+                    print("Creating directory %s" % dest_path)
+                    os.makedirs(dest_path)
                 if os.path.isfile(os.path.join(dest_path, file_name_nopath)):
                     print("File already exists at specified location")
-                elif os.path.abspath(file_path) == os.path.abspath(os.path.join(DATA_DIR, subdir)):
-                    print("%s is already in the working directory" %
-                          file_name_nopath)
                     print("Keeping existing copy.")
                 else:
-                    print("Copying %s from %s" % (file_name_nopath, file_path))
-                    if os.path.isdir(dest_path):
-                        try:
-                            shutil.copy(file_name, dest_path)
-                        except:
-                            print("Couldn't copy file to %s" % dest_path)
-                    else:
-                        try:
-                            print("Creating directory %s" % dest_path)
-                            os.makedirs(dest_path)
-                            shutil.copy(file_name, dest_path)
-                        except:
-                            print("Couldn't create directory %s" % dest_path)
+                    try:
+                        print("Copying %s from %s" % (file_name_nopath, file_path))
+                        shutil.copy(file_name, dest_path)
+                    except:
+                        print("Couldn't copy file to %s" % dest_path)
         self.all_files = set()
 
     def auto_create_table(self, table, url=None, filename=None, pk=None):
