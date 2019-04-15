@@ -32,7 +32,7 @@ def _install(args, use_cache, debug):
                 if debug:
                     raise
     else:
-        message = "Run retriever.datasets()to list the currently available " \
+        message = "Run retriever.datasets() to list the currently available " \
                   "datasets."
         raise ValueError(message)
     return engine
