@@ -2,9 +2,14 @@
     "name": "ecoregions-us",
     "title": "Ecoregions of the Conterminous United States",
     "description": "Ecoregions of the Conterminous United States",
+    "homepage": "https://www.epa.gov/eco-research/level-iii-and-iv-ecoregions-continental-united-states",
     "format": "vector",
     "spatial_ref": "NAD83",
-    "citation": "U.S. Environmental Protection Agency. 2011. Level III ecoregions of the conterminous United States. U.S. EPA, National Health and Environmental Effects Research Laboratory, Corvallis, Oregon, Map scale 1:3,000,000",
+    "citation": "",
+    "table_citations": {
+        "ecoregions level three": "U.S. Environmental Protection Agency. 2011. Level III ecoregions of the conterminous United States. U.S. EPA, National Health and Environmental Effects Research Laboratory, Corvallis, Oregon, Map scale 1:3,000,000",
+        "ecoregions level four": "U.S. Environmental Protection Agency. 2011. Level III and IV ecoregions of the conterminous United States. U.S. EPA, National Health and Environmental Effects Research Laboratory, Corvallis, Oregon."
+    },
     "version": "1.0.0",
     "license": [],
     "driver_name": "ESRI Shapefile",
