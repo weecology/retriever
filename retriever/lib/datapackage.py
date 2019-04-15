@@ -247,9 +247,9 @@ def create_json():
     file_name = contents['name'] + ".json"
     file_name = file_name.replace('-', '_')
     with open(os.path.join(HOME_DIR, 'scripts', file_name), 'w') as output_file:
-        json_str = str(json.dump(contents, output_file, sort_keys=True, indent=4,
-                              separators=(',', ': ')))
-        output_file.write(json_str + '\n')
+        json.dump(contents, output_file, sort_keys=True, indent=4,
+                  separators=(',', ': '))
+        output_file.write('\n')
         print("\nScript written to " + file_name)
         output_file.close()
 
@@ -426,9 +426,9 @@ def edit_json(json_file):
     file_name = contents['name'] + ".json"
     file_name = file_name.replace('-', '_')
     with open(os.path.join(HOME_DIR, 'scripts', file_name), 'w') as output_file:
-        json_str = str(json.dump(contents, output_file, sort_keys=True, indent=4,
-                              separators=(',', ': ')))
-        output_file.write(json_str + '\n')
+        json.dump(contents, output_file, sort_keys=True, indent=4,
+                  separators=(',', ': '))
+        output_file.write('\n')
         print("\nScript written to " +
               os.path.join(HOME_DIR, 'scripts', file_name))
         output_file.close()
