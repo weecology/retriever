@@ -160,7 +160,13 @@ def create_json():
 
     contents['title'] = clean_input("title: ", ignore_empty=True)
     contents['description'] = clean_input("description: ", ignore_empty=True)
-    contents['citation'] = clean_input("citation: ", ignore_empty=True)
+    citations = clean_input("citations (separated by ';'): ",
+                            split_char=';', ignore_empty=True)
+    contents['citation'] = ""
+    if len(citations) >= 1:
+        contents['citation'] = citations[0]
+    if len(citations) > 1:
+        contents['table_citations'] = citations
     contents['homepage'] = clean_input("homepage (for the entire dataset): ", ignore_empty=True)
     contents['keywords'] = clean_input("keywords (separated by ';'): ",
                                        split_char=';', ignore_empty=True)

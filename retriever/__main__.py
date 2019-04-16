@@ -70,7 +70,12 @@ def main():
                 scripts = name_matches(script_list, args.dataset)
                 for dataset in scripts:
                     print("\nDataset:  {}".format(dataset.name))
-                    print("Citation:   {}".format(dataset.citation))
+                    if hasattr(dataset, 'table_citations') and dataset.table_citations:
+                        print("Citations:   ")
+                        for index, citation in enumerate(dataset.table_citations):
+                            print("{count}. {citation}".format(count=index+1, citation=citation))
+                    else:
+                        print("Citation:   {}".format(dataset.citation))
                     print("Description:   {}\n".format(dataset.description))
 
             return
@@ -137,7 +142,7 @@ def main():
                     print(
                         "{count}. {title}\n {name}\n"
                         "{keywords}\n{description}\n"
-                        "{licenses}\n{citation}\n"
+                        "{licenses}"
                         "".format(
                             count=count,
                             title=script.title,
@@ -145,9 +150,14 @@ def main():
                             keywords=script.keywords,
                             description=script.description,
                             licenses=str(script.licenses[0]['name']),
-                            citation=script.citation,
                         )
                     )
+                    if hasattr(script, 'table_citations') and script.table_citations:
+                        for index, citation in enumerate(script.table_citations):
+                            print("{count}. {citation}".format(count=index+1, citation=citation))
+                    else:
+                        print("{citation}".format(citation=script.citation))
+
                     count += 1
 
             else:
