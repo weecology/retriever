@@ -4,6 +4,7 @@ from retriever._version import __version__
 
 VERSION = __version__
 COPYRIGHT = "Copyright (C) 2011-2016 Weecology University of Florida"
+LICENSE = "MIT"
 REPO_URL = "https://raw.githubusercontent.com/weecology/retriever/"
 MASTER_BRANCH = REPO_URL + "master/"
 REPOSITORY = MASTER_BRANCH
