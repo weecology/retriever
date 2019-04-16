@@ -293,13 +293,17 @@ def test_fetch():
                 assert expected_column_values == column_values
 
 
-def test_interface_table_registry():
+def test_interface_table_registry(tmpdir):
     # Test if script_table_registry keeps only the latest
     # table names of the installed data packages in
     # script_table_registry
+    
+    workdir = tmpdir.mkdtemp()
+    workdir.chdir()
     rt.install_csv("iris")
     wine_data = rt.fetch("wine-composition")
     assert "iris" not in wine_data.keys()
+    os.chdir(retriever_root_dir)
 
 
 @pytest.mark.parametrize("dataset, expected", fetch_order_tests)
