@@ -115,7 +115,7 @@ and datasets run ``retriever --help``. The output will look like this:
         delete_json         CLI to remove retriever datapackage.json script
         ls                  display a list all available dataset scripts
         citation            view citation
-        reset               reset retriever: removes configation settings,
+        reset               reset retriever: removes configuration settings,
                             scripts, and cached data
         help
 
