@@ -45,6 +45,8 @@ class engine(Engine):
                       "{db}.{table}"),
                      ]
     spatial_support = True
+    # default postgres encoding
+    db_encoding = "Latin1"
 
     def auto_create_table(self, table, url=None, filename=None, pk=None):
         """Create a table automatically.
@@ -182,18 +184,22 @@ CSV HEADER;"""
             path=os.path.normpath(path),
             SCHEMA_DBTABLE=self.table_name())
 
-        cmd_string = """ | psql -U {USER} -d {DATABASE} --port {PORT} --host {HOST}""".format(
+        cmd_string = """ | psql -U {USER} -d {DATABASE} --port {PORT} --host {HOST} > {nul_dev} """.format(
             USER=self.opts["user"],
             DATABASE=self.opts["database"],
             PORT=self.opts["port"],
-            HOST=self.opts["host"]
+            HOST=self.opts["host"],
+            nul_dev=os.devnull
         )
 
         cmd_stmt = raster_sql + cmd_string
         if self.debug:
             print(cmd_stmt)
         Engine.register_tables(self)
-        subprocess.call(cmd_stmt, shell=True, stdout=subprocess.PIPE)
+        try:
+            subprocess.call(cmd_stmt, shell=True)
+        except BaseException as e:
+            pass
 
     def insert_vector(self, path=None, srid=4326):
         """Import Vector into Postgis Table
@@ -218,23 +224,27 @@ CSV HEADER;"""
          """
         if not path:
             path = Engine.format_data_dir(self)
-        vector_sql = "shp2pgsql -d -I -W {encd} -s {SRID} \"{path}\" {SCHEMA_DBTABLE}".format(
+        vector_sql = "shp2pgsql -d -I -W \"{encd}\"  -s {SRID} \"{path}\" \"{SCHEMA_DBTABLE}\"".format(
             encd=ENCODING,
             SRID=srid,
             path=os.path.normpath(path),
             SCHEMA_DBTABLE=self.table_name())
 
-        cmd_string = """ | psql -U {USER} -d {DATABASE} --port {PORT} --host {HOST}""".format(
+        cmd_string = """ | psql -U {USER} -d {DATABASE} --port {PORT} --host {HOST} > {nul_dev} """.format(
             USER=self.opts["user"],
             DATABASE=self.opts["database"],
             PORT=self.opts["port"],
-            HOST=self.opts["host"]
+            HOST=self.opts["host"],
+            nul_dev=os.devnull
         )
         cmd_stmt = vector_sql + cmd_string
         if self.debug:
             print(cmd_stmt)
         Engine.register_tables(self)
-        subprocess.call(cmd_stmt, shell=True, stdout=subprocess.PIPE)
+        try:
+            subprocess.call(cmd_stmt, shell=True)
+        except BaseException as e:
+            pass
 
     def format_insert_value(self, value, datatype):
         """Format value for an insert statement."""
@@ -267,6 +277,6 @@ CSV HEADER;"""
         encoding_lookup = {'iso-8859-1': 'Latin1',
                            'latin-1': 'Latin1',
                            'utf-8': 'UTF8'}
-        db_encoding = encoding_lookup.get(encoding)
-        conn.set_client_encoding(db_encoding)
+        self.db_encoding = encoding_lookup.get(encoding)
+        conn.set_client_encoding(self.db_encoding)
         return conn

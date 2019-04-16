@@ -22,6 +22,7 @@ chytr_disease_distr.json,1.0.2
 community_abundance_misc.json,1.0.3
 croche_vegetation_data.json,1.0.2
 dicerandra_frutescens.json,1.0.2
+ecoregions_us.json,1.0.0
 elton_traits.json,1.2.1
 fao_global_capture_product.py,1.0.0
 fish_parasite_hosts.json,1.2.1
