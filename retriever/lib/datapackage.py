@@ -258,7 +258,7 @@ def edit_dict(obj, tabwidth=0):
     """
     Recursive helper function for edit_json() to edit a datapackage.JSON script file.
     """
-    for key, val in obj.items():
+    for key, val in obj.copy().items():
         print('\n' + "  " * tabwidth + "->" + key + " (", type(val), ") :\n")
         if isinstance(val, list):
             for v in val:
