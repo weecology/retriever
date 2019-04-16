@@ -120,463 +120,463 @@
                         "type": "int"
                     },
                     {
-                        "name": "Acalypha virginica",
+                        "name": "Acalypha_virginica",
                         "type": "double"
                     },
                     {
-                        "name": "Acer rubrum",
+                        "name": "Acer_rubrum",
                         "type": "double"
                     },
                     {
-                        "name": "Achillea millefolium",
+                        "name": "Achillea_millefolium",
                         "type": "double"
                     },
                     {
-                        "name": "Agrostis hyemalis",
+                        "name": "Agrostis_hyemalis",
                         "type": "double"
                     },
                     {
-                        "name": "Agrostis species",
+                        "name": "Agrostis_species",
                         "type": "double"
                     },
                     {
-                        "name": "Ambrosia artemisiifolia",
+                        "name": "Ambrosia_artemisiifolia",
                         "type": "double"
                     },
                     {
-                        "name": "Amorpha canescens",
+                        "name": "Amorpha_canescens",
                         "type": "double"
                     },
                     {
-                        "name": "Andropogon gerardi",
+                        "name": "Andropogon_gerardi",
                         "type": "double"
                     },
                     {
-                        "name": "Andropogon virginicus",
+                        "name": "Andropogon_virginicus",
                         "type": "double"
                     },
                     {
-                        "name": "Antennaria neglecta",
+                        "name": "Antennaria_neglecta",
                         "type": "double"
                     },
                     {
-                        "name": "Apocynum cannabinum",
+                        "name": "Apocynum_cannabinum",
                         "type": "double"
                     },
                     {
-                        "name": "Arenaria species",
+                        "name": "Arenaria_species",
                         "type": "double"
                     },
                     {
-                        "name": "Aristida oligantha",
+                        "name": "Aristida_oligantha",
                         "type": "double"
                     },
                     {
-                        "name": "Artemisia ludoviciana",
+                        "name": "Artemisia_ludoviciana",
                         "type": "double"
                     },
                     {
-                        "name": "Asclepias syriaca",
+                        "name": "Asclepias_syriaca",
                         "type": "double"
                     },
                     {
-                        "name": "Asclepias tuberosa",
+                        "name": "Asclepias_tuberosa",
                         "type": "double"
                     },
                     {
-                        "name": "Asclepias verticillata",
+                        "name": "Asclepias_verticillata",
                         "type": "double"
                     },
                     {
-                        "name": "Asclepias viridis",
+                        "name": "Asclepias_viridis",
                         "type": "double"
                     },
                     {
-                        "name": "Astragalus canadensis",
+                        "name": "Astragalus_canadensis",
                         "type": "double"
                     },
                     {
-                        "name": "Symphyotrichum ericoides",
+                        "name": "Symphyotrichum_ericoides",
                         "type": "double"
                     },
                     {
-                        "name": "Aster species",
+                        "name": "Aster_species",
                         "type": "double"
                     },
                     {
-                        "name": "Symphyotrichum novae-angliae",
+                        "name": "Symphyotrichum_novae-angliae",
                         "type": "double"
                     },
                     {
-                        "name": "Symphyotrichum pilosum",
+                        "name": "Symphyotrichum_pilosum",
                         "type": "double"
                     },
                     {
-                        "name": "Symphyotrichum praealtum",
+                        "name": "Symphyotrichum_praealtum",
                         "type": "double"
                     },
                     {
-                        "name": "Barbarea vulgaris",
+                        "name": "Barbarea_vulgaris",
                         "type": "double"
                     },
                     {
-                        "name": "Bouteloua curtipendula",
+                        "name": "Bouteloua_curtipendula",
                         "type": "double"
                     },
                     {
-                        "name": "Bromus inermis",
+                        "name": "Bromus_inermis",
                         "type": "double"
                     },
                     {
-                        "name": "Carex brevior",
+                        "name": "Carex_brevior",
                         "type": "double"
                     },
                     {
-                        "name": "Carex bushii",
+                        "name": "Carex_bushii",
                         "type": "double"
                     },
                     {
-                        "name": "Carex species",
+                        "name": "Carex_species",
                         "type": "double"
                     },
                     {
-                        "name": "Carduus nutans",
+                        "name": "Carduus_nutans",
                         "type": "double"
                     },
                     {
-                        "name": "Chamaecrista fasciculata",
+                        "name": "Chamaecrista_fasciculata",
                         "type": "double"
                     },
                     {
-                        "name": "Celtis occidentalis",
+                        "name": "Celtis_occidentalis",
                         "type": "double"
                     },
                     {
-                        "name": "Cerastium fontanum",
+                        "name": "Cerastium_fontanum",
                         "type": "double"
                     },
                     {
-                        "name": "Cichorium intybus",
+                        "name": "Cichorium_intybus",
                         "type": "double"
                     },
                     {
-                        "name": "Cirsium altissimum",
+                        "name": "Cirsium_altissimum",
                         "type": "double"
                     },
                     {
-                        "name": "Cirsium arvense",
+                        "name": "Cirsium_arvense",
                         "type": "double"
                     },
                     {
-                        "name": "Cirsium vulgare",
+                        "name": "Cirsium_vulgare",
                         "type": "double"
                     },
                     {
-                        "name": "Convolvulus arvensis",
+                        "name": "Convolvulus_arvensis",
                         "type": "double"
                     },
                     {
-                        "name": "Conyza canadensis",
+                        "name": "Conyza_canadensis",
                         "type": "double"
                     },
                     {
-                        "name": "Cornus drummondi",
+                        "name": "Cornus_drummondi",
                         "type": "double"
                     },
                     {
-                        "name": "Cynanchum laeve",
+                        "name": "Cynanchum_laeve",
                         "type": "double"
                     },
                     {
-                        "name": "Dactylis glomerata",
+                        "name": "Dactylis_glomerata",
                         "type": "double"
                     },
                     {
-                        "name": "Daucus carota",
+                        "name": "Daucus_carota",
                         "type": "double"
                     },
                     {
-                        "name": "Desmodium canadense",
+                        "name": "Desmodium_canadense",
                         "type": "double"
                     },
                     {
-                        "name": "Desmanthus illinoensis",
+                        "name": "Desmanthus_illinoensis",
                         "type": "double"
                     },
                     {
-                        "name": "Dichanthelium species",
+                        "name": "Dichanthelium_species",
                         "type": "double"
                     },
                     {
-                        "name": "Dichanthelium oliganthes",
+                        "name": "Dichanthelium_oliganthes",
                         "type": "double"
                     },
                     {
-                        "name": "Digitaria sanguinalis",
+                        "name": "Digitaria_sanguinalis",
                         "type": "double"
                     },
                     {
-                        "name": "Echinacea pallida",
+                        "name": "Echinacea_pallida",
                         "type": "double"
                     },
                     {
-                        "name": "Elymus canadensis",
+                        "name": "Elymus_canadensis",
                         "type": "double"
                     },
                     {
-                        "name": "Eragrostis spectabilis",
+                        "name": "Eragrostis_spectabilis",
                         "type": "double"
                     },
                     {
-                        "name": "Eragrostis trichodes",
+                        "name": "Eragrostis_trichodes",
                         "type": "double"
                     },
                     {
-                        "name": "Erechtites hieraciifolia",
+                        "name": "Erechtites_hieraciifolia",
                         "type": "double"
                     },
                     {
-                        "name": "Erigeron annuus",
+                        "name": "Erigeron_annuus",
                         "type": "double"
                     },
                     {
-                        "name": "Erigeron strigosus",
+                        "name": "Erigeron_strigosus",
                         "type": "double"
                     },
                     {
-                        "name": "Eryngium yuccifolium",
+                        "name": "Eryngium_yuccifolium",
                         "type": "double"
                     },
                     {
-                        "name": "Eupatorium altissimum",
+                        "name": "Eupatorium_altissimum",
                         "type": "double"
                     },
                     {
-                        "name": "Chamaesyce maculata",
+                        "name": "Chamaesyce_maculata",
                         "type": "double"
                     },
                     {
-                        "name": "Chamaesyce nutans",
+                        "name": "Chamaesyce_nutans",
                         "type": "double"
                     },
                     {
-                        "name": "Eupatorium serotinum",
+                        "name": "Eupatorium_serotinum",
                         "type": "double"
                     },
                     {
-                        "name": "Schedonorus arundinaceus",
+                        "name": "Schedonorus_arundinaceus",
                         "type": "double"
                     },
                     {
-                        "name": "Festuca ovina",
+                        "name": "Festuca_ovina",
                         "type": "double"
                     },
                     {
-                        "name": "Fragaria virginiana",
+                        "name": "Fragaria_virginiana",
                         "type": "double"
                     },
                     {
-                        "name": "Unknown species A",
+                        "name": "Unknown_species_A",
                         "type": "double"
                     },
                     {
-                        "name": "Galium species",
+                        "name": "Galium_species",
                         "type": "double"
                     },
                     {
-                        "name": "Gaura longiflora",
+                        "name": "Gaura_longiflora",
                         "type": "double"
                     },
                     {
-                        "name": "Geranium carolinianum",
+                        "name": "Geranium_carolinianum",
                         "type": "double"
                     },
                     {
-                        "name": "Geum canadense",
+                        "name": "Geum_canadense",
                         "type": "double"
                     },
                     {
-                        "name": "Gleditsia triacanthos",
+                        "name": "Gleditsia_triacanthos",
                         "type": "double"
                     },
                     {
-                        "name": "Pseudognaphalium obtusifolium",
+                        "name": "Pseudognaphalium_obtusifolium",
                         "type": "double"
                     },
                     {
-                        "name": "Hedeoma hispida",
+                        "name": "Hedeoma_hispida",
                         "type": "double"
                     },
                     {
-                        "name": "Helianthus annuus",
+                        "name": "Helianthus_annuus",
                         "type": "double"
                     },
                     {
-                        "name": "Heliopsis helianthoides",
+                        "name": "Heliopsis_helianthoides",
                         "type": "double"
                     },
                     {
-                        "name": "Helianthus maximiliani",
+                        "name": "Helianthus_maximiliani",
                         "type": "double"
                     },
                     {
-                        "name": "Helianthus pauciflorus",
+                        "name": "Helianthus_pauciflorus",
                         "type": "double"
                     },
                     {
-                        "name": "Hesperis matronalis",
+                        "name": "Hesperis_matronalis",
                         "type": "double"
                     },
                     {
-                        "name": "Hibiscus trionum",
+                        "name": "Hibiscus_trionum",
                         "type": "double"
                     },
                     {
-                        "name": "Ipomoea lacunosa",
+                        "name": "Ipomoea_lacunosa",
                         "type": "double"
                     },
                     {
-                        "name": "Iva annua",
+                        "name": "Iva_annua",
                         "type": "double"
                     },
                     {
-                        "name": "Juncus species",
+                        "name": "Juncus_species",
                         "type": "double"
                     },
                     {
-                        "name": "Juncus interior",
+                        "name": "Juncus_interior",
                         "type": "double"
                     },
                     {
-                        "name": "Juniperus virginiana",
+                        "name": "Juniperus_virginiana",
                         "type": "double"
                     },
                     {
-                        "name": "Brickellia eupatorioides",
+                        "name": "Brickellia_eupatorioides",
                         "type": "double"
                     },
                     {
-                        "name": "Lactuca canadensis",
+                        "name": "Lactuca_canadensis",
                         "type": "double"
                     },
                     {
-                        "name": "Lactuca saligna",
+                        "name": "Lactuca_saligna",
                         "type": "double"
                     },
                     {
-                        "name": "Lactuca serriola",
+                        "name": "Lactuca_serriola",
                         "type": "double"
                     },
                     {
-                        "name": "Lactuca species",
+                        "name": "Lactuca_species",
                         "type": "double"
                     },
                     {
-                        "name": "Lamium amplexicaule",
+                        "name": "Lamium_amplexicaule",
                         "type": "double"
                     },
                     {
-                        "name": "Digitaria cognata",
+                        "name": "Digitaria_cognata",
                         "type": "double"
                     },
                     {
-                        "name": "Lepidium virginicum",
+                        "name": "Lepidium_virginicum",
                         "type": "double"
                     },
                     {
-                        "name": "Lespedeza capitata",
+                        "name": "Lespedeza_capitata",
                         "type": "double"
                     },
                     {
-                        "name": "Lespedeza cuneata",
+                        "name": "Lespedeza_cuneata",
                         "type": "double"
                     },
                     {
-                        "name": "Kummerowia stipulacea",
+                        "name": "Kummerowia_stipulacea",
                         "type": "double"
                     },
                     {
-                        "name": "Liatris pycnostachya",
+                        "name": "Liatris_pycnostachya",
                         "type": "double"
                     },
                     {
-                        "name": "Linaria vulgaris",
+                        "name": "Linaria_vulgaris",
                         "type": "double"
                     },
                     {
-                        "name": "Medicago sativa",
+                        "name": "Medicago_sativa",
                         "type": "double"
                     },
                     {
-                        "name": "Melilotus alba",
+                        "name": "Melilotus_alba",
                         "type": "double"
                     },
                     {
-                        "name": "Melilotus officinalis",
+                        "name": "Melilotus_officinalis",
                         "type": "double"
                     },
                     {
-                        "name": "Mirabilis nyctaginea",
+                        "name": "Mirabilis_nyctaginea",
                         "type": "double"
                     },
                     {
-                        "name": "Mollugo verticillata",
+                        "name": "Mollugo_verticillata",
                         "type": "double"
                     },
                     {
-                        "name": "Monarda fistulosa",
+                        "name": "Monarda_fistulosa",
                         "type": "double"
                     },
                     {
-                        "name": "Morus alba",
+                        "name": "Morus_alba",
                         "type": "double"
                     },
                     {
-                        "name": "Myosotis verna",
+                        "name": "Myosotis_verna",
                         "type": "double"
                     },
                     {
-                        "name": "Oenothera biennis",
+                        "name": "Oenothera_biennis",
                         "type": "double"
                     },
                     {
-                        "name": "Oenothera missouriensis",
+                        "name": "Oenothera_missouriensis",
                         "type": "double"
                     },
                     {
-                        "name": "Oxalis stricta",
+                        "name": "Oxalis_stricta",
                         "type": "double"
                     },
                     {
-                        "name": "Panicum capillare",
+                        "name": "Panicum_capillare",
                         "type": "double"
                     },
                     {
-                        "name": "Panicum virgatum",
+                        "name": "Panicum_virgatum",
                         "type": "double"
                     },
                     {
-                        "name": "Parthenocissus quinquefolia",
+                        "name": "Parthenocissus_quinquefolia",
                         "type": "double"
                     },
                     {
-                        "name": "Penstemon albidus",
+                        "name": "Penstemon_albidus",
                         "type": "double"
                     },
                     {
-                        "name": "Dalea candida",
+                        "name": "Dalea_candida",
                         "type": "double"
                     },
                     {
-                        "name": "Dalea purpurea",
+                        "name": "Dalea_purpurea",
                         "type": "double"
                     },
                     {
-                        "name": "Phleum pratense",
+                        "name": "Phleum_pratense",
                         "type": "double"
                     },
                     {
-                        "name": "Physalis pumila",
+                        "name": "Physalis_pumila",
                         "type": "double"
                     },
                     {
@@ -584,31 +584,31 @@
                         "type": "double"
                     },
                     {
-                        "name": "Poa compressa",
+                        "name": "Poa_compressa",
                         "type": "double"
                     },
                     {
-                        "name": "Poa pratensis",
+                        "name": "Poa_pratensis",
                         "type": "double"
                     },
                     {
-                        "name": "Polygonum convolvulus",
+                        "name": "Polygonum_convolvulus",
                         "type": "double"
                     },
                     {
-                        "name": "Polygonum pensylvanicum",
+                        "name": "Polygonum_pensylvanicum",
                         "type": "double"
                     },
                     {
-                        "name": "Polygonum ramosissimum",
+                        "name": "Polygonum_ramosissimum",
                         "type": "double"
                     },
                     {
-                        "name": "Populus deltoides",
+                        "name": "Populus_deltoides",
                         "type": "double"
                     },
                     {
-                        "name": "Potentilla recta",
+                        "name": "Potentilla_recta",
                         "type": "double"
                     },
                     {
@@ -616,19 +616,19 @@
                         "type": "double"
                     },
                     {
-                        "name": "Pycnanthemum tenuifolium",
+                        "name": "Pycnanthemum_tenuifolium",
                         "type": "double"
                     },
                     {
-                        "name": "Ratibida pinnata",
+                        "name": "Ratibida_pinnata",
                         "type": "double"
                     },
                     {
-                        "name": "Rhus typhina",
+                        "name": "Rhus_typhina",
                         "type": "double"
                     },
                     {
-                        "name": "Robinia pseudo-acacia",
+                        "name": "Robinia_pseudo-acacia",
                         "type": "double"
                     },
                     {
@@ -636,171 +636,171 @@
                         "type": "double"
                     },
                     {
-                        "name": "Rudbeckia hirta",
+                        "name": "Rudbeckia_hirta",
                         "type": "double"
                     },
                     {
-                        "name": "Rumex crispus",
+                        "name": "Rumex_crispus",
                         "type": "double"
                     },
                     {
-                        "name": "Salvia azurea",
+                        "name": "Salvia_azurea",
                         "type": "double"
                     },
                     {
-                        "name": "Schizachyrium scoparium",
+                        "name": "Schizachyrium_scoparium",
                         "type": "double"
                     },
                     {
-                        "name": "Setaria faberii",
+                        "name": "Setaria_faberii",
                         "type": "double"
                     },
                     {
-                        "name": "Setaria glauca",
+                        "name": "Setaria_glauca",
                         "type": "double"
                     },
                     {
-                        "name": "Sida spinosa",
+                        "name": "Sida_spinosa",
                         "type": "double"
                     },
                     {
-                        "name": "Silene antirrhina",
+                        "name": "Silene_antirrhina",
                         "type": "double"
                     },
                     {
-                        "name": "Silphium laciniatum",
+                        "name": "Silphium_laciniatum",
                         "type": "double"
                     },
                     {
-                        "name": "Silphium perfoliatum",
+                        "name": "Silphium_perfoliatum",
                         "type": "double"
                     },
                     {
-                        "name": "Solidago canadensis",
+                        "name": "Solidago_canadensis",
                         "type": "double"
                     },
                     {
-                        "name": "Solanum carolienense",
+                        "name": "Solanum_carolienense",
                         "type": "double"
                     },
                     {
-                        "name": "Euthamia gymnospermoides",
+                        "name": "Euthamia_gymnospermoides",
                         "type": "double"
                     },
                     {
-                        "name": "Oligoneuron rigidum",
+                        "name": "Oligoneuron_rigidum",
                         "type": "double"
                     },
                     {
-                        "name": "Solanum rostratum",
+                        "name": "Solanum_rostratum",
                         "type": "double"
                     },
                     {
-                        "name": "Sonchus asper",
+                        "name": "Sonchus_asper",
                         "type": "double"
                     },
                     {
-                        "name": "Sorghastrum nutans",
+                        "name": "Sorghastrum_nutans",
                         "type": "double"
                     },
                     {
-                        "name": "Unknown species B",
+                        "name": "Unknown_species_B",
                         "type": "double"
                     },
                     {
-                        "name": "Sporobolus cryptandrus",
+                        "name": "Sporobolus_cryptandrus",
                         "type": "double"
                     },
                     {
-                        "name": "Stellaria media",
+                        "name": "Stellaria_media",
                         "type": "double"
                     },
                     {
-                        "name": "Symphoricarpos orbiculatus",
+                        "name": "Symphoricarpos_orbiculatus",
                         "type": "double"
                     },
                     {
-                        "name": "Taraxacum officinale",
+                        "name": "Taraxacum_officinale",
                         "type": "double"
                     },
                     {
-                        "name": "Teucrium canadense",
+                        "name": "Teucrium_canadense",
                         "type": "double"
                     },
                     {
-                        "name": "Torilis arvensis",
+                        "name": "Torilis_arvensis",
                         "type": "double"
                     },
                     {
-                        "name": "Toxicodendron radicans",
+                        "name": "Toxicodendron_radicans",
                         "type": "double"
                     },
                     {
-                        "name": "Tragopogon dubius",
+                        "name": "Tragopogon_dubius",
                         "type": "double"
                     },
                     {
-                        "name": "Tripsacum dactyloides",
+                        "name": "Tripsacum_dactyloides",
                         "type": "double"
                     },
                     {
-                        "name": "Tridens flavus",
+                        "name": "Tridens_flavus",
                         "type": "double"
                     },
                     {
-                        "name": "Trifolium pratense",
+                        "name": "Trifolium_pratense",
                         "type": "double"
                     },
                     {
-                        "name": "Trifolium repens",
+                        "name": "Trifolium_repens",
                         "type": "double"
                     },
                     {
-                        "name": "Ulmus rubra",
+                        "name": "Ulmus_rubra",
                         "type": "double"
                     },
                     {
-                        "name": "Unknown forb A",
+                        "name": "Unknown_forb_A",
                         "type": "double"
                     },
                     {
-                        "name": "Unknown grass A",
+                        "name": "Unknown_grass_A",
                         "type": "double"
                     },
                     {
-                        "name": "Unknown species C",
+                        "name": "Unknown_species_C_first",
                         "type": "double"
                     },
                     {
-                        "name": "Unknown species C",
+                        "name": "Unknown_species_C_second",
                         "type": "double"
                     },
                     {
-                        "name": "Unknown woody A",
+                        "name": "Unknown_woody_A",
                         "type": "double"
                     },
                     {
-                        "name": "Vernonia baldwini",
+                        "name": "Vernonia_baldwini",
                         "type": "double"
                     },
                     {
-                        "name": "Veronica peregrina",
+                        "name": "Veronica_peregrina",
                         "type": "double"
                     },
                     {
-                        "name": "Verbena stricta",
+                        "name": "Verbena_stricta",
                         "type": "double"
                     },
                     {
-                        "name": "Verbascum thapsus",
+                        "name": "Verbascum_thapsus",
                         "type": "double"
                     },
                     {
-                        "name": "Verbena urticifolia",
+                        "name": "Verbena_urticifolia",
                         "type": "double"
                     },
                     {
-                        "name": "Vicia villosa",
+                        "name": "Vicia_villosa",
                         "type": "double"
                     },
                     {
@@ -808,7 +808,7 @@
                         "type": "double"
                     },
                     {
-                        "name": "Zizia aurea",
+                        "name": "Zizia_aurea",
                         "type": "double"
                     }
                 ]
@@ -876,7 +876,7 @@
                 "delimiter": ",",
                 "header_rows": 1
             },
-            "name": "plant_species_composition-exp2",
+            "name": "plant_species_composition_exp2",
             "schema": {
                 "fields": [
                     {
@@ -916,299 +916,299 @@
                         "type": "int"
                     },
                     {
-                        "name": "Acalypha virginica",
+                        "name": "Acalypha_virginica",
                         "type": "double"
                     },
                     {
-                        "name": "Acer rubrum",
+                        "name": "Acer_rubrum",
                         "type": "double"
                     },
                     {
-                        "name": "Achillea millefolium",
+                        "name": "Achillea_millefolium",
                         "type": "double"
                     },
                     {
-                        "name": "Agrostis species",
+                        "name": "Agrostis_species",
                         "type": "double"
                     },
                     {
-                        "name": "Ambrosia artemisiifolia",
+                        "name": "Ambrosia_artemisiifolia",
                         "type": "double"
                     },
                     {
-                        "name": "Amorpha canescens",
+                        "name": "Amorpha_canescens",
                         "type": "double"
                     },
                     {
-                        "name": "Andropogon gerardi",
+                        "name": "Andropogon_gerardi",
                         "type": "double"
                     },
                     {
-                        "name": "Andropogon virginicus",
+                        "name": "Andropogon_virginicus",
                         "type": "double"
                     },
                     {
-                        "name": "Antennaria neglecta",
+                        "name": "Antennaria_neglecta",
                         "type": "double"
                     },
                     {
-                        "name": "Apocynum cannabinum",
+                        "name": "Apocynum_cannabinum",
                         "type": "double"
                     },
                     {
-                        "name": "Arenaria species",
+                        "name": "Arenaria_species",
                         "type": "double"
                     },
                     {
-                        "name": "Aristida oligantha",
+                        "name": "Aristida_oligantha",
                         "type": "double"
                     },
                     {
-                        "name": "Asclepias syriaca",
+                        "name": "Asclepias_syriaca",
                         "type": "double"
                     },
                     {
-                        "name": "Asclepias tuberosa",
+                        "name": "Asclepias_tuberosa",
                         "type": "double"
                     },
                     {
-                        "name": "Asclepias verticillata",
+                        "name": "Asclepias_verticillata",
                         "type": "double"
                     },
                     {
-                        "name": "Asclepias viridis",
+                        "name": "Asclepias_viridis",
                         "type": "double"
                     },
                     {
-                        "name": "Aster species",
+                        "name": "Aster_species",
                         "type": "double"
                     },
                     {
-                        "name": "Symphyotrichum novae-angliae",
+                        "name": "Symphyotrichum_novae-angliae",
                         "type": "double"
                     },
                     {
-                        "name": "Symphyotrichum pilosum",
+                        "name": "Symphyotrichum_pilosum",
                         "type": "double"
                     },
                     {
-                        "name": "Symphyotrichum praealtum",
+                        "name": "Symphyotrichum_praealtum",
                         "type": "double"
                     },
                     {
-                        "name": "Bouteloua curtipendula",
+                        "name": "Bouteloua_curtipendula",
                         "type": "double"
                     },
                     {
-                        "name": "Bouteloua gracilis",
+                        "name": "Bouteloua_gracilis",
                         "type": "double"
                     },
                     {
-                        "name": "Bromus inermis",
+                        "name": "Bromus_inermis",
                         "type": "double"
                     },
                     {
-                        "name": "Bromus tectorum",
+                        "name": "Bromus_tectorum",
                         "type": "double"
                     },
                     {
-                        "name": "Carex species",
+                        "name": "Carex_species",
                         "type": "double"
                     },
                     {
-                        "name": "Carduus nutans",
+                        "name": "Carduus_nutans",
                         "type": "double"
                     },
                     {
-                        "name": "Carex pensylvanica",
+                        "name": "Carex_pensylvanica",
                         "type": "double"
                     },
                     {
-                        "name": "Chamaecrista fasciculata",
+                        "name": "Chamaecrista_fasciculata",
                         "type": "double"
                     },
                     {
-                        "name": "Cerastium fontanum",
+                        "name": "Cerastium_fontanum",
                         "type": "double"
                     },
                     {
-                        "name": "Leucanthemum vulgare",
+                        "name": "Leucanthemum_vulgare",
                         "type": "double"
                     },
                     {
-                        "name": "Cirsium altissimum",
+                        "name": "Cirsium_altissimum",
                         "type": "double"
                     },
                     {
-                        "name": "Cirsium vulgare",
+                        "name": "Cirsium_vulgare",
                         "type": "double"
                     },
                     {
-                        "name": "Conyza canadensis",
+                        "name": "Conyza_canadensis",
                         "type": "double"
                     },
                     {
-                        "name": "Cornus drummondi",
+                        "name": "Cornus_drummondi",
                         "type": "double"
                     },
                     {
-                        "name": "Croton capitatus",
+                        "name": "Croton_capitatus",
                         "type": "double"
                     },
                     {
-                        "name": "Cornus drummondii",
+                        "name": "Cornus_drummondii",
                         "type": "double"
                     },
                     {
-                        "name": "Desmodium species",
+                        "name": "Desmodium_species",
                         "type": "double"
                     },
                     {
-                        "name": "Desmodium canadense",
+                        "name": "Desmodium_canadense",
                         "type": "double"
                     },
                     {
-                        "name": "Desmanthus illinoensis",
+                        "name": "Desmanthus_illinoensis",
                         "type": "double"
                     },
                     {
-                        "name": "Dichanthelium acuminatum",
+                        "name": "Dichanthelium_acuminatum",
                         "type": "double"
                     },
                     {
-                        "name": "Dichanthelium oliganthes",
+                        "name": "Dichanthelium_oliganthes",
                         "type": "double"
                     },
                     {
-                        "name": "Digitaria species",
+                        "name": "Digitaria_species",
                         "type": "double"
                     },
                     {
-                        "name": "Echinacea pallida",
+                        "name": "Echinacea_pallida",
                         "type": "double"
                     },
                     {
-                        "name": "Echinacea purpurea",
+                        "name": "Echinacea_purpurea",
                         "type": "double"
                     },
                     {
-                        "name": "Eragrostis spectabilis",
+                        "name": "Eragrostis_spectabilis",
                         "type": "double"
                     },
                     {
-                        "name": "Erigeron strigosus",
+                        "name": "Erigeron_strigosus",
                         "type": "double"
                     },
                     {
-                        "name": "Eryngium yuccifolium",
+                        "name": "Eryngium_yuccifolium",
                         "type": "double"
                     },
                     {
-                        "name": "Eupatorium altissimum",
+                        "name": "Eupatorium_altissimum",
                         "type": "double"
                     },
                     {
-                        "name": "Chamaesyce maculata",
+                        "name": "Chamaesyce_maculata",
                         "type": "double"
                     },
                     {
-                        "name": "Eupatorium serotinum",
+                        "name": "Eupatorium_serotinum",
                         "type": "double"
                     },
                     {
-                        "name": "Schedonorus arundinaceus",
+                        "name": "Schedonorus_arundinaceus",
                         "type": "double"
                     },
                     {
-                        "name": "Fragaria virginiana",
+                        "name": "Fragaria_virginiana",
                         "type": "double"
                     },
                     {
-                        "name": "Galium species",
+                        "name": "Galium_species",
                         "type": "double"
                     },
                     {
-                        "name": "Pseudognaphalium obtusifolium",
+                        "name": "Pseudognaphalium_obtusifolium",
                         "type": "double"
                     },
                     {
-                        "name": "Hedeoma hispida",
+                        "name": "Hedeoma_hispida",
                         "type": "double"
                     },
                     {
-                        "name": "Heliopsis helianthoides",
+                        "name": "Heliopsis_helianthoides",
                         "type": "double"
                     },
                     {
-                        "name": "Helianthus maximiliani",
+                        "name": "Helianthus_maximiliani",
                         "type": "double"
                     },
                     {
-                        "name": "Hypericum perforatum",
+                        "name": "Hypericum_perforatum",
                         "type": "double"
                     },
                     {
-                        "name": "Juncus species",
+                        "name": "Juncus_species",
                         "type": "double"
                     },
                     {
-                        "name": "Juncus tenuis",
+                        "name": "Juncus_tenuis",
                         "type": "double"
                     },
                     {
-                        "name": "Juniperus virginiana",
+                        "name": "Juniperus_virginiana",
                         "type": "double"
                     },
                     {
-                        "name": "Brickellia eupatorioides",
+                        "name": "Brickellia_eupatorioides",
                         "type": "double"
                     },
                     {
-                        "name": "Lactuca species",
+                        "name": "Lactuca_species",
                         "type": "double"
                     },
                     {
-                        "name": "Lamium amplexicaule",
+                        "name": "Lamium_amplexicaule",
                         "type": "double"
                     },
                     {
-                        "name": "Digitaria cognata",
+                        "name": "Digitaria_cognata",
                         "type": "double"
                     },
                     {
-                        "name": "Lepidium virginicum",
+                        "name": "Lepidium_virginicum",
                         "type": "double"
                     },
                     {
-                        "name": "Lespedeza capitata",
+                        "name": "Lespedeza_capitata",
                         "type": "double"
                     },
                     {
-                        "name": "Lespedeza cuneata",
+                        "name": "Lespedeza_cuneata",
                         "type": "double"
                     },
                     {
-                        "name": "Kummerowia stipulacea",
+                        "name": "Kummerowia_stipulacea",
                         "type": "double"
                     },
                     {
-                        "name": "Liatris pycnostachya",
+                        "name": "Liatris_pycnostachya",
                         "type": "double"
                     },
                     {
-                        "name": "Linaria vulgaris",
+                        "name": "Linaria_vulgaris",
                         "type": "double"
                     },
                     {
-                        "name": "Medicago lupulina",
+                        "name": "Medicago_lupulina",
                         "type": "double"
                     },
                     {
-                        "name": "Monarda fistulosa",
+                        "name": "Monarda_fistulosa",
                         "type": "double"
                     },
                     {
-                        "name": "Myosotis verna",
+                        "name": "Myosotis_verna",
                         "type": "double"
                     },
                     {
@@ -1216,171 +1216,171 @@
                         "type": "double"
                     },
                     {
-                        "name": "Oxalis stricta",
+                        "name": "Oxalis_stricta",
                         "type": "double"
                     },
                     {
-                        "name": "Panicum capillare",
+                        "name": "Panicum_capillare",
                         "type": "double"
                     },
                     {
-                        "name": "Panicum virgatum",
+                        "name": "Panicum_virgatum",
                         "type": "double"
                     },
                     {
-                        "name": "Penstemon albidus",
+                        "name": "Penstemon_albidus",
                         "type": "double"
                     },
                     {
-                        "name": "Penstemon digitalis",
+                        "name": "Penstemon_digitalis",
                         "type": "double"
                     },
                     {
-                        "name": "Dalea candida",
+                        "name": "Dalea_candida",
                         "type": "double"
                     },
                     {
-                        "name": "Dalea purpurea",
+                        "name": "Dalea_purpurea",
                         "type": "double"
                     },
                     {
-                        "name": "Phleum pratense",
+                        "name": "Phleum_pratense",
                         "type": "double"
                     },
                     {
-                        "name": "Physalis pumila",
+                        "name": "Physalis_pumila",
                         "type": "double"
                     },
                     {
-                        "name": "Physalis species",
+                        "name": "Physalis_species",
                         "type": "double"
                     },
                     {
-                        "name": "Physalis pubescens",
+                        "name": "Physalis_pubescens",
                         "type": "double"
                     },
                     {
-                        "name": "Plantago species",
+                        "name": "Plantago_species",
                         "type": "double"
                     },
                     {
-                        "name": "Poa compressa",
+                        "name": "Poa_compressa",
                         "type": "double"
                     },
                     {
-                        "name": "Poa pratensis",
+                        "name": "Poa_pratensis",
                         "type": "double"
                     },
                     {
-                        "name": "Polygonum pennsylvanicum",
+                        "name": "Polygonum_pennsylvanicum",
                         "type": "double"
                     },
                     {
-                        "name": "Polygonum persicaria",
+                        "name": "Polygonum_persicaria",
                         "type": "double"
                     },
                     {
-                        "name": "Potentilla recta",
+                        "name": "Potentilla_recta",
                         "type": "double"
                     },
                     {
-                        "name": "Ratibida columnifera",
+                        "name": "Ratibida_columnifera",
                         "type": "double"
                     },
                     {
-                        "name": "Ratibida pinnata",
+                        "name": "Ratibida_pinnata",
                         "type": "double"
                     },
                     {
-                        "name": "Rubus species",
+                        "name": "Rubus_species",
                         "type": "double"
                     },
                     {
-                        "name": "Rudbeckia hirta",
+                        "name": "Rudbeckia_hirta",
                         "type": "double"
                     },
                     {
-                        "name": "Rumex crispus",
+                        "name": "Rumex_crispus",
                         "type": "double"
                     },
                     {
-                        "name": "Salvia azurea",
+                        "name": "Salvia_azurea",
                         "type": "double"
                     },
                     {
-                        "name": "Schizachyrium scoparium",
+                        "name": "Schizachyrium_scoparium",
                         "type": "double"
                     },
                     {
-                        "name": "Senna marilandica",
+                        "name": "Senna_marilandica",
                         "type": "double"
                     },
                     {
-                        "name": "Solidago canadensis",
+                        "name": "Solidago_canadensis",
                         "type": "double"
                     },
                     {
-                        "name": "Solanum carolienense",
+                        "name": "Solanum_carolienense",
                         "type": "double"
                     },
                     {
-                        "name": "Euthamia gymnospermoides",
+                        "name": "Euthamia_gymnospermoides",
                         "type": "double"
                     },
                     {
-                        "name": "Oligoneuron rigidum",
+                        "name": "Oligoneuron_rigidum",
                         "type": "double"
                     },
                     {
-                        "name": "Sorghastrum nutans",
+                        "name": "Sorghastrum_nutans",
                         "type": "double"
                     },
                     {
-                        "name": "Sporobolus cryptandrus",
+                        "name": "Sporobolus_cryptandrus",
                         "type": "double"
                     },
                     {
-                        "name": "Stellaria media",
+                        "name": "Stellaria_media",
                         "type": "double"
                     },
                     {
-                        "name": "Symphoricarpos orbiculatus",
+                        "name": "Symphoricarpos_orbiculatus",
                         "type": "double"
                     },
                     {
-                        "name": "Teucrium canadense",
+                        "name": "Teucrium_canadense",
                         "type": "double"
                     },
                     {
-                        "name": "Toxicodendron radicans",
+                        "name": "Toxicodendron_radicans",
                         "type": "double"
                     },
                     {
-                        "name": "Tragopogon dubius",
+                        "name": "Tragopogon_dubius",
                         "type": "double"
                     },
                     {
-                        "name": "Tridens flavus",
+                        "name": "Tridens_flavus",
                         "type": "double"
                     },
                     {
-                        "name": "Trifolium pratense",
+                        "name": "Trifolium_pratense",
                         "type": "double"
                     },
                     {
-                        "name": "Trifolium repens",
+                        "name": "Trifolium_repens",
                         "type": "double"
                     },
                     {
-                        "name": "Tripsacum dactyloides",
+                        "name": "Tripsacum_dactyloides",
                         "type": "double"
                     },
                     {
-                        "name": "Ulmus rubra",
+                        "name": "Ulmus_rubra",
                         "type": "double"
                     },
                     {
-                        "name": "Verbascum thapsus",
+                        "name": "Verbascum_thapsus",
                         "type": "double"
                     },
                     {
@@ -1404,19 +1404,19 @@
                         "type": "double"
                     },
                     {
-                        "name": "Vernonia baldwini",
+                        "name": "Vernonia_baldwini",
                         "type": "double"
                     },
                     {
-                        "name": "Verbena hastata",
+                        "name": "Verbena_hastata",
                         "type": "double"
                     },
                     {
-                        "name": "Veronica peregrina",
+                        "name": "Veronica_peregrina",
                         "type": "double"
                     },
                     {
-                        "name": "Verbena stricta",
+                        "name": "Verbena_stricta",
                         "type": "double"
                     }
                 ]
@@ -1424,6 +1424,7 @@
             "url": "https://foster.ku.edu/sites/foster.ku.edu/files/files/E2%20Plant%20Species%20Composition%206%2016.csv"
         }
     ],
+
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Prairie-forest ecotone of eastern Kansas/Foster Lab",
