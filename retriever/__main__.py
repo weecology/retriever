@@ -12,7 +12,7 @@ from builtins import input
 from retriever.engines import engine_list, choose_engine
 from retriever.lib.datapackage import create_json, edit_json, delete_json, get_script_filename
 from retriever.lib.datasets import datasets, dataset_names, license
-from retriever.lib.defaults import sample_script, CITATION, SCRIPT_SEARCH_PATHS
+from retriever.lib.defaults import sample_script, CITATION, SCRIPT_SEARCH_PATHS, LICENSE
 from retriever.lib.engine_tools import name_matches, reset_retriever
 from retriever.lib.get_opts import parser
 from retriever.lib.repository import check_for_updates
@@ -76,11 +76,14 @@ def main():
             return
 
         elif args.command == 'license':
-            dataset_license = license(args.dataset)
-            if dataset_license:
-                print(dataset_license)
+            if args.dataset is None:
+                print(LICENSE)
             else:
-                print("There is no license information for {}".format(args.dataset))
+                dataset_license = license(args.dataset)
+                if dataset_license:
+                    print(dataset_license)
+                else:
+                    print("There is no license information for {}".format(args.dataset))
             return
 
         elif args.command == 'new':
