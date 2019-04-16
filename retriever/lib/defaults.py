@@ -39,10 +39,7 @@ sample_script = """
             "url": "http://esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"
         }
     ],
-    "title": "Mammal Life History Database - Ernest, et al., 2003",
-    "urls": {
-        "species": "http://esapubs.org/archive/ecol/E084/093/Mammal_lifehistories_v2.txt"
-    }
+    "title": "Mammal Life History Database - Ernest, et al., 2003"
 }
 """
 CITATION = """Morris, B.D. and E.P. White. 2013. The EcoData Retriever: improving access to
