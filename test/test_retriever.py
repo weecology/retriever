@@ -6,6 +6,7 @@ standard_library.install_aliases()
 import os
 import sys
 import subprocess
+import random
 from imp import reload
 from retriever.lib.defaults import ENCODING
 
@@ -680,6 +681,22 @@ def test_clean_input_not_bool(monkeypatch):
     mock_input.counter = 0
     monkeypatch.setattr('retriever.lib.datapackage.input', mock_input)
     assert clean_input("", dtype=bool) == "True"
+
+
+def test_reset_retriever(tmpdir):
+    """Test the dataset reset function."""
+
+    pwd_name = os.getcwd()
+    workdir = tmpdir.mkdtemp()
+    workdir.chdir()
+    dataset = random.choice(rt.dataset_names())
+    rt.reset_retriever(dataset)
+    rt.reload_scripts()
+    assert dataset not in rt.dataset_names()
+    rt.check_for_updates()
+    rt.reload_scripts()
+    assert dataset in rt.dataset_names()
+    os.chdir(pwd_name)
 
 
 def test_setup_functions():
