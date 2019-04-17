@@ -2366,5 +2366,5 @@
     ],
     "retriever_minimum_version": "2.1.dev",
     "title": "The LakeCat Dataset",
-    "version": "1.0.0"
+    "version": "2.0.0"
 }
