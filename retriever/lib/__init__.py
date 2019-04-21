@@ -1,5 +1,6 @@
 """retriever.lib contains the core Data Retriever modules."""
 
+from .create_scripts import create_package
 from .datasets import datasets
 from .datasets import dataset_names
 from .download import download
@@ -17,6 +18,7 @@ from .scripts import reload_scripts
 
 __all__ = [
     'check_for_updates',
+    'create_package',
     'datasets',
     'dataset_names',
     'download',
