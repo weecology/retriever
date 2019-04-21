@@ -14,13 +14,11 @@ class engine(Engine):
 
     name = "Download Only"
     abbreviation = "download"
-    required_opts = [("path",
-                      "File path to copy data files",
-                      "./"),
-                     ("sub_dir",
-                      "Install directory",
-                      "")
-                     ]
+    required_opts = [
+        ("path", "File path to copy data files", "./"),
+        ("sub_dir", "Install directory", ""),
+    ]
+    all_files = set()
 
     def table_exists(self, dbname, tablename):
         """Checks if the file to be downloaded already exists"""
@@ -40,7 +38,9 @@ class engine(Engine):
         if hasattr(self, "all_files"):
             for file_name in self.all_files:
                 file_path, file_name_nopath = os.path.split(file_name)
-                dest_path = os.path.join(self.opts['path'], self.opts.get('sub_dir', ""))
+                dest_path = os.path.join(
+                    self.opts["path"], self.opts.get("sub_dir", "")
+                )
                 if not os.path.isdir(dest_path):
                     print("Creating directory %s" % dest_path)
                     os.makedirs(dest_path)
@@ -88,8 +88,11 @@ class engine(Engine):
         informed of all of the file names so that it can move them.
 
         """
-        full_filenames = {self.find_file(filename) for filename in filenames
-                          if self.find_file(filename)}
+        full_filenames = {
+            self.find_file(filename)
+            for filename in filenames
+            if self.find_file(filename)
+        }
         self.all_files = self.all_files.union(full_filenames)
 
 
@@ -99,18 +102,21 @@ def dummy_method(self, *args, **kwargs):
 
 
 methods = inspect.getmembers(engine, predicate=inspect.ismethod)
-keep_methods = {'table_exists',
-                'get_connection',
-                'final_cleanup',
-                'auto_create_table',
-                'insert_data_from_url',
-                }
-remove_methods = ['insert_data_from_file', 'create_db', "create_table"]
+keep_methods = {
+    "table_exists",
+    "get_connection",
+    "final_cleanup",
+    "auto_create_table",
+    "insert_data_from_url",
+}
+remove_methods = ["insert_data_from_file", "create_db", "create_table"]
 for name, method in methods:
-    if (name not in keep_methods and
-                'download' not in name and
-                'file' not in name and
-                'dir' not in name):
+    if (
+        name not in keep_methods
+        and "download" not in name
+        and "file" not in name
+        and "dir" not in name
+    ):
         setattr(engine, name, dummy_method)
 for name in remove_methods:
     setattr(engine, name, dummy_method)
