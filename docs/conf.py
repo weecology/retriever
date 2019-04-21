@@ -14,8 +14,9 @@ from retriever.lib.defaults import ENCODING
 encoding = ENCODING.lower()
 
 from retriever.lib.defaults import VERSION, COPYRIGHT
-from retriever.lib.scripts import SCRIPT_LIST
+from retriever.lib.scripts import SCRIPT_LIST, reload_scripts
 from retriever.lib.tools import open_fw
+from retriever.lib.repository import check_for_updates
 
 # sys removes the setdefaultencoding method at startup; reload to get it back
 reload(sys)
@@ -38,6 +39,8 @@ Datasets Available
 
 
 """
+check_for_updates()
+reload_scripts()
 script_list = SCRIPT_LIST()
 
 # write the title of dataset rst file
