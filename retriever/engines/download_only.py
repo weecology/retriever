@@ -54,6 +54,8 @@ class engine(Engine):
                     print("%s is already in the working directory" %
                           file_name_nopath)
                     print("Keeping existing copy.")
+                elif file_name_nopath[-5:] == ".part":
+                    pass
                 else:
                     print("Copying %s from %s" % (file_name_nopath, file_path))
                     if os.path.isdir(dest_path):

@@ -30,6 +30,8 @@ from retriever.lib.warning import Warning
 from urllib.request import urlretrieve
 from requests.exceptions import InvalidSchema
 from imp import reload
+import shutil
+import hashlib
 
 encoding = ENCODING.lower()
 # sys removes the setdefaultencoding method at startup; reload to get it back
@@ -90,9 +92,11 @@ class Engine(object):
         of Engine."""
         raise NotImplementedError
 
+
     def add_to_table(self, data_source):
         """Adds data to a table from one or more lines specified
         in engine.table.source."""
+
         if self.table.columns[-1][1][0][:3] == "ct-":
             # cross-tab data
             real_line_length = self.get_ct_line_length(
@@ -168,6 +172,7 @@ class Engine(object):
             count_iter += 1
         progress_bar.close()
         self.connection.commit()
+
 
     def get_ct_line_length(self, lines):
         """Returns the number of real lines for cross-tab data"""
@@ -456,24 +461,100 @@ class Engine(object):
         """Download file to the raw data directory."""
         if not self.find_file(filename) or not self.use_cache:
             path = self.format_filename(filename)
-            self.create_raw_data_dir()
-            progbar = tqdm(unit='B',
-                           unit_scale=True,
-                           unit_divisor=1024,
-                           miniters=1,
-                           desc='Downloading {}'.format(filename))
             try:
-                requests.get(url, allow_redirects=True,
-                             stream=True,
-                             headers={'user-agent': 'Weecology/Data-Retriever \
-                                            Package Manager: http://www.data-retriever.org/'},
-                             hooks={'response': reporthook(progbar, path)})
+                head = requests.head(url).headers
+                file_size = int(head.get("Content-Length", -1))
+                print("Downloading: %s Bytes: %s" % (filename, file_size))
 
+                if file_size != -1 and file_size != 0 and \
+                        os.path.exists(path+'.part') and \
+                        file_size > os.path.getsize(path+'.part'):
+                    self.download_with_resume(url, path)
+                else:
+                    self.create_raw_data_dir()
+                    progbar = tqdm(unit='B',
+                                   unit_scale=True,
+                                   unit_divisor=1024,
+                                   miniters=1,
+                                   desc='Downloading {}'.format(filename))
+                    try:
+                        requests.get(url, allow_redirects=True,
+                                     stream=True,
+                                     headers={'user-agent': 'Weecology/Data-Retriever \
+                                                    Package Manager: http://www.data-retriever.org/'},
+                                     hooks={'response': reporthook(progbar, path)})
+                    except KeyboardInterrupt:
+                        print("KeyboardInterrupt")
+                        if os.path.exists(path) and os.path.getsize(path) < file_size:
+                            shutil.move(path, path+'.part')
+                    except InvalidSchema:
+                        urlretrieve(url, path, reporthook=reporthook(progbar))
+                    self.use_cache = True
+                    progbar.close()
             except InvalidSchema:
+                self.create_raw_data_dir()
+                progbar = tqdm(unit='B',
+                               unit_scale=True,
+                               unit_divisor=1024,
+                               miniters=1,
+                               desc='Downloading {}'.format(filename))
                 urlretrieve(url, path, reporthook=reporthook(progbar))
+                self.use_cache = True
+                progbar.close()
 
-            self.use_cache = True
+
+    def download_with_resume(self, url, file_path, hash=None, timeout=10):
+        """
+        Performs a HTTP(S) download that can be restarted if prematurely terminated.
+        The HTTP server must support byte ranges.
+
+        :param file_path: the path to the file to write to disk
+        :type file_path:  string
+        :param hash: hash value for file validation
+        :type hash:  string (MD5 hash value)
+        """
+        block_size = 1024 * 1024  # 1MB
+        tmp_file_path = file_path + '.part'
+        first_byte = os.path.getsize(tmp_file_path) if os.path.exists(tmp_file_path) else 0
+        print('Resuming downloading at %.1fMB' % (first_byte / 1024 / 1024))
+        file_size = -1
+        progbar = tqdm(unit='B',
+                       unit_scale=True,
+                       unit_divisor=1024,
+                       miniters=1,
+                       desc='Resuming downloading {}'.format(file_path[file_path.rfind('/')+1 : ]))
+        try:
+            file_size = int(requests.head(url).headers.get('Content-Length', -1))
+            progbar.total = ceil(file_size // (2 * 1024))
+            progress = first_byte // (2 * 1024)
+            for times in range(progress):
+                progbar.update(1)
+            while first_byte < file_size:
+                last_byte = first_byte + block_size \
+                    if first_byte + block_size < file_size \
+                    else file_size
+                resume_header = {'Range': 'bytes=%s-%s' % (first_byte, last_byte),
+                                 'Accept-Encoding': 'deflate',
+                                 'user-agent': 'Weecology/Data-Retriever \
+                                        Package Manager: http://www.data-retriever.org/'}
+                req = requests.get(url, headers = resume_header, stream=True)
+                with open(tmp_file_path, 'ab') as f:
+                    for chunk in req.iter_content(2 * 1024):
+                        f.write(chunk)
+                        progbar.update(1)
+                first_byte = last_byte + 1
+        except IOError as e:
+            print('IO Error - %s' % e)
+        except InvalidSchema:
+            urlretrieve(url, tmp_file_path, reporthook=reporthook(progbar))
+        finally:
             progbar.close()
+            if file_size == os.path.getsize(tmp_file_path):
+                if hash and not validate_file(tmp_file_path, hash):
+                    raise Exception('Error validating the file against its MD5 hash')
+                shutil.move(tmp_file_path, file_path)
+            elif file_size == -1:
+                raise Exception('Error getting Content-Length from server: %s' % url)
 
     def download_files_from_archive(self, url,
                                     file_names=None, archive_type="zip",
@@ -970,3 +1051,22 @@ def reporthook(tqdm_inst, filename=None):
         f.close()
 
     return update_rto if filename else update_to
+
+
+def validate_file(file_path, hash):
+    """
+    Validates a file against an MD5 hash value
+
+    :param file_path: path to the file for hash validation
+    :type file_path:  string
+    :param hash:      expected hash value of the file
+    :type hash:       string -- MD5 hash value
+    """
+    m = hashlib.md5()
+    with open(file_path, 'rb') as f:
+        while True:
+            chunk = f.read(1000 * 1000)  # 1MB
+            if not chunk:
+                break
+            m.update(chunk)
+    return m.hexdigest() == hash
