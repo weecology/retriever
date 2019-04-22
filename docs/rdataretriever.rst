@@ -121,9 +121,11 @@ have a specific preference for the format of the data and the kind of database.
 
 - ``quiet``  (Bool): Setting TRUE minimizes the console output.
 
-- ``sub_dir`` (Bool): Setting TRUE keeps the subdirectories for archived files.
+- ``sub_dir`` (String): sub_dir downloaded dataset is stored into a custom subdirectory.
 
 - ``debug``  (Bool): Setting TRUE helps in debugging in case of errors.
+
+- ``use_cache``  (Bool): Setting FALSE reinstalls scripts even if they are already installed.
 
 **Example** :
 
@@ -146,6 +148,8 @@ Format specific installation
 - ``dataset`` (String): Name of the dataset to install.
 
 - ``table_name`` (String): Specify the table name to install.
+
+- ``data_dir`` (String): Specify the dir path to store data, defaults to working dir
 
 - ``debug`` (Bool): Setting TRUE helps in debugging in case of errors.
 
