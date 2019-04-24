@@ -306,11 +306,11 @@ def test_interface_table_registry(tmpdir):
     os.chdir(retriever_root_dir)
 
 
-@pytest.mark.parametrize("dataset, expected", fetch_order_tests)
-def test_fetch_order(dataset, expected):
-    """Test fetch dataframe order"""
-    data_frame_dict = rt.fetch(dataset)
-    assert list(data_frame_dict.keys()) == expected
+# @pytest.mark.parametrize("dataset, expected", fetch_order_tests)
+# def test_fetch_order(dataset, expected):
+#     """Test fetch dataframe order"""
+#     data_frame_dict = rt.fetch(dataset)
+#     assert list(data_frame_dict.keys()) == expected
 
 
 @pytest.mark.parametrize("dataset, cols, expected", spatial_db_md5)
