@@ -82,8 +82,8 @@ setup(
         'Programming Language :: Python :: Implementation :: PyPy',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Scientific/Engineering :: GIS',
-        'Topic :: Scientific/Engineering :: Data '
-        'Topic :: Data Processing'
+        'Topic :: Scientific/Engineering :: Data',
+        'Topic :: Data Processing',
         'Topic :: Database',
     ],
     packages=find_packages(
