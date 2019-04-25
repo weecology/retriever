@@ -47,6 +47,8 @@ class engine(Engine):
                 if os.path.isfile(os.path.join(dest_path, file_name_nopath)):
                     print("File already exists at specified location")
                     print("Keeping existing copy.")
+                elif file_name_nopath[-5:] == ".part":
+                    pass
                 else:
                     try:
                         print("Copying %s from %s" % (file_name_nopath, file_path))
