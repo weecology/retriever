@@ -1,10 +1,10 @@
 import os
+import pandas as pd
 
 from retriever.lib.defaults import DATA_DIR
 from retriever.lib.dummy import DummyConnection
-from retriever.lib.models import Engine
-from retriever.lib.tools import open_fw, open_csvw
 from retriever.lib.engine_tools import sort_csv
+from retriever.lib.models import Engine, no_cleanup
 
 
 class engine(Engine):
@@ -41,11 +41,10 @@ class engine(Engine):
         """Create the table by creating an empty csv file"""
         self.auto_column_number = 1
         table_path = os.path.join(self.opts["data_dir"], self.table_name())
-        self.file = open_fw(table_path)
-        self.output_file = open_csvw(self.file)
+        self.output_file = open(table_path, 'a')
         column_list = self.table.get_insert_columns(join=False, create=True)
-        self.output_file.writerow([u'{}'.format(val) for val in column_list])
-        self.table_names.append((self.file, table_path))
+        self.output_file.writelines(','.join([u'{}'.format(val) for val in column_list]))
+        self.output_file.write('\n')
 
         # Register all tables created to enable
         # testing python files having custom download function
@@ -53,20 +52,20 @@ class engine(Engine):
 
     def disconnect(self):
         """Close the last file in the dataset"""
-        for output_tuple in self.table_names:
-            output_tuple[0].close()
+        self.output_file.close()
 
     def disconnect_files(self):
         """Close each file after being written"""
-        self.file.close()
+        pass
 
     def execute(self, statement, commit=True):
         """Write a line to the output file"""
-        self.output_file.writerows(statement)
+        self.output_file.writelines(statement)
 
     def executemany(self, statement, values, commit=True):
         """Write a line to the output file"""
-        self.output_file.writerows(statement)
+        chunk = pd.DataFrame(statement)
+        chunk.to_csv(self.output_file, mode='a', index=False, header= None, chunksize= 10**6)
 
     def format_insert_value(self, value, datatype):
         """Formats a value for an insert statement"""
@@ -94,6 +93,33 @@ class engine(Engine):
             return newrows
         else:
             return values
+
+    def insert_data_from_file(self, filename):
+        """Perform a high speed bulk insert
+
+        Checks to see if a given file can be bulk inserted, and if so loads
+        it in chunks and inserts those chunks into the database using
+        executemany.
+        """
+        chunk_size = 100000
+
+        # Determine if the dataset includes cross-tab data
+        crosstab = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
+
+        if (([self.table.cleanup.function, self.table.header_rows] == [no_cleanup, 1])
+            and not self.table.fixed_width
+            and not crosstab
+            and (not hasattr(self.table, "do_not_bulk_insert") or not self.table.do_not_bulk_insert)):
+            filename = os.path.abspath(filename)
+            try:
+                for chunk in pd.read_csv(filename, chunksize=chunk_size):
+                    chunk.to_csv(self.output_file, mode='a', header=None, index=False,
+                                 chunksize=chunk_size)
+            except:
+                self.output_file.truncate()
+                return Engine.insert_data_from_file(self, filename)
+        else:
+            return Engine.insert_data_from_file(self, filename)
 
     def table_exists(self, dbname, tablename):
         """Check to see if the data file currently exists"""
