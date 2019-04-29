@@ -67,7 +67,7 @@ class engine(Engine):
     def executemany(self, statement, values, commit=True):
         """Write a line to the output file"""
         chunk = pd.DataFrame(statement)
-        chunk.to_csv(self.output_file, mode='a', index=False, header= None, chunksize= 10**6, encoding='utf-8')
+        chunk.to_csv(self.output_file, mode='a', index=False, header= None, chunksize= 10**6, encoding='utf_8_sig')
 
     def format_insert_value(self, value, datatype):
         """Formats a value for an insert statement"""
