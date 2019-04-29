@@ -89,7 +89,7 @@ tree_canopy_geometries.json,1.0.1
 tree_demog_wghats.py,1.3.2
 turtle_offspring_nesting.json,1.0.2
 usgs_elevation.py,1.0.0
-veg_plots_sdl.json,1.2.1
+veg_plots_sdl.json,2.0.0
 vertnet.py,1.4.2
 vertnet_amphibians.py,1.1.2
 vertnet_birds.py,1.1.2
