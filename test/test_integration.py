@@ -401,6 +401,47 @@ change_header_values = {
     'expect_out': ['aa,bb,c_c', '1,2,3', '4,5,6']
 }
 
+underscore_csv = {
+    'name': 'underscore_csv',
+    'raw_data': ['a,b,c',
+                 '1,2,y',
+                 '4,5,2_0'],
+    'script': {"name": "underscore_csv",
+               "resources": [
+                   {"dialect": {"do_not_bulk_insert": "True"},
+                    "name": "underscore_csv",
+                    "schema": {
+                        "fields": [
+                            {
+                                "name": "record_id",
+                                "type": "pk-auto"
+                            },
+                            {
+                                "name": "a",
+                                "type": "int"
+                            },
+                            {
+                                "name": "b",
+                                "type": "int"
+                            },
+                            {
+                                "name": "c",
+                                "type": "char"
+                            }
+                        ]
+                    },
+                    "url": "http://example.com/underscore_csv.txt"
+                    }
+               ],
+               "retriever": "True",
+               "retriever_minimum_version": "2.0.dev",
+               "version": "1.0.0",
+               "urls": {"underscore_csv": "http://example.com/underscore_csv.txt"}
+               },
+    'expect_out': ['record_id,a,b,c', '1,1,2,y', '2,4,5,2_0']
+}
+
+
 tests = [
     simple_csv,
     comma_delimiter,
@@ -412,7 +453,9 @@ tests = [
     autopk_crosstab,
     skip_csv,
     extra_newline,
-    change_header_values]
+    change_header_values,
+    underscore_csv
+]
 
 # Create a tuple of all test scripts with their expected values
 test_parameters = [(test, test['expect_out']) for test in tests]
