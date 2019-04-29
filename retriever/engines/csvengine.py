@@ -45,6 +45,7 @@ class engine(Engine):
         column_list = self.table.get_insert_columns(join=False, create=True)
         self.output_file.writelines(','.join([u'{}'.format(val) for val in column_list]))
         self.output_file.write('\n')
+        self.table_names.append((self.output_file, table_path))
 
         # Register all tables created to enable
         # testing python files having custom download function
@@ -52,11 +53,12 @@ class engine(Engine):
 
     def disconnect(self):
         """Close the last file in the dataset"""
-        self.output_file.close()
+        for output_tuple in self.table_names:
+            output_tuple[0].close()
 
     def disconnect_files(self):
         """Close each file after being written"""
-        pass
+        self.output_file.close()
 
     def execute(self, statement, commit=True):
         """Write a line to the output file"""
@@ -98,8 +100,7 @@ class engine(Engine):
         """Perform a high speed bulk insert
 
         Checks to see if a given file can be bulk inserted, and if so loads
-        it in chunks and inserts those chunks into the database using
-        executemany.
+        it in chunks and inserts those chunks into the csv using chunksize.
         """
         chunk_size = 100000
 
