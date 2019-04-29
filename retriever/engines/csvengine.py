@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import csv
+import codecs
 
 from retriever.lib.defaults import DATA_DIR
 from retriever.lib.dummy import DummyConnection
@@ -42,10 +43,10 @@ class engine(Engine):
         """Create the table by creating an empty csv file"""
         self.auto_column_number = 1
         self.table_path = os.path.join(self.opts["data_dir"], self.table_name())
-        self.output_file = open(self.table_path, 'a')
+        self.output_file = open(self.table_path, 'a', encoding='utf-8')
         column_list = self.table.get_insert_columns(join=False, create=True)
         self.output_file.writelines(','.join([u'{}'.format(val) for val in column_list]))
-        self.output_file.write('\n')
+        self.output_file.writelines('\n')
         self.table_names.append((self.output_file, self.table_path))
 
         # Register all tables created to enable
@@ -67,12 +68,8 @@ class engine(Engine):
 
     def executemany(self, statement, values, commit=True):
         """Write a line to the output file"""
-        # chunk = pd.DataFrame(statement)
-        # chunk.to_csv(self.output_file, mode='a', index=False, header= None, chunksize= 10**6, encoding='utf_8_sig')
-
         writer = csv.writer(self.output_file)
         writer.writerows(statement)
-
 
     def format_insert_value(self, value, datatype):
         """Formats a value for an insert statement"""
