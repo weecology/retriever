@@ -67,7 +67,7 @@ class engine(Engine):
     def executemany(self, statement, values, commit=True):
         """Write a line to the output file"""
         chunk = pd.DataFrame(statement)
-        chunk.to_csv(self.output_file, mode='a', index=False, header= None, chunksize= 10**6)
+        chunk.to_csv(self.output_file, mode='a', index=False, header= None, chunksize= 10**6, encoding='utf-8')
 
     def format_insert_value(self, value, datatype):
         """Formats a value for an insert statement"""
@@ -113,9 +113,9 @@ class engine(Engine):
             and (not hasattr(self.table, "do_not_bulk_insert") or not self.table.do_not_bulk_insert)):
             filename = os.path.abspath(filename)
             try:
-                for chunk in pd.read_csv(filename, chunksize=chunk_size):
+                for chunk in pd.read_csv(filename, chunksize=chunk_size, encoding='utf-8'):
                     chunk.to_csv(self.output_file, mode='a', header=None, index=False,
-                                 chunksize=chunk_size)
+                                 chunksize=chunk_size, encoding='utf_8_sig')
             except:
                 self.output_file.truncate()
                 return Engine.insert_data_from_file(self, filename)
