@@ -737,7 +737,6 @@ class Engine(object):
                 if not os.path.exists(self.opts['data_dir']):
                     os.makedirs(self.opts['data_dir'])
 
-
     def insert_data_from_archive(self, url, filenames):
         """Insert data from files located in an online archive. This function
         extracts the file, inserts the data, and deletes the file if raw data
