@@ -1,3 +1,9 @@
+### Retriever v2.3.1
+
+### Minor changes
+
+Update PyPi description
+
 # v2.3.0
 
 ### Major changes
