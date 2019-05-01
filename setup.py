@@ -64,12 +64,13 @@ setup(
         a=read('README.md'),
         b=re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGES.md'))
     ),
+    long_description_content_type='text/markdown',
     author='Ben Morris, Shivam Negi, Akash Goel, Andrew Zhang, Henry Senyondo, Ethan White',
     author_email='ethan@weecology.org',
     url='https://github.com/weecology/retriever',
     classifiers=[
         'Intended Audience :: Science/Research',
-        'License :: OSI Approved :: MIT License'
+        'License :: OSI Approved :: MIT License',
         'Operating System :: Microsoft :: Windows',
         'Operating System :: POSIX',
         'Operating System :: Unix',
@@ -82,8 +83,7 @@ setup(
         'Programming Language :: Python :: Implementation :: PyPy',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Scientific/Engineering :: GIS',
-        'Topic :: Scientific/Engineering :: Data',
-        'Topic :: Data Processing',
+        'Topic :: Scientific/Engineering :: Information Analysis',
         'Topic :: Database',
     ],
     packages=find_packages(
