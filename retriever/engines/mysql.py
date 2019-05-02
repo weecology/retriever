@@ -114,7 +114,7 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
         encoding = ENCODING.lower()
         if self.script.encoding:
             encoding = self.script.encoding.lower()
-        encoding_lookup = {'iso-8859-1': 'latin1', 'latin-1': 'latin1', 'utf-8': 'utf8'}
+        encoding_lookup = {'iso-8859-1': 'latin1', 'latin-1': 'latin1', 'utf-8': 'UTF8MB4'}
         db_encoding = encoding_lookup.get(encoding)
         return db_encoding
 
