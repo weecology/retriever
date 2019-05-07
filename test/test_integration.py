@@ -155,6 +155,7 @@ csv_latin1_encoding = {
                "resources": [
                    {"dialect": {"do_not_bulk_insert": "True"},
                     "name": "csv_latin1_encoding",
+                    "encoding": "latin-1",
                     "schema": {},
                     "url": "http://example.com/csv_latin1_encoding.txt"
                     }

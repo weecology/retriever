@@ -306,11 +306,12 @@ def file_2list(input_file):
     """Read in a csv file and return lines a list."""
     input_file = os.path.normpath(input_file)
 
-    if sys.version_info >= (3, 0, 0):
-        input_obj = io.open(input_file, 'r')
-    else:
-        input_obj = io.open(input_file, encoding=ENCODING)
+    # if sys.version_info >= (3, 0, 0):
+    #     input_obj = io.open(input_file, 'r')
+    # else:
+    #     input_obj = io.open(input_file, encoding=ENCODING)
 
+    input_obj = open(input_file)
     abs_list = []
     for line in input_obj.readlines():
         abs_list.append(line.strip())
