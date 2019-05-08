@@ -1,4 +1,4 @@
-v2.3.1
+v2.3.2
 abalone_age.json,1.2.2
 acton_lake.json,1.0.0
 airports.json,1.0.3
@@ -23,7 +23,7 @@ community_abundance_misc.json,1.0.3
 croche_vegetation_data.json,1.0.2
 dicerandra_frutescens.json,1.0.2
 ecoregions_us.json,1.0.1
-elton_traits.json,1.2.1
+elton_traits.json,1.2.2
 fao_global_capture_product.py,1.0.0
 fish_parasite_hosts.json,1.2.1
 flensburg_food_web.py,1.0.4
@@ -58,7 +58,7 @@ mapped_plant_quads_ks.json,1.2.1
 mapped_plant_quads_mt.json,1.2.1
 marine_recruitment_data.json,1.0.1
 mediter_basin_plant_traits.json,1.0.1
-mt_st_helens_veg.json,1.2.2
+mt_st_helens_veg.json,1.2.3
 nd_gain.json,1.0.3
 nematode_traits.json,1.0.1
 ngreatplains_flowering_dates.json,1.0.2

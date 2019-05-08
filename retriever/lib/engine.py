@@ -32,10 +32,6 @@ from requests.exceptions import InvalidSchema
 from imp import reload
 
 encoding = ENCODING.lower()
-# sys removes the setdefaultencoding method at startup; reload to get it back
-reload(sys)
-if hasattr(sys, 'setdefaultencoding'):
-    sys.setdefaultencoding(encoding)
 
 
 class Engine(object):
@@ -811,7 +807,7 @@ class Engine(object):
 
     def set_table_delimiter(self, file_path):
         """Get the delimiter from the data file and set it."""
-        dataset_file = open_fr(file_path)
+        dataset_file = open(file_path)
         self.auto_get_delimiter(dataset_file.readline())
         dataset_file.close()
 
@@ -847,7 +843,10 @@ class Engine(object):
 
             csv_file_output = os.path.normpath(os.path.join(path if path else '',
                                                             table_name[0] + '.csv'))
-            csv_file = open_fw(csv_file_output)
+            encoding = ENCODING
+            if self.script.encoding:
+                encoding = self.script.encoding
+            csv_file = open_fw(csv_file_output, encoding=encoding)
             csv_writer = open_csvw(csv_file)
             self.get_cursor()
             self.set_engine_encoding()
@@ -913,7 +912,7 @@ class Engine(object):
         if not self.table.delimiter:
             self.set_table_delimiter(filename)
 
-        dataset_file = open_fr(filename)
+        dataset_file = open(filename)
 
         if self.table.fixed_width:
             for row in dataset_file:

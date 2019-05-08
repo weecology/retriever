@@ -4,7 +4,7 @@ import os
 from builtins import zip
 from collections import OrderedDict
 
-from retriever.lib.defaults import DATA_DIR
+from retriever.lib.defaults import DATA_DIR, ENCODING
 from retriever.lib.dummy import DummyConnection
 from retriever.lib.models import Engine
 from retriever.lib.tools import open_fr, open_fw
@@ -66,11 +66,11 @@ class engine(Engine):
         if self.table_names:
             for output_file_i, file_name in self.table_names:
                 output_file_i.close()
-                current_input_file = open_fr(file_name)
+                current_input_file = open_fr(file_name, encoding=ENCODING)
                 file_contents = current_input_file.readlines()
                 current_input_file.close()
                 file_contents[-1] = file_contents[-1].strip(',\n')
-                current_output_file = open_fw(file_name)
+                current_output_file = open_fw(file_name, encoding=ENCODING)
                 current_output_file.writelines(file_contents)
                 current_output_file.writelines(['\n]'])
                 current_output_file.close()

@@ -1,4 +1,3 @@
-#! /usr/bin/env python
 """Module to create scripts"""
 import collections
 import os

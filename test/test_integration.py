@@ -1,4 +1,3 @@
-# -*- coding: latin-1  -*-
 # """Integrations tests for Data Retriever"""
 from __future__ import print_function
 
@@ -54,13 +53,13 @@ simple_csv = {
                    {"dialect": {"do_not_bulk_insert": "True"},
                     "name": "simple_csv",
                     "schema": {},
-                    "url": "http://example.com/simple_csv.txt"}
+                    "url": "http://example.com/simple_csv.csv"}
                ],
                "retriever": "True",
                "retriever_minimum_version": "2.0.dev",
                "version": "1.0.0",
                "urls":
-                   {"simple_csv": "http://example.com/simple_csv.txt"}
+                   {"simple_csv": "http://example.com/simple_csv.csv"}
                },
     'expect_out': ['a,b,c', '1,2,3', '4,5,6']
 }
@@ -75,13 +74,13 @@ comma_delimiter = {
                    {"dialect": {"delimiter": ",", "do_not_bulk_insert": "True"},
                    "name": "comma_delimiter",
                    "schema": {},
-                   "url": "http://example.com/comma_delimiter.txt"}
+                   "url": "http://example.com/comma_delimiter.csv"}
                ],
                "retriever": "True",
                "retriever_minimum_version": "2.0.dev",
                "version": "1.0.0",
                "urls":
-                   {"comma_delimiter": "http://example.com/comma_delimiter.txt"}
+                   {"comma_delimiter": "http://example.com/comma_delimiter.csv"}
                },
     'expect_out': ['a,b,c', '1,2,3', '4,5,6']
 }
@@ -96,13 +95,13 @@ tab_delimiter = {
                    {"dialect": {"delimiter": "\t", "do_not_bulk_insert": "True" },
                    "name": "tab_delimiter",
                    "schema": {},
-                   "url": "http://example.com/tab_delimiter.txt"}
+                   "url": "http://example.com/tab_delimiter.csv"}
                ],
                "retriever": "True",
                "retriever_minimum_version": "2.0.dev",
                "version": "1.0.0",
                "urls":
-                   {"tab_delimiter": "http://example.com/tab_delimiter.txt"}
+                   {"tab_delimiter": "http://example.com/tab_delimiter.csv"}
                },
     'expect_out': ['a,b,c', '1,2,3', '4,5,6']
 }
@@ -134,14 +133,14 @@ data_no_header = {
                             }
                         ]
                     },
-                    "url": "http://example.com/data_no_header.txt"
+                    "url": "http://example.com/data_no_header.csv"
                     }
                ],
                "retriever": "True",
                "retriever_minimum_version": "2.0.dev",
                "version": "1.0.0",
                "urls":
-                   {"data_no_header": "http://example.com/data_no_header.txt"}
+                   {"data_no_header": "http://example.com/data_no_header.csv"}
                },
     'expect_out': ['a,b,c', '1,2,3', '4,5,6']
 }
@@ -149,14 +148,15 @@ data_no_header = {
 csv_latin1_encoding = {
     'name': 'csv_latin1_encoding',
     'raw_data': ['a,b,c',
-                 u'1,2,4Löve',
+                 '1,2,4LÃ¶ve',
                  '4,5,6'],
     'script': {"name": "csv_latin1_encoding",
                "resources": [
-                   {"dialect": {"do_not_bulk_insert": "True"},
+                   {"dialect": {"delimiter": ",","do_not_bulk_insert": "True"},
                     "name": "csv_latin1_encoding",
+                    "encoding": "latin-1",
                     "schema": {},
-                    "url": "http://example.com/csv_latin1_encoding.txt"
+                    "url": "http://example.com/csv_latin1_encoding.csv"
                     }
                ],
                "retriever": "True",
@@ -164,10 +164,10 @@ csv_latin1_encoding = {
                "version": "1.0.0",
                "urls":
                    {"csv_latin1_encoding":
-                        "http://example.com/csv_latin1_encoding.txt"
+                        "http://example.com/csv_latin1_encoding.csv"
                     }
                },
-    'expect_out': [u'a,b,c', u'1,2,4Löve', u'4,5,6']
+    'expect_out': ['a,b,c', u'1,2,4LÃ¶ve', '4,5,6']
 }
 
 autopk_csv = {
@@ -199,13 +199,13 @@ autopk_csv = {
                             }
                         ]
                     },
-                    "url": "http://example.com/autopk_csv.txt"
+                    "url": "http://example.com/autopk_csv.csv"
                     }
                ],
                "retriever": "True",
                "retriever_minimum_version": "2.0.dev",
                "version": "1.0.0",
-               "urls": {"autopk_csv": "http://example.com/autopk_csv.txt"}
+               "urls": {"autopk_csv": "http://example.com/autopk_csv.csv"}
                },
     'expect_out': ['record_id,a,b,c', '1,1,2,3', '2,4,5,6']
 }
@@ -237,13 +237,13 @@ crosstab = {
                             }
                         ]
                     },
-                    "url": "http://example.com/crosstab.txt"
+                    "url": "http://example.com/crosstab.csv"
                     }
                ],
                "retriever": "True",
                "retriever_minimum_version": "2.0.dev",
                "version": "1.0.0",
-               "urls": {"crosstab": "http://example.com/crosstab.txt"}
+               "urls": {"crosstab": "http://example.com/crosstab.csv"}
                },
     'expect_out': ['a,b,c,val',
                    '1,1,c1,1.1',
@@ -283,14 +283,14 @@ autopk_crosstab = {
                             }
                         ]
                     },
-                    "url": "http://example.com/autopk_crosstab.txt"
+                    "url": "http://example.com/autopk_crosstab.csv"
                     }
                ],
                "retriever": "True",
                "retriever_minimum_version": "2.0.dev",
                "version": "1.0.0",
                "urls":
-                   {"autopk_crosstab": "http://example.com/autopk_crosstab.txt"}
+                   {"autopk_crosstab": "http://example.com/autopk_crosstab.csv"}
                },
     'expect_out': ['record_id,a,b,c,val',
                    '1,1,1,c1,1.1',
@@ -324,13 +324,13 @@ skip_csv = {
                             }
                         ]
                     },
-                    "url": "http://example.com/skip_csv.txt"
+                    "url": "http://example.com/skip_csv.csv"
                     }
                ],
                "retriever": "True",
                "retriever_minimum_version": "2.0.dev",
                "version": "1.0.0",
-               "urls": {"skip_csv": "http://example.com/skip_csv.txt"}
+               "urls": {"skip_csv": "http://example.com/skip_csv.csv"}
                },
     'expect_out': ['b,c', '2,3', '5,6']
 }
@@ -345,14 +345,14 @@ extra_newline = {
                    {"dialect": {"do_not_bulk_insert": "True"},
                     "name": "extra_newline",
                     "schema": {},
-                    "url": "http://example.com/extra_newline.txt"
+                    "url": "http://example.com/extra_newline.csv"
                     }
                ],
                "retriever": "True",
                "retriever_minimum_version": "2.0.dev",
                "version": "1.0.0",
                "urls":
-                   {"extra_newline": "http://example.com/extra_newline.txt"}
+                   {"extra_newline": "http://example.com/extra_newline.csv"}
                },
     'expect_out': ['col1,col2,col3', 'ab,e f,cd']
 }
@@ -386,7 +386,7 @@ change_header_values = {
                                }
                            ]
                        },
-                       "url": "http://example.com/change_header_values.txt"
+                       "url": "http://example.com/change_header_values.csv"
                    }
                ],
                "retriever": "True",
@@ -395,7 +395,7 @@ change_header_values = {
                "urls":
                    {
                        "change_header_values":
-                           "http://example.com/change_header_values.txt"
+                           "http://example.com/change_header_values.csv"
                    }
                },
     'expect_out': ['aa,bb,c_c', '1,2,3', '4,5,6']
@@ -430,13 +430,13 @@ underscore_csv = {
                             }
                         ]
                     },
-                    "url": "http://example.com/underscore_csv.txt"
+                    "url": "http://example.com/underscore_csv.csv"
                     }
                ],
                "retriever": "True",
                "retriever_minimum_version": "2.0.dev",
                "version": "1.0.0",
-               "urls": {"underscore_csv": "http://example.com/underscore_csv.txt"}
+               "urls": {"underscore_csv": "http://example.com/underscore_csv.csv"}
                },
     'expect_out': ['record_id,a,b,c', '1,1,2,y', '2,4,5,2_0']
 }
@@ -480,7 +480,7 @@ def setup_module():
         if not os.path.exists(os.path.join(HOME_DIR, "raw_data", test['name'])):
             os.makedirs(os.path.join(HOME_DIR, "raw_data", test['name']))
         rd_path = os.path.join(HOME_DIR,
-                               "raw_data", test['name'], test['name'] + '.txt')
+                               "raw_data", test['name'], test['name'] + '.csv')
         create_file(test['raw_data'], rd_path)
 
         path_js = os.path.join(HOME_DIR, "scripts", test['name'] + '.json')
@@ -520,7 +520,10 @@ def get_output_as_csv(dataset, engines, tmpdir, db):
     # csv engine already has the .csv extension
     if engines.opts["engine"] != 'csv':
         csv_file += '.csv'
-    obs_out = file_2list(csv_file)
+    encode_val="utf-8"
+    if hasattr(dataset["script"], encoding):
+        encode_val = dataset["script"]["encoding"]
+    obs_out = file_2list(csv_file, encoding=encode_val)
     os.chdir(retriever_root_dir)
     return obs_out
 

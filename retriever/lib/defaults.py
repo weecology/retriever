@@ -8,7 +8,7 @@ LICENSE = "MIT"
 REPO_URL = "https://raw.githubusercontent.com/weecology/retriever/"
 MASTER_BRANCH = REPO_URL + "master/"
 REPOSITORY = MASTER_BRANCH
-ENCODING = 'ISO-8859-1'
+ENCODING = "utf-8"
 HOME_DIR = os.path.expanduser('~/.retriever/')
 SCRIPT_SEARCH_PATHS = [
     "./",

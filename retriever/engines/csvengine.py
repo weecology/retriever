@@ -1,6 +1,6 @@
 import os
 
-from retriever.lib.defaults import DATA_DIR
+from retriever.lib.defaults import DATA_DIR, ENCODING
 from retriever.lib.dummy import DummyConnection
 from retriever.lib.models import Engine
 from retriever.lib.tools import open_fw, open_csvw
@@ -39,9 +39,12 @@ class engine(Engine):
 
     def create_table(self):
         """Create the table by creating an empty csv file"""
+        encoding = ENCODING
+        if self.script.encoding:
+            encoding = self.script.encoding
         self.auto_column_number = 1
         table_path = os.path.join(self.opts["data_dir"], self.table_name())
-        self.file = open_fw(table_path)
+        self.file = open_fw(table_path, encoding=encoding)
         self.output_file = open_csvw(self.file)
         column_list = self.table.get_insert_columns(join=False, create=True)
         self.output_file.writerow([u'{}'.format(val) for val in column_list])
