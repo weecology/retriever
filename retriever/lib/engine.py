@@ -10,7 +10,6 @@ from builtins import input
 from builtins import zip
 from builtins import next
 from builtins import str
-import sys
 import os
 import getpass
 import zipfile
@@ -29,9 +28,6 @@ from retriever.lib.cleanup import no_cleanup
 from retriever.lib.warning import Warning
 from urllib.request import urlretrieve
 from requests.exceptions import InvalidSchema
-from imp import reload
-
-encoding = ENCODING.lower()
 
 
 class Engine(object):

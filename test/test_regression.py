@@ -11,14 +11,9 @@ from distutils.dir_util import copy_tree
 from imp import reload
 
 import retriever as rt
-from retriever.lib.defaults import ENCODING, DATA_DIR
+from retriever.lib.defaults import DATA_DIR
 from retriever.lib.load_json import read_json
 
-encoding = ENCODING.lower()
-
-reload(sys)
-if hasattr(sys, 'setdefaultencoding'):
-    sys.setdefaultencoding(encoding)
 import pytest
 from retriever.lib.engine_tools import getmd5
 from retriever.engines import engine_list

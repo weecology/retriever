@@ -6,16 +6,9 @@ import os
 import shlex
 import shutil
 import subprocess
-import sys
-from imp import reload
 
 from retriever.lib.defaults import ENCODING, DATA_DIR
 
-encoding = ENCODING.lower()
-
-reload(sys)
-if hasattr(sys, 'setdefaultencoding'):
-    sys.setdefaultencoding(encoding)
 import pytest
 from retriever.lib.load_json import read_json
 from retriever.lib.defaults import HOME_DIR
@@ -23,6 +16,7 @@ from retriever.engines import engine_list
 from retriever.lib.engine_tools import file_2list
 from retriever.lib.engine_tools import create_file
 
+encoding = ENCODING.lower()
 # Set postgres password, Appveyor service needs the password given
 # The Travis service obtains the password from the config file.
 os_password = ""
