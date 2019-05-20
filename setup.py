@@ -22,6 +22,7 @@ if os.path.exists(app_data):
     os.system("rm -r {}".format(app_data))
 
 __version__ = 'v2.3.1'
+
 with open(os.path.join("retriever", "_version.py"), "w") as version_file:
     version_file.write("__version__ = " + "'" + __version__ + "'\n")
     version_file.close()
