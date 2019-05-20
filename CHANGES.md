@@ -1,4 +1,23 @@
-### Retriever v2.3.1
+# v2.3.2
+
+### Major changes
+
+Adopt UTF-8 the default for Python3
+
+### Minor changes
+
+Update long description
+
+### New datasets
+
+Catalogos-dados-brasil
+Transparencia-dados-abertos-brasil
+
+### Dataset changes
+
+Elton-traits and mt-st-helens-veg change encoding
+
+### v2.3.1
 
 ### Minor changes
 

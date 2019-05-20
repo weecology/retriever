@@ -4,17 +4,9 @@ from future import standard_library
 
 standard_library.install_aliases()
 import os
-import sys
 import subprocess
 import random
-from imp import reload
-from retriever.lib.defaults import ENCODING
 
-encoding = ENCODING.lower()
-
-reload(sys)
-if hasattr(sys, 'setdefaultencoding'):
-    sys.setdefaultencoding(encoding)
 import retriever as rt
 from retriever.lib.engine import Engine
 from retriever.lib.table import TabularDataset

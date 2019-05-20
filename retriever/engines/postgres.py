@@ -271,12 +271,10 @@ CSV HEADER;"""
                              user=self.opts["user"],
                              password=self.opts["password"],
                              database=self.opts["database"])
-        encoding = ENCODING.lower()
-        if self.script.encoding:
-            encoding = self.script.encoding.lower()
+        self.set_engine_encoding()
         encoding_lookup = {'iso-8859-1': 'Latin1',
                            'latin-1': 'Latin1',
                            'utf-8': 'UTF8'}
-        self.db_encoding = encoding_lookup.get(encoding)
+        self.db_encoding = encoding_lookup.get(self.encoding)
         conn.set_client_encoding(self.db_encoding)
         return conn

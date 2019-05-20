@@ -41,7 +41,7 @@ class engine(Engine):
         """Create the table by creating an empty csv file"""
         self.auto_column_number = 1
         table_path = os.path.join(self.opts["data_dir"], self.table_name())
-        self.file = open_fw(table_path)
+        self.file = open_fw(table_path, encoding=self.encoding)
         self.output_file = open_csvw(self.file)
         column_list = self.table.get_insert_columns(join=False, create=True)
         self.output_file.writerow([u'{}'.format(val) for val in column_list])
