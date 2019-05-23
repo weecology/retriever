@@ -801,8 +801,8 @@ class Engine(object):
     def set_engine_encoding(self):
         """Set up the encoding to be used."""
         self.encoding = ENCODING.lower()
-        if self.script.encoding:
-            self.encoding = self.script.encoding.lower()
+        if self.script and self.script.encoding:
+                self.encoding = self.script.encoding.lower()
 
     def set_table_delimiter(self, file_path):
         """Get the delimiter from the data file and set it."""

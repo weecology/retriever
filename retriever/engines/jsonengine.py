@@ -44,7 +44,7 @@ class engine(Engine):
     def create_table(self):
         """Create the table by creating an empty json file"""
         table_path = os.path.join(self.opts["data_dir"], self.table_name())
-        self.output_file = open_fw(table_path)
+        self.output_file = open_fw(table_path, encoding=self.encoding)
         self.output_file.write("[")
         self.table_names.append((self.output_file, table_path))
         self.auto_column_number = 1
