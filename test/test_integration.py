@@ -151,7 +151,6 @@ csv_latin1_encoding = {
                "resources": [
                    {"dialect": {"delimiter": ",","do_not_bulk_insert": "True"},
                     "name": "csv_latin1_encoding",
-                    "encoding": "latin-1",
                     "schema": {},
                     "url": "http://example.com/csv_latin1_encoding.csv"
                     }
@@ -518,9 +517,6 @@ def get_output_as_csv(dataset, engines, tmpdir, db):
     # csv engine already has the .csv extension
     if engines.opts["engine"] != 'csv':
         csv_file += '.csv'
-    encode_val="utf-8"
-    if hasattr(dataset["script"], encoding):
-        encode_val = dataset["script"]["encoding"]
     obs_out = file_2list(csv_file)
     os.chdir(retriever_root_dir)
     return obs_out
