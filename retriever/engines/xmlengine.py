@@ -1,6 +1,6 @@
 import os
 
-from retriever.lib.defaults import DATA_DIR, ENCODING
+from retriever.lib.defaults import DATA_DIR
 from retriever.lib.dummy import DummyConnection
 from retriever.lib.models import Engine
 from retriever.lib.tools import open_fr, open_fw

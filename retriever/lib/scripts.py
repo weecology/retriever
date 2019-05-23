@@ -156,15 +156,9 @@ def open_csvw(csv_file, encode=True):
     return csv_writer
 
 
-def to_str(object, object_encoding=sys.stdout):
-    """Convert a Python3 object to a string as in Python2.
-
-    Strings in Python3 are bytes.
-    """
-    if sys.version_info >= (3, 0, 0):
-        enc = object_encoding.encoding
-        return str(object).encode(enc, errors='backslashreplace').decode("latin-1")
-    return object
+def to_str(object, object_encoding=sys.stdout, object_decoder=ENCODING):
+    enc = object_encoding.encoding
+    return str(object).encode(enc, errors='backslashreplace').decode(object_decoder)
 
 
 class StoredScripts:

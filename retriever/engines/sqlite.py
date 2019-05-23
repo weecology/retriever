@@ -115,5 +115,4 @@ class engine(Engine):
         db_file = self.opts["data_dir"]
         full_path = os.path.join(db_file, file)
         self.set_engine_encoding()
-        conn = dbapi.connect(os.path.normpath(full_path))
-        conn.execute('pragma encoding={e}'.format(e=self.encoding))
+        return dbapi.connect(os.path.normpath(full_path))

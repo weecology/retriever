@@ -75,7 +75,8 @@ class main(Script):
         for index in range(1, rows):
             row = sh.row(index)
             # get each row and format the sell value.
-            row_as_list = [to_str(column_value.value) for column_value in row]
+            row_as_list = [to_str(column_value.value, object_encoding=sys.stdout, object_decoder=self.encoding) for column_value in row]
+            # row_as_list = [str(column_value.value) for column_value in row]
             csv_writer.writerow(row_as_list)
         gwdd_data.close()
 
@@ -103,7 +104,7 @@ class main(Script):
         for index in range(1, rows):
             row = sh.row(index)
             # get each row and format the sell value.
-            row_as_list = [to_str(column_value.value, object_encoding=sys.stdout) for column_value in row]
+            row_as_list = [to_str(column_value.value, object_encoding=sys.stdout, object_decoder=self.encoding) for column_value in row]
             csv_writerd.writerow(row_as_list)
         ref_file.close()
 

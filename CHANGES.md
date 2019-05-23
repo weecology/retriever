@@ -2,7 +2,7 @@
 
 ### Major changes
 
-Adopt UTF-8 the default for Python3
+Remove Python 2 utilities
 
 ### Minor changes
 

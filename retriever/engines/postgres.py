@@ -1,7 +1,6 @@
 import os
 import subprocess
 
-from retriever.lib.defaults import ENCODING
 from retriever.lib.models import Engine, no_cleanup
 
 
@@ -225,7 +224,7 @@ CSV HEADER;"""
         if not path:
             path = Engine.format_data_dir(self)
         vector_sql = "shp2pgsql -d -I -W \"{encd}\"  -s {SRID} \"{path}\" \"{SCHEMA_DBTABLE}\"".format(
-            encd=ENCODING,
+            encd=self.encoding,
             SRID=srid,
             path=os.path.normpath(path),
             SCHEMA_DBTABLE=self.table_name())
