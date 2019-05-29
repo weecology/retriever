@@ -114,5 +114,5 @@ class engine(Engine):
         file = self.opts["file"]
         db_file = self.opts["data_dir"]
         full_path = os.path.join(db_file, file)
-
+        self.set_engine_encoding()
         return dbapi.connect(os.path.normpath(full_path))

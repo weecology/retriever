@@ -11,16 +11,12 @@ import os
 import sys
 import subprocess
 import requests
-from imp import reload
 from distutils.version import LooseVersion
 from retriever.engines import choose_engine, engine_list
 from retriever.lib.defaults import ENCODING
 from retriever.lib.scripts import SCRIPT_LIST
 from retriever.lib.engine_tools import get_script_version
 
-reload(sys)
-if hasattr(sys, 'setdefaultencoding'):
-    sys.setdefaultencoding(ENCODING)
 
 file_location = os.path.dirname(os.path.realpath(__file__))
 retriever_root_dir = os.path.abspath(os.path.join(file_location, os.pardir))

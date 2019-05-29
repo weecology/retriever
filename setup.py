@@ -21,7 +21,7 @@ app_data = "~/.retriever/scripts"
 if os.path.exists(app_data):
     os.system("rm -r {}".format(app_data))
 
-__version__ = 'v2.3.1'
+__version__ = 'v2.3.2'
 with open(os.path.join("retriever", "_version.py"), "w") as version_file:
     version_file.write("__version__ = " + "'" + __version__ + "'\n")
     version_file.close()
@@ -60,10 +60,7 @@ setup(
     name='retriever',
     version=clean_version(__version__),
     description='Data Retriever',
-    long_description='{a}\n{b}'.format(
-        a=read('README.md'),
-        b=re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGES.md'))
-    ),
+    long_description='{a}'.format(a=read('README.md')),
     long_description_content_type='text/markdown',
     author='Ben Morris, Shivam Negi, Akash Goel, Andrew Zhang, Henry Senyondo, Ethan White',
     author_email='ethan@weecology.org',

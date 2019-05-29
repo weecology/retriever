@@ -40,7 +40,7 @@ class engine(Engine):
     def create_table(self):
         """Create the table by creating an empty XML file."""
         table_path = os.path.join(self.opts["data_dir"], self.table_name())
-        self.output_file = open_fw(table_path)
+        self.output_file = open_fw(table_path, encoding=self.encoding)
         self.output_file.write(u'<?xml version="1.0" encoding="UTF-8"?>')
         self.output_file.write(u'\n<root>')
         self.table_names.append((self.output_file, table_path))
@@ -62,11 +62,11 @@ class engine(Engine):
         if self.table_names:
             for output_file_i, file_name in self.table_names:
                 output_file_i.close()
-                current_input_file = open_fr(file_name)
+                current_input_file = open_fr(file_name, encoding=self.encoding)
                 file_contents = current_input_file.readlines()
                 current_input_file.close()
                 file_contents[-1] = file_contents[-1].strip(',')
-                current_output_file = open_fw(file_name)
+                current_output_file = open_fw(file_name, encoding=self.encoding)
                 current_output_file.writelines(file_contents)
                 current_output_file.write(u'\n</root>')
                 current_output_file.close()

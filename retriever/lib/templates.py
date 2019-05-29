@@ -20,7 +20,7 @@ class Script(object):
                  citation="Not currently available",
                  licenses=[{'name': None}],
                  retriever_minimum_version="",
-                 version="", encoding="", message="", **kwargs):
+                 version="", encoding="utf-8", message="", **kwargs):
 
         self.title = title
         self.name = name
@@ -68,6 +68,7 @@ class Script(object):
             engine = choose_engine(opts)
         engine.get_input()
         engine.script = self
+        engine.set_engine_encoding()
         return engine
 
     def matches_terms(self, terms):
