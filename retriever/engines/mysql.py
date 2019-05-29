@@ -103,6 +103,7 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
         """Set MySQL database encoding to match data encoding"""
         db_encoding = self.lookup_encoding()
         self.execute("SET NAMES '{0}';".format(db_encoding))
+        Engine.set_engine_encoding(self)
 
     def lookup_encoding(self):
         """Convert well known encoding to MySQL syntax
@@ -114,7 +115,7 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
         encoding = ENCODING.lower()
         if self.script.encoding:
             encoding = self.script.encoding.lower()
-        encoding_lookup = {'iso-8859-1': 'latin1', 'latin-1': 'latin1', 'utf-8': 'utf8'}
+        encoding_lookup = {'iso-8859-1': 'latin1', 'latin-1': 'latin1', 'utf-8': 'UTF8MB4'}
         db_encoding = encoding_lookup.get(encoding)
         return db_encoding
 
