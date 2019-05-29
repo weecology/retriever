@@ -2,6 +2,7 @@
     "citation": "Kerry D. Woods. 2009. Multi-decade, spatially explicit population studies of canopy dynamics in Michigan old-growth forests. Ecology 90:3587.",
     "description": "The data set provides stem infomation from a regular grid of 256 permanent plots includes about 20% of a 100-ha old-growth forest at the Dukes Research Natural Area in northern Michigan, USA.",
     "homepage": "https://figshare.com/collections/Multi-decade_spatially_explicit_population_studies_of_canopy_dynamics_in_Michigan_old-growth_forests/3301757",
+    "encoding": "latin-1",
     "keywords": [
         "plants",
         "local-scale",
@@ -154,5 +155,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Michigan forest canopy dynamics plots - Woods et al. 2009",
-    "version": "1.2.1"
+    "version": "1.2.2"
 }
