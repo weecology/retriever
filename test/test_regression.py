@@ -11,14 +11,9 @@ from distutils.dir_util import copy_tree
 from imp import reload
 
 import retriever as rt
-from retriever.lib.defaults import ENCODING, DATA_DIR
+from retriever.lib.defaults import DATA_DIR
 from retriever.lib.load_json import read_json
 
-encoding = ENCODING.lower()
-
-reload(sys)
-if hasattr(sys, 'setdefaultencoding'):
-    sys.setdefaultencoding(encoding)
 import pytest
 from retriever.lib.engine_tools import getmd5
 from retriever.engines import engine_list
@@ -50,9 +45,9 @@ script_home = '{}/.retriever/scripts/'.format(HOMEDIR)
 script_home = os.path.normpath(script_home)
 
 download_md5 = [
-    ('mt-st-helens-veg', '99ad58deafb2e5793e25d912b0eaa50c'),
-    ('bird-size', 'dce81ee0f040295cd14c857c18cc3f7e'),
-    ('mammal-masses', 'b54b80d0d1959bdea0bb8a59b70fa871')
+    ('mt-st-helens-veg', '69fde013affe11e6eb3b585a0f71b522', 'ISO-8859-1'),
+    ('bird-size', 'dce81ee0f040295cd14c857c18cc3f7e', 'UTF-8'),
+    ('mammal-masses', 'b54b80d0d1959bdea0bb8a59b70fa871', 'UTF-8'),
 ]
 
 db_md5 = [
@@ -256,8 +251,8 @@ def test_csv_regression(dataset, expected, tmpdir):
     assert get_csv_md5(dataset, csv_engine, tmpdir, rt.install_csv, interface_opts) == expected
 
 
-@pytest.mark.parametrize("dataset, expected", download_md5)
-def test_download_regression(dataset, expected):
+@pytest.mark.parametrize("dataset, expected, encodings", download_md5)
+def test_download_regression(dataset, expected, encodings):
     """Test download regression."""
     os.chdir(retriever_root_dir)
     base_path = 'test_raw_data'
@@ -266,14 +261,14 @@ def test_download_regression(dataset, expected):
     data = os.path.normpath(os.path.join(retriever_root_dir, path, data_dir))
 
     rt.download(dataset, path=path)
-    current_md5 = getmd5(data=path, data_type='dir')
+    current_md5 = getmd5(data=path, data_type='dir', encoding=encodings)
     assert current_md5 == expected
     shutil.rmtree(base_path)
 
     # download using path and sub_dir
     os.chdir(retriever_root_dir)
     rt.download(dataset, path=path, sub_dir=data_dir)
-    current_md5 = getmd5(data=data, data_type='dir')
+    current_md5 = getmd5(data=data, data_type='dir', encoding=encodings)
     assert current_md5 == expected
     shutil.rmtree(base_path)
 
@@ -306,11 +301,11 @@ def test_interface_table_registry(tmpdir):
     os.chdir(retriever_root_dir)
 
 
-# @pytest.mark.parametrize("dataset, expected", fetch_order_tests)
-# def test_fetch_order(dataset, expected):
-#     """Test fetch dataframe order"""
-#     data_frame_dict = rt.fetch(dataset)
-#     assert list(data_frame_dict.keys()) == expected
+@pytest.mark.parametrize("dataset, expected", fetch_order_tests)
+def test_fetch_order(dataset, expected):
+    """Test fetch dataframe order"""
+    data_frame_dict = rt.fetch(dataset)
+    assert list(data_frame_dict.keys()) == expected
 
 
 @pytest.mark.parametrize("dataset, cols, expected", spatial_db_md5)

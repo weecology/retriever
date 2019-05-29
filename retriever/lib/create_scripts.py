@@ -1,4 +1,3 @@
-#! /usr/bin/env python
 """Module to create scripts"""
 import collections
 import os
@@ -99,7 +98,7 @@ def create_script_dict(allpacks, path, file, skip_lines):
         print("Skipped file: " + file)
         return
     allpacks.setdefault("resources", []).append(resources)
-    allpacks["retriever"] = ("True",)
+    allpacks["retriever"] = "True"
     allpacks["retriever_minimum_version"] = "2.1.0"
 
     return allpacks

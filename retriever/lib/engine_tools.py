@@ -19,7 +19,7 @@ import warnings
 
 from hashlib import md5
 from io import StringIO as NewFile
-from retriever.lib.defaults import HOME_DIR
+from retriever.lib.defaults import HOME_DIR, ENCODING
 
 from retriever.lib.models import *
 import xml.etree.ElementTree as ET
@@ -149,11 +149,11 @@ def json2csv(input_file, output_file=None, header_values=None):
 
     Function is used for only testing and can handle the file of the size.
     """
-    file_out = open_fr(input_file, encode=False)
+    file_out = open_fr(input_file, encoding=ENCODING)
     # set output file name and write header
     if output_file is None:
         output_file = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
-    csv_out = open_fw(output_file, encode=False)
+    csv_out = open_fw(output_file, encoding=ENCODING)
     if os.name == 'nt':
         outfile = csv.DictWriter(csv_out, dialect='excel', escapechar="\\",
                                  lineterminator='\n',
@@ -176,7 +176,7 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
 
     Function is used for only testing and can handle the file of the size.
     """
-    file_output = open_fr(input_file, encode=False)
+    file_output = open_fr(input_file, encoding=ENCODING)
     # set output file name and write header
     if outputfile is None:
         outputfile = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
@@ -199,15 +199,12 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
     return outputfile
 
 
-def getmd5(data, data_type='lines'):
+def getmd5(data, data_type='lines', encoding='utf-8'):
     """Get MD5 of a data source."""
     checksum = md5()
     if data_type == 'lines':
         for line in data:
-            if isinstance(line, bytes):
-                checksum.update(line)
-            else:
-                checksum.update(str(line).encode())
+            checksum.update(line.encode(encoding))
         return checksum.hexdigest()
     files = []
     if data_type == 'file':
@@ -220,33 +217,23 @@ def getmd5(data, data_type='lines'):
             for filename in sorted(filenames):
                 files.append(os.path.normpath(os.path.join(root, filename)))
     for file_path in files:
-        # don't use open_fr to keep line endings consistent across OSs
-        if sys.version_info >= (3, 0, 0):
-            if os.name == 'nt':
-                input_file = io.open(file_path, 'r', encoding=ENCODING)
-            else:
-                input_file = open(file_path, 'r', encoding=ENCODING)
-        else:
-            input_file = io.open(file_path, encoding=ENCODING)
+        input_file = open(file_path, 'r', encoding=encoding)
 
         for line in input_file:
-            if isinstance(line, bytes):
-                checksum.update(line)
-            else:
-                checksum.update(str(line).encode())
+            checksum.update(str(line).encode(encoding))
     return checksum.hexdigest()
 
 
-def sort_file(file_path):
+def sort_file(file_path, encoding=ENCODING):
     """Sort file by line and return the file.
 
     Function is used for only testing and can handle the file of the size.
     """
     file_path = os.path.normpath(file_path)
-    input_file = open_fr(file_path)
+    input_file = open_fr(file_path, encoding)
     lines = [line.strip().replace('\x00', '') for line in input_file]
     input_file.close()
-    outfile = open_fw(file_path)
+    outfile = open_fw(file_path, encoding)
     lines.sort()
     for line in lines:
         outfile.write(line + "\n")
@@ -254,17 +241,17 @@ def sort_file(file_path):
     return file_path
 
 
-def sort_csv(filename):
+def sort_csv(filename, encoding=None):
     """Sort CSV rows minus the header and return the file.
 
     Function is used for only testing and can handle the file of the size.
     """
     filename = os.path.normpath(filename)
-    input_file = open_fr(filename)
+    input_file = open_fr(filename, encoding)
     csv_reader_infile = csv.reader(input_file, escapechar="\\")
     #  write the data to a temporary file and sort it
     temp_path = os.path.normpath("tempfile")
-    temp_file = open_fw(temp_path)
+    temp_file = open_fw(temp_path, encoding)
 
     csv_writer = open_csvw(temp_file)
     i = 0
@@ -280,9 +267,9 @@ def sort_csv(filename):
 
     # sort the temp file
     sorted_txt = sort_file(temp_path)
-    tmp = open_fr(sorted_txt)
+    tmp = open_fr(sorted_txt, encoding)
     in_txt = csv.reader(tmp, delimiter=',', escapechar="\\")
-    csv_file = open_fw(filename)
+    csv_file = open_fw(filename, encoding)
     csv_writer = open_csvw(csv_file)
     csv_writer.writerow(infields)
     csv_writer.writerows(in_txt)
@@ -305,16 +292,18 @@ def create_file(data, output='output_file'):
 def file_2list(input_file):
     """Read in a csv file and return lines a list."""
     input_file = os.path.normpath(input_file)
-
-    if sys.version_info >= (3, 0, 0):
-        input_obj = io.open(input_file, 'r')
-    else:
-        input_obj = io.open(input_file, encoding=ENCODING)
-
+    input_obj = open(input_file)
     abs_list = []
     for line in input_obj.readlines():
         abs_list.append(line.strip())
     return abs_list
+
+
+def to_str(object, object_encoding=sys.stdout, object_decoder=ENCODING):
+    if os.name == "nt":
+        enc = object_encoding.encoding
+        return str(object).encode(enc, errors='backslashreplace').decode(object_decoder)
+    return str(object)
 
 
 def get_script_version():

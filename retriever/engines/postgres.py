@@ -1,7 +1,6 @@
 import os
 import subprocess
 
-from retriever.lib.defaults import ENCODING
 from retriever.lib.models import Engine, no_cleanup
 
 
@@ -225,7 +224,7 @@ CSV HEADER;"""
         if not path:
             path = Engine.format_data_dir(self)
         vector_sql = "shp2pgsql -d -I -W \"{encd}\"  -s {SRID} \"{path}\" \"{SCHEMA_DBTABLE}\"".format(
-            encd=ENCODING,
+            encd=self.encoding,
             SRID=srid,
             path=os.path.normpath(path),
             SCHEMA_DBTABLE=self.table_name())
@@ -271,12 +270,10 @@ CSV HEADER;"""
                              user=self.opts["user"],
                              password=self.opts["password"],
                              database=self.opts["database"])
-        encoding = ENCODING.lower()
-        if self.script.encoding:
-            encoding = self.script.encoding.lower()
+        self.set_engine_encoding()
         encoding_lookup = {'iso-8859-1': 'Latin1',
                            'latin-1': 'Latin1',
                            'utf-8': 'UTF8'}
-        self.db_encoding = encoding_lookup.get(encoding)
+        self.db_encoding = encoding_lookup.get(self.encoding)
         conn.set_client_encoding(self.db_encoding)
         return conn

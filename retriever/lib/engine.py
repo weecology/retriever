@@ -10,7 +10,6 @@ from builtins import input
 from builtins import zip
 from builtins import next
 from builtins import str
-import sys
 import os
 import getpass
 import zipfile
@@ -29,13 +28,6 @@ from retriever.lib.cleanup import no_cleanup
 from retriever.lib.warning import Warning
 from urllib.request import urlretrieve
 from requests.exceptions import InvalidSchema
-from imp import reload
-
-encoding = ENCODING.lower()
-# sys removes the setdefaultencoding method at startup; reload to get it back
-reload(sys)
-if hasattr(sys, 'setdefaultencoding'):
-    sys.setdefaultencoding(encoding)
 
 
 class Engine(object):
@@ -58,6 +50,7 @@ class Engine(object):
     use_cache = True
     warnings = []
     script_table_registry = OrderedDict()
+    encoding = None
 
     def connect(self, force_reconnect=False):
         """Create a connection."""
@@ -807,11 +800,16 @@ class Engine(object):
 
     def set_engine_encoding(self):
         """Set up the encoding to be used."""
-        pass
+        self.encoding = ENCODING.lower()
+        if self.script and self.script.encoding:
+                self.encoding = self.script.encoding.lower()
 
     def set_table_delimiter(self, file_path):
         """Get the delimiter from the data file and set it."""
-        dataset_file = open_fr(file_path)
+        if os.name == "nt":
+            dataset_file = open_fr(file_path)
+        else:
+            dataset_file = open_fr(file_path, encoding=self.encoding)
         self.auto_get_delimiter(dataset_file.readline())
         dataset_file.close()
 
@@ -847,10 +845,11 @@ class Engine(object):
 
             csv_file_output = os.path.normpath(os.path.join(path if path else '',
                                                             table_name[0] + '.csv'))
-            csv_file = open_fw(csv_file_output)
-            csv_writer = open_csvw(csv_file)
             self.get_cursor()
             self.set_engine_encoding()
+            csv_file = open_fw(csv_file_output, encoding=self.encoding)
+            csv_writer = open_csvw(csv_file)
+
             limit = ""
             cols = "*"
             if select_columns:
@@ -912,9 +911,10 @@ class Engine(object):
         """
         if not self.table.delimiter:
             self.set_table_delimiter(filename)
-
-        dataset_file = open_fr(filename)
-
+        if os.name == "nt":
+            dataset_file = open_fr(filename)
+        else:
+            dataset_file = open_fr(filename, encoding=self.encoding)
         if self.table.fixed_width:
             for row in dataset_file:
                 yield self.extract_fixed_width(row)

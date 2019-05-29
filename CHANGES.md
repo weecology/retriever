@@ -1,4 +1,20 @@
-### Retriever v2.3.1
+# v2.4.0
+
+### Minor changes
+
+Update long description
+Remove Python 2 utilities
+
+### New datasets
+
+Catalogos-dados-brasil
+Transparencia-dados-abertos-brasil
+
+### Dataset changes
+
+Elton-traits and mt-st-helens-veg change encoding
+
+### v2.3.1
 
 ### Minor changes
 
