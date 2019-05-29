@@ -1,12 +1,9 @@
-# v2.3.2
-
-### Major changes
-
-Remove Python 2 utilities
+# v2.4.0
 
 ### Minor changes
 
 Update long description
+Remove Python 2 utilities
 
 ### New datasets
 
