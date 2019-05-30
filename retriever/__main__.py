@@ -18,7 +18,7 @@ from retriever.lib.get_opts import parser
 from retriever.lib.repository import check_for_updates
 from retriever.lib.scripts import SCRIPT_LIST, reload_scripts, get_script
 from retriever.lib.create_scripts import create_package
-
+from retriever.lib.provenance import commit
 
 def main():
     """This function launches the Data Retriever."""
@@ -186,6 +186,11 @@ def main():
                         )
                         count += 1
             return
+        elif args.command == 'commit':
+            commit(dataset=args.dataset, path=os.path.normpath(args.path[0]),
+                   commit_message=args.message[0])
+            return
+
 
         engine = choose_engine(args.__dict__)
 
