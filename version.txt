@@ -4,7 +4,7 @@ acton_lake.json,1.0.0
 airports.json,1.0.3
 amniote_life_hist.py,2.0.4
 antarctic_breed_bird.json,1.2.2
-aquatic_animal_excretion.py,1.1.5
+aquatic_animal_excretion.py,1.1.6
 bioclim.json,1.3.0
 biodiversity_response.json,1.0.2
 biomass_allometry_db.py,1.4.4
@@ -89,7 +89,7 @@ tree_canopy_geometries.json,1.0.1
 tree_demog_wghats.py,1.3.2
 turtle_offspring_nesting.json,1.0.2
 usgs_elevation.py,1.0.0
-veg_plots_sdl.json,2.0.0
+veg_plots_sdl.json,2.0.1
 vertnet.py,1.4.2
 vertnet_amphibians.py,1.1.2
 vertnet_birds.py,1.1.2
