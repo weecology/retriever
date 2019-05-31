@@ -5,6 +5,7 @@
     "keywords": [
         "plants"
     ],
+    "encoding": "latin-1",
     "name": "veg-plots-sdl",
     "resources": [
         {
@@ -549,5 +550,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Sonoran Desert Lab perennials vegetation plots",
-    "version": "2.0.0"
+    "version": "2.0.1"
 }
