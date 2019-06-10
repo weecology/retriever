@@ -9,6 +9,7 @@ Remove Python 2 utilities
 
 Catalogos-dados-brasil
 Transparencia-dados-abertos-brasil
+biotimesql
 
 ### Dataset changes
 
