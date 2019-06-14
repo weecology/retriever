@@ -10,7 +10,6 @@ import sys
 from builtins import input
 
 from retriever.engines import engine_list, choose_engine
-from retriever.lib.datapackage import create_json, edit_json, delete_json, get_script_filename
 from retriever.lib.datasets import datasets, dataset_names, license
 from retriever.lib.defaults import sample_script, CITATION, SCRIPT_SEARCH_PATHS, LICENSE
 from retriever.lib.engine_tools import name_matches, reset_retriever
@@ -98,32 +97,12 @@ def main():
             reset_retriever(args.scope)
             return
 
-        elif args.command == 'new_json':
-            # create new JSON script
-            create_json()
-            return
-
-        elif args.command == 'edit_json':
-            # edit existing JSON script
-            json_file = get_script_filename(args.dataset.lower())
-            edit_json(json_file)
-            return
-
         elif args.command == 'autocreate':
             if sum([args.f, args.d]) == 1:
                 file_flag = True if args.f else False
                 create_package(args.path, args.dt, file_flag, args.o, args.skip_lines)
             else:
                 print('Please use one and only one of the flags -f -d')
-            return
-
-        elif args.command == 'delete_json':
-            # delete existing JSON script from home directory and or script directory if exists in current dir
-            confirm = input("Really remove " + args.dataset.lower() +
-                            " and all its contents? (y/N): ")
-            if confirm.lower().strip() in ['y', 'yes']:
-                json_file = get_script_filename(args.dataset.lower())
-                delete_json(json_file)
             return
 
         if args.command == 'ls':
