@@ -13,10 +13,6 @@ extra_includes = []
 if current_platform == "windows":
     extra_includes += ["pypyodbc"]
 
-if os.path.exists(".git/hooks"):  # check if we are in git repo
-    os.system("cp hooks/pre-commit .git/hooks/pre-commit")
-    os.system("chmod +x .git/hooks/pre-commit")
-
 app_data = "~/.retriever/scripts"
 if os.path.exists(app_data):
     os.system("rm -r {}".format(app_data))
@@ -139,3 +135,7 @@ try:
     compile()
 except:
     pass
+
+if os.path.exists(".git/hooks"):  # check if we are in git repo
+    os.system("cp hooks/pre-commit .git/hooks/pre-commit")
+    os.system("chmod +x .git/hooks/pre-commit")

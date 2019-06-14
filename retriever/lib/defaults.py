@@ -5,9 +5,12 @@ from retriever._version import __version__
 VERSION = __version__
 COPYRIGHT = "Copyright (C) 2011-2016 Weecology University of Florida"
 LICENSE = "MIT"
-REPO_URL = "https://raw.githubusercontent.com/weecology/retriever/"
-MASTER_BRANCH = REPO_URL + "master/"
+REPO_URL = "https://raw.githubusercontent.com/weecology/retriever-recipes/"
+RETRIEVER_REPO_URL = "https://raw.githubusercontent.com/harshitbansal05/retriever/"
+MASTER_BRANCH = REPO_URL + "retriever-recipes-dev/"
+RETRIEVER_MASTER_BRANCH = RETRIEVER_REPO_URL + "development/"
 REPOSITORY = MASTER_BRANCH
+RETRIEVER_REPOSITORY = RETRIEVER_MASTER_BRANCH
 ENCODING = 'ISO-8859-1'
 HOME_DIR = os.path.expanduser('~/.retriever/')
 SCRIPT_SEARCH_PATHS = [
@@ -23,6 +26,13 @@ DATA_SEARCH_PATHS = [
     os.path.join(HOME_DIR, 'raw_data/{dataset}'),
 ]
 DATA_WRITE_PATH = DATA_SEARCH_PATHS[-1]
+RETRIEVER_SCRIPTS = [
+"acton_lake.json",
+"amniote_life_hist.py",
+"bioclim.json",
+"iris.json",
+"predicts.py"
+]
 
 # Create default data directory
 DATA_DIR = '.'

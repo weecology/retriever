@@ -9,7 +9,7 @@ import requests
 import imp
 from tqdm import tqdm
 from pkg_resources import parse_version
-from retriever.lib.defaults import REPOSITORY, SCRIPT_WRITE_PATH, HOME_DIR
+from retriever.lib.defaults import REPOSITORY, RETRIEVER_REPOSITORY, SCRIPT_WRITE_PATH, HOME_DIR
 from retriever.lib.models import file_exists
 
 
@@ -25,14 +25,14 @@ def _download_from_repository(filepath, newpath, repo=REPOSITORY):
         raise
 
 
-def check_for_updates():
+def check_for_updates(repo=REPOSITORY):
     """Check for updates to datasets.
 
     This updates the HOME_DIR scripts directory with the latest script versions
     """
     try:
         # open version.txt for current release branch and get script versions
-        version_file = requests.get(REPOSITORY + "version.txt").text
+        version_file = requests.get(repo + "version.txt").text
         version_file = version_file.splitlines()[1:]
 
         # read scripts from the repository and the checksums from the version.txt
@@ -55,7 +55,8 @@ def check_for_updates():
             path_script_name = os.path.normpath(os.path.join(HOME_DIR, "scripts", script_name))
             if not file_exists(path_script_name):
                 _download_from_repository("scripts/" + script_name,
-                                          os.path.normpath(os.path.join(SCRIPT_WRITE_PATH, script_name)))
+                                          os.path.normpath(os.path.join(SCRIPT_WRITE_PATH, script_name)),
+                                          repo)
 
             need_to_download = False
             try:
@@ -69,9 +70,14 @@ def check_for_updates():
                 try:
                     os.remove(os.path.normpath(os.path.join(HOME_DIR, "scripts", script_name)))
                     _download_from_repository("scripts/" + script_name,
-                                              os.path.normpath(os.path.join(SCRIPT_WRITE_PATH, script_name)))
+                                              os.path.normpath(os.path.join(SCRIPT_WRITE_PATH, script_name)),
+                                              repo)
                 except Exception as e:
                     print(e)
                     pass
     except:
         raise
+
+    if repo == RETRIEVER_REPOSITORY:
+        return
+    check_for_updates(RETRIEVER_REPOSITORY)

@@ -306,26 +306,6 @@ def to_str(object, object_encoding=sys.stdout, object_decoder=ENCODING):
     return str(object)
 
 
-def get_script_version():
-    """This function gets the version number of the scripts and returns them in array form."""
-    from retriever.lib.scripts import SCRIPT_LIST
-
-    modules = SCRIPT_LIST()
-    scripts = []
-    for module in modules:
-        if module.public:
-            if os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.json') and module.version:
-                module_name = module._name + '.json'
-                scripts.append(','.join([module_name, str(module.version)]))
-            elif os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.py') and \
-                    not os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.json'):
-                module_name = module._name + '.py'
-                scripts.append(','.join([module_name, str(module.version)]))
-
-    scripts = sorted(scripts, key=str.lower)
-    return scripts
-
-
 def set_proxy():
     """Check for proxies and makes them available to urllib."""
     proxies = ["https_proxy", "http_proxy", "ftp_proxy",
