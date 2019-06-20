@@ -31,7 +31,7 @@ def commit_info(dataset):
     return info
 
 
-def commit(dataset, commit_message="", path=".", quiet=False):
+def commit(dataset, commit_message='', path='.', quiet=False):
     """
     Commit dataset to a zipped file.
     """
