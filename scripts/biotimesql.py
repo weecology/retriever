@@ -27,7 +27,7 @@ class main(Script):
         self.urls = {
             "sql_file": "https://zenodo.org/record/2602708/files/BioTIMESQL02_04_2018.sql?download=1",
         }
-        self.version = "1.0.0"
+        self.version = "1.0.1"
         self.ref = "https://zenodo.org/record/1095628#.WskN7dPwYyn"
         self.citation = "Dornelas M, Antão LH, Moyes F, et al. BioTIME: A database of biodiversity time series for the Anthropocene. Global Ecology & Biogeography. 2018; 00:1 - 26. https://doi.org/10.1111/geb.12729."
         self.description = "The BioTIME database has species identities and abundances in ecological assemblages through time."
@@ -51,6 +51,7 @@ class main(Script):
         csv_writer = None
         csv_file = None
         table_name = None
+        NULL = None
         for line in sql_data:
             table_indicator = "-- Table structure for table "
             if line.startswith(table_indicator):
