@@ -10,14 +10,11 @@ from retriever.lib.scripts import SCRIPT_LIST
 
 module_list = SCRIPT_LIST()
 script_list = []
-json_list = []
 keywords_list = []
 licenses_list = []
 
 for module in module_list:
     script_list.append(module.name)
-    if os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.json'):
-        json_list.append(module.name)
 
     if hasattr(module, "keywords"):
         # Add list of keywords to keywords_list
@@ -52,9 +49,6 @@ install_parser = subparsers.add_parser('install', help='download and install dat
 default_parser = subparsers.add_parser('defaults', help='displays default options')
 update_parser = subparsers.add_parser('update', help='download updated versions of scripts')
 new_parser = subparsers.add_parser('new', help='create a new sample retriever script')
-new_json_parser = subparsers.add_parser('new_json', help='CLI to create retriever datapackage.json script')
-edit_json_parser = subparsers.add_parser('edit_json', help='CLI to edit retriever datapackage.json script')
-delete_json_parser = subparsers.add_parser('delete_json', help='CLI to remove retriever datapackage.json script')
 autocreate_parser = subparsers.add_parser('autocreate', help='CLI to automatically create retriever scripts')
 ls_parser = subparsers.add_parser('ls', help='display a list all available dataset scripts')
 citation_parser = subparsers.add_parser('citation', help='view citation')
@@ -70,7 +64,6 @@ help_parser = subparsers.add_parser('help', help='')
 citation_parser.add_argument('dataset', help='dataset name', nargs='?', default=None, choices=script_list + [None])
 license_parser.add_argument('dataset', help='dataset name', nargs='?', default=None, choices=script_list + [None])
 new_parser.add_argument('filename', help='new script filename')
-edit_json_parser.add_argument('dataset', help='dataset name', choices=json_list)
 reset_parser.add_argument('scope', help='things to reset: all, scripts or data').completer = \
     ChoicesCompleter(script_list + ['all', 'scripts', 'data'])
 install_parser.add_argument('--compile', help='force re-compile of script before downloading', action='store_true')
@@ -88,7 +81,6 @@ ls_parser.add_argument('-k', help='search datasets with keyword(s)',
                        nargs='+').completer = ChoicesCompleter(list(keywords_options))
 ls_parser.add_argument('-v', help='verbose list of all datasets', nargs='*', default=False)
 
-delete_json_parser.add_argument('dataset', help='dataset name', choices=json_list)
 autocreate_parser.add_argument('path', help='path to the data file(s)')
 autocreate_parser.add_argument('-dt', help='datatype for files', nargs='?', default='tabular', choices=['raster', 'vector', 'tabular'])
 autocreate_parser.add_argument('-f', help='turn files into scripts', action='store_true')
