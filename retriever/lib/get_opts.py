@@ -56,12 +56,16 @@ license_parser = subparsers.add_parser('license', help='view dataset license')
 reset_parser = subparsers.add_parser('reset',
                                      help='reset retriever: removes configuration settings, scripts, and cached data')
 help_parser = subparsers.add_parser('help', help='')
+commit_parser = subparsers.add_parser('commit', help='commit a dataset')
 
 # ..............................................................
 # subparsers with Arguments
 # ..............................................................
 
 citation_parser.add_argument('dataset', help='dataset name', nargs='?', default=None, choices=script_list + [None])
+commit_parser.add_argument('dataset', help='dataset name', choices=script_list)
+commit_parser.add_argument('-p', '--path', help='path to store committed file', default=None, nargs=1, required=True)
+commit_parser.add_argument('-m', '--message', help='commit message', default=None, nargs=1, required=True, type=str)
 license_parser.add_argument('dataset', help='dataset name', nargs='?', default=None, choices=script_list + [None])
 new_parser.add_argument('filename', help='new script filename')
 reset_parser.add_argument('scope', help='things to reset: all, scripts or data').completer = \
@@ -82,11 +86,13 @@ ls_parser.add_argument('-k', help='search datasets with keyword(s)',
 ls_parser.add_argument('-v', help='verbose list of all datasets', nargs='*', default=False)
 
 autocreate_parser.add_argument('path', help='path to the data file(s)')
-autocreate_parser.add_argument('-dt', help='datatype for files', nargs='?', default='tabular', choices=['raster', 'vector', 'tabular'])
+autocreate_parser.add_argument('-dt', help='datatype for files', nargs='?', default='tabular',
+                               choices=['raster', 'vector', 'tabular'])
 autocreate_parser.add_argument('-f', help='turn files into scripts', action='store_true')
 autocreate_parser.add_argument('-d', help='turn a directory and subdirectories into scripts', action='store_true')
 autocreate_parser.add_argument('-o', help='write scripts out to a designated directory', nargs='?', const='')
-autocreate_parser.add_argument('--skip-lines', help='skip a set number of lines before processing data', nargs=1, type=int)
+autocreate_parser.add_argument('--skip-lines', help='skip a set number of lines before processing data', nargs=1,
+                               type=int)
 # retriever Install {Engine} ..
 # retriever download [options]
 install_subparsers = install_parser.add_subparsers(help='engine-specific help', dest='engine')

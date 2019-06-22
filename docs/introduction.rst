@@ -99,7 +99,7 @@ and datasets run ``retriever --help``. The output will look like this:
 ::
 
     usage: retriever [-h] [-v] [-q]
-                     {download,install,defaults,update,new,new_json,edit_json,delete_json,ls,citation,reset,help}
+                     {download,install,defaults,update,new,new_json,edit_json,delete_json,ls,citation,reset,help,commit}
                      ...
 
     positional arguments:
@@ -117,6 +117,7 @@ and datasets run ``retriever --help``. The output will look like this:
         citation            view citation
         reset               reset retriever: removes configuration settings,
                             scripts, and cached data
+        commit              commit dataset to a zipped file
         help
 
     optional arguments:
@@ -238,6 +239,14 @@ The ``citation`` command show the citation for the retriever and for the scripts
    retriever citation (citation of the Data retriever)
    retriever citation breed-bird-survey (citation of Breed bird survey data)
 
+**Using commit**
+
+The ``commit`` command allows committing of a dataset to a zipped file. The zipped file contains
+the script, raw data and the metadata of the dataset.
+
+::
+
+   retriever commit abalone-age --message "First commit" --path /home/
 
 **To create new, edit, delete scripts please read the documentation on scripts**
 
