@@ -4,7 +4,7 @@ from shutil import rmtree
 from tempfile import mkdtemp
 
 from retriever.engines import engine_list
-from retriever.lib.defaults import MASTER_BRANCH
+from retriever.lib.defaults import RETRIEVER_REPOSITORY
 from retriever.lib.load_json import read_json
 from retriever import commit
 
@@ -16,7 +16,7 @@ test_commit_details = [
     (
         "dataset_provenance",
         {
-            "main": MASTER_BRANCH
+            "main": RETRIEVER_REPOSITORY
             + "test/raw_data/dataset-provenance/modified/dataset_provenance.csv"
         },
         {
