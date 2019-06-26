@@ -13,6 +13,7 @@ Contents:
 
    introduction
    rdataretriever.rst
+   recipes.rst
    pyretriever.rst
    datasets_list.rst
    developer.rst
