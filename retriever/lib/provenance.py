@@ -1,13 +1,19 @@
 import json
 import os
 import pkg_resources
+from collections import OrderedDict
 from datetime import datetime, timezone
+from tempfile import mkdtemp
+from importlib import util
+from shutil import rmtree
 from zipfile import ZipFile
 
 from retriever.engines import choose_engine
 from retriever.lib.datasets import datasets
 from retriever.lib.defaults import HOME_DIR, ENCODING
 from retriever.lib.engine_tools import getmd5
+from retriever.lib.load_json import read_json
+
 
 
 def package_details():
@@ -88,3 +94,41 @@ def commit(dataset, commit_message='', path='.', quiet=False):
         print(e)
         print("Dataset could not be committed.")
         return
+
+def get_script(path_to_archive):
+    """
+    Reads script from archive.
+    """
+    with ZipFile(os.path.normpath(path_to_archive), 'r') as archive:
+        try:
+            commit_details = json.loads(archive.read('metadata.json').decode('utf-8'))
+            workdir = mkdtemp(dir=os.path.dirname(path_to_archive))
+            archive.extract(os.path.join('script', commit_details['script_name']), workdir)
+            if commit_details['script_name'].endswith('.json'):
+                script_object = read_json(os.path.join(workdir, 'script', commit_details['script_name'].split('.')[0]))
+            elif commit_details['script_name'].endswith('.py'):
+                spec = util.spec_from_file_location("script_module",
+                                                    os.path.join(workdir, 'script', commit_details['script_name']))
+                script_module = util.module_from_spec(spec)
+                spec.loader.exec_module(script_module)
+                script_object = script_module.SCRIPT
+            rmtree(workdir)
+        except Exception:
+            raise
+        return script_object
+
+
+def install_committed(path_to_archive, engine):
+    with ZipFile(os.path.normpath(path_to_archive), 'r') as archive:
+        try:
+            workdir = mkdtemp(dir=os.path.dirname(path_to_archive))
+            engine.data_path = os.path.join(workdir)
+            archive.extractall(workdir)
+            script_object = get_script(path_to_archive)
+            engine.script_table_registry = OrderedDict()
+            script_object.download(engine)
+            script_object.engine.final_cleanup()
+        except Exception:
+            raise
+        finally:
+            rmtree(workdir)

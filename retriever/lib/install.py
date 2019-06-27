@@ -9,12 +9,17 @@ from retriever.lib.defaults import DATA_DIR, SCRIPT_WRITE_PATH
 from retriever.lib.scripts import SCRIPT_LIST
 from retriever.lib.engine_tools import name_matches
 from retriever.lib.repository import check_for_updates
+from retriever.lib.provenance import install_committed
 
 
 def _install(args, use_cache, debug):
     """Install datasets for retriever."""
     engine = choose_engine(args)
     engine.use_cache = use_cache
+
+    if args['dataset'].endswith('.zip'):
+        install_committed(args['dataset'], engine)
+        return engine
 
     script_list = SCRIPT_LIST()
     if not (script_list or os.listdir(SCRIPT_WRITE_PATH)):
