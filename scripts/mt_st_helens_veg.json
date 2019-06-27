@@ -8,6 +8,7 @@
         "time-serie",
         "observational"
     ],
+    "encoding": "latin-1",
     "name": "mt-st-helens-veg",
     "resources": [
         {
@@ -159,5 +160,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Mount St. Helens vegetation recovery plots (del Moral 2010)",
-    "version": "1.2.2"
+    "version": "1.2.3"
 }
