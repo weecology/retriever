@@ -10,14 +10,14 @@ The `Data Retriever`_ earlier used a simple CLI for developing new dataset scrip
 .. _Data Retriever: http://data-retriever.org
 .. _DataPackage: http://specs.frictionlessdata.io/data-packages/
 
-This functionality has now been moved to the ``retriever-recipes`` repository to separate the scripts from the core ``retriever`` functionalities to help with organization, maintenance, and testing. The `retriever recipes`_ repository thus holds all the scripts which were earlier shipped with ``retriever`` and also all the script adding/editing functionalities.
+This functionality has been moved to the ``retriever-recipes`` repository to separate the scripts from the core ``retriever`` functionalities to help with organization, maintenance, and testing. The `retriever recipes`_ repository thus holds all the scripts which were earlier shipped with ``retriever`` and also all the script adding/editing functionalities.
 
 .. _retriever recipes: https://github.com/weecology/retriever-recipes
 
 Installation
 ------------
 
-The ``retriever-recipes`` project can simply be installed from Github via the following steps:
+The ``retriever-recipes`` project can be installed from Github using the following steps:
 
 ::
 
