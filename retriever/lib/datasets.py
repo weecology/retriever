@@ -1,14 +1,17 @@
-from retriever.lib.scripts import SCRIPT_LIST, get_script
-
+from retriever.lib.scripts import SCRIPT_LIST, get_script, get_dataset_names_upstream
+from retriever.lib.defaults import RETRIEVER_REPOSITORY
 
 def datasets(keywords=None, licenses=None):
     """Search all datasets by keywords and licenses."""
     script_list = SCRIPT_LIST()
 
     if not keywords and not licenses:
-        return sorted(script_list, key=lambda s: s.name.lower())
+        offline_scripts = sorted(script_list, key=lambda s: s.name.lower())
+        online_retriever_script_names = get_dataset_names_upstream(repo=RETRIEVER_REPOSITORY)
+        online_script_names = get_dataset_names_upstream()
+        return dict({'online': sorted(online_retriever_script_names + online_script_names), 'offline': offline_scripts})
 
-    result_scripts = set()
+    result_scripts_offline = set()
     if licenses:
         licenses = [l.lower() for l in licenses]
     for script in script_list:
@@ -18,7 +21,7 @@ def datasets(keywords=None, licenses=None):
                                   for licence_map in script.licenses
                                   if licence_map['name']]
                 if script_license and set(script_license).intersection(set(licenses)):
-                    result_scripts.add(script)
+                    result_scripts_offline.add(script)
                     continue
             if keywords:
                 script_keywords = script.title + ' ' + script.name
@@ -27,19 +30,24 @@ def datasets(keywords=None, licenses=None):
                 script_keywords = script_keywords.lower()
                 for k in keywords:
                     if script_keywords.find(k.lower()) != -1:
-                        result_scripts.add(script)
+                        result_scripts_offline.add(script)
                         break
-    return sorted(list(result_scripts), key=lambda s: s.name.lower())
+    result_scripts_offline = sorted(list(result_scripts_offline), key=lambda s: s.name.lower())
+    result_retriever_scripts_online = get_dataset_names_upstream(keywords, licenses, repo=RETRIEVER_REPOSITORY)
+    result_scripts_online = get_dataset_names_upstream(keywords, licenses)
+    return dict({'online': sorted(result_retriever_scripts_online + result_scripts_online), 'offline': result_scripts_offline})
 
 
 def dataset_names():
     """Return list of all available dataset names."""
     all_scripts = datasets()
-    scripts_name = []
-
-    for script in all_scripts:
-        scripts_name.append(script.name)
-
+    scripts_name = dict()
+    scripts_name['offline'] = []
+    scripts_name['online'] = []
+    for offline_script in all_scripts['offline']:
+        scripts_name['offline'].append(offline_script.name)
+    for online_script in all_scripts['online']:
+        scripts_name['online'].append(online_script)
     return scripts_name
 
 

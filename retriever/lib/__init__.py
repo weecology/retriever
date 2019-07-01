@@ -16,6 +16,7 @@ from .repository import check_for_updates
 from .engine_tools import reset_retriever
 from .fetch import fetch
 from .scripts import reload_scripts
+from .scripts import get_script_upstream
 
 __all__ = [
     'check_for_updates',
@@ -33,5 +34,6 @@ __all__ = [
     'install_msaccess',
     'install_json',
     'install_xml',
-    'fetch'
+    'fetch',
+    'get_script_upstream'
 ]

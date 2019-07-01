@@ -9,12 +9,13 @@ import io
 import os
 import sys
 import json
+import requests
 from os.path import join, exists
 from collections import OrderedDict
 
 from pkg_resources import parse_version
 
-from retriever.lib.defaults import SCRIPT_SEARCH_PATHS, VERSION, ENCODING, SCRIPT_WRITE_PATH, RETRIEVER_SCRIPTS
+from retriever.lib.defaults import REPOSITORY, RETRIEVER_REPOSITORY, SCRIPT_SEARCH_PATHS, VERSION, ENCODING, SCRIPT_WRITE_PATH, RETRIEVER_SCRIPTS, RETRIEVER_DATASETS
 from retriever.lib.load_json import read_json
 from retriever.lib.repository import check_for_updates
 
@@ -107,7 +108,101 @@ def get_script(dataset):
     if dataset in scripts:
         return scripts[dataset]
     else:
-        raise KeyError("No dataset named: {}".format(dataset))
+        if dataset in RETRIEVER_DATASETS:
+            read_script = get_script_upstream(dataset, repo=RETRIEVER_REPOSITORY)
+        else:
+            read_script = get_script_upstream(dataset)
+        if read_script is None:
+            raise KeyError("No dataset named: {}".format(dataset))
+        else:
+            return read_script
+
+
+def get_script_upstream(dataset, repo=REPOSITORY):
+    """Return the upstream script for a named dataset."""
+    try:
+        is_json = True
+        script = dataset.replace('-', '_')
+        script_name = script + ".json"
+        filepath = "scripts/" + script_name
+        newpath = os.path.normpath(os.path.join(SCRIPT_WRITE_PATH, script_name))
+        r = requests.get(repo + filepath, allow_redirects=True, stream=True)
+        if r.status_code == 404:
+            is_json = False
+            script_name = script + ".py"
+            filepath = "scripts/" + script_name
+            newpath = os.path.normpath(os.path.join(SCRIPT_WRITE_PATH, script_name))
+            r = requests.get(repo + filepath, allow_redirects=True, stream=True)
+            if r.status_code == 404:
+                return None
+        with open(newpath, 'wb') as f:
+            for chunk in r.iter_content(chunk_size=1024):
+                f.write(chunk)
+        r.close()
+        if is_json:
+            read_script = read_json(join(SCRIPT_WRITE_PATH, script))
+            setattr(read_script, "_file", os.path.join(SCRIPT_WRITE_PATH, script_name))
+            setattr(read_script, "_name", script)
+            return read_script
+        else:
+            file, pathname, desc = imp.find_module(script, [SCRIPT_WRITE_PATH])
+            new_module = imp.load_module(script, file, pathname, desc)
+            setattr(new_module.SCRIPT, "_file", os.path.join(SCRIPT_WRITE_PATH, script_name))
+            setattr(new_module.SCRIPT, "_name", script)
+            return new_module.SCRIPT
+    except:
+        raise
+
+
+def get_dataset_names_upstream(keywords=None, licenses=None, repo=REPOSITORY):
+    """Search all datasets upstream by keywords and licenses."""
+    if not keywords and not licenses:
+        version_file = requests.get(repo + "version.txt").text
+        version_file = version_file.splitlines()[1:]
+
+        scripts = []
+        max_scripts = 100
+        for line in version_file:
+            script = line.strip('\n').split(',')[0]
+            script = '.'.join(script.split('.')[:-1])
+            script = script.replace('_', '-')
+            scripts.append(script)
+            if len(scripts) == max_scripts:
+                break
+        return sorted(scripts)
+
+    result_scripts = set()
+    if repo == RETRIEVER_REPOSITORY:
+        search_url = "https://api.github.com/search/code?q={query}+in:file+path:scripts+repo:weecology/retriever"
+    else:
+        search_url = "https://api.github.com/search/code?q={query}+in:file+path:scripts+repo:weecology/retriever-recipes"
+    if licenses:
+        licenses = [l.lower() for l in licenses]
+        for l in licenses:
+            try:
+                r = requests.get(search_url.format(query=l))
+                r = r.json()
+                for index in range(r['total_count']):
+                    script = r['items'][index]['name']
+                    script = '.'.join(script.split('.')[:-1])
+                    script = script.replace('_', '-')
+                    result_scripts.add(script)
+            except:
+                raise
+    if keywords:
+        keywords = [k.lower() for k in keywords]
+        for k in keywords:
+            try:
+                r = requests.get(search_url.format(query=k))
+                r = r.json()
+                for index in range(r['total_count']):
+                    script = r['items'][index]['name']
+                    script = '.'.join(script.split('.')[:-1])
+                    script = script.replace('_', '-')
+                    result_scripts.add(script)
+            except:
+                raise
+    return sorted(result_scripts)
 
 
 def open_fr(file_name, encoding=ENCODING, encode=True):

@@ -19,7 +19,7 @@ import warnings
 
 from hashlib import md5
 from io import StringIO as NewFile
-from retriever.lib.defaults import HOME_DIR, ENCODING
+from retriever.lib.defaults import HOME_DIR, ENCODING, RETRIEVER_REPOSITORY, RETRIEVER_DATASETS
 
 from retriever.lib.models import *
 import xml.etree.ElementTree as ET
@@ -74,6 +74,16 @@ def name_matches(scripts, arg):
     for script in scripts:
         if arg == script.name.lower():
             return [script]
+
+    from retriever.lib.scripts import get_script_upstream
+
+    if arg in RETRIEVER_DATASETS:
+        read_script = get_script_upstream(arg, repo=RETRIEVER_REPOSITORY)
+    else:
+        read_script = get_script_upstream(arg)
+
+    if read_script is not None:
+        return [read_script]
 
     for script in scripts:
         script_match_ratio = difflib.SequenceMatcher(None, script.name, arg).ratio()
