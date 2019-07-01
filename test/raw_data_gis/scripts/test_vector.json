@@ -5,7 +5,7 @@
     "format": "vector",
     "spatial_ref": "ED50",
     "citation": "Test citation",
-    "license": [{"name": "CC Tests"}],
+    "licenses": [{"name": "CC Tests"}],
     "driver_name": "ESRI Shapefile",
     "keywords": [
         "test"
