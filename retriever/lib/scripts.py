@@ -8,11 +8,13 @@ import imp
 import io
 import os
 import sys
+import json
 from os.path import join, exists
+from collections import OrderedDict
 
 from pkg_resources import parse_version
 
-from retriever.lib.defaults import SCRIPT_SEARCH_PATHS, VERSION, ENCODING, SCRIPT_WRITE_PATH
+from retriever.lib.defaults import SCRIPT_SEARCH_PATHS, VERSION, ENCODING, SCRIPT_WRITE_PATH, RETRIEVER_SCRIPTS
 from retriever.lib.load_json import read_json
 from retriever.lib.repository import check_for_updates
 
@@ -159,6 +161,59 @@ def open_csvw(csv_file, encode=True):
 def to_str(object, object_encoding=sys.stdout, object_decoder=ENCODING):
     enc = object_encoding.encoding
     return str(object).encode(enc, errors='backslashreplace').decode(object_decoder)
+
+
+def read_json_version(json_file):
+    json_object = OrderedDict()
+    json_file_encoding = None
+
+    try:
+        file_obj = open_fr(json_file)
+        json_object = json.load(file_obj)
+        if "encoding" in json_object:
+            json_file_encoding = json_object['encoding']
+        file_obj.close()
+    except ValueError:
+        pass
+
+    try:
+        if json_file_encoding:
+            file_obj = open_fr(json_file, encoding=json_file_encoding)
+        else:
+            file_obj = open_fr(json_file)
+        json_object = json.load(file_obj)
+        file_obj.close()
+    except ValueError:
+        pass
+
+    return json_object.get("version", None)
+
+
+def read_py_version(script_name, search_path):
+    file, pathname, desc = imp.find_module(script_name, [search_path])
+    try:
+        new_module = imp.load_module(script_name, file, pathname, desc)
+        if hasattr(new_module.SCRIPT, "version"):
+            return new_module.SCRIPT.version
+    except:
+        pass
+    return None
+
+
+def get_retriever_script_versions():
+    search_path = "scripts"
+    scripts = []
+    if exists(search_path):
+        for script in RETRIEVER_SCRIPTS:
+            if script.endswith(".json"):
+                script_version = read_json_version(join(search_path, script))
+                scripts.append(','.join([script, str(script_version)]))
+            elif script.endswith(".py"):
+                script_name = '.'.join(script.split('.')[:-1])
+                script_version = read_py_version(script_name, search_path)
+                scripts.append(','.join([script, str(script_version)]))
+    scripts = sorted(scripts, key=str.lower)
+    return scripts
 
 
 class StoredScripts:
