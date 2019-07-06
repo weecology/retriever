@@ -5,7 +5,7 @@ from tempfile import mkdtemp
 
 from retriever.engines import engine_list
 from retriever.lib.defaults import ENCODING, RETRIEVER_REPOSITORY
-from retriever.lib.engine_tools import getmd5=
+from retriever.lib.engine_tools import getmd5
 from retriever.lib.load_json import read_json
 from retriever import commit, install_sqlite
 
@@ -28,8 +28,10 @@ test_commit_details = [
 ]
 
 test_commit_installation_details = [
-    ("dataset-provenance-b8b17d.zip" , "aaa2b66a3a77efe416e3555c444f4e2e")
+    ("dataset-provenance-b8b17d.zip", "aaa2b66a3a77efe416e3555c444f4e2e")
 ]
+
+
 def get_script_module(script_name):
     """Load a script module."""
     return read_json(os.path.join(file_location, script_name))
@@ -58,7 +60,7 @@ def install_and_commit(script_module, test_dir, commit_message, modified_table_u
 def test_commit(script_file_name, modified_table_urls, expected_archives):
     test_dir = mkdtemp(dir=file_location)
     os.chdir(test_dir)
-    script_path = os.path.join(file_location,"raw_data/scripts/", script_file_name)
+    script_path = os.path.join(file_location, "raw_data/scripts/", script_file_name)
     script_module = get_script_module(script_path)
     script_json = "{}.json".format(script_path)
     setattr(script_module, "_file", script_json)
@@ -85,7 +87,7 @@ def test_commit(script_file_name, modified_table_urls, expected_archives):
 
 
 @pytest.mark.parametrize("zip_file_name, expected_md5", test_commit_installation_details)
-def test_commit_installation(zip_file_name, expected_md5=None):
+def test_commit_installation(zip_file_name, expected_md5):
     """Installs the committed dataset in zip to sqlite and then converts
     it to csv to calculate md5 to compare it with the expected_md5"""
     db_name = 'test_sqlite.db'
