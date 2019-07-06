@@ -180,8 +180,8 @@ def install_committed(path_to_archive, engine, force=False, quiet=False):
                         archive.extract(filename, workdir)
                 engine.script_table_registry = OrderedDict()
                 script_object.download(engine)
-                script_object.engine.final_cleanup()
         except Exception:
             raise
         finally:
             rmtree(workdir)
+        return engine
