@@ -143,31 +143,32 @@ def get_script(path_to_archive):
         return script_object
 
 
-def install_committed(path_to_archive, engine, force=False):
+def install_committed(path_to_archive, engine, force=False, quiet=False):
     with ZipFile(os.path.normpath(path_to_archive), 'r') as archive:
         try:
             workdir = mkdtemp(dir=os.path.dirname(path_to_archive))
             engine.data_path = os.path.join(workdir)
             script_object = get_script(path_to_archive)
             details = commit_info_for_installation(get_metadata(path_to_archive))
-            print('Commit Message:', details['commit_message'])
-            print('Time:', details['time'])
-            if details['package_not_found'] or details['package_changed']:
-                print("The following requirements are not met.\n"
-                      "The installation may fail or not produce required results.")
-                if details["package_not_found"]:
-                    print("The following packages were not found:")
-                    for package in details['package_not_found']:
-                        print("{}=={}".format(package, details['package_not_found'][package]))
-                if details["package_changed"]:
-                    print("The following packages have different versions:")
-                    for package in details['package_changed']:
-                        print("Required: {0}=={1}  Found: {0}=={2}".format(package,
-                                                                           details['package_changed'][package]['old'],
-                                                                           details['package_changed'][package][
-                                                                               'current']))
+            if not quiet:
+                print('Commit Message:', details['commit_message'])
+                print('Time:', details['time'])
+                if details['package_not_found'] or details['package_changed']:
+                    print("The following requirements are not met.\n"
+                          "The installation may fail or not produce required results.")
+                    if details["package_not_found"]:
+                        print("The following packages were not found:")
+                        for package in details['package_not_found']:
+                            print("{}=={}".format(package, details['package_not_found'][package]))
+                    if details["package_changed"]:
+                        print("The following packages have different versions:")
+                        for package in details['package_changed']:
+                            print("Required: {0}=={1}  Found: {0}=={2}".format(package,
+                                                                               details['package_changed'][package]['old'],
+                                                                               details['package_changed'][package][
+                                                                                   'current']))
             if not force:
-                confirm = input("Please enter either y or n to continue with installtion:")
+                confirm = input("Please enter either y to continue with installtion or n to exit:")
                 while not (confirm.lower() in ['y', 'n']):
                     print("Please enter either y or n:")
                     confirm = input()
