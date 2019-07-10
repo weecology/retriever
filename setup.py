@@ -4,6 +4,7 @@ from __future__ import absolute_import
 import os
 import re
 import platform
+import subprocess
 
 from pkg_resources import parse_version
 from setuptools import setup, find_packages
@@ -14,8 +15,8 @@ if current_platform == "windows":
     extra_includes += ["pypyodbc"]
 
 if os.path.exists(".git/hooks"):  # check if we are in git repo
-    os.system("cp hooks/pre-commit .git/hooks/pre-commit")
-    os.system("chmod +x .git/hooks/pre-commit")
+    subprocess.call("cp hooks/pre-commit .git/hooks/pre-commit", shell=True)
+    subprocess.call("chmod +x .git/hooks/pre-commit", shell=True)
 
 app_data = "~/.retriever/scripts"
 if os.path.exists(app_data):
