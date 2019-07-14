@@ -128,7 +128,7 @@ def get_script(path_to_archive):
         try:
             commit_details = get_metadata(path_to_archive)
             workdir = mkdtemp(dir=os.path.dirname(path_to_archive))
-            archive.extract(os.path.join('script', commit_details['script_name']), workdir)
+            archive.extract('/'.join(('script', commit_details['script_name'])), workdir)
             if commit_details['script_name'].endswith('.json'):
                 script_object = read_json(os.path.join(workdir, 'script', commit_details['script_name'].split('.')[0]))
             elif commit_details['script_name'].endswith('.py'):
@@ -168,7 +168,7 @@ def install_committed(path_to_archive, engine, force=False, quiet=False):
                                                                                details['package_changed'][package][
                                                                                    'current']))
             if not force:
-                confirm = input("Please enter either y to continue with installtion or n to exit:")
+                confirm = input("Please enter either y to continue with installation or n to exit:")
                 while not (confirm.lower() in ['y', 'n']):
                     print("Please enter either y or n:")
                     confirm = input()
