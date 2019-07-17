@@ -100,8 +100,9 @@ def get_metadata(path_to_archive):
     with ZipFile(os.path.normpath(path_to_archive), 'r') as archive:
         try:
             metadata = json.loads(archive.read('metadata.json').decode('utf-8'))
-        except Exception:
-            raise
+        except Exception as e:
+            print(e)
+            return
     return metadata
 
 
@@ -138,8 +139,9 @@ def get_script(path_to_archive):
                 spec.loader.exec_module(script_module)
                 script_object = script_module.SCRIPT
             rmtree(workdir)
-        except Exception:
-            raise
+        except Exception as e:
+            print(e)
+            return
         return script_object
 
 
@@ -180,8 +182,9 @@ def install_committed(path_to_archive, engine, force=False, quiet=False):
                         archive.extract(filename, workdir)
                 engine.script_table_registry = OrderedDict()
                 script_object.download(engine)
-        except Exception:
-            raise
+        except Exception as e:
+            print(e)
+            return
         finally:
             rmtree(workdir)
         return engine
