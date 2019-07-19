@@ -34,6 +34,9 @@ RETRIEVER_SCRIPTS = [
 "predicts.py"
 ]
 
+# Provenance directory(to store committed datasets by default)
+PROVENANCE_DIR = os.environ.get('PROVENANCE_DIR', os.path.expanduser('~/.retriever_provenance/'))
+
 # Create default data directory
 DATA_DIR = '.'
 sample_script = """
