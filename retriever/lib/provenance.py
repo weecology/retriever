@@ -1,13 +1,18 @@
 import json
 import os
 import pkg_resources
+from collections import OrderedDict
 from datetime import datetime, timezone
+from tempfile import mkdtemp
+from importlib import util
+from shutil import rmtree
 from zipfile import ZipFile
 
 from retriever.engines import choose_engine
 from retriever.lib.datasets import datasets
 from retriever.lib.defaults import HOME_DIR, ENCODING, PROVENANCE_DIR
 from retriever.lib.engine_tools import getmd5
+from retriever.lib.load_json import read_json
 
 
 def package_details():
@@ -19,7 +24,7 @@ def package_details():
     return details
 
 
-def commit_info(dataset):
+def commit_info_for_commit(dataset):
     """
     Generate info for a particular commit.
     """
@@ -61,7 +66,7 @@ def commit(dataset, commit_message='', path=None, quiet=False):
                 for file in files:
                     paths_to_zip["raw_data"].append(os.path.join(root, file))
 
-            info = commit_info(dataset)
+            info = commit_info_for_commit(dataset)
             info["commit_message"] = commit_message
             info["script_name"] = os.path.basename(dataset._file)
             path_to_raw_data = os.path.join(HOME_DIR, "raw_data", dataset.name)
@@ -92,3 +97,98 @@ def commit(dataset, commit_message='', path=None, quiet=False):
         print(e)
         print("Dataset could not be committed.")
         return
+
+
+def get_metadata(path_to_archive):
+    "Returns a dictionary after reading metadata.json file of a committed dataset"
+    with ZipFile(os.path.normpath(path_to_archive), 'r') as archive:
+        try:
+            metadata = json.loads(archive.read('metadata.json').decode('utf-8'))
+        except Exception as e:
+            print(e)
+            return
+    return metadata
+
+
+def commit_info_for_installation(metadata_info):
+    info = {'commit_message': metadata_info['commit_message'], 'time': metadata_info['time'], 'package_not_found': {},
+            'package_changed': {}}
+    old_package_details = metadata_info['packages']
+    current_package_details = package_details()
+    if not metadata_info['packages'] == package_details():
+        for package in old_package_details:
+            if package not in current_package_details:
+                info['package_not_found'] = {package: old_package_details[package]}
+            elif old_package_details[package] != current_package_details[package]:
+                info['package_changed'] = {package: {'old': old_package_details[package],
+                                                     'current': current_package_details[package]}}
+    return info
+
+
+def get_script(path_to_archive):
+    """
+    Reads script from archive.
+    """
+    with ZipFile(os.path.normpath(path_to_archive), 'r') as archive:
+        try:
+            commit_details = get_metadata(path_to_archive)
+            workdir = mkdtemp(dir=os.path.dirname(path_to_archive))
+            archive.extract('/'.join(('script', commit_details['script_name'])), workdir)
+            if commit_details['script_name'].endswith('.json'):
+                script_object = read_json(os.path.join(workdir, 'script', commit_details['script_name'].split('.')[0]))
+            elif commit_details['script_name'].endswith('.py'):
+                spec = util.spec_from_file_location("script_module",
+                                                    os.path.join(workdir, 'script', commit_details['script_name']))
+                script_module = util.module_from_spec(spec)
+                spec.loader.exec_module(script_module)
+                script_object = script_module.SCRIPT
+            rmtree(workdir)
+        except Exception as e:
+            print(e)
+            return
+        return script_object
+
+
+def install_committed(path_to_archive, engine, force=False, quiet=False):
+    with ZipFile(os.path.normpath(path_to_archive), 'r') as archive:
+        try:
+            workdir = mkdtemp(dir=os.path.dirname(path_to_archive))
+            engine.data_path = os.path.join(workdir)
+            script_object = get_script(path_to_archive)
+            details = commit_info_for_installation(get_metadata(path_to_archive))
+            if not quiet:
+                print('Commit Message:', details['commit_message'])
+                print('Time:', details['time'])
+                if details['package_not_found'] or details['package_changed']:
+                    print("The following requirements are not met.\n"
+                          "The installation may fail or not produce required results.")
+                    if details["package_not_found"]:
+                        print("The following packages were not found:")
+                        for package in details['package_not_found']:
+                            print("{}=={}".format(package, details['package_not_found'][package]))
+                    if details["package_changed"]:
+                        print("The following packages have different versions:")
+                        for package in details['package_changed']:
+                            print("Required: {0}=={1}  Found: {0}=={2}".format(package,
+                                                                               details['package_changed'][package]['old'],
+                                                                               details['package_changed'][package][
+                                                                                   'current']))
+            if not force:
+                confirm = input("Please enter either y to continue with installation or n to exit:")
+                while not (confirm.lower() in ['y', 'n']):
+                    print("Please enter either y or n:")
+                    confirm = input()
+            else:
+                confirm = 'y'
+            if confirm.lower() == 'y':
+                for filename in archive.namelist():
+                    if filename.startswith(script_object.name + '/'):
+                        archive.extract(filename, workdir)
+                engine.script_table_registry = OrderedDict()
+                script_object.download(engine)
+        except Exception as e:
+            print(e)
+            return
+        finally:
+            rmtree(workdir)
+        return engine

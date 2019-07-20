@@ -14,6 +14,7 @@ from retriever.lib.datasets import datasets, dataset_names, license
 from retriever.lib.defaults import sample_script, CITATION, SCRIPT_SEARCH_PATHS, LICENSE
 from retriever.lib.engine_tools import name_matches, reset_retriever
 from retriever.lib.get_opts import parser
+from retriever.lib.install import _install
 from retriever.lib.repository import check_for_updates
 from retriever.lib.scripts import SCRIPT_LIST, reload_scripts, get_script
 from retriever.lib.create_scripts import create_package
@@ -181,26 +182,29 @@ def main():
             sys.tracebacklimit = 0
 
         if hasattr(args, 'debug') and args.not_cached:
-            engine.use_cache = False
+            use_cache = False
         else:
-            engine.use_cache = True
-
+            use_cache = True
+        engine.use_cache = use_cache
         if args.dataset is not None:
             scripts = name_matches(script_list, args.dataset)
         else:
             raise Exception("no dataset specified.")
         if scripts:
-            for dataset in scripts:
-                print("=> Installing", dataset.name)
-                try:
-                    dataset.download(engine, debug=debug)
-                    dataset.engine.final_cleanup()
-                except KeyboardInterrupt:
-                    pass
-                except Exception as e:
-                    print(e)
-                    if debug:
-                        raise
+            if args.dataset.endswith('.zip'):
+                _install(vars(args), debug=debug, use_cache=use_cache)
+            else:
+                for dataset in scripts:
+                    print("=> Installing", dataset.name)
+                    try:
+                        dataset.download(engine, debug=debug)
+                        dataset.engine.final_cleanup()
+                    except KeyboardInterrupt:
+                        pass
+                    except Exception as e:
+                        print(e)
+                        if debug:
+                            raise
             print("Done!")
         else:
             print("Run 'retriever ls' to see a list of currently available datasets.")
