@@ -7,13 +7,16 @@ import csv
 import imp
 import io
 import os
+import re
 import sys
 import json
 import requests
+import difflib
 from os.path import join, exists
 from collections import OrderedDict
 
 from pkg_resources import parse_version
+from distutils.version import LooseVersion
 
 from retriever.lib.defaults import REPOSITORY, RETRIEVER_REPOSITORY, SCRIPT_SEARCH_PATHS, VERSION, ENCODING, SCRIPT_WRITE_PATH, RETRIEVER_SCRIPTS, RETRIEVER_DATASETS
 from retriever.lib.load_json import read_json
@@ -102,11 +105,104 @@ def SCRIPT_LIST():
     return reload_scripts()
 
 
+def name_matches(scripts, arg):
+    """Check for a match of the script in available scripts
+
+    if all, return the entire script list
+    if the exact script is available, return that script
+    if no exact script name detected, match the argument with keywords
+    title and name of all scripts and return the closest matches
+    """
+
+    if not arg:
+        raise ValueError("No dataset name specified")
+    if arg.endswith('.zip'):
+        from retriever.lib.provenance import get_script
+        script = get_script(arg)
+        return [script]
+
+    arg = arg.strip().lower()
+    matches = []
+
+    if arg == 'all':
+        return scripts
+
+    for script in scripts:
+        if arg == script.name.lower():
+            local_version = script.version
+            if arg in RETRIEVER_DATASETS:
+                upstream_version = get_script_version_upstream(arg, repo=RETRIEVER_REPOSITORY)
+            else:
+                upstream_version = get_script_version_upstream(arg)
+            if upstream_version is None or LooseVersion(local_version) >= LooseVersion(upstream_version):
+                return [script]
+            prompt = "A newer version of {dataset} is available. Would you like to download " \
+                     "it? (y/N): ".format(dataset=arg)
+            should_download = input(prompt)
+            while not (should_download.lower() in ['y', 'n', '']):
+                print("Please enter either y or n.")
+                should_download = input()
+            if should_download.lower() == 'y':
+                if arg in RETRIEVER_DATASETS:
+                    read_script = get_script_upstream(arg, repo=RETRIEVER_REPOSITORY)
+                else:
+                    read_script = get_script_upstream(arg)
+                if read_script is None:
+                    print("Unable to download {dataset}.".format(dataset=arg))
+                    return [script]
+                return [read_script]
+            return [script]
+
+    if arg in RETRIEVER_DATASETS:
+        read_script = get_script_upstream(arg, repo=RETRIEVER_REPOSITORY)
+    else:
+        read_script = get_script_upstream(arg)
+
+    if read_script is not None:
+        return [read_script]
+
+    for script in scripts:
+        script_match_ratio = difflib.SequenceMatcher(None, script.name, arg).ratio()
+        if script_match_ratio > .53:
+            matches.append((script.name, script_match_ratio))
+
+    matches.sort(key=lambda x: -x[1])
+
+    print("\nThe dataset \"{}\" "
+          "isn't currently available in the Retriever.".format(arg))
+    if matches:
+        print("Did you mean:"
+              " \n\t{}".format("\n\t".join([i[0] for i in matches])))
+
+
 def get_script(dataset):
     """Return the script for a named dataset."""
     scripts = {script.name: script for script in SCRIPT_LIST()}
     if dataset in scripts:
-        return scripts[dataset]
+        script = scripts[dataset]
+        local_version = script.version
+        if dataset in RETRIEVER_DATASETS:
+            upstream_version = get_script_version_upstream(dataset, repo=RETRIEVER_REPOSITORY)
+        else:
+            upstream_version = get_script_version_upstream(dataset)
+        if upstream_version is None or LooseVersion(local_version) >= LooseVersion(upstream_version):
+            return script
+        prompt = "A newer version of {dataset} is available. Would you like to download " \
+                 "it? (y/N): ".format(dataset=dataset)
+        should_download = input(prompt)
+        while not (should_download.lower() in ['y', 'n', '']):
+            print("Please enter either y or n.")
+            should_download = input()
+        if should_download.lower() == 'y':
+            if dataset in RETRIEVER_DATASETS:
+                read_script = get_script_upstream(dataset, repo=RETRIEVER_REPOSITORY)
+            else:
+                read_script = get_script_upstream(dataset)
+            if read_script is None:
+                print("Unable to download {dataset}.".format(dataset=dataset))
+                return script
+            return read_script
+        return script
     else:
         if dataset in RETRIEVER_DATASETS:
             read_script = get_script_upstream(dataset, repo=RETRIEVER_REPOSITORY)
@@ -114,8 +210,7 @@ def get_script(dataset):
             read_script = get_script_upstream(dataset)
         if read_script is None:
             raise KeyError("No dataset named: {}".format(dataset))
-        else:
-            return read_script
+        return read_script
 
 
 def get_script_upstream(dataset, repo=REPOSITORY):
@@ -150,59 +245,84 @@ def get_script_upstream(dataset, repo=REPOSITORY):
             setattr(new_module.SCRIPT, "_file", os.path.join(SCRIPT_WRITE_PATH, script_name))
             setattr(new_module.SCRIPT, "_name", script)
             return new_module.SCRIPT
-    except:
-        raise
+    except requests.exceptions.RequestException:
+        return None
+
+
+def get_script_version_upstream(dataset, repo=REPOSITORY):
+    """Return the upstream script version for a named dataset."""
+    try:
+        script = dataset.replace('-', '_') + ".json"
+        filepath = "scripts/" + script
+        r = requests.get(repo + filepath, allow_redirects=True, stream=True)
+        if r.status_code == 404:
+            script = dataset.replace('-', '_') + ".py"
+            filepath = "scripts/" + script
+            r = requests.get(repo + filepath, allow_redirects=True, stream=True)
+            if r.status_code == 404:
+                return None
+
+        pattern = re.compile(r'[."]version[\'"\s":=]+(\d+\.\d+.\d+)')
+        version = re.search(pattern, r.text).group(1)
+        return version
+    except requests.exceptions.RequestException:
+        return None
 
 
 def get_dataset_names_upstream(keywords=None, licenses=None, repo=REPOSITORY):
     """Search all datasets upstream by keywords and licenses."""
-    if not keywords and not licenses:
-        version_file = requests.get(repo + "version.txt").text
-        version_file = version_file.splitlines()[1:]
+    try:
+        if not keywords and not licenses:
+            version_file = requests.get(repo + "version.txt").text
+            version_file = version_file.splitlines()[1:]
 
-        scripts = []
-        max_scripts = 100
-        for line in version_file:
-            script = line.strip('\n').split(',')[0]
-            script = '.'.join(script.split('.')[:-1])
-            script = script.replace('_', '-')
-            scripts.append(script)
-            if len(scripts) == max_scripts:
-                break
-        return sorted(scripts)
+            scripts = []
+            max_scripts = 100
+            for line in version_file:
+                script = line.strip('\n').split(',')[0]
+                script = '.'.join(script.split('.')[:-1])
+                script = script.replace('_', '-')
+                scripts.append(script)
+                if len(scripts) == max_scripts:
+                    break
+            return sorted(scripts)
 
-    result_scripts = set()
-    if repo == RETRIEVER_REPOSITORY:
-        search_url = "https://api.github.com/search/code?q={query}+in:file+path:scripts+repo:weecology/retriever"
-    else:
-        search_url = "https://api.github.com/search/code?q={query}+in:file+path:scripts+repo:weecology/retriever-recipes"
-    if licenses:
-        licenses = [l.lower() for l in licenses]
-        for l in licenses:
-            try:
-                r = requests.get(search_url.format(query=l))
-                r = r.json()
-                for index in range(r['total_count']):
-                    script = r['items'][index]['name']
-                    script = '.'.join(script.split('.')[:-1])
-                    script = script.replace('_', '-')
-                    result_scripts.add(script)
-            except:
-                raise
-    if keywords:
-        keywords = [k.lower() for k in keywords]
-        for k in keywords:
-            try:
-                r = requests.get(search_url.format(query=k))
-                r = r.json()
-                for index in range(r['total_count']):
-                    script = r['items'][index]['name']
-                    script = '.'.join(script.split('.')[:-1])
-                    script = script.replace('_', '-')
-                    result_scripts.add(script)
-            except:
-                raise
-    return sorted(result_scripts)
+        result_scripts = set()
+        search_base_url = "https://api.github.com/search/code?q={query}+in:file" \
+                          "+path:scripts+repo:weecology/"
+        if repo == RETRIEVER_REPOSITORY:
+            search_url = search_base_url + "retriever"
+        else:
+            search_url = search_base_url + "retriever-recipes"
+        if licenses:
+            licenses = [l.lower() for l in licenses]
+            for l in licenses:
+                try:
+                    r = requests.get(search_url.format(query=l))
+                    r = r.json()
+                    for index in range(r['total_count']):
+                        script = r['items'][index]['name']
+                        script = '.'.join(script.split('.')[:-1])
+                        script = script.replace('_', '-')
+                        result_scripts.add(script)
+                except:
+                    raise
+        if keywords:
+            keywords = [k.lower() for k in keywords]
+            for k in keywords:
+                try:
+                    r = requests.get(search_url.format(query=k))
+                    r = r.json()
+                    for index in range(r['total_count']):
+                        script = r['items'][index]['name']
+                        script = '.'.join(script.split('.')[:-1])
+                        script = script.replace('_', '-')
+                        result_scripts.add(script)
+                except:
+                    raise
+        return sorted(result_scripts)
+    except requests.exceptions.RequestException:
+        return []
 
 
 def open_fr(file_name, encoding=ENCODING, encode=True):

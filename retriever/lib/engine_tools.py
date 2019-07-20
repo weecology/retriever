@@ -10,7 +10,6 @@ from future import standard_library
 
 standard_library.install_aliases()
 
-import difflib
 import json
 import platform
 import shutil
@@ -19,7 +18,7 @@ import warnings
 
 from hashlib import md5
 from io import StringIO as NewFile
-from retriever.lib.defaults import HOME_DIR, ENCODING, RETRIEVER_REPOSITORY, RETRIEVER_DATASETS
+from retriever.lib.defaults import HOME_DIR, ENCODING
 
 from retriever.lib.models import *
 import xml.etree.ElementTree as ET
@@ -52,56 +51,6 @@ def create_home_dir():
                 print("The Retriever lacks permission to "
                       "access the ~/.retriever/ directory.")
                 raise
-
-
-def name_matches(scripts, arg):
-    """Check for a match of the script in available scripts
-
-    if all, return the entire script list
-    if the exact script is available, return that script
-    if no exact script name detected, match the argument with keywords
-    title and name of all scripts and return the closest matches
-    """
-
-    if not arg:
-        raise ValueError("No dataset name specified")
-    if arg.endswith('.zip'):
-        from retriever.lib.provenance import get_script
-        script = get_script(arg)
-        return [script]
-
-    arg = arg.strip().lower()
-    matches = []
-
-    if arg == 'all':
-        return scripts
-
-    for script in scripts:
-        if arg == script.name.lower():
-            return [script]
-
-    from retriever.lib.scripts import get_script_upstream
-
-    if arg in RETRIEVER_DATASETS:
-        read_script = get_script_upstream(arg, repo=RETRIEVER_REPOSITORY)
-    else:
-        read_script = get_script_upstream(arg)
-
-    if read_script is not None:
-        return [read_script]
-
-    for script in scripts:
-        script_match_ratio = difflib.SequenceMatcher(None, script.name, arg).ratio()
-        if script_match_ratio > .53:
-            matches.append((script.name, script_match_ratio))
-
-    matches.sort(key=lambda x: -x[1])
-
-    print("\nThe dataset \"{}\" "
-          "isn't currently available in the Retriever.".format(arg))
-    if matches:
-        print("Did you mean:"
-              " \n\t{}".format("\n\t".join([i[0] for i in matches])))
 
 
 def final_cleanup(engine):
