@@ -19,6 +19,7 @@ import warnings
 
 from hashlib import md5
 from io import StringIO as NewFile
+from distutils.version import LooseVersion
 from retriever.lib.defaults import HOME_DIR, ENCODING, RETRIEVER_REPOSITORY, RETRIEVER_DATASETS
 
 from retriever.lib.models import *
@@ -76,11 +77,34 @@ def name_matches(scripts, arg):
     if arg == 'all':
         return scripts
 
+    from retriever.lib.scripts import get_script_version_upstream, get_script_upstream
+
     for script in scripts:
         if arg == script.name.lower():
-            return [script]
-
-    from retriever.lib.scripts import get_script_upstream
+            local_version = script.version
+            if arg in RETRIEVER_DATASETS:
+                upstream_version = get_script_version_upstream(arg, repo=RETRIEVER_REPOSITORY)
+            else:
+                upstream_version = get_script_version_upstream(arg)
+            if upstream_version is None or LooseVersion(local_version) >= LooseVersion(upstream_version):
+                return [script]
+            prompt = "A newer version of {dataset} is available. Would you like to download it? (y/N): ".format(dataset=arg)
+            should_download = input(prompt)
+            while not (should_download.lower() in ['y', 'n', '']):
+                print("Please enter either y or n.")
+                should_download = input()
+            if should_download.lower() == 'y':
+                if arg in RETRIEVER_DATASETS:
+                    read_script = get_script_upstream(arg, repo=RETRIEVER_REPOSITORY)
+                else:
+                    read_script = get_script_upstream(arg)
+                if read_script is None:
+                    print("Unable to download {dataset}.".format(dataset=arg))
+                    return [script]
+                else:
+                    return [read_script]
+            else:
+                return [script]
 
     if arg in RETRIEVER_DATASETS:
         read_script = get_script_upstream(arg, repo=RETRIEVER_REPOSITORY)
