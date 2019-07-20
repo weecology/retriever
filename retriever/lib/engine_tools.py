@@ -62,11 +62,16 @@ def name_matches(scripts, arg):
     if no exact script name detected, match the argument with keywords
     title and name of all scripts and return the closest matches
     """
-    arg = arg.strip().lower()
-    matches = []
 
     if not arg:
         raise ValueError("No dataset name specified")
+    if arg.endswith('.zip'):
+        from retriever.lib.provenance import get_script
+        script = get_script(arg)
+        return [script]
+
+    arg = arg.strip().lower()
+    matches = []
 
     if arg == 'all':
         return scripts
