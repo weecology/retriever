@@ -10,7 +10,7 @@ from zipfile import ZipFile
 
 from retriever.engines import choose_engine
 from retriever.lib.datasets import datasets
-from retriever.lib.defaults import HOME_DIR, ENCODING
+from retriever.lib.defaults import HOME_DIR, ENCODING, PROVENANCE_DIR
 from retriever.lib.engine_tools import getmd5
 from retriever.lib.load_json import read_json
 
@@ -36,13 +36,17 @@ def commit_info_for_commit(dataset):
     return info
 
 
-def commit(dataset, commit_message='', path='.', quiet=False):
+def commit(dataset, commit_message='', path=None, quiet=False):
     """
     Commit dataset to a zipped file.
     """
     if isinstance(dataset, str):
         # if dataset is not a dataset script object find the right script
         dataset = [script for script in datasets() if script.name == dataset][0]
+    dataset_provenance_path = None if path else os.path.join(PROVENANCE_DIR, dataset.name)
+    if not path and not os.path.exists(dataset_provenance_path):
+        os.makedirs(dataset_provenance_path)
+    path = path if path else dataset_provenance_path
     paths_to_zip = {"script": dataset._file, "raw_data": []}
     raw_dir = os.path.join(HOME_DIR, "raw_data")
     data_exists = False

@@ -64,7 +64,7 @@ commit_parser = subparsers.add_parser('commit', help='commit a dataset')
 
 citation_parser.add_argument('dataset', help='dataset name', nargs='?', default=None, choices=script_list + [None])
 commit_parser.add_argument('dataset', help='dataset name', choices=script_list)
-commit_parser.add_argument('-p', '--path', help='path to store committed file', default=None, nargs=1, required=True)
+commit_parser.add_argument('-p', '--path', help='path to store committed file', default=None, nargs=1, required=False)
 commit_parser.add_argument('-m', '--message', help='commit message', default=None, nargs=1, required=True, type=str)
 license_parser.add_argument('dataset', help='dataset name', nargs='?', default=None, choices=script_list + [None])
 new_parser.add_argument('filename', help='new script filename')
