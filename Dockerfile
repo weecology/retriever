@@ -1,9 +1,13 @@
-# Download base image ubuntu 16.04
-FROM ubuntu:16.04
+# Download base image ubuntu 18.04
+FROM ubuntu:18.04
 
 MAINTAINER Weecology "https://github.com/weecology/retriever"
 
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
+
+# Manually install tzdata to allow for non-interactive install
+RUN apt-get install -y --force-yes tzdata
+
 RUN apt-get install -y --force-yes build-essential wget git locales locales-all > /dev/null
 RUN apt-get install -y --force-yes postgresql-client mysql-client > /dev/null
 
