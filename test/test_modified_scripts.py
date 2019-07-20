@@ -46,7 +46,7 @@ def get_modified_scripts():
         local_script, local_version = item.lower().split(",")
         # check for new scripts or a change in versions for present scripts
         # repo script versions compared with upstream.
-        if LooseVersion(local_version) != upstream_versions[local_script]:
+        if LooseVersion(local_version) > upstream_versions[local_script]:
             modified_list.append(os.path.basename(local_script).split('.')[0])
 
     return modified_list

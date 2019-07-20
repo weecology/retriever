@@ -5,7 +5,6 @@
   "format": "vector",
   "spatial_ref": "NAD83",
   "citation": "N/A",
-  "license": [],
   "driver_name": "ESRI Shapefile",
   "keywords": [
     "test",

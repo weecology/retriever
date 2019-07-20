@@ -5,8 +5,8 @@ import argcomplete
 from argcomplete.completers import ChoicesCompleter
 
 from retriever.engines import engine_list
-from retriever.lib.defaults import VERSION
-from retriever.lib.scripts import SCRIPT_LIST
+from retriever.lib.defaults import VERSION, RETRIEVER_REPOSITORY
+from retriever.lib.scripts import SCRIPT_LIST, get_dataset_names_upstream
 
 module_list = SCRIPT_LIST()
 script_list = []
@@ -27,6 +27,10 @@ for module in module_list:
             for dict_items in module.licenses:
                 if dict_items['name']:
                     licenses_list.append(dict_items['name'])
+
+script_list.extend(get_dataset_names_upstream(repo=RETRIEVER_REPOSITORY))
+script_list.extend(get_dataset_names_upstream())
+script_list = sorted(set(script_list))
 
 # set of all possible licenses and keywords
 licenses_options = set(licenses_list)

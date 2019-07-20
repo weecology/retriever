@@ -110,12 +110,23 @@ def main():
             # scripts should never be empty because check_for_updates is run on SCRIPT_LIST init
             if not (args.l or args.k or isinstance(args.v, list)):
                 all_scripts = dataset_names()
-                print("Available datasets : {}\n".format(len(all_scripts)))
                 from retriever import lscolumns
-
-                lscolumns.printls(all_scripts)
+                all_scripts_combined = []
+                for dataset in all_scripts['offline']:
+                    all_scripts_combined.append((dataset, True))
+                for dataset in all_scripts['online']:
+                    if dataset in all_scripts['offline']:
+                        continue
+                    all_scripts_combined.append((dataset, False))
+                all_scripts_combined = sorted(all_scripts_combined, key = lambda x: x[0])
+                print("Available datasets : {}\n".format(len(all_scripts_combined)))
+                lscolumns.printls(all_scripts_combined)
+                print("\nThe color red denotes some of the online datasets.")
+                print("To see the full list of available online datasets, visit "
+                      "https://github.com/weecology/retriever-recipes.")
 
             elif isinstance(args.v, list):
+                online_scripts = []
                 if args.v:
                     try:
                         all_scripts = [get_script(dataset) for dataset in args.v]
@@ -123,8 +134,12 @@ def main():
                         all_scripts = []
                         print("Dataset(s) is not found.")
                 else:
-                    all_scripts = datasets()
+                    scripts = datasets()
+                    all_scripts = scripts['offline']
+                    online_scripts = scripts['online']
                 count = 1
+                if not args.v:
+                    print("Offline datasets : {}\n".format(len(all_scripts)))
                 for script in all_scripts:
                     print(
                         "{count}. {title}\n {name}\n"
@@ -141,7 +156,19 @@ def main():
                         )
                     )
                     count += 1
-
+                count = 1
+                if not args.v:
+                    print("Online datasets : {}\n".format(len(online_scripts)))
+                offline_scripts = [script.name for script in all_scripts]
+                for script in online_scripts:
+                    if script in offline_scripts:
+                        continue
+                    print("{count}. {name}".format(
+                            count=count,
+                            name=script
+                        )
+                    )
+                    count += 1
             else:
                 param_licenses = args.l if args.l else None
                 keywords = args.k if args.k else None
@@ -151,9 +178,9 @@ def main():
                 if not searched_scripts:
                     print("No available datasets found")
                 else:
-                    print("Available datasets : {}\n".format(len(searched_scripts)))
+                    print("Available offline datasets : {}\n".format(len(searched_scripts['offline'])))
                     count = 1
-                    for script in searched_scripts:
+                    for script in searched_scripts['offline']:
                         print(
                             "{count}. {title}\n{name}\n"
                             "{keywords}\n{licenses}\n".format(
@@ -162,6 +189,18 @@ def main():
                                 name=script.name,
                                 keywords=script.keywords,
                                 licenses=str(script.licenses[0]['name']),
+                            )
+                        )
+                        count += 1
+                    print("Available online datasets : {}\n".format(len(searched_scripts['online'])))
+                    count = 1
+                    searched_scripts_offline = [script.name for script in searched_scripts['offline']]
+                    for script in searched_scripts['online']:
+                        if script in searched_scripts_offline:
+                            continue
+                        print("{count}. {name}".format(
+                                count=count,
+                                name=script
                             )
                         )
                         count += 1

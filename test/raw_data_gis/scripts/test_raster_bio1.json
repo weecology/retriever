@@ -13,7 +13,6 @@
   "extract_all": "True",
   "archived": "zip",
   "driver": "GTiff",
-  "licenses": [],
   "colums": 284,
   "rows": 249,
   "band_count": 1,
