@@ -72,7 +72,7 @@ database management systems:
 
 ### To install from source
 
-Either use pip to install directly from GitHub:
+Either use `pip` to install directly from GitHub:
 
 ```shell
 pip install git+https://git@github.com/weecology/retriever.git
@@ -208,9 +208,9 @@ For more information see the
 Acknowledgments
 ---------------
 
-Development of this software was funded by [the Gordon and Betty Moore
+Development of this software was funded by the [Gordon and Betty Moore
 Foundation's Data-Driven Discovery
-Initiative](http://www.moore.org/programs/science/data-driven-discovery) through
+Initiative](https://www.moore.org/initiative-strategy-detail?initiativeId=data-driven-discovery) through
 [Grant GBMF4563](http://www.moore.org/grants/list/GBMF4563) to Ethan White and
 the [National Science Foundation](http://nsf.gov/) as part of a [CAREER award to
 Ethan White](http://nsf.gov/awardsearch/showAward.do?AwardNumber=0953694).
