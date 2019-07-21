@@ -5,7 +5,7 @@ Developer's guide
 Required Modules
 ================
 
-If you are installing from source you will need a Python 2.6+ installation and the following modules:
+If you are installing from source you will need a Python 3.6.8+ installation and the following modules:
 
 ::
 

@@ -2,8 +2,8 @@ environment:
 
   matrix:
 
-    - PYTHON: "C:\\Python35-x64"
-      PYTHON_VERSION: "3.5.x"
+    - PYTHON: "C:\\Python36-x64"
+      PYTHON_VERSION: "3.6.8"
       PYTHON_ARCH: "64"
 
   # postgres

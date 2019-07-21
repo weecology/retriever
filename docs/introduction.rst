@@ -65,7 +65,7 @@ Installing From Source
 
 **Required packages**
 
-To install the Data Retriever from source, you’ll need Python 2.6+ or Python 3.3+
+To install the Data Retriever from source, you’ll need Python 3.6.8+
 with the following packages installed:
 
 -  xlrd
