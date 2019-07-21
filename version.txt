@@ -27,6 +27,7 @@ dicerandra_frutescens.json,1.0.2
 ecoregions_us.json,1.0.1
 elton_traits.json,1.2.1
 fao_global_capture_product.py,1.0.0
+fia-co.json,1.0.0
 fish_parasite_hosts.json,1.2.1
 flensburg_food_web.py,1.0.4
 forest_biomass_china.json,1.2.1
