@@ -6,8 +6,7 @@ from collections import OrderedDict
 
 from retriever.engines import choose_engine
 from retriever.lib.defaults import DATA_DIR, SCRIPT_WRITE_PATH
-from retriever.lib.scripts import SCRIPT_LIST
-from retriever.lib.engine_tools import name_matches
+from retriever.lib.scripts import SCRIPT_LIST, name_matches
 from retriever.lib.repository import check_for_updates
 from retriever.lib.provenance import install_committed
 

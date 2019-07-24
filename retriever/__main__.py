@@ -12,11 +12,11 @@ from builtins import input
 from retriever.engines import engine_list, choose_engine
 from retriever.lib.datasets import datasets, dataset_names, license
 from retriever.lib.defaults import sample_script, CITATION, SCRIPT_SEARCH_PATHS, LICENSE
-from retriever.lib.engine_tools import name_matches, reset_retriever
+from retriever.lib.engine_tools import reset_retriever
 from retriever.lib.get_opts import parser
 from retriever.lib.install import _install
 from retriever.lib.repository import check_for_updates
-from retriever.lib.scripts import SCRIPT_LIST, reload_scripts, get_script
+from retriever.lib.scripts import SCRIPT_LIST, reload_scripts, get_script, name_matches
 from retriever.lib.create_scripts import create_package
 from retriever.lib.provenance import commit
 
