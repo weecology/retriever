@@ -72,7 +72,8 @@ def create_resources(file, skip_lines):
     clean_table = table.__dict__
     resource_dict = {}
     path_to_table = os.path.basename(clean_table["name"])
-    resource_dict["name"] = os.path.splitext(path_to_table)[0]
+    resource_dict["name"] = os.path.splitext(path_to_table)[0].lower()
+    resource_dict["path"] = path_to_table
     resource_dict["schema"] = {}
     resource_dict["dialect"] = {}
     resource_dict["schema"]["fields"] = []
