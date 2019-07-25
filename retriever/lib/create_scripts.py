@@ -1,11 +1,11 @@
 """Module to create scripts"""
 import collections
-import os
 import json
+import os
 
+from retriever.lib.datapackage import clean_input
 from retriever.lib.engine import Engine
 from retriever.lib.models import Table
-from retriever.lib.datapackage import clean_input
 from retriever.lib.tools import open_fw
 
 
@@ -78,7 +78,12 @@ def create_resources(file, skip_lines):
     resource_dict["dialect"] = {}
     resource_dict["schema"]["fields"] = []
     for cname, ctuple in clean_table["columns"]:
-        resource_dict["schema"]["fields"].append({"name": cname, "type": ctuple[0]})
+        if len(ctuple) >= 2:
+            resource_dict["schema"]["fields"].append({"name": cname,
+                                                      "type": ctuple[0],
+                                                      "size": ctuple[1]})
+        else:
+            resource_dict["schema"]["fields"].append({"name": cname, "type": ctuple[0]})
     resource_dict["url"] = "FILL"
     return resource_dict
 
