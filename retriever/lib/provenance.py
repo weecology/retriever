@@ -39,10 +39,11 @@ def commit_info_for_commit(dataset):
 def commit(dataset, commit_message='', path=None, quiet=False):
     """
     Commit dataset to a zipped file.
+    TODO: Break this function into smaller functions
     """
     if isinstance(dataset, str):
         # if dataset is not a dataset script object find the right script
-        dataset = [script for script in datasets() if script.name == dataset][0]
+        dataset = [script for script in datasets()['offline'] if script.name == dataset][0]
     dataset_provenance_path = None if path else os.path.join(PROVENANCE_DIR, dataset.name)
     if not path and not os.path.exists(dataset_provenance_path):
         os.makedirs(dataset_provenance_path)
@@ -150,6 +151,10 @@ def get_script(path_to_archive):
 
 
 def install_committed(path_to_archive, engine, force=False, quiet=False):
+    """
+    Installs the committed dataset
+    TODO: Break this function into smaller functions
+    """
     with ZipFile(os.path.normpath(path_to_archive), 'r') as archive:
         try:
             workdir = mkdtemp(dir=os.path.dirname(path_to_archive))
@@ -192,3 +197,28 @@ def install_committed(path_to_archive, engine, force=False, quiet=False):
         finally:
             rmtree(workdir)
         return engine
+
+def commit_log(dataset):
+    "Shows logs for a committed dataset which is in provenance directory"
+    try:
+        committed_dataset_path = os.path.join(PROVENANCE_DIR, dataset)
+        if os.path.exists(committed_dataset_path):
+            log = {}
+            for root, _, files in os.walk(committed_dataset_path):
+                for file in files:
+                    if file.endswith('.zip'):
+                        commit_info = get_metadata(os.path.join(root, file))
+                        commit_datetime = datetime.strptime(commit_info['time'], "%m/%d/%Y, %H:%M:%S")
+                        log[commit_datetime] = (commit_info['commit_message'],
+                                                '{}{}'.format(commit_info["md5_dataset"][:3], commit_info["md5_script"][:3]))
+            # sort the commits according to time in reverse order i.e. latest commit is the first element
+            sorted_log = sorted(log.items(), reverse=True)
+            for commit in sorted_log:
+                print('\nCommit message:', commit[1][0])
+                print('Hash:', commit[1][1])
+                print('Date:', commit[0].strftime("%m/%d/%Y, %H:%M:%S"))
+        else:
+            print("No logs for {}".format(dataset))
+    except Exception as e:
+        print("Unable to generate log for", dataset)
+        print(e)
