@@ -61,6 +61,7 @@ reset_parser = subparsers.add_parser('reset',
                                      help='reset retriever: removes configuration settings, scripts, and cached data')
 help_parser = subparsers.add_parser('help', help='')
 commit_parser = subparsers.add_parser('commit', help='commit a dataset')
+commit_log_parser = subparsers.add_parser('log', help='see log of a committed dataset')
 
 # ..............................................................
 # subparsers with Arguments
@@ -70,6 +71,7 @@ citation_parser.add_argument('dataset', help='dataset name', nargs='?', default=
 commit_parser.add_argument('dataset', help='dataset name', choices=script_list)
 commit_parser.add_argument('-p', '--path', help='path to store committed file', default=None, nargs=1, required=False)
 commit_parser.add_argument('-m', '--message', help='commit message', default=None, nargs=1, required=True, type=str)
+commit_log_parser.add_argument('dataset', help='dataset name', choices=script_list)
 license_parser.add_argument('dataset', help='dataset name', nargs='?', default=None, choices=script_list + [None])
 new_parser.add_argument('filename', help='new script filename')
 reset_parser.add_argument('scope', help='things to reset: all, scripts or data').completer = \

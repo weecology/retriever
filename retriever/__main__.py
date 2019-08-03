@@ -18,7 +18,7 @@ from retriever.lib.install import _install
 from retriever.lib.repository import check_for_updates
 from retriever.lib.scripts import SCRIPT_LIST, reload_scripts, get_script, name_matches
 from retriever.lib.create_scripts import create_package
-from retriever.lib.provenance import commit
+from retriever.lib.provenance import commit, commit_log
 
 def main():
     """This function launches the Data Retriever."""
@@ -210,7 +210,9 @@ def main():
                    path=os.path.normpath(args.path[0]) if args.path else None,
                    commit_message=args.message[0])
             return
-
+        elif args.command == 'log':
+            commit_log(dataset=args.dataset)
+            return
 
         engine = choose_engine(args.__dict__)
 
