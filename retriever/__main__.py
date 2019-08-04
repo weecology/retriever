@@ -232,8 +232,9 @@ def main():
         else:
             raise Exception("no dataset specified.")
         if scripts:
-            if args.dataset.endswith('.zip'):
+            if args.dataset.endswith('.zip') or args.hash:
                 _install(vars(args), debug=debug, use_cache=use_cache)
+                return
             else:
                 for dataset in scripts:
                     print("=> Installing", dataset.name)
