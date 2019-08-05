@@ -79,6 +79,7 @@ reset_parser.add_argument('scope', help='things to reset: all, scripts or data')
 install_parser.add_argument('--compile', help='force re-compile of script before downloading', action='store_true')
 install_parser.add_argument('--debug', help='run in debug mode', action='store_true')
 install_parser.add_argument('--not-cached', help='overwrites local cache of raw data', action='store_true')
+install_parser.add_argument('--hash', help='install dataset from provenance directory using hash', default=None, nargs=1, required=False, type=str)
 download_parser.add_argument('--debug', help='run in debug mode', action='store_true')
 download_parser.add_argument('--not-cached', help='overwrites local cache of raw data', action='store_true')
 download_parser.add_argument('-b', '--bbox', nargs=4,
@@ -110,6 +111,8 @@ for engine in engine_list:
     else:
         engine_parser = install_subparsers.add_parser(engine.abbreviation, help=engine.name)
         engine_parser.add_argument('dataset', help='dataset name').completer = ChoicesCompleter(script_list)
+        engine_parser.add_argument('--hash', help='install dataset from provenance directory using hash', default=None,
+                                    nargs=1, required=False, type=str)
         engine_parser.add_argument('-b', '--bbox', nargs=4,
                                    help='Set bounding box xmin, ymin, xmax, ymax',
                                    required=False)
