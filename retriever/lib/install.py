@@ -23,7 +23,7 @@ def _install(args, use_cache, debug):
                                            '{}-{}.zip'.format(args['dataset'], args['hash'][0]))
         if not os.path.exists(path_to_archive):
             print('The committed file does not exist.')
-        engine = install_committed(path_to_archive, engine, force=args['force'])
+        engine = install_committed(path_to_archive, engine, force=args.get('force', False))
         return engine
     script_list = SCRIPT_LIST()
     if not (script_list or os.listdir(SCRIPT_WRITE_PATH)):

@@ -44,7 +44,7 @@ def commit_info_for_commit(dataset, commit_message):
     return info
 
 
-def commit_writer(dataset, commit_message, path):
+def commit_writer(dataset, commit_message, path, quiet):
     """
     Creates the committed zipped file
     """
@@ -97,7 +97,7 @@ def commit(dataset, commit_message='', path=None, quiet=False):
     if not quiet:
         print("Committing dataset {}".format(dataset.name))
     try:
-        commit_writer(dataset=dataset, commit_message=commit_message, path=path)
+        commit_writer(dataset=dataset, commit_message=commit_message, path=path, quiet=quiet)
         if not quiet:
             print("Successfully committed.")
     except Exception as e:
@@ -213,6 +213,7 @@ def install_committed(path_to_archive, engine, force=False, quiet=False):
             print(e)
             return
         finally:
+            engine.data_path = None
             rmtree(workdir)
         return engine
 
