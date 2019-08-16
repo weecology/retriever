@@ -504,7 +504,7 @@ class Engine(object):
                 file_names = self.extract_gz(archive_full_path, archive_dir)
             return file_names
 
-        archive_downloaded = False
+        archive_downloaded = True if self.data_path else False
         for file_name in file_names:
             archive_full_path = self.format_filename(archive_name)
             if not self.find_file(os.path.join(archive_dir, file_name)):
@@ -657,6 +657,8 @@ class Engine(object):
 
     def format_data_dir(self):
         """Return correctly formatted raw data directory location."""
+        if self.data_path:
+            return os.path.join(self.data_path, self.script.name)
         return DATA_WRITE_PATH.format(dataset=self.script.name)
 
     def format_filename(self, filename):
