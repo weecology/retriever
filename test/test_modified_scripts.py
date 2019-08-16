@@ -33,7 +33,7 @@ def get_modified_scripts():
     """Get modified script list, using version.txt in repo and master upstream"""
 
     modified_list = []
-    version_file = requests.get("https://raw.githubusercontent.com/weecology/retriever/retriever-recipes-dev/version.txt")
+    version_file = requests.get("https://raw.githubusercontent.com/weecology/retriever/master/version.txt")
     local_repo_scripts = get_retriever_script_versions()  # local repo versions
 
     upstream_versions = {}
