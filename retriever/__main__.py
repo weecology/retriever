@@ -232,7 +232,7 @@ def main():
         else:
             raise Exception("no dataset specified.")
         if scripts:
-            if args.dataset.endswith('.zip') or args.hash:
+            if args.dataset.endswith('.zip') or args.hash_value:
                 _install(vars(args), debug=debug, use_cache=use_cache)
                 return
             else:
