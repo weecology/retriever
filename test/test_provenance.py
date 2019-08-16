@@ -37,10 +37,11 @@ def get_script_module(script_name):
     return read_json(os.path.join(file_location, script_name))
 
 
-def install_and_commit(script_module, test_dir, commit_message, modified_table_urls={}):
-    for table in modified_table_urls:
-        # modify the url to the csv file
-        setattr(script_module.tables[table], "url", modified_table_urls[table])
+def install_and_commit(script_module, test_dir, commit_message, modified_table_urls=None):
+    if modified_table_urls:
+        for table in modified_table_urls:
+            # modify the url to the csv file
+            setattr(script_module.tables[table], "url", modified_table_urls[table])
     sqlite_engine.opts = {
         "install": "sqlite",
         "file": "test_db.sqlite3",
