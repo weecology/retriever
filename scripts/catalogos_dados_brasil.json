@@ -1,0 +1,77 @@
+{
+    "citation": "Augusto Herrmann, Catálogos de dados abertos no Brasil, (2015), https://github.com/dadosgovbr/catalogos-dados-brasil",
+    "description": "Um catálogo de dados é uma coleção curada de metadados a respeito de conjuntos de dados",
+    "encoding": "utf-8",
+    "homepage": "https://github.com/dadosgovbr/catalogos-dados-brasil",
+    "keywords": ["brazil"],
+    "licenses": [{"name": "MIT"}],
+    "name": "catalogos-dados-brasil",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "solucao",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "solução",
+                        "type": "char"
+                    },
+                    {
+                        "name": "tipo_de_licença",
+                        "type": "char"
+                    },
+                    {
+                        "name": "url",
+                        "type": "char"
+                    },
+                    {
+                        "name": "conceito",
+                        "type": "char"
+                    }
+                ]
+            },
+            "url": "https://raw.githubusercontent.com/dadosgovbr/catalogos-dados-brasil/master/dados/solucao.csv"
+        },
+        {
+            "dialect": {},
+            "name": "catalogos",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "título",
+                        "type": "char"
+                    },
+                    {
+                        "name": "url",
+                        "type": "char"
+                    },
+                    {
+                        "name": "município",
+                        "type": "char"
+                    },
+                    {
+                        "name": "uf",
+                        "type": "char"
+                    },
+                    {
+                        "name": "esfera",
+                        "type": "char"
+                    },
+                    {
+                        "name": "poder",
+                        "type": "char"
+                    },
+                    {
+                        "name": "solução",
+                        "type": "char"
+                    }
+                ]
+            },
+            "url": "https://raw.githubusercontent.com/dadosgovbr/catalogos-dados-brasil/master/dados/catalogos.csv"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.3.2",
+    "title": "Mapeamento de iniciativas (e catálogos) de dados abertos governamentais no Brasil.",
+    "version": "1.0.0"
+}

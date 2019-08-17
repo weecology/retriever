@@ -1,0 +1,3 @@
+gdp: https://raw.githubusercontent.com/datasets/gdp/master/datapackage.json
+country-codes: https://raw.githubusercontent.com/datasets/country-codes/master/datapackage.json
+population-density: https://raw.githubusercontent.com/datasets/population/master/datapackage.json
