@@ -15,6 +15,7 @@ Contents:
    rdataretriever.rst
    recipes.rst
    pyretriever.rst
+   provenance.rst
    datasets_list.rst
    developer.rst
    spatial_dbms.rst
