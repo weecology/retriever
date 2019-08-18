@@ -58,7 +58,7 @@ From these objects, we can access the available Script's attributes as follows.
 
   >>> for dataset in rt.datasets():
         print(dataset.name)
-        
+
   abalone-age
   airports
   amniote-life-hist
@@ -92,7 +92,7 @@ If there are no scripts available, or you want to update scripts to the latest v
 .. code-block:: python
 
   >>> rt.check_for_updates()
-  
+
   Downloading scripts...
   Download Progress: [####################] 100.00%
   The retriever is up-to-date
@@ -227,7 +227,7 @@ A description of default parameters mentioned above:
   use_cache       (Bool): Setting False reinstalls scripts even if they are already installed.
 
   user          (String): Specify the username. For postgres, mysql users.
-  
+
 Examples to Installing Datasets:
 
 Here, we are installing the dataset wine-composition as a CSV file in our current working directory.
@@ -254,33 +254,3 @@ Similarly, we can download any available dataset as a JSON file:
   Progress: 178/178 rows inserted into ./wine_composition_WineComposition.json totaling 17
 
 The wine-composition dataset is now installed as a JSON file called wine_composition_WineComposition.json in our current working directory.
-
-
-Commit Datasets
-===============
-
-Retriever supports committing of a dataset to a zipped file.
-
-.. code-block:: python
-
-  def commit(dataset, commit_message='', path='.', quiet=False):
-
-A description of default parameters mentioned above:
-
-.. code-block:: python
-
-  commit_message        (String): Specify commit message for a commit.
-
-  path                  (String): Specify directory path to store zipped file.
-
-  quiet                   (Bool): Setting True minimizes the console output.
-
-Example to commit dataset:
-
-.. code-block:: python
-
-  rt.commit('abalone-age', commit_message='First commit', path='/home/')
-
-  Committing dataset abalone-age
-
-  Successfully committed.
