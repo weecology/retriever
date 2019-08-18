@@ -20,7 +20,7 @@ from retriever.lib.engine_tools import sort_csv
 from retriever.lib.engine_tools import create_file
 from retriever.lib.engine_tools import file_2list
 from retriever.lib.datapackage import clean_input, is_empty
-from retriever.lib.defaults import RETRIEVER_DATASETS, RETRIEVER_REPOSITORY
+from retriever.lib.defaults import HOME_DIR, RETRIEVER_DATASETS, RETRIEVER_REPOSITORY
 
 # Create simple engine fixture
 test_engine = Engine()
@@ -695,7 +695,8 @@ def test_reset_retriever(tmpdir):
     dataset = random.choice(offline_datasets)
     rt.reset_retriever(dataset)
     rt.reload_scripts()
-    assert dataset not in rt.dataset_names()['offline']
+    assert os.path.exists(os.path.join(HOME_DIR, dataset.replace("-", "_") + ".json")) == False
+    assert os.path.exists(os.path.join(HOME_DIR, dataset.replace("-", "_") + ".py")) == False
     if dataset in RETRIEVER_DATASETS:
         rt.get_script_upstream(dataset, repo=RETRIEVER_REPOSITORY)
     else:
