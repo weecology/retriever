@@ -110,8 +110,9 @@ for engine in engine_list:
     else:
         engine_parser = install_subparsers.add_parser(engine.abbreviation, help=engine.name)
         engine_parser.add_argument('dataset', help='dataset name').completer = ChoicesCompleter(script_list)
-        engine_parser.add_argument('--hash-value', help='install dataset from provenance directory using hash value', default=None,
-                                    nargs=1, required=False, type=str)
+        engine_parser.add_argument('--hash-value',
+                                   help='install dataset from provenance directory using hash value',
+                                   default=None,nargs=1, required=False, type=str)
         engine_parser.add_argument('-b', '--bbox', nargs=4,
                                    help='Set bounding box xmin, ymin, xmax, ymax',
                                    required=False)
