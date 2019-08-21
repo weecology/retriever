@@ -69,8 +69,8 @@ commit_log_parser = subparsers.add_parser('log', help='see log of a committed da
 
 citation_parser.add_argument('dataset', help='dataset name', nargs='?', default=None, choices=script_list + [None])
 commit_parser.add_argument('dataset', help='dataset name', choices=script_list)
-commit_parser.add_argument('-p', '--path', help='path to store committed file', default=None, nargs=1, required=False)
-commit_parser.add_argument('-m', '--message', help='commit message', default=None, nargs=1, required=True, type=str)
+commit_parser.add_argument('-p', '--path', help='path to store committed file', default=None, required=False)
+commit_parser.add_argument('-m', '--message', help='commit message', default=None, required=True, type=str)
 commit_log_parser.add_argument('dataset', help='dataset name', choices=script_list)
 license_parser.add_argument('dataset', help='dataset name', nargs='?', default=None, choices=script_list + [None])
 new_parser.add_argument('filename', help='new script filename')
@@ -112,7 +112,7 @@ for engine in engine_list:
         engine_parser.add_argument('dataset', help='dataset name').completer = ChoicesCompleter(script_list)
         engine_parser.add_argument('--hash-value',
                                    help='install dataset from provenance directory using hash value',
-                                   default=None,nargs=1, required=False, type=str)
+                                   default=None, required=False, type=str)
         engine_parser.add_argument('-b', '--bbox', nargs=4,
                                    help='Set bounding box xmin, ymin, xmax, ymax',
                                    required=False)

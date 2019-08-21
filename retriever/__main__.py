@@ -207,8 +207,8 @@ def main():
             return
         elif args.command == 'commit':
             commit(dataset=args.dataset,
-                   path=os.path.normpath(args.path[0]) if args.path else None,
-                   commit_message=args.message[0])
+                   path=os.path.normpath(args.path) if args.path else None,
+                   commit_message=args.message)
             return
         elif args.command == 'log':
             commit_log(dataset=args.dataset)
