@@ -37,18 +37,18 @@ DATA_SEARCH_PATHS = [
 ]
 DATA_WRITE_PATH = DATA_SEARCH_PATHS[-1]
 RETRIEVER_SCRIPTS = [
-"acton_lake.json",
-"amniote_life_hist.py",
-"bioclim.json",
-"iris.json",
-"predicts.py"
+    "acton_lake.json",
+    "amniote_life_hist.py",
+    "bioclim.json",
+    "iris.json",
+    "predicts.py"
 ]
 RETRIEVER_DATASETS = [
-"acton-lake",
-"amniote-life-hist",
-"bioclim",
-"iris",
-"predicts"
+    "acton-lake",
+    "amniote-life-hist",
+    "bioclim",
+    "iris",
+    "predicts"
 ]
 
 # Provenance directory(to store committed datasets)

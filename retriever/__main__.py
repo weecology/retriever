@@ -20,6 +20,7 @@ from retriever.lib.scripts import SCRIPT_LIST, reload_scripts, get_script, name_
 from retriever.lib.create_scripts import create_package
 from retriever.lib.provenance import commit, commit_log
 
+
 def main():
     """This function launches the Data Retriever."""
     if len(sys.argv) == 1:
@@ -118,7 +119,7 @@ def main():
                     if dataset in all_scripts['offline']:
                         continue
                     all_scripts_combined.append((dataset, False))
-                all_scripts_combined = sorted(all_scripts_combined, key = lambda x: x[0])
+                all_scripts_combined = sorted(all_scripts_combined, key=lambda x: x[0])
                 print("Available datasets : {}\n".format(len(all_scripts_combined)))
                 lscolumns.printls(all_scripts_combined)
                 print("\nThe color red denotes some of the online datasets.")
@@ -156,18 +157,18 @@ def main():
                         )
                     )
                     count += 1
+
                 count = 1
-                if not args.v:
-                    print("Online datasets : {}\n".format(len(online_scripts)))
                 offline_scripts = [script.name for script in all_scripts]
+                set_online_scripts = []
                 for script in online_scripts:
                     if script in offline_scripts:
                         continue
-                    print("{count}. {name}".format(
-                            count=count,
-                            name=script
-                        )
-                    )
+                    set_online_scripts.append(script)
+                if not args.v:
+                    print("Online datasets : {}\n".format(len(set_online_scripts)))
+                for script in set_online_scripts:
+                    print("{count}. {name}".format(count=count, name=script))
                     count += 1
             else:
                 param_licenses = args.l if args.l else None
@@ -175,10 +176,12 @@ def main():
 
                 # search
                 searched_scripts = datasets(keywords, param_licenses)
+                offline_mesg = "Available offline datasets : {}\n"
+                online_mesg = "Available online datasets : {}\n"
                 if not searched_scripts:
                     print("No available datasets found")
                 else:
-                    print("Available offline datasets : {}\n".format(len(searched_scripts['offline'])))
+                    print(offline_mesg.format(len(searched_scripts['offline'])))
                     count = 1
                     for script in searched_scripts['offline']:
                         print(
@@ -192,17 +195,17 @@ def main():
                             )
                         )
                         count += 1
-                    print("Available online datasets : {}\n".format(len(searched_scripts['online'])))
+
                     count = 1
                     searched_scripts_offline = [script.name for script in searched_scripts['offline']]
+                    searched_scripts_online = []
                     for script in searched_scripts['online']:
                         if script in searched_scripts_offline:
                             continue
-                        print("{count}. {name}".format(
-                                count=count,
-                                name=script
-                            )
-                        )
+                        searched_scripts_online.append(script)
+                    print(online_mesg.format(len(searched_scripts_online)))
+                    for script in searched_scripts_online:
+                        print("{count}. {name}".format(count=count, name=script))
                         count += 1
             return
         elif args.command == 'commit':
@@ -235,18 +238,17 @@ def main():
             if args.dataset.endswith('.zip') or args.hash_value:
                 _install(vars(args), debug=debug, use_cache=use_cache)
                 return
-            else:
-                for dataset in scripts:
-                    print("=> Installing", dataset.name)
-                    try:
-                        dataset.download(engine, debug=debug)
-                        dataset.engine.final_cleanup()
-                    except KeyboardInterrupt:
-                        pass
-                    except Exception as e:
-                        print(e)
-                        if debug:
-                            raise
+            for dataset in scripts:
+                print("=> Installing", dataset.name)
+                try:
+                    dataset.download(engine, debug=debug)
+                    dataset.engine.final_cleanup()
+                except KeyboardInterrupt:
+                    pass
+                except Exception as e:
+                    print(e)
+                    if debug:
+                        raise
             print("Done!")
         else:
             print("Run 'retriever ls' to see a list of currently available datasets.")
