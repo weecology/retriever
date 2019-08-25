@@ -59,7 +59,7 @@ for script_num, script in enumerate(script_list, start=1):
             reference_link = list(script.urls.values())[0].rpartition('/')[0]
         else:
             reference_link = 'Not available'
-    title = str(script_num) + ". **{}**\n".format(script.title.strip())
+    title = str(script_num) + ". **{}**\n".format(to_str(script.title.strip(), encoding))
     datasetfile.write(title)
     datasetfile.write("-" * (len(title) - 1) + "\n\n")
 
@@ -74,7 +74,7 @@ for script_num, script in enumerate(script_list, start=1):
             s=script.name, r=to_str(reference_link).rstrip("/")))
 
     datasetfile.write(":citation: {}\n\n".format(to_str(script.citation, encoding)))
-    datasetfile.write(":description: {}\n\n".format(script.description))
+    datasetfile.write(":description: {}\n\n".format(to_str(script.description, encoding)))
 datasetfile.close()
 
 needs_sphinx = '1.3'
