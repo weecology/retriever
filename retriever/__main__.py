@@ -122,8 +122,8 @@ def main():
                 all_scripts_combined = sorted(all_scripts_combined, key=lambda x: x[0])
                 print("Available datasets : {}\n".format(len(all_scripts_combined)))
                 lscolumns.printls(all_scripts_combined)
-                print("\nThe color red denotes some of the online datasets.")
-                print("To see the full list of available online datasets, visit "
+                print("\nThe symbol * denotes the online datasets.")
+                print("To see the full list of available online datasets, visit\n"
                       "https://github.com/weecology/retriever-recipes.")
 
             elif isinstance(args.v, list):
