@@ -25,8 +25,8 @@ To install the development version, use ``devtools``
   install_github("ropensci/rdataretriever")
 
 Note: The R package takes advantage of the Data Retriever's command line
-interface, which must be available in the path. This path is given to the 
-``rdataretriever`` using the function ``use_RetrieverPath()``. The location of 
+interface, which must be available in the path. This path is given to the
+``rdataretriever`` using the function ``use_RetrieverPath()``. The location of
 ``retriever`` is dependent on the Python installation (Python.exe, Anaconda, Miniconda),
 the operating system and the presence of virtual environments in the system. The following instances
 exemplify this reliance and how to find retriever's path.
@@ -44,7 +44,7 @@ of ``which`` command in the terminal. For example:
 The path to be given as input to ``use_RetrieverPath()`` function is */home/<system_name>/.local/bin/*
 as shown below:
 
-:: 
+::
 
   library(rdataretriever)
   use_RetrieverPath("/home/<system_name>/.local/bin/")
@@ -109,7 +109,7 @@ data.frame as a member of a named list.
 
 download()
 ^^^^^^^^^^
-**Description** : Used to download datasets directly without cleaning them and when user does not 
+**Description** : Used to download datasets directly without cleaning them and when user does not
 have a specific preference for the format of the data and the kind of database.
 
 
@@ -137,7 +137,7 @@ Installation functions
 ^^^^^^^^^^^^^^^^^^^^^^
 Format specific installation
 ----------------------------
-**Description** : ``rdataretriever`` supports installation of datasets in three file formats through different functions: 
+**Description** : ``rdataretriever`` supports installation of datasets in three file formats through different functions:
 
 - csv (``install_csv``)
 - json (``install_json``)
@@ -244,17 +244,17 @@ Examples
 ::
 
  library(rdataretriever)
- 
+
  # List the datasets available via the retriever
  rdataretriever::datasets()
- 
+
  # Install the Gentry forest transects dataset into csv files in your working directory
  rdataretriever::install('gentry-forest-transects', 'csv')
- 
+
  # Download the raw Gentry dataset files without any processing to the
  # subdirectory named data
  rdataretriever::download('gentry-forest-transects', './data/')
- 
+
  # Install and load a dataset as a list
  Gentry = rdataretriever::fetch('gentry-forest-transects')
  names(gentry-forest-transects)

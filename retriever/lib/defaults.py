@@ -5,14 +5,27 @@ from retriever._version import __version__
 VERSION = __version__
 COPYRIGHT = "Copyright (C) 2011-2016 Weecology University of Florida"
 LICENSE = "MIT"
-REPO_URL = "https://raw.githubusercontent.com/weecology/retriever/"
+REPO_URL = "https://raw.githubusercontent.com/weecology/retriever-recipes/"
+RETRIEVER_REPO_URL = "https://raw.githubusercontent.com/weecology/retriever/"
 MASTER_BRANCH = REPO_URL + "master/"
+RETRIEVER_MASTER_BRANCH = RETRIEVER_REPO_URL + "master/"
 REPOSITORY = MASTER_BRANCH
+RETRIEVER_REPOSITORY = RETRIEVER_MASTER_BRANCH
 ENCODING = 'ISO-8859-1'
 HOME_DIR = os.path.expanduser('~/.retriever/')
+RETRIEVER_DIR = 'retriever'
+if os.path.exists(os.path.join(HOME_DIR, 'retriever_path.txt')):
+    with open(os.path.join(HOME_DIR, 'retriever_path.txt'), 'r') as f:
+        RETRIEVER_DIR = f.read()
+RETRIEVER_RECIPES_DIR = 'retriever-recipes'
+if os.path.exists(os.path.join(HOME_DIR, 'retriever_recipes_path.txt')):
+    with open(os.path.join(HOME_DIR, 'retriever_recipes_path.txt'), 'r') as f:
+        RETRIEVER_RECIPES_DIR = f.read()
 SCRIPT_SEARCH_PATHS = [
     "./",
     'scripts',
+    os.path.join(RETRIEVER_DIR, 'scripts/'),
+    os.path.join(RETRIEVER_RECIPES_DIR, 'scripts/'),
     os.path.join(HOME_DIR, 'scripts/')
 ]
 SCRIPT_WRITE_PATH = SCRIPT_SEARCH_PATHS[-1]
@@ -23,6 +36,24 @@ DATA_SEARCH_PATHS = [
     os.path.join(HOME_DIR, 'raw_data/{dataset}'),
 ]
 DATA_WRITE_PATH = DATA_SEARCH_PATHS[-1]
+RETRIEVER_SCRIPTS = [
+    "acton_lake.json",
+    "amniote_life_hist.py",
+    "bioclim.json",
+    "iris.json",
+    "predicts.py"
+]
+RETRIEVER_DATASETS = [
+    "acton-lake",
+    "amniote-life-hist",
+    "bioclim",
+    "iris",
+    "predicts"
+]
+
+# Provenance directory(to store committed datasets)
+DEFAULT_PROVENANCE_DIR = os.path.expanduser('~/.retriever_provenance/')
+PROVENANCE_DIR = os.environ.get('PROVENANCE_DIR', DEFAULT_PROVENANCE_DIR)
 
 # Create default data directory
 DATA_DIR = '.'

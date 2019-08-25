@@ -20,6 +20,7 @@ from retriever.lib.engine_tools import sort_csv
 from retriever.lib.engine_tools import create_file
 from retriever.lib.engine_tools import file_2list
 from retriever.lib.datapackage import clean_input, is_empty
+from retriever.lib.defaults import HOME_DIR, RETRIEVER_DATASETS, RETRIEVER_REPOSITORY
 
 # Create simple engine fixture
 test_engine = Engine()
@@ -172,27 +173,33 @@ def test_database_name():
 def test_datasets():
     """Check if datasets lookup includes a known value"""
     datasets = rt.datasets(keywords=['mammals'])
-    dataset_names = [dataset.name for dataset in datasets]
+    dataset_names = [dataset.name for dataset in datasets['offline']]
+    dataset_names.extend(datasets['online'])
     assert 'mammal-masses' in dataset_names
 
 
 def test_datasets_keywords():
     """Check if datasets lookup on keyword includes a known value"""
     datasets = rt.datasets(keywords=['mammals'])
-    dataset_names = [dataset.name for dataset in datasets]
+    dataset_names = [dataset.name for dataset in datasets['offline']]
+    dataset_names.extend(datasets['online'])
     assert 'mammal-masses' in dataset_names
 
 
 def test_datasets_licenses():
     """Check if datasets lookup on license includes a known value"""
     datasets = rt.datasets(licenses=['CC0-1.0'])
-    dataset_names = [dataset.name for dataset in datasets]
+    dataset_names = [dataset.name for dataset in datasets['offline']]
+    dataset_names.extend(datasets['online'])
     assert 'amniote-life-hist' in dataset_names
 
 
 def test_dataset_names():
     """Check if dataset names lookup includes a known value"""
-    assert 'mammal-masses' in rt.dataset_names()
+    datasets = rt.dataset_names()
+    dataset_names = datasets['offline']
+    dataset_names.extend(datasets['online'])
+    assert 'mammal-masses' in dataset_names
 
 
 def test_drop_statement():
@@ -681,13 +688,21 @@ def test_reset_retriever(tmpdir):
     pwd_name = os.getcwd()
     workdir = tmpdir.mkdtemp()
     workdir.chdir()
-    dataset = random.choice(rt.dataset_names())
+    offline_datasets = rt.dataset_names()['offline']
+    offline_datasets = [dataset for dataset in offline_datasets if not dataset.startswith('test-')]
+    if not offline_datasets:
+        return
+    dataset = random.choice(offline_datasets)
     rt.reset_retriever(dataset)
     rt.reload_scripts()
-    assert dataset not in rt.dataset_names()
-    rt.check_for_updates()
+    assert os.path.exists(os.path.join(HOME_DIR, dataset.replace("-", "_") + ".json")) == False
+    assert os.path.exists(os.path.join(HOME_DIR, dataset.replace("-", "_") + ".py")) == False
+    if dataset in RETRIEVER_DATASETS:
+        rt.get_script_upstream(dataset, repo=RETRIEVER_REPOSITORY)
+    else:
+        rt.get_script_upstream(dataset)
     rt.reload_scripts()
-    assert dataset in rt.dataset_names()
+    assert dataset in rt.dataset_names()['offline']
     os.chdir(pwd_name)
 
 

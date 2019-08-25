@@ -135,8 +135,13 @@ if current_platform != "windows":
 try:
     from retriever.compile import compile
     from retriever.lib.repository import check_for_updates
+    from retriever.lib.defaults import HOME_DIR
 
     check_for_updates()
     compile()
+    if os.path.exists(HOME_DIR):
+        retriever_path = os.getcwd()
+        with open(os.path.join(HOME_DIR, "retriever_path.txt"), "w+") as f:
+            f.write(retriever_path)
 except:
-    pass
+   pass

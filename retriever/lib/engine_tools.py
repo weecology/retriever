@@ -10,7 +10,6 @@ from future import standard_library
 
 standard_library.install_aliases()
 
-import difflib
 import json
 import platform
 import shutil
@@ -52,41 +51,6 @@ def create_home_dir():
                 print("The Retriever lacks permission to "
                       "access the ~/.retriever/ directory.")
                 raise
-
-
-def name_matches(scripts, arg):
-    """Check for a match of the script in available scripts
-
-    if all, return the entire script list
-    if the exact script is available, return that script
-    if no exact script name detected, match the argument with keywords
-    title and name of all scripts and return the closest matches
-    """
-    arg = arg.strip().lower()
-    matches = []
-
-    if not arg:
-        raise ValueError("No dataset name specified")
-
-    if arg == 'all':
-        return scripts
-
-    for script in scripts:
-        if arg == script.name.lower():
-            return [script]
-
-    for script in scripts:
-        script_match_ratio = difflib.SequenceMatcher(None, script.name, arg).ratio()
-        if script_match_ratio > .53:
-            matches.append((script.name, script_match_ratio))
-
-    matches.sort(key=lambda x: -x[1])
-
-    print("\nThe dataset \"{}\" "
-          "isn't currently available in the Retriever.".format(arg))
-    if matches:
-        print("Did you mean:"
-              " \n\t{}".format("\n\t".join([i[0] for i in matches])))
 
 
 def final_cleanup(engine):
@@ -304,26 +268,6 @@ def to_str(object, object_encoding=sys.stdout, object_decoder=ENCODING):
         enc = object_encoding.encoding
         return str(object).encode(enc, errors='backslashreplace').decode(object_decoder)
     return str(object)
-
-
-def get_script_version():
-    """This function gets the version number of the scripts and returns them in array form."""
-    from retriever.lib.scripts import SCRIPT_LIST
-
-    modules = SCRIPT_LIST()
-    scripts = []
-    for module in modules:
-        if module.public:
-            if os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.json') and module.version:
-                module_name = module._name + '.json'
-                scripts.append(','.join([module_name, str(module.version)]))
-            elif os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.py') and \
-                    not os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.json'):
-                module_name = module._name + '.py'
-                scripts.append(','.join([module_name, str(module.version)]))
-
-    scripts = sorted(scripts, key=str.lower)
-    return scripts
 
 
 def set_proxy():

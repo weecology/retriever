@@ -1,19 +1,34 @@
-==========================================
-Adding datasets to the Data Retriever
-==========================================
+===========================
+Using the retriever-recipes
+===========================
 
+retriever-recipes
+-----------------
+
+The `Data Retriever`_ earlier used a simple CLI for developing new dataset scripts. This allowed users with no programming experience to quickly add most standard datasets to the Retriever by specifying the names and locations of the tables along with additional information about the configuration of the data. The script is saved as a JSON file, that follows the DataPackage_ standards.
+
+.. _Data Retriever: http://data-retriever.org
+.. _DataPackage: http://specs.frictionlessdata.io/data-packages/
+
+This functionality has been moved to the ``retriever-recipes`` repository to separate the scripts from the core ``retriever`` functionalities to help with organization, maintenance, and testing. The `retriever recipes`_ repository thus holds all the scripts which were earlier shipped with ``retriever`` and also all the script adding/editing functionalities.
+
+.. _retriever recipes: https://github.com/weecology/retriever-recipes
+
+Installation
+------------
+
+The ``retriever-recipes`` project can be installed from Github using the following steps:
+
+::
+
+  git clone https://www.github.com/weecology/retriever-recipes.git
+  cd retriever-recipes
+  python setup.py install
 
 Script Creation
 ---------------
 
-
-The Data Retriever uses a simple CLI for developing new dataset scripts. This allows users with no programming experience to quickly add most standard datasets to the Retriever by specifying the names and locations of the tables along with additional information about the configuration of the data.
-The script is saved as a JSON file, that follows the DataPackage_ standards.
-
-.. _DataPackage: http://specs.frictionlessdata.io/data-packages/
-
-
-To create a new script, try ``retriever new_json``, which starts the CLI tool for new script creation.
+To create a new script, try ``retriever-recipes new_json``, which starts the CLI tool for new script creation.
 
 ``Required``
 
@@ -33,13 +48,11 @@ To create a new script, try ``retriever new_json``, which starts the CLI tool fo
 #. **table-name:** Name of the table, URL to the table
 #. **table-url:** Name of the table, URL to the table
 
-.. - TODO: Add license and comments option
-
 Basic Scripts
 -------------
 
 The most basic scripts structure requires only some general metadata about the
-dataset,i.e., the shortname of the database and table, and the location of the
+dataset, i.e., the shortname of the database and table, and the location of the
 table.
 
 **Example of a basic script, example.script**
@@ -614,15 +627,13 @@ The `Moral et al 2010 script`_. ``mt-st-helens-veg`` takes advantage of this fun
         },
   ...
 
-
-
 Script Editing
 --------------
 **Note:** Any time a script gets updated, the minor version number must be incremented from within the script.
 
-The JSON scripts created using the retriever CLI can also be edited using the CLI.
+The JSON scripts created using the retriever-recipes CLI can also be edited using the CLI.
 
-To edit a script, use the ``retriever edit_json`` command, followed by the script's shortname;
+To edit a script, use the ``retriever-recipes edit_json`` command, followed by the script's shortname;
 
 For example, editing the ``mammal-life-hist`` (Mammal Life History Database - Ernest, et al., 2003)
 dataset, the editing tool will ask a series a questions for each of the keys and values of the script,
@@ -635,7 +646,7 @@ and it is of class string or expects a string.
 
 ::
 
-  dev@retriever:~$ retriever edit_json mammal-life-hist
+  dev@retriever:~$ retriever-recipes edit_json mammal-life-hist
 
     ->citation ( <class 'str'> ) :
 

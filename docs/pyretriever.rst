@@ -58,7 +58,7 @@ From these objects, we can access the available Script's attributes as follows.
 
   >>> for dataset in rt.datasets():
         print(dataset.name)
-        
+
   abalone-age
   airports
   amniote-life-hist
@@ -92,7 +92,7 @@ If there are no scripts available, or you want to update scripts to the latest v
 .. code-block:: python
 
   >>> rt.check_for_updates()
-  
+
   Downloading scripts...
   Download Progress: [####################] 100.00%
   The retriever is up-to-date
@@ -227,7 +227,7 @@ A description of default parameters mentioned above:
   use_cache       (Bool): Setting False reinstalls scripts even if they are already installed.
 
   user          (String): Specify the username. For postgres, mysql users.
-  
+
 Examples to Installing Datasets:
 
 Here, we are installing the dataset wine-composition as a CSV file in our current working directory.

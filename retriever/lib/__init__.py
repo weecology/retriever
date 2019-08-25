@@ -11,13 +11,17 @@ from .install import install_mysql
 from .install import install_postgres
 from .install import install_sqlite
 from .install import install_xml
+from .provenance import commit, commit_log
 from .repository import check_for_updates
 from .engine_tools import reset_retriever
 from .fetch import fetch
 from .scripts import reload_scripts
+from .scripts import get_script_upstream
 
 __all__ = [
     'check_for_updates',
+    'commit',
+    'commit_log',
     'create_package',
     'datasets',
     'dataset_names',
@@ -31,5 +35,6 @@ __all__ = [
     'install_msaccess',
     'install_json',
     'install_xml',
-    'fetch'
+    'fetch',
+    'get_script_upstream'
 ]

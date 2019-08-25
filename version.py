@@ -4,11 +4,10 @@ from __future__ import absolute_import
 import os
 
 from retriever.lib.defaults import VERSION
-from retriever.lib.engine_tools import get_script_version
+from retriever.lib.scripts import get_retriever_script_versions
 
 
 def write_version_file(scripts):
-    """The function creates / updates version.txt with the script version numbers."""
     if os.path.isfile("version.txt"):
         os.remove("version.txt")
 
@@ -20,7 +19,7 @@ def write_version_file(scripts):
 
 def update_version_file():
     """Update version.txt."""
-    scripts = get_script_version()
+    scripts = get_retriever_script_versions()
     write_version_file(scripts)
     print("Version.txt updated.")
 

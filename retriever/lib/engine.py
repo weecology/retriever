@@ -51,6 +51,7 @@ class Engine(object):
     warnings = []
     script_table_registry = OrderedDict()
     encoding = None
+    data_path = None
 
     def connect(self, force_reconnect=False):
         """Create a connection."""
@@ -487,7 +488,7 @@ class Engine(object):
         archive_dir = self.format_data_dir()
         if keep_in_dir:
             archive_base = os.path.splitext(os.path.basename(archive_name))[0]
-            archive_dir = os.path.join(DATA_WRITE_PATH, archive_base)
+            archive_dir = self.data_path if self.data_path else os.path.join(DATA_WRITE_PATH, archive_base)
             archive_dir = archive_dir.format(dataset=self.script.name)
             if not os.path.exists(archive_dir):
                 os.makedirs(archive_dir)
@@ -503,7 +504,7 @@ class Engine(object):
                 file_names = self.extract_gz(archive_full_path, archive_dir)
             return file_names
 
-        archive_downloaded = False
+        archive_downloaded = True if self.data_path else False
         for file_name in file_names:
             archive_full_path = self.format_filename(archive_name)
             if not self.find_file(os.path.join(archive_dir, file_name)):
@@ -643,6 +644,10 @@ class Engine(object):
 
     def find_file(self, filename):
         """Check for an existing datafile."""
+        if self.data_path:
+            file_path = os.path.normpath(os.path.join(self.data_path, self.script.name, filename))
+            if file_exists(file_path):
+                return file_path
         for search_path in DATA_SEARCH_PATHS:
             search_path = search_path.format(dataset=self.script.name) if self.script else search_path
             file_path = os.path.normpath(os.path.join(search_path, filename))
@@ -652,6 +657,8 @@ class Engine(object):
 
     def format_data_dir(self):
         """Return correctly formatted raw data directory location."""
+        if self.data_path:
+            return os.path.join(self.data_path, self.script.name)
         return DATA_WRITE_PATH.format(dataset=self.script.name)
 
     def format_filename(self, filename):
