@@ -308,8 +308,10 @@ def get_script_version_upstream(dataset, repo=REPOSITORY):
 def get_dataset_names_upstream(keywords=None, licenses=None, repo=REPOSITORY):
     """Search all datasets upstream by keywords and licenses."""
     if not keywords and not licenses:
-        version_file = get_data_upstream(repo + "version.txt").text
-        version_file = version_file.splitlines()[1:]
+        version_file_request = get_data_upstream(repo + "version.txt")
+        if not version_file_request:
+            return []
+        version_file = version_file_request.text.splitlines()[1:]
 
         scripts = []
         max_scripts = 100
@@ -334,6 +336,8 @@ def get_dataset_names_upstream(keywords=None, licenses=None, repo=REPOSITORY):
         for l in licenses:
             try:
                 r = get_data_upstream(search_url.format(query=l))
+                if not r:
+                    return []
                 r = r.json()
                 for index in range(len(r['items'])):
                     script = r['items'][index]['name']
@@ -347,6 +351,8 @@ def get_dataset_names_upstream(keywords=None, licenses=None, repo=REPOSITORY):
         for k in keywords:
             try:
                 r = get_data_upstream(search_url.format(query=k))
+                if not r:
+                    return []
                 r = r.json()
                 for index in range(len(r['items'])):
                     script = r['items'][index]['name']
