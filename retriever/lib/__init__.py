@@ -17,6 +17,7 @@ from .engine_tools import reset_retriever
 from .fetch import fetch
 from .scripts import reload_scripts
 from .scripts import get_script_upstream
+from .scripts import get_dataset_names_upstream
 
 __all__ = [
     'check_for_updates',
@@ -36,5 +37,6 @@ __all__ = [
     'install_json',
     'install_xml',
     'fetch',
-    'get_script_upstream'
+    'get_script_upstream',
+    'get_dataset_names_upstream'
 ]

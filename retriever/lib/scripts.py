@@ -306,7 +306,11 @@ def get_script_version_upstream(dataset, repo=REPOSITORY):
 
 
 def get_dataset_names_upstream(keywords=None, licenses=None, repo=REPOSITORY):
-    """Search all datasets upstream by keywords and licenses."""
+    """Search all datasets upstream by keywords and licenses. If the keywords
+    or licenses argument is passed, Github's search API is used for looking
+    in the repositories. Else, the version.txt file is read and the script
+    names are then returned.
+    """
     if not keywords and not licenses:
         version_file_request = get_data_upstream(repo + "version.txt")
         if not version_file_request:
