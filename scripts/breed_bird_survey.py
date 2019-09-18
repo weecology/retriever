@@ -44,7 +44,7 @@ class main(Script):
         self.ref = "http://www.pwrc.usgs.gov/BBS/"
         self.keywords = ["birds", "continental-scale"]
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '2.0.0'
+        self.version = '3.0.0'
         self.urls = {
             "counts": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/",
             "routes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/routes.zip",
@@ -61,6 +61,7 @@ class main(Script):
             self.cleanup_func_clean = Cleanup(
                 correct_invalid_value, nulls=['*'])
         else:
+            self.encoding = "latin-1"
             self.cleanup_func_table = Cleanup(
                 correct_invalid_value, missing_values=['NULL'])
             self.cleanup_func_clean = Cleanup(
@@ -74,7 +75,7 @@ class main(Script):
 
             # Species table
             table = Table("species", cleanup=Cleanup(), contains_pk=True,
-                          header_rows=9)
+                          header_rows=10)
 
             table.columns = [("species_id", ("pk-int",)),
                              ("AOU", ("int",)),
@@ -128,7 +129,7 @@ class main(Script):
                 engine.format_filename("weather_new.csv"))
 
             # Region_codes table
-            table = Table("region_codes", pk=False, header_rows=11,
+            table = Table("region_codes", pk=False, header_rows=12,
                           fixed_width=[11, 11, 30])
 
             def regioncodes_cleanup(value, engine):
