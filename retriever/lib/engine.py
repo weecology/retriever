@@ -256,15 +256,18 @@ class Engine(object):
             if values:
                 for i in range(len(columns)):
                     try:
-                        val = u"{}".format(values[i])
-
+                        val = str(values[i]).strip()
+                        if not val:
+                            continue
                         if self.table.cleanup.function != no_cleanup:
                             val = self.table.cleanup.function(
                                 val, self.table.cleanup.args)
 
                         if val and val.strip():
-                            if len(str(val)) + 100 > max_lengths[i]:
-                                max_lengths[i] = len(str(val)) + 100
+                            # Find length using val.encode() to cater for various
+                            # encoded char for `char` types
+                            if len(val.encode()) > max_lengths[i]:
+                                max_lengths[i] = len(val.encode())
 
                             if column_types[i][0] in ('int', 'bigint'):
                                 try:
@@ -274,19 +277,20 @@ class Engine(object):
                                             val > self.max_int:
                                         column_types[i] = ['bigint', ]
                                 except Exception as _:
-                                    column_types[i] = ['double', ]
+                                    column_types[i] = ('double', )
                             if column_types[i][0] == 'double':
                                 try:
                                     val = float(val)
-                                    if "e" in str(val) or ("." in str(val) and len(str(val).split(".")[1]) > 10):
-                                        column_types[i] = ["decimal", "50,30"]
+                                    if "e" in str(val) or \
+                                            ("." in str(val) and len(str(val).split(".")[1]) > 10):
+                                        column_types[i] = ("decimal", "50,30")
                                 except Exception as _:
-                                    column_types[i] = ['char', max_lengths[i]]
+                                    column_types[i] = ('char', max_lengths[i])
                             if column_types[i][0] == 'char':
-                                if len(str(val)) + 100 > column_types[i][1]:
-                                    column_types[i][1] = max_lengths[i]
+                                if len(val.encode()) > column_types[i][1]:
+                                    column_types[i] = ('char', max_lengths[i])
                     except IndexError:
-                        pass
+                        continue
         for i, value in enumerate(columns):
             column = value
             column[1] = column_types[i]
