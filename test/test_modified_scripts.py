@@ -71,7 +71,7 @@ def install_modified():
 
     engine_list_install = engine_list
     if os.path.exists("test_modified"):
-        subprocess.call(['rm', '-r', 'test_modified'])
+        subprocess.call(['rm', '-r', 'test_modified'], shell=True)
     os.makedirs("test_modified")
     os.chdir("test_modified")
     dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb_retriever.sqlite'))
@@ -136,7 +136,7 @@ def install_modified():
                 else:
                     errors.append((key, "No connection detected......" + module.name))
     os.chdir("..")
-    subprocess.call(['rm', '-r', 'test_modified'])
+    subprocess.call(['rm', '-r', 'test_modified'], shell=True)
     return errors
 
 

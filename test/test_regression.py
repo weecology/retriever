@@ -115,7 +115,7 @@ python_files = ['flensburg_food_web']
 def setup_module():
     """Update retriever scripts and cd to test directory to find data."""
     os.chdir(retriever_root_dir)
-    subprocess.call(['cp', '-r', 'test/raw_data', retriever_root_dir])
+    subprocess.call(['cp', '-r', 'test/raw_data', retriever_root_dir], shell=True)
 
     src = os.path.join(retriever_root_dir, 'scripts')
     copy_tree(src, script_home)
@@ -132,7 +132,7 @@ def teardown_module():
     """Cleanup temporary output files and return to root directory."""
     os.chdir(retriever_root_dir)
     shutil.rmtree(os.path.join(retriever_root_dir, 'raw_data'))
-    subprocess.call(['rm', '-r', 'testdb_retriever.sqlite'])
+    subprocess.call(['rm', '-r', 'testdb_retriever.sqlite'], shell=True)
 
 
 def get_script_module(script_name):
@@ -160,10 +160,10 @@ def get_csv_md5(dataset, engine, tmpdir, install_function, config, cols=None):
 @pytest.mark.parametrize("dataset, expected", db_md5)
 def test_sqlite_regression(dataset, expected, tmpdir):
     """Check for sqlite regression."""
-    subprocess.call(['rm', '-r', 'testdb_retriever.sqlite'])
+    subprocess.call(['rm', '-r', 'testdb_retriever.sqlite'], shell=True)
     dbfile = 'testdb_retriever.sqlite'
     if os.path.exists(dbfile):
-        subprocess.call(['rm', '-r', dbfile])
+        subprocess.call(['rm', '-r', dbfile], shell=True)
     # SQlite should install datasets into a different folder from where .csv are dumped
     # This avoids having the `testdb.sqlite` being considered for md5 sum
     sqlite_engine.opts = {
@@ -179,7 +179,7 @@ def test_sqlite_regression(dataset, expected, tmpdir):
 def test_postgres_regression(dataset, expected, tmpdir):
     """Check for postgres regression."""
     cmd = 'psql -U postgres -d ' + testdb_retriever + ' -h ' + pgdb_host + ' -w -c \"DROP SCHEMA IF EXISTS ' + testschema + ' CASCADE\"'
-    subprocess.call(shlex.split(cmd))
+    subprocess.call(shlex.split(cmd), shell=True)
     postgres_engine.opts = {'engine': 'postgres',
                             'user': 'postgres',
                             'password': os_password,
@@ -201,7 +201,7 @@ def test_postgres_regression(dataset, expected, tmpdir):
 @pytest.mark.parametrize("dataset, expected", db_md5)
 def test_mysql_regression(dataset, expected, tmpdir):
     cmd = 'mysql -u travis -Bse "DROP DATABASE IF EXISTS {testdb_retriever}"'.format(testdb_retriever=testdb_retriever)
-    subprocess.call(shlex.split(cmd))
+    subprocess.call(shlex.split(cmd), shell=True)
     mysql_engine.opts = {'engine': 'mysql',
                          'user': 'travis',
                          'password': '',
@@ -312,7 +312,7 @@ def test_fetch_order(dataset, expected):
 def test_postgres_spatial(dataset, cols, expected, tmpdir):
     """Check for postgres regression."""
     cmd = 'psql -U postgres -d ' + testdb_retriever + ' -h ' + pgdb_host + ' -w -c \"DROP SCHEMA IF EXISTS ' + testschema + ' CASCADE\"'
-    subprocess.call(shlex.split(cmd))
+    subprocess.call(shlex.split(cmd), shell=True)
     postgres_engine.opts = {'engine': 'postgres',
                             'user': 'postgres',
                             'password': os_password,

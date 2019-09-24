@@ -62,7 +62,7 @@ def setup_module():
     Make sure you are in the main local retriever directory.
     """
     os.chdir(retriever_root_dir)
-    subprocess.call(['cp', '-r', 'test/raw_data', retriever_root_dir])
+    subprocess.call(['cp', '-r', 'test/raw_data', retriever_root_dir], shell=True)
 
 
 def teardown_module():
@@ -71,8 +71,8 @@ def teardown_module():
     Make sure you are in the main local retriever directory after these tests.
     """
     os.chdir(retriever_root_dir)
-    subprocess.call(['rm', '-r', 'raw_data'])
-    subprocess.call(['rm', '-r', test_engine.format_data_dir()])
+    subprocess.call(['rm', '-r', 'raw_data'], shell=True)
+    subprocess.call(['rm', '-r', test_engine.format_data_dir()], shell=True)
 
 
 def setup_functions():
@@ -722,7 +722,7 @@ def test_setup_functions():
 
     Function uses teardown_module and setup_module functions."""
     file_path = raw_dir_files.format(file_name='')
-    subprocess.call(['rm', '-r', file_path])
+    subprocess.call(['rm', '-r', file_path], shell=True)
     assert os.path.exists(raw_dir_files.format(file_name="")) is False
     setup_functions()
     assert os.path.exists(raw_dir_files.format(file_name=""))

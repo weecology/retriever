@@ -131,7 +131,7 @@ def json2csv(input_file, output_file=None, header_values=None):
     for item in raw_data:
         outfile.writerow(item)
     file_out.close()
-    subprocess.call(['rm', '-r', input_file])
+    subprocess.call(['rm', '-r', input_file], shell=True)
     return output_file
 
 
@@ -159,7 +159,7 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
         x = [name.text for name in header_values for name in rows.findall(name)]
         csv_writer.writerow(x)
     file_output.close()
-    subprocess.call(['rm', '-r', input_file])
+    subprocess.call(['rm', '-r', input_file], shell=True)
     return outputfile
 
 

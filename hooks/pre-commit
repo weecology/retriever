@@ -88,6 +88,6 @@ if modified_staged_scripts != "":
 # only runs version.py if we have modified scripts which have had their versions updated.
 if modified_staged_scripts and versions_updated:
     print("Updating version.txt")
-    subprocess.call(['python', 'version.py'])
+    subprocess.call(['python', 'version.py'], shell=True)
     print("version.txt added to commit")
-    subprocess.call(['git', 'add', 'version.txt'])
+    subprocess.call(['git', 'add', 'version.txt'], shell=True)

@@ -491,7 +491,7 @@ def teardown_module():
     for test in tests:
         shutil.rmtree(os.path.join(HOME_DIR, "raw_data", test['name']))
         os.remove(os.path.join(HOME_DIR, "scripts", test['name'] + '.json'))
-        subprocess.call(['rm', '-r', test['name']])
+        subprocess.call(['rm', '-r', test['name']], shell=True)
 
 
 def get_script_module(script_name):
@@ -536,7 +536,7 @@ def test_sqlite_integration(dataset, expected, tmpdir):
         'file': dbfile,
         'table_name': '{db}_{table}',
         'data_dir': DATA_DIR}
-    subprocess.call(['rm', '-r', 'testdb_retriever.sqlite'])
+    subprocess.call(['rm', '-r', 'testdb_retriever.sqlite'], shell=True)
     assert get_output_as_csv(dataset, sqlite_engine, tmpdir, dataset["name"]) == expected
 
 
@@ -558,7 +558,7 @@ def test_jsonengine_integration(dataset, expected, tmpdir):
 def test_postgres_integration(dataset, expected, tmpdir):
     """Check for postgres regression."""
     cmd = 'psql -U postgres -d ' + testdb_retriever +' -h ' + pgdb_host + ' -w -c \"DROP SCHEMA IF EXISTS ' + testschema + ' CASCADE\"'
-    subprocess.call(shlex.split(cmd))
+    subprocess.call(shlex.split(cmd), shell=True)
     postgres_engine.opts = {'engine': 'postgres', 'user': 'postgres',
                             'password': os_password, 'host': pgdb_host,
                             'port': 5432, 'database': testdb_retriever,
@@ -572,7 +572,7 @@ def test_postgres_integration(dataset, expected, tmpdir):
 def test_mysql_integration(dataset, expected, tmpdir):
     """Check for mysql regression."""
     cmd = 'mysql -u travis -Bse "DROP DATABASE IF EXISTS {testdb_retriever}"'.format(testdb_retriever=testdb_retriever)
-    subprocess.call(shlex.split(cmd))
+    subprocess.call(shlex.split(cmd), shell=True)
     mysql_engine.opts = {
         'engine': 'mysql',
         'user': 'travis',
