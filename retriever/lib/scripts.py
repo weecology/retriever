@@ -318,14 +318,11 @@ def get_dataset_names_upstream(keywords=None, licenses=None, repo=REPOSITORY):
         version_file = version_file_request.text.splitlines()[1:]
 
         scripts = []
-        max_scripts = 100
         for line in version_file:
             script = line.strip('\n').split(',')[0]
             script = '.'.join(script.split('.')[:-1])
             script = script.replace('_', '-')
             scripts.append(script)
-            if len(scripts) == max_scripts:
-                break
         return sorted(scripts)
 
     result_scripts = set()
