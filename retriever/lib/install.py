@@ -20,7 +20,7 @@ def _install(args, use_cache, debug):
         path_to_archive = args['dataset']
         if args['hash_value']:
             path_to_archive = os.path.join(PROVENANCE_DIR, args['dataset'],
-                                           '{}-{}.zip'.format(args['dataset'], args['hash_value'][0]))
+                                           '{}-{}.zip'.format(args['dataset'], args['hash_value']))
         if not os.path.exists(path_to_archive):
             print('The committed file does not exist.')
         engine = install_committed(path_to_archive, engine, force=args.get('force', False))
