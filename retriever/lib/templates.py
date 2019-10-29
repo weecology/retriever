@@ -111,8 +111,8 @@ class BasicTextTemplate(Script):
             elif self.url:
                 url = self.url
 
-            # Extract compressed source files
-            if hasattr(self, "archived"):
+            # Extract archived files if a resource or the script has archived
+            if hasattr(self, "archived") or hasattr(table_obj, "archived"):
                 self.process_archived_data(table_obj, url)
 
             # Create tables
@@ -137,9 +137,9 @@ class BasicTextTemplate(Script):
             self.engine.disconnect_files()
 
     def process_tabular_insert(self, table_obj, url):
-        if hasattr(self, "archived"):
-            self.engine.insert_data_from_file(
-                self.engine.format_filename(table_obj.path))
+        if hasattr(self, "archived") or hasattr(table_obj, "path"):
+            path_to_file = self.engine.format_filename(table_obj.path)
+            self.engine.insert_data_from_file(path_to_file)
         else:
             self.engine.insert_data_from_url(url)
 
@@ -150,27 +150,52 @@ class BasicTextTemplate(Script):
             self.engine.insert_vector(self.engine.format_filename(table_obj.path))
 
     def process_tables(self, table_obj, url):
-        if hasattr(self, "archived"):
-            self.engine.auto_create_table(table_obj, filename=table_obj.path)
+        """Obtain the clean file and create a table
+
+        if xls_sheets, convert excel to csv
+        Create the table from the file
+        """
+        if hasattr(table_obj, "xls_sheets"):
+            src_path = self.engine.format_filename(table_obj.xls_sheets[1])
+            path_to_csv = self.engine.format_filename(table_obj.path)
+            self.engine.download_file(url, table_obj.xls_sheets[1])
+            self.engine.excel_to_csv(src_path, path_to_csv, table_obj.xls_sheets, self.encoding)
+
+        if hasattr(table_obj, "path"):
+            self.engine.auto_create_table(table_obj, url=url, filename=table_obj.path)
         else:
             self.engine.auto_create_table(table_obj, url=url)
 
     def process_archived_data(self, table_obj, url):
         """Pre-process archived files.
 
+        Archive info is specified for a single resource or entire data package.
         Extract the files from the archived source based on
-        the specifications. Either extact a single file or the
-        entire files.
+        the specifications. Either extract a single file or all files.
+        If the archived data is excel, use the
+        xls_sheets to obtain the files to be extracted.
         """
-        archive_type = self.archived
+        archive_type = "zip"
         keep_in_dir = False
         archive_name = None
+        files = None
+
+        # First check the resource for the archived info, else check the table object
+        if hasattr(table_obj, "archived"):
+            archive_type = table_obj.archived
+        elif hasattr(self, "archived"):
+            archive_type = self.archived
 
         if hasattr(self, "extract_all"):
             if self.extract_all:
                 files = None
         else:
             files = [table_obj.path]
+
+        if hasattr(table_obj, "xls_sheets"):
+            # xls_sheets has [index of sheet, excel_filename]
+            files = [table_obj.xls_sheets[1]]
+
         if hasattr(self, "keep_in_dir"):
             keep_in_dir = self.keep_in_dir
         if hasattr(self, "archive_name"):
