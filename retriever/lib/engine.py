@@ -21,7 +21,8 @@ import requests
 from collections import OrderedDict
 from math import ceil
 from tqdm import tqdm
-from retriever.lib.tools import open_fr, open_fw, open_csvw, walk_relative_path
+from retriever.lib.tools import (open_fr, open_fw, open_csvw,
+                                 walk_relative_path, excel_csv)
 from setuptools import archive_util
 from retriever.lib.defaults import DATA_DIR, DATA_SEARCH_PATHS, DATA_WRITE_PATH, ENCODING
 from retriever.lib.cleanup import no_cleanup
@@ -546,6 +547,11 @@ class Engine(object):
         self.cursor.executemany(statement, values)
         if commit:
             self.connection.commit()
+
+    def excel_to_csv(self, src_path, path_to_csv, excel_info=None, encoding=ENCODING):
+        """Convert excel files to csv files."""
+        if self.find_file(src_path) and excel_info:
+            excel_csv(src_path, path_to_csv, excel_info, encoding)
 
     def extract_gz(self, archive_path, archivedir_write_path, file_name=None,
                    open_archive_file=None, archive=None):
