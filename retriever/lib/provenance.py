@@ -272,8 +272,10 @@ def commit_log(dataset):
                 print('\nCommit message:', commit_value[1][0])
                 print('Hash:', commit_value[1][1])
                 print('Date:', commit_value[0].strftime("%m/%d/%Y, %H:%M:%S"))
-        else:
-            print("No logs for {}".format(dataset))
+            return sorted_log
+
+        print("No logs for {}".format(dataset))
     except Exception as e:
         print("Unable to generate log for", dataset)
         print(e)
+        return None
