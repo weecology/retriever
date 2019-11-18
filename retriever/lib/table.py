@@ -152,6 +152,7 @@ class TabularDataset(Dataset):
             ("^", "_power_"),
             ("<", "_lthn_"),
             (">", "_gthn_"),
+            ("@", "_at_"),
         ]
         replace += [(x, '') for x in (")", "?", "#", ";" "\n", "\r", '"', "'")]
         replace += [(x, '_') for x in (" ", "(", "/", ".", "+", "-", "*", ":", "[", "]")]
@@ -179,7 +180,10 @@ class TabularDataset(Dataset):
             "index": "indices",
             "repeat": "repeats", 
             "system": "systems", 
-            "class": "classes"
+            "class": "classes",
+            "left": "vleft",
+            "right": "vright",
+            "union": "unions"
         }
         for x in (")", "\n", "\r", '"', "'"):
             replace_dict[x] = ''
