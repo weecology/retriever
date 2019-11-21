@@ -88,17 +88,25 @@ class Engine(object):
     def add_to_table(self, data_source):
         """Adds data to a table from one or more lines specified
         in engine.table.source."""
+
+        # if the number of records are known avoid counting
+        real_line_length = None
+        if self.table.number_of_records:
+            real_line_length = self.table.number_of_records
+
         if self.table.columns[-1][1][0][:3] == "ct-":
             # cross-tab data
-            real_line_length = self.get_ct_line_length(
-                gen_from_source(data_source))
+            if not real_line_length:
+                real_line_length = self.get_ct_line_length(
+                    gen_from_source(data_source))
 
             real_lines = self.get_ct_data(
                 gen_from_source(data_source))
         else:
             real_lines = gen_from_source(data_source)
-            len_source = gen_from_source(data_source)
-            real_line_length = sum(1 for _ in len_source)
+            if not real_line_length:
+                len_source = gen_from_source(data_source)
+                real_line_length = sum(1 for _ in len_source)
 
         total = self.table.record_id + real_line_length
         count_iter = 1
@@ -937,8 +945,7 @@ class Engine(object):
                 yield self.extract_fixed_width(row)
         else:
             reg = re.compile("\\r\\n|\n|\r")
-            for row in csv.reader(dataset_file,
-                                  delimiter=self.table.delimiter):
+            for row in csv.reader(dataset_file, delimiter=self.table.delimiter):
                 yield [reg.sub(" ", values) for values in row]
 
     def extract_fixed_width(self, line):
