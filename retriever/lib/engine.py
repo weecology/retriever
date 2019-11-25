@@ -89,7 +89,7 @@ class Engine(object):
         """Adds data to a table from one or more lines specified
         in engine.table.source."""
 
-        # if the number of records are known avoid counting
+        # If the number of records are known avoid counting the lines
         real_line_length = None
         if self.table.number_of_records:
             real_line_length = self.table.number_of_records
