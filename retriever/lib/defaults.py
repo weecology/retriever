@@ -11,7 +11,7 @@ MASTER_BRANCH = REPO_URL + "master/"
 RETRIEVER_MASTER_BRANCH = RETRIEVER_REPO_URL + "master/"
 REPOSITORY = MASTER_BRANCH
 RETRIEVER_REPOSITORY = RETRIEVER_MASTER_BRANCH
-ENCODING = 'ISO-8859-1'
+ENCODING = 'utf-8'
 HOME_DIR = os.path.expanduser('~/.retriever/')
 RETRIEVER_DIR = 'retriever'
 if os.path.exists(os.path.join(HOME_DIR, 'retriever_path.txt')):

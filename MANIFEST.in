@@ -1,1 +1,2 @@
 include CITATION
+recursive-include scripts/*

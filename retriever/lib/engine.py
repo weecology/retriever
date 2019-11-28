@@ -11,6 +11,7 @@ from builtins import zip
 from builtins import next
 from builtins import str
 import os
+import sys
 import getpass
 import zipfile
 import gzip
@@ -18,6 +19,7 @@ import tarfile
 import csv
 import re
 import requests
+import shutil
 from collections import OrderedDict
 from math import ceil
 from tqdm import tqdm
@@ -116,7 +118,7 @@ class Engine(object):
         progress_bar = tqdm(
             desc='Installing {}'.format(self.table_name()),
             total=total,
-            unit='rows')
+            unit='rows', ascii=True)
 
         line_values = None
         for line in real_lines:
@@ -916,14 +918,21 @@ class Engine(object):
             # If the directory does not exits, create it
             if not os.path.exists(os.path.dirname(write_path)):
                 os.makedirs(os.path.dirname(write_path))
-            unzipped_file = open(write_path, 'wb')
-            if open_object:
-                file_obj = archive.open(file_name, 'r')
-            if file_obj:
-                for line in file_obj:
-                    unzipped_file.write(line)
-                file_obj.close()
-            unzipped_file.close()
+            try:
+                try:
+                    unzipped_file = open(write_path, 'wb')
+                    if open_object:
+                        file_obj = archive.open(file_name, 'r')
+                    if file_obj:
+                        # use shutil to copy in chunks
+                        shutil.copyfileobj(file_obj, unzipped_file,128*1024)
+                finally:  # Ensure closed files
+                    if file_obj:
+                        file_obj.close()
+                    if unzipped_file:
+                        unzipped_file.close()
+            except (shutil.Error, OSError, IOError) as e:
+                print('Error: ', e)
 
     def load_data(self, filename):
         """Generator returning lists of values from lines in a data file.
@@ -931,9 +940,11 @@ class Engine(object):
         1. Works on both delimited (csv module)
         and fixed width data (extract_fixed_width)
         2. Identifies the delimiter if not known
-        3. Removes extra line endings
-
+        3. Removes extra line ending
         """
+        if hasattr(self.table, "csv_extend_size") and self.table.csv_extend_size:
+            set_csv_field_size()
+
         if not self.table.delimiter:
             self.set_table_delimiter(filename)
         if os.name == "nt":
@@ -956,6 +967,20 @@ class Engine(object):
             values.append(line[pos:pos + width].strip())
             pos += width
         return values
+
+
+def set_csv_field_size():
+    """Set the CSV size limit based on the available resources"""
+    maxInt = sys.maxsize
+    decrement = True
+    while decrement:
+        decrement = False
+        try:
+            csv.field_size_limit(maxInt)
+        except OverflowError:
+            maxInt = int(maxInt / 10)
+            decrement = True
+    return maxInt
 
 
 def skip_rows(rows, source):
