@@ -318,6 +318,17 @@ class Engine(object):
             if header.count(other_delimiter) > header.count(self.table.delimiter):
                 self.table.delimiter = other_delimiter
 
+    def check_bulk_insert(self):
+        """Check if a bulk insert could be performed on the data"""
+
+        # Determine if the dataset includes cross-tab data
+        ct = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
+        if (self.table.cleanup.function == no_cleanup and not self.table.fixed_width and
+                not ct and (not hasattr(self.table, "do_not_bulk_insert") or
+                            not self.table.do_not_bulk_insert)):
+            return True
+        return False
+
     def convert_data_type(self, datatype):
         """Convert Retriever generic data types to database platform specific
         data types.

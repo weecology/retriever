@@ -111,9 +111,10 @@ class engine(Engine):
         else:
             newrows = values
 
-        xml_lines = ['\n<row>\n{}</row>' \
-                     ''.format(self._format_single_row(keys, line_data))
-                     for line_data in newrows]
+        xml_lines = [
+            '\n<row>\n{}</row>'.format(self._format_single_row(keys, line_data))
+            for line_data in newrows
+        ]
         return xml_lines
 
     def _format_single_row(self, keys, line_data):

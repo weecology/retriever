@@ -112,14 +112,13 @@ class engine(Engine):
         return statement.replace(" DATABASE ", " SCHEMA ")
 
     def insert_data_from_file(self, filename):
-        """Use PostgreSQL's "COPY FROM" statement to perform a bulk insert."""
+        """Use PostgreSQL's "COPY FROM" statement to perform a bulk insert.
+
+        Current postgres engine bulk only supports comma delimiter
+        """
         self.get_cursor()
-        ct = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
-        if (([self.table.cleanup.function, self.table.delimiter,
-              self.table.header_rows] == [no_cleanup, ",", 1])
-            and not self.table.fixed_width
-            and not ct
-            and (not hasattr(self.table, "do_not_bulk_insert") or not self.table.do_not_bulk_insert)):
+        p_bulk = [self.check_bulk_insert(), self.table.delimiter, self.table.header_rows]
+        if p_bulk == [True, ",", 1]:
             columns = self.table.get_insert_columns()
             filename = os.path.abspath(filename)
             statement = """
@@ -131,11 +130,11 @@ CSV HEADER;"""
                 self.execute("BEGIN")
                 self.execute(statement)
                 self.execute("COMMIT")
+                return True
             except BaseException:
                 self.connection.rollback()
-                return Engine.insert_data_from_file(self, filename)
-        else:
-            return Engine.insert_data_from_file(self, filename)
+                return None
+        return Engine.insert_data_from_file(self, filename)
 
     def insert_statement(self, values):
         """Return SQL statement to insert a set of values."""

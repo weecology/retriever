@@ -56,14 +56,8 @@ class engine(Engine):
         mysql_set_autocommit_on = """SET autocommit=1;"""
 
         self.get_cursor()
-        ct = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
-        if (self.table.cleanup.function == no_cleanup and
-                not self.table.fixed_width and
-                not ct and
-                (not hasattr(self.table, "do_not_bulk_insert") or not self.table.do_not_bulk_insert)):
-
+        if self.check_bulk_insert():
             print("Inserting data from " + os.path.basename(filename) + "...")
-
             columns = self.table.get_insert_columns()
             statement = """
 BEGIN;
@@ -79,13 +73,13 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
                 self.cursor.execute(statement)
 
                 self.cursor.execute(mysql_set_autocommit_on)
-            except Exception as e:
+                return None
+            except Exception:
                 self.cursor.execute("ROLLBACK;")
-                self.disconnect()  # If the execute fails the database connection can get hung up
+                # If the execute fails the database connection can get hung up
+                self.disconnect()
                 self.cursor.execute(mysql_set_autocommit_on)
-                return Engine.insert_data_from_file(self, filename)
-        else:
-            return Engine.insert_data_from_file(self, filename)
+        return Engine.insert_data_from_file(self, filename)
 
     def table_exists(self, dbname, tablename):
         """Check to see if the given table exists."""

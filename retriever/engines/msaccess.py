@@ -64,13 +64,8 @@ class engine(Engine):
     def insert_data_from_file(self, filename):
         """Perform a bulk insert."""
         self.get_cursor()
-        ct = len([True for c in self.table.columns if c[1][0][:3] == "ct-"]) != 0
-        if ((self.table.cleanup.function == no_cleanup and not self.table.fixed_width and
-                     self.table.header_rows < 2)
-            and (self.table.delimiter in ["\t", ","])
-            and not ct
-            and (not hasattr(self.table, "do_not_bulk_insert") or not self.table.do_not_bulk_insert)
-            ):
+        if self.check_bulk_insert() and self.table.header_rows < 2 and (
+                self.table.delimiter in ["\t", ","]):
             print("Inserting data from " + os.path.basename(filename) + "...")
 
             if self.table.delimiter == "\t":
@@ -91,8 +86,10 @@ class engine(Engine):
             if self.table.pk and not self.table.contains_pk:
                 if '.' in os.path.basename(filename):
                     proper_name = filename.split('.')
-                    newfilename = '.'.join((proper_name[0:-1]) if len(proper_name) > 0 else proper_name[0]
-                                           ) + "_new." + filename.split(".")[-1]
+                    len_name = len(proper_name)
+                    newfilename = '.'.join(
+                        proper_name[0:-1] if len_name > 0 else proper_name[0]
+                    ) + "_new." + filename.split(".")[-1]
                 else:
                     newfilename = filename + "_new"
 
@@ -103,11 +100,12 @@ class engine(Engine):
                     to_write = ""
 
                     for line in read:
-                        to_write += str(id) + self.table.delimiter + line.replace("\n", "\r\n")
+                        line = line.strip()
+                        to_write += str(id) + self.table.delimiter + line
                         add_to_record_id += 1
                     self.table.record_id += add_to_record_id
 
-                    write.write(to_write)
+                    write.write(to_write + os.linesep)
                     write.close()
                     read.close()
                     need_to_delete = True
@@ -122,22 +120,19 @@ class engine(Engine):
 INSERT INTO """ + self.table_name() + " (" + columns + """)
 SELECT * FROM [""" + os.path.basename(newfilename) + ''']
 IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
-
             try:
                 self.execute(statement)
-            except:
+                return True
+            except BaseException:
                 print("Couldn't bulk insert. Trying manual insert.")
                 self.connection.rollback()
-
                 self.table.record_id -= add_to_record_id
+                return None
+            finally:
+                if need_to_delete:
+                    os.remove(newfilename)
 
-                return Engine.insert_data_from_file(self, filename)
-
-            if need_to_delete:
-                os.remove(newfilename)
-
-        else:
-            return Engine.insert_data_from_file(self, filename)
+        return Engine.insert_data_from_file(self, filename)
 
     def get_connection(self):
         """Gets the db connection."""
