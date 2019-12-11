@@ -925,14 +925,21 @@ class Engine(object):
             # If the directory does not exits, create it
             if not os.path.exists(os.path.dirname(write_path)):
                 os.makedirs(os.path.dirname(write_path))
-            unzipped_file = open(write_path, 'wb')
-            if open_object:
-                file_obj = archive.open(file_name, 'r')
-            if file_obj:
-                for line in file_obj:
-                    unzipped_file.write(line)
-                file_obj.close()
-            unzipped_file.close()
+            try:
+                try:
+                    unzipped_file = open(write_path, 'wb')
+                    if open_object:
+                        file_obj = archive.open(file_name, 'r')
+                    if file_obj:
+                        # use shutil to copy in chunks
+                        shutil.copyfileobj(file_obj, unzipped_file, 64 * 1024)
+                finally:  # Ensure closed files
+                    if file_obj:
+                        file_obj.close()
+                    if unzipped_file:
+                        unzipped_file.close()
+            except (shutil.Error, OSError, IOError) as e:
+                print('Error: ', e)
 
     def load_data(self, filename):
         """Generator returning lists of values from lines in a data file.
