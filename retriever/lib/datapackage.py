@@ -5,7 +5,7 @@ from builtins import input
 
 def is_empty(val):
     """Check if a variable is an empty string or an empty list."""
-    return val == "" or val == []
+    return val in ('', [])
 
 
 def clean_input(prompt="", split_char='', ignore_empty=False, dtype=None):
@@ -22,7 +22,7 @@ def clean_input(prompt="", split_char='', ignore_empty=False, dtype=None):
         # ensure correct input datatype if specified
         if not is_empty(val) and dtype is not None:
             try:
-                if not type(eval(val)) == dtype:
+                if not type(eval(val)) == dtype:  # pylint: disable=C0123,W0123
                     print("\tError: input doesn't match required type ", dtype, "\n")
                     continue
             except:

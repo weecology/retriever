@@ -2,12 +2,8 @@
 
 This module handles the CLI for the Data retriever.
 """
-from __future__ import absolute_import
-from __future__ import print_function
-
 import os
 import sys
-from builtins import input
 
 from retriever.engines import engine_list, choose_engine
 from retriever.lib.datasets import datasets, dataset_names, license
@@ -31,27 +27,28 @@ def main():
         # otherwise, parse them
         args = parser.parse_args()
 
-        if args.command not in ['reset', 'update'] \
-        and not os.path.isdir(SCRIPT_SEARCH_PATHS[1]) \
-        and not [f for f in os.listdir(SCRIPT_SEARCH_PATHS[-1])
-            if os.path.exists(SCRIPT_SEARCH_PATHS[-1])]:
-                check_for_updates()
-                reload_scripts()
+        reset_or_update = args.command in ["reset", "update"]
+        if (not reset_or_update and not os.path.isdir(SCRIPT_SEARCH_PATHS[1]) and not [
+                f for f in os.listdir(SCRIPT_SEARCH_PATHS[-1])
+                if os.path.exists(SCRIPT_SEARCH_PATHS[-1])
+        ]):
+            check_for_updates()
+            reload_scripts()
         script_list = SCRIPT_LIST()
 
         if args.command == "install" and not args.engine:
-            parser.parse_args(['install', '-h'])
+            parser.parse_args(["install", "-h"])
 
         if args.quiet:
-            sys.stdout = open(os.devnull, 'w')
+            sys.stdout = open(os.devnull, "w")
 
-        if args.command == 'help':
-            parser.parse_args(['-h'])
+        if args.command == "help":
+            parser.parse_args(["-h"])
 
-        if hasattr(args, 'compile') and args.compile:
+        if hasattr(args, "compile") and args.compile:
             script_list = reload_scripts()
 
-        if args.command == 'defaults':
+        if args.command == "defaults":
             for engine_item in engine_list:
                 print("Default options for engine ", engine_item.name)
                 for default_opts in engine_item.required_opts:
@@ -59,12 +56,12 @@ def main():
                 print()
             return
 
-        if args.command == 'update':
+        if args.command == "update":
             check_for_updates()
             reload_scripts()
             return
 
-        elif args.command == 'citation':
+        if args.command == "citation":
             if args.dataset is None:
                 print("\nCitation for retriever:\n")
                 print(CITATION)
@@ -77,7 +74,7 @@ def main():
 
             return
 
-        elif args.command == 'license':
+        if args.command == 'license':
             if args.dataset is None:
                 print(LICENSE)
             else:
@@ -88,20 +85,20 @@ def main():
                     print("There is no license information for {}".format(args.dataset))
             return
 
-        elif args.command == 'new':
+        if args.command == 'new':
             f = open(args.filename, 'w')
             f.write(sample_script)
             f.close()
 
             return
 
-        elif args.command == 'reset':
+        if args.command == 'reset':
             reset_retriever(args.scope)
             return
 
-        elif args.command == 'autocreate':
+        if args.command == 'autocreate':
             if sum([args.f, args.d]) == 1:
-                file_flag = True if args.f else False
+                file_flag = bool(args.f)
                 create_package(args.path, args.dt, file_flag, args.o, args.skip_lines)
             else:
                 print('Please use one and only one of the flags -f -d')
@@ -112,6 +109,7 @@ def main():
             if not (args.l or args.k or isinstance(args.v, list)):
                 all_scripts = dataset_names()
                 from retriever import lscolumns
+
                 all_scripts_combined = []
                 for dataset in all_scripts['offline']:
                     all_scripts_combined.append((dataset, True))
@@ -142,20 +140,18 @@ def main():
                 if not args.v:
                     print("Offline datasets : {}\n".format(len(all_scripts)))
                 for script in all_scripts:
-                    print(
-                        "{count}. {title}\n {name}\n"
-                        "{keywords}\n{description}\n"
-                        "{licenses}\n{citation}\n"
-                        "".format(
-                            count=count,
-                            title=script.title,
-                            name=script.name,
-                            keywords=script.keywords,
-                            description=script.description,
-                            licenses=str(script.licenses[0]['name']),
-                            citation=script.citation,
-                        )
-                    )
+                    print("{count}. {title}\n {name}\n"
+                          "{keywords}\n{description}\n"
+                          "{licenses}\n{citation}\n"
+                          "".format(
+                              count=count,
+                              title=script.title,
+                              name=script.name,
+                              keywords=script.keywords,
+                              description=script.description,
+                              licenses=str(script.licenses[0]['name']),
+                              citation=script.citation,
+                          ))
                     count += 1
 
                 count = 1
@@ -184,20 +180,20 @@ def main():
                     print(offline_mesg.format(len(searched_scripts['offline'])))
                     count = 1
                     for script in searched_scripts['offline']:
-                        print(
-                            "{count}. {title}\n{name}\n"
-                            "{keywords}\n{licenses}\n".format(
-                                count=count,
-                                title=script.title,
-                                name=script.name,
-                                keywords=script.keywords,
-                                licenses=str(script.licenses[0]['name']),
-                            )
-                        )
+                        print("{count}. {title}\n{name}\n"
+                              "{keywords}\n{licenses}\n".format(
+                                  count=count,
+                                  title=script.title,
+                                  name=script.name,
+                                  keywords=script.keywords,
+                                  licenses=str(script.licenses[0]['name']),
+                              ))
                         count += 1
 
                     count = 1
-                    searched_scripts_offline = [script.name for script in searched_scripts['offline']]
+                    searched_scripts_offline = [
+                        script.name for script in searched_scripts["offline"]
+                    ]
                     searched_scripts_online = []
                     for script in searched_scripts['online']:
                         if script in searched_scripts_offline:
@@ -208,12 +204,14 @@ def main():
                         print("{count}. {name}".format(count=count, name=script))
                         count += 1
             return
-        elif args.command == 'commit':
-            commit(dataset=args.dataset,
-                   path=os.path.normpath(args.path) if args.path else None,
-                   commit_message=args.message)
+        if args.command == 'commit':
+            commit(
+                dataset=args.dataset,
+                path=os.path.normpath(args.path) if args.path else None,
+                commit_message=args.message,
+            )
             return
-        elif args.command == 'log':
+        if args.command == 'log':
             commit_log(dataset=args.dataset)
             return
 

@@ -17,6 +17,9 @@ script:
 
 after_success:
   - codecov
+  - docker-compose  run python_retriever flake8 --ignore=E501,W503,E402,F401,F403,E722,F841,W504 retriever --max-line-length=90
+  - docker-compose  run python_retriever yapf --recursive retriever/engines --style=.style.yapf -d
+  - docker-compose  run python_retriever pylint -rn retriever/  -f colorized --rcfile=.pylintrc
 
 notifications:
   slack:

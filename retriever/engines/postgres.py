@@ -1,7 +1,8 @@
 import os
+import sys
 import subprocess
 
-from retriever.lib.models import Engine, no_cleanup
+from retriever.lib.models import Engine
 
 
 class engine(Engine):
@@ -21,33 +22,20 @@ class engine(Engine):
     max_int = 2147483647
     placeholder = "%s"
     insert_limit = 1000
-    required_opts = [("user",
-                      "Enter your PostgreSQL username",
-                      "postgres"),
-                     ("password",
-                      "Enter your password",
-                      ""),
-                     ("host",
-                      "Enter your PostgreSQL host",
-                      "localhost"),
-                     ("port",
-                      "Enter your PostgreSQL port",
-                      5432),
-                     ("database",
-                      "Enter your PostgreSQL database name",
-                      "postgres"),
-                     ("database_name",
-                      "Format of schema name",
-                      "{db}"),
-                     ("table_name",
-                      "Format of table name",
-                      "{db}.{table}"),
-                     ]
+    required_opts = [
+        ("user", "Enter your PostgreSQL username", "postgres"),
+        ("password", "Enter your password", ""),
+        ("host", "Enter your PostgreSQL host", "localhost"),
+        ("port", "Enter your PostgreSQL port", 5432),
+        ("database", "Enter your PostgreSQL database name", "postgres"),
+        ("database_name", "Format of schema name", "{db}"),
+        ("table_name", "Format of table name", "{db}.{table}"),
+    ]
     spatial_support = True
     # default postgres encoding
     db_encoding = "Latin1"
 
-    def auto_create_table(self, table, url=None, filename=None, pk=None):
+    def auto_create_table(self, table, url=None, filename=None, pk=None, make=True):
         """Create a table automatically.
 
         Overwrites the main Engine class. Identifies the type of table to create.
@@ -89,8 +77,8 @@ class engine(Engine):
         PostgreSQL needs to commit operations individually.
         Enable PostGis extensions if a script has a non tabular table.
         """
-        if self.table and self.table.dataset_type and \
-                not self.table.dataset_type == "TabularDataset":
+        if (self.table and self.table.dataset_type and
+                not self.table.dataset_type == "TabularDataset"):
             try:
                 # Check if Postgis is installed and EXTENSION are Loaded
                 self.execute("SELECT PostGIS_full_version();")
@@ -100,14 +88,14 @@ class engine(Engine):
                       "Open Postgres CLI or GUI(PgAdmin) and run:\n"
                       "CREATE EXTENSION postgis;\n"
                       "CREATE EXTENSION postgis_topology;")
-                exit()
+                sys.exit()
             return
         Engine.create_table(self)
         self.connection.commit()
 
-    def drop_statement(self, objecttype, objectname):
+    def drop_statement(self, object_type, object_name):
         """In PostgreSQL, the equivalent of a SQL database is a schema."""
-        statement = Engine.drop_statement(self, objecttype, objectname)
+        statement = Engine.drop_statement(self, object_type, object_name)
         statement += " CASCADE;"
         return statement.replace(" DATABASE ", " SCHEMA ")
 
@@ -153,8 +141,9 @@ CSV HEADER;"""
         if ext:
             raster_extensions = ext
         else:
-            raster_extensions = ['.gif', '.img', '.bil',
-                                 '.jpg', '.tif', '.tiff', '.hdf', '.l1b']
+            raster_extensions = [
+                '.gif', '.img', '.bil', '.jpg', '.tif', '.tiff', '.hdf', '.l1b'
+            ]
 
         gis_files = []
         for root, _, files in os.walk(path, topdown=False):
@@ -177,17 +166,19 @@ CSV HEADER;"""
         if not path:
             path = Engine.format_data_dir(self)
 
-        raster_sql = "raster2pgsql -Y -M -d -I -s {SRID} \"{path}\" -F -t 100x100 {SCHEMA_DBTABLE}".format(
-            SRID=srid,
-            path=os.path.normpath(path),
-            SCHEMA_DBTABLE=self.table_name())
+        raster_sql = ("raster2pgsql -Y -M -d -I -s {SRID} \"{path}\""
+                      " -F -t 100x100 {SCHEMA_DBTABLE}".format(
+                          SRID=srid,
+                          path=os.path.normpath(path),
+                          SCHEMA_DBTABLE=self.table_name()))
 
-        cmd_string = """ | psql -U {USER} -d {DATABASE} --port {PORT} --host {HOST} > {nul_dev} """.format(
+        cmd_string = """ | psql -U {USER} -d {DATABASE} --port {PORT}
+         --host {HOST} > {nul_dev} """.format(
             USER=self.opts["user"],
             DATABASE=self.opts["database"],
             PORT=self.opts["port"],
             HOST=self.opts["host"],
-            nul_dev=os.devnull
+            nul_dev=os.devnull,
         )
 
         cmd_stmt = raster_sql + cmd_string
@@ -196,7 +187,7 @@ CSV HEADER;"""
         Engine.register_tables(self)
         try:
             subprocess.call(cmd_stmt, shell=True)
-        except BaseException as e:
+        except BaseException:
             pass
 
     def insert_vector(self, path=None, srid=4326):
@@ -222,18 +213,21 @@ CSV HEADER;"""
          """
         if not path:
             path = Engine.format_data_dir(self)
-        vector_sql = "shp2pgsql -d -I -W \"{encd}\"  -s {SRID} \"{path}\" \"{SCHEMA_DBTABLE}\"".format(
-            encd=self.encoding,
-            SRID=srid,
-            path=os.path.normpath(path),
-            SCHEMA_DBTABLE=self.table_name())
+        vector_sql = ("shp2pgsql -d -I -W \"{encd}\"  -s {SRID}"
+                      " \"{path}\" \"{SCHEMA_DBTABLE}\"".format(
+                          encd=self.encoding,
+                          SRID=srid,
+                          path=os.path.normpath(path),
+                          SCHEMA_DBTABLE=self.table_name(),
+                      ))
 
-        cmd_string = """ | psql -U {USER} -d {DATABASE} --port {PORT} --host {HOST} > {nul_dev} """.format(
+        cmd_string = """ | psql -U {USER} -d {DATABASE} --port {PORT}
+         --host {HOST} > {nul_dev} """.format(
             USER=self.opts["user"],
             DATABASE=self.opts["database"],
             PORT=self.opts["port"],
             HOST=self.opts["host"],
-            nul_dev=os.devnull
+            nul_dev=os.devnull,
         )
         cmd_stmt = vector_sql + cmd_string
         if self.debug:
@@ -241,7 +235,7 @@ CSV HEADER;"""
         Engine.register_tables(self)
         try:
             subprocess.call(cmd_stmt, shell=True)
-        except BaseException as e:
+        except BaseException:
             pass
 
     def format_insert_value(self, value, datatype):
@@ -250,7 +244,7 @@ CSV HEADER;"""
             try:
                 if int(value) == 1:
                     return "TRUE"
-                elif int(value) == 0:
+                if int(value) == 0:
                     return "FALSE"
             except BaseException:
                 pass
@@ -264,15 +258,15 @@ CSV HEADER;"""
         import psycopg2 as dbapi
 
         self.get_input()
-        conn = dbapi.connect(host=self.opts["host"],
-                             port=int(self.opts["port"]),
-                             user=self.opts["user"],
-                             password=self.opts["password"],
-                             database=self.opts["database"])
+        conn = dbapi.connect(
+            host=self.opts["host"],
+            port=int(self.opts["port"]),
+            user=self.opts["user"],
+            password=self.opts["password"],
+            database=self.opts["database"],
+        )
         self.set_engine_encoding()
-        encoding_lookup = {'iso-8859-1': 'Latin1',
-                           'latin-1': 'Latin1',
-                           'utf-8': 'UTF8'}
+        encoding_lookup = {'iso-8859-1': 'Latin1', 'latin-1': 'Latin1', 'utf-8': 'UTF8'}
         self.db_encoding = encoding_lookup.get(self.encoding)
         conn.set_client_encoding(self.db_encoding)
         return conn

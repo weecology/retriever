@@ -11,7 +11,7 @@ MASTER_BRANCH = REPO_URL + "master/"
 RETRIEVER_MASTER_BRANCH = RETRIEVER_REPO_URL + "master/"
 REPOSITORY = MASTER_BRANCH
 RETRIEVER_REPOSITORY = RETRIEVER_MASTER_BRANCH
-ENCODING = 'ISO-8859-1'
+ENCODING = 'utf-8'
 HOME_DIR = os.path.expanduser('~/.retriever/')
 RETRIEVER_DIR = 'retriever'
 if os.path.exists(os.path.join(HOME_DIR, 'retriever_path.txt')):
@@ -22,8 +22,7 @@ if os.path.exists(os.path.join(HOME_DIR, 'retriever_recipes_path.txt')):
     with open(os.path.join(HOME_DIR, 'retriever_recipes_path.txt'), 'r') as f:
         RETRIEVER_RECIPES_DIR = f.read()
 SCRIPT_SEARCH_PATHS = [
-    "./",
-    'scripts',
+    "./", 'scripts',
     os.path.join(RETRIEVER_DIR, 'scripts/'),
     os.path.join(RETRIEVER_RECIPES_DIR, 'scripts/'),
     os.path.join(HOME_DIR, 'scripts/')
@@ -37,19 +36,9 @@ DATA_SEARCH_PATHS = [
 ]
 DATA_WRITE_PATH = DATA_SEARCH_PATHS[-1]
 RETRIEVER_SCRIPTS = [
-    "acton_lake.json",
-    "amniote_life_hist.py",
-    "bioclim.json",
-    "iris.json",
-    "predicts.py"
+    "acton_lake.json", "amniote_life_hist.py", "bioclim.json", "iris.json", "predicts.py"
 ]
-RETRIEVER_DATASETS = [
-    "acton-lake",
-    "amniote-life-hist",
-    "bioclim",
-    "iris",
-    "predicts"
-]
+RETRIEVER_DATASETS = ["acton-lake", "amniote-life-hist", "bioclim", "iris", "predicts"]
 
 # Provenance directory(to store committed datasets)
 DEFAULT_PROVENANCE_DIR = os.path.expanduser('~/.retriever_provenance/')

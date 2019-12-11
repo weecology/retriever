@@ -1,19 +1,16 @@
-from __future__ import print_function
-
 import os
 import platform
-from builtins import str
 
 from retriever.lib.defaults import DATA_DIR
-from retriever.lib.models import Engine, no_cleanup
+from retriever.lib.models import Engine
 
 
 class engine(Engine):
     """Engine instance for Microsoft Access."""
 
     name = "Microsoft Access"
-    instructions = "Create a database in Microsoft Access, close Access," \
-                   "then \nselect your database file using this dialog."
+    instructions = ("Create a database in Microsoft Access, close Access."
+                    "\nThen select your database file using this dialog.")
     abbreviation = "msaccess"
     datatypes = {
         "auto": "AUTOINCREMENT",
@@ -25,17 +22,16 @@ class engine(Engine):
         "bool": "BIT",
     }
     insert_limit = 1000
-    required_opts = [("file",
-                      "Enter the filename of your Access database",
-                      "access.mdb",
-                      "Access databases (*.mdb, *.accdb)|*.mdb;*.accdb"),
-                     ("table_name",
-                      "Format of table name",
-                      "[{db} {table}]"),
-                     ("data_dir",
-                      "Install directory",
-                      DATA_DIR),
-                     ]
+    required_opts = [
+        (
+            "file",
+            "Enter the filename of your Access database",
+            "access.mdb",
+            "Access databases (*.mdb, *.accdb)|*.mdb;*.accdb",
+        ),
+        ("table_name", "Format of table name", "[{db} {table}]"),
+        ("data_dir", "Install directory", DATA_DIR),
+    ]
     placeholder = "?"
 
     def convert_data_type(self, datatype):
@@ -48,7 +44,7 @@ class engine(Engine):
                 length = int(converted.split('(')[1].split(')')[0].split(',')[0])
                 if length > 255:
                     converted = "TEXT"
-            except:
+            except BaseException:
                 pass
         return converted
 
@@ -58,8 +54,8 @@ class engine(Engine):
 
     def drop_statement(self, object_type, object_name):
         """Returns a drop table or database SQL statement."""
-        dropstatement = "DROP %s %s" % (object_type, object_name)
-        return dropstatement
+        drop_statement = "DROP %s %s" % (object_type, object_name)
+        return drop_statement
 
     def insert_data_from_file(self, filename):
         """Perform a bulk insert."""
@@ -139,7 +135,7 @@ IN "''' + filepath + '''" "Text;FMT=''' + fmt + ''';HDR=''' + hdr + ''';"'''
         current_platform = platform.system().lower()
         if current_platform != "windows":
             raise Exception("MS Access can only be used in Windows.")
-        import pypyodbc as dbapi
+        import pypyodbc as dbapi  # pylint: disable=E0401
 
         self.get_input()
         file_name = self.opts["file"]

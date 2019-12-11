@@ -1,10 +1,7 @@
-# -*- coding: latin-1  -*-
+# -*- coding: utf-8  -*-
 # """Integrations tests for Data Retriever"""
-from __future__ import print_function
-
 import json
 import os
-import sys
 import shlex
 import shutil
 import subprocess
@@ -17,7 +14,6 @@ from retriever.lib.defaults import HOME_DIR
 from retriever.engines import engine_list
 from retriever.lib.engine_tools import file_2list
 from retriever.lib.engine_tools import create_file
-from retriever.lib.engine_tools import to_str
 
 encoding = ENCODING.lower()
 # Set postgres password, Appveyor service needs the password given
@@ -145,9 +141,10 @@ data_no_header = {
 csv_latin1_encoding = {
     'name': 'csv_latin1_encoding',
     'raw_data': ['a,b,c',
-                 u'1,2,4Löve',
+                 u'1,2,4LÃ¶ve',
                  '4,5,6'],
     'script': {"name": "csv_latin1_encoding",
+               "encoding": "latin-1",
                "resources": [
                    {"dialect": {"delimiter": ",","do_not_bulk_insert": "True"},
                     "name": "csv_latin1_encoding",
@@ -163,7 +160,7 @@ csv_latin1_encoding = {
                         "http://example.com/csv_latin1_encoding.csv"
                     }
                },
-    'expect_out': [u'a,b,c', to_str('1,2,4Löve', object_decoder="latin-1"), u'4,5,6']
+    'expect_out': [u'a,b,c', str('1,2,4LÃ¶ve'), u'4,5,6']
 }
 
 

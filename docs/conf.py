@@ -1,12 +1,4 @@
-# -*- coding: latin-1  -*-
-
-from __future__ import absolute_import
-from __future__ import print_function
-
 import sys
-from builtins import str
-from imp import reload
-
 import sphinx_rtd_theme
 
 from retriever.lib.defaults import ENCODING
@@ -18,17 +10,9 @@ from retriever.lib.scripts import SCRIPT_LIST, reload_scripts
 from retriever.lib.tools import open_fw
 from retriever.lib.repository import check_for_updates
 
-# sys removes the setdefaultencoding method at startup; reload to get it back
-reload(sys)
-if hasattr(sys, 'setdefaultencoding'):
-    # set default encoding to latin-1 to decode source text
-    sys.setdefaultencoding('latin-1')
-
 
 def to_str(object, object_encoding=encoding):
-    if sys.version_info >= (3, 0, 0):
-        return str(object).encode('UTF-8').decode(encoding)
-    return object
+    return str(object).encode('UTF-8').decode(encoding)
 
 
 # Create the .rst file for the available datasets
