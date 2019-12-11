@@ -13,7 +13,7 @@ from retriever.engines import choose_engine
 from retriever.lib.datasets import datasets
 from retriever.lib.defaults import ENCODING, HOME_DIR, PROVENANCE_DIR
 from retriever.lib.engine_tools import getmd5
-from retriever.lib.load_json import read_json
+from retriever.lib.provenance_tools import get_metadata, get_script_provenance
 
 
 def package_details():
@@ -21,7 +21,7 @@ def package_details():
     Returns a dictionary with details of installed packages in the current environment
     """
     details = {}
-    packages = pkg_resources.working_set
+    packages = dict(pkg_resources.working_set)
     for package in packages:
         details[package.project_name] = package.version
     return details
@@ -41,16 +41,13 @@ def commit_info_for_commit(dataset, commit_message):
     path_to_raw_data = os.path.join(HOME_DIR, "raw_data", dataset.name)
     if os.path.exists(path_to_raw_data):
         info["md5_dataset"] = getmd5(path_to_raw_data, "dir", encoding=ENCODING)
-    info["md5_script"] = getmd5(
-        dataset._file, data_type="file", encoding=ENCODING
-    )
+    info["md5_script"] = getmd5(dataset._file, data_type="file", encoding=ENCODING)
     return info
 
 
 def commit_writer(dataset, commit_message, path, quiet):
-    """
-    Creates the committed zipped file
-    """
+    """Creates the committed zipped file"""
+
     paths_to_zip = {"script": dataset._file, "raw_data": []}
     raw_dir = os.path.join(HOME_DIR, "raw_data")
     data_exists = False
@@ -68,9 +65,8 @@ def commit_writer(dataset, commit_message, path, quiet):
                 paths_to_zip["raw_data"].append(os.path.join(root, file))
 
         info = commit_info_for_commit(dataset, commit_message=commit_message)
-        zip_file_name = "{}-{}{}.zip".format(
-            dataset.name, info["md5_dataset"][:3], info["md5_script"][:3]
-        )
+        zip_file_name = "{}-{}{}.zip".format(dataset.name, info["md5_dataset"][:3],
+                                             info["md5_script"][:3])
 
         zip_file_path = os.path.join(path, zip_file_name)
         with ZipFile(zip_file_path, "w") as zipped:
@@ -92,18 +88,22 @@ def commit(dataset, commit_message='', path=None, quiet=False):
     """
     if isinstance(dataset, str):
         # if dataset is not a dataset script object find the right script
-        dataset = [script for script in datasets()['offline']
-                   if script.name == dataset][0]
-    dataset_provenance_path = None if path else os.path.join(
-        PROVENANCE_DIR, dataset.name)
+        dataset_list = [
+            script for script in datasets()['offline'] if script.name == dataset
+        ]
+        dataset = dataset_list[0]
+    dataset_provenance_path = (None
+                               if path else os.path.join(PROVENANCE_DIR, dataset.name))
     if not path and not os.path.exists(dataset_provenance_path):
         os.makedirs(dataset_provenance_path)
     path = path if path else dataset_provenance_path
     if not quiet:
         print("Committing dataset {}".format(dataset.name))
     try:
-        commit_writer(dataset=dataset, commit_message=commit_message,
-                      path=path, quiet=quiet)
+        commit_writer(dataset=dataset,
+                      commit_message=commit_message,
+                      path=path,
+                      quiet=quiet)
         if not quiet:
             print("Successfully committed.")
     except Exception as e:
@@ -112,27 +112,15 @@ def commit(dataset, commit_message='', path=None, quiet=False):
         return
 
 
-def get_metadata(path_to_archive):
-    """
-    Returns a dictionary after reading metadata.json file of a committed dataset
-    """
-    with ZipFile(os.path.normpath(path_to_archive), 'r') as archive:
-        try:
-            metadata = json.loads(archive.read('metadata.json').decode('utf-8'))
-        except Exception as e:
-            print(e)
-            return
-    return metadata
-
-
 def commit_info_for_installation(metadata_info):
     """
     Returns a dictionary with commit info and changes in old and current environment
     """
     info = {
         'commit_message': metadata_info['commit_message'],
-        'time': metadata_info['time'], 'package_not_found': {},
-        'package_changed': {}
+        'time': metadata_info['time'],
+        'package_not_found': {},
+        'package_changed': {},
     }
     old_package_details = metadata_info['packages']
     current_package_details = package_details()
@@ -142,8 +130,11 @@ def commit_info_for_installation(metadata_info):
                 info['package_not_found'] = {package: old_package_details[package]}
             elif old_package_details[package] != current_package_details[package]:
                 info['package_changed'] = {
-                    package: {'old': old_package_details[package],
-                              'current': current_package_details[package]}}
+                    package: {
+                        'old': old_package_details[package],
+                        'current': current_package_details[package],
+                    }
+                }
     return info
 
 
@@ -156,16 +147,12 @@ def installation_details(metadata_info, quiet):
         print('Commit Message:', details['commit_message'])
         print('Time:', details['time'])
         if details['package_not_found'] or details['package_changed']:
-            print(
-                "The following requirements are not met.\n"
-                "The installation may fail or not produce required results."
-            )
+            print("The following requirements are not met.\n"
+                  "The installation may fail or not produce required results.")
             if details["package_not_found"]:
                 print("The following packages were not found:")
                 for package in details['package_not_found']:
-                    print(
-                        "{}=={}".format(package, details['package_not_found'][package])
-                    )
+                    print("{}=={}".format(package, details['package_not_found'][package]))
             if details["package_changed"]:
                 print("The following packages have different versions:")
                 for package in details['package_changed']:
@@ -173,38 +160,6 @@ def installation_details(metadata_info, quiet):
                     current_version = details['package_changed'][package]['current']
                     message = "Required: {0}=={1}  Found: {0}=={2}"
                     print(message.format(package, old_version, current_version))
-
-
-def get_script(path_to_archive):
-    """
-    Reads script from archive.
-    """
-    with ZipFile(os.path.normpath(path_to_archive), 'r') as archive:
-        try:
-            commit_details = get_metadata(path_to_archive=path_to_archive)
-            workdir = mkdtemp(dir=os.path.dirname(path_to_archive))
-            archive.extract(
-                '/'.join(('script', commit_details['script_name'])), workdir
-            )
-            if commit_details['script_name'].endswith('.json'):
-                script_object = read_json(
-                    os.path.join(
-                        workdir, 'script', commit_details['script_name'].split('.')[0]
-                    )
-                )
-            elif commit_details['script_name'].endswith('.py'):
-                spec = util.spec_from_file_location(
-                    "script_module",
-                    os.path.join(workdir, 'script', commit_details['script_name']),
-                )
-                script_module = util.module_from_spec(spec)
-                spec.loader.exec_module(script_module)
-                script_object = script_module.SCRIPT
-            rmtree(workdir)
-        except Exception as e:
-            print(e)
-            return
-        return script_object
 
 
 def install_committed(path_to_archive, engine, force=False, quiet=False):
@@ -215,13 +170,12 @@ def install_committed(path_to_archive, engine, force=False, quiet=False):
         try:
             workdir = mkdtemp(dir=os.path.dirname(path_to_archive))
             engine.data_path = os.path.join(workdir)
-            script_object = get_script(path_to_archive=path_to_archive)
+            script_object = get_script_provenance(path_to_archive=path_to_archive)
             metadata_info = get_metadata(path_to_archive=path_to_archive)
             installation_details(metadata_info=metadata_info, quiet=quiet)
             if not force:
                 confirm = input(
-                    "Please enter either y to continue with installation or n to exit:"
-                )
+                    "Please enter either y to continue with installation or n to exit:")
                 while not (confirm.lower() in ['y', 'n']):
                     print("Please enter either y or n:")
                     confirm = input()
@@ -233,13 +187,13 @@ def install_committed(path_to_archive, engine, force=False, quiet=False):
                         archive.extract(filename, workdir)
                 engine.script_table_registry = OrderedDict()
                 script_object.download(engine)
+            return engine
         except Exception as e:
             print(e)
-            return
+            return None
         finally:
             engine.data_path = None
             rmtree(workdir)
-        return engine
 
 
 def commit_log(dataset):
@@ -255,9 +209,8 @@ def commit_log(dataset):
                 for zip_file in zip_files:
                     archive_path = os.path.join(root, zip_file)
                     commit_info = get_metadata(path_to_archive=archive_path)
-                    commit_datetime = datetime.strptime(
-                        commit_info['time'], "%m/%d/%Y, %H:%M:%S"
-                    )
+                    commit_datetime = datetime.strptime(commit_info['time'],
+                                                        "%m/%d/%Y, %H:%M:%S")
                     log[commit_datetime] = (
                         commit_info['commit_message'],
                         '{}{}'.format(
@@ -273,8 +226,8 @@ def commit_log(dataset):
                 print('Hash:', commit_value[1][1])
                 print('Date:', commit_value[0].strftime("%m/%d/%Y, %H:%M:%S"))
             return sorted_log
-
         print("No logs for {}".format(dataset))
+        return None
     except Exception as e:
         print("Unable to generate log for", dataset)
         print(e)

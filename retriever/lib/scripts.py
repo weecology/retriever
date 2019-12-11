@@ -32,6 +32,7 @@ from retriever.lib.defaults import (
 )
 from retriever.lib.load_json import read_json
 from retriever.lib.repository import check_for_updates
+from retriever.lib.provenance_tools import get_script_provanace
 
 global_script_list = None
 
