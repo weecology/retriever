@@ -21,15 +21,23 @@ class Dataset(object):
 class TabularDataset(Dataset):
     """Tabular database table."""
 
-    def __init__(self, name=None, url=None, pk=True,
-                 contains_pk=False, delimiter=None,
-                 header_rows=1, column_names_row=1,
-                 fixed_width=False, cleanup=Cleanup(),
+    def __init__(self,
+                 name=None,
+                 url=None,
+                 pk=True,
+                 contains_pk=False,
+                 delimiter=None,
+                 header_rows=1,
+                 column_names_row=1,
+                 fixed_width=False,
+                 cleanup=Cleanup(),
                  record_id=0,
                  columns=[],
                  replace_columns=[],
                  missingValues=None,
-                 cleaned_columns=False, **kwargs):
+                 cleaned_columns=False,
+                 number_of_records=None,
+                 **kwargs):
 
         self.name = name
         self.url = url
@@ -46,6 +54,7 @@ class TabularDataset(Dataset):
         self.missingValues = missingValues
         self.cleaned_columns = cleaned_columns
         self.dataset_type = "TabularDataset"
+        self.number_of_records = number_of_records
         for key in kwargs:
             if hasattr(self, key):
                 self.key = kwargs[key]

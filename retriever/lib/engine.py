@@ -88,17 +88,23 @@ class Engine(object):
     def add_to_table(self, data_source):
         """Adds data to a table from one or more lines specified
         in engine.table.source."""
+
+        # If the number of records are known avoid counting the lines
+        real_line_length = None
+        if self.table.number_of_records:
+            real_line_length = self.table.number_of_records
+
         if self.table.columns[-1][1][0][:3] == "ct-":
             # cross-tab data
-            real_line_length = self.get_ct_line_length(
-                gen_from_source(data_source))
+            if not real_line_length:
+                real_line_length = self.get_ct_line_length(gen_from_source(data_source))
 
-            real_lines = self.get_ct_data(
-                gen_from_source(data_source))
+            real_lines = self.get_ct_data(gen_from_source(data_source))
         else:
             real_lines = gen_from_source(data_source)
-            len_source = gen_from_source(data_source)
-            real_line_length = sum(1 for _ in len_source)
+            if not real_line_length:
+                len_source = gen_from_source(data_source)
+                real_line_length = sum(1 for _ in len_source)
 
         total = self.table.record_id + real_line_length
         count_iter = 1
