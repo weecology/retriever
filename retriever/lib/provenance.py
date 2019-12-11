@@ -2,7 +2,6 @@ import json
 import os
 from collections import OrderedDict
 from datetime import datetime, timezone
-from importlib import util
 from shutil import rmtree
 from tempfile import mkdtemp
 from zipfile import ZipFile
@@ -21,8 +20,8 @@ def package_details():
     Returns a dictionary with details of installed packages in the current environment
     """
     details = {}
-    packages = dict(pkg_resources.working_set)
-    for package in packages:
+    packages = pkg_resources.working_set
+    for package in packages:  # pylint: disable=E1133
         details[package.project_name] = package.version
     return details
 

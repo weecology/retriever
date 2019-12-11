@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import inspect
 import os
 import shutil
@@ -38,9 +36,7 @@ class engine(Engine):
         if hasattr(self, "all_files"):
             for file_name in self.all_files:
                 file_path, file_name_nopath = os.path.split(file_name)
-                dest_path = os.path.join(
-                    self.opts["path"], self.opts.get("sub_dir", "")
-                )
+                dest_path = os.path.join(self.opts["path"], self.opts.get("sub_dir", ""))
                 if not os.path.isdir(dest_path):
                     print("Creating directory %s" % dest_path)
                     os.makedirs(dest_path)
@@ -55,7 +51,7 @@ class engine(Engine):
                         print("Couldn't copy file to %s" % dest_path)
         self.all_files = set()
 
-    def auto_create_table(self, table, url=None, filename=None, pk=None):
+    def auto_create_table(self, table, url=None, filename=None, pk=None, make=True):
         """Download the file if it doesn't exist"""
         if url and not filename:
             filename = filename_from_url(url)
@@ -89,16 +85,14 @@ class engine(Engine):
 
         """
         full_filenames = {
-            self.find_file(filename)
-            for filename in filenames
-            if self.find_file(filename)
+            self.find_file(filename) for filename in filenames if self.find_file(filename)
         }
         self.all_files = self.all_files.union(full_filenames)
 
 
 # replace all other methods with a function that does nothing
-def dummy_method(self, *args, **kwargs):
-    pass
+def dummy_method(self, *args, **kwargs):  # pylint: disable=W0613
+    """Dummy method template to help with replacing Engine functions"""
 
 
 methods = inspect.getmembers(engine, predicate=inspect.ismethod)
@@ -111,12 +105,8 @@ keep_methods = {
 }
 remove_methods = ["insert_data_from_file", "create_db", "create_table"]
 for name, method in methods:
-    if (
-        name not in keep_methods
-        and "download" not in name
-        and "file" not in name
-        and "dir" not in name
-    ):
+    if (name not in keep_methods and "download" not in name and "file" not in name and
+            "dir" not in name):
         setattr(engine, name, dummy_method)
 for name in remove_methods:
     setattr(engine, name, dummy_method)

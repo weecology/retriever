@@ -1,8 +1,3 @@
-from __future__ import print_function
-
-from future import standard_library
-
-standard_library.install_aliases()
 import csv
 import imp
 import io
@@ -16,23 +11,13 @@ from os.path import join, exists
 from collections import OrderedDict
 
 from pkg_resources import parse_version
-from distutils.version import LooseVersion
 
-from retriever.lib.defaults import (
-    SCRIPT_SEARCH_PATHS,
-    VERSION,
-    ENCODING,
-    SCRIPT_WRITE_PATH
-)
-from retriever.lib.defaults import (
-    REPOSITORY,
-    RETRIEVER_REPOSITORY,
-    RETRIEVER_SCRIPTS,
-    RETRIEVER_DATASETS
-)
+from retriever.lib.defaults import (SCRIPT_SEARCH_PATHS, VERSION, ENCODING,
+                                    SCRIPT_WRITE_PATH)
+from retriever.lib.defaults import (REPOSITORY, RETRIEVER_REPOSITORY, RETRIEVER_SCRIPTS,
+                                    RETRIEVER_DATASETS)
 from retriever.lib.load_json import read_json
-from retriever.lib.repository import check_for_updates
-from retriever.lib.provenance_tools import get_script_provanace
+from retriever.lib.provenance_tools import get_script_provenance
 
 global_script_list = None
 
@@ -45,7 +30,7 @@ def check_retriever_minimum_version(module):
 
     if hasattr(module, "retriever_minimum_version"):
         if not parse_version(VERSION) >= parse_version("{}".format(mod_ver)):
-            print("{} is supported by Retriever version ""{}".format(m, mod_ver))
+            print("{} is supported by Retriever version " "{}".format(m, mod_ver))
             print("Current version is {}".format(VERSION))
             return False
     return True
@@ -60,7 +45,7 @@ def reload_scripts():
         os.makedirs(SCRIPT_WRITE_PATH)
 
     for search_path in [
-        search_path for search_path in SCRIPT_SEARCH_PATHS if exists(search_path)
+            search_path for search_path in SCRIPT_SEARCH_PATHS if exists(search_path)
     ]:
         data_packages = [
             file_i for file_i in os.listdir(search_path) if file_i.endswith(".json")
@@ -78,16 +63,10 @@ def reload_scripts():
                     loaded_files.append(script_name)
                     loaded_scripts.append(read_script.name.lower())
         files = [
-            file
-            for file in os.listdir(search_path)
-            if file[-3:] == ".py"
-            and file[0] != "_"
-            and (
-                "#retriever"
-                in " ".join(
-                    open_fr(join(search_path, file), encoding=ENCODING).readlines()[:2]
-                ).lower()
-            )
+            file for file in os.listdir(search_path)
+            if file[-3:] == ".py" and file[0] != "_" and ("#retriever" in " ".join(
+                open_fr(join(search_path, file), encoding=ENCODING).readlines()
+                [:2]).lower())
         ]
         for script in files:
             script_name = ".".join(script.split(".")[:-1])
@@ -104,16 +83,13 @@ def reload_scripts():
                     # if the script wasn't found in an early search path
                     # make sure it works and then add it
                     new_module.SCRIPT.download
-                    setattr(
-                        new_module.SCRIPT, "_file", os.path.join(search_path, script)
-                    )
+                    setattr(new_module.SCRIPT, "_file", os.path.join(search_path, script))
                     setattr(new_module.SCRIPT, "_name", script_name)
                     modules.append(new_module.SCRIPT)
                 except Exception as e:
-                    sys.stderr.write(
-                        "Failed to load script: {} ({})\n"
-                        "Exception: {} \n".format(script_name, search_path, str(e))
-                    )
+                    sys.stderr.write("Failed to load script: {} ({})\n"
+                                     "Exception: {} \n".format(script_name, search_path,
+                                                               str(e)))
     if global_script_list:
         global_script_list.set_scripts(modules)
     return modules
@@ -139,9 +115,7 @@ def name_matches(scripts, arg):
     if not arg:
         raise ValueError("No dataset name specified")
     if arg.endswith(".zip"):
-        from retriever.lib.provenance import get_script
-
-        script = get_script(arg)
+        script = get_script_provenance(arg)
         return [script]
 
     arg = arg.strip().lower()
@@ -154,19 +128,16 @@ def name_matches(scripts, arg):
         if arg == script.name.lower():
             local_version = script.version
             if arg in RETRIEVER_DATASETS:
-                upstream_version = get_script_version_upstream(
-                    arg, repo=RETRIEVER_REPOSITORY
-                )
+                upstream_version = get_script_version_upstream(arg,
+                                                               repo=RETRIEVER_REPOSITORY)
             else:
                 upstream_version = get_script_version_upstream(arg)
-            if not upstream_version or LooseVersion(local_version) >= LooseVersion(
-                upstream_version
-            ):
+            if not upstream_version or parse_version(local_version) >= parse_version(
+                    upstream_version):
                 return [script]
             prompt = (
                 "A newer version of {dataset} is available. Would you like to download "
-                "it? (y/N): ".format(dataset=arg)
-            )
+                "it? (y/N): ".format(dataset=arg))
             should_download = input(prompt)
             while not (should_download.lower() in ["y", "n", ""]):
                 print("Please enter either y or n.")
@@ -197,11 +168,10 @@ def name_matches(scripts, arg):
 
     matches.sort(key=lambda x: -x[1])
 
-    print(
-        '\nThe dataset "{}" ' "isn't currently available in the Retriever.".format(arg)
-    )
+    print('\nThe dataset "{}" ' "isn't currently available in the Retriever.".format(arg))
     if matches:
         print("Did you mean:" " \n\t{}".format("\n\t".join([i[0] for i in matches])))
+    return None
 
 
 def get_script(dataset):
@@ -211,19 +181,15 @@ def get_script(dataset):
         script = scripts[dataset]
         local_version = script.version
         if dataset in RETRIEVER_DATASETS:
-            upstream_version = get_script_version_upstream(
-                dataset, repo=RETRIEVER_REPOSITORY
-            )
+            upstream_version = get_script_version_upstream(dataset,
+                                                           repo=RETRIEVER_REPOSITORY)
         else:
             upstream_version = get_script_version_upstream(dataset)
-        if not upstream_version or LooseVersion(local_version) >= LooseVersion(
-            upstream_version
-        ):
+        if not upstream_version or parse_version(local_version) >= parse_version(
+                upstream_version):
             return script
-        prompt = (
-            "A newer version of {dataset} is available. Would you like to download "
-            "it? (y/N): ".format(dataset=dataset)
-        )
+        prompt = ("A newer version of {dataset} is available. Would you like to download "
+                  "it? (y/N): ".format(dataset=dataset))
         should_download = input(prompt)
         while not (should_download.lower() in ["y", "n", ""]):
             print("Please enter either y or n.")
@@ -401,20 +367,23 @@ def open_fw(file_name, encoding=ENCODING, encode=True):
     return file_obj
 
 
-def open_csvw(csv_file, encode=True):
+def open_csvw(csv_file):
     """Open a csv writer forcing the use of Linux line endings on Windows.
 
     Also sets dialect to 'excel' and escape characters to '\\'
     """
     if os.name == 'nt':
-        csv_writer = csv.writer(csv_file, dialect='excel',
-                                escapechar='\\', lineterminator='\n')
+        csv_writer = csv.writer(csv_file,
+                                dialect='excel',
+                                escapechar='\\',
+                                lineterminator='\n')
     else:
         csv_writer = csv.writer(csv_file, dialect='excel', escapechar='\\')
     return csv_writer
 
 
 def to_str(object, object_encoding=sys.stdout, object_decoder=ENCODING):
+    """Convert to str"""
     enc = object_encoding.encoding
     return str(object).encode(enc, errors='backslashreplace').decode(object_decoder)
 
@@ -476,13 +445,16 @@ def get_retriever_script_versions():
 
 
 class StoredScripts:
+
     def __init__(self):
         self._shared_scripts = SCRIPT_LIST()
 
     def get_scripts(self):
+        """Return shared scripts"""
         return self._shared_scripts
 
     def set_scripts(self, script_list):
+        """Set shared scripts"""
         self._shared_scripts = script_list
 
 

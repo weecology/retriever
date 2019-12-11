@@ -47,7 +47,6 @@ def create_package(path, data_type, file_flag, out_path, skip_lines=None):
 
 def create_raster_datapackage():
     """Creates raster package for a path"""
-    pass
 
 
 def create_tabular_datapackage(path, file_flag, out_path, skip_lines):
@@ -60,15 +59,14 @@ def create_tabular_datapackage(path, file_flag, out_path, skip_lines):
 
 def create_vector_datapackage():
     """Creates vector package for a path"""
-    pass
 
 
 def create_resources(file, skip_lines):
     """Creates resources for the script or errors out if not possible"""
     engine = Engine()
-    table = engine.auto_create_table(
-        Table(str(file), header_rows=skip_lines), filename=file, make=False
-    )
+    table = engine.auto_create_table(Table(str(file), header_rows=skip_lines),
+                                     filename=file,
+                                     make=False)
     clean_table = table.__dict__
     resource_dict = {}
     path_to_table = os.path.basename(clean_table["name"])
@@ -83,16 +81,19 @@ def create_resources(file, skip_lines):
             if ctuple[0] == 'char':
                 # char sizes need quotes
                 char_size = "{a}".format(a=ctuple[1])
-                resource_dict["schema"]["fields"].append({"name": cname,
-                                                          "type": ctuple[0],
-                                                          "size": char_size})
+                resource_dict["schema"]["fields"].append({
+                    "name": cname,
+                    "type": ctuple[0],
+                    "size": char_size
+                })
             else:
-                resource_dict["schema"]["fields"].append({"name": cname,
-                                                          "type": ctuple[0],
-                                                          "size": ctuple[1]})
+                resource_dict["schema"]["fields"].append({
+                    "name": cname,
+                    "type": ctuple[0],
+                    "size": ctuple[1]
+                })
         else:
-            resource_dict["schema"]["fields"].append({"name": cname,
-                                                      "type": ctuple[0]})
+            resource_dict["schema"]["fields"].append({"name": cname, "type": ctuple[0]})
     resource_dict["url"] = "FILL"
     return resource_dict
 
@@ -112,7 +113,7 @@ def create_script_dict(allpacks, path, file, skip_lines):
         resources = create_resources(os.path.join(path, file), skip_lines)
     except:
         print("Skipped file: " + file)
-        return
+        return None
     allpacks.setdefault("resources", []).append(resources)
     allpacks["retriever"] = "True"
     allpacks["retriever_minimum_version"] = "2.1.0"
@@ -184,9 +185,7 @@ def write_out_scripts(script_dict, path, out_path):
         print(write_path + " creation skipped because resources were empty.")
         return
     if os.path.exists(write_path):
-        choice = clean_input(
-            write_path + " already exists. Overwrite the script? [y/n]"
-        )
+        choice = clean_input(write_path + " already exists. Overwrite the script? [y/n]")
         if choice == "n":
             print(write_path + " creation skipped.")
             return

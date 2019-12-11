@@ -1,6 +1,7 @@
 from retriever.lib.scripts import SCRIPT_LIST, get_script, get_dataset_names_upstream
 from retriever.lib.defaults import RETRIEVER_REPOSITORY
 
+
 def datasets(keywords=None, licenses=None):
     """Search all datasets by keywords and licenses."""
     script_list = SCRIPT_LIST()
@@ -21,9 +22,11 @@ def datasets(keywords=None, licenses=None):
     for script in script_list:
         if script.name:
             if licenses:
-                script_license = [licence_map['name'].lower()
-                                  for licence_map in script.licenses
-                                  if licence_map['name']]
+                script_license = [
+                    licence_map['name'].lower()
+                    for licence_map in script.licenses
+                    if licence_map['name']
+                ]
                 if script_license and set(script_license).intersection(set(licenses)):
                     offline_scripts.add(script)
                     continue
@@ -39,7 +42,9 @@ def datasets(keywords=None, licenses=None):
     # The offline scripts filtered by params
     offline_scripts = sorted(list(offline_scripts), key=lambda s: s.name.lower())
     # The scripts present in upstream retriever repository filtered by params
-    retriever_scripts = get_dataset_names_upstream(keywords, licenses, repo=RETRIEVER_REPOSITORY)
+    retriever_scripts = get_dataset_names_upstream(keywords,
+                                                   licenses,
+                                                   repo=RETRIEVER_REPOSITORY)
     # The scripts present in upstream recipes repository filtered by params
     recipes_scripts = get_dataset_names_upstream(keywords, licenses)
     native_scripts = sorted(list(set(retriever_scripts + recipes_scripts)))
@@ -65,6 +70,5 @@ def license(dataset):
 
 def dataset_licenses():
     """Return set with all available licenses."""
-    license_values = [str(script.licenses[0]['name']).lower()
-                      for script in SCRIPT_LIST()]
+    license_values = [str(script.licenses[0]['name']).lower() for script in SCRIPT_LIST()]
     return set(license_values)

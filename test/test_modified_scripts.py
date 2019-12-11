@@ -1,17 +1,11 @@
 """This module, when run, attempts to install datasets for modified Retriever
 scripts in the /scripts folder (except for those listed in ignore_list)
 """
-from __future__ import absolute_import
-from __future__ import print_function
-
-from future import standard_library
-
-standard_library.install_aliases()
 import os
 import sys
 import subprocess
 import requests
-from distutils.version import LooseVersion
+from pkg_resources import parse_version
 from retriever.engines import choose_engine, engine_list
 from retriever.lib.scripts import SCRIPT_LIST, get_retriever_script_versions
 
@@ -46,7 +40,7 @@ def get_modified_scripts():
         local_script, local_version = item.lower().split(",")
         # check for new scripts or a change in versions for present scripts
         # repo script versions compared with upstream.
-        if LooseVersion(local_version) > upstream_versions[local_script]:
+        if parse_version(local_version) > upstream_versions[local_script]:
             modified_list.append(os.path.basename(local_script).split('.')[0])
 
     return modified_list

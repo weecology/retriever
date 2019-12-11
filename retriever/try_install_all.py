@@ -7,19 +7,12 @@ all possible combinations of database platform and script and checks to
 see if there are any errors. It does not check the values in the database.
 
 """
-from __future__ import absolute_import
-from __future__ import print_function
-
 import os
 import sys
-from imp import reload
 
 from retriever.engines import engine_list, choose_engine
 from retriever.lib.scripts import SCRIPT_LIST
 
-reload(sys)
-if hasattr(sys, 'setdefaultencoding'):
-    sys.setdefaultencoding('latin-1')
 if os.name == "nt":
     os_password = "Password12!"
 else:
@@ -28,10 +21,8 @@ else:
 MODULE_LIST = SCRIPT_LIST()
 if len(sys.argv) > 1:
     engine_list = [
-        e for e in engine_list
-        if e.name in sys.argv[1:] or
-        e.abbreviation in sys.argv[1:]
-        ]
+        e for e in engine_list if e.name in sys.argv[1:] or e.abbreviation in sys.argv[1:]
+    ]
 
 if os.path.exists("test_all"):
     os.system("rm -r test_all")
@@ -60,20 +51,29 @@ engine_test = {
         'database_name': 'testdb_retriever',
         'table_name': '{db}.{table}'
     },
-    "xml": {'engine': 'xml', 'table_name': 'output_file_{table}.xml'},
-    "json": {'engine': 'json', 'table_name': 'output_file_{table}.json'},
-    "csv": {'engine': 'csv', 'table_name': 'output_file_{table}.csv'},
-    "sqlite": {'engine': 'sqlite', 'file': dbfile, 'table_name': '{db}_{table}'}
+    "xml": {
+        'engine': 'xml',
+        'table_name': 'output_file_{table}.xml'
+    },
+    "json": {
+        'engine': 'json',
+        'table_name': 'output_file_{table}.json'
+    },
+    "csv": {
+        'engine': 'csv',
+        'table_name': 'output_file_{table}.csv'
+    },
+    "sqlite": {
+        'engine': 'sqlite',
+        'file': dbfile,
+        'table_name': '{db}_{table}'
+    }
 }
 
 SCRIPT_LIST = SCRIPT_LIST()
 TEST_ENGINES = {}
 IGNORE = [
-    "forest-inventory-analysis",
-    "bioclim",
-    "prism-climate",
-    "vertnet",
-    "NPN",
+    "forest-inventory-analysis", "bioclim", "prism-climate", "vertnet", "NPN",
     "mammal-super-tree"
 ]
 IGNORE = [dataset.lower() for dataset in IGNORE]
@@ -85,14 +85,14 @@ for engine in engine_list:
             TEST_ENGINES[engine.abbreviation] = choose_engine(opts)
         except:
             TEST_ENGINES[engine.abbreviation] = None
-            pass
 
 errors = []
 for module in MODULE_LIST:
     for (key, value) in list(TEST_ENGINES.items()):
         if module.SCRIPT.name.lower() not in IGNORE:
-            if value != None:
-                print("==>", module.__name__, value.name, "..........", module.SCRIPT.name)
+            if value:
+                print("==>", module.__name__, value.name, "..........",
+                      module.SCRIPT.name)
                 try:
                     module.SCRIPT.download(value)
                 except KeyboardInterrupt:

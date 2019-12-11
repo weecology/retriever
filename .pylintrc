@@ -1,0 +1,121 @@
+[MASTER]
+# Use the template to set up the required/specific configurations.
+# Specify a configuration file.
+#rcfile=
+
+# Add files or directories to the blacklist. They should be base names, not
+# paths.
+ignore=CVS
+
+# Pickle collected data for later comparisons.
+# persistent=yes
+
+# Use multiple processes to speed up Pylint.
+jobs=4
+
+# Allow loading of arbitrary C extensions. Extensions are imported into the
+# active Python interpreter and may run arbitrary code.
+unsafe-load-any-extension=no
+
+
+# [MESSAGES CONTROL]
+
+# # Only show warnings with the listed confidence levels. Leave empty to show
+# # all. Valid levels: HIGH, INFERENCE, INFERENCE_FAILURE, UNDEFINED
+# confidence=
+
+# # Enable the message, report, category or checker with the given id(s). You can
+# # either give multiple identifier separated by comma (,) or put this option
+# # multiple time. See also the "--disable" option for examples.
+# enable=use-symbolic-message-instead,useless-supression,fixme
+
+# # Disable the message, report, category or checker with the given id(s).
+
+disable=
+    C0413,
+    # C0111, # (all C0114-C0116)
+    # C0115, # missing-class-docstring
+    # W0143: # Comparing against a callable, did you omit the parenthesis? (comparison-with-callable)
+    # W0611, # unused-import
+    C0103, # invalid-name
+    C0114, # missing-module-docstring
+    C0330, # Wrong hanging indentation before block (add 4 spaces)
+    C0411, # wrong-import-order
+    C0413, # wrong-import-position
+    E1101, # no-member
+    R0911, # too-many-return-statements
+    R0914, # too-many-locals
+    W0102, # dangerous-default-value)
+    W0201, # attribute-defined-outside-init
+    W0614, # unused-wildcard-import
+    W0622, # Redefining built-in 'type' (redefined-builtin)
+    W0702, # bare-except
+    W0703, # broad-except
+    W0706, # try-except-raise)
+    R0913, # too-many-arguments
+    E1101, 
+    R1702, # too-many-nested-blocks
+    W0212, # protected-access
+    R0903, # too-few-public-methods
+    R0902, # too-many-instance-attributes
+    W0401, # wildcard-import
+    C0415, # import-outside-toplevel
+    R0912, # too-many-branches
+    R0915, # Too many statements (53/50) (too-many-statements)
+    R0904, # Too many public methods (51/20) (too-many-public-methods)
+    format
+
+
+[REPORTS]
+
+# Set the output format. Available formats are text, parseable, colorized, msvs
+# (visual studio) and html. You can also give a reporter class, eg
+# mypackage.mymodule.MyReporterClass.
+output-format=text
+
+# Put messages in a separate file for each module / package specified on the
+# command line instead of printing them on stdout. Reports (if any) will be
+# written in a file name "pylint_global.[txt|html]".
+files-output=no
+
+# Tells whether to display a full report or only the messages
+reports=no
+
+# Python expression which should return a note less than 10 (10 is the highest
+# note). You have access to the variables errors warning, statement which
+# respectively contain the number of errors / warnings messages and the total
+# number of statements analyzed. This is used by the global evaluation report
+# (RP0004).
+evaluation=10.0 - ((float(5 * error + warning + refactor + convention) / statement) * 10)
+
+# Template used to display messages. This is a python new-style format string
+# used to format the message information. See doc for all details
+#msg-template=
+
+
+# [LOGGING]
+
+# # Logging modules to check that the string format arguments are in logging
+# # function parameter format
+# logging-modules=logging
+
+
+# [MISCELLANEOUS]
+
+# # List of note tags to take in consideration, separated by a comma.
+# notes=FIXME,XXX,TODO
+
+[FORMAT]
+
+# Maximum number of characters on a single line.
+max-line-length=90
+
+# # Regexp for a line that is allowed to be longer than the limit.
+# ignore-long-lines=^\s*(# )?<?https?://\S+>?$
+
+
+# [BASIC]
+
+# # Good variable names which should always be accepted, separated by a comma
+# good-names=i,j,k,f,_
+

@@ -1,10 +1,7 @@
-from __future__ import print_function
-
 import os
-from builtins import str
 
 from retriever.lib.defaults import ENCODING
-from retriever.lib.models import Engine, no_cleanup
+from retriever.lib.models import Engine
 
 
 class engine(Engine):
@@ -24,30 +21,19 @@ class engine(Engine):
     max_int = 4294967295
     placeholder = "%s"
     insert_limit = 1000
-    required_opts = [("user",
-                      "Enter your MySQL username",
-                      "root"),
-                     ("password",
-                      "Enter your password",
-                      ""),
-                     ("host",
-                      "Enter your MySQL host",
-                      "localhost"),
-                     ("port",
-                      "Enter your MySQL port",
-                      3306),
-                     ("database_name",
-                      "Format of database name",
-                      "{db}"),
-                     ("table_name",
-                      "Format of table name",
-                      "{db}.{table}"),
-                     ]
+    required_opts = [
+        ("user", "Enter your MySQL username", "root"),
+        ("password", "Enter your password", ""),
+        ("host", "Enter your MySQL host", "localhost"),
+        ("port", "Enter your MySQL port", 3306),
+        ("database_name", "Format of database name", "{db}"),
+        ("table_name", "Format of table name", "{db}.{table}"),
+    ]
 
     def create_db_statement(self):
         """Return SQL statement to create a database."""
-        createstatement = "CREATE DATABASE IF NOT EXISTS " + self.database_name()
-        return createstatement
+        create_statement = "CREATE DATABASE IF NOT EXISTS " + self.database_name()
+        return create_statement
 
     def insert_data_from_file(self, filename):
         """Call MySQL "LOAD DATA LOCAL INFILE" statement to perform a bulk insert."""
@@ -109,7 +95,11 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
         encoding = ENCODING.lower()
         if self.script.encoding:
             encoding = self.script.encoding.lower()
-        encoding_lookup = {'iso-8859-1': 'latin1', 'latin-1': 'latin1', 'utf-8': 'UTF8MB4'}
+        encoding_lookup = {
+            'iso-8859-1': 'latin1',
+            'latin-1': 'latin1',
+            'utf-8': 'UTF8MB4'
+        }
         db_encoding = encoding_lookup.get(encoding)
         return db_encoding
 
@@ -121,13 +111,17 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
         For PyMySQL to work well on CI infrastructure,
         connect with the preferred charset
         """
-        args = {'host': self.opts['host'],
-                'port': int(self.opts['port']),
-                'user': self.opts['user'],
-                'passwd': self.opts['password']}
+        args = {
+            'host': self.opts['host'],
+            'port': int(self.opts['port']),
+            'user': self.opts['user'],
+            'passwd': self.opts['password'],
+        }
         import pymysql as dbapi
         import pymysql.constants.CLIENT as client
+
         args['client_flag'] = client.LOCAL_FILES
         self.get_input()
         return dbapi.connect(charset=self.lookup_encoding(),
-                             read_default_file='~/.my.cnf', **args)
+                             read_default_file='~/.my.cnf',
+                             **args)

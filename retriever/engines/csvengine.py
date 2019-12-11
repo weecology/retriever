@@ -24,12 +24,8 @@ class engine(Engine):
     }
     insert_limit = 1000
     required_opts = [
-        ("table_name",
-         "Format of table name",
-         "{db}_{table}.csv"),
-        ("data_dir",
-         "Install directory",
-         DATA_DIR),
+        ("table_name", "Format of table name", "{db}_{table}.csv"),
+        ("data_dir", "Install directory", DATA_DIR),
     ]
     table_names = []
 
@@ -92,8 +88,7 @@ class engine(Engine):
                 newrows.append(insert_stmt)
                 self.auto_column_number += 1
             return newrows
-        else:
-            return values
+        return values
 
     def table_exists(self, dbname, tablename):
         """Check to see if the data file currently exists"""
@@ -105,7 +100,7 @@ class engine(Engine):
     def to_csv(self, sort=True, path=None, select_columns=None):
         """Export sorted version of CSV file"""
         for table_item in self.script_table_registry[self.script.name]:
-            sort_csv(table_item[0])
+            sort_csv(table_item[0], self.encoding)
 
     def get_connection(self):
         """Gets the db connection."""
