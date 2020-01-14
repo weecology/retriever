@@ -1,8 +1,5 @@
-# -*- coding: latin-1  -*-
+# -*- coding: utf-8  -*-
 """Tests for the Data Retriever"""
-from future import standard_library
-
-standard_library.install_aliases()
 import os
 import subprocess
 import random
@@ -99,7 +96,7 @@ def test_auto_get_datatypes():
     The function adds 100 to the auto detected length of column
     """
     test_engine.auto_get_datatypes(None,
-                                   [["ö", 'bb', 'Löve']],
+                                   [["Ã¶", 'bb', 'LÃ¶ve']],
                                    [['a', None], ['b', None], ['c', None]])
     length = test_engine.table.columns
     # encoded char "?" will return 2 in length
@@ -222,7 +219,7 @@ def test_drop_statement():
 def test_download_archive_gz_known():
     """Download and extract known files
 
-    from a gzipped file to the .retriever/data  dir"""
+    from a gzipped file to the .retriever/data dir"""
     setup_functions()
     files = test_engine.download_files_from_archive(
         url=gz_url, file_names=['test/sample_tar.csv'], archive_type='gz')
@@ -235,7 +232,7 @@ def test_download_archive_gz_known():
 def test_download_archive_gz_unknown():
     """Download and extract unknown files
 
-    from a gzipped file to the .retriever/data  dir"""
+    from a gzipped file to the .retriever/data dir"""
     setup_functions()
     files = test_engine.download_files_from_archive(url=gz_url,
                                                     archive_type='gz')
@@ -248,7 +245,7 @@ def test_download_archive_gz_unknown():
 def test_download_archive_targz_known():
     """Download and extract known files
 
-    from a targzipped file to the .retriever/data  dir"""
+    from a targzipped file to the .retriever/data dir"""
     setup_functions()
     files = test_engine.download_files_from_archive(url=tar_gz_url,
                                                     file_names=['test/sample_tar.csv'],
@@ -262,7 +259,7 @@ def test_download_archive_targz_known():
 def test_download_archive_targz_unknown():
     """Download and extract unknown files
 
-    from a targzipped file to the .retriever/data  dir"""
+    from a targzipped file to the .retriever/data dir"""
     setup_functions()
     files = test_engine.download_files_from_archive(url=tar_gz_url,
                                                     archive_type='tar.gz')
@@ -275,7 +272,7 @@ def test_download_archive_targz_unknown():
 def test_download_archive_tar_known():
     """Download and extract known files
 
-    from a tarred file to the .retriever/data  dir"""
+    from a tarred file to the .retriever/data dir"""
     setup_functions()
     files = test_engine.download_files_from_archive(
         url=tar_url,
@@ -290,7 +287,7 @@ def test_download_archive_tar_known():
 def test_download_archive_tar_unknown():
     """Download and extract unknown files
 
-    from a tarred file to the .retriever/data  dir"""
+    from a tarred file to the .retriever/data dir"""
     setup_functions()
     files = test_engine.download_files_from_archive(url=tar_url,
                                                     archive_type='tar')
@@ -303,7 +300,7 @@ def test_download_archive_tar_unknown():
 def test_download_archive_zip_known():
     """Download and extract known files
 
-    from a zipped file to the .retriever/data  dir"""
+    from a zipped file to the .retriever/data dir"""
     setup_functions()
     files = test_engine.download_files_from_archive(url=zip_url,
                                                     file_names=['sample_zip.csv'],
@@ -317,7 +314,7 @@ def test_download_archive_zip_known():
 def test_download_archive_zip_unkown():
     """Download and extract unknown files
 
-    from a zipped file to the .retriever/data  dir"""
+    from a zipped file to the .retriever/data dir"""
     setup_functions()
     files = test_engine.download_files_from_archive(url=zip_url,
                                                     archive_type='zip')

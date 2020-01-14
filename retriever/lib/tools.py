@@ -65,8 +65,10 @@ def open_csvw(csv_file):
     Also sets dialect to 'excel' and escape characters to '\\'
     """
     if os.name == 'nt':
-        csv_writer = csv.writer(csv_file, dialect='excel',
-                                escapechar='\\', lineterminator='\n')
+        csv_writer = csv.writer(csv_file,
+                                dialect='excel',
+                                escapechar='\\',
+                                lineterminator='\n')
     else:
         csv_writer = csv.writer(csv_file, dialect='excel', escapechar='\\')
     return csv_writer
@@ -80,6 +82,8 @@ def to_str(object, object_encoding=sys.stdout, object_decoder=ENCODING):
 
 def walk_relative_path(dir_name):
     """Return relative paths of files in the directory"""
-    return [os.path.join(os.path.relpath(dir_, dir_name), file_name)
-            for dir_, _, files in os.walk(dir_name, topdown=False)
-            for file_name in files]
+    return [
+        os.path.join(os.path.relpath(dir_, dir_name), file_name)
+        for dir_, _, files in os.walk(dir_name, topdown=False)
+        for file_name in files
+    ]

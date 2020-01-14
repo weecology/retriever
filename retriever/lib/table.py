@@ -1,16 +1,12 @@
-from future import standard_library
-
-standard_library.install_aliases()
-
 import csv
 import io
 import sys
 from functools import reduce
 
-from retriever.lib.cleanup import *
+from retriever.lib.cleanup import correct_invalid_value, Cleanup
 
 
-class Dataset(object):
+class Dataset():
     """Dataset generic properties"""
 
     def __init__(self, name=None, url=None):
@@ -21,15 +17,23 @@ class Dataset(object):
 class TabularDataset(Dataset):
     """Tabular database table."""
 
-    def __init__(self, name=None, url=None, pk=True,
-                 contains_pk=False, delimiter=None,
-                 header_rows=1, column_names_row=1,
-                 fixed_width=False, cleanup=Cleanup(),
+    def __init__(self,
+                 name=None,
+                 url=None,
+                 pk=True,
+                 contains_pk=False,
+                 delimiter=None,
+                 header_rows=1,
+                 column_names_row=1,
+                 fixed_width=False,
+                 cleanup=Cleanup(),
                  record_id=0,
                  columns=[],
                  replace_columns=[],
                  missingValues=None,
-                 cleaned_columns=False, **kwargs):
+                 cleaned_columns=False,
+                 number_of_records=None,
+                 **kwargs):
 
         self.name = name
         self.url = url
@@ -46,6 +50,7 @@ class TabularDataset(Dataset):
         self.missingValues = missingValues
         self.cleaned_columns = cleaned_columns
         self.dataset_type = "TabularDataset"
+        self.number_of_records = number_of_records
         for key in kwargs:
             if hasattr(self, key):
                 self.key = kwargs[key]
@@ -107,18 +112,16 @@ class TabularDataset(Dataset):
                 column_list = []
                 for obj in self.schema["fields"]:
                     type = None
-                    if str(obj["type"]).startswith("pk-") or str(obj["type"]).startswith("ct-"):
+                    if str(obj["type"]).startswith("pk-") or str(
+                            obj["type"]).startswith("ct-"):
                         type = obj["type"]
                     else:
                         type = spec_data_types.get(obj["type"], "char")
 
                     if "size" in obj:
-                        column_list.append((obj["name"],
-                                            (type,
-                                             obj["size"])))
+                        column_list.append((obj["name"], (type, obj["size"])))
                     else:
-                        column_list.append((obj["name"],
-                                            (type,)))
+                        column_list.append((obj["name"], (type,)))
                 self.columns = column_list
             elif key == "ct_column":
                 setattr(self, key, "'" + self.schema[key] + "'")
@@ -142,8 +145,7 @@ class TabularDataset(Dataset):
         remove leading whitespaces, replace sql key words, etc.
         """
         column_name = column_name.lower().strip().replace("\n", "")
-        replace_columns = {old.lower(): new.lower()
-                           for old, new in self.replace_columns}
+        replace_columns = {old.lower(): new.lower() for old, new in self.replace_columns}
         column_name = str(replace_columns.get(column_name, column_name).strip())
         replace = [
             ("%", "percent"),
@@ -154,7 +156,7 @@ class TabularDataset(Dataset):
             (">", "_gthn_"),
             ("@", "_at_"),
         ]
-        replace += [(x, '') for x in (")", "?", "#", ";" "\n", "\r", '"', "'")]
+        replace += [(x, '') for x in (")", "?", "#", ";", "\n", "\r", '"', "'")]
         replace += [(x, '_') for x in (" ", "(", "/", ".", "+", "-", "*", ":", "[", "]")]
 
         column_name = reduce(lambda x, y: x.replace(*y), replace, column_name)
@@ -178,8 +180,8 @@ class TabularDataset(Dataset):
             "update": "updates",
             "date": "record_date",
             "index": "indices",
-            "repeat": "repeats", 
-            "system": "systems", 
+            "repeat": "repeats",
+            "system": "systems",
             "class": "classes",
             "left": "vleft",
             "right": "vright",
@@ -189,9 +191,7 @@ class TabularDataset(Dataset):
             replace_dict[x] = ''
         for x in (" ", "(", "/", ".", "-"):
             replace_dict[x] = '_'
-        if column_name in replace_dict:
-            column_name = replace_dict[column_name]
-        return column_name
+        return replace_dict.get(column_name, column_name)
 
     def combine_on_delimiter(self, line_as_list):
         """Combine a list of values into a line of csv data."""
@@ -206,6 +206,10 @@ class TabularDataset(Dataset):
         return writer_file.getvalue()
 
     def values_from_line(self, line):
+        """Return expected row values
+
+        Includes dynamically generated field values like auto pk
+        """
         linevalues = []
         if self.columns[0][1][0] == 'pk-auto':
             column = 1
@@ -249,15 +253,16 @@ class TabularDataset(Dataset):
         if not self.cleaned_columns:
             column_names = list(self.columns)
             self.columns[:] = []
-            self.columns = [(self.clean_column_name(name[0]), name[1])
-                            for name in column_names]
+            self.columns = [
+                (self.clean_column_name(name[0]), name[1]) for name in column_names
+            ]
             self.cleaned_columns = True
         for item in self.columns:
             if not create and item[1][0] == 'pk-auto':
                 # don't include this columns if create=False
                 continue
             thistype = item[1][0]
-            if (thistype != "skip") and (thistype != "combine"):
+            if thistype not in ('skip', 'combine'):
                 columns.append(item[0])
         if join:
             return ", ".join(columns)
@@ -317,6 +322,7 @@ class VectorDataset(Dataset):
                 setattr(self, key, kwargs[key])
 
         Dataset.__init__(self, self.name, self.url)
+
 
 myTables = {
     "vector": VectorDataset,

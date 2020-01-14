@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-from __future__ import print_function
-
 import os
 from collections import OrderedDict
 
@@ -19,11 +16,14 @@ def _install(args, use_cache, debug):
     if args['dataset'].endswith('.zip') or args['hash_value']:
         path_to_archive = args['dataset']
         if args['hash_value']:
-            path_to_archive = os.path.join(PROVENANCE_DIR, args['dataset'],
-                                           '{}-{}.zip'.format(args['dataset'], args['hash_value']))
+            path_to_archive = os.path.join(
+                PROVENANCE_DIR, args['dataset'],
+                '{}-{}.zip'.format(args['dataset'], args['hash_value']))
         if not os.path.exists(path_to_archive):
             print('The committed file does not exist.')
-        engine = install_committed(path_to_archive, engine, force=args.get('force', False))
+        engine = install_committed(path_to_archive,
+                                   engine,
+                                   force=args.get('force', False))
         return engine
     script_list = SCRIPT_LIST()
     if not (script_list or os.listdir(SCRIPT_WRITE_PATH)):
@@ -49,7 +49,11 @@ def _install(args, use_cache, debug):
 
 def install_csv(dataset,
                 table_name='{db}_{table}.csv',
-                data_dir=DATA_DIR, debug=False, use_cache=True, force=False, hash_value=None):
+                data_dir=DATA_DIR,
+                debug=False,
+                use_cache=True,
+                force=False,
+                hash_value=None):
     """Install datasets into csv."""
     args = {
         'command': 'install',
@@ -63,9 +67,17 @@ def install_csv(dataset,
     return _install(args, use_cache, debug)
 
 
-def install_mysql(dataset, user='root', password='', host='localhost',
-                  port=3306, database_name='{db}', table_name='{db}.{table}',
-                  debug=False, use_cache=True, force=False, hash_value=None):
+def install_mysql(dataset,
+                  user='root',
+                  password='',
+                  host='localhost',
+                  port=3306,
+                  database_name='{db}',
+                  table_name='{db}.{table}',
+                  debug=False,
+                  use_cache=True,
+                  force=False,
+                  hash_value=None):
     """Install datasets into mysql."""
     args = {
         'command': 'install',
@@ -83,10 +95,19 @@ def install_mysql(dataset, user='root', password='', host='localhost',
     return _install(args, use_cache, debug)
 
 
-def install_postgres(dataset, user='postgres', password='',
-                     host='localhost', port=5432, database='postgres',
-                     database_name='{db}', table_name='{db}.{table}', bbox=[],
-                     debug=False, use_cache=True, force=False, hash_value=None):
+def install_postgres(dataset,
+                     user='postgres',
+                     password='',
+                     host='localhost',
+                     port=5432,
+                     database='postgres',
+                     database_name='{db}',
+                     table_name='{db}.{table}',
+                     bbox=[],
+                     debug=False,
+                     use_cache=True,
+                     force=False,
+                     hash_value=None):
     """Install datasets into postgres."""
     args = {
         'command': 'install',
@@ -106,10 +127,14 @@ def install_postgres(dataset, user='postgres', password='',
     return _install(args, use_cache, debug)
 
 
-def install_sqlite(dataset, file='sqlite.db',
+def install_sqlite(dataset,
+                   file='sqlite.db',
                    table_name='{db}_{table}',
                    data_dir=DATA_DIR,
-                   debug=False, use_cache=True, force=False, hash_value=None):
+                   debug=False,
+                   use_cache=True,
+                   force=False,
+                   hash_value=None):
     """Install datasets into sqlite."""
     args = {
         'command': 'install',
@@ -124,10 +149,14 @@ def install_sqlite(dataset, file='sqlite.db',
     return _install(args, use_cache, debug)
 
 
-def install_msaccess(dataset, file='access.mdb',
+def install_msaccess(dataset,
+                     file='access.mdb',
                      table_name='[{db} {table}]',
                      data_dir=DATA_DIR,
-                     debug=False, use_cache=True, force=False, hash_value=None):
+                     debug=False,
+                     use_cache=True,
+                     force=False,
+                     hash_value=None):
     """Install datasets into msaccess."""
     args = {
         'command': 'install',
@@ -144,7 +173,12 @@ def install_msaccess(dataset, file='access.mdb',
 
 def install_json(dataset,
                  table_name='{db}_{table}.json',
-                 data_dir=DATA_DIR, debug=False, use_cache=True, pretty=False, force=False, hash_value=None):
+                 data_dir=DATA_DIR,
+                 debug=False,
+                 use_cache=True,
+                 pretty=False,
+                 force=False,
+                 hash_value=None):
     """Install datasets into json."""
     args = {
         'command': 'install',
@@ -161,7 +195,11 @@ def install_json(dataset,
 
 def install_xml(dataset,
                 table_name='{db}_{table}.xml',
-                data_dir=DATA_DIR, debug=False, use_cache=True, force=False, hash_value=None):
+                data_dir=DATA_DIR,
+                debug=False,
+                use_cache=True,
+                force=False,
+                hash_value=None):
     """Install datasets into xml."""
     args = {
         'command': 'install',

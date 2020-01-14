@@ -4,19 +4,21 @@ This module contains dummy classes required for non-db based children of the Eng
 """
 
 
-class DummyConnection(object):
+class DummyConnection():
+    """Dummy connection class"""
+
     def cursor(self):
-        pass
+        """Dummy cursor function"""
 
     def commit(self):
-        pass
+        """Dummy commit"""
 
     def rollback(self):
-        pass
+        """Dummy rollback"""
 
     def close(self):
-        pass
+        """Dummy close connection"""
 
 
 class DummyCursor(DummyConnection):
-    pass
+    """Dummy connection cursor"""

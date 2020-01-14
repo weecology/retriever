@@ -1,155 +1,187 @@
-retriever\.lib package
-======================
+retriever.lib package
+=====================
 
 Submodules
 ----------
 
-retriever\.lib\.cleanup module
-------------------------------
+retriever.lib.cleanup module
+----------------------------
 
 .. automodule:: retriever.lib.cleanup
     :members:
     :undoc-members:
     :show-inheritance:
 
-retriever\.lib\.datapackage module
-----------------------------------
+retriever.lib.create\_scripts module
+------------------------------------
+
+.. automodule:: retriever.lib.create_scripts
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+retriever.lib.datapackage module
+--------------------------------
 
 .. automodule:: retriever.lib.datapackage
     :members:
     :undoc-members:
     :show-inheritance:
 
-retriever\.lib\.datasets module
--------------------------------
+retriever.lib.datasets module
+-----------------------------
 
 .. automodule:: retriever.lib.datasets
     :members:
     :undoc-members:
     :show-inheritance:
 
-retriever\.lib\.defaults module
--------------------------------
+retriever.lib.defaults module
+-----------------------------
 
 .. automodule:: retriever.lib.defaults
     :members:
     :undoc-members:
     :show-inheritance:
 
-retriever\.lib\.download module
--------------------------------
+retriever.lib.download module
+-----------------------------
 
 .. automodule:: retriever.lib.download
     :members:
     :undoc-members:
     :show-inheritance:
 
-retriever\.lib\.dummy module
-----------------------------
+retriever.lib.dummy module
+--------------------------
 
 .. automodule:: retriever.lib.dummy
     :members:
     :undoc-members:
     :show-inheritance:
 
-retriever\.lib\.engine module
------------------------------
+retriever.lib.engine module
+---------------------------
 
 .. automodule:: retriever.lib.engine
     :members:
     :undoc-members:
     :show-inheritance:
 
-retriever\.lib\.engine\_tools module
-------------------------------------
+retriever.lib.engine\_tools module
+----------------------------------
 
 .. automodule:: retriever.lib.engine_tools
     :members:
     :undoc-members:
     :show-inheritance:
 
-retriever\.lib\.excel module
-----------------------------
+retriever.lib.excel module
+--------------------------
 
 .. automodule:: retriever.lib.excel
     :members:
     :undoc-members:
     :show-inheritance:
 
-retriever\.lib\.get\_opts module
---------------------------------
+retriever.lib.fetch module
+--------------------------
+
+.. automodule:: retriever.lib.fetch
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+retriever.lib.get\_opts module
+------------------------------
 
 .. automodule:: retriever.lib.get_opts
     :members:
     :undoc-members:
     :show-inheritance:
 
-retriever\.lib\.install module
-------------------------------
+retriever.lib.install module
+----------------------------
 
 .. automodule:: retriever.lib.install
     :members:
     :undoc-members:
     :show-inheritance:
 
-retriever\.lib\.load\_json module
----------------------------------
+retriever.lib.load\_json module
+-------------------------------
 
 .. automodule:: retriever.lib.load_json
     :members:
     :undoc-members:
     :show-inheritance:
 
-retriever\.lib\.models module
------------------------------
+retriever.lib.models module
+---------------------------
 
 .. automodule:: retriever.lib.models
     :members:
     :undoc-members:
     :show-inheritance:
 
-retriever\.lib\.repository module
----------------------------------
+retriever.lib.provenance module
+-------------------------------
+
+.. automodule:: retriever.lib.provenance
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+retriever.lib.provenance\_tools module
+--------------------------------------
+
+.. automodule:: retriever.lib.provenance_tools
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+retriever.lib.repository module
+-------------------------------
 
 .. automodule:: retriever.lib.repository
     :members:
     :undoc-members:
     :show-inheritance:
 
-retriever\.lib\.scripts module
-------------------------------
+retriever.lib.scripts module
+----------------------------
 
 .. automodule:: retriever.lib.scripts
     :members:
     :undoc-members:
     :show-inheritance:
 
-retriever\.lib\.table module
-----------------------------
+retriever.lib.table module
+--------------------------
 
 .. automodule:: retriever.lib.table
     :members:
     :undoc-members:
     :show-inheritance:
 
-retriever\.lib\.templates module
---------------------------------
+retriever.lib.templates module
+------------------------------
 
 .. automodule:: retriever.lib.templates
     :members:
     :undoc-members:
     :show-inheritance:
 
-retriever\.lib\.tools module
-----------------------------
+retriever.lib.tools module
+--------------------------
 
 .. automodule:: retriever.lib.tools
     :members:
     :undoc-members:
     :show-inheritance:
 
-retriever\.lib\.warning module
-------------------------------
+retriever.lib.warning module
+----------------------------
 
 .. automodule:: retriever.lib.warning
     :members:
