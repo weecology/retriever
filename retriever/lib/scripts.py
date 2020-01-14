@@ -62,12 +62,19 @@ def reload_scripts():
                     modules.append(read_script)
                     loaded_files.append(script_name)
                     loaded_scripts.append(read_script.name.lower())
-        files = [
-            file for file in os.listdir(search_path)
-            if file[-3:] == ".py" and file[0] != "_" and ("#retriever" in " ".join(
-                open_fr(join(search_path, file), encoding=ENCODING).readlines()
-                [:2]).lower())
-        ]
+
+        files = []
+        for file in os.listdir(search_path):
+            if file[-3:] == ".py" and file[0] != "_":
+                try:
+
+                    if "#retriever" in " ".join(
+                            open_fr(join(search_path, file),
+                                    encoding=ENCODING).readlines()[:2]).lower():
+                        files.append(file)
+                except:
+                    continue
+
         for script in files:
             script_name = ".".join(script.split(".")[:-1])
             if script_name not in loaded_files:
@@ -82,7 +89,7 @@ def reload_scripts():
                             continue
                     # if the script wasn't found in an early search path
                     # make sure it works and then add it
-                    new_module.SCRIPT.download
+                    new_module.SCRIPT.download  # pylint: disable=W0104
                     setattr(new_module.SCRIPT, "_file", os.path.join(search_path, script))
                     setattr(new_module.SCRIPT, "_name", script_name)
                     modules.append(new_module.SCRIPT)
@@ -445,6 +452,7 @@ def get_retriever_script_versions():
 
 
 class StoredScripts:
+    """Stored scripts class"""
 
     def __init__(self):
         self._shared_scripts = SCRIPT_LIST()
