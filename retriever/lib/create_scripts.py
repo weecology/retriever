@@ -68,12 +68,14 @@ def create_resources(file, skip_lines):
     engine = Engine()
     table = engine.auto_create_table(
         Table(str(file), header_rows=skip_lines), filename=file, make=False
-    )
+    ) 
     clean_table = table.__dict__
     resource_dict = {}
     path_to_table = os.path.basename(clean_table["name"])
-    resource_dict["name"] = os.path.splitext(path_to_table)[0].lower()
-    resource_dict["path"] = path_to_table
+    r_name, r_ext = os.path.splitext(path_to_table)
+    r_name = r_name.translate(r_name.maketrans(" -_.","    ")).strip().replace(" ","_").lower()
+    resource_dict["name"] = r_name
+    resource_dict["path"] = r_name + r_ext
     resource_dict["schema"] = {}
     resource_dict["dialect"] = {}
     resource_dict["schema"]["fields"] = []
@@ -81,7 +83,7 @@ def create_resources(file, skip_lines):
         if len(ctuple) >= 2:
             resource_dict["schema"]["fields"].append({"name": cname,
                                                       "type": ctuple[0],
-                                                      "size": ctuple[1]})
+                                                      "size": "{a}".format(a=ctuple[1])})
         else:
             resource_dict["schema"]["fields"].append({"name": cname, "type": ctuple[0]})
     resource_dict["url"] = "FILL"
