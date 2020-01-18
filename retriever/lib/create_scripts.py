@@ -73,23 +73,17 @@ def create_resources(file, skip_lines):
     resource_dict = {}
     path_to_table = os.path.basename(clean_table["name"])
     print("Processing... {file_name}".format(file_name=path_to_table))
-    resource_dict["name"] = os.path.splitext(path_to_table)[0].lower()
+    r_name = os.path.splitext(path_to_table)[0]
+    resource_dict["name"] = r_name.translate(r_name.maketrans(" -_.","    ")).strip().replace(" ","_").lower()
     resource_dict["path"] = path_to_table
     resource_dict["schema"] = {}
     resource_dict["dialect"] = {"delimiter": ","}
     resource_dict["schema"]["fields"] = []
     for cname, ctuple in clean_table["columns"]:
         if len(ctuple) >= 2:
-            if ctuple[0] == 'char':
-                # char sizes need quotes
-                char_size = "{a}".format(a=ctuple[1])
-                resource_dict["schema"]["fields"].append({"name": cname,
-                                                          "type": ctuple[0],
-                                                          "size": char_size})
-            else:
-                resource_dict["schema"]["fields"].append({"name": cname,
-                                                          "type": ctuple[0],
-                                                          "size": ctuple[1]})
+            resource_dict["schema"]["fields"].append({"name": cname,
+                                                      "type": ctuple[0],
+                                                      "size": "{a}".format(a=ctuple[1])})
         else:
             resource_dict["schema"]["fields"].append({"name": cname,
                                                       "type": ctuple[0]})
@@ -171,7 +165,7 @@ def process_singles(single_files_path, out_path, skip_lines):
 
 def write_out_scripts(script_dict, path, out_path):
     """Writes scripts out to a given path"""
-    names = os.path.basename(path).split(".")[0] + ".json"
+    names = os.path.basename(path).split(".")[0].strip() + ".json"
     file_name = names.lower().replace("-", "_")
     path_dir = get_directory(os.path.expanduser(path))
     if out_path is not None:
