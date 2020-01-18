@@ -157,7 +157,8 @@ def process_singles(single_files_path, out_path, skip_lines):
 
 def write_out_scripts(script_dict, path, out_path):
     """Writes scripts out to a given path"""
-    file_name = os.path.basename(path).split(".")[0] + ".json"
+    file_name = os.path.basename(path).split(".")[0]
+    file_name = file_name.strip().translate(file_name.maketrans(" -","__")) + ".json"
     path_dir = get_directory(os.path.expanduser(path))
     if out_path is not None:
         path_dir = os.path.expanduser(out_path)
