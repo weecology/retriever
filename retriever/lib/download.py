@@ -1,25 +1,23 @@
-from __future__ import absolute_import
-from __future__ import print_function
-
 import os
 
 from retriever.engines import choose_engine
 from retriever.lib.defaults import SCRIPT_WRITE_PATH
-from retriever.lib.scripts import SCRIPT_LIST
-from retriever.lib.engine_tools import name_matches
 from retriever.lib.repository import check_for_updates
+from retriever.lib.scripts import SCRIPT_LIST, name_matches
 
 
-def download(dataset, path='./', quiet=False, subdir=False, debug=False):
+def download(dataset, path='./', quiet=False, sub_dir='', debug=False, use_cache=True):
     """Download scripts for retriever."""
     args = {
         'dataset': dataset,
         'command': 'download',
         'path': path,
-        'subdir': subdir,
+        'sub_dir': sub_dir,
         'quiet': quiet
     }
     engine = choose_engine(args)
+    engine.use_cache = use_cache
+
     script_list = SCRIPT_LIST()
     if not script_list or not os.listdir(SCRIPT_WRITE_PATH):
         check_for_updates()
@@ -36,6 +34,7 @@ def download(dataset, path='./', quiet=False, subdir=False, debug=False):
                 if debug:
                     raise
     else:
-        message = "Run retriever.datasets() to see a list of currently " \
+        message = "Run retriever.datasets() to see the list of currently " \
                   "available datasets."
         raise ValueError(message)
+    return engine

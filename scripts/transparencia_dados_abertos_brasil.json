@@ -1,0 +1,73 @@
+{
+    "citation": "Augusto Herrmann, Transparency and Open Data Portals of Brazilian states and municipalities, (2017), GitHub repository, https://github.com/augusto-herrmann/transparencia-dados-abertos-brasil",
+    "description": "Tabelas com o levantamento de portais estaduais e municipais de transparência e dados abertos, feito originalmente por Rodrigo Klein em sua tese de doutorado na PUC/RS, em 2017",
+    "encoding": "utf-8",
+    "homepage": "https://github.com/augusto-herrmann/transparencia-dados-abertos-brasil",
+    "keywords": ["Brazil"],
+    "licenses": [{"name": "MIT"}],
+    "name": "transparencia-dados-abertos-brasil",
+    "resources": [
+        {
+            "dialect": {},
+            "name": "portais_estaduais",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "uf",
+                        "type": "char"
+                    },
+                    {
+                        "name": "uf_nome",
+                        "type": "char"
+                    },
+                    {
+                        "name": "url",
+                        "type": "char"
+                    },
+                    {
+                        "name": "tipo",
+                        "type": "char"
+                    }
+                ]
+            },
+            "url": "https://raw.githubusercontent.com/augusto-herrmann/transparencia-dados-abertos-brasil/master/data/portais-estaduais.csv"
+        },
+        {
+            "dialect": {},
+            "name": "portais_municipais",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "uf",
+                        "type": "char"
+                    },
+                    {
+                        "name": "município",
+                        "type": "char"
+                    },
+                    {
+                        "name": "população",
+                        "type": "int"
+                    },
+                    {
+                        "name": "url",
+                        "type": "char"
+                    },
+                    {
+                        "name": "tipo",
+                        "type": "char"
+                    },
+                    {
+                        "name": "observação",
+                        "type": "char"
+                    }
+                ]
+            },
+            "url": "https://raw.githubusercontent.com/augusto-herrmann/transparencia-dados-abertos-brasil/master/data/portais-municipais.csv"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.3.2",
+    "title": "Transparency and Open Data Portals of Brazilian states and municipalities",
+    "version": "1.0.0"
+}

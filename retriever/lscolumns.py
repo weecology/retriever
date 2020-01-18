@@ -1,11 +1,4 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 import sys
-from builtins import range
-from builtins import zip
-
 from retriever.term_size import get_terminal_size
 
 
@@ -37,20 +30,31 @@ def printls(values, max_width=None, spacing=2):
     if max_width:
         # if output to terminal or max_width is specified, use column output
         columns = None
-        for cols in [int((len(values) // float(i)) + 0.5) for i in range(1, len(values) + 1)]:
+        for cols in [
+                int((len(values) // float(i)) + 0.5) for i in range(1,
+                                                                    len(values) + 1)
+        ]:
             columns = get_columns(values, cols)
-            widths = [max([len(c) for c in column]) +
-                      spacing for column in columns]
+            widths = [max([len(c[0]) for c in column]) + spacing for column in columns]
             if sum(widths) < max_width:
                 break
         if columns:
             for pos in range(len(columns[0])):
                 for column, width in zip(columns, widths):
                     if len(column) > pos:
-                        print(column[pos].ljust(width - 1), end=' ')
+                        dataset = column[pos]
+                        if dataset[1]:
+                            print(dataset[0].ljust(width - 1), end=' ')
+                        else:
+                            print('\033[91m' + (dataset[0] + '*').ljust(width - 1) +
+                                  '\033[0m',
+                                  end=' ')
                 print()
 
     else:
         # otherwise, just output each value, one per line
         for value in values:
-            print(value)
+            if value[1]:
+                print(value[0])
+            else:
+                print('\033[91m' + value[0] + '*' + '\033[0m')

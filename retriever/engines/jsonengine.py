@@ -1,7 +1,6 @@
 """Engine for writing data to a JSON file"""
 import json
 import os
-from builtins import zip
 from collections import OrderedDict
 
 from retriever.lib.defaults import DATA_DIR
@@ -12,7 +11,7 @@ from retriever.lib.engine_tools import json2csv, sort_csv
 
 
 class engine(Engine):
-    """Engine instance for writing data to a CSV file."""
+    """Engine instance for writing data to a JSON file."""
 
     name = "JSON"
     abbreviation = "json"
@@ -28,12 +27,8 @@ class engine(Engine):
     }
     insert_limit = 1000
     required_opts = [
-        ("table_name",
-         "Format of table name",
-         "{db}_{table}.json"),
-        ("data_dir",
-         "Install directory",
-         DATA_DIR),
+        ("table_name", "Format of table name", "{db}_{table}.json"),
+        ("data_dir", "Install directory", DATA_DIR),
     ]
     table_names = []
 
@@ -44,7 +39,7 @@ class engine(Engine):
     def create_table(self):
         """Create the table by creating an empty json file"""
         table_path = os.path.join(self.opts["data_dir"], self.table_name())
-        self.output_file = open_fw(table_path)
+        self.output_file = open_fw(table_path, encoding=self.encoding)
         self.output_file.write("[")
         self.table_names.append((self.output_file, table_path))
         self.auto_column_number = 1
@@ -54,8 +49,7 @@ class engine(Engine):
         if self.script.name not in self.script_table_registry:
             self.script_table_registry[self.script.name] = []
         self.script_table_registry[self.script.name].append(
-            (self.table_name(), self.table)
-        )
+            (self.table_name(), self.table))
 
     def disconnect(self):
         """Close out the JSON with a `\\n]}` and close the file.
@@ -66,11 +60,11 @@ class engine(Engine):
         if self.table_names:
             for output_file_i, file_name in self.table_names:
                 output_file_i.close()
-                current_input_file = open_fr(file_name)
+                current_input_file = open_fr(file_name, encoding=self.encoding)
                 file_contents = current_input_file.readlines()
                 current_input_file.close()
                 file_contents[-1] = file_contents[-1].strip(',\n')
-                current_output_file = open_fw(file_name)
+                current_output_file = open_fw(file_name, encoding=self.encoding)
                 current_output_file.writelines(file_contents)
                 current_output_file.writelines(['\n]'])
                 current_output_file.close()
@@ -110,10 +104,16 @@ class engine(Engine):
         else:
             newrows = values
         json_dumps = []
+
+        pretty = bool("pretty" in self.opts and self.opts["pretty"])
         for line_data in newrows:
             tuples = (zip(keys, line_data))
             write_data = OrderedDict(tuples)
-            json_dumps.append(json.dumps(write_data, ensure_ascii=False) + ",")
+            if not pretty:
+                json_dumps.append(json.dumps(write_data, ensure_ascii=False) + ",")
+            else:
+                json_dumps.append(
+                    json.dumps(write_data, ensure_ascii=False, indent=2) + ",")
         return json_dumps
 
     def table_exists(self, dbname, tablename):
@@ -123,14 +123,19 @@ class engine(Engine):
         table_name = os.path.join(tabledir, tablename)
         return os.path.exists(table_name)
 
-    def to_csv(self, sort=True, path=None):
+    def to_csv(self, sort=True, path=None, select_columns=None):
         """Export table from json engine to CSV file"""
         for table_item in self.script_table_registry[self.script.name]:
             header = table_item[1].get_insert_columns(join=False, create=True)
             outputfile = os.path.normpath(
-                os.path.join(path if path else '', os.path.splitext(os.path.basename(table_item[0]))[0] + '.csv'))
-            csv_outfile = json2csv(table_item[0], output_file=outputfile, header_values=header)
-            sort_csv(csv_outfile)
+                os.path.join(
+                    path if path else '',
+                    os.path.splitext(os.path.basename(table_item[0]))[0] + '.csv'))
+            csv_outfile = json2csv(table_item[0],
+                                   output_file=outputfile,
+                                   header_values=header,
+                                   encoding=self.encoding)
+            sort_csv(csv_outfile, encoding=self.encoding)
 
     def get_connection(self):
         """Gets the db connection."""

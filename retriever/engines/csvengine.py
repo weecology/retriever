@@ -24,12 +24,8 @@ class engine(Engine):
     }
     insert_limit = 1000
     required_opts = [
-        ("table_name",
-         "Format of table name",
-         "{db}_{table}.csv"),
-        ("data_dir",
-         "Install directory",
-         DATA_DIR),
+        ("table_name", "Format of table name", "{db}_{table}.csv"),
+        ("data_dir", "Install directory", DATA_DIR),
     ]
     table_names = []
 
@@ -41,7 +37,7 @@ class engine(Engine):
         """Create the table by creating an empty csv file"""
         self.auto_column_number = 1
         table_path = os.path.join(self.opts["data_dir"], self.table_name())
-        self.file = open_fw(table_path)
+        self.file = open_fw(table_path, encoding=self.encoding)
         self.output_file = open_csvw(self.file)
         column_list = self.table.get_insert_columns(join=False, create=True)
         self.output_file.writerow([u'{}'.format(val) for val in column_list])
@@ -49,10 +45,7 @@ class engine(Engine):
 
         # Register all tables created to enable
         # testing python files having custom download function
-        if self.script.name not in self.script_table_registry:
-            self.script_table_registry[self.script.name] = []
-        self.script_table_registry[self.script.name].append(
-            (self.table_name(), self.table))
+        Engine.register_tables(self)
 
     def disconnect(self):
         """Close the last file in the dataset"""
@@ -95,8 +88,7 @@ class engine(Engine):
                 newrows.append(insert_stmt)
                 self.auto_column_number += 1
             return newrows
-        else:
-            return values
+        return values
 
     def table_exists(self, dbname, tablename):
         """Check to see if the data file currently exists"""
@@ -105,10 +97,10 @@ class engine(Engine):
         table_name = os.path.join(tabledir, tablename)
         return os.path.exists(table_name)
 
-    def to_csv(self, sort=True):
+    def to_csv(self, sort=True, path=None, select_columns=None):
         """Export sorted version of CSV file"""
         for table_item in self.script_table_registry[self.script.name]:
-            sort_csv(table_item[0])
+            sort_csv(table_item[0], self.encoding)
 
     def get_connection(self):
         """Gets the db connection."""

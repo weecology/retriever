@@ -13,9 +13,10 @@ Contents:
 
    introduction
    rdataretriever.rst
+   recipes.rst
    pyretriever.rst
+   provenance.rst
    datasets_list.rst
-   scripts
    developer.rst
    spatial_dbms.rst
    code_of_conduct.rst

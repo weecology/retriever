@@ -65,7 +65,7 @@ Installing From Source
 
 **Required packages**
 
-To install the Data Retriever from source, you’ll need Python 2.6+ or Python 3.3+
+To install the Data Retriever from source, you’ll need Python 3.6.8+
 with the following packages installed:
 
 -  xlrd
@@ -74,7 +74,7 @@ with the following packages installed:
 
 -  PyMySQL (for MySQL)
 -  sqlite3 (for SQLite, v3.8 or higher required)
--  psycopg2 (for PostgreSQL)
+-  psycopg2-binary (for PostgreSQL)
 -  pypyodbc (for MS Access)
 
 **Steps to install from source**
@@ -99,7 +99,7 @@ and datasets run ``retriever --help``. The output will look like this:
 ::
 
     usage: retriever [-h] [-v] [-q]
-                     {download,install,defaults,update,new,new_json,edit_json,delete_json,ls,citation,reset,help}
+                     {download,install,defaults,update,new,new_json,edit_json,delete_json,ls,citation,reset,help,commit}
                      ...
 
     positional arguments:
@@ -115,9 +115,11 @@ and datasets run ``retriever --help``. The output will look like this:
         delete_json         CLI to remove retriever datapackage.json script
         ls                  display a list all available dataset scripts
         citation            view citation
-        reset               reset retriever: removes configation settings,
+        reset               reset retriever: removes configuration settings,
                             scripts, and cached data
         help
+        commit              commit dataset to a zipped file
+        log                 see log of a committed dataset
 
     optional arguments:
       -h, --help            show this help message and exit
@@ -238,7 +240,6 @@ The ``citation`` command show the citation for the retriever and for the scripts
    retriever citation (citation of the Data retriever)
    retriever citation breed-bird-survey (citation of Breed bird survey data)
 
-
 **To create new, edit, delete scripts please read the documentation on scripts**
 
 
@@ -273,7 +274,7 @@ is the `client` section which should take the general form:
 
 where each word to the right of the `=` is replaced with the correct information
 for your database connection. Remove or comment out the lines for any values you
-don't want to set. 
+don't want to set.
 
 
 Acknowledgments

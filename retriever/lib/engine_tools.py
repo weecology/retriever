@@ -4,13 +4,6 @@ This module contains miscellaneous classes and functions used in Retriever
 scripts.
 
 """
-from __future__ import print_function
-
-from future import standard_library
-
-standard_library.install_aliases()
-
-import difflib
 import json
 import platform
 import shutil
@@ -19,12 +12,14 @@ import warnings
 
 from hashlib import md5
 from io import StringIO as NewFile
-from retriever.lib.defaults import HOME_DIR
+from retriever.lib.defaults import HOME_DIR, ENCODING
 
-from retriever.lib.models import *
 import xml.etree.ElementTree as ET
+import os
+import csv
 
 warnings.filterwarnings("ignore")
+from retriever.lib.tools import open_fr, open_csvw, open_fw
 
 TEST_ENGINES = dict()
 
@@ -33,12 +28,11 @@ def create_home_dir():
     """Create Directory for retriever."""
     current_platform = platform.system().lower()
     if current_platform != 'windows':
-        import pwd
+        import pwd  # pylint: disable=E0401
 
     # create the necessary directory structure for storing scripts/raw_data
     # in the ~/.retriever directory
-    required_dirs = [os.path.join(HOME_DIR, dirs)
-                     for dirs in ['', 'raw_data', 'scripts']]
+    required_dirs = [os.path.join(HOME_DIR, dirs) for dirs in ['', 'raw_data', 'scripts']]
     for dir in required_dirs:
         if not os.path.exists(dir):
             try:
@@ -54,58 +48,21 @@ def create_home_dir():
                 raise
 
 
-def name_matches(scripts, arg):
-    """Check for a match of the script in available scripts
-
-    if all, return the entire script list
-    if the exact script is available, return that script
-    if no exact script name detected, match the argument with keywords
-    title and name of all scripts and return the closest matches
-    """
-    arg = arg.strip().lower()
-    matches = []
-
-    if not arg:
-        raise ValueError("No dataset name specified")
-
-    if arg == 'all':
-        return scripts
-
-    for script in scripts:
-        if arg == script.name.lower():
-            return [script]
-
-    for script in scripts:
-        script_match_ratio = difflib.SequenceMatcher(None, script.name, arg).ratio()
-        if script_match_ratio > .53:
-            matches.append((script.name, script_match_ratio))
-
-    matches.sort(key=lambda x: -x[1])
-
-    print("\nThe dataset \"{}\" "
-          "isn't currently available in the Retriever.".format(arg))
-    if matches:
-        print("Did you mean:"
-              " \n\t{}".format("\n\t".join([i[0] for i in matches])))
-
-
-def final_cleanup(engine):
-    """Perform final cleanup operations after all scripts have run."""
-    pass
-
-
 def reset_retriever(scope="all", ask_permission=True):
     """Remove stored information on scripts and data."""
     warning_messages = {
-        'all': "\nThis will remove existing scripts and cached data."
-               "\nSpecifically it will remove the scripts and raw_data folders"
-               "in {}\nDo you want to proceed? (y/N)\n",
-        'scripts': "\nThis will remove existing scripts."
-                   + "\nSpecifically it will remove the scripts folder in {}."
-                   + "\nDo you want to proceed? (y/N)\n",
-        'data': "\nThis will remove raw data cached by the Retriever."
-                + "\nSpecifically it will remove the raw_data folder in {}."
-                + "\nDo you want to proceed? (y/N)\n"
+        'all':
+            "\nThis will remove existing scripts and cached data."
+            "\nSpecifically it will remove the scripts and raw_data folders "
+            "in {}\nDo you want to proceed? (y/N)\n",
+        'scripts':
+            "\nThis will remove existing scripts." +
+            "\nSpecifically it will remove the scripts folder in {}." +
+            "\nDo you want to proceed? (y/N)\n",
+        'data':
+            "\nThis will remove raw data cached by the Retriever." +
+            "\nSpecifically it will remove the raw_data folder in {}." +
+            "\nDo you want to proceed? (y/N)\n"
     }
 
     path = os.path.normpath(HOME_DIR)
@@ -144,23 +101,27 @@ def reset_retriever(scope="all", ask_permission=True):
             print("can't find script {scp}".format(scp=scope))
 
 
-def json2csv(input_file, output_file=None, header_values=None):
+def json2csv(input_file, output_file=None, header_values=None, encoding=ENCODING):
     """Convert Json file to CSV.
 
     Function is used for only testing and can handle the file of the size.
     """
-    file_out = open_fr(input_file, encode=False)
+    file_out = open_fr(input_file, encoding=encoding)
     # set output file name and write header
     if output_file is None:
         output_file = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
-    csv_out = open_fw(output_file, encode=False)
+    csv_out = open_fw(output_file, encoding=encoding)
     if os.name == 'nt':
-        outfile = csv.DictWriter(csv_out, dialect='excel', escapechar="\\",
+        outfile = csv.DictWriter(csv_out,
+                                 dialect='excel',
+                                 escapechar="\\",
                                  lineterminator='\n',
                                  fieldnames=header_values)
     else:
-        outfile = csv.DictWriter(csv_out, dialect='excel',
-                                 escapechar="\\", fieldnames=header_values)
+        outfile = csv.DictWriter(csv_out,
+                                 dialect='excel',
+                                 escapechar="\\",
+                                 fieldnames=header_values)
     raw_data = json.loads(file_out.read())
     outfile.writeheader()
 
@@ -176,14 +137,16 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
 
     Function is used for only testing and can handle the file of the size.
     """
-    file_output = open_fr(input_file, encode=False)
+    file_output = open_fr(input_file, encoding=ENCODING)
     # set output file name and write header
     if outputfile is None:
         outputfile = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
     csv_out = open_fw(outputfile)
     if os.name == 'nt':
-        csv_writer = csv.writer(csv_out, dialect='excel',
-                                escapechar='\\', lineterminator='\n')
+        csv_writer = csv.writer(csv_out,
+                                dialect='excel',
+                                escapechar='\\',
+                                lineterminator='\n')
     else:
         csv_writer = csv.writer(csv_out, dialect='excel', escapechar='\\')
 
@@ -199,15 +162,12 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
     return outputfile
 
 
-def getmd5(data, data_type='lines'):
+def getmd5(data, data_type='lines', encoding='utf-8'):
     """Get MD5 of a data source."""
     checksum = md5()
     if data_type == 'lines':
         for line in data:
-            if isinstance(line, bytes):
-                checksum.update(line)
-            else:
-                checksum.update(str(line).encode())
+            checksum.update(line.encode(encoding))
         return checksum.hexdigest()
     files = []
     if data_type == 'file':
@@ -220,33 +180,23 @@ def getmd5(data, data_type='lines'):
             for filename in sorted(filenames):
                 files.append(os.path.normpath(os.path.join(root, filename)))
     for file_path in files:
-        # don't use open_fr to keep line endings consistent across OSs
-        if sys.version_info >= (3, 0, 0):
-            if os.name == 'nt':
-                input_file = io.open(file_path, 'r', encoding=ENCODING)
-            else:
-                input_file = open(file_path, 'r', encoding=ENCODING)
-        else:
-            input_file = io.open(file_path, encoding=ENCODING)
+        input_file = open(file_path, 'r', encoding=encoding)
 
         for line in input_file:
-            if isinstance(line, bytes):
-                checksum.update(line)
-            else:
-                checksum.update(str(line).encode())
+            checksum.update(str(line).encode(encoding))
     return checksum.hexdigest()
 
 
-def sort_file(file_path):
+def sort_file(file_path, encoding=ENCODING):
     """Sort file by line and return the file.
 
     Function is used for only testing and can handle the file of the size.
     """
     file_path = os.path.normpath(file_path)
-    input_file = open_fr(file_path)
-    lines = [line.strip().replace('\x00', '') for line in input_file]
+    input_file = open_fr(file_path, encoding)
+    lines = [line.strip() for line in input_file]
     input_file.close()
-    outfile = open_fw(file_path)
+    outfile = open_fw(file_path, encoding)
     lines.sort()
     for line in lines:
         outfile.write(line + "\n")
@@ -254,17 +204,17 @@ def sort_file(file_path):
     return file_path
 
 
-def sort_csv(filename):
+def sort_csv(filename, encoding=ENCODING):
     """Sort CSV rows minus the header and return the file.
 
     Function is used for only testing and can handle the file of the size.
     """
     filename = os.path.normpath(filename)
-    input_file = open_fr(filename)
+    input_file = open_fr(filename, encoding)
     csv_reader_infile = csv.reader(input_file, escapechar="\\")
     #  write the data to a temporary file and sort it
     temp_path = os.path.normpath("tempfile")
-    temp_file = open_fw(temp_path)
+    temp_file = open_fw(temp_path, encoding)
 
     csv_writer = open_csvw(temp_file)
     i = 0
@@ -279,10 +229,10 @@ def sort_csv(filename):
     temp_file.close()
 
     # sort the temp file
-    sorted_txt = sort_file(temp_path)
-    tmp = open_fr(sorted_txt)
+    sorted_txt = sort_file(temp_path, encoding)
+    tmp = open_fr(sorted_txt, encoding)
     in_txt = csv.reader(tmp, delimiter=',', escapechar="\\")
-    csv_file = open_fw(filename)
+    csv_file = open_fw(filename, encoding)
     csv_writer = open_csvw(csv_file)
     csv_writer.writerow(infields)
     csv_writer.writerows(in_txt)
@@ -305,42 +255,18 @@ def create_file(data, output='output_file'):
 def file_2list(input_file):
     """Read in a csv file and return lines a list."""
     input_file = os.path.normpath(input_file)
-
-    if sys.version_info >= (3, 0, 0):
-        input_obj = io.open(input_file, 'r')
-    else:
-        input_obj = io.open(input_file, encoding=ENCODING)
-
+    input_obj = open(input_file)
     abs_list = []
     for line in input_obj.readlines():
         abs_list.append(line.strip())
     return abs_list
 
 
-def get_script_version():
-    """This function gets the version number of the scripts and returns them in array form."""
-    from retriever.lib.scripts import SCRIPT_LIST
-
-    modules = SCRIPT_LIST()
-    scripts = []
-    for module in modules:
-        if module.public:
-            if os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.json') and module.version:
-                module_name = module._name + '.json'
-                scripts.append(','.join([module_name, str(module.version)]))
-            elif os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.py') and \
-                    not os.path.isfile('.'.join(module._file.split('.')[:-1]) + '.json'):
-                module_name = module._name + '.py'
-                scripts.append(','.join([module_name, str(module.version)]))
-
-    scripts = sorted(scripts, key=str.lower)
-    return scripts
-
-
 def set_proxy():
     """Check for proxies and makes them available to urllib."""
-    proxies = ["https_proxy", "http_proxy", "ftp_proxy",
-               "HTTP_PROXY", "HTTPS_PROXY", "FTP_PROXY"]
+    proxies = [
+        "https_proxy", "http_proxy", "ftp_proxy", "HTTP_PROXY", "HTTPS_PROXY", "FTP_PROXY"
+    ]
     for proxy in proxies:
         if os.getenv(proxy):
             if os.environ[proxy]:

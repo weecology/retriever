@@ -1,9 +1,11 @@
 {
     "citation": "Susana Rodriguez-Buritica, Helen Raichle, Robert H. Webb, Raymond M. Turner, and D. Lawrence Venable. 2013. One hundred and six years of population and community dynamics of Sonoran Desert Laboratory perennials. Ecology 94:976.",
     "description": "The data set constitutes all information associated with the Spalding-Shreve permanent vegetation plots from 1906 through 2012, which is the longest-running plant monitoring program in the world.",
+    "homepage": "https://figshare.com/articles/Data_Paper_Data_Paper/3555756",
     "keywords": [
         "plants"
     ],
+    "encoding": "latin-1",
     "name": "veg-plots-sdl",
     "resources": [
         {
@@ -13,7 +15,90 @@
                 ]
             },
             "name": "Plots",
-            "schema": {},
+            "schema": {
+                "fields": [
+                    {
+                        "name": "plot",
+                        "type": "char"
+                    },
+                    {
+                        "name": "area_m2",
+                        "type": "char"
+                    },
+                    {
+                        "name": "source_area",
+                        "type": "char"
+                    },
+                    {
+                        "name": "elevation_masl",
+                        "type": "char"
+                    },
+                    {
+                        "name": "slope_direction",
+                        "type": "char"
+                    },
+                    {
+                        "name": "slope_angle",
+                        "type": "char"
+                    },
+                    {
+                        "name": "slope_description",
+                        "type": "char"
+                    },
+                    {
+                        "name": "source_slope",
+                        "type": "char"
+                    },
+                    {
+                        "name": "status",
+                        "type": "char"
+                    },
+                    {
+                        "name": "originator",
+                        "type": "char"
+                    },
+                    {
+                        "name": "date_established",
+                        "type": "int"
+                    },
+                    {
+                        "name": "location_orgnotes",
+                        "type": "char"
+                    },
+                    {
+                        "name": "criteria",
+                        "type": "char"
+                    },
+                    {
+                        "name": "photo_stake",
+                        "type": "char"
+                    },
+                    {
+                        "name": "substrate",
+                        "type": "char"
+                    },
+                    {
+                        "name": "source_substrate",
+                        "type": "char"
+                    },
+                    {
+                        "name": "notes_disturbance",
+                        "type": "char"
+                    },
+                    {
+                        "name": "num_photos",
+                        "type": "int"
+                    },
+                    {
+                        "name": "repeat_photo",
+                        "type": "char"
+                    },
+                    {
+                        "name": "num_stakes",
+                        "type": "char"
+                    }
+                ]
+            },
             "url": "https://ndownloader.figshare.com/files/5625330"
         },
         {
@@ -23,7 +108,50 @@
                 ]
             },
             "name": "Plot_corners",
-            "schema": {},
+            "schema": {
+              "fields": [
+                    {
+                        "name": "plot",
+                        "type": "char"
+                    },
+                    {
+                        "name": "vertex",
+                        "type": "char"
+                    },
+                    {
+                        "name": "latitude",
+                        "type": "char"
+                    },
+                    {
+                        "name": "longitude",
+                        "type": "char"
+                    },
+                    {
+                        "name": "elevation",
+                        "type": "char"
+                    },
+                    {
+                        "name": "source_proj",
+                        "type": "char"
+                    },
+                    {
+                        "name": "accuracy",
+                        "type": "char"
+                    },
+                    {
+                        "name": "gps_id",
+                        "type": "char"
+                    },
+                    {
+                        "name": "easting_utm",
+                        "type": "double"
+                    },
+                    {
+                        "name": "northing_utm",
+                        "type": "double"
+                    }
+                ]
+            },
             "url": "https://ndownloader.figshare.com/files/5625333"
         },
         {
@@ -33,7 +161,54 @@
                 ]
             },
             "name": "Species",
-            "schema": {},
+            "schema": {
+                "fields": [
+                    {
+                        "name": "code",
+                        "type": "char"
+                    },
+                    {
+                        "name": "plants_code",
+                        "type": "char"
+                    },
+                    {
+                        "name": "reportedname",
+                        "type": "char"
+                    },
+                    {
+                        "name": "acceptedname",
+                        "type": "char"
+                    },
+                    {
+                        "name": "authority",
+                        "type": "char"
+                    },
+                    {
+                        "name": "family",
+                        "type": "char"
+                    },
+                    {
+                        "name": "common_name",
+                        "type": "char"
+                    },
+                    {
+                        "name": "habit",
+                        "type": "char"
+                    },
+                    {
+                        "name": "duration",
+                        "type": "char"
+                    },
+                    {
+                        "name": "enumeration",
+                        "type": "char"
+                    },
+                    {
+                        "name": "comment",
+                        "type": "char"
+                    }
+                ]
+            },
             "url": "https://ndownloader.figshare.com/files/5625336"
         },
         {
@@ -43,7 +218,66 @@
                 ]
             },
             "name": "Seedling_counts",
-            "schema": {},
+            "schema": {
+                "fields": [
+                    {
+                        "name": "plot",
+                        "type": "char"
+                    },
+                    {
+                        "name": "year",
+                        "type": "int"
+                    },
+                    {
+                        "name": "startdate",
+                        "type": "char"
+                    },
+                    {
+                        "name": "enddate",
+                        "type": "char"
+                    },
+                    {
+                        "name": "row",
+                        "type": "int"
+                    },
+                    {
+                        "name": "col",
+                        "type": "int"
+                    },
+                    {
+                        "name": "plant",
+                        "type": "char"
+                    },
+                    {
+                        "name": "number",
+                        "type": "int"
+                    },
+                    {
+                        "name": "upper_limit",
+                        "type": "int"
+                    },
+                    {
+                        "name": "unit",
+                        "type": "char"
+                    },
+                    {
+                        "name": "dimension",
+                        "type": "char"
+                    },
+                    {
+                        "name": "present",
+                        "type": "char"
+                    },
+                    {
+                        "name": "mapped",
+                        "type": "char"
+                    },
+                    {
+                        "name": "digitized",
+                        "type": "char"
+                    }
+                ]
+            },
             "url": "https://ndownloader.figshare.com/files/5625339"
         },
         {
@@ -53,7 +287,50 @@
                 ]
             },
             "name": "Count1906",
-            "schema": {},
+            "schema": {
+              "fields": [
+                    {
+                        "name": "plot",
+                        "type": "int"
+                    },
+                    {
+                        "name": "code",
+                        "type": "char"
+                    },
+                    {
+                        "name": "cat",
+                        "type": "char"
+                    },
+                    {
+                        "name": "num",
+                        "type": "int"
+                    },
+                    {
+                        "name": "height_m",
+                        "type": "double"
+                    },
+                    {
+                        "name": "joints",
+                        "type": "int"
+                    },
+                    {
+                        "name": "notes",
+                        "type": "char"
+                    },
+                    {
+                        "name": "abund",
+                        "type": "char"
+                    },
+                    {
+                        "name": "distr",
+                        "type": "char"
+                    },
+                    {
+                        "name": "name",
+                        "type": "char"
+                    }
+                ]
+            },
             "url": "https://ndownloader.figshare.com/files/5625342"
         },
         {
@@ -63,7 +340,30 @@
                 ]
             },
             "name": "SMCover",
-            "schema": {},
+            "schema": {
+              "fields": [
+                    {
+                        "name": "code",
+                        "type": "char"
+                    },
+                    {
+                        "name": "plot",
+                        "type": "char"
+                    },
+                    {
+                        "name": "year",
+                        "type": "int"
+                    },
+                    {
+                        "name": "coverns",
+                        "type": "double"
+                    },
+                    {
+                        "name": "cover",
+                        "type": "double"
+                    }
+                ]
+            },
             "url": "https://ndownloader.figshare.com/files/5625345"
         },
         {
@@ -73,7 +373,30 @@
                 ]
             },
             "name": "SMDensity",
-            "schema": {},
+            "schema": {
+                "fields": [
+                    {
+                        "name": "code",
+                        "type": "char"
+                    },
+                    {
+                        "name": "plot",
+                        "type": "char"
+                    },
+                    {
+                        "name": "year",
+                        "type": "int"
+                    },
+                    {
+                        "name": "countns",
+                        "type": "int"
+                    },
+                    {
+                        "name": "count",
+                        "type": "int"
+                    }
+                ]
+            },
             "url": "https://ndownloader.figshare.com/files/5625348"
         },
         {
@@ -84,7 +407,58 @@
                 ]
             },
             "name": "Stake_info",
-            "schema": {},
+            "schema": {
+              "fields": [
+                    {
+                        "name": "stkphnum",
+                        "type": "char"
+                    },
+                    {
+                        "name": "plot",
+                        "type": "char"
+                    },
+                    {
+                        "name": "location",
+                        "type": "char"
+                    },
+                    {
+                        "name": "easting_utm",
+                        "type": "double"
+                    },
+                    {
+                        "name": "northing_utm",
+                        "type": "double"
+                    },
+                    {
+                        "name": "lat_deg",
+                        "type": "double"
+                    },
+                    {
+                        "name": "long_deg",
+                        "type": "double"
+                    },
+                    {
+                        "name": "elev_m",
+                        "type": "int"
+                    },
+                    {
+                        "name": "depository",
+                        "type": "char"
+                    },
+                    {
+                        "name": "original_number",
+                        "type": "char"
+                    },
+                    {
+                        "name": "no_photos",
+                        "type": "int"
+                    },
+                    {
+                        "name": "marker",
+                        "type": "char"
+                    }
+                ]
+            },
             "url": "https://ndownloader.figshare.com/files/5625351"
         },
         {
@@ -94,12 +468,87 @@
                 ]
             },
             "name": "Photo_info",
-            "schema": {},
+            "schema": {
+              "fields": [
+                    {
+                        "name": "ordered",
+                        "type": "int"
+                    },
+                    {
+                        "name": "stkphnum",
+                        "type": "char"
+                    },
+                    {
+                        "name": "record_date",
+                        "type": "char"
+                    },
+                    {
+                        "name": "photographer",
+                        "type": "char"
+                    },
+                    {
+                        "name": "time",
+                        "type": "char"
+                    },
+                    {
+                        "name": "camera",
+                        "type": "char"
+                    },
+                    {
+                        "name": "lenstype",
+                        "type": "char"
+                    },
+                    {
+                        "name": "focaldist",
+                        "type": "char"
+                    },
+                    {
+                        "name": "lensnote",
+                        "type": "char"
+                    },
+                    {
+                        "name": "azimuth",
+                        "type": "char"
+                    },
+                    {
+                        "name": "verttilt",
+                        "type": "char"
+                    },
+                    {
+                        "name": "tiltdeg",
+                        "type": "char"
+                    },
+                    {
+                        "name": "camheight",
+                        "type": "char"
+                    },
+                    {
+                        "name": "bwneg",
+                        "type": "char"
+                    },
+                    {
+                        "name": "colorneg",
+                        "type": "char"
+                    },
+                    {
+                        "name": "colorpos",
+                        "type": "char"
+                    },
+                    {
+                        "name": "filter",
+                        "type": "char"
+                    },
+                    {
+                        "name": "digital",
+                        "type": "int"
+                    }
+                ]
+            },
             "url": "https://ndownloader.figshare.com/files/5625354"
         }
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Sonoran Desert Lab perennials vegetation plots",
-    "version": "1.2.1"
+    "version": "2.0.1"
 }

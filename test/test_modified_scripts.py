@@ -1,32 +1,17 @@
 """This module, when run, attempts to install datasets for modified Retriever
 scripts in the /scripts folder (except for those listed in ignore_list)
 """
-from __future__ import absolute_import
-from __future__ import print_function
-
-from future import standard_library
-
-standard_library.install_aliases()
 import os
 import sys
 import subprocess
 import requests
-from imp import reload
-from distutils.version import LooseVersion
+from pkg_resources import parse_version
 from retriever.engines import choose_engine, engine_list
-from retriever.lib.defaults import ENCODING
-from retriever.lib.scripts import SCRIPT_LIST
-from retriever.lib.engine_tools import get_script_version
+from retriever.lib.scripts import SCRIPT_LIST, get_retriever_script_versions
 
-reload(sys)
-if hasattr(sys, 'setdefaultencoding'):
-    sys.setdefaultencoding(ENCODING)
 
 file_location = os.path.dirname(os.path.realpath(__file__))
 retriever_root_dir = os.path.abspath(os.path.join(file_location, os.pardir))
-working_script_dir = os.path.abspath(os.path.join(retriever_root_dir, "scripts"))
-home_dir = os.path.expanduser('~')
-script_home = "{}/.retriever/scripts".format(home_dir)
 
 
 def setup_module():
@@ -41,10 +26,9 @@ def setup_module():
 def get_modified_scripts():
     """Get modified script list, using version.txt in repo and master upstream"""
 
-    os.chdir(retriever_root_dir)
     modified_list = []
     version_file = requests.get("https://raw.githubusercontent.com/weecology/retriever/master/version.txt")
-    local_repo_scripts = get_script_version()  # local repo versions
+    local_repo_scripts = get_retriever_script_versions()  # local repo versions
 
     upstream_versions = {}
     version_file = version_file.text.splitlines()[1:]
@@ -56,11 +40,8 @@ def get_modified_scripts():
         local_script, local_version = item.lower().split(",")
         # check for new scripts or a change in versions for present scripts
         # repo script versions compared with upstream.
-        if local_script not in upstream_versions.keys():
+        if parse_version(local_version) > upstream_versions[local_script]:
             modified_list.append(os.path.basename(local_script).split('.')[0])
-        else:
-            if LooseVersion(local_version) != upstream_versions[local_script]:
-                modified_list.append(os.path.basename(local_script).split('.')[0])
 
     return modified_list
 
@@ -73,12 +54,7 @@ def install_modified():
         os_password = "Password12!"
 
     ignore = [
-        "forest-inventory-analysis",
-        "bioclim",
-        "prism-climate",
-        "vertnet",
-        "NPN",
-        "mammal-super-tree"
+        "bioclim"
     ]
     ignore_list = [dataset.lower() for dataset in ignore]
 
@@ -93,6 +69,7 @@ def install_modified():
     os.makedirs("test_modified")
     os.chdir("test_modified")
     dbfile = os.path.normpath(os.path.join(os.getcwd(), 'testdb_retriever.sqlite'))
+
     engine_test = {
         "postgres": {'engine': 'postgres',
                      'user': 'postgres',
@@ -112,13 +89,13 @@ def install_modified():
                   'table_name': '{db}.{table}'},
 
         "xml": {'engine': 'xml',
-                'table_name': 'output_file_{table}.xml'},
+                'table_name': '{db}_{table}.xml'},
 
         "json": {'engine': 'json',
-                 'table_name': 'output_file_{table}.json'},
+                 'table_name': '{db}_{table}.json'},
 
         "csv": {'engine': 'csv',
-                'table_name': 'output_file_{table}.csv'},
+                'table_name': '{db}_{table}.csv'},
 
         "sqlite": {'engine': 'sqlite',
                    'file': dbfile, 'table_name': '{db}_{table}'}
@@ -155,10 +132,6 @@ def install_modified():
     os.chdir("..")
     subprocess.call(['rm', '-r', 'test_modified'])
     return errors
-
-
-# def test_install_modified():
-#     assert install_modified() == []
 
 
 def main():

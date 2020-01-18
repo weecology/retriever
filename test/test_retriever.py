@@ -1,19 +1,9 @@
-# -*- coding: latin-1  -*-
+# -*- coding: utf-8  -*-
 """Tests for the Data Retriever"""
-from future import standard_library
-
-standard_library.install_aliases()
 import os
-import sys
 import subprocess
-from imp import reload
-from retriever.lib.defaults import ENCODING
+import random
 
-encoding = ENCODING.lower()
-
-reload(sys)
-if hasattr(sys, 'setdefaultencoding'):
-    sys.setdefaultencoding(encoding)
 import retriever as rt
 from retriever.lib.engine import Engine
 from retriever.lib.table import TabularDataset
@@ -27,6 +17,7 @@ from retriever.lib.engine_tools import sort_csv
 from retriever.lib.engine_tools import create_file
 from retriever.lib.engine_tools import file_2list
 from retriever.lib.datapackage import clean_input, is_empty
+from retriever.lib.defaults import HOME_DIR, RETRIEVER_DATASETS, RETRIEVER_REPOSITORY
 
 # Create simple engine fixture
 test_engine = Engine()
@@ -105,11 +96,12 @@ def test_auto_get_datatypes():
     The function adds 100 to the auto detected length of column
     """
     test_engine.auto_get_datatypes(None,
-                                   [["ö", 'bb', 'Löve']],
+                                   [["Ã¶", 'bb', 'LÃ¶ve']],
                                    [['a', None], ['b', None], ['c', None]])
     length = test_engine.table.columns
+    # encoded char "?" will return 2 in length
     assert [length[0][1][1], length[1][1][1], length[2][1][1]] == \
-           [101, 102, 104]
+           [2, 2, 5]
 
 
 def test_auto_get_columns_extra_whitespace():
@@ -179,27 +171,43 @@ def test_database_name():
 def test_datasets():
     """Check if datasets lookup includes a known value"""
     datasets = rt.datasets(keywords=['mammals'])
-    dataset_names = [dataset.name for dataset in datasets]
+    dataset_names = [dataset.name for dataset in datasets['offline']]
+    dataset_names.extend(datasets['online'])
     assert 'mammal-masses' in dataset_names
 
 
 def test_datasets_keywords():
     """Check if datasets lookup on keyword includes a known value"""
     datasets = rt.datasets(keywords=['mammals'])
-    dataset_names = [dataset.name for dataset in datasets]
+    dataset_names = [dataset.name for dataset in datasets['offline']]
+    dataset_names.extend(datasets['online'])
     assert 'mammal-masses' in dataset_names
 
 
 def test_datasets_licenses():
     """Check if datasets lookup on license includes a known value"""
     datasets = rt.datasets(licenses=['CC0-1.0'])
-    dataset_names = [dataset.name for dataset in datasets]
+    dataset_names = [dataset.name for dataset in datasets['offline']]
+    dataset_names.extend(datasets['online'])
     assert 'amniote-life-hist' in dataset_names
 
 
 def test_dataset_names():
     """Check if dataset names lookup includes a known value"""
-    assert 'mammal-masses' in rt.dataset_names()
+    datasets = rt.dataset_names()
+    dataset_names = datasets['offline']
+    dataset_names.extend(datasets['online'])
+    assert 'mammal-masses' in dataset_names
+
+
+def test_dataset_names_upstream():
+    """Check if upstream datasets include a known value"""
+    datasets = rt.get_dataset_names_upstream()
+    assert 'portal' in datasets
+    license_datasets = rt.get_dataset_names_upstream(licenses=['CC0-1.0'])
+    assert 'bird-size' in license_datasets
+    keyword_datasets = rt.get_dataset_names_upstream(keywords=['plants'])
+    assert 'biodiversity-response' in keyword_datasets
 
 
 def test_drop_statement():
@@ -211,7 +219,7 @@ def test_drop_statement():
 def test_download_archive_gz_known():
     """Download and extract known files
 
-    from a gzipped file to the .retriever/data  dir"""
+    from a gzipped file to the .retriever/data dir"""
     setup_functions()
     files = test_engine.download_files_from_archive(
         url=gz_url, file_names=['test/sample_tar.csv'], archive_type='gz')
@@ -224,7 +232,7 @@ def test_download_archive_gz_known():
 def test_download_archive_gz_unknown():
     """Download and extract unknown files
 
-    from a gzipped file to the .retriever/data  dir"""
+    from a gzipped file to the .retriever/data dir"""
     setup_functions()
     files = test_engine.download_files_from_archive(url=gz_url,
                                                     archive_type='gz')
@@ -237,7 +245,7 @@ def test_download_archive_gz_unknown():
 def test_download_archive_targz_known():
     """Download and extract known files
 
-    from a targzipped file to the .retriever/data  dir"""
+    from a targzipped file to the .retriever/data dir"""
     setup_functions()
     files = test_engine.download_files_from_archive(url=tar_gz_url,
                                                     file_names=['test/sample_tar.csv'],
@@ -251,7 +259,7 @@ def test_download_archive_targz_known():
 def test_download_archive_targz_unknown():
     """Download and extract unknown files
 
-    from a targzipped file to the .retriever/data  dir"""
+    from a targzipped file to the .retriever/data dir"""
     setup_functions()
     files = test_engine.download_files_from_archive(url=tar_gz_url,
                                                     archive_type='tar.gz')
@@ -264,7 +272,7 @@ def test_download_archive_targz_unknown():
 def test_download_archive_tar_known():
     """Download and extract known files
 
-    from a tarred file to the .retriever/data  dir"""
+    from a tarred file to the .retriever/data dir"""
     setup_functions()
     files = test_engine.download_files_from_archive(
         url=tar_url,
@@ -279,7 +287,7 @@ def test_download_archive_tar_known():
 def test_download_archive_tar_unknown():
     """Download and extract unknown files
 
-    from a tarred file to the .retriever/data  dir"""
+    from a tarred file to the .retriever/data dir"""
     setup_functions()
     files = test_engine.download_files_from_archive(url=tar_url,
                                                     archive_type='tar')
@@ -292,7 +300,7 @@ def test_download_archive_tar_unknown():
 def test_download_archive_zip_known():
     """Download and extract known files
 
-    from a zipped file to the .retriever/data  dir"""
+    from a zipped file to the .retriever/data dir"""
     setup_functions()
     files = test_engine.download_files_from_archive(url=zip_url,
                                                     file_names=['sample_zip.csv'],
@@ -306,7 +314,7 @@ def test_download_archive_zip_known():
 def test_download_archive_zip_unkown():
     """Download and extract unknown files
 
-    from a zipped file to the .retriever/data  dir"""
+    from a zipped file to the .retriever/data dir"""
     setup_functions()
     files = test_engine.download_files_from_archive(url=zip_url,
                                                     archive_type='zip')
@@ -441,8 +449,8 @@ def test_find_file_present():
     This enables the data to be in the DATA_SEARCH_PATHS.
     """
     test_engine.script.name = 'bird-size'
-    assert test_engine.find_file('avian_ssd_jan07.txt') == os.path.normpath(
-        'raw_data/bird-size/avian_ssd_jan07.txt')
+    assert test_engine.find_file('5599229') == os.path.normpath(
+        'raw_data/bird-size/5599229')
 
 
 def test_format_data_dir():
@@ -680,6 +688,30 @@ def test_clean_input_not_bool(monkeypatch):
     mock_input.counter = 0
     monkeypatch.setattr('retriever.lib.datapackage.input', mock_input)
     assert clean_input("", dtype=bool) == "True"
+
+
+def test_reset_retriever(tmpdir):
+    """Test the dataset reset function."""
+
+    pwd_name = os.getcwd()
+    workdir = tmpdir.mkdtemp()
+    workdir.chdir()
+    offline_datasets = rt.dataset_names()['offline']
+    offline_datasets = [dataset for dataset in offline_datasets if not dataset.startswith('test-')]
+    if not offline_datasets:
+        return
+    dataset = random.choice(offline_datasets)
+    rt.reset_retriever(dataset)
+    rt.reload_scripts()
+    assert os.path.exists(os.path.join(HOME_DIR, dataset.replace("-", "_") + ".json")) == False
+    assert os.path.exists(os.path.join(HOME_DIR, dataset.replace("-", "_") + ".py")) == False
+    if dataset in RETRIEVER_DATASETS:
+        rt.get_script_upstream(dataset, repo=RETRIEVER_REPOSITORY)
+    else:
+        rt.get_script_upstream(dataset)
+    rt.reload_scripts()
+    assert dataset in rt.dataset_names()['offline']
+    os.chdir(pwd_name)
 
 
 def test_setup_functions():

@@ -1,22 +1,13 @@
-# -*- coding: latin-1  -*-
+# -*- coding: utf-8  -*-
 # """Integrations tests for Data Retriever"""
-from __future__ import print_function
-
 import json
 import os
 import shlex
 import shutil
 import subprocess
-import sys
-from imp import reload
 
 from retriever.lib.defaults import ENCODING, DATA_DIR
 
-encoding = ENCODING.lower()
-
-reload(sys)
-if hasattr(sys, 'setdefaultencoding'):
-    sys.setdefaultencoding(encoding)
 import pytest
 from retriever.lib.load_json import read_json
 from retriever.lib.defaults import HOME_DIR
@@ -24,12 +15,23 @@ from retriever.engines import engine_list
 from retriever.lib.engine_tools import file_2list
 from retriever.lib.engine_tools import create_file
 
+encoding = ENCODING.lower()
 # Set postgres password, Appveyor service needs the password given
 # The Travis service obtains the password from the config file.
+os_password = ""
+pgdb_host = "localhost"
+mysqldb_host = "localhost"
+testdb_retriever = "testdb_retriever"
+testschema = "testschema_retriever"
+
 if os.name == "nt":
     os_password = "Password12!"
-else:
-    os_password = ""
+
+docker_or_travis = os.environ.get("IN_DOCKER")
+if docker_or_travis == "true":
+    os_password = 'Password12!'
+    pgdb_host = "pgdb_retriever"
+    mysqldb_host = "mysqldb_retriever"
 
 mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, \
 csv_engine, download_engine, json_engine, xml_engine = engine_list
@@ -44,13 +46,13 @@ simple_csv = {
                    {"dialect": {"do_not_bulk_insert": "True"},
                     "name": "simple_csv",
                     "schema": {},
-                    "url": "http://example.com/simple_csv.txt"}
+                    "url": "http://example.com/simple_csv.csv"}
                ],
                "retriever": "True",
                "retriever_minimum_version": "2.0.dev",
                "version": "1.0.0",
                "urls":
-                   {"simple_csv": "http://example.com/simple_csv.txt"}
+                   {"simple_csv": "http://example.com/simple_csv.csv"}
                },
     'expect_out': ['a,b,c', '1,2,3', '4,5,6']
 }
@@ -65,13 +67,13 @@ comma_delimiter = {
                    {"dialect": {"delimiter": ",", "do_not_bulk_insert": "True"},
                    "name": "comma_delimiter",
                    "schema": {},
-                   "url": "http://example.com/comma_delimiter.txt"}
+                   "url": "http://example.com/comma_delimiter.csv"}
                ],
                "retriever": "True",
                "retriever_minimum_version": "2.0.dev",
                "version": "1.0.0",
                "urls":
-                   {"comma_delimiter": "http://example.com/comma_delimiter.txt"}
+                   {"comma_delimiter": "http://example.com/comma_delimiter.csv"}
                },
     'expect_out': ['a,b,c', '1,2,3', '4,5,6']
 }
@@ -86,13 +88,13 @@ tab_delimiter = {
                    {"dialect": {"delimiter": "\t", "do_not_bulk_insert": "True" },
                    "name": "tab_delimiter",
                    "schema": {},
-                   "url": "http://example.com/tab_delimiter.txt"}
+                   "url": "http://example.com/tab_delimiter.csv"}
                ],
                "retriever": "True",
                "retriever_minimum_version": "2.0.dev",
                "version": "1.0.0",
                "urls":
-                   {"tab_delimiter": "http://example.com/tab_delimiter.txt"}
+                   {"tab_delimiter": "http://example.com/tab_delimiter.csv"}
                },
     'expect_out': ['a,b,c', '1,2,3', '4,5,6']
 }
@@ -124,14 +126,14 @@ data_no_header = {
                             }
                         ]
                     },
-                    "url": "http://example.com/data_no_header.txt"
+                    "url": "http://example.com/data_no_header.csv"
                     }
                ],
                "retriever": "True",
                "retriever_minimum_version": "2.0.dev",
                "version": "1.0.0",
                "urls":
-                   {"data_no_header": "http://example.com/data_no_header.txt"}
+                   {"data_no_header": "http://example.com/data_no_header.csv"}
                },
     'expect_out': ['a,b,c', '1,2,3', '4,5,6']
 }
@@ -139,14 +141,15 @@ data_no_header = {
 csv_latin1_encoding = {
     'name': 'csv_latin1_encoding',
     'raw_data': ['a,b,c',
-                 u'1,2,4Löve',
+                 u'1,2,4LÃ¶ve',
                  '4,5,6'],
     'script': {"name": "csv_latin1_encoding",
+               "encoding": "latin-1",
                "resources": [
-                   {"dialect": {"do_not_bulk_insert": "True"},
+                   {"dialect": {"delimiter": ",","do_not_bulk_insert": "True"},
                     "name": "csv_latin1_encoding",
                     "schema": {},
-                    "url": "http://example.com/csv_latin1_encoding.txt"
+                    "url": "http://example.com/csv_latin1_encoding.csv"
                     }
                ],
                "retriever": "True",
@@ -154,11 +157,12 @@ csv_latin1_encoding = {
                "version": "1.0.0",
                "urls":
                    {"csv_latin1_encoding":
-                        "http://example.com/csv_latin1_encoding.txt"
+                        "http://example.com/csv_latin1_encoding.csv"
                     }
                },
-    'expect_out': [u'a,b,c', u'1,2,4Löve', u'4,5,6']
+    'expect_out': [u'a,b,c', str('1,2,4LÃ¶ve'), u'4,5,6']
 }
+
 
 autopk_csv = {
     'name': 'autopk_csv',
@@ -189,13 +193,13 @@ autopk_csv = {
                             }
                         ]
                     },
-                    "url": "http://example.com/autopk_csv.txt"
+                    "url": "http://example.com/autopk_csv.csv"
                     }
                ],
                "retriever": "True",
                "retriever_minimum_version": "2.0.dev",
                "version": "1.0.0",
-               "urls": {"autopk_csv": "http://example.com/autopk_csv.txt"}
+               "urls": {"autopk_csv": "http://example.com/autopk_csv.csv"}
                },
     'expect_out': ['record_id,a,b,c', '1,1,2,3', '2,4,5,6']
 }
@@ -227,13 +231,13 @@ crosstab = {
                             }
                         ]
                     },
-                    "url": "http://example.com/crosstab.txt"
+                    "url": "http://example.com/crosstab.csv"
                     }
                ],
                "retriever": "True",
                "retriever_minimum_version": "2.0.dev",
                "version": "1.0.0",
-               "urls": {"crosstab": "http://example.com/crosstab.txt"}
+               "urls": {"crosstab": "http://example.com/crosstab.csv"}
                },
     'expect_out': ['a,b,c,val',
                    '1,1,c1,1.1',
@@ -273,14 +277,14 @@ autopk_crosstab = {
                             }
                         ]
                     },
-                    "url": "http://example.com/autopk_crosstab.txt"
+                    "url": "http://example.com/autopk_crosstab.csv"
                     }
                ],
                "retriever": "True",
                "retriever_minimum_version": "2.0.dev",
                "version": "1.0.0",
                "urls":
-                   {"autopk_crosstab": "http://example.com/autopk_crosstab.txt"}
+                   {"autopk_crosstab": "http://example.com/autopk_crosstab.csv"}
                },
     'expect_out': ['record_id,a,b,c,val',
                    '1,1,1,c1,1.1',
@@ -314,13 +318,13 @@ skip_csv = {
                             }
                         ]
                     },
-                    "url": "http://example.com/skip_csv.txt"
+                    "url": "http://example.com/skip_csv.csv"
                     }
                ],
                "retriever": "True",
                "retriever_minimum_version": "2.0.dev",
                "version": "1.0.0",
-               "urls": {"skip_csv": "http://example.com/skip_csv.txt"}
+               "urls": {"skip_csv": "http://example.com/skip_csv.csv"}
                },
     'expect_out': ['b,c', '2,3', '5,6']
 }
@@ -335,14 +339,14 @@ extra_newline = {
                    {"dialect": {"do_not_bulk_insert": "True"},
                     "name": "extra_newline",
                     "schema": {},
-                    "url": "http://example.com/extra_newline.txt"
+                    "url": "http://example.com/extra_newline.csv"
                     }
                ],
                "retriever": "True",
                "retriever_minimum_version": "2.0.dev",
                "version": "1.0.0",
                "urls":
-                   {"extra_newline": "http://example.com/extra_newline.txt"}
+                   {"extra_newline": "http://example.com/extra_newline.csv"}
                },
     'expect_out': ['col1,col2,col3', 'ab,e f,cd']
 }
@@ -376,7 +380,7 @@ change_header_values = {
                                }
                            ]
                        },
-                       "url": "http://example.com/change_header_values.txt"
+                       "url": "http://example.com/change_header_values.csv"
                    }
                ],
                "retriever": "True",
@@ -385,11 +389,52 @@ change_header_values = {
                "urls":
                    {
                        "change_header_values":
-                           "http://example.com/change_header_values.txt"
+                           "http://example.com/change_header_values.csv"
                    }
                },
     'expect_out': ['aa,bb,c_c', '1,2,3', '4,5,6']
 }
+
+underscore_csv = {
+    'name': 'underscore_csv',
+    'raw_data': ['a,b,c',
+                 '1,2,y',
+                 '4,5,2_0'],
+    'script': {"name": "underscore_csv",
+               "resources": [
+                   {"dialect": {"do_not_bulk_insert": "True"},
+                    "name": "underscore_csv",
+                    "schema": {
+                        "fields": [
+                            {
+                                "name": "record_id",
+                                "type": "pk-auto"
+                            },
+                            {
+                                "name": "a",
+                                "type": "int"
+                            },
+                            {
+                                "name": "b",
+                                "type": "int"
+                            },
+                            {
+                                "name": "c",
+                                "type": "char"
+                            }
+                        ]
+                    },
+                    "url": "http://example.com/underscore_csv.csv"
+                    }
+               ],
+               "retriever": "True",
+               "retriever_minimum_version": "2.0.dev",
+               "version": "1.0.0",
+               "urls": {"underscore_csv": "http://example.com/underscore_csv.csv"}
+               },
+    'expect_out': ['record_id,a,b,c', '1,1,2,y', '2,4,5,2_0']
+}
+
 
 tests = [
     simple_csv,
@@ -402,7 +447,9 @@ tests = [
     autopk_crosstab,
     skip_csv,
     extra_newline,
-    change_header_values]
+    change_header_values,
+    underscore_csv
+]
 
 # Create a tuple of all test scripts with their expected values
 test_parameters = [(test, test['expect_out']) for test in tests]
@@ -427,7 +474,7 @@ def setup_module():
         if not os.path.exists(os.path.join(HOME_DIR, "raw_data", test['name'])):
             os.makedirs(os.path.join(HOME_DIR, "raw_data", test['name']))
         rd_path = os.path.join(HOME_DIR,
-                               "raw_data", test['name'], test['name'] + '.txt')
+                               "raw_data", test['name'], test['name'] + '.csv')
         create_file(test['raw_data'], rd_path)
 
         path_js = os.path.join(HOME_DIR, "scripts", test['name'] + '.json')
@@ -461,7 +508,7 @@ def get_output_as_csv(dataset, engines, tmpdir, db):
     engines.script_table_registry = {}
     script_module.download(engines)
     script_module.engine.final_cleanup()
-    script_module.engine.to_csv()
+    script_module.engine.to_csv(sort=False)
     # get filename and append .csv
     csv_file = engines.opts['table_name'].format(db=db, table=dataset["name"])
     # csv engine already has the .csv extension
@@ -507,13 +554,12 @@ def test_jsonengine_integration(dataset, expected, tmpdir):
 @pytest.mark.parametrize("dataset, expected", test_parameters)
 def test_postgres_integration(dataset, expected, tmpdir):
     """Check for postgres regression."""
-    cmd = 'psql -U postgres -d testdb_retriever -h localhost -c ' \
-          '"DROP SCHEMA IF EXISTS testschema CASCADE"'
+    cmd = 'psql -U postgres -d ' + testdb_retriever +' -h ' + pgdb_host + ' -w -c \"DROP SCHEMA IF EXISTS ' + testschema + ' CASCADE\"'
     subprocess.call(shlex.split(cmd))
     postgres_engine.opts = {'engine': 'postgres', 'user': 'postgres',
-                            'password': os_password, 'host': 'localhost',
-                            'port': 5432, 'database': 'testdb_retriever',
-                            'database_name': 'testschema',
+                            'password': os_password, 'host': pgdb_host,
+                            'port': 5432, 'database': testdb_retriever,
+                            'database_name': testschema,
                             'table_name': '{db}.{table}'}
     assert get_output_as_csv(dataset, postgres_engine, tmpdir,
                              db=postgres_engine.opts['database_name']) == expected
@@ -522,14 +568,14 @@ def test_postgres_integration(dataset, expected, tmpdir):
 @pytest.mark.parametrize("dataset, expected", test_parameters)
 def test_mysql_integration(dataset, expected, tmpdir):
     """Check for mysql regression."""
-    cmd = 'mysql -u travis -Bse "DROP DATABASE IF EXISTS testdb_retriever"'
+    cmd = 'mysql -u travis -Bse "DROP DATABASE IF EXISTS {testdb_retriever}"'.format(testdb_retriever=testdb_retriever)
     subprocess.call(shlex.split(cmd))
     mysql_engine.opts = {
         'engine': 'mysql',
         'user': 'travis',
         'password': '',
-        'host': 'localhost',
+        'host': mysqldb_host,
         'port': 3306,
-        'database_name': 'testdb_retriever',
+        'database_name': testdb_retriever,
         'table_name': '{db}.{table}'}
     assert get_output_as_csv(dataset, mysql_engine, tmpdir, db=mysql_engine.opts['database_name']) == expected

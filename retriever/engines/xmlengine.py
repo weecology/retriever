@@ -24,12 +24,8 @@ class engine(Engine):
     }
     insert_limit = 1000
     required_opts = [
-        ("table_name",
-         "Format of table name",
-         "{db}_{table}.xml"),
-        ("data_dir",
-         "Install directory",
-         DATA_DIR),
+        ("table_name", "Format of table name", "{db}_{table}.xml"),
+        ("data_dir", "Install directory", DATA_DIR),
     ]
     table_names = []
 
@@ -40,7 +36,7 @@ class engine(Engine):
     def create_table(self):
         """Create the table by creating an empty XML file."""
         table_path = os.path.join(self.opts["data_dir"], self.table_name())
-        self.output_file = open_fw(table_path)
+        self.output_file = open_fw(table_path, encoding=self.encoding)
         self.output_file.write(u'<?xml version="1.0" encoding="UTF-8"?>')
         self.output_file.write(u'\n<root>')
         self.table_names.append((self.output_file, table_path))
@@ -62,11 +58,11 @@ class engine(Engine):
         if self.table_names:
             for output_file_i, file_name in self.table_names:
                 output_file_i.close()
-                current_input_file = open_fr(file_name)
+                current_input_file = open_fr(file_name, encoding=self.encoding)
                 file_contents = current_input_file.readlines()
                 current_input_file.close()
                 file_contents[-1] = file_contents[-1].strip(',')
-                current_output_file = open_fw(file_name)
+                current_output_file = open_fw(file_name, encoding=self.encoding)
                 current_output_file.writelines(file_contents)
                 current_output_file.write(u'\n</root>')
                 current_output_file.close()
@@ -111,27 +107,35 @@ class engine(Engine):
         else:
             newrows = values
 
-        xml_lines = ['\n<row>\n{}</row>' \
-                     ''.format(self._format_single_row(keys, line_data))
-                     for line_data in newrows]
+        xml_lines = [
+            '\n<row>\n{}</row>'.format(format_single_row(keys, line_data))
+            for line_data in newrows
+        ]
         return xml_lines
 
-    def _format_single_row(self, keys, line_data):
-        """Create an xml string from the keys and line_data values."""
-        row_values = ['    <{key}>{value}</{key}>\n'.format(key=key, value=value)
-                      for key, value in zip(keys, line_data)]
-        return ''.join(row_values)
-
-    def to_csv(self, sort=True, path=None):
+    def to_csv(self, sort=True, path=None, select_columns=None):
         """Export table from xml engine to CSV file."""
         for table_item in self.script_table_registry[self.script.name]:
             header = table_item[1].get_insert_columns(join=False, create=True)
             outputfile = os.path.normpath(
-                os.path.join(path if path else '', os.path.splitext(os.path.basename(table_item[0]))[0] + '.csv'))
-            csv_outfile = xml2csv(table_item[0], outputfile=outputfile, header_values=header)
-            sort_csv(csv_outfile)
+                os.path.join(
+                    path if path else '',
+                    os.path.splitext(os.path.basename(table_item[0]))[0] + '.csv'))
+            csv_outfile = xml2csv(table_item[0],
+                                  outputfile=outputfile,
+                                  header_values=header)
+            sort_csv(csv_outfile, encoding=self.encoding)
 
     def get_connection(self):
         """Get db connection."""
         self.get_input()
         return DummyConnection()
+
+
+def format_single_row(keys, line_data):
+    """Create an xml string from the keys and line_data values."""
+    row_values = [
+        '    <{key}>{value}</{key}>\n'.format(key=key, value=value)
+        for key, value in zip(keys, line_data)
+    ]
+    return ''.join(row_values)

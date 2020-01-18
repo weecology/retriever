@@ -5,22 +5,33 @@ functions available for inheritance by the scripts or datasets.
 from __future__ import print_function
 
 from retriever.engines import choose_engine
-from retriever.lib.models import *
 
 
-class Script(object):
+class Script():
     """This class defines the properties of a generic dataset.
 
     Each Dataset inherits attributes from this class to define
     it's Unique functionality.
     """
 
-    def __init__(self, title="", description="", name="", urls=dict(),
-                 tables=dict(), ref="", public=True, addendum=None,
+    def __init__(self,
+                 title="",
+                 description="",
+                 name="",
+                 urls=dict(),
+                 tables=dict(),
+                 ref="",
+                 public=True,
+                 addendum=None,
                  citation="Not currently available",
-                 licenses=[{'name': None}],
+                 licenses=[{
+                     'name': None
+                 }],
                  retriever_minimum_version="",
-                 version="", encoding="", message="", **kwargs):
+                 version="",
+                 encoding="utf-8",
+                 message="",
+                 **kwargs):
 
         self.title = title
         self.name = name
@@ -55,6 +66,7 @@ class Script(object):
         self.engine.create_db()
 
     def reference_url(self):
+        """Get a reference url as the parent url from data url"""
         if self.ref:
             return self.ref
         if len(self.urls) == 1:
@@ -68,13 +80,14 @@ class Script(object):
             engine = choose_engine(opts)
         engine.get_input()
         engine.script = self
+        engine.set_engine_encoding()
         return engine
 
     def matches_terms(self, terms):
+        """Check if the terms matches a script metadata info"""
         try:
-            search_string = ' '.join([self.name,
-                                      self.description,
-                                      self.name] + self.keywords).upper()
+            search_string = ' '.join([self.name, self.description, self.name] +
+                                     self.keywords).upper()
 
             for term in terms:
                 if not term.upper() in search_string:
@@ -110,8 +123,8 @@ class BasicTextTemplate(Script):
             elif self.url:
                 url = self.url
 
-            # Extract compressed source files
-            if hasattr(self, "archived"):
+            # Extract archived files if a resource or the script has archived
+            if hasattr(self, "archived") or hasattr(table_obj, "archived"):
                 self.process_archived_data(table_obj, url)
 
             # Create tables
@@ -136,46 +149,75 @@ class BasicTextTemplate(Script):
             self.engine.disconnect_files()
 
     def process_tabular_insert(self, table_obj, url):
-        if hasattr(self, "archived"):
-            self.engine.insert_data_from_file(
-                self.engine.format_filename(table_obj.path))
+        """Process tabular data for insertion"""
+        if hasattr(self, "archived") or hasattr(table_obj, "path"):
+            path_to_file = self.engine.format_filename(table_obj.path)
+            self.engine.insert_data_from_file(path_to_file)
         else:
             self.engine.insert_data_from_url(url)
 
     def process_spatial_insert(self, table_obj):
+        """Process spatial data for insertion"""
         if table_obj.dataset_type == "RasterDataset":
             self.engine.insert_raster(self.engine.format_filename(table_obj.path))
         elif table_obj.dataset_type == "VectorDataset":
             self.engine.insert_vector(self.engine.format_filename(table_obj.path))
 
     def process_tables(self, table_obj, url):
-        if hasattr(self, "archived"):
-            self.engine.auto_create_table(table_obj, filename=table_obj.path)
+        """Obtain the clean file and create a table
+
+        if xls_sheets, convert excel to csv
+        Create the table from the file
+        """
+        if hasattr(table_obj, "xls_sheets"):
+            src_path = self.engine.format_filename(table_obj.xls_sheets[1])
+            path_to_csv = self.engine.format_filename(table_obj.path)
+            self.engine.download_file(url, table_obj.xls_sheets[1])
+            self.engine.excel_to_csv(src_path, path_to_csv, table_obj.xls_sheets,
+                                     self.encoding)
+
+        if hasattr(table_obj, "path"):
+            self.engine.auto_create_table(table_obj, url=url, filename=table_obj.path)
         else:
             self.engine.auto_create_table(table_obj, url=url)
 
     def process_archived_data(self, table_obj, url):
         """Pre-process archived files.
 
+        Archive info is specified for a single resource or entire data package.
         Extract the files from the archived source based on
-        the specifications. Either extact a single file or the
-        entire files.
+        the specifications. Either extract a single file or all files.
+        If the archived data is excel, use the
+        xls_sheets to obtain the files to be extracted.
         """
-        archive_type = self.archived
+        archive_type = "zip"
         keep_in_dir = False
         archive_name = None
+        files = None
+
+        # First check the resource for the archived info, else check the table object
+        if hasattr(table_obj, "archived"):
+            archive_type = table_obj.archived
+        elif hasattr(self, "archived"):
+            archive_type = self.archived
 
         if hasattr(self, "extract_all"):
             if self.extract_all:
                 files = None
         else:
             files = [table_obj.path]
+
+        if hasattr(table_obj, "xls_sheets"):
+            # xls_sheets has [index of sheet, excel_filename]
+            files = [table_obj.xls_sheets[1]]
+
         if hasattr(self, "keep_in_dir"):
             keep_in_dir = self.keep_in_dir
         if hasattr(self, "archive_name"):
             archive_name = self.archive_name
 
-        self.engine.download_files_from_archive(url=url, file_names=files,
+        self.engine.download_files_from_archive(url=url,
+                                                file_names=files,
                                                 archive_type=archive_type,
                                                 keep_in_dir=keep_in_dir,
                                                 archive_name=archive_name)
@@ -184,10 +226,5 @@ class BasicTextTemplate(Script):
 class HtmlTableTemplate(Script):
     """Script template for parsing data in HTML tables."""
 
-    pass
 
-
-TEMPLATES = {
-    "default": BasicTextTemplate,
-    "html_table": HtmlTableTemplate
-}
+TEMPLATES = {"default": BasicTextTemplate, "html_table": HtmlTableTemplate}

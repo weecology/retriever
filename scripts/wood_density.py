@@ -17,11 +17,11 @@ try:
     from retriever.lib.defaults import VERSION
 
     try:
-        from retriever.lib.tools import open_fw, open_csvw, to_str
+        from retriever.lib.tools import open_csvw, to_str
     except ImportError:
-        from retriever.lib.scripts import open_fw, open_csvw, to_str
+        from retriever.lib.scripts import open_csvw, to_str
 except ImportError:
-    from retriever import HOME_DIR, open_fr, open_fw, open_csvw, to_str, VERSION
+    from retriever import HOME_DIR, open_csvw, to_str, VERSION
 
 
 class main(Script):
@@ -30,7 +30,8 @@ class main(Script):
         self.title = "Global wood density database - Zanne et al. 2009"
         self.name = "wood-density"
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '1.3.3'
+        self.version = '1.3.4'
+        self.encoding = 'latin-1'
         self.urls = {
             "GWDD": "http://datadryad.org/bitstream/handle/10255/dryad.235/GlobalWoodDensityDatabase.xls?sequence=1"}
         self.keywords = ["Taxon > Plants", "Spatial Scale > Global",
@@ -57,7 +58,7 @@ class main(Script):
         Script.download(self, engine, debug)
         reload(sys)
         if hasattr(sys, 'setdefaultencoding'):
-            sys.setdefaultencoding("utf-8")
+            sys.setdefaultencoding("latin-1")
 
         self.engine.download_file(self.urls["GWDD"], "GlobalWoodDensityDatabase.xls")
         filename = os.path.basename("GlobalWoodDensityDatabase.xls")
@@ -67,14 +68,15 @@ class main(Script):
 
         # Creating data files
         file_path = self.engine.format_filename("gwdd_data.csv")
-        gwdd_data = open_fw(file_path)
+        gwdd_data = open(file_path, 'w', newline='', encoding=self.encoding)
         csv_writer = open_csvw(gwdd_data)
         csv_writer.writerow(["Number", "Family", "Binomial", "Wood_Density", "Region", "Reference_Number"])
 
         for index in range(1, rows):
             row = sh.row(index)
             # get each row and format the sell value.
-            row_as_list = [to_str(column_value.value) for column_value in row]
+            row_as_list = [to_str(column_value.value, object_encoding=sys.stdout, object_decoder=self.encoding) for column_value in row]
+            # row_as_list = [str(column_value.value) for column_value in row]
             csv_writer.writerow(row_as_list)
         gwdd_data.close()
 
@@ -94,7 +96,7 @@ class main(Script):
 
         # Creating reference tale file
         file_path = self.engine.format_filename("gwdd_ref.csv")
-        ref_file = open_fw(file_path)
+        ref_file = open(file_path, 'w', newline='', encoding=self.encoding)
         csv_writerd = open_csvw(ref_file)
         csv_writerd.writerow(["Reference_Number", "Reference"])
         sh = book.sheet_by_index(2)
@@ -102,7 +104,7 @@ class main(Script):
         for index in range(1, rows):
             row = sh.row(index)
             # get each row and format the sell value.
-            row_as_list = [to_str(column_value.value, object_encoding=sys.stdout) for column_value in row]
+            row_as_list = [to_str(column_value.value, object_encoding=sys.stdout, object_decoder=self.encoding) for column_value in row]
             csv_writerd.writerow(row_as_list)
         ref_file.close()
 

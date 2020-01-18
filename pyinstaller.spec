@@ -12,8 +12,7 @@ a = Analysis([os.path.normpath('retriever/__main__.py')],
              hiddenimports=['xlrd', 'pymysql', 'psycopg2', 'sqlite3', 'pyodbc'],
              hookspath=[],
              runtime_hooks=[],
-             excludes=[
-                       ],
+             excludes=[],
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
              cipher=block_cipher)

@@ -11,6 +11,11 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1038272.svg)](https://doi.org/10.5281/zenodo.1038272)
 [![JOSS Publication](http://joss.theoj.org/papers/10.21105/joss.00451/status.svg)](https://doi.org/10.21105/joss.00451)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/retriever/badges/version.svg)](https://anaconda.org/conda-forge/retriever)
+[![Version](https://img.shields.io/pypi/v/retriever.svg)](https://pypi.python.org/pypi/retriever)
+<a href="https://numfocus.org/sponsored-projects">
+<img alt="NumFOCUS"
+   src="https://i0.wp.com/numfocus.org/wp-content/uploads/2019/06/AffiliatedProject.png" width="100" height="18">
+</a>
 
 Finding data is one thing. Getting it ready for analysis is another. Acquiring,
 cleaning, standardizing and importing publicly available data is time consuming
@@ -52,7 +57,7 @@ the [download page](http://www.data-retriever.org/download.html).
 Installing From Source
 ----------------------
 
-To install the Data Retriever from source, you'll need Python 2.7+ or 3.3+ with the following packages installed:
+To install the Data Retriever from source, you'll need Python 3.6.8+ with the following packages installed:
 
 * xlrd
 
@@ -61,13 +66,13 @@ database management systems:
 
 * PyMySQL (for MySQL)
 * sqlite3 (for SQLite)
-* psycopg2 (for PostgreSQL)
+* psycopg2-binary (for PostgreSQL), previously psycopg2.
 * pyodbc (for MS Access - this option is only available on Windows)
 * Microsoft Access Driver (ODBC for windows)
 
 ### To install from source
 
-Either use pip to install directly from GitHub:
+Either use `pip` to install directly from GitHub:
 
 ```shell
 pip install git+https://git@github.com/weecology/retriever.git
@@ -106,7 +111,7 @@ positional arguments:
     delete_json         CLI to remove retriever datapackage.json script
     ls                  display a list all available dataset scripts
     citation            view citation
-    reset               reset retriever: removes configation settings,
+    reset               reset retriever: removes configuration settings,
                         scripts, and cached data
     help
 
@@ -203,9 +208,9 @@ For more information see the
 Acknowledgments
 ---------------
 
-Development of this software was funded by [the Gordon and Betty Moore
+Development of this software was funded by the [Gordon and Betty Moore
 Foundation's Data-Driven Discovery
-Initiative](http://www.moore.org/programs/science/data-driven-discovery) through
+Initiative](https://www.moore.org/initiative-strategy-detail?initiativeId=data-driven-discovery) through
 [Grant GBMF4563](http://www.moore.org/grants/list/GBMF4563) to Ethan White and
 the [National Science Foundation](http://nsf.gov/) as part of a [CAREER award to
 Ethan White](http://nsf.gov/awardsearch/showAward.do?AwardNumber=0953694).

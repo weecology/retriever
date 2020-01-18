@@ -1,12 +1,4 @@
-# -*- coding: latin-1  -*-
-
-from __future__ import absolute_import
-from __future__ import print_function
-
 import sys
-from builtins import str
-from imp import reload
-
 import sphinx_rtd_theme
 
 from retriever.lib.defaults import ENCODING
@@ -14,20 +6,13 @@ from retriever.lib.defaults import ENCODING
 encoding = ENCODING.lower()
 
 from retriever.lib.defaults import VERSION, COPYRIGHT
-from retriever.lib.scripts import SCRIPT_LIST
+from retriever.lib.scripts import SCRIPT_LIST, reload_scripts
 from retriever.lib.tools import open_fw
-
-# sys removes the setdefaultencoding method at startup; reload to get it back
-reload(sys)
-if hasattr(sys, 'setdefaultencoding'):
-    # set default encoding to latin-1 to decode source text
-    sys.setdefaultencoding('latin-1')
+from retriever.lib.repository import check_for_updates
 
 
 def to_str(object, object_encoding=encoding):
-    if sys.version_info >= (3, 0, 0):
-        return str(object).encode('UTF-8').decode(encoding)
-    return object
+    return str(object).encode('UTF-8').decode(encoding)
 
 
 # Create the .rst file for the available datasets
@@ -38,6 +23,8 @@ Datasets Available
 
 
 """
+check_for_updates()
+reload_scripts()
 script_list = SCRIPT_LIST()
 
 # write the title of dataset rst file
@@ -56,7 +43,7 @@ for script_num, script in enumerate(script_list, start=1):
             reference_link = list(script.urls.values())[0].rpartition('/')[0]
         else:
             reference_link = 'Not available'
-    title = str(script_num) + ". **{}**\n".format(script.title.strip())
+    title = str(script_num) + ". **{}**\n".format(to_str(script.title.strip(), encoding))
     datasetfile.write(title)
     datasetfile.write("-" * (len(title) - 1) + "\n\n")
 
@@ -71,7 +58,7 @@ for script_num, script in enumerate(script_list, start=1):
             s=script.name, r=to_str(reference_link).rstrip("/")))
 
     datasetfile.write(":citation: {}\n\n".format(to_str(script.citation, encoding)))
-    datasetfile.write(":description: {}\n\n".format(script.description))
+    datasetfile.write(":description: {}\n\n".format(to_str(script.description, encoding)))
 datasetfile.close()
 
 needs_sphinx = '1.3'
