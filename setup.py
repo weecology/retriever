@@ -94,6 +94,7 @@ setup(
     entry_points={
         'console_scripts': [
             'retriever = retriever.__main__:main',
+            'python-deb-pkg = python_deb_pkg.main:main',
         ],
     },
     install_requires=[
