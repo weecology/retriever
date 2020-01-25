@@ -9,6 +9,8 @@ import platform
 import shutil
 import subprocess
 import warnings
+from flatten_json import flatten
+import pandas as pd
 
 from hashlib import md5
 from io import StringIO as NewFile
@@ -102,33 +104,24 @@ def reset_retriever(scope="all", ask_permission=True):
 
 
 def json2csv(input_file, output_file=None, header_values=None, encoding=ENCODING):
-    """Convert Json file to CSV.
+    #Convert Json file to CSV.
+    with open(input_file) as f:
+        data = json.load(f)
+    list1 = []
+    for i, (key, value) in enumerate(data.items()):
+        list1.append(key)
 
-    Function is used for only testing and can handle the file of the size.
-    """
-    file_out = open_fr(input_file, encoding=encoding)
-    # set output file name and write header
-    if output_file is None:
-        output_file = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
-    csv_out = open_fw(output_file, encoding=encoding)
-    if os.name == 'nt':
-        outfile = csv.DictWriter(csv_out,
-                                 dialect='excel',
-                                 escapechar="\\",
-                                 lineterminator='\n',
-                                 fieldnames=header_values)
-    else:
-        outfile = csv.DictWriter(csv_out,
-                                 dialect='excel',
-                                 escapechar="\\",
-                                 fieldnames=header_values)
-    raw_data = json.loads(file_out.read())
-    outfile.writeheader()
+    for item in list1:
+        new_data = data[item]
 
-    for item in raw_data:
-        outfile.writerow(item)
-    file_out.close()
-    subprocess.call(['rm', '-r', input_file])
+    dic_flattened = []
+
+    for i, d in enumerate(new_data):
+        dic_flattened.append(flatten(d))
+
+    df = pd.DataFrame(dic_flattened)
+    print(df)
+    df.to_csv(output_file)
     return output_file
 
 
