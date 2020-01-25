@@ -363,6 +363,51 @@ This is already set up but could be change if need be.
 Collaborative Workflows with GitHub
 ===================================
 
+First fork the `Data Retriever repository`_.
+Then Clone your forked version with either HTTPS or SSH
+
+   ::
+
+      # Clone with HTTPS
+      git clone https://github.com/[myusername]/retriever.git
+      # Clone with SSH
+      git clone git@github.com:[myusername]/retriever.git
+
+This will update your `.git/config` to point to your repository copy of the Data Retriever as `remote "origin"`
+
+   ::
+
+       [remote "origin"]
+       url = git@github.com:[myusername]/retriever.git
+       fetch = +refs/heads/*:refs/remotes/origin/*
+
+Point to Weecology `Data Retriever repository`_ repo.
+This will enable you update your master(origin) and you can then push to your origin master.
+In our case, we can call this upstream().
+
+   ::
+
+      git remote add upstream https://github.com/weecology/retriever.git
+
+This will update your `.git/config` to point to the Weecology `Data Retriever repository`_.
+
+.. code-block:: bash
+
+  [remote "upstream"]
+  url = https://github.com/weecology/retriever.git
+  fetch = +refs/heads/*:refs/remotes/upstream/*
+  # To fetch pull requests add
+  fetch = +refs/pull/*/head:refs/remotes/origin/pr/*
+
+Fetch upstream master and create a branch to add the contributions to.
+
+.. code-block:: bash
+
+  git fetch upstream
+  git checkout master
+  git reset --hard upstream master
+  git checkout -b [new-branch-to-fix-issue]
+
 **Submiting issues**
 
 Categorize the issues based on labels. For example (Bug, Dataset Bug, Important, Feature Request and etc..)
@@ -401,4 +446,4 @@ Use ``-f`` flag to force pushing changes to the branch. ``git push -f origin [br
 .. _installing: https://docs.python.org/3.6/install/
 .. _installing the wheel: http://www.lfd.uci.edu/~gohlke/pythonlibs/
 .. _setup tools: https://pythonhosted.org/an_example_pypi_project/setuptools.html
-
+.. _Data Retriever repository: https://github.com/weecology/retriever
