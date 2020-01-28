@@ -107,13 +107,13 @@ def json2csv(input_file, output_file=None, header_values=None, encoding=ENCODING
     #Converting Json file to CSV.
 
     with open(input_file) as f:
-        data = json.load(f)
+        content = json.load(f)
     list1 = []
-    for i, (key, value) in enumerate(data.items()):
+    for i, (key, value) in enumerate(content.items()):
         list1.append(key)
 
     for item in list1:
-        new_data = data[item]
+        new_data = content[item]
 
     dic_flattened = []
 
