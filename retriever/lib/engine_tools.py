@@ -108,6 +108,25 @@ def json2csv(input_file, output_file=None, header_values=None, encoding=ENCODING
 
     with open(input_file) as f:
         content = json.load(f)
+    if type(content) == list:
+        for diction in content:
+            list1 = []
+            for i, (key, value) in enumerate(diction.items()):
+                list1.append(key)
+
+            for item in list1:
+                new_data = diction[item]
+
+            dic_flattened = []
+
+            for i, d in enumerate(new_data):
+                dic_flattened.append(flatten(d))
+
+            df = pd.DataFrame(dic_flattened)
+            print(df)
+            df.to_csv(output_file)
+        return output_file
+
     list1 = []
     for i, (key, value) in enumerate(content.items()):
         list1.append(key)
