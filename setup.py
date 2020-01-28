@@ -42,6 +42,8 @@ includes = [
                'future',
                'argcomplete',
                'pymysql',
+               'pyyaml'
+               'datapackage',
                'psycopg2-binary',
                'sqlite3',
            ] + extra_includes
@@ -102,7 +104,9 @@ setup(
         'argcomplete',
         'tqdm',
         'requests',
-        'pandas'
+        'pandas',
+        'pyyaml',
+        'datapackage'
     ],
     data_files=[('', ['CITATION'])],
     setup_requires=[],
