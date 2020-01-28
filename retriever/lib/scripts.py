@@ -18,6 +18,7 @@ from retriever.lib.defaults import (REPOSITORY, RETRIEVER_REPOSITORY, RETRIEVER_
                                     RETRIEVER_DATASETS)
 from retriever.lib.load_json import read_json
 from retriever.lib.provenance_tools import get_script_provenance
+from retriever.lib.f_datapackage import get_dps, get_module
 
 global_script_list = None
 
@@ -37,7 +38,9 @@ def check_retriever_minimum_version(module):
 
 
 def reload_scripts():
-    """Load scripts from scripts directory and return list of modules."""
+    """Load scripts from scripts directory and also frictionless datapackage listed in datapackage.yml 
+       and return list of modules.
+    """
     modules = []
     loaded_files = []
     loaded_scripts = []
@@ -97,6 +100,19 @@ def reload_scripts():
                     sys.stderr.write("Failed to load script: {} ({})\n"
                                      "Exception: {} \n".format(script_name, search_path,
                                                                str(e)))
+
+    """ After loading all scripts from various search path, trys to add scripts of frictionless datapackage
+    """
+    dp_dict = get_dps()
+    for dp in dp_dict:
+        try:
+            if dp not in loaded_scripts:
+                modules.append(get_module(dp,dp_dict[dp]))
+                loaded_scripts.append(dp)
+        except Exception as e:
+            sys.stderr.write("failed to load Frictionless Datapackage : {} ({})\n"
+                             "Exception: {}\n".format(dp,dp_dict[dp],str(e)))
+        
     if global_script_list:
         global_script_list.set_scripts(modules)
     return modules
