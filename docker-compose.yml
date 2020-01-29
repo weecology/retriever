@@ -1,8 +1,4 @@
 version: '3'
-volumes:
-  cli_tools/postgis-data:
-  cli_tools/postgis-backups:
-
 services:
   mysqldb_retriever:
     image: mysql:5.7
@@ -16,8 +12,8 @@ services:
   pgdb_retriever:
     image: kartoza/postgis:12.0
     volumes:
-      - cli_tools/postgis-data:/var/lib/postgresql
-      - cli_tools/postgis-backups:/backups
+      - ./cli_tools/postgis-data:/var/lib/postgresql
+      - ./cli_tools/:/backups
     container_name: pgdb_ret_container
     environment:
       # To create multiple database you can add coma separated databases eg gis,data
@@ -29,8 +25,6 @@ services:
       # Default are the three specified below
       - POSTGRES_MULTIPLE_EXTENSIONS=postgis,hstore,postgis_topology
     restart: on-failure
-    healthcheck:
-      test: "exit 0"
 
   python_retriever:
     container_name: ret_container
@@ -52,8 +46,6 @@ services:
     build: .
     depends_on:
       - mysqldb_retriever
-      pgdb_retriever:
-        condition: service_healthy
-condition: service_healthy
+      - pgdb_retriever
     ports:
       - 5001:80

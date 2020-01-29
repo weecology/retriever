@@ -8,9 +8,9 @@ services:
 before_install:
   # Make dir corresponding to the version of Postgres used
   - mkdir -p cli_tools/postgis-data/12/main
+  - mkdir -p cli_tools/postgis-data
+  - mkdir -p cli_tools/postgis-backups
   - chmod +x cli_tools/postgis-data/12/main
-  - sleep 60
-  - docker-compose ps
 
 # command to run tests using py.test
 script:
