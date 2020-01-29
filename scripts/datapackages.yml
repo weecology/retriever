@@ -1,3 +1,2 @@
-gdp: https://raw.githubusercontent.com/datasets/gdp/master/datapackage.json
-country-codes: https://raw.githubusercontent.com/datasets/country-codes/master/datapackage.json
-population-density: https://raw.githubusercontent.com/datasets/population/master/datapackage.json
+eu-emission-trading-system: https://datahub.io/core/eu-emissions-trading-system/r/eu-emissions-trading-system_zip.zip
+global_co2_levels : https://datahub.io/core/co2-ppm/r/co2-ppm_zip.zip
