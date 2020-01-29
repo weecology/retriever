@@ -10,7 +10,7 @@ import shutil
 import subprocess
 import warnings
 import pandas as pd
-import json
+from flatten_json import flatten
 
 from hashlib import md5
 from io import StringIO as NewFile
@@ -127,23 +127,23 @@ def json2csv(input_file, output_file=None, header_values=None, encoding=ENCODING
                 print(df)
                 df.to_csv(output_file)
         return output_file
+    elif type(content) == dict:
+        list1 = []
+        for i, (key, value) in enumerate(content.items()):
+            list1.append(key)
 
-    list1 = []
-    for i, (key, value) in enumerate(content.items()):
-        list1.append(key)
+        for item in list1:
+            new_data = content[item]
 
-    for item in list1:
-        new_data = content[item]
+        dic_flattened = []
 
-    dic_flattened = []
+        for i, d in enumerate(new_data):
+            dic_flattened.append(flatten(d))
 
-    for i, d in enumerate(new_data):
-        dic_flattened.append(flatten(d))
-
-    df = pd.DataFrame(dic_flattened)
-    print(df)
-    df.to_csv(output_file)
-    return output_file
+        df = pd.DataFrame(dic_flattened)
+        print(df)
+        df.to_csv(output_file)
+        return output_file
 
 
 def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
