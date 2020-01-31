@@ -1,6 +1,9 @@
 import os.path
 import yaml
-from datapackage import Package 
+try:
+    from datapackage import Package 
+except ImportError as e:
+    print("Could not import Package - ",e) 
 from collections import OrderedDict
 from retriever.lib.templates import TEMPLATES
 from retriever.lib.models import myTables
@@ -31,8 +34,14 @@ def get_module(dp,url):
         returns script module
     """
     descriptor = get_frictionless(url)
-    updated_resources = convert_frictionless(descriptor)
-    module = create_module (descriptor , updated_resources)
+    try: 
+        updated_resources = convert_frictionless(descriptor)
+    except:
+        print("\n problem in converting")
+    try:
+        module = create_module (descriptor , updated_resources)
+    except Exception as e:
+        print("\n problems creating mmodule -- ",e)
     return module
 
 def get_frictionless(url):
@@ -43,6 +52,7 @@ def get_frictionless(url):
         pc = Package(url)
         return pc.descriptor
     except Exception as e:
+        print("#Problems downloading the datapackage zip")
         print(e)
         return None
     
@@ -97,13 +107,17 @@ def create_module(descriptor , updated_resources):
                 if "urls" in descriptor:
                     descriptor["urls"][resource["name"]] = resource["url"]
         
+        
         descriptor["tables"] = OrderedDict()
         temp_tables = {}
         table_names = [item["name"] for item in updated_resources]
         temp_tables["tables"] = OrderedDict(zip(table_names, updated_resources))
-        for table_name, table_spec in temp_tables["tables"].items():
-            descriptor["tables"][table_name] = myTables[temp_tables["tables"][table_name]
-                                                         ["format"]](**table_spec)
+        try:
+            for table_name, table_spec in temp_tables["tables"].items():
+                table_spec["format"] = "tabular"
+                descriptor["tables"][table_name] = myTables["tabular"](**table_spec)
+        except Exception as e:
+            print("\n inside create module - ",e)  
         descriptor.pop("resources", None)
-        return TEMPLATES["default"](**descriptor)
+        return TEMPLATES["default"](**descriptor)    
     return None

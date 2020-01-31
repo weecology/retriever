@@ -106,6 +106,7 @@ def reload_scripts():
     dp_dict = get_dps()
     for dp in dp_dict:
         try:
+            print("\n New additions")
             if dp not in loaded_scripts:
                 modules.append(get_module(dp,dp_dict[dp]))
                 loaded_scripts.append(dp)
