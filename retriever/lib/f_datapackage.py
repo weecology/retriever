@@ -115,6 +115,7 @@ def create_module(descriptor , updated_resources):
         try:
             for table_name, table_spec in temp_tables["tables"].items():
                 table_spec["format"] = "tabular"
+                table_spec.pop("path")
                 descriptor["tables"][table_name] = myTables["tabular"](**table_spec)
         except Exception as e:
             print("\n inside create module - ",e)  
