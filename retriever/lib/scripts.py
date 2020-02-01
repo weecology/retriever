@@ -279,6 +279,16 @@ def get_script_version_upstream(dataset, repo=REPOSITORY):
     return version
 
 
+def get_script_citation(dataset=None):
+    """Get the citation for a script"""
+    if not dataset:
+        return VERSION
+    scripts = name_matches(reload_scripts(), dataset)
+    if scripts:
+        return scripts[0].citation
+    return None
+
+
 def get_dataset_names_upstream(keywords=None, licenses=None, repo=REPOSITORY):
     """Search all datasets upstream by keywords and licenses. If the keywords
     or licenses argument is passed, Github's search API is used for looking

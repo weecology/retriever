@@ -491,6 +491,13 @@ def test_format_insert_value_string_complex():
     assert test_engine.format_insert_value(test_str, 'char') == test_str
 
 
+def test_get_script_citation():
+    """Test get citation of a script"""
+    cite = rt.get_script_citation("iris")
+    expected_cite = "R. A. Fisher. 1936."
+    assert expected_cite.lower() in cite.lower()
+
+
 def test_getmd5_lines():
     """Test md5 sum calculation given a line."""
     lines = ['a,b,c', '1,2,3', '4,5,6']
