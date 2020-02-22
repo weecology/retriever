@@ -480,11 +480,18 @@ class Engine():
                 api.authenticate()
                 if url.split(":")[1] == "dataset":
                     api.dataset_download_files(dataset=url.split(":")[-1], path=path, quiet=False)
+                    with zipfile.ZipFile(os.path.join(path, url.split(":")[-1].split("/")[-1]+".zip")) as archive:
+                        archive.extractall(path)
+                        # shutil.rmtree(os.path.join(path, url.split(":")[-1].split("/")[-1]+".zip"))
+
                 elif url.split(":")[1] == "competition":
-                    api.comptetition_download_files(competition=url.split(":")[-1], path=path, quiet=False)
+                    api.competition_download_files(competition=url.split(":")[-1], path=path, quiet=False)
+                    with zipfile.ZipFile(os.path.join(path, url.split(":")[-1].split("/")[-1]+".zip")) as archive:
+                        archive.extractall(path)
+                        # shutil.rmtree(os.path.join(path, url.split(":")[-1].split("/")[-1]+".zip"))
+
                 else:
-                    #FIXME! Dataset not found erpr
-                    raise Exception("Couldn't unserstand the request")
+                    raise Exception("Could not understand the request")
 
             else:
                 progbar = tqdm(
