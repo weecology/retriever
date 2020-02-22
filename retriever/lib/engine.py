@@ -470,31 +470,48 @@ class Engine():
         if not self.find_file(filename) or not self.use_cache:
             path = self.format_filename(filename)
             self.create_raw_data_dir()
-            progbar = tqdm(
-                unit='B',
-                unit_scale=True,
-                unit_divisor=1024,
-                miniters=1,
-                desc='Downloading {}'.format(filename),
-            )
-            try:
-                requests.get(
-                    url,
-                    allow_redirects=True,
-                    stream=True,
-                    headers={
-                        'user-agent':
-                            'Weecology/Data-Retriever \
-                                            Package Manager: http://www.data-retriever.org/'
-                    },
-                    hooks={'response': reporthook(progbar, path)},
+
+            #  This implies that the dataset belongs to kaggle
+            # url format: kaggle:<dataset_type>:<dataset_name>
+            if "kaggle" == url.split(":")[0]:
+                from kaggle.api.kaggle_api_extended import KaggleApi
+
+                api = KaggleApi()
+                api.authenticate()
+                if url.split(":")[1] == "dataset":
+                    api.dataset_download_files(dataset=url.split(":")[-1], path=path, quiet=False)
+                elif url.split(":")[1] == "competition":
+                    api.comptetition_download_files(competition=url.split(":")[-1], path=path, quiet=False)
+                else:
+                    #FIXME! Dataset not found erpr
+                    raise Exception("Couldn't unserstand the request")
+
+            else:
+                progbar = tqdm(
+                    unit='B',
+                    unit_scale=True,
+                    unit_divisor=1024,
+                    miniters=1,
+                    desc='Downloading {}'.format(filename),
                 )
+                try:
+                    requests.get(
+                        url,
+                        allow_redirects=True,
+                        stream=True,
+                        headers={
+                            'user-agent':
+                                'Weecology/Data-Retriever \
+                                                Package Manager: http://www.data-retriever.org/'
+                        },
+                        hooks={'response': reporthook(progbar, path)},
+                    )
 
-            except InvalidSchema:
-                urlretrieve(url, path, reporthook=reporthook(progbar))
+                except InvalidSchema:
+                    urlretrieve(url, path, reporthook=reporthook(progbar))
 
-            self.use_cache = True
-            progbar.close()
+                self.use_cache = True
+                progbar.close()
 
     def download_files_from_archive(
         self,

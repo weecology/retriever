@@ -131,7 +131,6 @@ def json2csv(input_file, output_file=None, header_values=None, encoding=ENCODING
     subprocess.call(['rm', '-r', input_file])
     return output_file
 
-
 def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
     """Convert xml to csv.
 
