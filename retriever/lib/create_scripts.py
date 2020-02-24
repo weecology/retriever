@@ -71,7 +71,9 @@ def create_resources(file, skip_lines):
     resource_dict = {}
     path_to_table = os.path.basename(clean_table["name"])
     print("Processing... {file_name}".format(file_name=path_to_table))
-    resource_dict["name"] = os.path.splitext(path_to_table)[0].lower()
+    path_raw = os.path.splitext(path_to_table)[0].lower()
+    path_underscore = path_raw.translate(path_raw.maketrans("-. ", "___"))
+    resource_dict["name"] = '_'.join(filter(None, path_underscore.split('_')))
     resource_dict["path"] = path_to_table
     resource_dict["schema"] = {}
     resource_dict["dialect"] = {"delimiter": ","}
