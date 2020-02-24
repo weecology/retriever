@@ -85,7 +85,6 @@ class Engine():
         """Adds data to a table from one or more lines specified
         in engine.table.source."""
         print('Installing {}'.format(self.table_name()))
-
         # If the number of records are known avoid counting the lines
         real_line_length = None
         if self.table.number_of_records:
@@ -471,54 +470,60 @@ class Engine():
             path = self.format_filename(filename)
             self.create_raw_data_dir()
 
-            #  This implies that the dataset belongs to kaggle
-            # url format: kaggle:<dataset_type>:<dataset_name>
-            if "kaggle" == url.split(":")[0]:
-                from kaggle.api.kaggle_api_extended import KaggleApi
+            # if url.split(":")[0] ==  "kaggle":
+            #     print("asdddddddddddddddd")
+            #     from kaggle.api.kaggle_api_extended import KaggleApi
 
-                api = KaggleApi()
-                api.authenticate()
-                if url.split(":")[1] == "dataset":
-                    api.dataset_download_files(dataset=url.split(":")[-1], path=path, quiet=False)
-                    with zipfile.ZipFile(os.path.join(path, url.split(":")[-1].split("/")[-1]+".zip")) as archive:
-                        archive.extractall(path)
-                        # shutil.rmtree(os.path.join(path, url.split(":")[-1].split("/")[-1]+".zip"))
+            #     api = KaggleApi()
+            #     api.authenticate()
+            #     if url.split(":")[1] == "dataset":
+            #         api.dataset_download_files(dataset=url.split(":")[-1], path=path, quiet=False)
+            #         with zipfile.ZipFile(os.path.join(path, url.split(":")[-1].split("/")[-1]+".zip")) as archive:
+            #             archive.extractall(path)
+            #             from glob import glob
+            #             files = glob(path+"/*", recursive=True)
+            #             for file in files:
+            #                 shutil.move(file, file.replace(url.split(":")[-1].split("/")[-1]+"/", ""))
 
-                elif url.split(":")[1] == "competition":
-                    api.competition_download_files(competition=url.split(":")[-1], path=path, quiet=False)
-                    with zipfile.ZipFile(os.path.join(path, url.split(":")[-1].split("/")[-1]+".zip")) as archive:
-                        archive.extractall(path)
-                        # shutil.rmtree(os.path.join(path, url.split(":")[-1].split("/")[-1]+".zip"))
+            #             shutil.rmtree(path)
+            #             # removing the zip file
+            #             os.remove(path+".zip")
 
-                else:
-                    raise Exception("Could not understand the request")
+            #     elif url.split(":")[1] == "competition":
+            #         api.competition_download_files(competition=url.split(":")[-1], path=path, quiet=False)
+            #         with zipfile.ZipFile(os.path.join(path, url.split(":")[-1].split("/")[-1]+".zip")) as archive:
+            #             archive.extractall(path+".zip")
+            #             # shutil.rmtree(os.path.join(path, url.split(":")[-1].split("/")[-1]+".zip"))
 
-            else:
-                progbar = tqdm(
-                    unit='B',
-                    unit_scale=True,
-                    unit_divisor=1024,
-                    miniters=1,
-                    desc='Downloading {}'.format(filename),
+            #     else:
+            #         raise Exception("Could not understand the request")
+
+        # else:
+            progbar = tqdm(
+                unit='B',
+                unit_scale=True,
+                unit_divisor=1024,
+                miniters=1,
+                desc='Downloading {}'.format(filename),
+            )
+            try:
+                requests.get(
+                    url,
+                    allow_redirects=True,
+                    stream=True,
+                    headers={
+                        'user-agent':
+                            'Weecology/Data-Retriever \
+                                            Package Manager: http://www.data-retriever.org/'
+                    },
+                    hooks={'response': reporthook(progbar, path)},
                 )
-                try:
-                    requests.get(
-                        url,
-                        allow_redirects=True,
-                        stream=True,
-                        headers={
-                            'user-agent':
-                                'Weecology/Data-Retriever \
-                                                Package Manager: http://www.data-retriever.org/'
-                        },
-                        hooks={'response': reporthook(progbar, path)},
-                    )
 
-                except InvalidSchema:
-                    urlretrieve(url, path, reporthook=reporthook(progbar))
+            except InvalidSchema:
+                urlretrieve(url, path, reporthook=reporthook(progbar))
 
-                self.use_cache = True
-                progbar.close()
+            self.use_cache = True
+            progbar.close()
 
     def download_files_from_archive(
         self,
@@ -529,7 +534,6 @@ class Engine():
         archive_name=None,
     ):
         """Download files from an archive into the raw data directory."""
-
         if not archive_name:
             archive_name = filename_from_url(url)
         else:
@@ -537,6 +541,8 @@ class Engine():
 
         archive_full_path = self.format_filename(archive_name)
         archive_dir = self.format_data_dir()
+
+
         if keep_in_dir:
             archive_base = os.path.splitext(os.path.basename(archive_name))[0]
             archive_dir = (self.data_path if self.data_path else os.path.join(
@@ -545,34 +551,56 @@ class Engine():
             if not os.path.exists(archive_dir):
                 os.makedirs(archive_dir)
 
-        if not file_names:
-            self.download_file(url, archive_name)
-            if archive_type in ('tar', 'tar.gz'):
-                file_names = self.extract_tar(archive_full_path, archive_dir,
-                                              archive_type)
-            elif archive_type == 'zip':
-                file_names = self.extract_zip(archive_full_path, archive_dir)
-            elif archive_type == 'gz':
-                file_names = self.extract_gz(archive_full_path, archive_dir)
-            return file_names
+        if url.split(":")[0] ==  "kaggle":
+            from kaggle.api.kaggle_api_extended import KaggleApi
 
-        archive_downloaded = bool(self.data_path)
-        for file_name in file_names:
-            archive_full_path = self.format_filename(archive_name)
-            if not self.find_file(os.path.join(archive_dir, file_name)):
-                # if no local copy, download the data
-                self.create_raw_data_dir()
-                if not archive_downloaded:
-                    self.download_file(url, archive_name)
-                    archive_downloaded = True
-                if archive_type == 'zip':
-                    self.extract_zip(archive_full_path, archive_dir, file_name)
+            api = KaggleApi()
+            api.authenticate()
+            if url.split(":")[1] == "dataset":
+                archive_full_path = archive_full_path+".zip"
+                api.dataset_download_files(dataset=url.split(":")[-1], path=archive_dir, quiet=False)
+                file_names = self.extract_zip(archive_full_path, archive_dir)
+                return file_names
+
+            elif url.split(":")[1] == "competition":
+                archive_full_path = archive_full_path.replace("kaggle:competition:", "")+".zip"
+                api.competition_download_files(competition=url.split(":")[-1], path=archive_dir, quiet=False)
+                file_names = self.extract_zip(archive_full_path, archive_dir)
+                return file_names
+
+            else:
+                raise Exception("Could not understand the request for Kaggle Data.", url)
+
+        else:
+
+            if not file_names:
+                self.download_file(url, archive_name)
+                if archive_type in ('tar', 'tar.gz'):
+                    file_names = self.extract_tar(archive_full_path, archive_dir,
+                                                archive_type)
+                elif archive_type == 'zip':
+                    file_names = self.extract_zip(archive_full_path, archive_dir)
                 elif archive_type == 'gz':
-                    self.extract_gz(archive_full_path, archive_dir, file_name)
-                elif archive_type in ('tar', 'tar.gz'):
-                    self.extract_tar(archive_full_path, archive_dir, archive_type,
-                                     file_name)
-        return file_names
+                    file_names = self.extract_gz(archive_full_path, archive_dir)
+                return file_names
+
+            archive_downloaded = bool(self.data_path)
+            for file_name in file_names:
+                archive_full_path = self.format_filename(archive_name)
+                if not self.find_file(os.path.join(archive_dir, file_name)):
+                    # if no local copy, download the data
+                    self.create_raw_data_dir()
+                    if not archive_downloaded:
+                        self.download_file(url, archive_name)
+                        archive_downloaded = True
+                    if archive_type == 'zip':
+                        self.extract_zip(archive_full_path, archive_dir, file_name)
+                    elif archive_type == 'gz':
+                        self.extract_gz(archive_full_path, archive_dir, file_name)
+                    elif archive_type in ('tar', 'tar.gz'):
+                        self.extract_tar(archive_full_path, archive_dir, archive_type,
+                                        file_name)
+            return file_names
 
     def drop_statement(self, object_type, object_name):
         """Return drop table or database SQL statement."""

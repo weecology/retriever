@@ -115,7 +115,6 @@ class BasicTextTemplate(Script):
         pre processing steps provided by the retriever."""
         Script.download(self, engine, debug)
         # make file name mandatory for simplicity
-
         for _, table_obj in self.tables.items():
             # if the table has no url, use the script's url
             if hasattr(table_obj, "url") and table_obj.url:
