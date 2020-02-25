@@ -469,36 +469,6 @@ class Engine():
         if not self.find_file(filename) or not self.use_cache:
             path = self.format_filename(filename)
             self.create_raw_data_dir()
-
-            # if url.split(":")[0] ==  "kaggle":
-            #     print("asdddddddddddddddd")
-            #     from kaggle.api.kaggle_api_extended import KaggleApi
-
-            #     api = KaggleApi()
-            #     api.authenticate()
-            #     if url.split(":")[1] == "dataset":
-            #         api.dataset_download_files(dataset=url.split(":")[-1], path=path, quiet=False)
-            #         with zipfile.ZipFile(os.path.join(path, url.split(":")[-1].split("/")[-1]+".zip")) as archive:
-            #             archive.extractall(path)
-            #             from glob import glob
-            #             files = glob(path+"/*", recursive=True)
-            #             for file in files:
-            #                 shutil.move(file, file.replace(url.split(":")[-1].split("/")[-1]+"/", ""))
-
-            #             shutil.rmtree(path)
-            #             # removing the zip file
-            #             os.remove(path+".zip")
-
-            #     elif url.split(":")[1] == "competition":
-            #         api.competition_download_files(competition=url.split(":")[-1], path=path, quiet=False)
-            #         with zipfile.ZipFile(os.path.join(path, url.split(":")[-1].split("/")[-1]+".zip")) as archive:
-            #             archive.extractall(path+".zip")
-            #             # shutil.rmtree(os.path.join(path, url.split(":")[-1].split("/")[-1]+".zip"))
-
-            #     else:
-            #         raise Exception("Could not understand the request")
-
-        # else:
             progbar = tqdm(
                 unit='B',
                 unit_scale=True,
@@ -510,7 +480,7 @@ class Engine():
                 requests.get(
                     url,
                     allow_redirects=True,
-                    stream=True,
+                    s0tream=True,
                     headers={
                         'user-agent':
                             'Weecology/Data-Retriever \
@@ -524,6 +494,35 @@ class Engine():
 
             self.use_cache = True
             progbar.close()
+
+    def download_from_kaggle(
+        self,
+        data_source,
+        dataset_name,
+        archive_dir,
+        archive_full_path,
+    ):
+        """Download files from Kaggle into the raw data directory"""
+        from kaggle.api.kaggle_api_extended import KaggleApi
+        api = KaggleApi()
+        api.authenticate()
+
+        if data_source == "dataset":
+            archive_full_path = archive_full_path + ".zip"
+            api.dataset_download_files(
+                dataset=dataset_name, path=archive_dir, quiet=False)
+            file_names = self.extract_zip(archive_full_path, archive_dir)
+
+        elif data_source == "competition":
+            archive_full_path = archive_full_path.replace(
+                "kaggle:competition:", "") + ".zip"
+            api.competition_download_files(
+                competition=dataset_name, path=archive_dir, quiet=False)
+            file_names = self.extract_zip(archive_full_path, archive_dir)
+        else:
+            raise Exception("Could not understand this request for Kaggle Data")
+
+        return file_names
 
     def download_files_from_archive(
         self,
@@ -552,27 +551,14 @@ class Engine():
                 os.makedirs(archive_dir)
 
         if url.split(":")[0] ==  "kaggle":
-            from kaggle.api.kaggle_api_extended import KaggleApi
-
-            api = KaggleApi()
-            api.authenticate()
-            if url.split(":")[1] == "dataset":
-                archive_full_path = archive_full_path+".zip"
-                api.dataset_download_files(dataset=url.split(":")[-1], path=archive_dir, quiet=False)
-                file_names = self.extract_zip(archive_full_path, archive_dir)
-                return file_names
-
-            elif url.split(":")[1] == "competition":
-                archive_full_path = archive_full_path.replace("kaggle:competition:", "")+".zip"
-                api.competition_download_files(competition=url.split(":")[-1], path=archive_dir, quiet=False)
-                file_names = self.extract_zip(archive_full_path, archive_dir)
-                return file_names
-
-            else:
-                raise Exception("Could not understand the request for Kaggle Data.", url)
+            file_names = self.download_from_kaggle(
+                data_source=url.split(":")[1],
+                dataset_name=url.split(":")[-1],
+                archive_dir=archive_dir,
+                archive_full_path=archive_full_path
+            )
 
         else:
-
             if not file_names:
                 self.download_file(url, archive_name)
                 if archive_type in ('tar', 'tar.gz'):
@@ -601,6 +587,7 @@ class Engine():
                         self.extract_tar(archive_full_path, archive_dir, archive_type,
                                         file_name)
             return file_names
+
 
     def drop_statement(self, object_type, object_name):
         """Return drop table or database SQL statement."""
