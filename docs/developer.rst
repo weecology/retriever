@@ -99,26 +99,42 @@ links `Read The Docs`_, `codecov`_, `AppVeyor`_ and  `Travis`_
 To run the tests you will need to have all of the relevant database management systems and associated
 modules installed (see ``Setting up servers``). Create the appropriate permissions for the tests to access
 the databases. You can do this by running the following commands in MySQL and
-PostgreSQL and creating the .pgpass(pgpass.conf for Microsoft Windows) file as described below:
+PostgreSQL and creating the .pgpass.conf file as described below:
 
 Passwordless configuration
 --------------------------
 
 To avoid supplying the passwords when using the tool, use the config files
-`.pgpass`(`pgpass.conf` for Microsoft Windows) for Postgres and `.my.cnf`
-for MySQL. The files are kept in the HOME directory(~/.pgpass, ~/.my.cnf).
+``.pgpass.conf and pgpass.conf`` for Postgres and ``.my.cnf`` for MySQL.
+
+The files are usually in the HOME directory(~/.pgpass.conf, ~/.my.cnf) for Linux
+and ``\Users\username\AppData\Roaming\postgresql\pgpass.conf`` for
+Microsoft Windows.
+
 Make sure you set the file permissions to 600. For Postgres, on Microsoft
-Windows, entering `%APPDATA%` will take you to `C:\Users\username\AppData\Roaming`.
-In this directory create a new subdirectory named `postgresql`. Then create the
-`pgpass.conf` file inside it. On Microsoft Windows, it is assumed that the file
+Windows, entering ``%APPDATA%`` will take you to ``C:\Users\username\AppData\Roaming``.
+In this directory create a new subdirectory named ``postgresql``. Then create the
+``pgpass.conf`` file inside it. On Microsoft Windows, it is assumed that the file
 is stored in a directory that is secure, so no special permissions check is made.
+
+For windows check file ownership
+
+::
+
+  C:\Users\username\AppData\Roaming\postgresql>cacls pgpass.conf
+  C:\Users\username\AppData\Roaming\postgresql\pgpass.conf NT AUTHORITY\SYSTEM:(ID)F
+                                                           BUILTIN\Administrators:(ID)F
+                                                           WIN-G3BNU2NQAI1\postgres:(ID)F
+
+::
+
+On Solaris/Linux platform
 
 ::
 
   chmod 600 ~/.pgpass
   chmod 600 ~/.my.cnf
 
-::
 
   MySQL
   -----
@@ -140,7 +156,7 @@ is stored in a directory that is secure, so no special permissions check is made
   psql -c 'CREATE DATABASE testdb_retriever'
   psql -c 'GRANT ALL PRIVILEGES ON DATABASE testdb_retriever to postgres'
   ​
-  Create .pgpass in your home directory:
+  Create .pgpass.conf in your home directory:
   localhost:*:testdb_retriever:postgres:Password12!
 
 
@@ -163,7 +179,7 @@ To run tests on a specific test category add the path of the test module to the 
 This will only run test_retriever.py
 
 In case ``py.test`` requests for Password (even after Passwordless configuration), change the owner and group
-from the permissions of the files ``~/.pgpass, ~/.my.cnf``
+from the permissions of the files ``~/.pgpass.conf, ~/.my.cnf``
 
 Continuous Integration
 ^^^^^^^^^^^^^^^^^^^^^^

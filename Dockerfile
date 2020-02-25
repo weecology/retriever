@@ -23,7 +23,7 @@ RUN rm -f /usr/bin/pip && ln -s /usr/bin/pip3 /usr/bin/pip
 
 RUN echo "export PATH="/usr/bin/python:$PATH"" >> ~/.profile
 RUN echo "export PYTHONPATH="/usr/bin/python:$PYTHONPATH"" >> ~/.profile
-RUN echo "export PGPASSFILE="~/.pgpass"" >> ~/.profile
+RUN echo "export PGPASSFILE="~/.pgpass.conf"" >> ~/.profile
 
 # Add permissions to config files
 RUN chmod 0644 ~/.profile
@@ -51,8 +51,8 @@ WORKDIR ./retriever
 RUN pip install -e .
 # Add permissions to config files
 # Do not run these cmds before Entrypoint.
-RUN export PGPASSFILE="~/.pgpass"
-RUN chmod 600 cli_tools/.pgpass
+RUN export PGPASSFILE="~/.pgpass.conf"
+RUN chmod 600 cli_tools/.pgpass.conf
 RUN chmod 600 cli_tools/.my.cnf
 
 CMD ["bash", "-c", "Python --version"]
