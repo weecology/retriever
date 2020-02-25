@@ -7,12 +7,12 @@ import sys
 
 from retriever.engines import engine_list, choose_engine
 from retriever.lib.datasets import datasets, dataset_names, license
-from retriever.lib.defaults import sample_script, CITATION, SCRIPT_SEARCH_PATHS, LICENSE
+from retriever.lib.defaults import sample_script, CITATION, SCRIPT_SEARCH_PATHS, LICENSE, VERSION
 from retriever.lib.engine_tools import reset_retriever
 from retriever.lib.get_opts import parser
 from retriever.lib.install import _install
 from retriever.lib.repository import check_for_updates
-from retriever.lib.scripts import SCRIPT_LIST, reload_scripts, get_script, name_matches
+from retriever.lib.scripts import SCRIPT_LIST, reload_scripts, get_script, name_matches, get_script_citation
 from retriever.lib.create_scripts import create_package
 from retriever.lib.provenance import commit, commit_log
 
@@ -62,16 +62,15 @@ def main():
             return
 
         if args.command == "citation":
-            if args.dataset is None:
+            citations = get_script_citation(args.dataset)
+            if not citations:
+                return
+            if citations == [VERSION]:
                 print("\nCitation for retriever:\n")
                 print(CITATION)
             else:
-                scripts = name_matches(script_list, args.dataset)
-                for dataset in scripts:
-                    print("\nDataset:  {}".format(dataset.name))
-                    print("Citation:   {}".format(dataset.citation))
-                    print("Description:   {}\n".format(dataset.description))
-
+                for citation in citations:
+                    print("Citation:   {}".format(citation))
             return
 
         if args.command == 'license':
