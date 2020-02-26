@@ -215,8 +215,8 @@ def test_drop_statement():
     assert test_engine.drop_statement(
         'TABLE', 'tablename') == "DROP TABLE IF EXISTS tablename"
 
-def test_download_from_kaggle_known():
-    """Test the downloading of dataset from kaggle, of a known dataset"""
+def test_download_from_kaggle_competition():
+    """Test the downloading of dataset from kaggle, of a known competition"""
     setup_functions()
     files = test_engine.download_from_kaggle(
         data_source="competition",
@@ -224,7 +224,33 @@ def test_download_from_kaggle_known():
         archive_dir=raw_dir_files,
         archive_full_path=os.path.join(raw_dir_files, "titanic")
     )
-    assert ["train.csv", "test.csv"] <= files
+    assert ["gender_submission.csv",  "test.csv", "train.csv"] == files
+
+def test_download_from_kaggle_dataset():
+    """Test the downloading of dataset from kaggle, of a known dataset"""
+    setup_functions()
+    files = test_engine.download_from_kaggle(
+        data_source="dataset",
+        dataset_name="uciml/iris",
+        archive_dir=raw_dir_files,
+        archive_full_path=os.path.join(raw_dir_files, "iris")
+    )
+    assert ['Iris.csv', 'database.sqlite'] == files
+
+def test_download_from_kaggle_unknown():
+    """Test the downloading of dataset from kaggle, of a erranous dataset name"""
+    setup_functions()
+    try:
+        files = test_engine.download_from_kaggle(
+            data_source="competition",
+            dataset_name="titanic",
+            archive_dir=raw_dir_files,
+            archive_full_path=os.path.join(raw_dir_files, "non_existant_dataset")
+        )
+        assert False
+    except Exception:
+        assert True
+
 
 def test_download_archive_gz_known():
     """Download and extract known files
