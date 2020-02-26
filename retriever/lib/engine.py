@@ -480,7 +480,7 @@ class Engine():
                 requests.get(
                     url,
                     allow_redirects=True,
-                    s0tream=True,
+                    stream=True,
                     headers={
                         'user-agent':
                             'Weecology/Data-Retriever \
