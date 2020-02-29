@@ -13,7 +13,7 @@ REPOSITORY = MASTER_BRANCH
 RETRIEVER_REPOSITORY = RETRIEVER_MASTER_BRANCH
 ENCODING = 'utf-8'
 HOME_DIR = os.path.expanduser('~/.retriever/')
-KAGGLE_DIR = os.path.expanduser('~/.kaggle/')
+KAGGLE_TOKEN_PATH = os.path.expanduser('~/.kaggle/kaggle.json')
 RETRIEVER_DIR = 'retriever'
 if os.path.exists(os.path.join(HOME_DIR, 'retriever_path.txt')):
     with open(os.path.join(HOME_DIR, 'retriever_path.txt'), 'r') as f:

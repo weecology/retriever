@@ -17,7 +17,7 @@ from retriever.lib.engine_tools import sort_csv
 from retriever.lib.engine_tools import create_file
 from retriever.lib.engine_tools import file_2list
 from retriever.lib.datapackage import clean_input, is_empty
-from retriever.lib.defaults import HOME_DIR, RETRIEVER_DATASETS, RETRIEVER_REPOSITORY, KAGGLE_DIR
+from retriever.lib.defaults import HOME_DIR, RETRIEVER_DATASETS, RETRIEVER_REPOSITORY, KAGGLE_TOKEN_PATH
 
 # Create simple engine fixture
 test_engine = Engine()
@@ -217,7 +217,7 @@ def test_drop_statement():
 
 def test_download_from_kaggle_competition():
     """Test the downloading of dataset from kaggle, of a known competition"""
-    if os.listdir(KAGGLE_DIR) or set(os.environ.keys()).issubset(['KAGGLE_USERNAME', 'KAGGLE_KEY']):
+    if os.path.isfile(KAGGLE_TOKEN_PATH) or set(os.environ.keys()).issubset(['KAGGLE_USERNAME', 'KAGGLE_KEY']):
         setup_functions()
         files = test_engine.download_from_kaggle(
             data_source="competition",
@@ -229,7 +229,7 @@ def test_download_from_kaggle_competition():
 
 def test_download_from_kaggle_dataset():
     """Test the downloading of dataset from kaggle, of a known dataset"""
-    if os.listdir(KAGGLE_DIR) or set(os.environ.keys()).issubset(['KAGGLE_USERNAME', 'KAGGLE_KEY']):
+    if os.path.isfile(KAGGLE_TOKEN_PATH) or set(os.environ.keys()).issubset(['KAGGLE_USERNAME', 'KAGGLE_KEY']):
         setup_functions()
         files = test_engine.download_from_kaggle(
             data_source="dataset",
@@ -243,7 +243,7 @@ def test_download_from_kaggle_unknown():
     """Test the downloading of a dataset from kaggle using an erroneous dataset name"""
     setup_functions()
     try:
-        if os.listdir(KAGGLE_DIR) or set(os.environ.keys()).issubset(['KAGGLE_USERNAME', 'KAGGLE_KEY']):
+        if os.path.isfile(KAGGLE_TOKEN_PATH) or set(os.environ.keys()).issubset(['KAGGLE_USERNAME', 'KAGGLE_KEY']):
             files = test_engine.download_from_kaggle(
                 data_source="competition",
                 dataset_name="titanic",
