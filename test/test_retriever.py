@@ -17,7 +17,7 @@ from retriever.lib.engine_tools import sort_csv
 from retriever.lib.engine_tools import create_file
 from retriever.lib.engine_tools import file_2list
 from retriever.lib.datapackage import clean_input, is_empty
-from retriever.lib.defaults import HOME_DIR, RETRIEVER_DATASETS, RETRIEVER_REPOSITORY
+from retriever.lib.defaults import HOME_DIR, RETRIEVER_DATASETS, RETRIEVER_REPOSITORY, KAGGLE_DIR
 
 # Create simple engine fixture
 test_engine = Engine()
@@ -217,37 +217,40 @@ def test_drop_statement():
 
 def test_download_from_kaggle_competition():
     """Test the downloading of dataset from kaggle, of a known competition"""
-    setup_functions()
-    files = test_engine.download_from_kaggle(
-        data_source="competition",
-        dataset_name="titanic",
-        archive_dir=raw_dir_files,
-        archive_full_path=os.path.join(raw_dir_files, "titanic")
-    )
-    assert ["gender_submission.csv",  "test.csv", "train.csv"] == files
-
-def test_download_from_kaggle_dataset():
-    """Test the downloading of dataset from kaggle, of a known dataset"""
-    setup_functions()
-    files = test_engine.download_from_kaggle(
-        data_source="dataset",
-        dataset_name="uciml/iris",
-        archive_dir=raw_dir_files,
-        archive_full_path=os.path.join(raw_dir_files, "iris")
-    )
-    assert ['Iris.csv', 'database.sqlite'] == files
-
-def test_download_from_kaggle_unknown():
-    """Test the downloading of dataset from kaggle, of a erranous dataset name"""
-    setup_functions()
-    try:
+    if os.listdir(KAGGLE_DIR) or set(os.environ.keys()).issubset(['KAGGLE_USERNAME', 'KAGGLE_KEY']):
+        setup_functions()
         files = test_engine.download_from_kaggle(
             data_source="competition",
             dataset_name="titanic",
             archive_dir=raw_dir_files,
-            archive_full_path=os.path.join(raw_dir_files, "non_existant_dataset")
+            archive_full_path=os.path.join(raw_dir_files, "titanic")
         )
-        assert False
+        assert ["gender_submission.csv",  "test.csv", "train.csv"] == files
+
+def test_download_from_kaggle_dataset():
+    """Test the downloading of dataset from kaggle, of a known dataset"""
+    if os.listdir(KAGGLE_DIR) or set(os.environ.keys()).issubset(['KAGGLE_USERNAME', 'KAGGLE_KEY']):
+        setup_functions()
+        files = test_engine.download_from_kaggle(
+            data_source="dataset",
+            dataset_name="uciml/iris",
+            archive_dir=raw_dir_files,
+            archive_full_path=os.path.join(raw_dir_files, "iris")
+        )
+        assert ['Iris.csv', 'database.sqlite'] == files
+
+def test_download_from_kaggle_unknown():
+    """Test the downloading of a dataset from kaggle using an erroneous dataset name"""
+    setup_functions()
+    try:
+        if os.listdir(KAGGLE_DIR) or set(os.environ.keys()).issubset(['KAGGLE_USERNAME', 'KAGGLE_KEY']):
+            files = test_engine.download_from_kaggle(
+                data_source="competition",
+                dataset_name="titanic",
+                archive_dir=raw_dir_files,
+                archive_full_path=os.path.join(raw_dir_files, "non_existent_dataset")
+            )
+            assert False
     except Exception:
         assert True
 

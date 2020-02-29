@@ -15,7 +15,6 @@ import requests
 from requests.exceptions import InvalidSchema
 from setuptools import archive_util
 from tqdm import tqdm
-from kaggle.api.kaggle_api_extended import KaggleApi
 
 from retriever.lib.cleanup import no_cleanup
 from retriever.lib.defaults import DATA_DIR, DATA_SEARCH_PATHS, DATA_WRITE_PATH, ENCODING
@@ -504,6 +503,7 @@ class Engine():
         archive_full_path,
     ):
         """Download files from Kaggle into the raw data directory"""
+        from kaggle.api.kaggle_api_extended import KaggleApi
         api = KaggleApi()
         api.authenticate()
 
