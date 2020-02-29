@@ -63,7 +63,6 @@ def install_csv(dataset,
         'force': force,
         'hash_value': hash_value
     }
-    print("thea args are", args)
     return _install(args, use_cache, debug)
 
 
