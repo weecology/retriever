@@ -70,7 +70,7 @@ def create_resources(file, skip_lines):
     clean_table = table.__dict__
     resource_dict = {}
     path_to_table = os.path.basename(clean_table["name"])
-    print("Processing... {file_name}".format(file_name=path_to_table))
+    print(f"Processing... {path_to_table}")
     path_raw = os.path.splitext(path_to_table)[0].lower()
     path_underscore = path_raw.translate(path_raw.maketrans("-. ", "___"))
     resource_dict["name"] = '_'.join(filter(None, path_underscore.split('_')))
@@ -199,4 +199,4 @@ def write_out_scripts(script_dict, path, out_path):
             print("Successfully wrote scripts to " + os.path.abspath(write_path))
             output_path.close()
     except Exception as e:
-        print(write_path + " could not be created. {}".format(e.message))
+        print(write_path + f" could not be created. {e.message}")

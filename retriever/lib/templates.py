@@ -134,8 +134,8 @@ class BasicTextTemplate(Script):
                 if self.engine.spatial_support:
                     self.process_tables(table_obj, url)
                 else:
-                    print("Engine {eng} does not support spatial "
-                          "processing".format(eng=self.engine.name))
+                    print(f"Engine {self.engine.name} does not support spatial "
+                          f"processing")
                     return
 
             # insert data procedures

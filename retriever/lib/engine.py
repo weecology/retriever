@@ -84,7 +84,7 @@ class Engine():
     def add_to_table(self, data_source):
         """Adds data to a table from one or more lines specified
         in engine.table.source."""
-        print('Installing {}'.format(self.table_name()))
+        print(f'Installing {self.table_name()}')
 
         # If the number of records are known avoid counting the lines
         real_line_length = None
@@ -666,8 +666,8 @@ class Engine():
                                       open_object)
             return file_names
         except zipfile.BadZipFile as e:
-            print("\n{0} can't be extracted, "
-                  "may be corrupt \n{1}".format(file_name, e))
+            print(f"\n{file_name} can't be extracted, "
+                  f"may be corrupt \n{e}")
 
     def fetch_tables(self, dataset, table_names):  # pylint: disable=W0613,R0201
         """This can be overridden to return the tables of sqlite db

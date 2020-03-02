@@ -30,8 +30,8 @@ def check_retriever_minimum_version(module):
 
     if hasattr(module, "retriever_minimum_version"):
         if not parse_version(VERSION) >= parse_version("{}".format(mod_ver)):
-            print("{} is supported by Retriever version " "{}".format(m, mod_ver))
-            print("Current version is {}".format(VERSION))
+            print(f"{m} is supported by Retriever version {mod_ver}")
+            print(f"Current version is {VERSION}")
             return False
     return True
 
@@ -155,7 +155,7 @@ def name_matches(scripts, arg):
                 else:
                     read_script = get_script_upstream(arg)
                 if not read_script:
-                    print("Unable to download {dataset}.".format(dataset=arg))
+                    print(f"Unable to download {arg}.")
                     return [script]
                 return [read_script]
             return [script]
@@ -175,9 +175,10 @@ def name_matches(scripts, arg):
 
     matches.sort(key=lambda x: -x[1])
 
-    print('\nThe dataset "{}" ' "isn't currently available in the Retriever.".format(arg))
+    print(f'\nThe dataset "{arg}" ' "isn't currently available in the Retriever.")
     if matches:
-        print("Did you mean:" " \n\t{}".format("\n\t".join([i[0] for i in matches])))
+        output = "\n\t".join([i[0] for i in matches])
+        print(f"Did you mean: \n\t{output}")
     return None
 
 
@@ -207,7 +208,7 @@ def get_script(dataset):
             else:
                 read_script = get_script_upstream(dataset)
             if not read_script:
-                print("Unable to download {dataset}.".format(dataset=dataset))
+                print(f"Unable to download {dataset}.")
                 return script
             return read_script
         return script

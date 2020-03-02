@@ -97,7 +97,7 @@ def commit(dataset, commit_message='', path=None, quiet=False):
         os.makedirs(dataset_provenance_path)
     path = path if path else dataset_provenance_path
     if not quiet:
-        print("Committing dataset {}".format(dataset.name))
+        print(f"Committing dataset {dataset.name}")
     try:
         commit_writer(dataset=dataset,
                       commit_message=commit_message,
@@ -151,7 +151,7 @@ def installation_details(metadata_info, quiet):
             if details["package_not_found"]:
                 print("The following packages were not found:")
                 for package in details['package_not_found']:
-                    print("{}=={}".format(package, details['package_not_found'][package]))
+                    print(f"{package}=={details['package_not_found'][package]}")
             if details["package_changed"]:
                 print("The following packages have different versions:")
                 for package in details['package_changed']:
@@ -225,7 +225,7 @@ def commit_log(dataset):
                 print('Hash:', commit_value[1][1])
                 print('Date:', commit_value[0].strftime("%m/%d/%Y, %H:%M:%S"))
             return sorted_log
-        print("No logs for {}".format(dataset))
+        print(f"No logs for {dataset}")
         return None
     except Exception as e:
         print("Unable to generate log for", dataset)

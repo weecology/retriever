@@ -68,9 +68,9 @@ def main():
             else:
                 scripts = name_matches(script_list, args.dataset)
                 for dataset in scripts:
-                    print("\nDataset:  {}".format(dataset.name))
-                    print("Citation:   {}".format(dataset.citation))
-                    print("Description:   {}\n".format(dataset.description))
+                    print(f"\nDataset:  {dataset.name}")
+                    print(f"Citation:   {dataset.citation}")
+                    print(f"Description:   {dataset.description}\n")
 
             return
 
@@ -82,7 +82,7 @@ def main():
                 if dataset_license:
                     print(dataset_license)
                 else:
-                    print("There is no license information for {}".format(args.dataset))
+                    print(f"There is no license information for {args.dataset}")
             return
 
         if args.command == 'new':
@@ -118,7 +118,7 @@ def main():
                         continue
                     all_scripts_combined.append((dataset, False))
                 all_scripts_combined = sorted(all_scripts_combined, key=lambda x: x[0])
-                print("Available datasets : {}\n".format(len(all_scripts_combined)))
+                print(f"Available datasets : {len(all_scripts_combined)}\n")
                 lscolumns.printls(all_scripts_combined)
                 print("\nThe symbol * denotes the online datasets.")
                 print("To see the full list of available online datasets, visit\n"
@@ -138,20 +138,11 @@ def main():
                     online_scripts = scripts['online']
                 count = 1
                 if not args.v:
-                    print("Offline datasets : {}\n".format(len(all_scripts)))
+                    print(f"Offline datasets : {len(all_scripts)}\n")
                 for script in all_scripts:
-                    print("{count}. {title}\n {name}\n"
-                          "{keywords}\n{description}\n"
-                          "{licenses}\n{citation}\n"
-                          "".format(
-                              count=count,
-                              title=script.title,
-                              name=script.name,
-                              keywords=script.keywords,
-                              description=script.description,
-                              licenses=str(script.licenses[0]['name']),
-                              citation=script.citation,
-                          ))
+                    print(f"{count}. {script.title}\n {script.name}\n"
+                          f"{script.keywords}\n{script.description}\n"
+                          f"{str(script.licenses[0]['name'])}\n{script.citation}\n")
                     count += 1
 
                 count = 1
@@ -162,9 +153,9 @@ def main():
                         continue
                     set_online_scripts.append(script)
                 if not args.v:
-                    print("Online datasets : {}\n".format(len(set_online_scripts)))
+                    print(f"Online datasets : {len(set_online_scripts)}\n")
                 for script in set_online_scripts:
-                    print("{count}. {name}".format(count=count, name=script))
+                    print(f"{count}. {script}")
                     count += 1
             else:
                 param_licenses = args.l if args.l else None
@@ -180,14 +171,8 @@ def main():
                     print(offline_mesg.format(len(searched_scripts['offline'])))
                     count = 1
                     for script in searched_scripts['offline']:
-                        print("{count}. {title}\n{name}\n"
-                              "{keywords}\n{licenses}\n".format(
-                                  count=count,
-                                  title=script.title,
-                                  name=script.name,
-                                  keywords=script.keywords,
-                                  licenses=str(script.licenses[0]['name']),
-                              ))
+                        print(f"{count}. {script.title}\n{script.name}\n"
+                              f"{script.keywords}\n{str(script.licenses[0]['name'])}\n")
                         count += 1
 
                     count = 1
@@ -201,7 +186,7 @@ def main():
                         searched_scripts_online.append(script)
                     print(online_mesg.format(len(searched_scripts_online)))
                     for script in searched_scripts_online:
-                        print("{count}. {name}".format(count=count, name=script))
+                        print(f"{count}. {script}")
                         count += 1
             return
         if args.command == 'commit':
