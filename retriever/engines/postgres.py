@@ -172,8 +172,8 @@ CSV HEADER;"""
                           path=os.path.normpath(path),
                           SCHEMA_DBTABLE=self.table_name()))
 
-        cmd_string = """ | psql -U {USER} -d {DATABASE} --port {PORT}
-         --host {HOST} > {nul_dev} """.format(
+        cmd_string = " | psql -U {USER} -d {DATABASE} " \
+                     "--port {PORT} --host {HOST} > {nul_dev} ".format(
             USER=self.opts["user"],
             DATABASE=self.opts["database"],
             PORT=self.opts["port"],
@@ -221,8 +221,8 @@ CSV HEADER;"""
                           SCHEMA_DBTABLE=self.table_name(),
                       ))
 
-        cmd_string = """ | psql -U {USER} -d {DATABASE} --port {PORT}
-         --host {HOST} > {nul_dev} """.format(
+        cmd_string = " | psql -U {USER} -d {DATABASE} --port {PORT} " \
+                     "--host {HOST} > {nul_dev} ".format(
             USER=self.opts["user"],
             DATABASE=self.opts["database"],
             PORT=self.opts["port"],
