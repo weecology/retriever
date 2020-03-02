@@ -96,7 +96,8 @@ def main():
         if args.command == 'autocreate':
             if sum([args.f, args.d]) == 1:
                 file_flag = bool(args.f)
-                create_package(args.path, args.dt, file_flag, args.o, args.skip_lines)
+                create_package(args.path, args.dt, file_flag, args.o, args.skip_lines,
+                               args.e)
             else:
                 print('Please use one and only one of the flags -f -d')
             return
