@@ -82,7 +82,7 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
     def set_engine_encoding(self):
         """Set MySQL database encoding to match data encoding"""
         db_encoding = self.lookup_encoding()
-        self.execute("SET NAMES '{0}';".format(db_encoding))
+        self.execute(f"SET NAMES '{db_encoding}';")
         Engine.set_engine_encoding(self)
 
     def lookup_encoding(self):

@@ -64,9 +64,7 @@ def commit_writer(dataset, commit_message, path, quiet):
                 paths_to_zip["raw_data"].append(os.path.join(root, file))
 
         info = commit_info_for_commit(dataset, commit_message=commit_message)
-        zip_file_name = "{}-{}{}.zip".format(dataset.name, info["md5_dataset"][:3],
-                                             info["md5_script"][:3])
-
+        zip_file_name = f"{dataset.name}-{info['md5_dataset'][:3]}{info['md5_script'][:3]}.zip"
         zip_file_path = os.path.join(path, zip_file_name)
         with ZipFile(zip_file_path, "w") as zipped:
             zipped.write(
@@ -212,10 +210,7 @@ def commit_log(dataset):
                                                         "%m/%d/%Y, %H:%M:%S")
                     log[commit_datetime] = (
                         commit_info['commit_message'],
-                        '{}{}'.format(
-                            commit_info["md5_dataset"][:3],
-                            commit_info["md5_script"][:3],
-                        ),
+                        f"{commit_info['md5_dataset'][:3]}{commit_info['md5_script'][:3]}",
                     )
             # sort the commits according to time in reverse order
             # i.e. latest commit is the first element

@@ -45,7 +45,7 @@ def choose_engine(opts, choice=True):
                 "{db}" not in opts['table_name']):
             for opt in engine.required_opts:
                 if opt[0] == 'table_name':
-                    raise Exception('Accepted Table format ' '{fom}'.format(fom=opt[2]))
+                    raise Exception(f'Accepted Table format ' '{opt[2]}')
 
     engine.opts = opts
     return engine

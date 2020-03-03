@@ -175,7 +175,8 @@ def getmd5(data, data_type='lines', encoding='utf-8'):
     if data_type == 'dir':
         directory_path = os.path.normpath(data)
         if not os.path.exists(directory_path):
-            raise "Path not found, {path}".format(path=directory_path)
+            exp = f"Path not found, {directory_path}"
+            raise exp
         for root, _, filenames in os.walk(os.path.normpath(directory_path)):
             for filename in sorted(filenames):
                 files.append(os.path.normpath(os.path.join(root, filename)))

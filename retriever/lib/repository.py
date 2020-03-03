@@ -44,7 +44,7 @@ def check_for_updates(repo=REPOSITORY):
         scripts_type = 'upstream'
         if repo == RETRIEVER_REPOSITORY:
             scripts_type = 'default'
-        desc = 'Downloading {} scripts'.format(scripts_type)
+        desc = f'Downloading {scripts_type} scripts'
         for script in tqdm(scripts, unit='files', desc=desc):
             script_name = script[0]
             if len(script) > 1:

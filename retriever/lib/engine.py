@@ -127,8 +127,7 @@ class Engine():
                             types[n]) for n in range(len(line_values))
                     ]
                 except Exception as e:
-                    self.warning('Exception in line {}: {}'.format(
-                        self.table.record_id, e))
+                    self.warning(f'Exception in line {self.table.record_id}: {e}')
                     continue
 
             if line or count_iter == real_line_length:
@@ -475,7 +474,7 @@ class Engine():
                 unit_scale=True,
                 unit_divisor=1024,
                 miniters=1,
-                desc='Downloading {}'.format(filename),
+                desc=f'Downloading {filename}',
             )
             try:
                 requests.get(
@@ -830,11 +829,11 @@ class Engine():
             for i in range(column_count - row_length):
                 row.append(self.format_insert_value(None, types[row_length + i]))
 
-        insert_stmt = "INSERT INTO {table}".format(table=self.table_name())
-        insert_stmt += " ( {columns} )".format(columns=columns)
+        insert_stmt = f"INSERT INTO {self.table_name()}"
+        insert_stmt += f" ( {columns} )"
         insert_stmt += " VALUES ("
         for i in range(0, column_count):
-            insert_stmt += "{}, ".format(self.placeholder)
+            insert_stmt += f"{self.placeholder}, "
         insert_stmt = insert_stmt.rstrip(", ") + ")"
 
         if self.debug:
@@ -906,7 +905,7 @@ class Engine():
                 sql_query.format(cols=cols, tab=table_name[0], limit=limit))
             row = self.cursor.fetchone()
             column_names = [
-                u'{}'.format(tuple_i[0]) for tuple_i in self.cursor.description
+                f'{tuple_i[0]}' for tuple_i in self.cursor.description
             ]
             csv_writer.writerow(column_names)
             while row is not None:

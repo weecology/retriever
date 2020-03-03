@@ -166,20 +166,11 @@ CSV HEADER;"""
         if not path:
             path = Engine.format_data_dir(self)
 
-        raster_sql = ("raster2pgsql -Y -M -d -I -s {SRID} \"{path}\""
-                      " -F -t 100x100 {SCHEMA_DBTABLE}".format(
-                          SRID=srid,
-                          path=os.path.normpath(path),
-                          SCHEMA_DBTABLE=self.table_name()))
+        raster_sql = (f"raster2pgsql -Y -M -d -I -s {srid} \"{os.path.normpath(path)}\""
+                      f" -F -t 100x100 {self.table_name()}")
 
-        cmd_string = """ | psql -U {USER} -d {DATABASE} --port {PORT}
-         --host {HOST} > {nul_dev} """.format(
-            USER=self.opts["user"],
-            DATABASE=self.opts["database"],
-            PORT=self.opts["port"],
-            HOST=self.opts["host"],
-            nul_dev=os.devnull,
-        )
+        cmd_string = f""" | psql -U {self.opts["user"]} -d {self.opts["database"]} --port {self.opts["port"]}
+         --host {self.opts["host"]} > {os.devnull} """
 
         cmd_stmt = raster_sql + cmd_string
         if self.debug:
@@ -213,22 +204,11 @@ CSV HEADER;"""
          """
         if not path:
             path = Engine.format_data_dir(self)
-        vector_sql = ("shp2pgsql -d -I -W \"{encd}\"  -s {SRID}"
-                      " \"{path}\" \"{SCHEMA_DBTABLE}\"".format(
-                          encd=self.encoding,
-                          SRID=srid,
-                          path=os.path.normpath(path),
-                          SCHEMA_DBTABLE=self.table_name(),
-                      ))
+        vector_sql = (f"shp2pgsql -d -I -W \"{self.encoding}\"  -s {srid}"
+                      f" \"{os.path.normpath(path)}\" \"{self.table_name()}\"")
 
-        cmd_string = """ | psql -U {USER} -d {DATABASE} --port {PORT}
-         --host {HOST} > {nul_dev} """.format(
-            USER=self.opts["user"],
-            DATABASE=self.opts["database"],
-            PORT=self.opts["port"],
-            HOST=self.opts["host"],
-            nul_dev=os.devnull,
-        )
+        cmd_string = f""" | psql -U {self.opts["user"]} -d {self.opts["database"]} --port {self.opts["port"]}
+         --host {self.opts["host"]} > {os.devnull} """
         cmd_stmt = vector_sql + cmd_string
         if self.debug:
             print(cmd_stmt)

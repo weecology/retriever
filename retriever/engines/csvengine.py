@@ -40,7 +40,7 @@ class engine(Engine):
         self.file = open_fw(table_path, encoding=self.encoding)
         self.output_file = open_csvw(self.file)
         column_list = self.table.get_insert_columns(join=False, create=True)
-        self.output_file.writerow([u'{}'.format(val) for val in column_list])
+        self.output_file.writerow([f'{val}' for val in column_list])
         self.table_names.append((self.file, table_path))
 
         # Register all tables created to enable

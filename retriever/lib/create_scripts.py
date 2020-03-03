@@ -82,7 +82,7 @@ def create_resources(file, skip_lines):
         if len(ctuple) >= 2:
             if ctuple[0] == 'char':
                 # char sizes need quotes
-                char_size = "{a}".format(a=ctuple[1])
+                char_size = f"{ctuple[1]}"
                 resource_dict["schema"]["fields"].append({
                     "name": cname,
                     "type": ctuple[0],
