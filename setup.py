@@ -120,7 +120,7 @@ if current_platform != "windows":
     else:
         bash_file = "/dev/null"
 
-    argcomplete_command = 'eval "$(register-python-argcomplete retriever)"'
+    argcomplete_command = "eval $(register-python-argcomplete retriever)"
     with open(os.path.expanduser(bash_file), "a+") as bashrc:
         bashrc.seek(0)
         # register retriever for arg-completion if not already registered
@@ -128,7 +128,7 @@ if current_platform != "windows":
         if argcomplete_command not in bashrc.read():
             bashrc.write(argcomplete_command + "\n")
             bashrc.close()
-    os.system("activate-global-python-argcomplete")
+    os.system("activate-global-python-argcomplete --user")
     # register for the current shell
     os.system(argcomplete_command)
 
