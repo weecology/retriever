@@ -62,13 +62,11 @@ def main():
             return
 
         if args.command == "citation":
-            citations = get_script_citation(args.dataset)
-            if not citations:
-                return
-            if citations == [VERSION]:
+            if args.dataset is None:
                 print("\nCitation for retriever:\n")
                 print(CITATION)
             else:
+                citations = get_script_citation(args.dataset)
                 for citation in citations:
                     print("Citation:   {}".format(citation))
             return
