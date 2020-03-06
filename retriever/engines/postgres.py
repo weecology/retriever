@@ -168,9 +168,8 @@ CSV HEADER;"""
 
         raster_sql = (f"raster2pgsql -Y -M -d -I -s {srid} \"{os.path.normpath(path)}\""
                       f" -F -t 100x100 {self.table_name()}")
-
-        cmd_string = f""" | psql -U {self.opts["user"]} -d {self.opts["database"]} --port {self.opts["port"]}
-         --host {self.opts["host"]} > {os.devnull} """
+        cmd_string = f" | psql -U {self.opts['user']} -d {self.opts['database']} " \
+                     f"--port {self.opts['port']} --host {self.opts['host']} > {os.devnull} "
 
         cmd_stmt = raster_sql + cmd_string
         if self.debug:
@@ -206,9 +205,9 @@ CSV HEADER;"""
             path = Engine.format_data_dir(self)
         vector_sql = (f"shp2pgsql -d -I -W \"{self.encoding}\"  -s {srid}"
                       f" \"{os.path.normpath(path)}\" \"{self.table_name()}\"")
+        cmd_string = f" | psql -U {self.opts['user']} -d {self.opts['database']} --port {self.opts['port']} " \
+                     f"--host {self.opts['host']} > {os.devnull} "
 
-        cmd_string = f""" | psql -U {self.opts["user"]} -d {self.opts["database"]} --port {self.opts["port"]}
-         --host {self.opts["host"]} > {os.devnull} """
         cmd_stmt = vector_sql + cmd_string
         if self.debug:
             print(cmd_stmt)

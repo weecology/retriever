@@ -108,9 +108,7 @@ class Engine():
         insert_limit = self.insert_limit
         types = self.table.get_column_datatypes()
         multiple_values = []
-        progress_bar = tqdm(desc='Progress',
-                            total=total,
-                            unit='rows')
+        progress_bar = tqdm(desc='Progress', total=total, unit='rows')
 
         line_values = None
         for line in real_lines:
