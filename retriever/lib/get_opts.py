@@ -132,10 +132,14 @@ autocreate_parser.add_argument('-dt',
                                nargs='?',
                                default='tabular',
                                choices=['raster', 'vector', 'tabular'])
-autocreate_parser.add_argument('-f', help='turn files into scripts', action='store_true')
 autocreate_parser.add_argument('-d',
                                help='turn a directory and subdirectories into scripts',
                                action='store_true')
+autocreate_parser.add_argument('-e',
+                               help='encoding of the source file',
+                               nargs='?',
+                               default='utf-8')
+autocreate_parser.add_argument('-f', help='turn files into scripts', action='store_true')
 autocreate_parser.add_argument('-o',
                                help='write scripts out to a designated directory',
                                nargs='?',
