@@ -113,6 +113,19 @@ In this directory create a new subdirectory named `postgresql`. Then create the
 `pgpass.conf` file inside it. On Microsoft Windows, it is assumed that the file
 is stored in a directory that is secure, so no special permissions check is made.
 
+Change the pg_hba.conf file located in i.e `C:\Program Files\PostgreSQL\11\data`
+from md5 to trust.(11 is for the version number)
+Reload the data directory using SQL query `SELECT pg_reload_conf()` or restart the server manually
+
+::
+
+host    all             all             127.0.0.1/32             md5
+# IPv6 local connections:
+host    all             all             ::1/128                 md5
+
+::
+
+
 ::
 
   chmod 600 ~/.pgpass
