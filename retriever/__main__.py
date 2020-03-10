@@ -68,7 +68,7 @@ def main():
             else:
                 citations = get_script_citation(args.dataset)
                 for citation in citations:
-                    print(f"Citation:   {citation}")
+                    print(f"Citation:  {citation}")
             return
 
         if args.command == 'license':
