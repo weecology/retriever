@@ -108,20 +108,20 @@ class engine(Engine):
         p_bulk = [self.check_bulk_insert(), self.table.delimiter, self.table.header_rows]
         if p_bulk == [True, ",", 1]:
             columns = self.table.get_insert_columns()
-            filename = os.path.abspath(filename)
+            filename = os.path.normpath(os.path.abspath(filename))
             statement = """
 COPY """ + self.table_name() + " (" + columns + """)
-FROM '""" + filename.replace("\\", "\\\\") + """'
+FROM '""" + filename + """'
 WITH DELIMITER ','
 CSV HEADER;"""
             try:
                 self.execute("BEGIN")
                 self.execute(statement)
                 self.execute("COMMIT")
+                print("Bulk insert on .. ", self.table_name())
                 return True
-            except BaseException:
+            except Exception:
                 self.connection.rollback()
-                return None
         return Engine.insert_data_from_file(self, filename)
 
     def insert_statement(self, values):
@@ -260,16 +260,17 @@ CSV HEADER;"""
         self.get_input()
         try:
             conn = dbapi.connect(
-            host=self.opts["host"],
-            port=int(self.opts["port"]),
-            user=self.opts["user"],
-            password=self.opts["password"],
-            database=self.opts["database"],)
-        except dbapi.OperationalError as error: 
+                host=self.opts["host"],
+                port=int(self.opts["port"]),
+                user=self.opts["user"],
+                password=self.opts["password"],
+                database=self.opts["database"],
+            )
+        except dbapi.OperationalError as error:
             raise (error)
         except Exception as e:
             print(e)
-        
+
         self.set_engine_encoding()
         encoding_lookup = {'iso-8859-1': 'Latin1', 'latin-1': 'Latin1', 'utf-8': 'UTF8'}
         self.db_encoding = encoding_lookup.get(self.encoding)
