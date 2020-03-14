@@ -475,8 +475,9 @@ class Engine():
                 miniters=1,
                 desc='Downloading {}'.format(filename),
             )
+            response = None
             try:
-                requests.get(
+                response = requests.get(
                     url,
                     allow_redirects=True,
                     stream=True,
@@ -487,12 +488,16 @@ class Engine():
                     },
                     hooks={'response': reporthook(progbar, path)},
                 )
-
+                if response.status_code == 404:
+                    print ("404 error: The data source not found, or server not found ")
+                    os.remove(path)
+                    return None
             except InvalidSchema:
                 urlretrieve(url, path, reporthook=reporthook(progbar))
 
             self.use_cache = True
             progbar.close()
+        return True
 
     def download_files_from_archive(
         self,
