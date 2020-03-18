@@ -1,6 +1,7 @@
 # -*- coding: utf-8  -*-
 """Tests for the Data Retriever"""
 import os
+import pytest
 import subprocess
 import random
 
@@ -52,6 +53,12 @@ tar_url = os.path.normpath(achive_url.format(file_path='sample_tar.tar'))
 tar_gz_url = os.path.normpath(achive_url.format(file_path='sample_tar.tar.gz'))
 gz_url = os.path.normpath(achive_url.format(file_path='sample.gz'))
 
+kaggle_datasets = [
+    # test_name, data_source, dataset_name, dataset_name, repath, expected
+    ("kaggle_competition", "competition", "titanic", "titanic", ["gender_submission.csv",  "test.csv", "train.csv"]),
+    ("kaggle_unknown", "dataset", "uciml/iris", "iris", ['Iris.csv', 'database.sqlite']),
+    ("kaggle_dataset", "competition", "non_existent_dataset", "non_existent_dataset", []),
+]
 
 def setup_module():
     """"Automatically sets up the environment before the module runs.
@@ -215,44 +222,23 @@ def test_drop_statement():
     assert test_engine.drop_statement(
         'TABLE', 'tablename') == "DROP TABLE IF EXISTS tablename"
 
-def test_download_from_kaggle_competition():
-    """Test the downloading of dataset from kaggle, of a known competition"""
-    if os.path.isfile(KAGGLE_TOKEN_PATH) or set(os.environ.keys()).issubset(['KAGGLE_USERNAME', 'KAGGLE_KEY']):
+
+@pytest.mark.parametrize("test_name, data_source, dataset_name,  repath, expected", kaggle_datasets)
+def test_download_kaggle_dataset(test_name, data_source, dataset_name,  repath, expected):
+    """Test the downloading of dataset from kaggle."""
+    kaggle_token = os.path.isfile(KAGGLE_TOKEN_PATH)
+    kaggle_username = os.getenv('KAGGLE_USERNAME', "").strip()
+    kaggle_key = os.getenv('KAGGLE_KEY', "").strip()
+    if kaggle_token or (kaggle_username and kaggle_key):
         setup_functions()
         files = test_engine.download_from_kaggle(
-            data_source="competition",
-            dataset_name="titanic",
+            data_source=data_source,
+            dataset_name=dataset_name,
             archive_dir=raw_dir_files,
-            archive_full_path=os.path.join(raw_dir_files, "titanic")
+            archive_full_path=os.path.join(raw_dir_files, repath)
         )
-        assert ["gender_submission.csv",  "test.csv", "train.csv"] == files
-
-def test_download_from_kaggle_dataset():
-    """Test the downloading of dataset from kaggle, of a known dataset"""
-    if os.path.isfile(KAGGLE_TOKEN_PATH) or set(os.environ.keys()).issubset(['KAGGLE_USERNAME', 'KAGGLE_KEY']):
-        setup_functions()
-        files = test_engine.download_from_kaggle(
-            data_source="dataset",
-            dataset_name="uciml/iris",
-            archive_dir=raw_dir_files,
-            archive_full_path=os.path.join(raw_dir_files, "iris")
-        )
-        assert ['Iris.csv', 'database.sqlite'] == files
-
-def test_download_from_kaggle_unknown():
-    """Test the downloading of a dataset from kaggle using an erroneous dataset name"""
-    setup_functions()
-    try:
-        if os.path.isfile(KAGGLE_TOKEN_PATH) or set(os.environ.keys()).issubset(['KAGGLE_USERNAME', 'KAGGLE_KEY']):
-            files = test_engine.download_from_kaggle(
-                data_source="competition",
-                dataset_name="titanic",
-                archive_dir=raw_dir_files,
-                archive_full_path=os.path.join(raw_dir_files, "non_existent_dataset")
-            )
-            assert False
-    except Exception:
-        assert True
+        
+        assert expected == files
 
 
 def test_download_archive_gz_known():

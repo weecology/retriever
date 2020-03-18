@@ -502,21 +502,30 @@ class Engine():
     ):
         """Download files from Kaggle into the raw data directory"""
         from kaggle.api.kaggle_api_extended import KaggleApi
+        from kaggle.rest import ApiException
         api = KaggleApi()
         api.authenticate()
 
         if data_source == "dataset":
             archive_full_path = archive_full_path + ".zip"
-            api.dataset_download_files(
-                dataset=dataset_name, path=archive_dir, quiet=False, force=True)
-            file_names = self.extract_zip(archive_full_path, archive_dir)
+            try:
+                api.dataset_download_files(
+                    dataset=dataset_name, path=archive_dir, quiet=False, force=True)
+                file_names = self.extract_zip(archive_full_path, archive_dir)
+            except ApiException:
+                print(f"The dataset '{dataset_name}' isn't currently available in the Retriever.\nRun 'retriever ls' to see a list of currently available datasets.")
+                return []
 
         elif data_source == "competition":
             archive_full_path = archive_full_path.replace(
                 "kaggle:competition:", "") + ".zip"
-            api.competition_download_files(
-                competition=dataset_name, path=archive_dir, quiet=False, force=True)
-            file_names = self.extract_zip(archive_full_path, archive_dir)
+            try:
+                api.competition_download_files(
+                    competition=dataset_name, path=archive_dir, quiet=False, force=True)
+                file_names = self.extract_zip(archive_full_path, archive_dir)
+            except ApiException:
+                print(f"The dataset '{dataset_name}' isn't currently available in the Retriever.\nRun 'retriever ls' to see a list of currently available datasets.")
+                return []
         else:
             raise Exception("Could not understand this request for Kaggle Data")
 
