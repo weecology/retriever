@@ -1,8 +1,6 @@
 """Data Retriever Tools
-
 This module contains miscellaneous classes and functions used in Retriever
 scripts.
-
 """
 import json
 import platform
@@ -103,7 +101,6 @@ def reset_retriever(scope="all", ask_permission=True):
 
 def json2csv(input_file, output_file=None, header_values=None, encoding=ENCODING):
     """Convert Json file to CSV.
-
     Function is used for only testing and can handle the file of the size.
     """
     file_out = open_fr(input_file, encoding=encoding)
@@ -131,9 +128,9 @@ def json2csv(input_file, output_file=None, header_values=None, encoding=ENCODING
     subprocess.call(['rm', '-r', input_file])
     return output_file
 
+
 def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
     """Convert xml to csv.
-
     Function is used for only testing and can handle the file of the size.
     """
     file_output = open_fr(input_file, encoding=ENCODING)
@@ -188,7 +185,6 @@ def getmd5(data, data_type='lines', encoding='utf-8'):
 
 def sort_file(file_path, encoding=ENCODING):
     """Sort file by line and return the file.
-
     Function is used for only testing and can handle the file of the size.
     """
     file_path = os.path.normpath(file_path)
@@ -205,7 +201,6 @@ def sort_file(file_path, encoding=ENCODING):
 
 def sort_csv(filename, encoding=ENCODING):
     """Sort CSV rows minus the header and return the file.
-
     Function is used for only testing and can handle the file of the size.
     """
     filename = os.path.normpath(filename)

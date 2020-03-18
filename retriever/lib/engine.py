@@ -508,14 +508,14 @@ class Engine():
         if data_source == "dataset":
             archive_full_path = archive_full_path + ".zip"
             api.dataset_download_files(
-                dataset=dataset_name, path=archive_dir, quiet=False)
+                dataset=dataset_name, path=archive_dir, quiet=False, force=True)
             file_names = self.extract_zip(archive_full_path, archive_dir)
 
         elif data_source == "competition":
             archive_full_path = archive_full_path.replace(
                 "kaggle:competition:", "") + ".zip"
             api.competition_download_files(
-                competition=dataset_name, path=archive_dir, quiet=False)
+                competition=dataset_name, path=archive_dir, quiet=False, force=True)
             file_names = self.extract_zip(archive_full_path, archive_dir)
         else:
             raise Exception("Could not understand this request for Kaggle Data")
