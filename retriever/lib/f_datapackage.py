@@ -25,9 +25,10 @@ def get_dps():
         try:
             with open(os.path.join(path, "datapackages.yml"), 'r') as dp_file:
                 dp_dict = yaml.safe_load(dp_file)
+            return dp_dict
         except:
             pass
-    return dp_dict
+    return None
 
 def get_module(dp,url):
     """ Called by scripts.py -> reload_scripts()
