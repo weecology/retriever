@@ -87,7 +87,6 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
 
     def lookup_encoding(self):
         """Convert well known encoding to MySQL syntax
-
         MySQL has a unique way of representing the encoding.
         For example, latin-1 becomes latin1 in MySQL.
         Please update the encoding lookup table if the required
@@ -105,7 +104,6 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
 
     def get_connection(self):
         """Get db connection.
-
         PyMySQL has changed the default encoding from latin1 to utf8mb4.
         https://github.com/PyMySQL/PyMySQL/pull/692/files
         For PyMySQL to work well on CI infrastructure,
@@ -122,6 +120,10 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
 
         args['client_flag'] = client.LOCAL_FILES
         self.get_input()
-        return dbapi.connect(charset=self.lookup_encoding(),
-                             read_default_file='~/.my.cnf',
-                             **args)
+        try:
+            return dbapi.connect(charset=self.lookup_encoding(),
+                             read_default_file='~/.my.cnf', **args)
+        except dbapi.err.OperationalError as error:
+            raise (error)
+        except Exception as e:
+            print(e)
