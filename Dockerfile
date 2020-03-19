@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
 RUN apt-get install -y --force-yes tzdata
 
 RUN apt-get install -y --force-yes build-essential wget git locales locales-all > /dev/null
-RUN apt-get install -y --force-yes postgresql-client mysql-client > /dev/null
+RUN apt-get install -y --force-yes postgresql-client mariadb-client > /dev/null
 
 # Set encoding
 ENV LC_ALL en_US.UTF-8
