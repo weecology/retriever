@@ -166,20 +166,20 @@ CSV HEADER;"""
         if not path:
             path = Engine.format_data_dir(self)
 
-        raster_sql = ("raster2pgsql -Y -M -d -I -s {SRID} \"{path}\""
+        raster_sql = ('raster2pgsql -Y -M -d -I -s {SRID} "{path}"'
                       " -F -t 100x100 {SCHEMA_DBTABLE}".format(
                           SRID=srid,
                           path=os.path.normpath(path),
                           SCHEMA_DBTABLE=self.table_name()))
 
-        cmd_string = " | psql -U {USER} -d {DATABASE} " \
-                     "--port {PORT} --host {HOST} > {nul_dev} ".format(
-            USER=self.opts["user"],
-            DATABASE=self.opts["database"],
-            PORT=self.opts["port"],
-            HOST=self.opts["host"],
-            nul_dev=os.devnull,
-        )
+        cmd_string = (" | psql -U {USER} -d {DATABASE} "
+                      "--port {PORT} --host {HOST} > {nul_dev} ".format(
+                          USER=self.opts["user"],
+                          DATABASE=self.opts["database"],
+                          PORT=self.opts["port"],
+                          HOST=self.opts["host"],
+                          nul_dev=os.devnull,
+                      ))
 
         cmd_stmt = raster_sql + cmd_string
         if self.debug:
@@ -213,16 +213,14 @@ CSV HEADER;"""
          """
         if not path:
             path = Engine.format_data_dir(self)
-        vector_sql = ("shp2pgsql -d -I -W \"{encd}\"  -s {SRID}"
-                      " \"{path}\" \"{SCHEMA_DBTABLE}\"".format(
-                          encd=self.encoding,
-                          SRID=srid,
-                          path=os.path.normpath(path),
-                          SCHEMA_DBTABLE=self.table_name(),
-                      ))
+        vector_sql = 'shp2pgsql -d -I -W "{encd}"  -s {SRID}  "{path}" "{SCHEMA_DBTABLE}"'.format(
+            encd=self.encoding,
+            SRID=srid,
+            path=os.path.normpath(path),
+            SCHEMA_DBTABLE=self.table_name(),
+        )
 
-        cmd_string = " | psql -U {USER} -d {DATABASE} --port {PORT} " \
-                     "--host {HOST} > {nul_dev} ".format(
+        cmd_string = " | psql -U {USER} -d {DATABASE} --port {PORT} --host {HOST} > {nul_dev} ".format(
             USER=self.opts["user"],
             DATABASE=self.opts["database"],
             PORT=self.opts["port"],
@@ -272,7 +270,7 @@ CSV HEADER;"""
             print(e)
 
         self.set_engine_encoding()
-        encoding_lookup = {'iso-8859-1': 'Latin1', 'latin-1': 'Latin1', 'utf-8': 'UTF8'}
+        encoding_lookup = {"iso-8859-1": "Latin1", "latin-1": "Latin1", "utf-8": "UTF8"}
         self.db_encoding = encoding_lookup.get(self.encoding)
         conn.set_client_encoding(self.db_encoding)
         return conn

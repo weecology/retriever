@@ -36,7 +36,7 @@ RUN pip install pytest-xdist -U
 RUN pip install pytest
 RUN pip install yapf
 RUN pip install pylint
-RUN pip install flake8
+RUN pip install flake8 -U
 
 # Install Postgis after Python is setup
 RUN apt-get install -y --force-yes postgis
