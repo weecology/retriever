@@ -54,7 +54,7 @@ tar_gz_url = os.path.normpath(achive_url.format(file_path='sample_tar.tar.gz'))
 gz_url = os.path.normpath(achive_url.format(file_path='sample.gz'))
 
 kaggle_datasets = [
-    # test_name, data_source, dataset_name, dataset_name, repath, expected
+    # test_name, data_source, dataset_identifier, dataset_name, repath, expected
     ("kaggle_competition", "competition", "titanic", "titanic", ["gender_submission.csv",  "test.csv", "train.csv"]),
     ("kaggle_unknown", "dataset", "uciml/iris", "iris", ['Iris.csv', 'database.sqlite']),
     ("kaggle_dataset", "competition", "non_existent_dataset", "non_existent_dataset", []),
@@ -223,8 +223,8 @@ def test_drop_statement():
         'TABLE', 'tablename') == "DROP TABLE IF EXISTS tablename"
 
 
-@pytest.mark.parametrize("test_name, data_source, dataset_name,  repath, expected", kaggle_datasets)
-def test_download_kaggle_dataset(test_name, data_source, dataset_name,  repath, expected):
+@pytest.mark.parametrize("test_name, data_source, dataset_identifier,  repath, expected", kaggle_datasets)
+def test_download_kaggle_dataset(test_name, data_source, dataset_identifier,  repath, expected):
     """Test the downloading of dataset from kaggle."""
     kaggle_token = os.path.isfile(KAGGLE_TOKEN_PATH)
     kaggle_username = os.getenv('KAGGLE_USERNAME', "").strip()
@@ -233,7 +233,7 @@ def test_download_kaggle_dataset(test_name, data_source, dataset_name,  repath, 
         setup_functions()
         files = test_engine.download_from_kaggle(
             data_source=data_source,
-            dataset_name=dataset_name,
+            dataset_name=dataset_identifier,
             archive_dir=raw_dir_files,
             archive_full_path=os.path.join(raw_dir_files, repath)
         )

@@ -16,6 +16,9 @@ from requests.exceptions import InvalidSchema
 from setuptools import archive_util
 from tqdm import tqdm
 
+from kaggle.api.kaggle_api_extended import KaggleApi
+from kaggle.rest import ApiException
+
 from retriever.lib.cleanup import no_cleanup
 from retriever.lib.defaults import DATA_DIR, DATA_SEARCH_PATHS, DATA_WRITE_PATH, ENCODING
 from retriever.lib.tools import (
@@ -501,8 +504,6 @@ class Engine():
         archive_full_path,
     ):
         """Download files from Kaggle into the raw data directory"""
-        from kaggle.api.kaggle_api_extended import KaggleApi
-        from kaggle.rest import ApiException
         api = KaggleApi()
         api.authenticate()
 
@@ -557,7 +558,7 @@ class Engine():
             if not os.path.exists(archive_dir):
                 os.makedirs(archive_dir)
 
-        if "kaggle" in self.script.__dict__:
+        if hasattr(self.script.__dict__, "kaggle"):
             file_names = self.download_from_kaggle(
                 data_source=self.script.data_source,
                 dataset_name=url,
