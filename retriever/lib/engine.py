@@ -549,7 +549,6 @@ class Engine():
         archive_full_path = self.format_filename(archive_name)
         archive_dir = self.format_data_dir()
 
-
         if keep_in_dir:
             archive_base = os.path.splitext(os.path.basename(archive_name))[0]
             archive_dir = (self.data_path if self.data_path else os.path.join(
