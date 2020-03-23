@@ -2,6 +2,7 @@
     "citation": "Katherine M. Thibault, Sarah R. Supp, Mikaelle Giffin, Ethan P. White, and S. K. Morgan Ernest. 2011. Species composition and abundance of mammalian communities. Ecology 92:2316.",
     "description": "This data set includes species lists for 1000 mammal communities, excluding bats, with species-level abundances available for 940 of these communities.",
     "homepage": "https://figshare.com/articles/Data_Paper_Data_Paper/3552243",
+    "encoding": "latin-1",
     "keywords": [
         "mammals",
         "global-scale",
@@ -44,5 +45,5 @@
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Mammal Community DataBase (Thibault et al. 2011)",
-    "version": "1.2.1"
+    "version": "1.2.2"
 }

@@ -48,7 +48,7 @@ lakecats_final_tables.json,2.0.0
 leaf_herbivory.json,1.2.1
 macroalgal_communities.json,2.0.0
 macrocystis_variation.json,1.0.1
-mammal_community_db.json,1.2.1
+mammal_community_db.json,1.2.2
 mammal_diet.json,1.1.2
 mammal_life_hist.json,1.2.1
 mammal_masses.json,1.3.2
