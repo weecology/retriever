@@ -10,6 +10,7 @@ import zipfile
 from collections import OrderedDict
 from math import ceil
 from urllib.request import urlretrieve
+from urllib.error import HTTPError
 
 import requests
 from requests.exceptions import InvalidSchema
@@ -475,8 +476,9 @@ class Engine():
                 miniters=1,
                 desc='Downloading {}'.format(filename),
             )
+
             try:
-                requests.get(
+                response = requests.get(
                     url,
                     allow_redirects=True,
                     stream=True,
@@ -488,11 +490,21 @@ class Engine():
                     hooks={'response': reporthook(progbar, path)},
                 )
 
+                if response.status_code == 404:
+                    print("Error 404: The data source or server not found")
+                    os.remove(path)
+                    return None
+
             except InvalidSchema:
-                urlretrieve(url, path, reporthook=reporthook(progbar))
+                try:
+                    urlretrieve(url, path, reporthook=reporthook(progbar))
+                except HTTPError as e:
+                    print(f"HTTPError: {e.code}")
+                    return None
 
             self.use_cache = True
             progbar.close()
+        return True
 
     def download_files_from_archive(
         self,
