@@ -281,15 +281,17 @@ def get_script_version_upstream(dataset, repo=REPOSITORY):
 
 def get_script_citation(dataset=None):
     """Get the citation list for a script"""
-    if dataset is None:
+    if dataset is not None:
+        dataset = dataset.strip()
+    if not dataset:
         return [VERSION]
+    citations = []
     scripts = name_matches(reload_scripts(), dataset)
     if scripts:
         citations = []
         for script in scripts:
             citations.append(script.citation)
-        return citations
-    return None
+    return citations
 
 
 def get_dataset_names_upstream(keywords=None, licenses=None, repo=REPOSITORY):
