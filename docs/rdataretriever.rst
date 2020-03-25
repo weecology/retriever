@@ -2,8 +2,8 @@
 Using the Data Retriever from R
 ===============================
 
-rdataretriever
-==============
+rdataretriever_
+===============
 
 The `Data Retriever`_ provides an R interface to the Data Retriever so
 that the ``retriever``'s data handling can easily be integrated into R workflows.
@@ -11,9 +11,9 @@ that the ``retriever``'s data handling can easily be integrated into R workflows
 Installation
 ============
 
-To use the R package ``rdataretriever``, you first need to `install the retriever <introduction.html#installing-binaries>`_.
+To use the R package rdataretriever_, you first need to `install the retriever <introduction.html#installing-binaries>`_.
 
-The ``rdataretriever`` can then be installed using
+The rdataretriever_ can then be installed using
 ``install.packages("rdataretriever")``
 
 To install the development version, use ``devtools``
@@ -26,7 +26,7 @@ To install the development version, use ``devtools``
 
 Note: The R package takes advantage of the Data Retriever's command line
 interface, which must be available in the path. This path is given to the
-``rdataretriever`` using the function ``use_RetrieverPath()``. The location of
+rdataretriever_ using the function ``use_RetrieverPath()``. The location of
 ``retriever`` is dependent on the Python installation (Python.exe, Anaconda, Miniconda),
 the operating system and the presence of virtual environments in the system. The following instances
 exemplify this reliance and how to find retriever's path.
@@ -265,3 +265,4 @@ To get citation information for the ``rdataretriever`` in R use ``citation(packa
 
 
 .. _Data Retriever: http://data-retriever.org
+.. _rdataretriever: https://github.com/ropensci/rdataretriever
