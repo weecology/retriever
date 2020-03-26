@@ -28,7 +28,33 @@ The ``retriever-recipes`` project can be installed from Github using the followi
 Script Creation
 ---------------
 
-To create a new script, try ``retriever-recipes new_json``, which starts the CLI tool for new script creation.
+To create a new script, there are 2 methods :- 
+
+1. Use retriever autocreate to automatically create a script template. Specify the type of data using -dt, the default data type is tabular. Download the files to a folder. In case of tabular data, the files should be CSV files. Autocreate can create a script template for each file using -f or use -d to create a single script template for all files in the directory.
+
+::
+
+
+  usage: retriever autocreate [-h] [-dt [{raster,vector,tabular}]] [-f] [-d]
+                              [-o [O]] [--skip-lines SKIP_LINES]
+                              path
+
+  positional arguments:
+    path                  path to the data file(s)
+
+  optional arguments:
+    -h, --help            show this help message and exit
+    -dt [{raster,vector,tabular}]
+                          datatype for files
+    -f                    turn files into scripts
+    -d                    turn a directory and subdirectories into scripts
+    -o [O]                write scripts out to a designated directory
+    --skip-lines SKIP_LINES
+                          skip a set number of lines before processing data
+
+
+
+2. Manual script creation using ``retriever-recipes new_json``, which starts the CLI tool for new script creation.
 
 ``Required``
 
