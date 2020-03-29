@@ -43,6 +43,8 @@ elif ext == '.h5' :
   res = fp.replace(ext, '.csv')
   df = pd.read_hdf('fp', 'table')
   df.to_csv('res' , index = False, header= True)
+  
+# netcdf file format
 
 elif ext == 'netcdf' :
   nc = xr.open_dataset('file_path')
