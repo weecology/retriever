@@ -1,0 +1,31 @@
+# we can change the major,minor and patch in the version
+## [bumpversion]
+
+current_version = 0.0.0
+commit = True
+tag = False
+parse = (?P\d+).(?P\d+).(?P\d+)(-(?P[a-z]+)(?P\d+))?
+serialize =
+{major}.{minor}.{patch}-{release}{build}
+{major}.{minor}.{patch}
+
+[bumpversion:part:release]
+optional_value = prod
+first_value = dev
+values =
+dev
+prod
+
+[bumpversion:part:build]
+
+[bumpversion:file:VERSION]
+
+[bumpversion:file:./api/version.py]
+
+[bumpversion:file:./api/swagger.yaml]
+search = version: {current_version}
+replace = {new_version}
+
+##  we run it as
+$ bumpversion major/minor/patch; cat version
+and the output results in an increment in the mentioned element
