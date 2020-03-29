@@ -66,7 +66,7 @@ class TabularPk:
         clean_table = table.__dict__
         resource_dict = {}
         path_to_table = os.path.basename(clean_table["name"])
-        print("Processing... {file_name}".format(file_name=path_to_table))
+        print(f"Processing... {path_to_table}")
         r_name = os.path.splitext(path_to_table)[0].lower()
         resource_dict["name"] = clean_table_name(r_name)
         resource_dict["path"] = path_to_table
@@ -77,7 +77,7 @@ class TabularPk:
             if len(ctuple) >= 2:
                 if ctuple[0] == "char":
                     # char sizes need quotes
-                    char_size = "{a}".format(a=ctuple[1])
+                    char_size = f"{ctuple[1]}"
                     resource_dict["schema"]["fields"].append({
                         "name": cname,
                         "type": ctuple[0],
@@ -121,14 +121,14 @@ class VectorPk(TabularPk):
 
     def set_globals(self, da_layer):
         """Set vector values"""
-        self.title = "The {} dataset".format(da_layer.GetName())
+        self.title = f"The {da_layer.GetName()} dataset"
         self.description = da_layer.GetDescription()
         self.extent = OrderedDict(
             zip(["xMin", "xMax", "yMin", "yMax"], da_layer.GetExtent()))
         self.geom_type = ogr.GeometryTypeToName(da_layer.GetLayerDefn().GetGeomType())
         sp_ref = da_layer.GetSpatialRef()
         if sp_ref:
-            self.spatial_ref = "{}".format(str(sp_ref.ExportToWkt()))
+            self.spatial_ref = f"{str(sp_ref.ExportToWkt())}"
 
     def create_vector_resources(self, path, driver_name):
         """Create vector data resources"""
@@ -413,4 +413,5 @@ def write_out_scripts(script_dict, path, out_path):
             print("Successfully wrote scripts to " + os.path.abspath(write_path))
             output_path.close()
     except Exception as error:
-        print(write_path + " could not be created. {}".format(error.message))
+        print(write_path + f" could not be created. {error.message}")
+

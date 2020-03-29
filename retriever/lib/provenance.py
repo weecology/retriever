@@ -64,9 +64,7 @@ def commit_writer(dataset, commit_message, path, quiet):
                 paths_to_zip["raw_data"].append(os.path.join(root, file))
 
         info = commit_info_for_commit(dataset, commit_message=commit_message)
-        zip_file_name = "{}-{}{}.zip".format(dataset.name, info["md5_dataset"][:3],
-                                             info["md5_script"][:3])
-
+        zip_file_name = f"{dataset.name}-{info['md5_dataset'][:3]}{info['md5_script'][:3]}.zip"
         zip_file_path = os.path.join(path, zip_file_name)
         with ZipFile(zip_file_path, "w") as zipped:
             zipped.write(
@@ -97,7 +95,7 @@ def commit(dataset, commit_message='', path=None, quiet=False):
         os.makedirs(dataset_provenance_path)
     path = path if path else dataset_provenance_path
     if not quiet:
-        print("Committing dataset {}".format(dataset.name))
+        print(f"Committing dataset {dataset.name}")
     try:
         commit_writer(dataset=dataset,
                       commit_message=commit_message,
@@ -151,7 +149,7 @@ def installation_details(metadata_info, quiet):
             if details["package_not_found"]:
                 print("The following packages were not found:")
                 for package in details['package_not_found']:
-                    print("{}=={}".format(package, details['package_not_found'][package]))
+                    print(f"{package}=={details['package_not_found'][package]}")
             if details["package_changed"]:
                 print("The following packages have different versions:")
                 for package in details['package_changed']:
@@ -212,10 +210,7 @@ def commit_log(dataset):
                                                         "%m/%d/%Y, %H:%M:%S")
                     log[commit_datetime] = (
                         commit_info['commit_message'],
-                        '{}{}'.format(
-                            commit_info["md5_dataset"][:3],
-                            commit_info["md5_script"][:3],
-                        ),
+                        f"{commit_info['md5_dataset'][:3]}{commit_info['md5_script'][:3]}",
                     )
             # sort the commits according to time in reverse order
             # i.e. latest commit is the first element
@@ -225,7 +220,7 @@ def commit_log(dataset):
                 print('Hash:', commit_value[1][1])
                 print('Date:', commit_value[0].strftime("%m/%d/%Y, %H:%M:%S"))
             return sorted_log
-        print("No logs for {}".format(dataset))
+        print(f"No logs for {dataset}")
         return None
     except Exception as e:
         print("Unable to generate log for", dataset)

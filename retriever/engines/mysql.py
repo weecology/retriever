@@ -82,11 +82,12 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
     def set_engine_encoding(self):
         """Set MySQL database encoding to match data encoding"""
         db_encoding = self.lookup_encoding()
-        self.execute("SET NAMES '{0}';".format(db_encoding))
+        self.execute(f"SET NAMES '{db_encoding}';")
         Engine.set_engine_encoding(self)
 
     def lookup_encoding(self):
         """Convert well known encoding to MySQL syntax
+
         MySQL has a unique way of representing the encoding.
         For example, latin-1 becomes latin1 in MySQL.
         Please update the encoding lookup table if the required
@@ -104,6 +105,7 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
 
     def get_connection(self):
         """Get db connection.
+
         PyMySQL has changed the default encoding from latin1 to utf8mb4.
         https://github.com/PyMySQL/PyMySQL/pull/692/files
         For PyMySQL to work well on CI infrastructure,

@@ -20,7 +20,7 @@ if os.path.exists(".git/hooks"):  # check if we are in git repo
 
 app_data = "~/.retriever/scripts"
 if os.path.exists(app_data):
-    os.system("rm -r {}".format(app_data))
+    os.system(f"rm -r {app_data}")
 
 __version__ = 'v2.4.1.dev'
 with open(os.path.join("retriever", "_version.py"), "w") as version_file:
@@ -61,7 +61,7 @@ setup(
     name='retriever',
     version=clean_version(__version__),
     description='Data Retriever',
-    long_description='{a}'.format(a=read('README.md')),
+    long_description=f"{read('README.md')}",
     long_description_content_type='text/markdown',
     author='Ben Morris, Shivam Negi, Akash Goel, Andrew Zhang, Henry Senyondo, Ethan White',
     author_email='ethan@weecology.org',

@@ -108,7 +108,7 @@ class engine(Engine):
             newrows = values
 
         xml_lines = [
-            '\n<row>\n{}</row>'.format(format_single_row(keys, line_data))
+            f'\n<row>\n{format_single_row(keys, line_data)}</row>'
             for line_data in newrows
         ]
         return xml_lines
@@ -135,7 +135,7 @@ class engine(Engine):
 def format_single_row(keys, line_data):
     """Create an xml string from the keys and line_data values."""
     row_values = [
-        '    <{key}>{value}</{key}>\n'.format(key=key, value=value)
+        f'    <{key}>{value}</{key}>\n'
         for key, value in zip(keys, line_data)
     ]
     return ''.join(row_values)

@@ -38,17 +38,17 @@ class engine(Engine):
                 file_path, file_name_nopath = os.path.split(file_name)
                 dest_path = os.path.join(self.opts["path"], self.opts.get("sub_dir", ""))
                 if not os.path.isdir(dest_path):
-                    print("Creating directory %s" % dest_path)
+                    print(f"Creating directory {dest_path}")
                     os.makedirs(dest_path)
                 if os.path.isfile(os.path.join(dest_path, file_name_nopath)):
                     print("File already exists at specified location")
                     print("Keeping existing copy.")
                 else:
                     try:
-                        print("Copying %s from %s" % (file_name_nopath, file_path))
+                        print(f"Copying {file_name_nopath} from {file_path}")
                         shutil.copy(file_name, dest_path)
                     except:
-                        print("Couldn't copy file to %s" % dest_path)
+                        print(f"Couldn't copy file to {dest_path}")
         self.all_files = set()
 
     def auto_create_table(self, table, url=None, filename=None, pk=None, make=True):

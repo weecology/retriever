@@ -93,12 +93,12 @@ def reset_retriever(scope="all", ask_permission=True):
         script_path_json = os.path.normpath(os.path.join(sc_dir, script + ".json"))
         if os.path.exists(script_path_py):
             os.remove(script_path_py)
-            print("successfully removed the script {scp}".format(scp=scope))
+            print(f"successfully removed the script {scope}")
         elif os.path.exists(script_path_json):
             os.remove(script_path_json)
-            print("successfully removed the script {scp}".format(scp=scope))
+            print(f"successfully removed the script {scope}")
         else:
-            print("can't find script {scp}".format(scp=scope))
+            print(f"can't find script {scope}")
 
 
 def json2csv(input_file, output_file=None, header_values=None, encoding=ENCODING):
@@ -175,7 +175,8 @@ def getmd5(data, data_type='lines', encoding='utf-8'):
     if data_type == 'dir':
         directory_path = os.path.normpath(data)
         if not os.path.exists(directory_path):
-            raise "Path not found, {path}".format(path=directory_path)
+            exp = f"Path not found, {directory_path}"
+            raise exp
         for root, _, filenames in os.walk(os.path.normpath(directory_path)):
             for filename in sorted(filenames):
                 files.append(os.path.normpath(os.path.join(root, filename)))
