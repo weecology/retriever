@@ -1,0 +1,70 @@
+import os
+import pandas as pd
+import xarray as xr
+import xml.etree.ElementTree as ET
+import xmltodict
+import json
+
+fp = 'enter file_path'                            # get path of dataset file that has been downloaded
+ext = os.path.splitext(fp)[-1].lower()            # get file extension from the path                               
+f = os.path.basename(fp)                      
+file_name = os.path.splitext(f)[0]                # name of file without extension and path                 
+
+# excel file format
+
+if ext == '.xls' or ext == '.xlsx' :
+  res = fp.replace(ext, '.csv')                    # res - the resultant csv file path
+  df = pd.read_excel('fp')
+  df.to_csv(res, index= False, header= True)
+
+# json file format
+
+elif ext == '.json' :
+  res = fp.replace(ext, '.csv')
+  df = pd.read_json(w'fp')
+  df.to_csv(res, index=False, header= True)
+
+#.sql format
+
+elif ext == '.sql' :
+  res = fp.replace(ext, '.csv')
+  df = pd.read_sql_table('table_name', 'postgres:///db_name')                  # or df = pd.read_sql(sql query to select data) 
+  df.to_csv(res, index = False, header= True)
+
+# sqlite3 format
+
+conn = sqlite3.connect(db_file, isolation_level=None,detect_types=sqlite3.PARSE_COLNAMES)
+  df = pd.read_sql_query("SELECT * FROM error_log", conn)
+  df.to_csv(res, index=False)
+
+#hdf5 file format
+
+elif ext == '.h5' :
+  res = fp.replace(ext, '.csv')
+  df = pd.read_hdf('fp', 'table')
+  df.to_csv('res' , index = False, header= True)
+
+elif ext == 'netcdf' :
+  nc = xr.open_dataset('file_path')
+  nc.file_name.to_dataframe().to_csv(res)
+
+# xml format
+
+elif ext == '.xml' :
+  tree = ET.parse('output.xml')
+  xml_data = tree.getroot()
+  xmlstr = ET.tostring(xml_data, encoding='utf8', method='xml')
+  data_dict = dict(xmltodict.parse(xmlstr))
+  with open('new_data_2.json', 'w+') as json_file:
+    json.dump(data_dict, json_file, indent=4, sort_keys=True
+   
+  res = fp.replace(ext, '.csv')
+  df = pd.read_json('fp')
+  df.to_csv(res, index=False, header= True)
+  
+  
+  
+# REFERENCES
+https://medium.com/analytics-vidhya/converting-xml-data-to-csv-format-using-python-3ea09fa18d38
+https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html
+https://towardsdatascience.com/the-easy-way-to-work-with-csv-json-and-xml-in-python-5056f9325ca9
