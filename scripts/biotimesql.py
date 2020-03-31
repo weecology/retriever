@@ -27,13 +27,13 @@ class main(Script):
         self.urls = {
             "sql_file": "https://zenodo.org/record/2602708/files/BioTIMESQL02_04_2018.sql?download=1",
         }
-        self.version = "1.0.1"
+        self.version = "1.0.2"
         self.ref = "https://zenodo.org/record/1095628#.WskN7dPwYyn"
         self.citation = "Dornelas M, Antão LH, Moyes F, et al. BioTIME: A database of biodiversity time series for the Anthropocene. Global Ecology & Biogeography. 2018; 00:1 - 26. https://doi.org/10.1111/geb.12729."
         self.description = "The BioTIME database has species identities and abundances in ecological assemblages through time."
         self.keywords = ["Time series", "Anthropocene", "Global"]
         self.licenses = [{"name": "CC BY 4.0"}]
-        self.encoding = "latin1"
+        self.encoding = "latin-1"
 
         if parse_version(VERSION) <= parse_version("2.0.0"):
             self.shortname = self.name
