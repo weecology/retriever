@@ -6,7 +6,7 @@ improvements to the documentation, bug reports, or anything else you can think
 of. We strive to be supportive of anyone who wants to contribute, so don't be
 shy, give it a go, and we'll do our best to help.  One way to ease into
 contributing is to
-[add datasets](https://retriever.readthedocs.io/en/latest/scripts.html) to the
+[add datasets](https://retriever.readthedocs.io/en/latest/recipes.html) to the
 Retriever.
 
 ## Process for contributing changes
