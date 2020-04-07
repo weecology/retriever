@@ -17,6 +17,8 @@ from retriever.lib.defaults import HOME_DIR, ENCODING
 import xml.etree.ElementTree as ET
 import os
 import csv
+import pandas as pd
+from pandas import json_normalize
 
 warnings.filterwarnings("ignore")
 from retriever.lib.tools import open_fr, open_csvw, open_fw
