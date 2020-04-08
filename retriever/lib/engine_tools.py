@@ -123,7 +123,10 @@ def json2csv(input_file, output_file=None, header_values=None, encoding=ENCODING
                                 )
     raw_data = json.loads(file_out.read())
     raw_data = walker(raw_data, row_key=row_key, header_values=header_values, rows=[], normalize=False)
-    raw_data = [row.tolist() for row in raw_data]
+    if isinstance(raw_data[0], dict):
+        raw_data = [list(row.values()) for row in raw_data]
+    else:
+        raw_data = [row.tolist() for row in raw_data]
     outfile.writerow(header_values)
     outfile.writerows(raw_data)
     file_out.close()
@@ -136,13 +139,15 @@ def walker(dictionary, row_key=None, header_values=None, rows=[], normalize=Fals
     Both name and columns cant be none
     """
     #  Handles the simple case, where row_key and column_key are not required
-    if not row_key and not header_values:
+    if not (row_key or header_values):
         if isinstance(dictionary, dict):
             # rows = pd.Series(dictionary)
             rows = pd.DataFrame([dictionary]).values
+            # rows = [row.tolist() for row in rows]
             return rows
         elif isinstance(dictionary, list):
             rows = pd.DataFrame(dictionary, columns=header_values).values
+            # rows = [row.tolist() for row in rows]
             return rows
 
     if isinstance(dictionary, dict):
@@ -156,10 +161,11 @@ def walker(dictionary, row_key=None, header_values=None, rows=[], normalize=Fals
             if normalize:
                 rows.extend(json_normalize(dictionary[row_key]).values)
             else:
-                rows.extend(dictionary[row_key])
+                rows = walker(dictionary[row_key], row_key, header_values, rows, normalize=True)
+                return rows
 
         else:
-            for _, item in dictionary.items():
+            for item in dictionary.values():
                 if isinstance(item, list):
                     for ls in item:
                         rows = walker(ls, row_key, header_values, rows)
