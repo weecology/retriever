@@ -148,13 +148,13 @@ def walker(dictionary, row_key=None, header_values=None, rows=[], normalize=Fals
             return rows
 
     if isinstance(dictionary, dict):
-        if header_values and (set(dictionary.keys()).issubset(header_values):
+        if header_values and (set(header_values).issubset(dictionary.keys())):
             if normalize:
                 rows.extend(json_normalize(dict(i for i in dictionary.items() if i[0] in header_values)).values)
             else:
                 rows.extend([dict(i for i in dictionary.items() if i[0] in header_values)])
 
-        elif row_key and row_key in list(dictionary.keys()):
+        elif dictionary.get(row_key):
             if normalize:
                 rows.extend(json_normalize(dictionary[row_key]).values)
             else:
