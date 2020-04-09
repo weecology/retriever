@@ -114,12 +114,12 @@ def json2csv(input_file, output_file=None, header_values=None, encoding=ENCODING
         outfile = csv.writer(csv_out,
                                  dialect='excel',
                                  escapechar="\\",
-                                 lineterminator='\n',
+                                 lineterminator='\n'
                                 )
     else:
         outfile = csv.writer(csv_out,
                                  dialect='excel',
-                                 escapechar="\\",
+                                 escapechar="\\"
                                 )
     raw_data = json.loads(file_out.read())
     raw_data = walker(raw_data, row_key=row_key, header_values=header_values, rows=[], normalize=False)
@@ -136,24 +136,19 @@ def json2csv(input_file, output_file=None, header_values=None, encoding=ENCODING
 
 def walker(dictionary, row_key=None, header_values=None, rows=[], normalize=False):
     """
-    Both name and columns cant be none
+    Extract rows of data from json datasets
     """
     #  Handles the simple case, where row_key and column_key are not required
     if not (row_key or header_values):
         if isinstance(dictionary, dict):
-            # rows = pd.Series(dictionary)
             rows = pd.DataFrame([dictionary]).values
-            # rows = [row.tolist() for row in rows]
             return rows
         elif isinstance(dictionary, list):
             rows = pd.DataFrame(dictionary, columns=header_values).values
-            # rows = [row.tolist() for row in rows]
             return rows
 
     if isinstance(dictionary, dict):
-        print(header_values, dictionary.keys())
-        print()
-        if header_values and (set(dictionary.keys()).issubset(header_values) or header_values == list(dictionary.keys())):
+        if header_values and (set(dictionary.keys()).issubset(header_values):
             if normalize:
                 rows.extend(json_normalize(dict(i for i in dictionary.items() if i[0] in header_values)).values)
             else:
