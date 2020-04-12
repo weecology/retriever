@@ -8,7 +8,7 @@ retriever-recipes
 The `Data Retriever`_ earlier used a simple CLI for developing new dataset scripts. This allowed users with no programming experience to quickly add most standard datasets to the Retriever by specifying the names and locations of the tables along with additional information about the configuration of the data. The script is saved as a JSON file, that follows the DataPackage_ standards.
 
 .. _Data Retriever: http://data-retriever.org
-.. _DataPackage: http://specs.frictionlessdata.io/data-packages/
+.. _DataPackage: https://specs.frictionlessdata.io/data-package/
 
 This functionality has been moved to the ``retriever-recipes`` repository to separate the scripts from the core ``retriever`` functionalities to help with organization, maintenance, and testing. The `retriever recipes`_ repository thus holds all the scripts which were earlier shipped with ``retriever`` and also all the script adding/editing functionalities.
 
