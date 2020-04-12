@@ -19,6 +19,7 @@ from retriever.lib.tools import open_fw
 
 
 class TabularPk:
+    """Main Tabular data package"""
 
     def __init__(self,
                  name="fill",
@@ -111,8 +112,10 @@ class VectorPk(TabularPk):
         self.extent = ""
         self.geom_type = ""
 
-    def get_source(self, source, driver_name="ESRI Shapefile"):
+    def get_source(self, source, driver_name=None):
         """Open a data source"""
+        if not driver_name:
+            driver_name = self.driver_name
         driver = ogr.GetDriverByName(driver_name)
         return driver.Open(source, 0)
 
@@ -154,8 +157,10 @@ class VectorPk(TabularPk):
             layer["schema"]["fields"].append(col_obj)
         return layer
 
-    def get_resources(self, file_path, file_name=None, driver_name=None):
-        return self.create_vector_resources(file_path, driver_name=self.driver_name)
+    def get_resources(self, file_path, driver_name=None):  # pylint: disable=W0221
+        if not driver_name:
+            driver_name = self.driver_name
+        return self.create_vector_resources(file_path, driver_name)
 
 
 class RasterPk(TabularPk):
@@ -179,9 +184,11 @@ class RasterPk(TabularPk):
         self.transform = ""
         self.resources = []
 
-    def get_source(self, sub_dataset_name):
+    def get_source(self, file_path):
         """Read raster data source"""
-        src_ds = gdal.Open(sub_dataset_name, GA_ReadOnly)
+        if not self.driver:
+            # use default open
+            src_ds = gdal.Open(file_path, GA_ReadOnly)
         return src_ds
 
     def set_global(self, src_ds):
@@ -238,7 +245,7 @@ class RasterPk(TabularPk):
                 resource_pk.append(bands)
         return resource_pk[0]
 
-    def get_resources(self, file_path, skip_lines=None):
+    def get_resources(self, file_path):  # pylint: disable=W0221
         """Get raster resources"""
         return self.create_raster_resources(file_path)
 
@@ -321,7 +328,6 @@ def create_script_dict(pk_type, path, file, skip_lines, encoding):
     try:
         resources = pk_type.get_resources(path, skip_lines, encoding)
     except:
-        raise
         print("Skipped file: " + file)
         return None
     dict_values.setdefault("resources", []).append(resources)
@@ -343,7 +349,7 @@ def process_dirs(pk_type, sub_dirs_path, out_path, skip_lines, encoding):
                                                      os.path.join(path, file_name),
                                                      file_name, skip_lines, encoding)
                 json_pk.update(try_create_dict)
-    write_out_scripts(json_pk, path, out_path)
+        write_out_scripts(json_pk, path, out_path)
 
 
 def process_singles(pk_type, single_files_path, out_path, skip_lines, encoding):

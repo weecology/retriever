@@ -37,6 +37,9 @@ install:
   - "%PYTHON%\\python.exe -m pip install codecov"
   - "%PYTHON%\\python.exe -m pip install nose-cov"
   - "%PYTHON%\\python.exe -m pip install -U pytest"
+  - "%PYTHON%\\python.exe -m pip install -U flake8"
+  - "%PYTHON%\\python.exe -m pip install -U yapf"
+  - "%PYTHON%\\python.exe -m pip install -U pylint"
 
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - "%PYTHON%\\python.exe -m  pip --version"
@@ -63,3 +66,6 @@ build_script:
 
 test_script:
   - py.test -v -k "not test_download_archive and not test_postgres_spatial"
+  - flake8 --ignore=E501,W503,E402,F401,F403,E722,F841,W504 retriever --max-line-length=90
+  - yapf --recursive retriever/ --style=.style.yapf -d
+  - pylint -rn retriever/ -f colorized --rcfile=.pylintrc

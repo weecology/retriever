@@ -7,7 +7,7 @@ import sys
 
 from retriever.engines import engine_list, choose_engine
 from retriever.lib.datasets import datasets, dataset_names, license
-from retriever.lib.defaults import sample_script, CITATION, SCRIPT_SEARCH_PATHS, LICENSE, VERSION
+from retriever.lib.defaults import sample_script, CITATION, SCRIPT_SEARCH_PATHS, LICENSE
 from retriever.lib.engine_tools import reset_retriever
 from retriever.lib.get_opts import parser
 from retriever.lib.install import _install
@@ -231,7 +231,8 @@ def main():
         else:
             raise Exception("no dataset specified.")
         if scripts:
-            if args.dataset.endswith('.zip') or hasattr(args, 'hash_value'):
+            if args.dataset.endswith('.zip') or (hasattr(args, 'hash_value') and
+                                                 args.hash_value):
                 _install(vars(args), debug=debug, use_cache=use_cache)
                 return
             for dataset in scripts:
