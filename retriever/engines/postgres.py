@@ -260,16 +260,17 @@ CSV HEADER;"""
         self.get_input()
         try:
             conn = dbapi.connect(
-            host=self.opts["host"],
-            port=int(self.opts["port"]),
-            user=self.opts["user"],
-            password=self.opts["password"],
-            database=self.opts["database"],)
-        except dbapi.OperationalError as error: 
+                host=self.opts["host"],
+                port=int(self.opts["port"]),
+                user=self.opts["user"],
+                password=self.opts["password"],
+                database=self.opts["database"],
+            )
+        except dbapi.OperationalError as error:
             raise (error)
         except Exception as e:
             print(e)
-        
+
         self.set_engine_encoding()
         encoding_lookup = {'iso-8859-1': 'Latin1', 'latin-1': 'Latin1', 'utf-8': 'UTF8'}
         self.db_encoding = encoding_lookup.get(self.encoding)

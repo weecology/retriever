@@ -507,12 +507,12 @@ class Engine():
         return True
 
     def download_files_from_archive(
-        self,
-        url,
-        file_names=None,
-        archive_type="zip",
-        keep_in_dir=False,
-        archive_name=None,
+            self,
+            url,
+            file_names=None,
+            archive_type="zip",
+            keep_in_dir=False,
+            archive_name=None,
     ):
         """Download files from an archive into the raw data directory."""
 
@@ -584,12 +584,12 @@ class Engine():
             excel_csv(src_path, path_to_csv, excel_info, encoding)
 
     def extract_gz(
-        self,
-        archive_path,
-        archivedir_write_path,
-        file_name=None,
-        open_archive_file=None,
-        archive=None,
+            self,
+            archive_path,
+            archivedir_write_path,
+            file_name=None,
+            open_archive_file=None,
+            archive=None,
     ):
         """Extract gz files.
 
@@ -933,12 +933,12 @@ class Engine():
         self.warnings.append(new_warning)
 
     def write_fileobject(
-        self,
-        archivedir_write_path,
-        file_name,
-        file_obj=None,
-        archive=None,
-        open_object=False,
+            self,
+            archivedir_write_path,
+            file_name,
+            file_obj=None,
+            archive=None,
+            open_object=False,
     ):
         """Write a file object from a archive object to a given path
 
