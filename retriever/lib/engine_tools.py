@@ -112,17 +112,18 @@ def json2csv(input_file, output_file=None, header_values=None, encoding=ENCODING
     csv_out = open_fw(output_file, encoding=encoding)
     if os.name == 'nt':
         outfile = csv.writer(csv_out,
-                                 dialect='excel',
-                                 escapechar="\\",
-                                 lineterminator='\n'
-                                )
+                             dialect='excel',
+                             escapechar="\\",
+                             lineterminator='\n'
+                             )
     else:
         outfile = csv.writer(csv_out,
-                                 dialect='excel',
-                                 escapechar="\\"
-                                )
+                             dialect='excel',
+                             escapechar="\\"
+                             )
     raw_data = json.loads(file_out.read())
-    raw_data = walker(raw_data, row_key=row_key, header_values=header_values, rows=[], normalize=False)
+    raw_data = walker(raw_data, row_key=row_key,
+                      header_values=header_values, rows=[], normalize=False)
     if isinstance(raw_data[0], dict):
         raw_data = [list(row.values()) for row in raw_data]
     else:
@@ -150,15 +151,18 @@ def walker(dictionary, row_key=None, header_values=None, rows=[], normalize=Fals
     if isinstance(dictionary, dict):
         if header_values and (set(header_values).issubset(dictionary.keys())):
             if normalize:
-                rows.extend(json_normalize(dict(i for i in dictionary.items() if i[0] in header_values)).values)
+                rows.extend(json_normalize(
+                    dict(i for i in dictionary.items() if i[0] in header_values)).values)
             else:
-                rows.extend([dict(i for i in dictionary.items() if i[0] in header_values)])
+                rows.extend(
+                    [dict(i for i in dictionary.items() if i[0] in header_values)])
 
         elif dictionary.get(row_key):
             if normalize:
                 rows.extend(json_normalize(dictionary[row_key]).values)
             else:
-                rows = walker(dictionary[row_key], row_key, header_values, rows, normalize=True)
+                rows = walker(dictionary[row_key], row_key,
+                              header_values, rows, normalize=True)
                 return rows
 
         else:
