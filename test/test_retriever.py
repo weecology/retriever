@@ -31,6 +31,7 @@ json2csv_datasets = [
     # test_name, json_data, header_values, row_key, expected
     ("simple_json", """[ {"User": "Alex", "Country": "US", "Age": "25"} ]""", ['User','Country','Age'], None, ['User,Country,Age', 'Alex,US,25']),
     ("nested_json", """{"prizes":[{"year":"2019","category":"chemistry","laureates":[{"id":"976","firstname":"John","surname":"Goodenough","motivation":"text shorted","share":"3"}]}]}""", ["id", "firstname", "surname", "motivation", "share"], 'prizes', ['id,firstname,surname,motivation,share', '976,John,Goodenough,text shorted,3']),
+    ("null_data_json", """[{"User":"Alex","id":"US1","Age":"25","kt":"2.0","qt":"1.00"},{"User":"Tom","id":"US2","Age":"20","kt":"0.0","qt":"1.0"},{"User":"Dan","id":"44","Age":"2","kt":"0","qt":"1"},{"User":"Kim","id":"654","Age":"","kt":"","qt":""}]""", ["User", "id", "Age", "kt", "qt"], None, ['User,id,Age,kt,qt', 'Alex,US1,25,2.0,1.00', 'Tom,US2,20,0.0,1.0', 'Dan,44,2,0,1', 'Kim,654,,,'])
 ]
 
 # Main paths
