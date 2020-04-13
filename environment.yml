@@ -1,0 +1,4 @@
+name: retriever
+dependencies:
+  - pip:
+      - git+git://github.com/weecology/retriever.git
