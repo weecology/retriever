@@ -12,7 +12,6 @@ def _install(args, use_cache, debug):
     """Install datasets for retriever."""
     engine = choose_engine(args)
     engine.use_cache = use_cache
-
     if args['dataset'].endswith('.zip') or args['hash_value']:
         path_to_archive = args['dataset']
         if args['hash_value']:

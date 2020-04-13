@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
 RUN apt-get install -y --force-yes tzdata
 
 RUN apt-get install -y --force-yes build-essential wget git locales locales-all > /dev/null
-RUN apt-get install -y --force-yes postgresql-client mysql-client > /dev/null
+RUN apt-get install -y --force-yes postgresql-client mariadb-client > /dev/null
 
 # Set encoding
 ENV LC_ALL en_US.UTF-8
@@ -36,7 +36,8 @@ RUN pip install pytest-xdist -U
 RUN pip install pytest
 RUN pip install yapf
 RUN pip install pylint
-RUN pip install flake8
+RUN pip install flake8 -U
+RUN pip install kaggle
 
 # Install Postgis after Python is setup
 RUN apt-get install -y --force-yes postgis
