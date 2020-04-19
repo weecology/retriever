@@ -17,7 +17,6 @@ from requests.exceptions import InvalidSchema
 from setuptools import archive_util
 from tqdm import tqdm
 
-
 from retriever.lib.cleanup import no_cleanup
 from retriever.lib.defaults import DATA_DIR, DATA_SEARCH_PATHS, DATA_WRITE_PATH, ENCODING, KAGGLE_TOKEN_PATH
 from retriever.lib.tools import (
@@ -507,11 +506,11 @@ class Engine():
         return True
 
     def download_from_kaggle(
-        self,
-        data_source,
-        dataset_name,
-        archive_dir,
-        archive_full_path,
+            self,
+            data_source,
+            dataset_name,
+            archive_dir,
+            archive_full_path,
     ):
         """Download files from Kaggle into the raw data directory"""
         kaggle_token = os.path.isfile(KAGGLE_TOKEN_PATH)
@@ -522,7 +521,9 @@ class Engine():
             from kaggle.api.kaggle_api_extended import KaggleApi
             from kaggle.rest import ApiException
         else:
-            print(f"Could not find kaggle.json. Make sure it's located at {KAGGLE_TOKEN_PATH}. Or available in the environment variables. For more information checkout https://github.com/Kaggle/kaggle-api#api-credentials")
+            print(
+                f"Could not find kaggle.json. Make sure it's located at {KAGGLE_TOKEN_PATH}. Or available in the environment variables. For more information checkout https://github.com/Kaggle/kaggle-api#api-credentials"
+            )
             return
 
         api = KaggleApi()
@@ -531,33 +532,41 @@ class Engine():
         if data_source == "dataset":
             archive_full_path = archive_full_path + ".zip"
             try:
-                api.dataset_download_files(
-                    dataset=dataset_name, path=archive_dir, quiet=False, force=True)
+                api.dataset_download_files(dataset=dataset_name,
+                                           path=archive_dir,
+                                           quiet=False,
+                                           force=True)
                 file_names = self.extract_zip(archive_full_path, archive_dir)
             except ApiException:
-                print(f"The dataset '{dataset_name}' isn't currently available in the Retriever.\nRun 'retriever ls' to see a list of currently available datasets.")
+                print(
+                    f"The dataset '{dataset_name}' isn't currently available in the Retriever.\nRun 'retriever ls' to see a list of currently available datasets."
+                )
                 return []
 
         else:
-            archive_full_path = archive_full_path.replace(
-                "kaggle:competition:", "") + ".zip"
+            archive_full_path = archive_full_path.replace("kaggle:competition:",
+                                                          "") + ".zip"
             try:
-                api.competition_download_files(
-                    competition=dataset_name, path=archive_dir, quiet=False, force=True)
+                api.competition_download_files(competition=dataset_name,
+                                               path=archive_dir,
+                                               quiet=False,
+                                               force=True)
                 file_names = self.extract_zip(archive_full_path, archive_dir)
             except ApiException:
-                print(f"The dataset '{dataset_name}' isn't currently available in the Retriever.\nRun 'retriever ls' to see a list of currently available datasets.")
+                print(
+                    f"The dataset '{dataset_name}' isn't currently available in the Retriever.\nRun 'retriever ls' to see a list of currently available datasets."
+                )
                 return []
 
         return file_names
 
     def download_files_from_archive(
-        self,
-        url,
-        file_names=None,
-        archive_type="zip",
-        keep_in_dir=False,
-        archive_name=None,
+            self,
+            url,
+            file_names=None,
+            archive_type="zip",
+            keep_in_dir=False,
+            archive_name=None,
     ):
         """Download files from an archive into the raw data directory."""
         if not archive_name:
@@ -577,12 +586,10 @@ class Engine():
                 os.makedirs(archive_dir)
 
         if hasattr(self.script.__dict__, "kaggle"):
-            file_names = self.download_from_kaggle(
-                data_source=self.script.data_source,
-                dataset_name=url,
-                archive_dir=archive_dir,
-                archive_full_path=archive_full_path
-            )
+            file_names = self.download_from_kaggle(data_source=self.script.data_source,
+                                                   dataset_name=url,
+                                                   archive_dir=archive_dir,
+                                                   archive_full_path=archive_full_path)
 
         else:
             if not file_names:
@@ -638,12 +645,12 @@ class Engine():
             excel_csv(src_path, path_to_csv, excel_info, encoding)
 
     def extract_gz(
-        self,
-        archive_path,
-        archivedir_write_path,
-        file_name=None,
-        open_archive_file=None,
-        archive=None,
+            self,
+            archive_path,
+            archivedir_write_path,
+            file_name=None,
+            open_archive_file=None,
+            archive=None,
     ):
         """Extract gz files.
 
@@ -987,12 +994,12 @@ class Engine():
         self.warnings.append(new_warning)
 
     def write_fileobject(
-        self,
-        archivedir_write_path,
-        file_name,
-        file_obj=None,
-        archive=None,
-        open_object=False,
+            self,
+            archivedir_write_path,
+            file_name,
+            file_obj=None,
+            archive=None,
+            open_object=False,
     ):
         """Write a file object from a archive object to a given path
 
