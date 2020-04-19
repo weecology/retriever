@@ -491,9 +491,7 @@ class Engine():
                 )
 
                 if response.status_code == 404:
-                    print("Error 404: The data source or server not found")
-                    os.remove(path)
-                    return None
+                    print("The data source or server may be redirected or not found")
 
             except InvalidSchema:
                 try:
