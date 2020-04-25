@@ -13,16 +13,14 @@ import warnings
 from hashlib import md5
 from io import StringIO as NewFile
 from retriever.lib.defaults import HOME_DIR, ENCODING
+from retriever.lib.tools import open_fr, open_csvw, open_fw
 
 import xml.etree.ElementTree as ET
 import os
 import csv
 import pandas as pd
 
-
-
 warnings.filterwarnings("ignore")
-from retriever.lib.tools import open_fr, open_csvw, open_fw
 
 TEST_ENGINES = dict()
 
@@ -277,8 +275,10 @@ def set_proxy():
                     os.environ[i] = os.environ[proxy]
                 break
 
+
 def xml2dict(dic, node, level):
     """Convert xml to dict type.
+
     """
     if not node.tag:
         print(type(node))
@@ -310,8 +310,10 @@ def xml2dict(dic, node, level):
             val = vals[k] if len(vals[k]) > 1 else vals[k][0]
             dic[k].append(val)
 
+
 def xml2csv_update(input_file, outputfile=None):
     """Convert xml to csv.
+
     """
 
     tree = ET.parse(input_file)
