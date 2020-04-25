@@ -17,6 +17,9 @@ from retriever.lib.defaults import HOME_DIR, ENCODING
 import xml.etree.ElementTree as ET
 import os
 import csv
+import pandas as pd
+
+
 
 warnings.filterwarnings("ignore")
 from retriever.lib.tools import open_fr, open_csvw, open_fw
@@ -273,3 +276,47 @@ def set_proxy():
                 for i in proxies:
                     os.environ[i] = os.environ[proxy]
                 break
+
+def xml2dict(dic, node, level):
+    """Convert xml to dict type.
+    """
+    if not node.tag:
+        print(type(node))
+        return
+    vals = dict()
+    for child in node:
+        key = child.tag.strip() + '_' + str(level)
+        if key not in dic:
+            dic[key] = []
+        if child.attrib:
+            if key not in vals:
+                vals[key] = [child.attrib]
+            else:
+                vals[key].append(child.attrib)
+
+        if child.text and child.text.strip():
+            if key not in vals:
+                vals[key] = [child.text]
+            else:
+                vals[key].append(child.text)
+        if child:
+            xml2dict(dic, child, level + 1)
+
+    for k in vals:
+        if len(vals.keys()) == 1:
+            for val in vals[k]:
+                dic[k].append(val)
+        else:
+            val = vals[k] if len(vals[k]) > 1 else vals[k][0]
+            dic[k].append(val)
+
+def xml2csv_update(input_file, outputfile=None):
+    """Convert xml to csv.
+    """
+
+    tree = ET.parse(input_file)
+    root = tree.getroot()
+    dic = {}
+    xml2dict(dic, root, 0)
+    df = pd.DataFrame.from_dict(dic)
+    return df.to_csv(outputfile)
