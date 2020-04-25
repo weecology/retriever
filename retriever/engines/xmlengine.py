@@ -134,8 +134,5 @@ class engine(Engine):
 
 def format_single_row(keys, line_data):
     """Create an xml string from the keys and line_data values."""
-    row_values = [
-        f'    <{key}>{value}</{key}>\n'
-        for key, value in zip(keys, line_data)
-    ]
+    row_values = [f'    <{key}>{value}</{key}>\n' for key, value in zip(keys, line_data)]
     return ''.join(row_values)

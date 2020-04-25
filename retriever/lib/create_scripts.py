@@ -414,4 +414,3 @@ def write_out_scripts(script_dict, path, out_path):
             output_path.close()
     except Exception as error:
         print(write_path + f" could not be created. {error.message}")
-

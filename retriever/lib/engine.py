@@ -673,8 +673,7 @@ class Engine():
                                       open_object)
             return file_names
         except zipfile.BadZipFile as e:
-            print(f"\n{file_name} can't be extracted, "
-                  f"may be corrupt \n{e}")
+            print(f"\n{file_name} can't be extracted, " f"may be corrupt \n{e}")
 
     def fetch_tables(self, dataset, table_names):  # pylint: disable=W0613,R0201
         """This can be overridden to return the tables of sqlite db
@@ -912,9 +911,7 @@ class Engine():
             self.cursor.execute(
                 sql_query.format(cols=cols, tab=table_name[0], limit=limit))
             row = self.cursor.fetchone()
-            column_names = [
-                f'{tuple_i[0]}' for tuple_i in self.cursor.description
-            ]
+            column_names = [f'{tuple_i[0]}' for tuple_i in self.cursor.description]
             csv_writer.writerow(column_names)
             while row is not None:
                 csv_writer.writerow(row)

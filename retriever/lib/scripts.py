@@ -94,8 +94,9 @@ def reload_scripts():
                     setattr(new_module.SCRIPT, "_name", script_name)
                     modules.append(new_module.SCRIPT)
                 except Exception as e:
-                    sys.stderr.write(f"Failed to load script: {script_name} ({search_path})\n"
-                                     f"Exception: {str(e)} \n")
+                    sys.stderr.write(
+                        f"Failed to load script: {script_name} ({search_path})\n"
+                        f"Exception: {str(e)} \n")
     if global_script_list:
         global_script_list.set_scripts(modules)
     return modules
@@ -195,8 +196,9 @@ def get_script(dataset):
         if not upstream_version or parse_version(local_version) >= parse_version(
                 upstream_version):
             return script
-        prompt = (f"A newer version of {dataset} is available. Would you like to download "
-                  f"it? (y/N): ")
+        prompt = (
+            f"A newer version of {dataset} is available. Would you like to download "
+            f"it? (y/N): ")
         should_download = input(prompt)
         while not (should_download.lower() in ["y", "n", ""]):
             print("Please enter either y or n.")
