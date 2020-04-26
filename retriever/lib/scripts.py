@@ -290,7 +290,10 @@ def get_script_citation(dataset=None):
     if scripts:
         citations = []
         for script in scripts:
-            citations.append(script.citation)
+            if isinstance(script.citation, list):
+                citations += script.citation
+            else:
+                citations.append(script.citation)
     return citations
 
 
