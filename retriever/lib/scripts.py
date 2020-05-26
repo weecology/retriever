@@ -322,10 +322,10 @@ def get_dataset_names_upstream(keywords=None, licenses=None, repo=REPOSITORY):
     else:
         search_url = search_base_url + "retriever-recipes"
     if licenses:
-        licenses = [l.lower() for l in licenses]
-        for l in licenses:
+        licenses = [i.lower() for i in licenses]
+        for i in licenses:
             try:
-                r = get_data_upstream(search_url.format(query=l))
+                r = get_data_upstream(search_url.format(query=i))
                 if not r:
                     return []
                 r = r.json()

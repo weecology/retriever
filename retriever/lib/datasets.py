@@ -18,7 +18,7 @@ def datasets(keywords=None, licenses=None):
 
     offline_scripts = set()
     if licenses:
-        licenses = [l.lower() for l in licenses]
+        licenses = [i.lower() for i in licenses]
     for script in script_list:
         if script.name:
             if licenses:

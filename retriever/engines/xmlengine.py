@@ -64,7 +64,7 @@ class engine(Engine):
                 file_contents[-1] = file_contents[-1].strip(',')
                 current_output_file = open_fw(file_name, encoding=self.encoding)
                 current_output_file.writelines(file_contents)
-                current_output_file.write(u'\n</root>')
+                current_output_file.write('\n</root>')
                 current_output_file.close()
             self.table_names = []
 
