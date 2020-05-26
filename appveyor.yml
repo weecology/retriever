@@ -68,4 +68,4 @@ test_script:
   - py.test -v -k "not test_download_archive and not test_postgres_spatial"
   - flake8 --ignore=E501,W503,E402,F401,F403,E722,F841,W504 retriever --max-line-length=90
   - yapf --recursive retriever/ --style=.style.yapf -d
-  - pylint -rn retriever/ -f colorized --rcfile=.pylintrc
+#  - pylint -rn retriever/ -f colorized --rcfile=.pylintrc

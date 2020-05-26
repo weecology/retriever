@@ -163,6 +163,30 @@ csv_latin1_encoding = {
     'expect_out': [u'a,b,c', str('1,2,4Löve'), u'4,5,6']
 }
 
+csv_latin1_encoding_no_delim = {
+    'name': 'csv_latin1_encoding_no_delim',
+    'raw_data': ['a,b,c',
+                 u'1,2,4Löve',
+                 '4,5,6'],
+    'script': {"name": "csv_latin1_encoding_no_delim",
+               "encoding": "latin-1",
+               "resources": [
+                   {"dialect": {"do_not_bulk_insert": "True"},
+                    "name": "csv_latin1_encoding_no_delim",
+                    "schema": {},
+                    "url": "http://example.com/csv_latin1_encoding_no_delim.csv"
+                    }
+               ],
+               "retriever": "True",
+               "retriever_minimum_version": "2.0.dev",
+               "version": "1.0.0",
+               "urls":
+                   {"csv_latin1_encoding_no_delim":
+                        "http://example.com/csv_latin1_encoding_no_delim.csv"
+                    }
+               },
+    'expect_out': [u'a,b,c', str('1,2,4Löve'), u'4,5,6']
+}
 
 autopk_csv = {
     'name': 'autopk_csv',
@@ -442,6 +466,7 @@ tests = [
     tab_delimiter,
     data_no_header,
     csv_latin1_encoding,
+    csv_latin1_encoding_no_delim,
     autopk_csv,
     crosstab,
     autopk_crosstab,
@@ -462,7 +487,7 @@ test_parameters = [(test, test['expect_out']) for test in tests]
 # it will raise an error.
 # pytest captures that error and fails.
 xml_test_parameters = [(test, test['expect_out'])
-                       for test in tests if test != csv_latin1_encoding]
+                       for test in tests if test not in [csv_latin1_encoding, csv_latin1_encoding_no_delim]]
 
 file_location = os.path.dirname(os.path.realpath(__file__))
 retriever_root_dir = os.path.abspath(os.path.join(file_location, os.pardir))
