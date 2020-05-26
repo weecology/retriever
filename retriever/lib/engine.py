@@ -860,10 +860,7 @@ class Engine():
 
     def set_table_delimiter(self, file_path):
         """Get the delimiter from the data file and set it."""
-        if os.name == "nt":
-            dataset_file = open_fr(file_path)
-        else:
-            dataset_file = open_fr(file_path, encoding=self.encoding)
+        dataset_file = open_fr(file_path, encoding=self.encoding)
         self.auto_get_delimiter(dataset_file.readline())
         dataset_file.close()
 
