@@ -1,1 +1,3 @@
 include CITATION
+include LICENSE
+include requirements.txt
