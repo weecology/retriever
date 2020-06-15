@@ -9,6 +9,9 @@ import platform
 import shutil
 import subprocess
 import warnings
+import pandas as pd
+from sqlite3 import Error
+import sqlite3 as sql
 
 from hashlib import md5
 from io import StringIO as NewFile
@@ -130,6 +133,23 @@ def json2csv(input_file, output_file=None, header_values=None, encoding=ENCODING
     file_out.close()
     subprocess.call(['rm', '-r', input_file])
     return output_file
+
+
+def sqlite2csv(database):
+    """Convert sqlite database file to CSV.
+    
+    Function is used for only testing and can handle the file of the size.
+    """
+    conn = sql.connect(database)
+    cursorObj = conn.cursor()
+    cursorObj.execute('SELECT name from sqlite_master where type= "table"')
+    list_table = cursorObj.fetchall()
+    for table_name in list_table:
+        table_name = table_name[0]
+        table = pd.read_sql_query("SELECT * from %s" % table_name, conn)
+        table.to_csv(table_name + '.csv', index_label='index')
+    cursorObj.close()
+    conn.close()
 
 
 def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
