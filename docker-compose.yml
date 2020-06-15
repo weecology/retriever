@@ -11,7 +11,7 @@ services:
       MYSQL_DATABASE: testdb_retriever
 
   pgdb_retriever:
-    image: kartoza/postgis:11.0-2.5
+    image: kartoza/postgis:latest
     volumes:
       - ./cli_tools/postgis-data:/var/lib/postgresql
       - ./cli_tools/:/backups
