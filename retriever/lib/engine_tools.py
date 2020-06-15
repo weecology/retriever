@@ -17,6 +17,8 @@ from retriever.lib.defaults import HOME_DIR, ENCODING
 import xml.etree.ElementTree as ET
 import os
 import csv
+import xlrd
+import pandas as pd
 
 warnings.filterwarnings("ignore")
 from retriever.lib.tools import open_fr, open_csvw, open_fw
@@ -160,6 +162,25 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
     file_output.close()
     subprocess.call(['rm', '-r', input_file])
     return outputfile
+
+
+def xlsxcsv(book):
+    workbook = xlrd.open_workbook(book)
+    dire = book.rstrip(".xlsx")
+    if not os.path.exists(dire):
+        os.makedirs(dire)
+    else:
+        pass
+    os.chdir(dire)
+    res = len(workbook.sheet_names())
+    for sheet in range(0, res):
+        worksheet = workbook.sheet_by_index(sheet)
+        df = pd.DataFrame(columns=list(worksheet.row_values(0)))
+        for index in range(worksheet.nrows):
+            df.loc[len(df)] = worksheet.row_values(1)
+        table_name = workbook.sheet_names()
+        df.to_csv(table_name[sheet] + '.csv', index_label='index')
+    os.chdir("..")
 
 
 def getmd5(data, data_type='lines', encoding='utf-8'):
