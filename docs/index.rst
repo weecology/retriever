@@ -12,6 +12,7 @@ Contents:
    :maxdepth: 2
 
    introduction
+   quickstart
    rdataretriever.rst
    pyretriever.rst
    datasets_list.rst
