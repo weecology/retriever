@@ -97,8 +97,7 @@ class Engine():
             if not real_line_length:
                 real_line_length = self.get_ct_line_length(gen_from_source(data_source))
 
-            real_lines = self.get_ct_data(
-            	gen_from_source(data_source))
+            real_lines = self.get_ct_data(gen_from_source(data_source))
         else:
             real_lines = gen_from_source(data_source)
             if not real_line_length:
