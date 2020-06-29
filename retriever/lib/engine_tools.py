@@ -15,6 +15,7 @@ from io import StringIO as NewFile
 from retriever.lib.defaults import HOME_DIR, ENCODING
 
 import xml.etree.ElementTree as ET
+import geopandas
 import os
 import csv
 
@@ -161,6 +162,15 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
     subprocess.call(['rm', '-r', input_file])
     return outputfile
 
+def geojson2csv(input_file):
+    """Convert Geojson file to csv.
+
+    Function is used for testing only.
+    """
+    file = open(input_file)
+    input_file = input_file.rstrip(".geojson")
+    df = geopandas.read_file(file)
+    df.to_csv(input_file + '.csv', index_label='index')
 
 def getmd5(data, data_type='lines', encoding='utf-8'):
     """Get MD5 of a data source."""
