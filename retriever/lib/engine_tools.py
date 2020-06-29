@@ -17,6 +17,8 @@ from retriever.lib.defaults import HOME_DIR, ENCODING
 import xml.etree.ElementTree as ET
 import os
 import csv
+import h5py
+import numpy as np
 
 warnings.filterwarnings("ignore")
 from retriever.lib.tools import open_fr, open_csvw, open_fw
@@ -160,6 +162,19 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
     file_output.close()
     subprocess.call(['rm', '-r', input_file])
     return outputfile
+
+
+def hdfcsv(filename, output=None):
+    """Convert HDF5 file to csv files.
+
+    Function is used for testing only
+    """
+    f = h5py.File(filename, 'r')
+    for group_key in f.keys():
+        data_hdf = list(f[group_key])
+        for data in data_hdf:
+            df = np.atleast_1d(f[group_key].get(data))
+            np.savetxt(data + ".csv", df, fmt='%s', delimiter=",")
 
 
 def getmd5(data, data_type='lines', encoding='utf-8'):
