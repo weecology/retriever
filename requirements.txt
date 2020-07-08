@@ -15,3 +15,4 @@ setuptools
 tables
 h5py
 Pillow
+datapackage

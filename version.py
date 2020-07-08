@@ -5,6 +5,7 @@ import os
 
 from retriever.lib.defaults import VERSION
 from retriever.lib.scripts import get_retriever_script_versions
+from retriever.lib.scripts import get_data_upstream, reload_scripts, download_frictionless_packages
 
 
 def write_version_file(scripts):
@@ -19,6 +20,7 @@ def write_version_file(scripts):
 
 def update_version_file():
     """Update version.txt."""
+    download_frictionless_packages()
     scripts = get_retriever_script_versions()
     write_version_file(scripts)
     print("Version.txt updated.")

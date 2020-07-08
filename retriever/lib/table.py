@@ -33,6 +33,7 @@ class TabularDataset(Dataset):
                  missingValues=None,
                  cleaned_columns=False,
                  number_of_records=None,
+                 format=None,
                  **kwargs):
 
         self.name = name
@@ -45,6 +46,7 @@ class TabularDataset(Dataset):
         self.fixed_width = fixed_width
         self.cleanup = cleanup
         self.record_id = record_id
+        self.format = format
         self.columns = columns
         self.replace_columns = replace_columns
         self.missingValues = missingValues
@@ -328,4 +330,10 @@ myTables = {
     "vector": VectorDataset,
     "raster": RasterDataset,
     "tabular": TabularDataset,
+    "json": TabularDataset,
+    "xml": TabularDataset,
+    "geojson": TabularDataset,
+    "csv": TabularDataset,
+    "sqlite": TabularDataset,
+    "xls_sheets": TabularDataset,
 }

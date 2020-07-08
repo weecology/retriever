@@ -25,7 +25,7 @@ def _install(args, use_cache, debug):
                                    engine,
                                    force=args.get('force', False))
         return engine
-    script_list = SCRIPT_LIST()
+    script_list = SCRIPT_LIST(args['dataset'])
     if not (script_list or os.listdir(SCRIPT_WRITE_PATH)):
         check_for_updates()
         script_list = SCRIPT_LIST()

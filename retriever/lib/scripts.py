@@ -5,6 +5,7 @@ import os
 import re
 import sys
 import json
+import yaml
 import requests
 import difflib
 from os.path import join, exists
@@ -18,7 +19,7 @@ from retriever.lib.defaults import (REPOSITORY, RETRIEVER_REPOSITORY, RETRIEVER_
                                     RETRIEVER_DATASETS)
 from retriever.lib.load_json import read_json
 from retriever.lib.provenance_tools import get_script_provenance
-from retriever.lib.f_datapackage import get_dps, get_module
+from retriever.lib.frictionless_package import (get_dps, get_module)
 
 global_script_list = None
 
@@ -37,9 +38,31 @@ def check_retriever_minimum_version(module):
     return True
 
 
+def download_frictionless_packages(target_dir):
+    if os.path.isfile("scripts/datapackages.yml"):
+        with open("scripts/datapackages.yml", 'r') as dp_file:
+            dp_dict = yaml.safe_load(dp_file)
+            for key, value in dp_dict.items():
+                # if not key == "gdp-uk":
+                #     continue # for tests rmovedddddddd
+                # print(key)
+                file_name = key.replace("-", "_")+ ".json"
+                # script_path = os.path.join("/Users/henrykironde/.retriever/scripts",file_name)
+
+                # # For retriever recipes
+                script_path = os.path.join(target_dir, file_name)
+                script_path = os.path.normpath(script_path)
+                os.path.normpath(script_path)
+                r = get_data_upstream(value)
+                with open(script_path, 'wb') as f:
+                    for chunk in r.iter_content(chunk_size=1024):
+                        f.write(chunk)
+        reload_scripts()
+
+
 def reload_scripts():
-    """Load scripts from scripts directory and also frictionless datapackage listed in datapackage.yml 
-       and return list of modules.
+    """Load scripts from the scripts directory and the list of frictionless
+    data packages in datapackage.yml and return a list of associated modules.
     """
     modules = []
     loaded_files = []
@@ -101,27 +124,30 @@ def reload_scripts():
                                      "Exception: {} \n".format(script_name, search_path,
                                                                str(e)))
 
-    """ After loading all scripts from various search path, trys to add scripts of frictionless datapackage
-    """
+    # After loading all scripts from various search path,
+    # Add frictionless datapackages
     dp_dict = get_dps()
+
     for dp in dp_dict:
         try:
             if dp not in loaded_scripts:
-                modules.append(get_module(dp,dp_dict[dp]))
+                modules.append(get_module(dp, dp_dict[dp]))
                 loaded_scripts.append(dp)
         except Exception as e:
-            sys.stderr.write("failed to load Frictionless Datapackage : {} ({})\n"
-                             "Exception: {}\n".format(dp,dp_dict[dp],str(e)))
-        
+            sys.stderr.write("Failed to load Frictionless Datapackage : {} ({})\n"
+                             "Exception: {}\n".format(dp, dp_dict[dp], str(e)))
+
     if global_script_list:
         global_script_list.set_scripts(modules)
     return modules
 
 
-def SCRIPT_LIST():
+def SCRIPT_LIST(dataset_name=None):
     """Return Loaded scripts.
 
     Ensure that only one instance of SCRIPTS is created."""
+    if dataset_name:
+        download_frictionless_packages(SCRIPT_WRITE_PATH)
     if global_script_list:
         return global_script_list.get_scripts()
     return reload_scripts()
@@ -298,7 +324,7 @@ def get_script_version_upstream(dataset, repo=REPOSITORY):
 def get_script_citation(dataset=None):
     """Get the citation list for a script"""
     if dataset is not None:
-        dataset = dataset.strip()
+        dataset = dataset.strip().lower()
     if not dataset:
         return [VERSION]
     citations = []

@@ -25,7 +25,13 @@ def check_for_updates(repo=REPOSITORY):
     """Check for updates to datasets.
 
     This updates the HOME_DIR scripts directory with the latest script versions
+    Downloads the datapackages.yml file from the recipe repo
     """
+    try:
+        pack_path = os.path.normpath(os.path.join(SCRIPT_WRITE_PATH, "datapackages.yml"))
+        _download_from_repository("/scripts/datapackages.yml", pack_path, repo)
+    except:
+        pass
     try:
         # open version.txt for current release branch and get script versions
         version_file = requests.get(repo + "version.txt").text
@@ -75,7 +81,3 @@ def check_for_updates(repo=REPOSITORY):
                     print(e)
     except:
         raise
-
-    if repo == RETRIEVER_REPOSITORY:
-        return
-    check_for_updates(RETRIEVER_REPOSITORY)

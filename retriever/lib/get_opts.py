@@ -24,13 +24,12 @@ for module in module_list:
         # Append string to list of licenses_list
         if module.licenses:
             for dict_items in module.licenses:
-                if dict_items['name']:
+                if hasattr(dict_items, "name") and dict_items['name']:
                     licenses_list.append(dict_items['name'])
 
 script_list.extend(get_dataset_names_upstream(repo=RETRIEVER_REPOSITORY))
 script_list.extend(get_dataset_names_upstream())
-script_list = sorted(set(script_list))
-
+script_list = [x.lower() for x in sorted(set(script_list))]
 # set of all possible licenses and keywords
 licenses_options = set(licenses_list)
 keywords_options = set(keywords_list)

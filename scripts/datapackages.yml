@@ -1,2 +1,24 @@
-eu-emission-trading-system: https://datahub.io/core/eu-emissions-trading-system/r/eu-emissions-trading-system_zip.zip
-global_co2_levels : https://datahub.io/core/co2-ppm/r/co2-ppm_zip.zip
+eu-emissions-trading-system: https://pkgstore.datahub.io/core/eu-emissions-trading-system/13/datapackage.json
+co2-ppm : https://datahub.io/core/co2-ppm/datapackage.json
+population : https://pkgstore.datahub.io/core/population/11/datapackage.json
+population-city : https://pkgstore.datahub.io/core/population-city/7/datapackage.json
+population-global-historical: https://pkgstore.datahub.io/core/population-global-historical/9/datapackage.json
+
+population-growth-estimates-and-projections : https://pkgstore.datahub.io/core/population-growth-estimates-and-projections/12/datapackage.json
+usa-education-budget-analysis : https://datahub.io/core/usa-education-budget-analysis/datapackage.json
+cirp-survey-of-freshmen : https://pkgstore.datahub.io/core/cirp-survey-of-freshmen/3/datapackage.json
+#gdp-uk : https://datahub.io/core/gdp-uk/datapackage.json
+bond-yields-uk-10y : https://pkgstore.datahub.io/core/bond-yields-uk-10y/64/datapackage.json
+house-prices-uk : https://pkgstore.datahub.io/core/house-prices-uk/10/datapackage.json
+interest-rates-gb : https://pkgstore.datahub.io/core/interest-rates-gb/7/datapackage.json
+gold-prices : https://pkgstore.datahub.io/core/gold-prices/135/datapackage.json
+natural-gas : https://pkgstore.datahub.io/core/natural-gas/680/datapackage.json
+oil-prices : https://pkgstore.datahub.io/core/oil-prices/813/datapackage.json
+ppp : https://pkgstore.datahub.io/core/ppp/8/datapackage.json
+house-prices-global : https://pkgstore.datahub.io/core/house-prices-global/7/datapackage.json
+gini-index: https://pkgstore.datahub.io/core/gini-index/13/datapackage.json
+expenditure-on-research-and-development : https://pkgstore.datahub.io/core/expenditure-on-research-and-development/6/datapackage.json
+euribor : https://pkgstore.datahub.io/core/euribor/8/datapackage.json
+corruption-perceptions-index: https://pkgstore.datahub.io/core/corruption-perceptions-index/8/datapackage.json
+imf-weo : https://pkgstore.datahub.io/core/imf-weo/8/datapackage.json
+exchange-rates : https://pkgstore.datahub.io/core/exchange-rates/6/datapackage.json
