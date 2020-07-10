@@ -18,7 +18,7 @@ from setuptools import archive_util
 from tqdm import tqdm
 
 from retriever.lib.cleanup import no_cleanup
-from retriever.lib.defaults import DATA_DIR, DATA_SEARCH_PATHS, DATA_WRITE_PATH, ENCODING
+from retriever.lib.defaults import DATA_DIR, DATA_SEARCH_PATHS, DATA_WRITE_PATH, ENCODING, KAGGLE_TOKEN_PATH
 from retriever.lib.tools import (
     open_fr,
     open_fw,
@@ -504,13 +504,68 @@ class Engine():
             progbar.close()
         return True
 
+    def download_from_kaggle(
+            self,
+            data_source,
+            dataset_name,
+            archive_dir,
+            archive_full_path,
+    ):
+        """Download files from Kaggle into the raw data directory"""
+        kaggle_token = os.path.isfile(KAGGLE_TOKEN_PATH)
+        kaggle_username = os.getenv('KAGGLE_USERNAME', "").strip()
+        kaggle_key = os.getenv('KAGGLE_KEY', "").strip()
+
+        if kaggle_token or (kaggle_username and kaggle_key):
+            from kaggle.rest import ApiException
+            from kaggle.api.kaggle_api_extended import KaggleApi
+        else:
+            print(
+                f"Could not find kaggle.json. Make sure it's located at {KAGGLE_TOKEN_PATH}. Or available in the environment variables. For more information checkout https://github.com/Kaggle/kaggle-api#api-credentials"
+            )
+            return
+
+        api = KaggleApi()
+        api.authenticate()
+
+        if data_source == "dataset":
+            archive_full_path = archive_full_path + ".zip"
+            try:
+                api.dataset_download_files(dataset=dataset_name,
+                                           path=archive_dir,
+                                           quiet=False,
+                                           force=True)
+                file_names = self.extract_zip(archive_full_path, archive_dir)
+            except ApiException:
+                print(
+                    f"The dataset '{dataset_name}' isn't currently available in the Retriever.\nRun 'retriever ls' to see a list of currently available datasets."
+                )
+                return []
+
+        else:
+            archive_full_path = archive_full_path.replace("kaggle:competition:",
+                                                          "") + ".zip"
+            try:
+                api.competition_download_files(competition=dataset_name,
+                                               path=archive_dir,
+                                               quiet=False,
+                                               force=True)
+                file_names = self.extract_zip(archive_full_path, archive_dir)
+            except ApiException:
+                print(
+                    f"The dataset '{dataset_name}' isn't currently available in the Retriever.\nRun 'retriever ls' to see a list of currently available datasets."
+                )
+                return []
+
+        return file_names
+
     def download_files_from_archive(
-        self,
-        url,
-        file_names=None,
-        archive_type="zip",
-        keep_in_dir=False,
-        archive_name=None,
+            self,
+            url,
+            file_names=None,
+            archive_type="zip",
+            keep_in_dir=False,
+            archive_name=None,
     ):
         """Download files from an archive into the raw data directory."""
 
@@ -521,6 +576,7 @@ class Engine():
 
         archive_full_path = self.format_filename(archive_name)
         archive_dir = self.format_data_dir()
+
         if keep_in_dir:
             archive_base = os.path.splitext(os.path.basename(archive_name))[0]
             archive_dir = (self.data_path if self.data_path else os.path.join(
@@ -529,33 +585,39 @@ class Engine():
             if not os.path.exists(archive_dir):
                 os.makedirs(archive_dir)
 
-        if not file_names:
-            self.download_file(url, archive_name)
-            if archive_type in ('tar', 'tar.gz'):
-                file_names = self.extract_tar(archive_full_path, archive_dir,
-                                              archive_type)
-            elif archive_type == 'zip':
-                file_names = self.extract_zip(archive_full_path, archive_dir)
-            elif archive_type == 'gz':
-                file_names = self.extract_gz(archive_full_path, archive_dir)
-            return file_names
-
-        archive_downloaded = bool(self.data_path)
-        for file_name in file_names:
-            archive_full_path = self.format_filename(archive_name)
-            if not self.find_file(os.path.join(archive_dir, file_name)):
-                # if no local copy, download the data
-                self.create_raw_data_dir()
-                if not archive_downloaded:
-                    self.download_file(url, archive_name)
-                    archive_downloaded = True
-                if archive_type == 'zip':
-                    self.extract_zip(archive_full_path, archive_dir, file_name)
+        if hasattr(self.script.__dict__, "kaggle"):
+            file_names = self.download_from_kaggle(data_source=self.script.data_source,
+                                                   dataset_name=url,
+                                                   archive_dir=archive_dir,
+                                                   archive_full_path=archive_full_path)
+        else:
+            if not file_names:
+                self.download_file(url, archive_name)
+                if archive_type in ('tar', 'tar.gz'):
+                    file_names = self.extract_tar(archive_full_path, archive_dir,
+                                                  archive_type)
+                elif archive_type == 'zip':
+                    file_names = self.extract_zip(archive_full_path, archive_dir)
                 elif archive_type == 'gz':
-                    self.extract_gz(archive_full_path, archive_dir, file_name)
-                elif archive_type in ('tar', 'tar.gz'):
-                    self.extract_tar(archive_full_path, archive_dir, archive_type,
-                                     file_name)
+                    file_names = self.extract_gz(archive_full_path, archive_dir)
+                else:
+                    archive_downloaded = bool(self.data_path)
+                    for file_name in file_names:
+                        archive_full_path = self.format_filename(archive_name)
+                        if not self.find_file(os.path.join(archive_dir, file_name)):
+                            # if no local copy, download the data
+                            self.create_raw_data_dir()
+                            if not archive_downloaded:
+                                self.download_file(url, archive_name)
+                                archive_downloaded = True
+                            if archive_type == 'zip':
+                                self.extract_zip(archive_full_path, archive_dir,
+                                                 file_name)
+                            elif archive_type == 'gz':
+                                self.extract_gz(archive_full_path, archive_dir, file_name)
+                            elif archive_type in ('tar', 'tar.gz'):
+                                self.extract_tar(archive_full_path, archive_dir,
+                                                 archive_type, file_name)
         return file_names
 
     def drop_statement(self, object_type, object_name):
@@ -582,12 +644,12 @@ class Engine():
             excel_csv(src_path, path_to_csv, excel_info, encoding)
 
     def extract_gz(
-        self,
-        archive_path,
-        archivedir_write_path,
-        file_name=None,
-        open_archive_file=None,
-        archive=None,
+            self,
+            archive_path,
+            archivedir_write_path,
+            file_name=None,
+            open_archive_file=None,
+            archive=None,
     ):
         """Extract gz files.
 
@@ -928,12 +990,12 @@ class Engine():
         self.warnings.append(new_warning)
 
     def write_fileobject(
-        self,
-        archivedir_write_path,
-        file_name,
-        file_obj=None,
-        archive=None,
-        open_object=False,
+            self,
+            archivedir_write_path,
+            file_name,
+            file_obj=None,
+            archive=None,
+            open_object=False,
     ):
         """Write a file object from a archive object to a given path
 

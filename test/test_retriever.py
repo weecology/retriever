@@ -2,6 +2,7 @@
 """Tests for the Data Retriever"""
 import os
 import subprocess
+import pytest
 import random
 
 import retriever as rt
@@ -17,7 +18,7 @@ from retriever.lib.engine_tools import sort_csv
 from retriever.lib.engine_tools import create_file
 from retriever.lib.engine_tools import file_2list
 from retriever.lib.datapackage import clean_input, is_empty
-from retriever.lib.defaults import HOME_DIR, RETRIEVER_DATASETS, RETRIEVER_REPOSITORY
+from retriever.lib.defaults import HOME_DIR, RETRIEVER_DATASETS, RETRIEVER_REPOSITORY, KAGGLE_TOKEN_PATH
 
 # Create simple engine fixture
 test_engine = Engine()
@@ -51,6 +52,14 @@ zip_url = os.path.normpath(achive_url.format(file_path='sample_zip.zip'))
 tar_url = os.path.normpath(achive_url.format(file_path='sample_tar.tar'))
 tar_gz_url = os.path.normpath(achive_url.format(file_path='sample_tar.tar.gz'))
 gz_url = os.path.normpath(achive_url.format(file_path='sample.gz'))
+
+kaggle_datasets = [
+    # test_name, data_source, dataset_identifier, dataset_name, repath, expected
+    ("kaggle_competition", "competition", "titanic", "titanic",
+     ["gender_submission.csv", "test.csv", "train.csv"]),
+    ("kaggle_unknown", "dataset", "uciml/iris", "iris", ['Iris.csv', 'database.sqlite']),
+    ("kaggle_dataset", "competition", "non_existent_dataset", "non_existent_dataset", []),
+]
 
 
 def setup_module():
@@ -214,6 +223,26 @@ def test_drop_statement():
     """Test the creation of drop statements."""
     assert test_engine.drop_statement(
         'TABLE', 'tablename') == "DROP TABLE IF EXISTS tablename"
+
+
+@pytest.mark.parametrize("test_name, data_source, dataset_identifier,  repath, expected", kaggle_datasets)
+def test_download_kaggle_dataset(test_name, data_source, dataset_identifier, repath, expected):
+    """Test the downloading of dataset from kaggle."""
+    setup_functions()
+    files = test_engine.download_from_kaggle(
+        data_source=data_source,
+        dataset_name=dataset_identifier,
+        archive_dir=raw_dir_files,
+        archive_full_path=os.path.join(raw_dir_files, repath)
+    )
+
+    kaggle_token = os.path.isfile(KAGGLE_TOKEN_PATH)
+    kaggle_username = os.getenv('KAGGLE_USERNAME', "").strip()
+    kaggle_key = os.getenv('KAGGLE_KEY', "").strip()
+    if kaggle_token or (kaggle_username and kaggle_key):
+        assert files == expected
+    else:
+        assert files is None
 
 
 def test_download_archive_gz_known():
@@ -458,7 +487,7 @@ def test_format_data_dir():
     test_engine.script.name = "TestName"
     r_path = '.retriever/raw_data/TestName'
     assert os.path.normpath(test_engine.format_data_dir()) == \
-           os.path.normpath(os.path.join(HOMEDIR, r_path))
+        os.path.normpath(os.path.join(HOMEDIR, r_path))
 
 
 def test_format_filename():
@@ -466,7 +495,7 @@ def test_format_filename():
     test_engine.script.name = "TestName"
     r_path = '.retriever/raw_data/TestName/testfile.csv'
     assert os.path.normpath(test_engine.format_filename('testfile.csv')) == \
-           os.path.normpath(os.path.join(HOMEDIR, r_path))
+        os.path.normpath(os.path.join(HOMEDIR, r_path))
 
 
 def test_format_insert_value_int():
@@ -496,6 +525,7 @@ def test_get_script_citation():
     cite = rt.get_script_citation("iris")
     expected_cite = "R. A. Fisher. 1936."
     assert expected_cite.lower() in cite[0].lower()
+
 
 def test_getmd5_lines():
     """Test md5 sum calculation given a line."""
@@ -668,7 +698,7 @@ def test_clean_input_not_empty_list(monkeypatch):
 
     monkeypatch.setattr('retriever.lib.datapackage.input', mock_input)
     assert clean_input("", ignore_empty=True, split_char=',', dtype=None) == \
-           ["1", "2", "3"]
+        ["1", "2", "3"]
 
 
 def test_clean_input_bool(monkeypatch):
@@ -703,14 +733,17 @@ def test_reset_retriever(tmpdir):
     workdir = tmpdir.mkdtemp()
     workdir.chdir()
     offline_datasets = rt.dataset_names()['offline']
-    offline_datasets = [dataset for dataset in offline_datasets if not dataset.startswith('test-')]
+    offline_datasets = [
+        dataset for dataset in offline_datasets if not dataset.startswith('test-')]
     if not offline_datasets:
         return
     dataset = random.choice(offline_datasets)
     rt.reset_retriever(dataset)
     rt.reload_scripts()
-    assert os.path.exists(os.path.join(HOME_DIR, dataset.replace("-", "_") + ".json")) == False
-    assert os.path.exists(os.path.join(HOME_DIR, dataset.replace("-", "_") + ".py")) == False
+    assert os.path.exists(os.path.join(
+        HOME_DIR, dataset.replace("-", "_") + ".json")) == False
+    assert os.path.exists(os.path.join(
+        HOME_DIR, dataset.replace("-", "_") + ".py")) == False
     if dataset in RETRIEVER_DATASETS:
         rt.get_script_upstream(dataset, repo=RETRIEVER_REPOSITORY)
     else:
