@@ -4,12 +4,6 @@ warnings_are_errors: false
 services:
   - docker
 
-# database setup
-before_install:
-  # Make dir corresponding to the version of Postgres used
-  - mkdir -p cli_tools/postgis-data/11/main
-  - chmod +x cli_tools/postgis-data/11/main
-
 # command to run tests using py.test
 script:
   - docker-compose run --service-ports python_retriever pytest -v --cov=retriever
