@@ -176,6 +176,31 @@ class BasicTextTemplate(Script):
             self.engine.excel_to_csv(src_path, path_to_csv, table_obj.xls_sheets,
                                      self.encoding)
 
+        if hasattr(table_obj, "hdf5_data"):
+            path_to_csv = self.engine.format_filename(table_obj.path)
+            self.engine.download_file(url, table_obj)
+            self.engine.hdfcsv(path_to_csv)
+
+        if hasattr(table_obj, "json_data"):
+            path_to_csv = self.engine.format_filename(table_obj.path)
+            self.engine.download_file(url, table_obj)
+            self.engine.json2csv(path_to_csv, self.encoding)
+
+        if hasattr(table_obj, "xml_data"):
+            path_to_csv = self.engine.format_filename(table_obj.path)
+            self.engine.download_file(url, table_obj)
+            self.engine.xml2csv_update(path_to_csv)
+
+        if hasattr(table_obj, "geojson_data"):
+            path_to_csv = self.engine.format_filename(table_obj.path)
+            self.engine.download_file(url, table_obj)
+            self.engine.geojson2csv(path_to_csv)
+
+        if hasattr(table_obj, "sqlite_data"):
+            path_to_csv = self.engine.format_filename(table_obj.path)
+            self.engine.download_file(url, table_obj)
+            self.engine.sqlite2csv(path_to_csv)
+
         if hasattr(table_obj, "path"):
             self.engine.auto_create_table(table_obj, url=url, filename=table_obj.path)
         else:
