@@ -183,16 +183,11 @@ Start
 ^^^^^
 
 1. **Run the tests**. Seriously, do it now.
-2. In the `master` branch update the version number in ``setup.py`` (if it
-   hasn’t already been bumped)
+2. Update ``CHANGES.md`` with major updates since last release
 3. Run ``python version.py`` (this will update ``version.txt``)
-4. Update the version number in ``retriever_installer.iss`` (if it
-   hasn’t already been bumped)
-5. Update ``CHANGES.md`` with major updates since last release
-6. Commit changes
-7. Add a tag with appropriate version number, e.g.
-   ,\ ``git tag -a v1.8.0 -m "Version 1.8.0"``
-8. Push the release commit and the tag
+4. In the `master` branch update the version number and create a tag, run `bumpversion release`
+5. Push the release commit and the tag
+6. After the release, update the version to dev, run `bumpversion patch`
 
    ::
 
