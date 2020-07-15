@@ -1,4 +1,7 @@
 version: '3'
+volumes:
+  dbbackups:
+  postgis-data:
 
 services:
   mysqldb_retriever:
@@ -13,8 +16,8 @@ services:
   pgdb_retriever:
     image: kartoza/postgis:latest
     volumes:
-      - ./cli_tools/postgis-data:/var/lib/postgresql
-      - ./cli_tools/:/backups
+      - postgis-data:/var/lib/postgresql
+      - dbbackups:/backups
     container_name: pgdb_ret_container
     environment:
       # To create multiple database you can add coma separated databases eg gis,data
@@ -22,6 +25,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASS=Password12!
       - ALLOW_IP_RANGE=0.0.0.0/0
+      - POSTGRES_MULTIPLE_EXTENSIONS=postgis,hstore,postgis_topology,postgis_raster,pgrouting
     restart: on-failure
 
   python_retriever:
