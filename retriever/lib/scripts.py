@@ -454,7 +454,7 @@ def get_retriever_script_versions():
     search_path = "scripts"
     scripts = []
     if exists(search_path):
-        for script in RETRIEVER_SCRIPTS:
+        for script in os.listdir(search_path):
             if script.endswith(".json"):
                 script_version = read_json_version(join(search_path, script))
                 scripts.append(','.join([script, str(script_version)]))
