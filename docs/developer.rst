@@ -188,40 +188,11 @@ Start
 4. In the `master` branch update the version number and create a tag, run `bumpversion release`
 5. Push the release commit and the tag
 6. After the release, update the version to dev, run `bumpversion patch`
-
+    `
    ::
 
        git push upstream master
        git push upstream --tags
-
-Linux
-^^^^^
-
-**Building the DEB package does not work using conda. If conda is your main**
-**Python change `python` in `build.sh` to `/usr/bin/python` or otherwise**
-**Adjust the path to use the system Python.**
-
-1. **Run the tests** (unless you just ran them on the same machine)
-2. Checkout master
-3. Run ``build.sh``
-
-Windows
-^^^^^^^
-
-1. **Run the tests**. This helps makes sure that the build environment
-   is properly set up.
-2. Checkout master
-3. Run ``sh build_win``
-
-Mac
-^^^
-
-1. **Run the tests**. This helps makes sure that the build environment
-   is properly set up.
-2. Checkout master
-3. Run ``build_mac``
-4. Install the retriever for verification. Reference
-   http://www.data-retriever.org/download.html
 
 Pypi
 ^^^^

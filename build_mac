@@ -1,7 +1,0 @@
-export DYLD_LIBRARY_PATH=/usr/local/mysql/lib/
-sudo rm -rf mac
-sudo mkdir mac
-sudo python setup.py install
-sudo pyinstaller pyinstaller.spec --log-level ERROR
-sudo mv dist/retriever.app mac/retriever.app
-sudo rm -rf build dist
