@@ -1,3 +1,24 @@
+# v3.0.0
+
+### Major changes
+
+Add provenance support to the Data Retriever
+Use utf-8 as default
+Move scripts from Retriever to retriever-recipes repository
+Adapt google code style and add linters, use yapf. Test linters
+Extend CSV field size limit
+Improve output when connection is not made
+Add __version__ to the interface
+Prompt user if a newer version of script is available
+Add all the recipes datasets
+Add test for installation of committed dataset
+Add function to commit dataset
+
+### Minor changes
+
+Improve "argcomplete-command"
+Add NUMFOCUS logo in README
+
 # v2.4.0
 
 ### Minor changes
@@ -44,7 +65,7 @@ Add docs and examples for Postgis support
 Change testdb name to testdb_retriever
 Improve Pypi retriever description
 Update documentation for passwordless setup of Postgres on Windows
-Setting up infrastructure for  automating script creation
+Setting up infrastructure for automating script creation
 
 ### New datasets
 
@@ -56,7 +77,7 @@ Adding Acton Lake dataset `acton-lake`
 ### Dataset changes
 
 MammalSuperTree.py to `mammal_super_tree.py`
-lakecats_finaltables.json to  `lakecats_final_tables`
+lakecats_finaltables.json to `lakecats_final_tables`
 harvard_forests.json to `harvard_forest.json`
 macroalgal_communities to `macroalgal-communities`
 
