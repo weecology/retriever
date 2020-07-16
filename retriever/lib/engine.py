@@ -497,7 +497,7 @@ class Engine():
                 try:
                     urlretrieve(url, path, reporthook=reporthook(progbar))
                 except HTTPError as e:
-                    print(f"HTTPError: {e.code}")
+                    print("HTTPError :", e)
                     return None
 
             self.use_cache = True
