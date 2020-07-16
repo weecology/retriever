@@ -49,9 +49,7 @@ sudo pip install retriever
 Precompiled binary installers are also available for Windows, OS X, and
 Ubuntu/Debian on
 the [releases page](https://github.com/weecology/retriever/releases). These do
-not require a Python installation. Download the installer for your operating
-system and follow the instructions at on
-the [download page](http://www.data-retriever.org/download.html).
+not require a Python installation.
 
 
 Installing From Source
