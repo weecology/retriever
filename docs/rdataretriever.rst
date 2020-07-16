@@ -5,13 +5,13 @@ Using the Data Retriever from R
 rdataretriever_
 ===============
 
-The `Data Retriever`_ provides an R interface to the Data Retriever so
+The rdataretriever provides an R interface to the Data Retriever so
 that the ``retriever``'s data handling can easily be integrated into R workflows.
 
 Installation
 ============
 
-To use the R package rdataretriever_, you first need to `install the retriever <introduction.html#installing-binaries>`_.
+To use the R package rdataretriever_, you first need to install the `Data Retriever`_.
 
 The rdataretriever_ can then be installed using
 ``install.packages("rdataretriever")``
@@ -264,5 +264,5 @@ Examples
 To get citation information for the ``rdataretriever`` in R use ``citation(package = 'rdataretriever')``:
 
 
-.. _Data Retriever: http://data-retriever.org
+.. _Data Retriever: https://github.com/weecology/retriever
 .. _rdataretriever: https://github.com/ropensci/rdataretriever
