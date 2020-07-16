@@ -67,13 +67,14 @@ if modified_staged_scripts != "":
             subprocess.check_output("git add {}".format(file), shell=True)
             output = to_string(subprocess.check_output('cat {}'.format(file), shell=True))
             match = re.search(pattern, output)
-            script_current_version = parse_version(match.group(1))
-
-            if os.path.basename(file) in version_dict.keys():
-                if not script_current_version > get_script_version(file):
-                    versions_not_changed.append(file)
-                    versions_updated = False
-
+            if match:
+                script_current_version = parse_version(match.group(1))
+                if os.path.basename(file) in version_dict.keys():
+                    if not script_current_version > get_script_version(file):
+                        versions_not_changed.append(file)
+                        versions_updated = False
+            else:
+                ("Print version not detected in ", file)
     if not versions_updated:
         print("\nThese scripts have changed, update the version numbers before commit:")
         for items in versions_not_changed:
