@@ -197,7 +197,10 @@ Start
 Pypi
 ^^^^
 
-1. `sudo python setup.py sdist bdist_wheel upload`
+You will need to create an API key on PyPI and store it in ~/.pypirc to upload to PyPI.
+
+1. `sudo python setup.py sdist bdist_wheel`
+2. `sudo python -m twine upload -r pypi dist/*`
 
 Cleanup
 ^^^^^^^
