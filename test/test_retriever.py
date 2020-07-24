@@ -529,7 +529,7 @@ def test_getmd5_path():
 def test_json2csv(test_name, json_data, header_values, row_key, expected):
     """Test json2csv function.
 
-    Creates a json file and tests the md5 sum calculation.
+    Creates a json file.
     """
     json_file = create_file([json_data],
         'output.json')
