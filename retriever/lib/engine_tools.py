@@ -167,21 +167,16 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
 def xlsxcsv(book):
     workbook = xlrd.open_workbook(book)
     dire = book.rstrip(".xlsx")
-    if not os.path.exists(dire):
-        os.makedirs(dire)
-    else:
-        pass
+    os.makedirs(dire,exist_ok=True)
     os.chdir(dire)
     res = len(workbook.sheet_names())
-    for sheet in range(0, res):
+    for sheet in range(res):
         worksheet = workbook.sheet_by_index(sheet)
         df = pd.DataFrame(columns=list(worksheet.row_values(0)))
         for index in range(worksheet.nrows):
             df.loc[len(df)] = worksheet.row_values(1)
         table_name = workbook.sheet_names()
-        df.to_csv(table_name[sheet] + '.csv', index_label='index')
-    os.chdir("..")
-
+        df.to_csv(f"{table_name[sheet]}.csv", index_label='index')
 
 def getmd5(data, data_type='lines', encoding='utf-8'):
     """Get MD5 of a data source."""
