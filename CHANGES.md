@@ -2,123 +2,123 @@
 
 ### Major changes
 
-Add provenance support to the Data Retriever
-Use utf-8 as default
-Move scripts from Retriever to retriever-recipes repository
-Adapt google code style and add linters, use yapf. Test linters
-Extend CSV field size limit
-Improve output when connection is not made
-Add __version__ to the interface
-Prompt user if a newer version of script is available
-Add all the recipes datasets
-Add test for installation of committed dataset
-Add function to commit dataset
+- Add provenance support to the Data Retriever
+- Use utf-8 as default
+- Move scripts from Retriever to retriever-recipes repository
+- Adapt google code style and add linters, use yapf. Test linters
+- Extend CSV field size limit
+- Improve output when connection is not made
+- Add __version__ to the interface
+- Prompt user if a newer version of script is available
+- Add all the recipes datasets
+- Add test for installation of committed dataset
+- Add function to commit dataset
 
 ### Minor changes
 
-Improve "argcomplete-command"
-Add NUMFOCUS logo in README
+- Improve "argcomplete-command"
+- Add NUMFOCUS logo in README
 
 # v2.4.0
 
 ### Minor changes
 
-Update long description
-Remove Python 2 utilities
+- Update long description
+- Remove Python 2 utilities
 
 ### New datasets
 
-Catalogos-dados-brasil
-Transparencia-dados-abertos-brasil
-biotimesql
+- Catalogos-dados-brasil
+- Transparencia-dados-abertos-brasil
+- biotimesql
 
 ### Dataset changes
 
-Elton-traits and mt-st-helens-veg change encoding
+- Elton-traits and mt-st-helens-veg change encoding
 
 ### v2.3.1
 
 ### Minor changes
 
-Update PyPi description
+- Update PyPi description
 
 # v2.3.0
 
 ### Major changes
 
-Change Psycopg2 to psycopg2-binary
-Add Spatial data testing on Docker
-Add option for pretty json
-keep order of fetched tables and order of processing resources
-Add reset to specific dataset and script function
-Use tqdm 4.30.0
-Install data into custom director using data_dir option
-Download data into custom directory using sub_dir
+- Change Psycopg2 to psycopg2-binary
+- Add Spatial data testing on Docker
+- Add option for pretty json
+- keep order of fetched tables and order of processing resources
+- Add reset to specific dataset and script function
+- Use tqdm 4.30.0
+- Install data into custom director using data_dir option
+- Download data into custom directory using sub_dir
 
 ### Minor changes
 
-Add tests for reset script
-Add smaller samples of GIS data for testing
-Reactivate MySQL tests on Travis
-Allow custom arguments for psql
-Add docs and examples for Postgis support
-Change testdb name to testdb_retriever
-Improve Pypi retriever description
-Update documentation for passwordless setup of Postgres on Windows
-Setting up infrastructure for automating script creation
+- Add tests for reset script
+- Add smaller samples of GIS data for testing
+- Reactivate MySQL tests on Travis
+- Allow custom arguments for psql
+- Add docs and examples for Postgis support
+- Change testdb name to testdb_retriever
+- Improve Pypi retriever description
+- Update documentation for passwordless setup of Postgres on Windows
+- Setting up infrastructure for automating script creation
 
 ### New datasets
 
-USA eco legions, `ecoregions-us`
-LTREB `Prairie-forest` ecotone of eastern Kansas/Foster Lab dataset
-Sonoran Desert, `sonoran-desert`
-Adding Acton Lake dataset `acton-lake`
+- USA eco legions, `ecoregions-us`
+- LTREB `Prairie-forest` ecotone of eastern Kansas/Foster Lab dataset
+- Sonoran Desert, `sonoran-desert`
+- Adding Acton Lake dataset `acton-lake`
 
 ### Dataset changes
 
-MammalSuperTree.py to `mammal_super_tree.py`
-lakecats_finaltables.json to `lakecats_final_tables`
-harvard_forests.json to `harvard_forest.json`
-macroalgal_communities to `macroalgal-communities`
+- MammalSuperTree.py to `mammal_super_tree.py`
+- lakecats_finaltables.json to `lakecats_final_tables`
+- harvard_forests.json to `harvard_forest.json`
+- macroalgal_communities to `macroalgal-communities`
 
 # v2.2.0
 
 ## Major changes
 
-Use requests package to for handling downloads
-Add support for spatial datasets using postGIS and PostgreSQL
-Update ls to include more details about datasets
-Update license lookup for datasets
-Update keyword lookup for datasets
-Use tqdm for cleaner progress tracking
-Add `fetch` function that installs a dataset and returns it as a dictionary of dataframes
+- Use requests package to for handling downloads
+- Add support for spatial datasets using postGIS and PostgreSQL
+- Update ls to include more details about datasets
+- Update license lookup for datasets
+- Update keyword lookup for datasets
+- Use tqdm for cleaner progress tracking
+- Add `fetch` function that installs a dataset and returns it as a dictionary of dataframes
 
 ## Minor changes
 
-Documentation refinement
-Connect to MySQL using preferred encoding.
-License search and keyword search added.
-Conda_Forge docs
-Add Zenodo badge to link to archive
-Add test for extracting data
-Changed all "-" in JSON files to "_"
+- Documentation refinement
+- Connect to MySQL using preferred encoding.
+- License search and keyword search added.
+- Conda_Forge docs
+- Add Zenodo badge to link to archive
+- Add test for extracting data
+- Changed all "-" in JSON files to "_"
 
 ## New datasets
 
-Add Noaa Fisheries trade, noaa-fisheries-trade.
-Add Fishery Statistical Collections data, fao-global-capture-product.
-Add bupa liver disorders dataset, bupa-liver-disorders.
-Add GLOBI interactions data. globi-interaction.
-Addition of the National Aquatic Resource Surveys (NARS), nla.
-Addition of partners in flight dataset, partners-in-flight.
-Add the ND-GAIN Country Index. nd-gain.
-Add world GDP in current US Dollars. dgp.
-Add airports dataset, airports.
-Repair aquatic animal excretion.
-Add Biotime dataset. 
-Add lakecats final tables dataset, lakecats-final-tables.
-Add harvard forests data, harvard forests.
-Add USGS elevation data, usgs-elevation.
+- Add Noaa Fisheries trade, noaa-fisheries-trade.
+- Add Fishery Statistical Collections data, fao-global-capture-product.
+- Add bupa liver disorders dataset, bupa-liver-disorders.
+- Add GLOBI interactions data. globi-interaction.
+- Addition of the National Aquatic Resource Surveys (NARS), nla.
+- Addition of partners in flight dataset, partners-in-flight.
+- Add the ND-GAIN Country Index. nd-gain.
+- Add world GDP in current US Dollars. dgp.
+- Add airports dataset, airports.
+- Repair aquatic animal excretion.
+- Add Biotime dataset. 
+- Add lakecats final tables dataset, lakecats-final-tables.
+- Add harvard forests data, harvard forests.
+- Add USGS elevation data, usgs-elevation.
 
 # v2.1.0
 
