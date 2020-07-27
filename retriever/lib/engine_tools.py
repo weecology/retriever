@@ -280,9 +280,6 @@ def xml2dict(dic, node, level):
     """Convert xml to dict type.
 
     """
-    if not node.tag:
-        print(type(node))
-        return
     vals = dict()
     for child in node:
         key = child.tag.strip() + '_' + str(level)
@@ -294,7 +291,7 @@ def xml2dict(dic, node, level):
             else:
                 vals[key].append(child.attrib)
 
-        if child.text and child.text.strip():
+        if child.text.strip():
             if key not in vals:
                 vals[key] = [child.text]
             else:
@@ -303,7 +300,7 @@ def xml2dict(dic, node, level):
             xml2dict(dic, child, level + 1)
 
     for k in vals:
-        if len(vals.keys()) == 1:
+        if len(vals) == 1:
             for val in vals[k]:
                 dic[k].append(val)
         else:
