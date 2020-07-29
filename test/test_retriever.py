@@ -3,6 +3,8 @@
 import os
 import subprocess
 import random
+import pytest
+import requests
 
 import retriever as rt
 from retriever.lib.engine import Engine
@@ -12,6 +14,12 @@ from retriever.lib.cleanup import correct_invalid_value
 from retriever.lib.engine_tools import getmd5
 from retriever.lib.engine_tools import xml2csv
 from retriever.lib.engine_tools import json2csv
+
+try:
+    from retriever.lib.engine_tools import geojson2csv
+except ModuleNotFoundError:
+    pass
+
 from retriever.lib.engine_tools import sort_file
 from retriever.lib.engine_tools import sort_csv
 from retriever.lib.engine_tools import create_file
@@ -25,6 +33,10 @@ test_engine.table = TabularDataset(**{"name": "test"})
 test_engine.script = BasicTextTemplate(
     **{"tables": test_engine.table, "name": "test"})
 test_engine.opts = {'database_name': '{db}_abc'}
+
+geojson2csv_dataset = [
+    ("simple_geojson2csv", "lake_county.geojson", "http://data-lakecountyil.opendata.arcgis.com/datasets/cd63911cc52841f38b289aeeeff0f300_1.geojson", 'fid,zip,colorectal,lung_bronc,breast_can,prostate_c,urinary_sy,all_cancer,shape_length,shape_area,geometry')
+]
 
 # Main paths
 HOMEDIR = os.path.expanduser('~')
@@ -533,6 +545,20 @@ def test_json2csv():
     os.remove(output_json)
     assert obs_out == ['User,Country,Age', 'Alex,US,25']
 
+
+@pytest.mark.parametrize("test_name, table_name, geojson_data_url, expected", geojson2csv_dataset)
+def test_geojson2csv(test_name, table_name, geojson_data_url, expected):
+    if not os.environ.get("CI"):
+        r = requests.get(geojson_data_url, allow_redirects=True)
+        open(table_name, 'wb').write(r.content)
+        output_geojson = geojson2csv(table_name, "output_file_geojson.csv", encoding=test_engine.encoding)
+        header_val = None
+        with open(output_geojson, 'r') as fh:
+            header_val = fh.readline().split()
+        header_val = header_val[0].lower()
+        os.remove(output_geojson)
+        os.remove(table_name)
+        assert header_val == expected
 
 def test_xml2csv():
     """Test xml2csv function.
