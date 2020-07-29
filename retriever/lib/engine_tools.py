@@ -17,6 +17,7 @@ from retriever.lib.defaults import HOME_DIR, ENCODING
 import xml.etree.ElementTree as ET
 import os
 import csv
+import geopandas
 
 warnings.filterwarnings("ignore")
 from retriever.lib.tools import open_fr, open_csvw, open_fw
@@ -160,6 +161,16 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
     file_output.close()
     subprocess.call(['rm', '-r', input_file])
     return outputfile
+
+
+def geojson2csv(input_file, output_file, encoding):
+    """Convert Geojson file to csv.
+
+    Function is used for testing only.
+    """
+    file = open(input_file)
+    df = geopandas.read_file(file)
+    df.to_csv(output_file, index_label='index')
 
 
 def getmd5(data, data_type='lines', encoding='utf-8'):
