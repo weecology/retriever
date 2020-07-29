@@ -33,6 +33,9 @@ init:
 install:
   - "%PYTHON%\\python.exe -m pip install --upgrade pip"
   - "%PYTHON%\\python.exe -m pip install wheel"
+  - "%PYTHON%\\python.exe -m pip install https://download.lfd.uci.edu/pythonlibs/w3jqiv8s/Fiona-1.8.13-cp36-cp36m-win_amd64.whl"
+  - "%PYTHON%\\python.exe -m pip install https://download.lfd.uci.edu/pythonlibs/w3jqiv8s/GDAL-3.1.2-cp36-cp36m-win_amd64.whl"
+  - "%PYTHON%\\python.exe -m pip install pip install https://github.com/geopandas/geopandas/archive/master.zip"
   - "%PYTHON%\\python.exe -m pip install -r requirements.txt"
   - "%PYTHON%\\python.exe -m pip install codecov"
   - "%PYTHON%\\python.exe -m pip install nose-cov"

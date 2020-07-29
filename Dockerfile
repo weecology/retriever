@@ -27,7 +27,9 @@ RUN echo "export PGPASSFILE="~/.pgpass"" >> ~/.profile
 
 # Add permissions to config files
 RUN chmod 0644 ~/.profile
-
+RUN wget http://download.osgeo.org/gdal/3.1.1/gdal-3.1.1.tar.gz && tar xvfz dal-3.1.1.tar.gz && cd gdal-3.1.1 && ./configure --with-python && make make install
+RUN pip install Fiona
+RUN pip install geopandas
 RUN pip install pymysql
 RUN pip install psycopg2-binary -U
 RUN pip install codecov -U
