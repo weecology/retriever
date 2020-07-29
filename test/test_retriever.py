@@ -1,19 +1,19 @@
 # -*- coding: utf-8  -*-
 """Tests for the Data Retriever"""
 import os
-import subprocess
 import random
+import subprocess
+
 import pytest
 import requests
-
 import retriever as rt
+from retriever.lib.cleanup import correct_invalid_value
 from retriever.lib.engine import Engine
+from retriever.lib.engine_tools import getmd5
+from retriever.lib.engine_tools import json2csv
+from retriever.lib.engine_tools import xml2csv_test
 from retriever.lib.table import TabularDataset
 from retriever.lib.templates import BasicTextTemplate
-from retriever.lib.cleanup import correct_invalid_value
-from retriever.lib.engine_tools import getmd5
-from retriever.lib.engine_tools import xml2csv
-from retriever.lib.engine_tools import json2csv
 
 try:
     from retriever.lib.engine_tools import geojson2csv
@@ -48,6 +48,10 @@ json2csv_datasets = [
     ("simple_json", ["""{"User": "Alex", "Country": "US", "Age": "25"}"""], ['User','Country','Age'], None, ['user,country,age', 'Alex,US,25']),
     ("nested_json", ["""{"prizes":[{"year":"2019","category":"chemistry","laureates":[{"id":"976","firstname":"John","surname":"Goodenough","motivation":"text shorted","share":"3"}]}]}"""], ["id", "firstname", "surname", "motivation", "share"], 'prizes', ['id,firstname,surname,motivation,share', '976,John,Goodenough,text shorted,3']),
     ("null_data_json", ["""[{"User":"Alex","id":"US1","Age":"25","kt":"2.0","qt":"1.00"},{"User":"Tom","id":"US2","Age":"20","kt":"0.0","qt":"1.0"},{"User":"Dan","id":"44","Age":"2","kt":"0","qt":"1"},{"User":"Kim","id":"654","Age":"","kt":"","qt":""}]"""], ["User", "id", "Age", "kt", "qt"], None, ['User,id,Age,kt,qt', 'Alex,US1,25,2.0,1.00', 'Tom,US2,20,0.0,1.0', 'Dan,44,2,0,1', 'Kim,654,,,'])
+]
+
+xml2csv_dataset = [
+    ("simple_xml", ["""<root><row><User>Alex</User><Country>US</Country><Age>25</Age></row><row><User>Ben</User><Country>US</Country><Age>24</Age></row></root>"""], ["User", "Country", "Age"], 1, ['User,Country,Age', 'Alex,US,25', 'Ben,US,24'])
 ]
 
 # Main paths
@@ -583,25 +587,21 @@ def test_sqlite2csv(test_name, db_name, sqlite_data_url, table_name, expected):
     os.remove(db_name)
     assert header_val == expected
 
-def test_xml2csv():
+@pytest.mark.parametrize("test_name, xml_data, header_values, empty_rows, expected", xml2csv_dataset)
+def test_xml2csv(test_name, xml_data, header_values, empty_rows, expected):
     """Test xml2csv function.
 
     Creates a xml file and tests the md5 sum calculation.
     """
-    xml_file = create_file(['<root>', '<row>',
-                            '<User>Alex</User>',
-                            '<Country>US</Country>',
-                            '<Age>25</Age>', '</row>',
-                            '<row>', '<User>Ben</User>',
-                            '<Country>US</Country>',
-                            '<Age>24</Age>',
-                            '</row>', '</root>'], 'output.xml')
+    xml_file = create_file(xml_data, 'output.xml')
+    input_file = xml_file
+    outputfile = "output_xml.csv"
 
-    output_xml = xml2csv(xml_file, "output_xml.csv",
-                         header_values=["User", "Country", "Age"])
+    output_xml = xml2csv_test(input_file, outputfile, header_values, row_tag="row")
+
     obs_out = file_2list(output_xml)
     os.remove(output_xml)
-    assert obs_out == ['User,Country,Age', 'Alex,US,25', 'Ben,US,24']
+    assert obs_out == expected
 
 
 def test_sort_file():

@@ -29,6 +29,7 @@ from retriever.lib.tools import (
 from retriever.lib.engine_tools import geojson2csv
 from retriever.lib.engine_tools import sqlite2csv
 from retriever.lib.engine_tools import json2csv
+from retriever.lib.engine_tools import xml2csv
 from retriever.lib.warning import Warning
 
 
@@ -604,6 +605,15 @@ class Engine():
                      header_values=headers,
                      encoding=encoding,
                      row_key=None)
+
+    def process_xml2csv(self,
+                        src_path,
+                        path_to_csv,
+                        header_values=None,
+                        empty_rows=1,
+                        encoding=ENCODING):
+        if self.find_file(src_path):
+            xml2csv(src_path, path_to_csv, header_values, empty_rows, encoding)
 
     def extract_gz(
         self,

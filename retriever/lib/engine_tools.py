@@ -17,7 +17,6 @@ import sqlite3 as sql
 
 from hashlib import md5
 from io import StringIO as NewFile
-from retriever.lib.defaults import HOME_DIR, ENCODING
 
 import xml.etree.ElementTree as ET
 import os
@@ -30,8 +29,10 @@ except ModuleNotFoundError:
 from pandas.io.json import json_normalize
 from collections import OrderedDict
 
-warnings.filterwarnings("ignore")
+from retriever.lib.defaults import HOME_DIR, ENCODING
 from retriever.lib.tools import open_fr, open_csvw, open_fw
+
+warnings.filterwarnings("ignore")
 
 TEST_ENGINES = dict()
 
@@ -225,7 +226,7 @@ def sqlite2csv(input_file, output_file, table_name=None, encoding=ENCODING):
     return output_file
 
 
-def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
+def xml2csv_test(input_file, outputfile=None, header_values=None, row_tag="row"):
     """Convert xml to csv.
 
     Function is used for only testing and can handle the file of the size.
@@ -377,3 +378,50 @@ def set_proxy():
                 for i in proxies:
                     os.environ[i] = os.environ[proxy]
                 break
+
+
+def xml2dict(data, node, level):
+    """Convert xml to dict type.
+
+    """
+    vals = dict()
+    for child in node:
+        key = child.tag.strip()
+        if key not in data:
+            data[key] = []
+        if child.attrib:
+            if key not in vals:
+                vals[key] = [child.attrib]
+            else:
+                vals[key].append(child.attrib)
+        if child.text and child.text.strip():
+            if key not in vals:
+                vals[key] = [child.text]
+            else:
+                vals[key].append(child.text)
+        if child:
+            xml2dict(data, child, level + 1)
+
+    for k in vals:
+        if len(vals) == 1:
+            for val in vals[k]:
+                data[k].append(val)
+        else:
+            val = vals[k] if len(vals[k]) > 1 else vals[k][0]
+            data[k].append(val)
+
+
+def xml2csv(input_file, output_file, header_values=None, empty_rows=1, encoding=ENCODING):
+    """Convert xml to csv."""
+
+    tree = ET.parse(input_file)
+    root = tree.getroot()
+    dic = OrderedDict()
+    xml2dict(dic, root, empty_rows)
+
+    for empty_row in range(empty_rows):
+        dic.pop("row")
+    df = pd.DataFrame.from_dict(dic, orient='index')
+    df = df.transpose()
+    df.to_csv(output_file, index=False, encoding=encoding)
+    return output_file

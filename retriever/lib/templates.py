@@ -204,6 +204,20 @@ class BasicTextTemplate(Script):
 
             self.engine.process_json2csv(src_path, path_to_csv, schema_fields)
 
+        if hasattr(table_obj, "xml_data"):
+            src_path = self.engine.format_filename(table_obj.xml_data)
+            path_to_csv = self.engine.format_filename(table_obj.path)
+            self.engine.download_file(url, table_obj.xml_data)
+            schema_fields = None
+            empty_rows = 1
+            if hasattr(table_obj, "empty_rows"):
+                empty_rows = table_obj.empty_rows
+            if hasattr(table_obj, "schema") and hasattr(table_obj.schema, "fields"):
+                if table_obj.schema.fields:
+                    schema_fields = table_obj.schema.fields
+
+            self.engine.process_xml2csv(src_path, path_to_csv, schema_fields, empty_rows)
+
         if hasattr(table_obj, "path"):
             self.engine.auto_create_table(table_obj, url=url, filename=table_obj.path)
         else:
