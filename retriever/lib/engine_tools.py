@@ -4,23 +4,17 @@ This module contains miscellaneous classes and functions used in Retriever
 scripts.
 
 """
+import csv
+import itertools
 import json
+import os
 import platform
 import shutil
+import sqlite3 as sql
 import subprocess
 import warnings
-import pandas as pd
-import itertools
 from string import ascii_lowercase
-from sqlite3 import Error
-import sqlite3 as sql
 
-from hashlib import md5
-from io import StringIO as NewFile
-
-import xml.etree.ElementTree as ET
-import os
-import csv
 try:
     # Geopanda installation is not smooth on the CI tests platforms
     import geopandas
@@ -28,6 +22,13 @@ except ModuleNotFoundError:
     pass
 from pandas.io.json import json_normalize
 from collections import OrderedDict
+import xml.etree.ElementTree as ET
+from hashlib import md5
+from io import StringIO as NewFile
+import h5py
+import numpy as np
+import pandas as pd
+from PIL import Image
 
 from retriever.lib.defaults import HOME_DIR, ENCODING
 from retriever.lib.tools import open_fr, open_csvw, open_fw
@@ -267,6 +268,20 @@ def geojson2csv(input_file, output_file, encoding):
     return output_file
 
 
+def hdf2csv(file, output_file, data_name, data_type, encoding=ENCODING):
+    if data_type == "csv":
+        data = pd.read_hdf(file, data_name)
+        data.to_csv(output_file, index=False)
+    elif data_type == "image":
+        file = h5py.File(file, 'r+')
+        data = file.get(data_name)
+        image = np.asarray(data)
+        im = Image.fromarray(image)
+        im.save(output_file)
+        file.close()
+    return output_file
+
+
 def getmd5(data, data_type='lines', encoding='utf-8'):
     """Get MD5 of a data source."""
     checksum = md5()
@@ -323,6 +338,7 @@ def sort_csv(filename, encoding=ENCODING):
 
     csv_writer = open_csvw(temp_file)
     i = 0
+    infields = None
     for row in csv_reader_infile:
         if i == 0:
             # The first entry is the header line

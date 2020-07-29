@@ -218,6 +218,14 @@ class BasicTextTemplate(Script):
 
             self.engine.process_xml2csv(src_path, path_to_csv, schema_fields, empty_rows)
 
+        if hasattr(table_obj, "hdf5_data"):
+            src_path = self.engine.format_filename(table_obj.hdf5_data[0])
+            path_to_csv = self.engine.format_filename(table_obj.path)
+            self.engine.download_file(url, table_obj.hdf5_data[0])
+            data_type = table_obj.hdf5_data[1]
+            data_name = table_obj.hdf5_data[2]
+            self.engine.process_hdf52csv(src_path, path_to_csv, data_name, data_type)
+
         if hasattr(table_obj, "path"):
             self.engine.auto_create_table(table_obj, url=url, filename=table_obj.path)
         else:
