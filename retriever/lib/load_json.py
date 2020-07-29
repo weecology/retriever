@@ -38,7 +38,7 @@ def read_json(json_file):
 
     if isinstance(json_object, dict) and "resources" in json_object.keys():
         # Note::formats described by frictionless data may need to change
-        tabular_exts = {"csv", "tab", "geojson"}
+        tabular_exts = {"csv", "tab", "geojson", "sqlite", "db"}
         vector_exts = {"shp", "kmz"}
         raster_exts = {"tif", "tiff", "bil", "hdr", "h5", "hdf5", "hr", "image"}
         for resource_item in json_object["resources"]:

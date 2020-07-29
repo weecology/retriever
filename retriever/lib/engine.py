@@ -27,6 +27,7 @@ from retriever.lib.tools import (
     excel_csv,
 )
 from retriever.lib.engine_tools import geojson2csv
+from retriever.lib.engine_tools import sqlite2csv
 from retriever.lib.warning import Warning
 
 
@@ -583,7 +584,17 @@ class Engine():
             excel_csv(src_path, path_to_csv, excel_info, encoding)
 
     def process_geojson2csv(self, src_path, path_to_csv, encoding=ENCODING):
-        geojson2csv(src_path, path_to_csv, encoding)
+        if self.find_file(src_path):
+            geojson2csv(src_path, path_to_csv, encoding)
+
+    def process_sqlite2csv(self,
+                           src_path,
+                           path_to_csv,
+                           table_name=None,
+                           encoding=ENCODING):
+        """Process sqlite database to csv files."""
+        if self.find_file(src_path):
+            sqlite2csv(src_path, path_to_csv, table_name, encoding)
 
     def extract_gz(
         self,

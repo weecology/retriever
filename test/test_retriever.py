@@ -20,6 +20,7 @@ try:
 except ModuleNotFoundError:
     pass
 
+from retriever.lib.engine_tools import sqlite2csv
 from retriever.lib.engine_tools import sort_file
 from retriever.lib.engine_tools import sort_csv
 from retriever.lib.engine_tools import create_file
@@ -36,6 +37,10 @@ test_engine.opts = {'database_name': '{db}_abc'}
 
 geojson2csv_dataset = [
     ("simple_geojson2csv", "lake_county.geojson", "http://data-lakecountyil.opendata.arcgis.com/datasets/cd63911cc52841f38b289aeeeff0f300_1.geojson", 'fid,zip,colorectal,lung_bronc,breast_can,prostate_c,urinary_sy,all_cancer,shape_length,shape_area,geometry')
+]
+
+sqlite2csv_dataset = [
+    ("simple_sqlite2csv", "portal_project.sqlite", "https://ndownloader.figshare.com/files/11188550", "plots", ['plot_id,plot_type'])
 ]
 
 # Main paths
@@ -559,6 +564,18 @@ def test_geojson2csv(test_name, table_name, geojson_data_url, expected):
         os.remove(output_geojson)
         os.remove(table_name)
         assert header_val == expected
+
+@pytest.mark.parametrize("test_name, db_name, sqlite_data_url, table_name, expected", sqlite2csv_dataset)
+def test_sqlite2csv(test_name, db_name, sqlite_data_url, table_name, expected):
+    r = requests.get(sqlite_data_url, allow_redirects=True)
+    open(db_name, 'wb').write(r.content)
+    output_sqlite = sqlite2csv(db_name, "output_file_sqlite.csv", table_name, encoding=test_engine.encoding)
+    header_val = None
+    with open(output_sqlite, 'r') as fh:
+        header_val = fh.readline().split()
+    os.remove(output_sqlite)
+    os.remove(db_name)
+    assert header_val == expected
 
 def test_xml2csv():
     """Test xml2csv function.

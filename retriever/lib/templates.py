@@ -182,6 +182,13 @@ class BasicTextTemplate(Script):
             self.engine.download_file(url, table_obj.geojson_data)
             self.engine.process_geojson2csv(src_path, path_to_csv)
 
+        if hasattr(table_obj, "sqlite_data"):
+            src_path = self.engine.format_filename(table_obj.sqlite_data[1])
+            path_to_csv = self.engine.format_filename(table_obj.path)
+            self.engine.download_file(url, table_obj.sqlite_data[1])
+            self.engine.process_sqlite2csv(src_path, path_to_csv,
+                                           table_obj.sqlite_data[0])
+
         if hasattr(table_obj, "path"):
             self.engine.auto_create_table(table_obj, url=url, filename=table_obj.path)
         else:

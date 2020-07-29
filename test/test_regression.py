@@ -53,7 +53,8 @@ download_md5 = [
 db_md5 = [
     ('flensburg_food_web', '89c8ae47fb419d0336b2c22219f23793'),
     ('bird_size', '98dcfdca19d729c90ee1c6db5221b775'),
-    ('mammal_masses', '6fec0fc63007a4040d9bbc5cfcd9953e')
+    ('mammal_masses', '6fec0fc63007a4040d9bbc5cfcd9953e'),
+    ('portal-project-teaching', 'f81620d5f5550b81062e427542e96fa5')
 ]
 
 spatial_db_md5 = [
