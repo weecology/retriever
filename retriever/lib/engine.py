@@ -28,6 +28,7 @@ from retriever.lib.tools import (
 )
 from retriever.lib.engine_tools import geojson2csv
 from retriever.lib.engine_tools import sqlite2csv
+from retriever.lib.engine_tools import json2csv
 from retriever.lib.warning import Warning
 
 
@@ -595,6 +596,14 @@ class Engine():
         """Process sqlite database to csv files."""
         if self.find_file(src_path):
             sqlite2csv(src_path, path_to_csv, table_name, encoding)
+
+    def process_json2csv(self, src_path, path_to_csv, headers, encoding=ENCODING):
+        if self.find_file(src_path):
+            json2csv(input_file=src_path,
+                     output_file=path_to_csv,
+                     header_values=headers,
+                     encoding=encoding,
+                     row_key=None)
 
     def extract_gz(
         self,

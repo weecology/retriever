@@ -43,6 +43,13 @@ sqlite2csv_dataset = [
     ("simple_sqlite2csv", "portal_project.sqlite", "https://ndownloader.figshare.com/files/11188550", "plots", ['plot_id,plot_type'])
 ]
 
+json2csv_datasets = [
+    # test_name, json_data, header_values, row_key, expected
+    ("simple_json", ["""{"User": "Alex", "Country": "US", "Age": "25"}"""], ['User','Country','Age'], None, ['user,country,age', 'Alex,US,25']),
+    ("nested_json", ["""{"prizes":[{"year":"2019","category":"chemistry","laureates":[{"id":"976","firstname":"John","surname":"Goodenough","motivation":"text shorted","share":"3"}]}]}"""], ["id", "firstname", "surname", "motivation", "share"], 'prizes', ['id,firstname,surname,motivation,share', '976,John,Goodenough,text shorted,3']),
+    ("null_data_json", ["""[{"User":"Alex","id":"US1","Age":"25","kt":"2.0","qt":"1.00"},{"User":"Tom","id":"US2","Age":"20","kt":"0.0","qt":"1.0"},{"User":"Dan","id":"44","Age":"2","kt":"0","qt":"1"},{"User":"Kim","id":"654","Age":"","kt":"","qt":""}]"""], ["User", "id", "Age", "kt", "qt"], None, ['User,id,Age,kt,qt', 'Alex,US1,25,2.0,1.00', 'Tom,US2,20,0.0,1.0', 'Dan,44,2,0,1', 'Kim,654,,,'])
+]
+
 # Main paths
 HOMEDIR = os.path.expanduser('~')
 file_location = os.path.dirname(os.path.realpath(__file__))
@@ -535,20 +542,19 @@ def test_getmd5_path():
     assert getmd5(data=data_file, data_type='file') == exp_hash
 
 
-def test_json2csv():
+@pytest.mark.parametrize("test_name, json_data, header_values, row_key, expected", json2csv_datasets)
+def test_json2csv(test_name, json_data, header_values, row_key, expected):
     """Test json2csv function.
 
     Creates a json file and tests the md5 sum calculation.
     """
-    json_file = create_file([
-        """[ {"User": "Alex", "Country": "US", "Age": "25"} ]"""],
-        'output.json')
-
+    json_file = create_file(json_data, 'output.json')
     output_json = json2csv(json_file, "output_json.csv",
-                           header_values=["User", "Country", "Age"])
+                           header_values=header_values,
+                           row_key=row_key)
     obs_out = file_2list(output_json)
     os.remove(output_json)
-    assert obs_out == ['User,Country,Age', 'Alex,US,25']
+    assert obs_out == expected
 
 
 @pytest.mark.parametrize("test_name, table_name, geojson_data_url, expected", geojson2csv_dataset)
