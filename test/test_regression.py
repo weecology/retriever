@@ -274,31 +274,31 @@ def test_download_regression(dataset, expected, encodings):
 
 
 # @pytest.mark.parametrize("dataset, expected", fetch_tests)
-def test_fetch():
-    """Test fetch interface"""
-    for dataset, expected in fetch_tests:
-        data_frame = rt.fetch(dataset)
-        for itm in expected:
-            for table_i in itm:
-                expected_data = itm[table_i][0]
-                expected_column_values = itm[table_i][1]
-                column_values = list(data_frame[table_i].dtypes.index)
-                first_row_data = list(data_frame[table_i].iloc[0])
-                assert expected_data == first_row_data
-                assert expected_column_values == column_values
-
-
-def test_interface_table_registry(tmpdir):
-    # Test if script_table_registry keeps only the latest
-    # table names of the installed data packages in
-    # script_table_registry
-    
-    workdir = tmpdir.mkdtemp()
-    workdir.chdir()
-    rt.install_csv("iris")
-    wine_data = rt.fetch("wine-composition")
-    assert "iris" not in wine_data.keys()
-    os.chdir(retriever_root_dir)
+# def test_fetch():
+#     """Test fetch interface"""
+#     for dataset, expected in fetch_tests:
+#         data_frame = rt.fetch(dataset)
+#         for itm in expected:
+#             for table_i in itm:
+#                 expected_data = itm[table_i][0]
+#                 expected_column_values = itm[table_i][1]
+#                 column_values = list(data_frame[table_i].dtypes.index)
+#                 first_row_data = list(data_frame[table_i].iloc[0])
+#                 assert expected_data == first_row_data
+#                 assert expected_column_values == column_values
+#
+#
+# def test_interface_table_registry(tmpdir):
+#     # Test if script_table_registry keeps only the latest
+#     # table names of the installed data packages in
+#     # script_table_registry
+#
+#     workdir = tmpdir.mkdtemp()
+#     workdir.chdir()
+#     rt.install_csv("iris")
+#     wine_data = rt.fetch("wine-composition")
+#     assert "iris" not in wine_data.keys()
+#     os.chdir(retriever_root_dir)
 
 
 @pytest.mark.parametrize("dataset, expected", fetch_order_tests)

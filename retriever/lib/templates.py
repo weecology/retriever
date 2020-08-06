@@ -176,6 +176,12 @@ class BasicTextTemplate(Script):
             self.engine.excel_to_csv(src_path, path_to_csv, table_obj.xls_sheets,
                                      self.encoding)
 
+        if hasattr(table_obj, "netcdf_data"):
+            src_path = self.engine.format_filename(table_obj.netcdf_data[1])
+            path_to_csv = self.engine.format_filename(table_obj.path)
+            self.engine.download_file(url, table_obj.netcdf_data[1])
+            self.engine.netcdf_to_csv(src_path, path_to_csv, table_obj.netcdf_data[0])
+
         if hasattr(table_obj, "path"):
             self.engine.auto_create_table(table_obj, url=url, filename=table_obj.path)
         else:
