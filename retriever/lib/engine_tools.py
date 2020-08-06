@@ -17,6 +17,8 @@ from retriever.lib.defaults import HOME_DIR, ENCODING
 import xml.etree.ElementTree as ET
 import os
 import csv
+import netCDF4
+import pandas as pd
 
 warnings.filterwarnings("ignore")
 from retriever.lib.tools import open_fr, open_csvw, open_fw
@@ -161,6 +163,24 @@ def xml2csv(input_file, outputfile=None, header_values=None, row_tag="row"):
     subprocess.call(['rm', '-r', input_file])
     return outputfile
 
+
+def netcdf2csv(input_file, output_file, table_name=None, encoding=ENCODING):
+    rootgrp = netCDF4.Dataset(input_file, format="NETCDF4")
+    df = pd.DataFrame()
+    list_net = list(rootgrp.variables.keys())
+    for column in list_net:
+        column_data = rootgrp.variables[column][:]
+        print(column)
+        if len(column_data.shape) > 1:
+            print("multiple")
+            for i in range(len(column_data.shape)):
+                df[str(column) + "_" + str(i)] = pd.Series(column_data[:, i])
+                print(str(column) + "_" + str(i) + "made")
+        else:
+            print("single")
+        # df[column] = column_data
+    # print(df)
+    # np.savetxt(data + "1.csv", df, fmt='%s', delimiter=",")
 
 def getmd5(data, data_type='lines', encoding='utf-8'):
     """Get MD5 of a data source."""

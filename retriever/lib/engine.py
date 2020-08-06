@@ -27,6 +27,7 @@ from retriever.lib.tools import (
     excel_csv,
 )
 from retriever.lib.warning import Warning
+from retriever.lib.engine_tools import netcdf2csv
 
 
 class Engine():
@@ -580,6 +581,10 @@ class Engine():
         """Convert excel files to csv files."""
         if self.find_file(src_path) and excel_info:
             excel_csv(src_path, path_to_csv, excel_info, encoding)
+
+    def netcdf_to_csv(self, src_path, path_to_csv, table_name=None, encoding=ENCODING):
+        """Convert NetCDF file to csv files"""
+        netcdf2csv(src_path, path_to_csv, table_name, encoding)
 
     def extract_gz(
         self,
