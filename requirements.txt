@@ -1,6 +1,7 @@
 future
 xlrd>=0.7
 argcomplete
+kaggle
 PyMySQL>=0.4
 psycopg2-binary
 numpydoc

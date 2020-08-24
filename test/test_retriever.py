@@ -26,7 +26,7 @@ from retriever.lib.engine_tools import sort_csv
 from retriever.lib.engine_tools import create_file
 from retriever.lib.engine_tools import file_2list
 from retriever.lib.datapackage import clean_input, is_empty
-from retriever.lib.defaults import HOME_DIR, RETRIEVER_DATASETS, RETRIEVER_REPOSITORY
+from retriever.lib.defaults import HOME_DIR, RETRIEVER_DATASETS, RETRIEVER_REPOSITORY, KAGGLE_TOKEN_PATH
 
 # Create simple engine fixture
 test_engine = Engine()
@@ -80,6 +80,12 @@ tar_url = os.path.normpath(achive_url.format(file_path='sample_tar.tar'))
 tar_gz_url = os.path.normpath(achive_url.format(file_path='sample_tar.tar.gz'))
 gz_url = os.path.normpath(achive_url.format(file_path='sample.gz'))
 
+kaggle_datasets = [
+    # test_name, data_source, dataset_identifier, dataset_name, repath, expected
+    ("kaggle_competition", "competition", "titanic", "titanic", ["gender_submission.csv",  "test.csv", "train.csv"]),
+    ("kaggle_unknown", "dataset", "uciml/iris", "iris", ['Iris.csv', 'database.sqlite']),
+    ("kaggle_dataset", "competition", "non_existent_dataset", "non_existent_dataset", []),
+]
 
 def setup_module():
     """"Automatically sets up the environment before the module runs.
@@ -242,6 +248,26 @@ def test_drop_statement():
     """Test the creation of drop statements."""
     assert test_engine.drop_statement(
         'TABLE', 'tablename') == "DROP TABLE IF EXISTS tablename"
+
+
+@pytest.mark.parametrize("test_name, data_source, dataset_identifier,  repath, expected", kaggle_datasets)
+def test_download_kaggle_dataset(test_name, data_source, dataset_identifier,  repath, expected):
+    """Test the downloading of dataset from kaggle."""
+    setup_functions()
+    files = test_engine.download_from_kaggle(
+        data_source=data_source,
+        dataset_name=dataset_identifier,
+        archive_dir=raw_dir_files,
+        archive_full_path=os.path.join(raw_dir_files, repath)
+    )
+
+    kaggle_token = os.path.isfile(KAGGLE_TOKEN_PATH)
+    kaggle_username = os.getenv('KAGGLE_USERNAME', "").strip()
+    kaggle_key = os.getenv('KAGGLE_KEY', "").strip()
+    if kaggle_token or (kaggle_username and kaggle_key):
+        assert files == expected
+    else:
+        assert files == None
 
 
 def test_download_archive_gz_known():

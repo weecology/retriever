@@ -39,6 +39,7 @@ RUN pip install pylint
 RUN pip install flake8 -U
 RUN pip install h5py
 RUN pip install Pillow
+RUN pip install kaggle
 
 # Install Postgis after Python is setup
 RUN apt-get install -y --force-yes postgis
