@@ -3,7 +3,7 @@ from retriever.lib.engine import Engine
 
 engines = [
     "mysql", "postgres", "sqlite", "msaccess", "csvengine", "download_only", "jsonengine",
-    "xmlengine"
+    "xmlengine", "hdf5"
 ]
 
 engine_module_list = [

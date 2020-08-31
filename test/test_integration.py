@@ -34,7 +34,7 @@ if docker_or_travis == "true":
     mysqldb_host = "mysqldb_retriever"
 
 mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, \
-csv_engine, download_engine, json_engine, xml_engine = engine_list
+csv_engine, download_engine, json_engine, xml_engine, _ = engine_list
 
 simple_csv = {
     'name': 'simple_csv',
