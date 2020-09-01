@@ -1,0 +1,71 @@
+{
+    "citation": "",
+    "description": "geospatial data of cancer rates in Lake County, Illinois",
+    "encoding": "latin-1",
+    "homepage": "https://catalog.data.gov/dataset/cancer-rates",
+    "keywords": [],
+    "licenses": [],
+    "name": "lake-county-illinois-cancer-rates",
+    "resources": [
+        {
+            "dialect": {
+                "delimiter": ","
+            },
+            "name": "lakecounty_health",
+            "path": "LakeCounty_Health.csv",
+            "format": "tabular",
+            "geojson_data": "mytest.geojson",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "fid",
+                        "type": "int"
+                    },
+                    {
+                        "name": "zip",
+                        "type": "int"
+                    },
+                    {
+                        "name": "colorectal",
+                        "type": "double"
+                    },
+                    {
+                        "name": "lung_bronc",
+                        "type": "double"
+                    },
+                    {
+                        "name": "breast_can",
+                        "type": "double"
+                    },
+                    {
+                        "name": "prostate_c",
+                        "type": "double"
+                    },
+                    {
+                        "name": "urinary_sy",
+                        "type": "double"
+                    },
+                    {
+                        "name": "all_cancer",
+                        "type": "double"
+                    },
+                    {
+                        "name": "shape_length",
+                        "size": "50,30",
+                        "type": "decimal"
+                    },
+                    {
+                        "name": "shape_area",
+                        "size": "50,30",
+                        "type": "decimal"
+                    }
+                ]
+            },
+            "url": "http://data-lakecountyil.opendata.arcgis.com/datasets/cd63911cc52841f38b289aeeeff0f300_1.geojson"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.1.0",
+    "title": " Cancer Rates Lake County",
+    "version": "1.0.0"
+}

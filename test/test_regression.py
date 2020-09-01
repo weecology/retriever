@@ -292,7 +292,7 @@ def test_interface_table_registry(tmpdir):
     # Test if script_table_registry keeps only the latest
     # table names of the installed data packages in
     # script_table_registry
-    
+
     workdir = tmpdir.mkdtemp()
     workdir.chdir()
     rt.install_csv("iris")
