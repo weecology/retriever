@@ -188,7 +188,7 @@ Start
 4. In the `master` branch update the version number and create a tag, run `bumpversion release`
 5. Push the release commit and the tag
 6. After the release, update the version to dev, run `bumpversion patch`
-    `
+
    ::
 
        git push upstream master

@@ -380,6 +380,242 @@ includes this functionality:
     ...
 
 
+Data Format
+-----------
+
+Data packages for different data formats can been added to Retriever now.
+To add data format add keys in the script for Data sources except in the case of csv.
+
+Data formats which can be added are :-
+
+1. JSON Data :- For JSON raw data, add the key word ``json_data`` to the
+resource. To add data formats for a given data package(`nuclear-power-plants`),
+add keys to the resource part as described below.
+
+::
+
+  ...
+   "name": "nuclear-power-plants",
+    "resources": [
+        {
+            "dialect": {
+                "delimiter": ","
+            },
+            "name": "nuclear_power_plants",
+            "path": "nuclear_power_plants.csv",
+            "json_data": "nuclear_power_plants.json",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "id",
+                        "type": "int"
+                    },
+                    {
+                        "name": "name",
+                        "size": "40",
+                        "type": "char"
+                    },
+    ...
+
+2. XML Data :- For XML raw data, add the key words ``xml_data`` and ``empty_rows``
+to the resource. To add data formats for a given data package(`county-emergency-management-offices`), add keys to
+the resource part as described below.
+
+::
+
+  ...
+  "name": "county-emergency-management-offices",
+    "resources": [
+        {
+            "dialect": {
+                "delimiter": ","
+            },
+            "name": "county_emergency_management_offices",
+            "path": "County_Emergency_Management_Offices.csv",
+            "xml_data": "emergency_offices.xml",
+            "empty_rows": 1,
+            "schema": {
+                "fields": [
+                    {
+                        "name": "county",
+                        "size": "11",
+                        "type": "char"
+                    },
+                    {
+                        "name": "emergency_manager",
+                        "size": "20",
+                        "type": "char"
+    ...
+
+3. SQlite Data :- For SQlite raw data, add the key word ``sqlite_data`` to the
+resource. To add data formats for a given data package(`portal-project-test`),
+add keys to the resource part as described below.
+
+::
+
+  ...
+   "name": "portal-project-test",
+    "resources": [
+        {
+            "dialect": {
+                "delimiter": ","
+            },
+            "name": "species",
+            "path": "species.csv",
+            "sqlite_data": ["species","portal_project.sqlite"],
+            "schema": {
+                "fields": [
+                    {
+                        "name": "species_id",
+                        "size": "2",
+                        "type": "char"
+                    },
+                    {
+                        "name": "genus",
+                        "size": "16",
+                        "type": "char"
+                    },
+    ...
+
+
+4. GeoJSON Data :- For GeoJSON raw data, add the key word ``geojson_data`` to the
+resource. To add data formats for a given data package(`lake-county-illinois-cancer-rates`),
+add keys to the resource part as described below.
+
+::
+
+  ...
+   "name": "lake-county-illinois-cancer-rates",
+    "resources": [
+        {
+            "dialect": {
+                "delimiter": ","
+            },
+            "name": "lakecounty_health",
+            "path": "LakeCounty_Health.csv",
+            "format": "tabular",
+            "geojson_data": "mytest.geojson",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "fid",
+                        "type": "int"
+                    },
+                    {
+                        "name": "zip",
+                        "type": "int"
+                    },
+
+    ...
+
+5. HDF5 Data :- For HDF5 raw data, add the key word ``hdf5_data`` to the
+resource. To add data formats for a given data package(`sample-hdf`),
+add keys to the resource part as described below.
+
+::
+
+  ...
+   "name": "sample-hdf",
+  "title": "Test data raster bio1",
+  "description": "Test data sampled from bioclim bio1",
+  "citation": "N/A",
+  "keywords": [
+    "tests"
+  ],
+  "encoding": "latin-1",
+  "url": "https://github.com/ashishpriyadarshiCIC/My_data/raw/master/Test_table_image_data.h5",
+  "ref": "N/A",
+  "version": "1.0.0",
+  "retriever_minimum_version": "2.1.dev",
+  "driver": "GTiff",
+  "colums": 284,
+  "rows": 249,
+  "band_count": 1,
+  "datum": "N/A - Coordinate Reference System",
+  "projection": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]",
+  "file_size": "N/A",
+  "group_count": "N/A",
+  "dataset_count": "N/A",
+  "transform": {
+    "xOrigin": -121.6250000000029,
+    "pixelWidth": 0.041666666666667,
+    "rotation_2": 0.0,
+    "yOrigin": 42.79166666666632,
+    "rotation_4": 0.0,
+    "pixelHeight": -0.041666666666667
+  },
+  "resources": [
+    {
+      "dialect": {
+        "delimiter": ","
+      },
+      "name": "table_data",
+      "path": "table_data.csv",
+      "hdf5_data": [
+        "Test_table_image_data.h5",
+        "csv",
+        "G1/table_data"
+      ],
+      "schema": {
+        "fields": [
+          {
+            "name": "region",
+            "size": "33",
+            "type": "char"
+          },
+          {
+            "name": "country",
+            "size": "32",
+            "type": "char"
+          },
+          {
+            "name": "item_type",
+            "size": "15",
+            "type": "char"
+          },
+          {
+            "name": "sales_channel",
+            "size": "7",
+            "type": "char"
+          },
+          {
+            "name": "order_id",
+            "type": "int"
+          },
+          {
+            "name": "total_profit",
+            "type": "double"
+          }
+        ]
+      },
+      "url": "https://github.com/ashishpriyadarshiCIC/My_data/raw/master/Test_table_image_data.h5"
+    },
+    {
+      "name": "test_image",
+      "format": "raster",
+      "hdf5_data": [
+        "Test_table_image_data.h5",
+        "image",
+        "G1/G2/im"
+      ],
+      "path": "test_raster_bio1.tif",
+      "extensions": [
+        "tif"
+      ],
+      "no_data_value": -9999.0,
+      "min": null,
+      "max": null,
+      "scale": 1.0,
+      "color_table": null,
+      "statistics": {
+        "minimum": 0.0,
+        "maximum": 0.0,
+        "mean": 0.0,
+        "stddev": -1.0
+      },
+    ...
+
+
 Full control over column names and data types
 ---------------------------------------------
 
