@@ -9,6 +9,9 @@ import platform
 import shutil
 import subprocess
 import warnings
+import pandas as pd
+from sqlite3 import Error
+import sqlite3 as sql
 
 from hashlib import md5
 from io import StringIO as NewFile
@@ -134,6 +137,17 @@ def json2csv(input_file, output_file=None, header_values=None, encoding=ENCODING
         outfile.writerow(item)
     file_out.close()
     subprocess.call(['rm', '-r', input_file])
+    return output_file
+
+
+def sqlite2csv(input_file, output_file, table_name=None, encoding=ENCODING):
+    """Convert sqlite database file to CSV."""
+    conn = sql.connect(input_file)
+    cursor = conn.cursor()
+    table = pd.read_sql_query("SELECT * from %s" % table_name, conn)
+    table.to_csv(output_file, index=False)
+    cursor.close()
+    conn.close()
     return output_file
 
 
