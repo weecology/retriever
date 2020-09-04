@@ -10,13 +10,12 @@ import time
 from distutils.dir_util import copy_tree
 from imp import reload
 
-import retriever as rt
-from retriever.lib.defaults import DATA_DIR
-from retriever.lib.load_json import read_json
-
 import pytest
-from retriever.lib.engine_tools import getmd5
+import retriever as rt
 from retriever.engines import engine_list
+from retriever.lib.defaults import DATA_DIR
+from retriever.lib.engine_tools import getmd5
+from retriever.lib.load_json import read_json
 
 # Set postgres password, Appveyor service needs the password given
 # The Travis service obtains the password from the config file.
@@ -55,6 +54,7 @@ db_md5 = [
     ('bird_size', '98dcfdca19d729c90ee1c6db5221b775'),
     ('mammal_masses', '6fec0fc63007a4040d9bbc5cfcd9953e'),
     ('portal-project-teaching', 'f81620d5f5550b81062e427542e96fa5'),
+    ('county-emergency-management-offices', '75fcadc47cf38f3650a7686e074c7211'),
     ('nuclear-power-plants', 'b932543c4fb311357a9616a870226a6b')
 ]
 
@@ -222,7 +222,7 @@ def test_mysql_regression(dataset, expected, tmpdir):
 
 # xml_engine is failing for nuclear-power-plants
 # dataset as it contains a special character
-@pytest.mark.parametrize("dataset, expected", db_md5[:4])
+@pytest.mark.parametrize("dataset, expected", db_md5[:5])
 def test_xmlengine_regression(dataset, expected, tmpdir):
     """Check for xmlenginee regression."""
     xml_engine.opts = {

@@ -13,7 +13,7 @@
         {
             "dialect": {
                 "missingValues": [
-                    -999
+                    -999, "None"
                 ], 
                 "header_rows": 0
             },

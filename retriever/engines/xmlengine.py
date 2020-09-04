@@ -4,7 +4,7 @@ from retriever.lib.defaults import DATA_DIR
 from retriever.lib.dummy import DummyConnection
 from retriever.lib.models import Engine
 from retriever.lib.tools import open_fr, open_fw
-from retriever.lib.engine_tools import xml2csv, sort_csv
+from retriever.lib.engine_tools import sort_csv, xml2csv_test
 
 
 class engine(Engine):
@@ -121,9 +121,16 @@ class engine(Engine):
                 os.path.join(
                     path if path else '',
                     os.path.splitext(os.path.basename(table_item[0]))[0] + '.csv'))
-            csv_outfile = xml2csv(table_item[0],
-                                  outputfile=outputfile,
-                                  header_values=header)
+            empty_rows = 1
+            if hasattr(self.script, "empty_rows"):
+                empty_rows = self.script.empty_rows
+            input_file = table_item[0]
+            header_values = header
+
+            csv_outfile = xml2csv_test(input_file,
+                                       outputfile,
+                                       header_values,
+                                       row_tag="row")
             sort_csv(csv_outfile, encoding=self.encoding)
 
     def get_connection(self):
