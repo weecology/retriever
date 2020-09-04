@@ -10,6 +10,8 @@ import shutil
 import subprocess
 import warnings
 import pandas as pd
+import itertools
+from string import ascii_lowercase
 from sqlite3 import Error
 import sqlite3 as sql
 
@@ -25,6 +27,8 @@ try:
     import geopandas
 except ModuleNotFoundError:
     pass
+from pandas.io.json import json_normalize
+from collections import OrderedDict
 
 warnings.filterwarnings("ignore")
 from retriever.lib.tools import open_fr, open_csvw, open_fw
@@ -109,35 +113,105 @@ def reset_retriever(scope="all", ask_permission=True):
             print("can't find script {scp}".format(scp=scope))
 
 
-def json2csv(input_file, output_file=None, header_values=None, encoding=ENCODING):
-    """Convert Json file to CSV.
-
-    Function is used for only testing and can handle the file of the size.
-    """
+def json2csv(input_file,
+             output_file=None,
+             header_values=None,
+             encoding=ENCODING,
+             row_key=None):
+    """Convert Json file to CSV."""
     file_out = open_fr(input_file, encoding=encoding)
     # set output file name and write header
     if output_file is None:
         output_file = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
     csv_out = open_fw(output_file, encoding=encoding)
     if os.name == 'nt':
-        outfile = csv.DictWriter(csv_out,
-                                 dialect='excel',
-                                 escapechar="\\",
-                                 lineterminator='\n',
-                                 fieldnames=header_values)
+        outfile = csv.writer(csv_out,
+                             dialect='excel',
+                             escapechar="\\",
+                             lineterminator='\n')
     else:
-        outfile = csv.DictWriter(csv_out,
-                                 dialect='excel',
-                                 escapechar="\\",
-                                 fieldnames=header_values)
-    raw_data = json.loads(file_out.read())
-    outfile.writeheader()
+        outfile = csv.writer(csv_out, dialect='excel', escapechar="\\")
 
-    for item in raw_data:
-        outfile.writerow(item)
+    raw_data = json.loads(file_out.read(), object_pairs_hook=OrderedDict)
+
+    raw_data, header_values = walker(raw_data,
+                                     row_key=row_key,
+                                     header_values=header_values,
+                                     rows=[],
+                                     normalize=False)
+
+    if isinstance(raw_data[0], dict):
+        # row values are in a list of dictionaries
+        raw_data = [list(row.values()) for row in raw_data]
+    else:
+        raw_data = [row.tolist() for row in raw_data]
+    if header_values:
+        outfile.writerow(header_values)
+    outfile.writerows(raw_data)
     file_out.close()
     subprocess.call(['rm', '-r', input_file])
     return output_file
+
+
+def walker(raw_data, row_key=None, header_values=None, rows=[], normalize=False):
+    """
+    Extract rows of data from json datasets
+    """
+    #  Handles the simple case, where row_key and column_key are not required
+    if not (row_key or header_values):
+        if isinstance(raw_data, dict):
+            rows = pd.DataFrame([raw_data]).values
+            header_values = raw_data.keys()
+            return rows, header_values
+        elif isinstance(raw_data, list):
+            rows = pd.DataFrame(raw_data, columns=header_values).values
+            # Create headers with values as alphabets like [a , b, c, d]
+            num_columns = len(rows[0])
+            header_values = list(
+                itertools.chain(ascii_lowercase, (
+                    ''.join(pair) for pair in itertools.product(ascii_lowercase, repeat=2)
+                )))[:num_columns]
+            return rows, header_values
+
+    if isinstance(raw_data, dict):
+        header_values = [i.lower() for i in header_values]
+        # dict_keys = [i.lower() for i in dictionary.keys()]
+        raw_data = {k.lower(): v for k, v in raw_data.items()}
+        if header_values and (set(header_values).issubset(raw_data.keys())):
+            if normalize:
+                rows.extend(
+                    json_normalize(
+                        dict(
+                            i for i in raw_data.items() if i[0] in header_values)).values)
+            else:
+                rows.extend([dict(i for i in raw_data.items() if i[0] in header_values)])
+
+        elif raw_data.get(row_key):
+            if normalize:
+                rows.extend(json_normalize(raw_data[row_key]).values)
+            else:
+                rows, header_field = walker(raw_data[row_key],
+                                            row_key,
+                                            header_values,
+                                            rows,
+                                            normalize=True)
+                return rows, header_values
+
+        else:
+            for item in raw_data.values():
+                if isinstance(item, list):
+                    for ls in item:
+                        rows, header_field = walker(ls, row_key, header_values, rows)
+
+    if isinstance(raw_data, list):
+        for item in raw_data:
+            rows, header_field = walker(item,
+                                        row_key,
+                                        header_values,
+                                        rows,
+                                        normalize=True)
+
+    return rows, header_values
 
 
 def sqlite2csv(input_file, output_file, table_name=None, encoding=ENCODING):

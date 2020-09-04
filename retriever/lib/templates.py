@@ -189,6 +189,21 @@ class BasicTextTemplate(Script):
             self.engine.process_sqlite2csv(src_path, path_to_csv,
                                            table_obj.sqlite_data[0])
 
+        if hasattr(table_obj, "json_data"):
+            src_path = self.engine.format_filename(table_obj.json_data)
+            path_to_csv = self.engine.format_filename(table_obj.path)
+            self.engine.download_file(url, table_obj.json_data)
+            # schema_fields = None
+
+            schema_fields = None
+            empty_rows = None
+            if hasattr(table_obj, "columns"):
+                schema_fields = [c[0] for c in table_obj.columns]
+            if hasattr(table_obj, "empty_rows"):
+                empty_rows = table_obj.empty_rows
+
+            self.engine.process_json2csv(src_path, path_to_csv, schema_fields)
+
         if hasattr(table_obj, "path"):
             self.engine.auto_create_table(table_obj, url=url, filename=table_obj.path)
         else:
