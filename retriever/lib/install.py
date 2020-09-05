@@ -211,3 +211,24 @@ def install_xml(dataset,
         'hash_value': hash_value
     }
     return _install(args, use_cache, debug)
+
+
+def install_hdf5(dataset,
+                 file='hdf5.h5',
+                 table_name='{db}_{table}',
+                 data_dir=DATA_DIR,
+                 debug=False,
+                 use_cache=True,):
+    """Install datasets into hdf5."""
+    args = {
+        'command': 'install',
+        'dataset': dataset,
+        'engine': 'hdf5',
+        'file': file,
+        'table_name': table_name,
+        'data_dir': data_dir
+    }
+    hdf5_engine = choose_engine(args)
+    dataset.download(hdf5_engine, debug=debug)
+    dataset.engine.final_cleanup()
+    return _install(args, use_cache, debug)
