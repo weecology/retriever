@@ -11,3 +11,5 @@ sphinx_rtd_theme
 tqdm==4.30.0
 pandas
 setuptools
+h5py
+Pillow

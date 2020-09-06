@@ -30,6 +30,7 @@ from retriever.lib.engine_tools import geojson2csv
 from retriever.lib.engine_tools import sqlite2csv
 from retriever.lib.engine_tools import json2csv
 from retriever.lib.engine_tools import xml2csv
+from retriever.lib.engine_tools import hdf2csv
 from retriever.lib.warning import Warning
 
 
@@ -615,6 +616,15 @@ class Engine():
         if self.find_file(src_path):
             xml2csv(src_path, path_to_csv, header_values, empty_rows, encoding)
 
+    def process_hdf52csv(self,
+                         src_path,
+                         path_to_csv,
+                         data_name,
+                         data_type,
+                         encoding=ENCODING):
+        if self.find_file(src_path):
+            hdf2csv(src_path, path_to_csv, data_name, data_type, encoding=ENCODING)
+
     def extract_gz(
         self,
         archive_path,
@@ -915,7 +925,7 @@ class Engine():
                 dbname = ''
         return self.opts["table_name"].format(db=dbname, table=name)
 
-    def to_csv(self, sort=True, path=None, select_columns=None):
+    def to_csv(self, sort=True, path=None, select_columns=None, select_table=None):
         """Create a CSV file from the a data store.
 
         sort flag to create a sorted file,
