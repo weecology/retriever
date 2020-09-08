@@ -1,6 +1,8 @@
 import os
 
+import pandas as pd
 from pandas import HDFStore
+import sqlite3 as dbapi
 
 from retriever.lib.defaults import DATA_DIR
 from retriever.lib.dummy import DummyConnection
@@ -23,15 +25,6 @@ class engine(Engine):
         """Override create_db since an SQLite dataset needs to be created
         first followed by the creation of an empty HDFStore file.
         """
-        from retriever.engines.sqlite import engine
-
-        self.dbname = self.script.name.lower()
-        self.sqlite_engine = engine()
-        self.sqlite_engine.opts = {
-            "file": self.opts["file"].split(".")[0] + ".db",
-            "table_name": self.opts["table_name"],
-            "data_dir": self.opts["data_dir"]
-        }
         file_path = os.path.join(self.opts["data_dir"], self.opts["file"])
         self.file = HDFStore(file_path)
 
@@ -48,8 +41,22 @@ class engine(Engine):
         SQLite engine and putting it into the HDFStore file.
         """
         table_name = self.table_name()
-        df = self.sqlite_engine.fetch_table(table_name)
+        df = self.fetch_table(table_name)
         self.file.put(table_name, df, data_columns=True)
+
+    def fetch_table(self, table_name):
+        """Return a table from sqlite dataset as pandas dataframe."""
+        connection = self.get_sqlite_connection()
+        sql_query = "SELECT * FROM {};".format(table_name)
+        return pd.read_sql_query(sql_query, connection)
+
+    def get_sqlite_connection(self):
+        # self.get_input()
+        file = self.opts["file"]
+        file = (file.split("."))[0] + ".db"
+        db_file = self.opts["data_dir"]
+        full_path = os.path.join(db_file, file)
+        return dbapi.connect(os.path.normpath(full_path))
 
     def get_connection(self):
         """Gets the db connection."""
@@ -59,3 +66,6 @@ class engine(Engine):
     def disconnect(self):
         """Close the file after being written"""
         self.file.close()
+        file = self.opts["file"]
+        file = (file.split("."))[0] + ".db"
+        os.remove(file)
