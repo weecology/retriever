@@ -12,3 +12,5 @@ tqdm==4.30.0
 pandas
 setuptools
 tables
+h5py
+Pillow
