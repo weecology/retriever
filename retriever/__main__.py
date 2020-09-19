@@ -231,21 +231,7 @@ def main():
         else:
             raise Exception("no dataset specified.")
         if scripts:
-            if args.dataset.endswith('.zip') or (hasattr(args, 'hash_value') and
-                                                 args.hash_value):
-                _install(vars(args), debug=debug, use_cache=use_cache)
-                return
-            for dataset in scripts:
-                print("=> Installing", dataset.name)
-                try:
-                    dataset.download(engine, debug=debug)
-                    dataset.engine.final_cleanup()
-                except KeyboardInterrupt:
-                    pass
-                except Exception as e:
-                    print(e)
-                    if debug:
-                        raise
+            _install(vars(args), debug=debug, use_cache=use_cache)
             print("Done!")
         else:
             print("Run 'retriever ls' to see a list of currently available datasets.")

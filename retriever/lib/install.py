@@ -32,7 +32,20 @@ def _install(args, use_cache, debug):
     data_sets_scripts = name_matches(script_list, args['dataset'])
     if data_sets_scripts:
         for data_sets_script in data_sets_scripts:
+            print("=> Installing", data_sets_script.name)
             try:
+                if engine.name == "HDF5":
+                    sqlite_opts = {
+                        'command': 'install',
+                        'dataset': data_sets_script,
+                        'engine': 'sqlite',
+                        'file': (args["file"].split("."))[0] + ".db",
+                        'table_name': args["table_name"],
+                        'data_dir': args["data_dir"]
+                    }
+                    sqlite_engine = choose_engine(sqlite_opts)
+                    data_sets_script.download(sqlite_engine, debug=debug)
+                    data_sets_script.engine.final_cleanup()
                 engine.script_table_registry = OrderedDict()
                 data_sets_script.download(engine, debug=debug)
                 data_sets_script.engine.final_cleanup()
@@ -208,6 +221,26 @@ def install_xml(dataset,
         'table_name': table_name,
         'data_dir': data_dir,
         'force': force,
+        'hash_value': hash_value
+    }
+    return _install(args, use_cache, debug)
+
+
+def install_hdf5(dataset,
+                 file='hdf5.h5',
+                 table_name='{db}_{table}',
+                 data_dir=DATA_DIR,
+                 debug=False,
+                 use_cache=True,
+                 hash_value=None):
+    """Install datasets into hdf5."""
+    args = {
+        'command': 'install',
+        'dataset': dataset,
+        'engine': 'hdf5',
+        'file': file,
+        'table_name': table_name,
+        'data_dir': data_dir,
         'hash_value': hash_value
     }
     return _install(args, use_cache, debug)

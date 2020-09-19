@@ -11,7 +11,7 @@ from retriever import commit, install_sqlite
 
 file_location = os.path.normpath(os.path.dirname(os.path.realpath(__file__)))
 mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, \
-csv_engine, download_engine, json_engine, xml_engine = engine_list
+csv_engine, download_engine, json_engine, xml_engine, _ = engine_list
 
 test_commit_details = [
     (
