@@ -28,6 +28,7 @@ except ImportError:
 
 
 class main(Script):
+
     def __init__(self, **kwargs):
         Script.__init__(self, **kwargs)
         self.title = "USGS North American Breeding Bird Survey"
@@ -44,13 +45,16 @@ class main(Script):
         self.ref = "http://www.pwrc.usgs.gov/BBS/"
         self.keywords = ["birds", "continental-scale"]
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '3.0.0'
+        self.version = '4.0.0'
+        base_url = "https://www.sciencebase.gov/catalog/file/get/5ea04e9a82cefae35a129d65?f=__disk__"
         self.urls = {
-            "counts": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/States/",
-            "routes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/routes.zip",
-            "weather": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/Weather.zip",
-            "region_codes": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/RegionCodes.txt",
-            "species": "ftp://ftpext.usgs.gov/pub/er/md/laurel/BBS/DataFiles/SpeciesList.txt"}
+            "counts": base_url + "38%2F0e%2F1d%2F380e1dd98a48aa48b9cf2efa25f74e07ebc797f8",
+            "routes": base_url + "5d%2Fca%2F74%2F5dca74b1e3e1c21f18443e8f27c38bf0e2b2a234&allowOpen=true",
+            "weather": base_url + "87%2Fb5%2F1d%2F87b51d999ae1ad18838aa60851e9bcff4498ac8d",
+            "migrants": base_url + "bf%2Fe5%2Ff6%2Fbfe5f6834f85cc1e31edf67b5eb825b9abff5806",
+            "Vehicledata": base_url + "a9%2F97%2F2b%2Fa9972b26aaeb48bf9425ed21681312b4cc063a7c",
+            "species": base_url + "6f%2F16%2F1f%2F6f161fc7c7db1dcaf1259deb02d824700f280460&allowOpen=true",
+        }
 
         if parse_version(VERSION) <= parse_version("2.0.0"):
             self.shortname = self.name
@@ -74,118 +78,173 @@ class main(Script):
             engine = self.engine
 
             # Species table
-            table = Table("species", cleanup=Cleanup(), contains_pk=True,
-                          header_rows=10)
-
-            table.columns = [("species_id", ("pk-int",)),
-                             ("AOU", ("int",)),
-                             ("english_common_name", ("char", 50)),
-                             ("french_common_name", ("char", 50)),
-                             ("spanish_common_name", ("char", 50)),
-                             ("sporder", ("char", 30)),
-                             ("family", ("char", 30)),
-                             ("genus", ("char", 30)),
-                             ("species", ("char", 50)),
-                             ]
+            table = Table("species", cleanup=Cleanup(), contains_pk=True, header_rows=11)
+            table.columns = [
+                ("species_id", ("pk-int",)),
+                ("AOU", ("int",)),
+                ("english_common_name", ("char", 50)),
+                ("french_common_name", ("char", 50)),
+                ("spanish_common_name", ("char", 50)),
+                ("sporder", ("char", 30)),
+                ("family", ("char", 30)),
+                ("genus", ("char", 30)),
+                ("species", ("char", 50)),
+            ]
             table.fixed_width = [7, 6, 51, 51, 51, 51, 51, 51, 50]
-
             engine.table = table
             engine.create_table()
             engine.insert_data_from_url(self.urls["species"])
 
             # Routes table
-            engine.download_files_from_archive(self.urls["routes"],
-                                               ["routes.csv"])
+            engine.download_files_from_archive(self.urls["routes"], ["routes.csv"],
+                                               archive_name="routes.zip")
             engine.auto_create_table(Table("routes", cleanup=Cleanup()),
                                      filename="routes.csv")
             engine.insert_data_from_file(engine.format_filename("routes.csv"))
 
             # Weather table
-            if not os.path.isfile(engine.format_filename("weather_new.csv")):
-                engine.download_files_from_archive(self.urls["weather"],
-                                                   ["weather.csv"])
-                read = open_fr(engine.format_filename("weather.csv"))
-                write = open_fw(engine.format_filename("weather_new.csv"))
-                print("Cleaning weather data...")
-                for line in read:
-                    values = line.split(',')
-                    newvalues = []
-                    for value in values:
-
-                        if ':' in value:
-                            newvalues.append(value.replace(':', ''))
-                        elif value == "N":
-                            newvalues.append(None)
-                        else:
-                            newvalues.append(value)
-                    write.write(','.join(str(value) for value in newvalues))
-                write.close()
-                read.close()
-
-            engine.auto_create_table(Table("weather", pk="RouteDataId",
+            engine.download_files_from_archive(self.urls["weather"], ["weather.csv"],
+                                               archive_name="weather.zip")
+            engine.auto_create_table(Table("weather",
+                                           pk="RouteDataId",
                                            cleanup=self.cleanup_func_table),
-                                     filename="weather_new.csv")
-            engine.insert_data_from_file(
-                engine.format_filename("weather_new.csv"))
+                                     filename="weather.csv")
+            engine.insert_data_from_file(engine.format_filename("weather.csv"))
 
-            # Region_codes table
-            table = Table("region_codes", pk=False, header_rows=12,
-                          fixed_width=[11, 11, 30])
+            # Migrations data
+            engine.download_files_from_archive(self.urls["migrants"],
+                                               archive_name="MigrantNonBreeder.zip")
+            engine.extract_zip(
+                engine.format_filename("MigrantNonBreeder/Migrants.zip"),
+                engine.format_filename("Migrant"),
+            )
+            engine.extract_zip(
+                engine.format_filename("MigrantNonBreeder/MigrantSummary.zip"),
+                engine.format_filename("MigrantSummary"),
+            )
 
-            def regioncodes_cleanup(value, engine):
-                replace = {chr(225): "a", chr(233): "e", chr(237): "i", chr(243): "o"}
-                newvalue = str(value)
-                for key in list(replace.keys()):
-                    if key in newvalue:
-                        newvalue = newvalue.replace(key, replace[key])
-                return newvalue
-
-            table.cleanup = Cleanup(regioncodes_cleanup)
-
-            table.columns = [("countrynum", ("int",)),
-                             ("regioncode", ("int",)),
-                             ("regionname", ("char", 30))]
-
+            table = Table("migrants", cleanup=Cleanup())
+            table.columns = [
+                ('routedataid', ('int',)), ('countrynum', ('int',)),
+                ('statenum', ('int',)), ('route', ('int',)), ('rpid', ('int',)),
+                ('year', ('int',)), ('aou', ('int',)), ('stop1', ('int',)),
+                ('stop2', ('int',)), ('stop3', ('int',)), ('stop4', ('int',)),
+                ('stop5', ('int',)), ('stop6', ('int',)), ('stop7', ('int',)),
+                ('stop8', ('int',)), ('stop9', ('int',)), ('stop10', ('int',)),
+                ('stop11', ('int',)), ('stop12', ('int',)), ('stop13', ('int',)),
+                ('stop14', ('int',)), ('stop15', ('int',)), ('stop16', ('int',)),
+                ('stop17', ('int',)), ('stop18', ('int',)), ('stop19', ('int',)),
+                ('stop20', ('int',)), ('stop21', ('int',)), ('stop22', ('int',)),
+                ('stop23', ('int',)), ('stop24', ('int',)), ('stop25', ('int',)),
+                ('stop26', ('int',)), ('stop27', ('int',)), ('stop28', ('int',)),
+                ('stop29', ('int',)), ('stop30', ('int',)), ('stop31', ('int',)),
+                ('stop32', ('int',)), ('stop33', ('int',)), ('stop34', ('int',)),
+                ('stop35', ('int',)), ('stop36', ('int',)), ('stop37', ('int',)),
+                ('stop38', ('int',)), ('stop39', ('int',)), ('stop40', ('int',)),
+                ('stop41', ('int',)), ('stop42', ('int',)), ('stop43', ('int',)),
+                ('stop44', ('int',)), ('stop45', ('int',)), ('stop46', ('int',)),
+                ('stop47', ('int',)), ('stop48', ('int',)), ('stop49', ('int',)),
+                ('stop50', ('int',))
+            ]
             engine.table = table
             engine.create_table()
+            engine.insert_data_from_file(engine.format_filename("Migrant/Migrants.csv"))
 
-            engine.insert_data_from_url(self.urls["region_codes"])
+            table = Table("migrantsummary", cleanup=Cleanup())
+            table.columns = [('routedataid', ('int',)), ('countrynum', ('int',)),
+                             ('statenum', ('int',)), ('route', ('int',)),
+                             ('rpid', ('int',)), ('year', ('int',)), ('aou', ('int',)),
+                             ('count10', ('int',)), ('count20', ('int',)),
+                             ('count30', ('int',)), ('count40', ('int',)),
+                             ('count50', ('int',)), ('stoptotal', ('int',)),
+                             ('speciestotal', ('int',))]
+            engine.table = table
+            engine.create_table()
+            engine.insert_data_from_file(
+                engine.format_filename("MigrantSummary/MigrantSummary.csv"))
+
+            table = Table("vehicledata", cleanup=Cleanup())
+            table.columns = [
+                ('routedataid', ('int',)), ('countrynum', ('int',)),
+                ('statenum', ('int',)), ('route', ('int',)), ('rpid', ('int',)),
+                ('year', ('int',)), ('recordedcar', ('char',)), ('car1', ('int',)),
+                ('car2', ('int',)), ('car3', ('int',)), ('car4', ('int',)),
+                ('car5', ('int',)), ('car6', ('int',)), ('car7', ('int',)),
+                ('car8', ('int',)), ('car9', ('int',)), ('car10', ('int',)),
+                ('car11', ('int',)), ('car12', ('int',)), ('car13', ('int',)),
+                ('car14', ('int',)), ('car15', ('int',)), ('car16', ('int',)),
+                ('car17', ('int',)), ('car18', ('int',)), ('car19', ('int',)),
+                ('car20', ('int',)), ('car21', ('int',)), ('car22', ('int',)),
+                ('car23', ('int',)), ('car24', ('int',)), ('car25', ('int',)),
+                ('car26', ('int',)), ('car27', ('int',)), ('car28', ('int',)),
+                ('car29', ('int',)), ('car30', ('int',)), ('car31', ('int',)),
+                ('car32', ('int',)), ('car33', ('int',)), ('car34', ('int',)),
+                ('car35', ('int',)), ('car36', ('int',)), ('car37', ('int',)),
+                ('car38', ('int',)), ('car39', ('int',)), ('car40', ('int',)),
+                ('car41', ('int',)), ('car42', ('int',)), ('car43', ('int',)),
+                ('car44', ('int',)), ('car45', ('int',)), ('car46', ('int',)),
+                ('car47', ('int',)), ('car48', ('int',)), ('car49', ('int',)),
+                ('car50', ('int',)), ('noise1', ('int',)), ('noise2', ('int',)),
+                ('noise3', ('int',)), ('noise4', ('int',)), ('noise5', ('int',)),
+                ('noise6', ('int',)), ('noise7', ('int',)), ('noise8', ('int',)),
+                ('noise9', ('int',)), ('noise10', ('int',)), ('noise11', ('int',)),
+                ('noise12', ('int',)), ('noise13', ('int',)), ('noise14', ('int',)),
+                ('noise15', ('int',)), ('noise16', ('int',)), ('noise17', ('int',)),
+                ('noise18', ('int',)), ('noise19', ('int',)), ('noise20', ('int',)),
+                ('noise21', ('int',)), ('noise22', ('int',)), ('noise23', ('int',)),
+                ('noise24', ('int',)), ('noise25', ('int',)), ('noise26', ('int',)),
+                ('noise27', ('int',)), ('noise28', ('int',)), ('noise29', ('int',)),
+                ('noise30', ('int',)), ('noise31', ('int',)), ('noise32', ('int',)),
+                ('noise33', ('int',)), ('noise34', ('int',)), ('noise35', ('int',)),
+                ('noise36', ('int',)), ('noise37', ('int',)), ('noise38', ('int',)),
+                ('noise39', ('int',)), ('noise40', ('int',)), ('noise41', ('int',)),
+                ('noise42', ('int',)), ('noise43', ('int',)), ('noise44', ('int',)),
+                ('noise45', ('int',)), ('noise46', ('int',)), ('noise47', ('int',)),
+                ('noise48', ('int',)), ('noise49', ('int',)), ('noise50', ('int',))
+            ]
+            engine.table = table
+            engine.create_table()
+            engine.download_files_from_archive(self.urls["Vehicledata"],
+                                               archive_name="VehicleData.zip")
+            engine.extract_zip(
+                engine.format_filename("VehicleData/VehicleData.zip"),
+                engine.format_filename("VehicleData"),
+            )
+            engine.insert_data_from_file(
+                engine.format_filename("VehicleData/VehicleData.csv"))
 
             # Counts table
-            table = Table("counts", delimiter=',')
+            table = Table("counts", delimiter=",")
+            engine.download_files_from_archive(self.urls["counts"],
+                                               archive_name="States.zip")
 
-            table.columns = [("record_id", ("pk-auto",)),
-                             ("RouteDataID", ("int",)),
-                             ("countrynum", ("int",)),
-                             ("statenum", ("int",)),
-                             ("Route", ("int",)),
-                             ("RPID", ("int",)),
-                             ("Year", ("int",)),
-                             ("Aou", ("int",)),
-                             ("Count10", ("int",)),
-                             ("Count20", ("int",)),
-                             ("Count30", ("int",)),
-                             ("Count40", ("int",)),
-                             ("Count50", ("int",)),
-                             ("StopTotal", ("int",)),
-                             ("SpeciesTotal", ("int",))]
+            table.columns = [("record_id", ("pk-auto",)), ("RouteDataID", ("int",)),
+                             ("countrynum", ("int",)), ("statenum", ("int",)),
+                             ("Route", ("int",)), ("RPID", ("int",)), ("Year", ("int",)),
+                             ("Aou", ("int",)), ("Count10", ("int",)),
+                             ("Count20", ("int",)), ("Count30", ("int",)),
+                             ("Count40", ("int",)), ("Count50", ("int",)),
+                             ("StopTotal", ("int",)), ("SpeciesTotal", ("int",))]
 
-            stateslist = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado",
-                          "Connecticut", "Delaware", "Florida", "Georgia", "Idaho",
-                          "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine",
-                          "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi",
-                          "Missouri", "Montana", "Nebraska", "Nevada",
-                          ["New Hampshire", "NHampsh"], ["New Jersey", "NJersey"],
-                          ["New Mexico", "NMexico"], ["New York", "NYork"],
-                          ["North Carolina", "NCaroli"], ["North Dakota", "NDakota"], "Ohio",
-                          "Oklahoma", "Oregon", "Pennsylvania", ["Rhode Island", "RhodeIs"],
-                          ["South Carolina", "SCaroli"], ["South Dakota", "SDakota"], "Tennessee",
-                          "Texas", "Utah", "Vermont", "Virginia", "Washington",
-                          ["West Virginia", "W_Virgi"], "Wisconsin", "Wyoming", "Alberta",
-                          ["British Columbia", "BritCol"], "Manitoba", ["New Brunswick", "NBrunsw"],
-                          ["Northwest Territories", "NWTerri"], "Newfoundland",
-                          ["Nova Scotia", "NovaSco"], "Nunavut", "Ontario",
-                          ["Prince Edward Island", "PEI"], "Quebec", "Saskatchewan", "Yukon"]
+            stateslist = [
+                "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado",
+                "Connecticut", "Delaware", "Florida", "Georgia", "Idaho", "Illinois",
+                "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland",
+                "Massachusetts", "Michigan", "Minnesota",
+                "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada",
+                ["New Hampshire", "NHampsh"], ["New Jersey", "NJersey"],
+                ["New Mexico", "NMexico"], ["New York",
+                                            "NYork"], ["North Carolina", "NCaroli"],
+                ["North Dakota", "NDakota"], "Ohio", "Oklahoma", "Oregon", "Pennsylvania",
+                ["Rhode Island", "RhodeIs"], ["South Carolina", "SCaroli"],
+                ["South Dakota", "SDakota"
+                ], "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington",
+                ["West Virginia", "W_Virgi"], "Wisconsin", "Wyoming", "Alberta",
+                ["British Columbia", "BritCol"], "Manitoba", ["New Brunswick", "NBrunsw"],
+                ["Northwest Territories", "NWTerri"], "Newfoundland",
+                ["Nova Scotia", "NovaSco"], "Nunavut", "Ontario",
+                ["Prince Edward Island", "PEI"], "Quebec", "Saskatchewan", "Yukon"
+            ]
 
             state = ""
             shortstate = ""
@@ -203,19 +262,18 @@ class main(Script):
                     print("Inserting data from " + state + "...")
                     try:
                         engine.table.cleanup = Cleanup()
-                        engine.insert_data_from_archive(
-                            self.urls["counts"] + shortstate + ".zip", [shortstate + ".csv"])
+                        engine.extract_zip(
+                            engine.format_filename("States/" + shortstate + ".zip"),
+                            engine.format_filename("States/" + shortstate),
+                        )
+                        file_path = "{states}/{shortstate}/{shortstate}.csv".format(
+                            states="States", shortstate=shortstate)
+                        engine.insert_data_from_file(engine.format_filename(file_path))
                     except:
-                        print(
-                            "Failed bulk insert on " +
-                            state +
-                            ", inserting manually.")
+                        print(state, ": Failed bulk insert on, inserting manually.")
                         engine.connection.rollback()
                         engine.table.cleanup = self.cleanup_func_clean
-                        engine.insert_data_from_archive(
-                            self.urls["counts"] + shortstate + ".zip",
-                            [shortstate + ".csv"])
-
+                        engine.insert_data_from_file(engine.format_filename(file_path))
                 except:
                     print("There was an error in " + state + ".")
                     raise
