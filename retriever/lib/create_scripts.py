@@ -309,6 +309,9 @@ def create_package(path,
     if not os.path.exists(path):
         print("Please enter a valid path.")
         return
+    elif not file_flag and not os.path.isdir(path):
+        print("Please enter a valid directory path.")
+        return
     if not out_path or out_path == "":
         out_path = os.path.join(get_directory(path), "")
     if data_type.lower() == "tabular":
