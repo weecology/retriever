@@ -10,6 +10,7 @@
 [![Join the chat at https://gitter.im/weecology/retriever](https://badges.gitter.im/weecology/retriever.svg)](https://gitter.im/weecology/retriever?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1038272.svg)](https://doi.org/10.5281/zenodo.1038272)
 [![JOSS Publication](http://joss.theoj.org/papers/10.21105/joss.00451/status.svg)](https://doi.org/10.21105/joss.00451)
+[![Anaconda-Server Badge](https://anaconda.org/conda-forge/retriever/badges/downloads.svg)](https://anaconda.org/conda-forge/retriever)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/retriever/badges/version.svg)](https://anaconda.org/conda-forge/retriever)
 [![Version](https://img.shields.io/pypi/v/retriever.svg)](https://pypi.python.org/pypi/retriever)
 <a href="https://numfocus.org/sponsored-projects">
