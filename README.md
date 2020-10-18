@@ -52,6 +52,8 @@ Ubuntu/Debian on
 the [releases page](https://github.com/weecology/retriever/releases). These do
 not require a Python installation.
 
+[List of Available Datasets](https://retriever.readthedocs.io/en/latest/datasets_list.html)
+----------------------------
 
 Installing From Source
 ----------------------
