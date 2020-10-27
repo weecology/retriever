@@ -26,7 +26,7 @@ def package_details():
     return details
 
 
-def commit_info_for_commit(dataset, commit_message):
+def commit_info_for_commit(dataset, commit_message, encoding=ENCODING):
     """
     Generate info for a particular commit.
     """
@@ -39,8 +39,8 @@ def commit_info_for_commit(dataset, commit_message):
     }
     path_to_raw_data = os.path.join(HOME_DIR, "raw_data", dataset.name)
     if os.path.exists(path_to_raw_data):
-        info["md5_dataset"] = getmd5(path_to_raw_data, "dir", encoding=ENCODING)
-    info["md5_script"] = getmd5(dataset._file, data_type="file", encoding=ENCODING)
+        info["md5_dataset"] = getmd5(path_to_raw_data, "dir", encoding=encoding)
+    info["md5_script"] = getmd5(dataset._file, data_type="file", encoding=encoding)
     return info
 
 
@@ -62,8 +62,9 @@ def commit_writer(dataset, commit_message, path, quiet):
         for root, _, files in os.walk(os.path.join(raw_dir, dataset.name)):
             for file in files:
                 paths_to_zip["raw_data"].append(os.path.join(root, file))
-
-        info = commit_info_for_commit(dataset, commit_message=commit_message)
+        info = commit_info_for_commit(dataset,
+                                      commit_message=commit_message,
+                                      encoding=dataset.encoding)
         zip_file_name = "{}-{}{}.zip".format(dataset.name, info["md5_dataset"][:3],
                                              info["md5_script"][:3])
 
