@@ -97,7 +97,8 @@ Check the services' home pages in case you have to add the same capabilities to 
 links `Read The Docs`_, `codecov`_, `AppVeyor`_ and  `Travis`_
 
 To run the tests you will need to have all of the relevant database management systems and associated
-modules installed (see ``Setting up servers``). Create the appropriate permissions for the tests to access
+modules installed (see ``Setting up servers``). For PostgresSQL installation refer to `Spatial database setup`_.
+Create the appropriate permissions for the tests to access
 the databases. You can do this by running the following commands in MySQL and
 PostgreSQL and creating the .pgpass(pgpass.conf for Microsoft Windows) file as described below:
 
@@ -416,3 +417,4 @@ Use ``-f`` flag to force pushing changes to the branch. ``git push -f origin [br
 .. _installing the wheel: http://www.lfd.uci.edu/~gohlke/pythonlibs/
 .. _setup tools: https://pythonhosted.org/an_example_pypi_project/setuptools.html
 .. _Data Retriever repository: https://github.com/weecology/retriever
+.. _Spatial database setup: developer.html#Spatial-database-setup
