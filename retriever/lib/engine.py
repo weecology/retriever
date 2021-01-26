@@ -533,34 +533,30 @@ class Engine():
 
         api = KaggleApi()
         api.authenticate()
+        archive_full_path = archive_full_path + ".zip"
 
         if data_source == "dataset":
-            archive_full_path = archive_full_path + ".zip"
             try:
                 api.dataset_download_files(dataset=dataset_name,
                                            path=archive_dir,
                                            quiet=False,
                                            force=True)
                 file_names = self.extract_zip(archive_full_path, archive_dir)
-            except ApiException:
-                print(f"The dataset '{dataset_name}' isn't currently available "
-                      f"in the Retriever.\nRun 'retriever ls' to see a "
-                      f"list of currently available datasets.")
+            except ApiException as e:
+                print(f"Could not download '{dataset_name}' from kaggle datasets.")
+                print("Response :", e.body.decode("unicode_escape"))
                 return []
 
         else:
-            archive_full_path = archive_full_path.replace("kaggle:competition:",
-                                                          "") + ".zip"
             try:
                 api.competition_download_files(competition=dataset_name,
                                                path=archive_dir,
                                                quiet=False,
                                                force=True)
                 file_names = self.extract_zip(archive_full_path, archive_dir)
-            except ApiException:
-                print(f"The dataset '{dataset_name}' isn't currently available "
-                      f"in the Retriever.\nRun 'retriever ls' to see a "
-                      f"list of currently available datasets.")
+            except ApiException as e:
+                print(f"Could not download '{dataset_name}' from kaggle competitions.")
+                print("Response :", e.body.decode("unicode_escape"))
                 return []
 
         return file_names
@@ -589,8 +585,7 @@ class Engine():
             archive_dir = archive_dir.format(dataset=self.script.name)
             if not os.path.exists(archive_dir):
                 os.makedirs(archive_dir)
-
-        if hasattr(self.script.__dict__, "kaggle"):
+        if hasattr(self.script, "kaggle"):
             file_names = self.download_from_kaggle(data_source=self.script.data_source,
                                                    dataset_name=url,
                                                    archive_dir=archive_dir,
