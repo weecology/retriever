@@ -509,7 +509,7 @@ class Engine():
             progbar.close()
         return True
 
-    def git(
+    def download_from_kaggle(
         self,
         data_source,
         dataset_name,
