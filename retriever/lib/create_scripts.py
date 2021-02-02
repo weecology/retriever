@@ -184,30 +184,32 @@ class RasterPk(TabularPk):
         self.transform = ""
         self.resources = []
 
-    def get_source(self, file_path):
+    def get_source(self, file_path, driver=None):
         """Read raster data source"""
-        if not self.driver:
-            # use default open
-            src_ds = gdal.Open(file_path, GA_ReadOnly)
-        return src_ds
+        if driver:
+            # use driver open
+            driver = ogr.GetDriverByName(driver)
+            return  driver.Open(file_path, 0)
+        return gdal.Open(file_path, GA_ReadOnly)
 
     def set_global(self, src_ds):
         """Set raster specific properties"""
-        self.description = os.path.basename(src_ds.GetDescription())
-        self.driver = src_ds.GetDriver().ShortName
-        self.projection = src_ds.GetProjection()
-        self.transform = OrderedDict(
-            zip(
-                [
-                    "xOrigin",
-                    "pixelWidth",
-                    "rotation_2",
-                    "yOrigin",
-                    "rotation_4",
-                    "pixelHeight",
-                ],
-                src_ds.GetGeoTransform(),
-            ))
+        if src_ds:
+            self.description = os.path.basename(src_ds.GetDescription())
+            self.driver = src_ds.GetDriver().ShortName
+            self.projection = src_ds.GetProjection()
+            self.transform = OrderedDict(
+                zip(
+                    [
+                        "xOrigin",
+                        "pixelWidth",
+                        "rotation_2",
+                        "yOrigin",
+                        "rotation_4",
+                        "pixelHeight",
+                    ],
+                    src_ds.GetGeoTransform(),
+                ))
 
     def create_raster_resources(self, file_path):
         """Get resource information from raster file"""
@@ -215,14 +217,13 @@ class RasterPk(TabularPk):
         fomart_x = extension[1:]
         file_name = os.path.basename(file_path)
         base = os.path.splitext(file_name)[0]
+        resource_pk = []
         if os.path.isfile(file_path) and fomart_x in self.pk_formats:
             sub_dataset_name = file_path
             src_ds = self.get_source(sub_dataset_name)
             if not self.name:
                 self.name = os.path.basename(src_ds.GetDescription())
             self.set_global(src_ds)
-
-            resource_pk = []
             for band_num in range(1, src_ds.RasterCount + 1):
                 bands = OrderedDict()
                 srcband = src_ds.GetRasterBand(band_num)
@@ -243,9 +244,10 @@ class RasterPk(TabularPk):
                         srcband.GetStatistics(True, False),
                     ))
                 resource_pk.append(bands)
-        return resource_pk[0]
+        # self.resource = resource_pk
+        return resource_pk
 
-    def get_resources(self, file_path):  # pylint: disable=W0221
+    def get_resources(self, file_path, driver_name=None):  # pylint: disable=W0221
         """Get raster resources"""
         return self.create_raster_resources(file_path)
 
@@ -329,8 +331,11 @@ def create_script_dict(pk_type, path, file, skip_lines, encoding):
     """Create a script dict or skips file if resources cannot be made"""
     dict_values = pk_type.__dict__
     try:
-        resources = pk_type.get_resources(path, skip_lines, encoding)
-    except:
+        resources = pk_type.get_resources(file_path=path,
+                                          driver_name=None,
+                                          skip_lines=skip_lines,
+                                          encoding=encoding)
+    except Exception as e:
         print("Skipped file: " + file)
         return None
     dict_values.setdefault("resources", []).append(resources)
