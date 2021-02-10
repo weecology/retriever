@@ -1,6 +1,6 @@
 {
     "name": "test-raster-single-band",
-    "url": "https://github.com/weecology/retriever/raw/master/test/raw_data_gis/usgstest.zip",
+    "url": "https://github.com/weecology/retriever/raw/main/test/raw_data_gis/usgstest.zip",
     "title": "Landsat Washington p047r027_7t20000730_z10_nn30 ",
     "ref": "https://github.com/cgarrard/osgeopy-code",
     "driver": "GTiff",

@@ -1,6 +1,6 @@
 {
     "name": "test-raster-multi-bands",
-    "url": "https://github.com/weecology/retriever/raw/master/test/raw_data_gis/harv_landrgb.zip",
+    "url": "https://github.com/weecology/retriever/raw/main/test/raw_data_gis/harv_landrgb.zip",
     "title": "229_HARV_landRGB",
     "ref": "https://www.neonscience.org/dc-raster-time-series-r",
     "driver": "GTiff",

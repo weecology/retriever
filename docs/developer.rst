@@ -84,7 +84,7 @@ Running tests locally
 Services Used
 -------------
 
-Check the services' home pages in case you have to add the same capabilities to your master branch.
+Check the services' home pages in case you have to add the same capabilities to your main branch.
 
 ::
 
@@ -186,13 +186,13 @@ Start
 1. **Run the tests**. Seriously, do it now.
 2. Update ``CHANGES.md`` with major updates since last release
 3. Run ``python version.py`` (this will update ``version.txt``)
-4. In the `master` branch update the version number and create a tag, run `bumpversion release`
+4. In the `main` branch update the version number and create a tag, run `bumpversion release`
 5. Push the release commit and the tag
 6. After the release, update the version to dev, run `bumpversion patch`
 
    ::
 
-       git push upstream master
+       git push upstream main
        git push upstream --tags
 
 Pypi
@@ -290,7 +290,7 @@ Documentation
 
 We are using `Sphinx`_ and `Read the Docs`_. for the documentation.
 Sphinx uses reStructuredText as its markup language.
-Source Code documentation is automatically included after committing to the master.
+Source Code documentation is automatically included after committing to the main.
 Other documentation (not source code) files are added as new reStructuredText in the docs folder
 
 In case you want to change the organization of the Documentation, please refer to `Sphinx`_
@@ -352,7 +352,7 @@ This will update your `.git/config` to point to your repository copy of the Data
        fetch = +refs/heads/*:refs/remotes/origin/*
 
 Point to Weecology `Data Retriever repository`_ repo.
-This will enable you update your master(origin) and you can then push to your origin master.
+This will enable you update your main(origin) and you can then push to your origin main.
 In our case, we can call this upstream().
 
    ::
@@ -369,13 +369,13 @@ This will update your `.git/config` to point to the Weecology `Data Retriever re
   # To fetch pull requests add
   fetch = +refs/pull/*/head:refs/remotes/origin/pr/*
 
-Fetch upstream master and create a branch to add the contributions to.
+Fetch upstream main and create a branch to add the contributions to.
 
 .. code-block:: bash
 
   git fetch upstream
-  git checkout master
-  git reset --hard upstream master
+  git checkout main
+  git reset --hard upstream main
   git checkout -b [new-branch-to-fix-issue]
 
 **Submiting issues**
@@ -386,7 +386,7 @@ Explain the issue explicitly with all details, giving examples and logs where ap
 **Commits**
 
 From your local branch of retriever, commit to your origin.
-Once tests have passed you can then make a pull request to the retriever master (upstream)
+Once tests have passed you can then make a pull request to the retriever main (upstream)
 For each commit, add the issue number at the end of the description with the tag ``fixes #[issue_number]``.
 
 Example::

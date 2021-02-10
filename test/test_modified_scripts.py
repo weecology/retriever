@@ -24,17 +24,17 @@ def setup_module():
 
 
 def get_modified_scripts():
-    """Get modified script list, using version.txt in repo and master upstream"""
+    """Get modified script list, using version.txt in repo and main upstream"""
 
     modified_list = []
-    version_file = requests.get("https://raw.githubusercontent.com/weecology/retriever/master/version.txt")
+    version_file = requests.get("https://raw.githubusercontent.com/weecology/retriever/main/version.txt")
     local_repo_scripts = get_retriever_script_versions()  # local repo versions
 
     upstream_versions = {}
     version_file = version_file.text.splitlines()[1:]
     for line in version_file:
-        master_script_name, master_script_version = line.lower().strip().split(",")
-        upstream_versions[master_script_name] = master_script_version
+        main_script_name, main_script_version = line.lower().strip().split(",")
+        upstream_versions[main_script_name] = main_script_version
 
     for item in local_repo_scripts:
         local_script, local_version = item.lower().split(",")
