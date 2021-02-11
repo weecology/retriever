@@ -1,0 +1,36 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Python package
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.7, 3.8, 3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install flake8 pytest
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Run Tests in docker
+      run: |
+        docker-compose run --service-ports python_retriever pytest -v -k "not test_geojson2csv" --cov=retriever
+        docker-compose run python_retriever flake8 --ignore=E501,W503,E402,F401,F403,E722,F841,W504 retriever --max-line-length=90 2>&1
+        docker-compose run python_retriever yapf -d --recursive retriever/ --style=.style.yapf 2>&1
+        docker-compose run python_retriever pylint -rn retriever/ -f colorized --rcfile=.pylintrc > /dev/null 2>&1
