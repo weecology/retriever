@@ -523,7 +523,7 @@ add keys to the resource part as described below.
     "tests"
   ],
   "encoding": "latin-1",
-  "url": "https://github.com/ashishpriyadarshiCIC/My_data/raw/master/Test_table_image_data.h5",
+  "url": "https://github.com/ashishpriyadarshiCIC/My_data/raw/main/Test_table_image_data.h5",
   "ref": "N/A",
   "version": "1.0.0",
   "retriever_minimum_version": "2.1.dev",
@@ -588,7 +588,7 @@ add keys to the resource part as described below.
           }
         ]
       },
-      "url": "https://github.com/ashishpriyadarshiCIC/My_data/raw/master/Test_table_image_data.h5"
+      "url": "https://github.com/ashishpriyadarshiCIC/My_data/raw/main/Test_table_image_data.h5"
     },
     {
       "name": "test_image",

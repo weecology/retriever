@@ -10,7 +10,7 @@
     "keywords": [
         "test"
     ],
-    "url": "https://github.com/weecology/retriever/raw/master/test/raw_data_gis/regions_shape.zip",
+    "url": "https://github.com/weecology/retriever/raw/main/test/raw_data_gis/regions_shape.zip",
     "ref": "http://example-test.com/",
     "version": "1.0.0",
     "retriever": "True",
@@ -21,7 +21,7 @@
         {
             "name": "reg",
             "path": "regioni2001/reg2001_s.shp",
-            "url": "https://github.com/weecology/retriever/raw/master/test/raw_data_gis/regions_shape.zip",
+            "url": "https://github.com/weecology/retriever/raw/main/test/raw_data_gis/regions_shape.zip",
             "geom_type": "Polygon",
              "extent": {
                 "xMin": 313360.99994548626,

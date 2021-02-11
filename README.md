@@ -1,12 +1,12 @@
 ![Retriever logo](http://i.imgur.com/se7TtrK.png)
 
 
-[![Build Status](https://travis-ci.com/weecology/retriever.svg?branch=master)](https://travis-ci.com/weecology/retriever)
-[![Build Status (windows)](https://ci.appveyor.com/api/projects/status/qetgo4jxa5769qtb/branch/master?svg=true)](https://ci.appveyor.com/project/ethanwhite/retriever/branch/master)
+[![Build Status](https://travis-ci.com/weecology/retriever.svg?branch=main)](https://travis-ci.com/weecology/retriever)
+[![Build Status (windows)](https://ci.appveyor.com/api/projects/status/qetgo4jxa5769qtb/branch/main?svg=true)](https://ci.appveyor.com/project/ethanwhite/retriever/branch/main)
 [![Research software impact](http://depsy.org/api/package/pypi/retriever/badge.svg)](http://depsy.org/package/python/retriever)
-[![codecov.io](https://codecov.io/github/weecology/retriever/coverage.svg?branch=master)](https://codecov.io/github/weecology/retriever?branch=master)
+[![codecov.io](https://codecov.io/github/weecology/retriever/coverage.svg?branch=main)](https://codecov.io/github/weecology/retriever?branch=main)
 [![Documentation Status](https://readthedocs.org/projects/retriever/badge/?version=latest)](http://retriever.readthedocs.io/en/latest/?badge=latest)
-[![License](http://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/weecology/retriever/master/LICENSE)
+[![License](http://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/weecology/retriever/main/LICENSE)
 [![Join the chat at https://gitter.im/weecology/retriever](https://badges.gitter.im/weecology/retriever.svg)](https://gitter.im/weecology/retriever?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1038272.svg)](https://doi.org/10.5281/zenodo.1038272)
 [![JOSS Publication](http://joss.theoj.org/papers/10.21105/joss.00451/status.svg)](https://doi.org/10.21105/joss.00451)

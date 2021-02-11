@@ -19,7 +19,7 @@
                 ],
                 "contains_pk":"True"
             },
-            "url":"https://raw.githubusercontent.com/weecology/retriever/master/test/raw_data/dataset-provenance/original/dataset_provenance.csv",
+            "url":"https://raw.githubusercontent.com/weecology/retriever/main/test/raw_data/dataset-provenance/original/dataset_provenance.csv",
             "name":"main",
             "schema":{
                 "fields":[
