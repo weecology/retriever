@@ -19,12 +19,11 @@ Setting up servers
 
 You need to install all the database infrastructures to enable local testing.
 
-::
 
-  SQLite
-  MySQL
-  PostgreSQL
-  MSAccess
+`PostgresSQL`_
+`MySQL`_
+`SQLite`_
+MSAccess
 
 You will also need the following modules:
 
@@ -56,13 +55,13 @@ we can either install from source as
 
 .. code-block:: bash
 
-  $ pip install . --upgrade or python setup.py install
+  pip install . --upgrade or python setup.py install
 
 or install in development mode.
 
 .. code-block:: bash
 
-  $  python setup.py develop
+  python setup.py develop
 
 For more about `installing`_ refer to the python setuptools `documentation`_.
 
@@ -88,13 +87,12 @@ Check the services' home pages in case you have to add the same capabilities to 
 
 ::
 
-  Travis
   AppVeyor
   readthedocs
   codecov
 
 
-links `Read The Docs`_, `codecov`_, `AppVeyor`_ and  `Travis`_
+links `Read The Docs`_, `codecov`_, `AppVeyor`_
 
 To run the tests you will need to have all of the relevant database management systems and associated
 modules installed (see ``Setting up servers``). For PostgresSQL installation refer to `Spatial database setup`_.
@@ -126,7 +124,11 @@ is stored in a directory that is secure, so no special permissions check is made
   mysql -e "CREATE USER 'travis'@'localhost';" -uroot
   mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'travis'@'localhost';" -uroot
   mysql -e "GRANT FILE ON *.* TO 'travis'@'localhost';" -uroot
-  Sample  `~.my.cnf` file
+
+MySQL conf file `~.my.cnf` file.
+
+::
+
   [client]
   user="travis"
   password="Password12!"
@@ -140,12 +142,22 @@ is stored in a directory that is secure, so no special permissions check is made
   psql -c "CREATE USER postgres WITH PASSWORD 'Password12!'"
   psql -c 'CREATE DATABASE testdb_retriever'
   psql -c 'GRANT ALL PRIVILEGES ON DATABASE testdb_retriever to postgres'
-  ​
-  Create .pgpass in your home directory:
+
+PostgresSQL conf file `~/.pgpass` file.
+
+::
+
   localhost:*:testdb_retriever:postgres:Password12!
 
+Find the installed Postgres directory and
+In order to allow passwordless login to Postgres, you should change peer to `trust` in `pg_hba.conf`
+Find the `pg_hba.conf` file in the postgres directory.
+One way to find the file `pg_hba.conf` is using `psql -t -P format=unaligned -c 'show hba_file';`
 
+::
 
+  # Database administrative login by Unix domain socket
+  local   all             postgres                                trust
 
 To run tests we use pytest.
 From the source top level directory, run
@@ -169,7 +181,7 @@ from the permissions of the files ``~/.pgpass, ~/.my.cnf``
 Continuous Integration
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The main GitHub repository runs test on both the Travis (Linux) and AppVeyor
+The main GitHub repository runs test on both the GitHub Actions (Linux) and AppVeyor
 (Windows) continuous integration platforms.
 
 Pull requests submitted to the repository will automatically be tested using
@@ -410,7 +422,6 @@ Use ``-f`` flag to force pushing changes to the branch. ``git push -f origin [br
 .. _project website: http://data-retriever.org
 .. _Sphinx: http://www.sphinx-doc.org/en/stable/
 .. _Read The Docs: https://readthedocs.org//
-.. _Travis: https://travis-ci.org/
 .. _AppVeyor: https://www.appveyor.com/
 .. _documentation: https://pythonhosted.org/an_example_pypi_project/setuptools.html
 .. _installing: https://docs.python.org/3.6/install/
@@ -418,3 +429,6 @@ Use ``-f`` flag to force pushing changes to the branch. ``git push -f origin [br
 .. _setup tools: https://pythonhosted.org/an_example_pypi_project/setuptools.html
 .. _Data Retriever repository: https://github.com/weecology/retriever
 .. _Spatial database setup: developer.html#Spatial-database-setup
+.. _PostgresSQL: https://www.postgresql.org/download/
+.. _SQlite: https://sqlite.org/download.html
+.. _MySQL: https://www.mysql.com/downloads/
