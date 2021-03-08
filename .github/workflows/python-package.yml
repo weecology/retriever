@@ -33,4 +33,4 @@ jobs:
         docker-compose run --service-ports python_retriever pytest -v -k "not test_geojson2csv" --cov=retriever
         docker-compose run python_retriever flake8 --ignore=E501,W503,E402,F401,F403,E722,F841,W504 retriever --max-line-length=90 2>&1
         docker-compose run python_retriever yapf -d --recursive retriever/ --style=.style.yapf 2>&1
-        docker-compose run python_retriever pylint -rn retriever/ -f colorized --rcfile=.pylintrc > /dev/null 2>&1
+        
