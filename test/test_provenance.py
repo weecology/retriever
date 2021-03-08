@@ -21,8 +21,8 @@ test_commit_details = [
             + "test/raw_data/dataset-provenance/modified/dataset_provenance.csv"
         },
         {
-            "original": "dataset-provenance-c147c9.zip",
-            "modified": "dataset-provenance-6ca7c9.zip",
+            "original": "dataset-provenance-c14c6e.zip",
+            "modified": "dataset-provenance-6cac6e.zip",
         },
     )
 ]
