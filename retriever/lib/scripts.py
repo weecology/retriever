@@ -82,6 +82,8 @@ def reload_scripts():
                 file, pathname, desc = imp.find_module(script_name, [search_path])
                 try:
                     new_module = imp.load_module(script_name, file, pathname, desc)
+                    if not hasattr(new_module, "SCRIPT"):
+                        continue
                     if hasattr(new_module.SCRIPT, "retriever_minimum_version"):
                         # a script with retriever_minimum_version should be loaded
                         # only if its compliant with the version of the retriever
@@ -94,6 +96,7 @@ def reload_scripts():
                     setattr(new_module.SCRIPT, "_name", script_name)
                     modules.append(new_module.SCRIPT)
                 except Exception as e:
+                    raise (e)
                     sys.stderr.write("Failed to load script: {} ({})\n"
                                      "Exception: {} \n".format(script_name, search_path,
                                                                str(e)))
