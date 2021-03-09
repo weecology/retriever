@@ -55,7 +55,7 @@ db_md5 = [
     ('mammal_masses', '6fec0fc63007a4040d9bbc5cfcd9953e'),
     ('portal-project-teaching', 'f81620d5f5550b81062e427542e96fa5'),
     ('county-emergency-management-offices', '75fcadc47cf38f3650a7686e074c7211'),
-    ('nuclear-power-plants', '00ae84a5d286ed87db74b12d8aea57fa')
+    ('nuclear-power-plants', '0ca3a6350df61b5a6c6932ba06ea386b')
 ]
 
 spatial_db_md5 = [
