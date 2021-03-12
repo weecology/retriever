@@ -1,7 +1,7 @@
 ![Retriever logo](http://i.imgur.com/se7TtrK.png)
 
 
-[![Python package](https://github.com/henrykironde/retriever/actions/workflows/python-package.yml/badge.svg)](https://github.com/henrykironde/retriever/actions/workflows/python-package.yml)
+[![Python package](https://github.com/weecology/retriever/actions/workflows/python-package.yml/badge.svg)](https://github.com/weecology/retriever/actions/workflows/python-package.yml)
 [![Build Status (windows)](https://ci.appveyor.com/api/projects/status/qetgo4jxa5769qtb/branch/main?svg=true)](https://ci.appveyor.com/project/ethanwhite/retriever/branch/main)
 [![Research software impact](http://depsy.org/api/package/pypi/retriever/badge.svg)](http://depsy.org/package/python/retriever)
 [![codecov.io](https://codecov.io/github/weecology/retriever/coverage.svg?branch=main)](https://codecov.io/github/weecology/retriever?branch=main)
