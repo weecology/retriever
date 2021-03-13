@@ -421,7 +421,7 @@ Use ``-f`` flag to force pushing changes to the branch. ``git push -f origin [br
 .. _codecov: https://codecov.io/
 .. _project website: http://data-retriever.org
 .. _Sphinx: http://www.sphinx-doc.org/en/stable/
-.. _Read The Docs: https://readthedocs.org//
+.. _Read The Docs: https://readthedocs.org/
 .. _AppVeyor: https://www.appveyor.com/
 .. _documentation: https://pythonhosted.org/an_example_pypi_project/setuptools.html
 .. _installing: https://docs.python.org/3.6/install/
