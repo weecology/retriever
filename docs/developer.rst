@@ -2,17 +2,65 @@
 Developer's guide
 =================
 
-Required Modules
-================
+1. Quickstart by forking the main repository https://github.com/weecology/retriever
+2. Clone your copy of the repository
 
-If you are installing from source you will need a Python 3.6.8+ installation and the following modules:
+    - Using https ``git clone https://github.com/henrykironde/retriever.git``
+    - Using ssh ``git clone git@github.com:henrykironde/retriever.git``
+
+3. Link or point your cloned copy to the main repository. (I always name it upstream)
+
+    - ``git remote add upstream https://github.com/weecology/retriever.git``
+
+5. Check/confirm your settings using ``git remote -v``
 
 ::
 
-  setuptools
-  xlrd
-  Sphinx
+    origin	git@github.com:henrykironde/retriever.git (fetch)
+    origin	git@github.com:henrykironde/retriever.git (push)
+    upstream	https://github.com/weecology/retriever.git (fetch)
+    upstream	https://github.com/weecology/retriever.git (push)
 
+6. Install the package from the main directory.
+use `-U or --upgrade` to upgrade or overwrite any previously installed versions.
+
+::
+
+    pip install . -U
+
+7. Check if the package was installed
+
+::
+
+    retriever ls
+    retriever -v
+
+8. Run sample test on  CSV engine only, with the option `-k`
+
+::
+
+   pip install pytest
+   pytest -k "CSV" -v
+
+
+Required Modules
+================
+
+You will need Python 3.6.8+
+Make sure the required modules are installed: ``Pip install -r requirements.txt``
+
+Developers need to install these extra packages.
+
+::
+
+   pip install codecov
+   pip install pytest-cov
+   pip install pytest-xdist
+   pip install pytest
+   pip install yapf
+   pip install pylint
+   pip install flake8
+   Pip install pypyodbc # For only Windows(MS Access)
 
 Setting up servers
 ==================
@@ -23,25 +71,87 @@ You need to install all the database infrastructures to enable local testing.
 `PostgresSQL`_
 `MySQL`_
 `SQLite`_
-`MSAccess`_ 
+`MSAccess`_ (For only Windows, MS Access)
 
-You will also need the following modules:
+After installation, configure passwordless access to MySQL and PostgresSQL Servers
+
+Passwordless configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To avoid supplying the passwords when using the tool, use the config files
+`.pgpass`(`pgpass.conf` for Microsoft Windows) for Postgres and `.my.cnf`
+for MySQL.
+
+Create if not exists, and add/append the configuration details as below.
+PostgresSQL conf file `~/.pgpass` file.
 
 ::
 
-  mysqldb (MySQL)
-  psycopg2-binary (PostgreSQL)
-  pypyodbc (MS Access)
+  localhost:*:testdb_retriever:postgres:Password12!
 
-Style Guide for Python Code
-===========================
+**Postgress:**
 
-Run ``pep8`` on the given file to make sure the file follows the right style.
-In some cases we do tend to work outside the ``pep8`` requirements.
-The compromise on ``pep8``  may be a result of enforcing better code readability.
-In some cases ``pep`` shows errors for long lines, but that can be ignored.
+(Linux / Macos):- A `.pgpass` file in your HOME directory(~)
 
-``pep8 pythonfile.py``
+(WINDOWS 10-) - A `pgpass.conf` in your HOME directory(~)
+
+(WINDOWS 10+):- Entering `%APPDATA%` will take you to `C:/\Users/\username/\AppData/\Roaming`.
+
+In this directory create a new subdirectory named `postgresql`. Then create the `pgpass.conf` file inside it. On Microsoft Windows, it is assumed that the file is stored in a secure directory, hence no special permissions setting is needed.
+
+Make sure you set the file permissions to 600
+
+::
+
+  # Linux / Macos
+  chmod 600 ~/.pgpass
+  chmod 600 ~/.my.cnf
+
+For most of the recent versions of **Postgress server 10+**, you need to find `pg_hba.conf`. This file is located in the installed Postgres directory.
+One way to find the location of the file `pg_hba.conf` is using ``psql -t -P format=unaligned -c 'show hba_file';``
+To allow passwordless login to Postgres, change peer to `trust` in `pg_hba.conf` file.
+
+::
+
+  # Database administrative login by Unix domain socket
+  local   all             postgres                                trust
+
+Run commands in terminal to create user
+::
+
+  PostgreSQL
+  ----------
+  psql -c "CREATE USER postgres WITH PASSWORD 'Password12!'"
+  psql -c 'CREATE DATABASE testdb_retriever'
+  psql -c 'GRANT ALL PRIVILEGES ON DATABASE testdb_retriever to postgres'
+
+Restart the server and test Postgress passwordless setup using retriever without providing the password
+
+``retriever install postgres iris``
+
+**MySQL:** Create if not exists `.my.cnf` in your HOME directory(~).
+Add the configuration info to the MySQL conf file `~.my.cnf` file.
+
+::
+
+  [client]
+  user="travis"
+  password="Password12!"
+  host="mysqldb"
+  port="3306"
+
+Run commands in terminal to create user
+::
+
+  MySQL
+  -----
+  mysql -e "CREATE USER 'travis'@'localhost';" -uroot
+  mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'travis'@'localhost';" -uroot
+  mysql -e "GRANT FILE ON *.* TO 'travis'@'localhost';" -uroot
+
+ Restart the server and test Postgress passwordless setup using retriever without providing the password
+
+``retriever install mysql iris``
 
 Testing
 =======
@@ -73,9 +183,10 @@ you can also install from Git.
   pip install git+file:///path/to/your/git/repo #  test a PIP package located in a local git repository
   pip install git+file:///path/to/your/git/repo@branch  # checkout a specific branch by adding @branch_name at the end
 
-  # Remote github repository
-  pip install git+git://github.com/myuser/myproject  #  package from a github repository
+  # Remote GitHub repository
+  pip install git+git://github.com/myuser/myproject  #  package from a GitHub repository
   pip install git+git://github.com/myuser/myproject@my_branch # github repository Specific branch
+
 
 Running tests locally
 ^^^^^^^^^^^^^^^^^^^^^
@@ -83,106 +194,33 @@ Running tests locally
 Services Used
 -------------
 
-Check the services' home pages in case you have to add the same capabilities to your main branch.
+`Read The Docs`_,
+`codecov`_,
+`AppVeyor`_
 
-::
-
-  AppVeyor
-  readthedocs
-  codecov
-
-
-links `Read The Docs`_, `codecov`_, `AppVeyor`_
-
-To run the tests you will need to have all of the relevant database management systems and associated
-modules installed (see ``Setting up servers``). For PostgresSQL installation refer to `Spatial database setup`_.
-Create the appropriate permissions for the tests to access
-the databases. You can do this by running the following commands in MySQL and
-PostgreSQL and creating the .pgpass(pgpass.conf for Microsoft Windows) file as described below:
-
-Passwordless configuration
---------------------------
-
-To avoid supplying the passwords when using the tool, use the config files
-`.pgpass`(`pgpass.conf` for Microsoft Windows) for Postgres and `.my.cnf`
-for MySQL. The files are kept in the HOME directory(~/.pgpass, ~/.my.cnf).
-Make sure you set the file permissions to 600. For Postgres, on Microsoft
-Windows, entering `%APPDATA%` will take you to `C:\Users\username\AppData\Roaming`.
-In this directory create a new subdirectory named `postgresql`. Then create the
-`pgpass.conf` file inside it. On Microsoft Windows, it is assumed that the file
-is stored in a directory that is secure, so no special permissions check is made.
-
-::
-
-  chmod 600 ~/.pgpass
-  chmod 600 ~/.my.cnf
-
-::
-
-  MySQL
-  -----
-  mysql -e "CREATE USER 'travis'@'localhost';" -uroot
-  mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'travis'@'localhost';" -uroot
-  mysql -e "GRANT FILE ON *.* TO 'travis'@'localhost';" -uroot
-
-MySQL conf file `~.my.cnf` file.
-
-::
-
-  [client]
-  user="travis"
-  password="Password12!"
-  host="mysqldb"
-  port="3306"
-
-::
-
-  PostgreSQL
-  ----------
-  psql -c "CREATE USER postgres WITH PASSWORD 'Password12!'"
-  psql -c 'CREATE DATABASE testdb_retriever'
-  psql -c 'GRANT ALL PRIVILEGES ON DATABASE testdb_retriever to postgres'
-
-PostgresSQL conf file `~/.pgpass` file.
-
-::
-
-  localhost:*:testdb_retriever:postgres:Password12!
-
-Find the installed Postgres directory and
-In order to allow passwordless login to Postgres, you should change peer to `trust` in `pg_hba.conf`
-Find the `pg_hba.conf` file in the postgres directory.
-One way to find the file `pg_hba.conf` is using `psql -t -P format=unaligned -c 'show hba_file';`
-
-::
-
-  # Database administrative login by Unix domain socket
-  local   all             postgres                                trust
-
-To run tests we use pytest.
-From the source top level directory, run
+From the source top-level directory, Use Pytest as examples below
 
 .. code-block:: sh
 
-  $   py.test
-
-
-To run tests on a specific test category add the path of the test module to the end of the py.test command: 
-
-.. code-block:: sh
-
-  $   py.test ./test/test_retriever.py
-
-This will only run test_retriever.py
+  $   py.test -v # All tests
+  $   py.test -v -k"csv" # Specific test with expression csv
+  $   py.test ./test/test_retriever.py # Specific file
 
 In case ``py.test`` requests for Password (even after Passwordless configuration), change the owner and group
-from the permissions of the files ``~/.pgpass, ~/.my.cnf``
+permissions for the config files ``~/.pgpass, ~/.my.cnf``
+
+Style Guide for Python Code
+---------------------------
+
+Use ``yapf -d --recursive retriever/ --style=.style.yapf`` to check style.
+
+Use ``yapf -i --recursive retriever/ --style=.style.yapf`` refactor style
 
 Continuous Integration
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The main GitHub repository runs test on both the GitHub Actions (Linux) and AppVeyor
-(Windows) continuous integration platforms.
+The main GitHub repository runs the test on both the GitHub Actions (Linux) and AppVeyor
+(Windows) continuous-integration platforms.
 
 Pull requests submitted to the repository will automatically be tested using
 these systems and results reported in the ``checks`` section of the pull request
@@ -196,7 +234,7 @@ Start
 ^^^^^
 
 1. **Run the tests**. Seriously, do it now.
-2. Update ``CHANGES.md`` with major updates since last release
+2. Update ``CHANGES.md`` with major updates since the last release
 3. Run ``python version.py`` (this will update ``version.txt``)
 4. In the `main` branch update the version number and create a tag, run `bumpversion release`
 5. Push the release commit and the tag
@@ -218,7 +256,7 @@ You will need to create an API key on PyPI and store it in ~/.pypirc to upload t
 Cleanup
 ^^^^^^^
 
-1. Bump the version numbers as needed. The version number are located in the ``setup.py``,
+1. Bump the version numbers as needed. The version number is located in the ``setup.py``,
    ``retriever_installer.iss``, ``version.txt`` and ``retriever/_version.py``
 
 Mac OSX Build
@@ -241,19 +279,18 @@ Homebrew
 ^^^^^^^^
 
 Homebrew works great if you just want to install the Retriever from
-source on your own machine, but at least based on this recipe it does
-not support distribution of the Mac App to other versions of OS X (i.e.,
+source on your machine, but at least based on this recipe it does
+not support the distribution of the Mac App to other versions of OS X (i.e.,
 if you build the App on OS X 10.9 it will only run on 10.9)
 
 1.  Install Homebrew
     ``ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"``
 2.  Install Xcode
 3.  Install Python ``brew install python``
-4.  Install the Xcode command line tools ``xcode-select --install``
+4.  Install the Xcode command-line tools ``xcode-select --install``
 5.  Make brew’s Python the default
     ``echo export PATH='usr/local/bin:$PATH' >> ~/.bash_profile``
-6.  Install xlrd via pip ``pip install xlrd``. No ``sudo`` is necessary
-    since we’re using brew.
+6.  Install xlrd via pip ``pip install xlrd``. No ``sudo`` is necessary since we’re using brew.
 7.  Clone the Retriever
     ``git clone git@github.com:weecology/retriever.git``
 8. Switch directories ``cd retriever``
@@ -286,7 +323,7 @@ Creating or Updating a Conda Release
 
 To create or update a Conda Release, first fork the conda-forge `retriever-feedstock repository <https://github.com/conda-forge/retriever-feedstock>`_.
 
-Once forked, open a pull request to the retriever-feedstock repository. Your package will be tested on Windows, Mac and Linux.
+Once forked, open a pull request to the retriever-feedstock repository. Your package will be tested on Windows, Mac, and Linux.
 
 When your pull request is merged, the package will be rebuilt and become automatically available on conda-forge.
 
@@ -295,7 +332,7 @@ All branches in the conda-forge/retriever-feedstock are created and uploaded imm
 For producing a uniquely identifiable distribution:
 
  - If the version of a package is not being incremented, then the build/number can be added or increased.
- - If the version of a package is being incremented, then remember to return the build/number back to 0.
+ - If the version of a package is being incremented, then remember to change the build/number back to 0.
 
 Documentation
 =============
@@ -309,8 +346,8 @@ In case you want to change the organization of the Documentation, please refer t
 
 **Update Documentation**
 
-The documetation is automatically updated for changes with in modules.
-However, the documentation should be updated after addition of new modules in the engines or lib directory.
+The documentation is automatically updated for changes within modules.
+However, the documentation should be updated after the addition of new modules in the engines or lib directory.
 Change to the docs directory and create a temporary directory, i.e. ``source``.
 Run
 
@@ -322,7 +359,7 @@ Run
 
 The ``source`` is the destination folder for the source rst files. ``/Users/../retriever/`` is the path to where
 the retriever source code is located.
-Copy the ``.rst`` files that you want to update to the docs direcotry, overwriting the old files.
+Copy the ``.rst`` files that you want to update to the docs directory, overwriting the old files.
 Make sure you check the changes and edit if necessary to ensure that only what is required is updated.
 Commit and push the new changes.
 Do not commit the temporary source directory.
@@ -335,12 +372,12 @@ Do not commit the temporary source directory.
   make html # Run
 
   Note:
-  Do not commit the build directory after making html.
+  Do not commit the _build directory after making Html.
 
 **Read The Docs configuration**
 
 Configure read the docs (advanced settings) so that the source is first installed then docs are built.
-This is already set up but could be change if need be.
+This is already set up but could be changed if need be.
 
 Collaborative Workflows with GitHub
 ===================================
@@ -364,7 +401,7 @@ This will update your `.git/config` to point to your repository copy of the Data
        fetch = +refs/heads/*:refs/remotes/origin/*
 
 Point to Weecology `Data Retriever repository`_ repo.
-This will enable you update your main(origin) and you can then push to your origin main.
+This will enable you to update your main(origin) and you can then push to your origin main.
 In our case, we can call this upstream().
 
    ::
@@ -390,9 +427,9 @@ Fetch upstream main and create a branch to add the contributions to.
   git reset --hard upstream main
   git checkout -b [new-branch-to-fix-issue]
 
-**Submiting issues**
+**Submitting issues**
 
-Categorize the issues based on labels. For example (Bug, Dataset Bug, Important, Feature Request and etc..)
+Categorize the issues based on labels. For example (Bug, Dataset Bug, Important, Feature Request, etc..)
 Explain the issue explicitly with all details, giving examples and logs where applicable.
 
 **Commits**
@@ -401,17 +438,18 @@ From your local branch of retriever, commit to your origin.
 Once tests have passed you can then make a pull request to the retriever main (upstream)
 For each commit, add the issue number at the end of the description with the tag ``fixes #[issue_number]``.
 
-Example::
+Example
+::
 
   Add version number to postgres.py to enable tracking
 
   Skip a line and add more explanation if needed
   fixes #3
 
-**Clean histroy**
+**Clean history**
 
-We try to make one commit for each issue.
-As you work on an issue, try adding all the commits into one general commit rather than several commits.
+Make one commit for each issue.
+As you work on a particular issue, try adding all the commits into one general commit rather than several commits.
 
 Use ``git commit --amend`` to add new changes to a branch.
 
@@ -433,4 +471,3 @@ Use ``-f`` flag to force pushing changes to the branch. ``git push -f origin [br
 .. _SQlite: https://sqlite.org/download.html
 .. _MySQL: https://www.mysql.com/downloads/
 .. _MSAccess: https://www.microsoft.com/en-ww/microsoft-365/access
-
