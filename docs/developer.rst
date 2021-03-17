@@ -85,6 +85,8 @@ for MySQL.
 Create if not exists, and add/append the configuration details as below.
 PostgresSQL conf file `~/.pgpass` file.
 
+For more information regarding Passwordless configuration you can visit `Password File`_  
+
 ::
 
   localhost:*:testdb_retriever:postgres:Password12!
@@ -471,3 +473,4 @@ Use ``-f`` flag to force pushing changes to the branch. ``git push -f origin [br
 .. _SQlite: https://sqlite.org/download.html
 .. _MySQL: https://www.mysql.com/downloads/
 .. _MSAccess: https://www.microsoft.com/en-ww/microsoft-365/access
+.. _Password File : https://www.postgresql.org/docs/current/libpq-pgpass.html
