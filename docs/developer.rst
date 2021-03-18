@@ -85,7 +85,8 @@ for MySQL.
 Create if not exists, and add/append the configuration details as below.
 PostgresSQL conf file `~/.pgpass` file.
 
-For more information regarding Passwordless configuration you can visit `Password File`_  
+For more information regarding Passwordless configuration you can visit `PostgreSQL Password File`_ 
+and `MySQL Password File`_ 
 
 ::
 
@@ -473,4 +474,5 @@ Use ``-f`` flag to force pushing changes to the branch. ``git push -f origin [br
 .. _SQlite: https://sqlite.org/download.html
 .. _MySQL: https://www.mysql.com/downloads/
 .. _MSAccess: https://www.microsoft.com/en-ww/microsoft-365/access
-.. _Password File : https://www.postgresql.org/docs/current/libpq-pgpass.html
+.. _PostgreSQL Password File : https://www.postgresql.org/docs/current/libpq-pgpass.html
+.. _MySQL Password File : https://dev.mysql.com/doc/refman/8.0/en/option-files.html
