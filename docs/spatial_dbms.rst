@@ -22,9 +22,10 @@ Supporting installation of spatial data into `Postgres DBMS`.
 
   **For example, this could be a sample of paths exported on Mac:**
 
+  #~/.bash_profile file, Postgres PATHS and tools .
+
 .. code-block::
 
-  #~/.bash_profile file, Postgres PATHS and tools .
   export PATH="/Applications/Postgres.app/Contents/MacOS/bin:${PATH}"
   export PATH="$PATH:/Applications/Postgres.app/Contents/Versions/10/bin"
 
@@ -32,22 +33,16 @@ Supporting installation of spatial data into `Postgres DBMS`.
 2. **Enable PostGIS extensions**
 
   If you have Postgres set up, enable `PostGIS extensions`.
-  This is done by using either `Postgres CLI` or `GUI(PgAdmin)` and run
-  **For psql CLI**
+  This is done by using either `Postgres CLI` or `GUI(PgAdmin)` and run the commands below.
 
-.. note::
-    PostGIS excluded the raster types and functions from the main extension as of version 3.x;
-    A separate CREATE EXTENSION postgis_raster; is then needed to get raster support.
-
-    Versions 2.x have full raster support as part of the main extension environment,
-    so CREATE EXTENSION postgis; is all that you need`
+**For psql CLI**
 
 .. code-block::
 
   psql -d yourdatabase -c "CREATE EXTENSION postgis;"
   psql -d yourdatabase -c "CREATE EXTENSION postgis_topology;"
 
-  **For GUI(PgAdmin)**
+**For GUI(PgAdmin)**
 
 .. code-block::
 
@@ -55,6 +50,15 @@ Supporting installation of spatial data into `Postgres DBMS`.
   `CREATE EXTENSION postgis_topology`
 
 For more details refer to the `Postgis docs`_.
+
+.. note::
+
+
+    PostGIS excluded the raster types and functions from the main extension as of version 3.x;
+    A separate CREATE EXTENSION postgis_raster; is then needed to get raster support.
+
+    Versions 2.x have full raster support as part of the main extension environment,
+    so CREATE EXTENSION postgis; is all that you need`
 
 
 .. _PostgreSQL download: https://www.postgresql.org/download/
