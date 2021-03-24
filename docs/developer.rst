@@ -90,7 +90,7 @@ and `MySQL Password File`_
 
 ::
 
-  localhost:*:testdb_retriever:postgres:Password12!
+  localhost:*:*:postgres:Password12!
 
 **Postgress:**
 
@@ -158,6 +158,8 @@ Run commands in terminal to create user
 
 Testing
 =======
+
+Before running the tests make sure Postgis is set up `Spatial database setup`_.
 
 Follow these instructions to run a complete set of tests for any branch
 Clone the branch you want to test.
