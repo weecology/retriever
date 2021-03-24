@@ -20,7 +20,7 @@ try:
     import geopandas
 except ModuleNotFoundError:
     pass
-from pandas.io.json import json_normalize
+from pandas import json_normalize
 from collections import OrderedDict
 import xml.etree.ElementTree as ET
 from hashlib import md5
