@@ -147,7 +147,8 @@ def main():
                               name=script.name,
                               keywords=script.keywords,
                               description=script.description,
-                              licenses=str(script.licenses[0]['name']),
+                              licenses=str(script.licenses[0]['name'])
+                              if script.licenses else str('N/A'),
                               citation=script.citation,
                           ))
                     count += 1
