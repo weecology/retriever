@@ -123,20 +123,14 @@ def main():
                       "https://github.com/weecology/retriever-recipes.")
 
             elif isinstance(args.v, list):
-                online_scripts = []
                 if args.v:
                     try:
                         all_scripts = [get_script(dataset) for dataset in args.v]
                     except KeyError:
                         all_scripts = []
                         print("Dataset(s) is not found.")
-                else:
-                    scripts = datasets()
-                    all_scripts = scripts['offline']
-                    online_scripts = scripts['online']
+
                 count = 1
-                if not args.v:
-                    print("Offline datasets : {}\n".format(len(all_scripts)))
                 for script in all_scripts:
                     print("{count}. {title}\n {name}\n"
                           "{keywords}\n{description}\n"
@@ -153,18 +147,6 @@ def main():
                           ))
                     count += 1
 
-                count = 1
-                offline_scripts = [script.name for script in all_scripts]
-                set_online_scripts = []
-                for script in online_scripts:
-                    if script in offline_scripts:
-                        continue
-                    set_online_scripts.append(script)
-                if not args.v:
-                    print("Online datasets : {}\n".format(len(set_online_scripts)))
-                for script in set_online_scripts:
-                    print("{count}. {name}".format(count=count, name=script))
-                    count += 1
             else:
                 param_licenses = args.l if args.l else None
                 keywords = args.k if args.k else None
