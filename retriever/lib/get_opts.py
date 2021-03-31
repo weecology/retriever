@@ -31,9 +31,10 @@ script_list.extend(get_dataset_names_upstream(repo=RETRIEVER_REPOSITORY))
 script_list.extend(get_dataset_names_upstream())
 script_list = sorted(set(script_list))
 
-# set of all possible licenses and keywords
+# set of all possible licenses, keywords and scripts
 licenses_options = set(licenses_list)
 keywords_options = set(keywords_list)
+scripts_options = script_list
 
 parser = argparse.ArgumentParser(prog="retriever")
 parser.add_argument('-v', '--version', action='version', version=VERSION)
@@ -121,10 +122,8 @@ ls_parser.add_argument('-l', help='search datasets with specific license(s)',
                        nargs='+').completer = ChoicesCompleter(list(licenses_options))
 ls_parser.add_argument('-k', help='search datasets with keyword(s)',
                        nargs='+').completer = ChoicesCompleter(list(keywords_options))
-ls_parser.add_argument('-v',
-                       help='verbose list of all datasets',
-                       nargs='*',
-                       default=False)
+ls_parser.add_argument('-v', help='verbose list of specified dataset(s)',
+                       nargs='+').completer = ChoicesCompleter(list(scripts_options))
 
 autocreate_parser.add_argument('path', help='path to the data file(s)')
 autocreate_parser.add_argument('-dt',
