@@ -6,7 +6,7 @@ import os
 import sys
 
 from retriever.engines import engine_list, choose_engine
-from retriever.lib.datasets import datasets, dataset_names, license
+from retriever.lib.datasets import datasets, dataset_names, license, dataset_verbose_list
 from retriever.lib.defaults import sample_script, CITATION, SCRIPT_SEARCH_PATHS, LICENSE
 from retriever.lib.engine_tools import reset_retriever
 from retriever.lib.get_opts import parser
@@ -123,29 +123,7 @@ def main():
                       "https://github.com/weecology/retriever-recipes.")
 
             elif isinstance(args.v, list):
-                if args.v:
-                    try:
-                        all_scripts = [get_script(dataset) for dataset in args.v]
-                    except KeyError:
-                        all_scripts = []
-                        print("Dataset(s) is not found.")
-
-                count = 1
-                for script in all_scripts:
-                    print("{count}. {title}\n {name}\n"
-                          "{keywords}\n{description}\n"
-                          "{licenses}\n{citation}\n"
-                          "".format(
-                              count=count,
-                              title=script.title,
-                              name=script.name,
-                              keywords=script.keywords,
-                              description=script.description,
-                              licenses=str(script.licenses[0]['name'])
-                              if script.licenses else str('N/A'),
-                              citation=script.citation,
-                          ))
-                    count += 1
+                dataset_verbose_list(args.v)
 
             else:
                 param_licenses = args.l if args.l else None
