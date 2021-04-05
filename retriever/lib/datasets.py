@@ -70,5 +70,36 @@ def license(dataset):
 
 def dataset_licenses():
     """Return set with all available licenses."""
-    license_values = [str(script.licenses[0]['name']).lower() for script in SCRIPT_LIST()]
+    license_values = [
+        str(script.licenses[0]['name']).lower()
+        for script in SCRIPT_LIST()
+        if script.licenses
+    ]
     return set(license_values)
+
+
+def dataset_verbose_list(script_names: list):
+    """Returns the verbose list of the specified dataset(s)"""
+    if isinstance(script_names, list):
+        try:
+            scripts = [get_script(dataset) for dataset in script_names]
+        except KeyError:
+            scripts = []
+            print("Dataset(s) is not found")
+
+        count = 1
+        for script in scripts:
+            print("{count}. {title}\nDataset Name: {name}\n"
+                  "Keywords: {keywords}\nDescription: {description}\n"
+                  "Licenses: {licenses}\nCitation: {citation}\n"
+                  "".format(
+                      count=count,
+                      title=script.title,
+                      name=script.name,
+                      keywords=script.keywords,
+                      description=script.description,
+                      licenses=str(script.licenses[0]['name'])
+                      if script.licenses else str('N/A'),
+                      citation=script.citation,
+                  ))
+            count += 1
