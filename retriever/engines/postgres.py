@@ -166,7 +166,7 @@ CSV HEADER;"""
         if not path:
             path = Engine.format_data_dir(self)
 
-        raster_sql = ('raster2pgsql -Y -M -d -I -s {SRID} "{path}"'
+        raster_sql = ('raster2pgsql -Y -M -d -I -l 2 -s {SRID} "{path}"'
                       " -F -t 100x100 {SCHEMA_DBTABLE}".format(
                           SRID=srid,
                           path=os.path.normpath(path),
