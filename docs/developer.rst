@@ -152,7 +152,7 @@ Run commands in terminal to create user
   mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'travis'@'localhost';" -uroot
   mysql -e "GRANT FILE ON *.* TO 'travis'@'localhost';" -uroot
 
- Restart the server and test Postgress passwordless setup using retriever without providing the password
+ Restart the server and test MySQL passwordless setup using retriever without providing the password
 
 ``retriever install mysql iris``
 
