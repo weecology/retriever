@@ -13,9 +13,9 @@ def _install(args, use_cache, debug):
     engine = choose_engine(args)
     engine.use_cache = use_cache
 
-    if args['dataset'].endswith('.zip') or args['hash_value']:
+    if args['dataset'].endswith('.zip') or args.get('hash_value'):
         path_to_archive = args['dataset']
-        if args['hash_value']:
+        if args.get('hash_value'):
             path_to_archive = os.path.join(
                 PROVENANCE_DIR, args['dataset'],
                 '{}-{}.zip'.format(args['dataset'], args['hash_value']))
