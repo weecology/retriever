@@ -102,7 +102,9 @@ setup(
         'argcomplete',
         'tqdm',
         'requests',
-        'pandas'
+        'pandas',
+        'h5py',
+        'Pillow'
     ],
     data_files=[('', ['CITATION'])],
     setup_requires=[],
