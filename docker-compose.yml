@@ -12,7 +12,9 @@ services:
       MYSQL_PASSWORD: Password12!
       MYSQL_ROOT_PASSWORD: Password12!
       MYSQL_DATABASE: testdb_retriever
-
+    restart: on-failure
+    healthcheck:
+      test: "exit 0"
   pgdb_retriever:
     image: kartoza/postgis:latest
     volumes:
@@ -26,8 +28,11 @@ services:
       - POSTGRES_PASS=Password12!
       - ALLOW_IP_RANGE=0.0.0.0/0
       - POSTGRES_MULTIPLE_EXTENSIONS=postgis,hstore,postgis_topology,postgis_raster,pgrouting
+    ports:
+      - 25432:5432
     restart: on-failure
-
+    healthcheck:
+      test: "exit 0"
   python_retriever:
     container_name: ret_container
     image: ret_image
@@ -47,7 +52,9 @@ services:
     restart: on-failure
     build: .
     depends_on:
-      - mysqldb_retriever
-      - pgdb_retriever
+      mysqldb_retriever:
+        condition: service_healthy
+      pgdb_retriever:
+        condition: service_healthy
     ports:
       - 5001:80
