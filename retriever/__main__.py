@@ -15,6 +15,7 @@ from retriever.lib.repository import check_for_updates
 from retriever.lib.scripts import SCRIPT_LIST, reload_scripts, get_script, name_matches, get_script_citation
 from retriever.lib.create_scripts import create_package
 from retriever.lib.provenance import commit, commit_log
+from retriever.lib.check import check
 
 
 def main():
@@ -86,7 +87,11 @@ def main():
             f = open(args.filename, 'w')
             f.write(sample_script)
             f.close()
+            return
 
+        if args.command == 'check':
+            dataset = args.check
+            check(dataset=dataset)
             return
 
         if args.command == 'reset':
