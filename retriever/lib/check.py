@@ -28,23 +28,3 @@ def check(dataset, path='./', quiet=False, sub_dir='', debug=False, use_cache=Tr
             print("Already in Retriever")
         else:
             download(dataset, path='./', quiet=False, sub_dir='', debug=False, use_cache=True)
-
-    # if not script_list or not os.listdir(SCRIPT_WRITE_PATH):
-    #     check_for_updates()
-    #     script_list = SCRIPT_LIST()
-    # scripts = name_matches(script_list, args['dataset'])
-    # if scripts:
-    #     for script in scripts:
-    #         print("=> Downloading", script.name)
-    #         try:
-    #             script.download(engine, debug=debug)
-    #             script.engine.final_cleanup()
-    #         except Exception as e:
-    #             print(e)
-    #             if debug:
-    #                 raise
-    # else:
-    #     message = "Run retriever.datasets() to see the list of currently " \
-    #               "available datasets."
-    #     raise ValueError(message)
-    # return engine
