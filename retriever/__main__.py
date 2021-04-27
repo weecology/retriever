@@ -90,8 +90,8 @@ def main():
             return
 
         if args.command == 'check':
-            dataset = args.check
-            check(dataset=dataset)
+            url = args.check
+            check(url=url)
             return
 
         if args.command == 'reset':
