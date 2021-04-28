@@ -12,4 +12,4 @@ def check(url):
         if script == url:
             print("Already in Retriever")
         else:
-            print("url does not exist hence you can add the data.")This branch is 3 commits ahead of weecology:main. 
+            print("url does not exist hence you can add the data.")
