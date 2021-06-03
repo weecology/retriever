@@ -53,7 +53,7 @@ subparsers = parser.add_subparsers(help='sub-command help', dest='command')
 # retriever download/install/update/new help
 download_parser = subparsers.add_parser('download',
                                         help='download raw data files for a dataset')
-check_parser = subparsers.add_parser('check', help='checking for already existing dataset')
+check_parser = subparsers.add_parser('check ansh', help='checking for already existing dataset')
 install_parser = subparsers.add_parser('install', help='download and install dataset')
 default_parser = subparsers.add_parser('defaults', help='displays default options')
 update_parser = subparsers.add_parser('update',

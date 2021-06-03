@@ -236,8 +236,11 @@ def main():
         else:
             raise Exception("no dataset specified.")
         if scripts:
+            print("Ansh Dassani 1")
             _install(vars(args), debug=debug, use_cache=use_cache)
-            print("Done!")
+            print("Ansh Dassani 2")
+            print("Done! Hey Raam")
+            print("Ansh Dassani 3")
         else:
             print("Run 'retriever ls' to see a list of currently available datasets.")
 
