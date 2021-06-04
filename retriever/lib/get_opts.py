@@ -100,7 +100,7 @@ license_parser.add_argument('dataset',
                             default=None,
                             choices=script_list + [None])
 new_parser.add_argument('filename', help='new script filename')
-check_parser.add_argument('url', help='check for url')
+check_parser.add_argument('url', help='check for url', nargs=1)
 reset_parser.add_argument('scope', help='things to reset: all, scripts or data').completer = \
     ChoicesCompleter(script_list + ['all', 'scripts', 'data'])
 install_parser.add_argument('--compile',

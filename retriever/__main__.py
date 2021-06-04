@@ -90,7 +90,7 @@ def main():
             return
 
         if args.command == 'check':
-            url = args.check
+            url = args.url[0]
             check(url=url)
             return
 
@@ -237,7 +237,6 @@ def main():
             raise Exception("no dataset specified.")
         if scripts:
             _install(vars(args), debug=debug, use_cache=use_cache)
-            print("Done!")
         else:
             print("Run 'retriever ls' to see a list of currently available datasets.")
 
