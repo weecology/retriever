@@ -26,7 +26,7 @@ def main():
     else:
         # otherwise, parse them
         args = parser.parse_args()
-
+        
         reset_or_update = args.command in ["reset", "update"]
         if (not reset_or_update and not os.path.isdir(SCRIPT_SEARCH_PATHS[1]) and not [
                 f for f in os.listdir(SCRIPT_SEARCH_PATHS[-1])
@@ -139,13 +139,15 @@ def main():
                     print(offline_mesg.format(len(searched_scripts['offline'])))
                     count = 1
                     for script in searched_scripts['offline']:
+                        x=script.licenses
                         print("{count}. {title}\n{name}\n"
                               "{keywords}\n{licenses}\n".format(
                                   count=count,
                                   title=script.title,
                                   name=script.name,
                                   keywords=script.keywords,
-                                  licenses=str(script.licenses[0]['name']),
+                                  licenses=str(script.licenses[0]['name'])
+                                  if script.licenses and len(script.licenses) else str('N/A'),
                               ))
                         count += 1
 

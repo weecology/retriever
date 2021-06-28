@@ -65,7 +65,11 @@ def dataset_names():
 
 def license(dataset):
     """Get the license for a dataset."""
-    return get_script(dataset).licenses[0]['name']
+    script=get_script(dataset)
+    if script.licenses and len(script.licenses):
+        return script.licenses[0]['name']
+    else:
+        return str('N/A')
 
 
 def dataset_licenses():
@@ -99,7 +103,7 @@ def dataset_verbose_list(script_names: list):
                       keywords=script.keywords,
                       description=script.description,
                       licenses=str(script.licenses[0]['name'])
-                      if script.licenses else str('N/A'),
+                      if script.licenses and len(script.licenses) else str('N/A'),
                       citation=script.citation,
                   ))
             count += 1
