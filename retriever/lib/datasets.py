@@ -65,7 +65,7 @@ def dataset_names():
 
 def license(dataset):
     """Get the license for a dataset."""
-    script=get_script(dataset)
+    script = get_script(dataset)
     if script.licenses and len(script.licenses):
         return script.licenses[0]['name']
     else:
