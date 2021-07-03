@@ -10,6 +10,7 @@ RUN apt-get install -y --force-yes tzdata
 
 RUN apt-get install -y --force-yes build-essential wget git locales locales-all > /dev/null
 RUN apt-get install -y --force-yes postgresql-client mariadb-client > /dev/null
+RUN apt-get install -y --force-yes libpq-dev
 
 # Set encoding
 ENV LC_ALL en_US.UTF-8
@@ -40,6 +41,7 @@ RUN pip install flake8 -U
 RUN pip install h5py
 RUN pip install Pillow
 RUN pip install kaggle
+RUN pip install inquirer
 
 # Install Postgis after Python is setup
 RUN apt-get install -y --force-yes postgis
@@ -58,4 +60,4 @@ RUN export PGPASSFILE="~/.pgpass"
 RUN chmod 600 cli_tools/.pgpass
 RUN chmod 600 cli_tools/.my.cnf
 
-CMD ["bash", "-c", "Python --version"]
+CMD ["bash", "-c", "python --version"]
