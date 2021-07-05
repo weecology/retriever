@@ -92,6 +92,22 @@ def main():
             return
 
         if args.command == 'autocreate':
+            if args.c:
+                url = args.path
+                script_list = SCRIPT_LIST()
+                flag = 0
+
+                for script in script_list:
+                    for dataset in script.tables:
+                        if script.tables[dataset].url == url:
+                            flag = 1
+                            break
+
+                if flag == 1:
+                    print("File already exist in dataset " + str(script.name))
+                else:
+                    print("Dataset is not avaliable, Please download")
+                return
             if sum([args.f, args.d]) == 1:
                 file_flag = bool(args.f)
                 create_package(args.path, args.dt, file_flag, args.o, args.skip_lines,
