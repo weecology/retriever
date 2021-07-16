@@ -50,7 +50,7 @@ services:
       "PGPORT" : "5432"
       "PGHOST" : "pgdb_retriever"
     restart: on-failure
-    build: .
+    build: ./docker
     depends_on:
       mysqldb_retriever:
         condition: service_healthy
