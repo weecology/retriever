@@ -185,7 +185,8 @@ class TabularDataset(Dataset):
             "class": "classes",
             "left": "vleft",
             "right": "vright",
-            "union": "unions"
+            "union": "unions",
+            "desc": "description",
         }
         for x in (")", "\n", "\r", '"', "'"):
             replace_dict[x] = ''
