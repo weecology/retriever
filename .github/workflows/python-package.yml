@@ -61,6 +61,11 @@ jobs:
           sudo apt-get install -y --force-yes tzdata
           sudo apt-get install -y --force-yes build-essential wget git locales locales-all > /dev/null
           sudo apt-get install -y --force-yes libpq-dev
+          sudo apt-get install libgdal-dev
+          sudo apt-get install gdal-bin
+          export CPLUS_INCLUDE_PATH=/usr/include/gdal
+          export C_INCLUDE_PATH=/usr/include/gdal
+          pip install GDAL 
           sudo apt-get install -y --force-yes postgis
           
       - name: Setup paths and files
