@@ -1,7 +1,7 @@
 import os
 import sys
 import subprocess
-
+from osgeo import gdal
 from retriever.lib.models import Engine
 
 
@@ -165,6 +165,23 @@ CSV HEADER;"""
 
         if not path:
             path = Engine.format_data_dir(self)
+
+        if self.opts["bbox"] or self.script.tables[self.table.name].extent:
+            if self.script.tables[self.table.name].extensions:
+                converted_tif = path[:-3] + "tif"
+                if self.script.tables[self.table.name].extensions[0] == "bil":
+                    conversion = "gdal_translate -co 'COMPRESS=LZW' {path} {converted_tif}".format(
+                        path=os.path.normpath(path), converted_tif=converted_tif)
+                    os.system(conversion)
+
+                ds = gdal.Open(converted_tif)
+                i = converted_tif.find(".tif")
+                location_of_cropped_tif = converted_tif[:i] + "crop" + converted_tif[i:]
+                ds = gdal.Translate(location_of_cropped_tif,
+                                    ds,
+                                    projWin=self.opts["bbox"])
+                ds = None
+                path = location_of_cropped_tif
 
         raster_sql = ('raster2pgsql -Y -M -d -I -l 2 -s {SRID} "{path}"'
                       " -F -t 100x100 {SCHEMA_DBTABLE}".format(

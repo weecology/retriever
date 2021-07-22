@@ -36,7 +36,7 @@ services:
   python_retriever:
     container_name: ret_container
     image: ret_image
-    command: bash -c "Python --version"
+    command: bash -c "python --version"
     environment:
       # Handle tzdata install see: https://serverfault.com/a/975084
       TZ: America/New_York
@@ -50,7 +50,7 @@ services:
       "PGPORT" : "5432"
       "PGHOST" : "pgdb_retriever"
     restart: on-failure
-    build: .
+    build: ./docker
     depends_on:
       mysqldb_retriever:
         condition: service_healthy

@@ -10,29 +10,94 @@ on:
     branches: [ main ]
 
 jobs:
+  
   build:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7, 3.8] #  3.9] removed to reduce testing time
-        os:
-          - "ubuntu-latest"
-          - "macos-latest"
+        python-version: [3.7, 3.8]
+    
+    services:
+      mysqldb_retriever:
+        image: mysql:5.7
+        env:
+          MYSQL_USER: travis
+          MYSQL_PASSWORD: Password12!
+          MYSQL_ROOT_PASSWORD: Password12!
+          MYSQL_DATABASE: testdb_retriever
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        python -m pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Run Tests in docker
-      run: |
-        docker-compose run --service-ports python_retriever pytest -v -k "not test_geojson2csv  and not test_mysql_integration" --cov=retriever
-        docker-compose run python_retriever flake8 --ignore=E501,W503,E402,F401,F403,E722,F841,W504 retriever --max-line-length=90 2>&1
-        docker-compose run python_retriever yapf -d --recursive retriever/ --style=.style.yapf 2>&1
-        
+      - uses: actions/checkout@v2
+ 
+      - name: Set up Postgresql with Postgis
+        uses: huaxk/postgis-action@v1
+        with:
+          postgresql version: '11'
+          postgresql user: 'postgres'
+          postgresql password: 'Password12!'
+          postgresql db: 'testdb_retriever'
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      
+      - name: Install dependencies
+        env:
+          LC_ALL : en_US.UTF-8
+          ENV LANG : en_US.UTF-8
+          ENV LANGUAGE : en_US.UTF-8
+          TZ: America/New_York
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo apt-get update && sudo apt-get install -y --no-install-recommends apt-utils
+          sudo apt-get install -y --force-yes tzdata
+          sudo apt-get install -y --force-yes build-essential wget git locales locales-all > /dev/null
+          sudo apt-get install -y --force-yes libpq-dev
+          sudo apt-get install libgdal-dev
+          sudo apt-get install gdal-bin
+          export CPLUS_INCLUDE_PATH=/usr/include/gdal
+          export C_INCLUDE_PATH=/usr/include/gdal
+          pip install GDAL 
+          sudo apt-get install -y --force-yes postgis
+          
+      - name: Setup paths and files
+        run : |
+          cd ..
+          chmod 0755 retriever/cli_tools/entrypoint.sh
+          sh retriever/cli_tools/entrypoint.sh
+          echo "export PATH="/usr/bin/python:$PATH"" >> ~/.profile
+          echo "export PYTHONPATH="/usr/bin/python:$PYTHONPATH"" >> ~/.profile
+          echo "export PGPASSFILE="~/.pgpass"" >> ~/.profile
+          chmod 0644 ~/.profile
+      
+      - name: PostGIS check version
+        run : |
+          export PGPASSWORD='Password12!'
+          psql -d testdb_retriever -U postgres -h localhost -p 5432 -c "SELECT PostGIS_version();"
+
+      - name: Install python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install flake8 pytest yapf codecov pytest-cov pytest-xdist -U
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      
+      - name: Install retriever
+        run: |
+          pip install -e .
+          export PGPASSFILE="~/.pgpass"
+          chmod 600 ~/.pgpass
+          chmod 600 ~/.my.cnf
+
+      - name: Run pytest
+        run: |
+          pytest -v -k "not test_geojson2csv  and not test_mysql_integration" --cov=retriever
+          flake8 --ignore=E501,W503,E402,F401,F403,E722,F841,W504 retriever --max-line-length=90 2>&1
+          yapf -d --recursive ./retriever/ --style=.style.yapf 2>&1

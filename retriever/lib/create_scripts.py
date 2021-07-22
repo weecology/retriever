@@ -186,6 +186,7 @@ class RasterPk(TabularPk):
         self.group_count = "--Number of groups in the dataset if applicable"
         self.dataset_count = "--The number of individual datasets"
         self.transform = ""
+        self.extent = []
         self.resources = []
 
     def get_source(self, file_path, driver=None):

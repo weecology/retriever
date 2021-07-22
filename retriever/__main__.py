@@ -6,7 +6,7 @@ import os
 import sys
 
 from retriever.engines import engine_list, choose_engine
-from retriever.lib.datasets import datasets, dataset_names, license
+from retriever.lib.datasets import datasets, dataset_names, license, dataset_verbose_list
 from retriever.lib.defaults import sample_script, CITATION, SCRIPT_SEARCH_PATHS, LICENSE
 from retriever.lib.engine_tools import reset_retriever
 from retriever.lib.get_opts import parser
@@ -26,7 +26,6 @@ def main():
     else:
         # otherwise, parse them
         args = parser.parse_args()
-
         reset_or_update = args.command in ["reset", "update"]
         if (not reset_or_update and not os.path.isdir(SCRIPT_SEARCH_PATHS[1]) and not [
                 f for f in os.listdir(SCRIPT_SEARCH_PATHS[-1])
@@ -86,7 +85,6 @@ def main():
             f = open(args.filename, 'w')
             f.write(sample_script)
             f.close()
-
             return
 
         if args.command == 'reset':
@@ -94,6 +92,22 @@ def main():
             return
 
         if args.command == 'autocreate':
+            if args.c:
+                url = args.path
+                script_list = SCRIPT_LIST()
+                flag = 0
+
+                for script in script_list:
+                    for dataset in script.tables:
+                        if script.tables[dataset].url == url:
+                            flag = 1
+                            break
+
+                if flag == 1:
+                    print("File already exist in dataset " + str(script.name))
+                else:
+                    print("Dataset is not avaliable, Please download")
+                return
             if sum([args.f, args.d]) == 1:
                 file_flag = bool(args.f)
                 create_package(args.path, args.dt, file_flag, args.o, args.skip_lines,
@@ -123,47 +137,8 @@ def main():
                       "https://github.com/weecology/retriever-recipes.")
 
             elif isinstance(args.v, list):
-                online_scripts = []
-                if args.v:
-                    try:
-                        all_scripts = [get_script(dataset) for dataset in args.v]
-                    except KeyError:
-                        all_scripts = []
-                        print("Dataset(s) is not found.")
-                else:
-                    scripts = datasets()
-                    all_scripts = scripts['offline']
-                    online_scripts = scripts['online']
-                count = 1
-                if not args.v:
-                    print("Offline datasets : {}\n".format(len(all_scripts)))
-                for script in all_scripts:
-                    print("{count}. {title}\n {name}\n"
-                          "{keywords}\n{description}\n"
-                          "{licenses}\n{citation}\n"
-                          "".format(
-                              count=count,
-                              title=script.title,
-                              name=script.name,
-                              keywords=script.keywords,
-                              description=script.description,
-                              licenses=str(script.licenses[0]['name']),
-                              citation=script.citation,
-                          ))
-                    count += 1
+                dataset_verbose_list(args.v)
 
-                count = 1
-                offline_scripts = [script.name for script in all_scripts]
-                set_online_scripts = []
-                for script in online_scripts:
-                    if script in offline_scripts:
-                        continue
-                    set_online_scripts.append(script)
-                if not args.v:
-                    print("Online datasets : {}\n".format(len(set_online_scripts)))
-                for script in set_online_scripts:
-                    print("{count}. {name}".format(count=count, name=script))
-                    count += 1
             else:
                 param_licenses = args.l if args.l else None
                 keywords = args.k if args.k else None
@@ -178,14 +153,16 @@ def main():
                     print(offline_mesg.format(len(searched_scripts['offline'])))
                     count = 1
                     for script in searched_scripts['offline']:
-                        print("{count}. {title}\n{name}\n"
-                              "{keywords}\n{licenses}\n".format(
-                                  count=count,
-                                  title=script.title,
-                                  name=script.name,
-                                  keywords=script.keywords,
-                                  licenses=str(script.licenses[0]['name']),
-                              ))
+                        print(
+                            "{count}. {title}\n{name}\n"
+                            "{keywords}\n{licenses}\n".format(
+                                count=count,
+                                title=script.title,
+                                name=script.name,
+                                keywords=script.keywords,
+                                licenses=str(script.licenses[0]['name']) if
+                                script.licenses and len(script.licenses) else str('N/A'),
+                            ))
                         count += 1
 
                     count = 1

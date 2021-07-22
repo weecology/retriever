@@ -143,6 +143,7 @@ autocreate_parser.add_argument('-o',
                                help='write scripts out to a designated directory',
                                nargs='?',
                                const='')
+autocreate_parser.add_argument('-c', help='turn files into scripts', action='store_true')
 autocreate_parser.add_argument('--skip-lines',
                                help='skip a set number of lines before processing data',
                                nargs=1,

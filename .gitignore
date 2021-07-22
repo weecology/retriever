@@ -10,3 +10,4 @@ apidocs
 scripts/*.pyc
 .idea*
 *_pycache_
+.vscode/
