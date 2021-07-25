@@ -1,0 +1,50 @@
+{
+    "archived": "zip",
+    "citation": "",
+    "dataset_count": "1",
+    "datum": "",
+    "description": "bio1clip.tif",
+    "driver": "GTiff",
+    "file_size": "",
+    "group_count": "",
+    "homepage": "fill",
+    "keywords": [],
+    "licenses": [],
+    "name": "test-raster-bio1clip",
+    "projection": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AXIS[\"Latitude\",NORTH],AXIS[\"Longitude\",EAST],AUTHORITY[\"EPSG\",\"4326\"]]",
+    "resources": [
+        {
+            "band_name": "bio1clip_1",
+            "color_table": null,
+            "extensions": [
+                "tif"
+            ],
+            "format": "raster",
+            "name": "bio1clip",
+            "no_data_value": -9999.0,
+            "other_paths": "",
+            "path": "test_raster_bio1clip/bio1clip.tif",
+            "scale": null,
+            "statistics": {
+                "maximum": 0.0,
+                "mean": 0.0,
+                "minimum": 0.0,
+                "stddev": -1.0
+            },
+            "url": "https://github.com/weecology/retriever/raw/main/test/raw_data_gis/test_raster_bio1clip.zip"
+            
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.1.0",
+    "title": "fill",
+    "transform": {
+        "pixelHeight": -0.041666666666667,
+        "pixelWidth": 0.041666666666667,
+        "rotation_2": 0.0,
+        "rotation_4": 0.0,
+        "xOrigin": 74.999999999999,
+        "yOrigin": 64.9999999999998
+    },
+    "version": "1.0.0"
+}

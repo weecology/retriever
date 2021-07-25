@@ -1,9 +1,7 @@
 environment:
-
   matrix:
-
-    - PYTHON: "C:\\Python36-x64"
-      PYTHON_VERSION: "3.6.8"
+    - PYTHON: "C:\\Python38-x64"
+      PYTHON_VERSION: "3.8.x"
       PYTHON_ARCH: "64"
 
   # postgres
@@ -29,19 +27,22 @@ services:
 
 init:
   - SET PATH=%POSTGRES_PATH%\bin;%MYSQL_PATH%\bin;%PATH%
-
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
 install:
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  - "SET PYTHONPATH=%PYTHON%\\Lib\\site-packages;%PYTHONPATH%"
   - "%PYTHON%\\python.exe -m pip install --upgrade pip"
   - "%PYTHON%\\python.exe -m pip install wheel"
   - "%PYTHON%\\python.exe -m pip install -r requirements.txt"
+  - "%PYTHON%\\python.exe -m pip install pymyinstall"
   - "%PYTHON%\\python.exe -m pip install codecov"
   - "%PYTHON%\\python.exe -m pip install nose-cov"
   - "%PYTHON%\\python.exe -m pip install -U pytest"
   - "%PYTHON%\\python.exe -m pip install -U flake8"
   - "%PYTHON%\\python.exe -m pip install -U yapf"
   - "%PYTHON%\\python.exe -m pip install -U pylint"
-
-  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  - "%PYTHON%\\Scripts\\pymy_install3 cartopy pyproj shapely fiona gdal llvmlite numba cpyquickhelper"
+  - set PYTHONPATH=src
   - "%PYTHON%\\python.exe -m  pip --version"
   - "python --version"
   - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
