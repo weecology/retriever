@@ -46,8 +46,8 @@ class engine(Engine):
         # testing python files having custom download function
         if self.script.name not in self.script_table_registry:
             self.script_table_registry[self.script.name] = []
-        self.script_table_registry[self.script.name].append(
-            (self.table_name(), self.table))
+        self.script_table_registry[self.script.name].append((self.table_name(),
+                                                             self.table))
 
     def disconnect(self):
         """Close out the xml files
@@ -127,10 +127,8 @@ class engine(Engine):
             input_file = table_item[0]
             header_values = header
 
-            csv_outfile = xml2csv_test(input_file,
-                                       outputfile,
-                                       header_values,
-                                       row_tag="row")
+            csv_outfile = xml2csv_test(
+                input_file, outputfile, header_values, row_tag="row")
             sort_csv(csv_outfile, encoding=self.encoding)
 
     def get_connection(self):

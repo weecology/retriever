@@ -266,11 +266,12 @@ class BasicTextTemplate(Script):
         if hasattr(self, "archive_name"):
             archive_name = self.archive_name
 
-        self.engine.download_files_from_archive(url=url,
-                                                file_names=files,
-                                                archive_type=archive_type,
-                                                keep_in_dir=keep_in_dir,
-                                                archive_name=archive_name)
+        self.engine.download_files_from_archive(
+            url=url,
+            file_names=files,
+            archive_type=archive_type,
+            keep_in_dir=keep_in_dir,
+            archive_name=archive_name)
 
 
 class HtmlTableTemplate(Script):

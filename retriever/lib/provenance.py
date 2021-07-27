@@ -62,9 +62,8 @@ def commit_writer(dataset, commit_message, path, quiet):
         for root, _, files in os.walk(os.path.join(raw_dir, dataset.name)):
             for file in files:
                 paths_to_zip["raw_data"].append(os.path.join(root, file))
-        info = commit_info_for_commit(dataset,
-                                      commit_message=commit_message,
-                                      encoding=dataset.encoding)
+        info = commit_info_for_commit(
+            dataset, commit_message=commit_message, encoding=dataset.encoding)
         zip_file_name = "{}-{}{}.zip".format(dataset.name, info["md5_dataset"][:3],
                                              info["md5_script"][:3])
 
@@ -100,10 +99,8 @@ def commit(dataset, commit_message='', path=None, quiet=False):
     if not quiet:
         print("Committing dataset {}".format(dataset.name))
     try:
-        commit_writer(dataset=dataset,
-                      commit_message=commit_message,
-                      path=path,
-                      quiet=quiet)
+        commit_writer(
+            dataset=dataset, commit_message=commit_message, path=path, quiet=quiet)
         if not quiet:
             print("Successfully committed.")
     except Exception as e:

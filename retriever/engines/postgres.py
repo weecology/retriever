@@ -166,22 +166,72 @@ CSV HEADER;"""
         if not path:
             path = Engine.format_data_dir(self)
 
-        if self.opts["bbox"] or self.script.tables[self.table.name].extent:
-            if self.script.tables[self.table.name].extensions:
-                converted_tif = path[:-3] + "tif"
-                if self.script.tables[self.table.name].extensions[0] == "bil":
-                    conversion = "gdal_translate -co 'COMPRESS=LZW' {path} {converted_tif}".format(
-                        path=os.path.normpath(path), converted_tif=converted_tif)
-                    os.system(conversion)
+        if self.opts["bbox"] or self.script.tables[self.table.
+                                                   name].extent or self.script.extent:
 
-                ds = gdal.Open(converted_tif)
-                i = converted_tif.find(".tif")
-                location_of_cropped_tif = converted_tif[:i] + "crop" + converted_tif[i:]
-                ds = gdal.Translate(location_of_cropped_tif,
-                                    ds,
-                                    projWin=self.opts["bbox"])
-                ds = None
-                path = location_of_cropped_tif
+            # bbox[xmin, ymax, xmax, ymin]
+            bbox = []
+
+            if self.opts["bbox"]:
+                bbox.append(self.opts["bbox"][0])
+                bbox.append(self.opts["bbox"][1])
+                bbox.append(self.opts["bbox"][2])
+                bbox.append(self.opts["bbox"][3])
+
+            else:
+                if self.script.extent:
+                    bbox.append(self.script.extent["xMin"])
+                    bbox.append(self.script.extent["yMax"])
+                    bbox.append(self.script.extent["xMax"])
+                    bbox.append(self.script.extent["yMin"])
+
+                else:
+                    bbox.append(self.script.tables[self.table.name].extent["xMin"])
+                    bbox.append(self.script.tables[self.table.name].extent["yMax"])
+                    bbox.append(self.script.tables[self.table.name].extent["xMax"])
+                    bbox.append(self.script.tables[self.table.name].extent["yMin"])
+
+            bbox = [int(i) for i in bbox]
+
+            if bbox[2] > bbox[0] and bbox[1] > bbox[3]:
+                if self.script.tables[self.table.name].extensions:
+                    converted_tif = path[:-3] + "tif"
+                    if self.script.tables[self.table.name].extensions[0] == "bil":
+                        conversion = "gdal_translate -co 'COMPRESS=LZW' {path} {converted_tif}".format(
+                            path=os.path.normpath(path), converted_tif=converted_tif)
+                        os.system(conversion)
+
+                    ds = gdal.Open(converted_tif)
+
+                    info = gdal.Info(converted_tif, format='json')
+                    coordinates = info['wgs84Extent']['coordinates'][0]
+
+                    if bbox[0] < coordinates[2][0] and bbox[2] > coordinates[0][
+                            0] and bbox[1] > coordinates[1][1] and bbox[3] < coordinates[
+                                0][1]:
+
+                        if bbox[0] < coordinates[0][0]:
+                            bbox[0] = coordinates[0][0]
+
+                        if bbox[1] > coordinates[0][1]:
+                            bbox[1] = coordinates[0][1]
+
+                        if bbox[2] > coordinates[2][0]:
+                            bbox[2] = coordinates[2][0]
+
+                        if bbox[3] < coordinates[2][1]:
+                            bbox[3] = coordinates[2][1]
+
+                        i = converted_tif.find(".tif")
+                        location_of_cropped_tif = converted_tif[:i] + \
+                            "crop" + converted_tif[i:]
+                        ds = gdal.Translate(location_of_cropped_tif, ds, projWin=bbox)
+                        ds = None
+                        path = location_of_cropped_tif
+                    else:
+                        print("Bounding Box exceds image boundaries")
+            else:
+                print("Extinct cannot be negative")
 
         raster_sql = ('raster2pgsql -Y -M -d -I -l 2 -s {SRID} "{path}"'
                       " -F -t 100x100 {SCHEMA_DBTABLE}".format(

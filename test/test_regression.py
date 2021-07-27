@@ -59,7 +59,7 @@ db_md5 = [
 
 spatial_db_md5 = [
     ("test-eco-level-four", ["gid", "us_l3code", "na_l3code", "na_l2code"], 'd1c01d8046143e9700f5cf92cbd6be3d',[]),
-    ("test-raster-bio1clip", ["rid","filename"], '6a124bad7feee1c91448b5311c9bd5df',[75, 65, 125, 45]),
+    ("test-raster-bio1clip", ["rid","filename"], '29f702992ae42cc221d6ca9149635024',[60, 50, 100, 0]),
     ("test-raster-bio1", ["rid", "filename"], '27e0472ddc2da9fe807bfb48b786a251',[]),
     ("test-raster-bio2", ["rid", "filename"], '2983a9f7e099355db2ce2fa312a94cc6',[]),
     ("test-us-eco", ["gid", "us_l3code", "na_l3code", "na_l2code"], 'eaab9fa30c745557ff6ba7c116910b45',[]),

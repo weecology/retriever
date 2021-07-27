@@ -46,9 +46,10 @@ def printls(values, max_width=None, spacing=2):
                         if dataset[1]:
                             print(dataset[0].ljust(width - 1), end=' ')
                         else:
-                            print('\033[91m' + (dataset[0] + '*').ljust(width - 1) +
-                                  '\033[0m',
-                                  end=' ')
+                            print(
+                                '\033[91m' + (dataset[0] + '*').ljust(width - 1) +
+                                '\033[0m',
+                                end=' ')
                 print()
 
     else:

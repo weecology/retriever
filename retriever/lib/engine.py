@@ -126,9 +126,9 @@ class Engine():
                 try:
                     clean_values = [
                         self.format_insert_value(
-                            self.table.cleanup.function(line_values[n],
-                                                        self.table.cleanup.args),
-                            types[n]) for n in range(len(line_values))
+                            self.table.cleanup.function(
+                                line_values[n], self.table.cleanup.args), types[n])
+                        for n in range(len(line_values))
                     ]
                 except Exception as e:
                     self.warning('Exception in line {}: {}'.format(
@@ -230,9 +230,9 @@ class Engine():
         if (self.table.columns[-1][1][0][:3] == "ct-" and
                 hasattr(self.table, "ct_names") and
                 self.table.ct_column not in [c[0] for c in self.table.columns]):
-            self.table.columns = (self.table.columns[:-1] + [(self.table.ct_column,
-                                                              ("char", 50))] +
-                                  [self.table.columns[-1]])
+            self.table.columns = (
+                self.table.columns[:-1] + [(self.table.ct_column,
+                                            ("char", 50))] + [self.table.columns[-1]])
         if not make:
             return self.table
         return self.create_table()
@@ -432,8 +432,8 @@ class Engine():
         """Register table names of scripts"""
         if self.script.name not in self.script_table_registry:
             self.script_table_registry[self.script.name] = []
-        self.script_table_registry[self.script.name].append(
-            (self.table_name(), self.table))
+        self.script_table_registry[self.script.name].append((self.table_name(),
+                                                             self.table))
 
     def create_table_statement(self):
         """Return SQL statement to create a table."""
@@ -489,7 +489,7 @@ class Engine():
                     stream=True,
                     headers={
                         'user-agent':
-                            'Weecology/Data-Retriever \
+                        'Weecology/Data-Retriever \
                                             Package Manager: http://www.data-retriever.org/'
                     },
                     hooks={'response': reporthook(progbar, path)},
@@ -510,11 +510,11 @@ class Engine():
         return True
 
     def download_from_kaggle(
-        self,
-        data_source,
-        dataset_name,
-        archive_dir,
-        archive_full_path,
+            self,
+            data_source,
+            dataset_name,
+            archive_dir,
+            archive_full_path,
     ):
         """Download files from Kaggle into the raw data directory"""
         kaggle_token = os.path.isfile(KAGGLE_TOKEN_PATH)
@@ -537,10 +537,8 @@ class Engine():
 
         if data_source == "dataset":
             try:
-                api.dataset_download_files(dataset=dataset_name,
-                                           path=archive_dir,
-                                           quiet=False,
-                                           force=True)
+                api.dataset_download_files(
+                    dataset=dataset_name, path=archive_dir, quiet=False, force=True)
                 file_names = self.extract_zip(archive_full_path, archive_dir)
             except ApiException as e:
                 print(f"Could not download '{dataset_name}' from kaggle datasets.")
@@ -549,10 +547,8 @@ class Engine():
 
         else:
             try:
-                api.competition_download_files(competition=dataset_name,
-                                               path=archive_dir,
-                                               quiet=False,
-                                               force=True)
+                api.competition_download_files(
+                    competition=dataset_name, path=archive_dir, quiet=False, force=True)
                 file_names = self.extract_zip(archive_full_path, archive_dir)
             except ApiException as e:
                 print(f"Could not download '{dataset_name}' from kaggle competitions.")
@@ -562,12 +558,12 @@ class Engine():
         return file_names
 
     def download_files_from_archive(
-        self,
-        url,
-        file_names=None,
-        archive_type="zip",
-        keep_in_dir=False,
-        archive_name=None,
+            self,
+            url,
+            file_names=None,
+            archive_type="zip",
+            keep_in_dir=False,
+            archive_name=None,
     ):
         """Download files from an archive into the raw data directory."""
 
@@ -586,10 +582,11 @@ class Engine():
             if not os.path.exists(archive_dir):
                 os.makedirs(archive_dir)
         if hasattr(self.script, "kaggle"):
-            file_names = self.download_from_kaggle(data_source=self.script.data_source,
-                                                   dataset_name=url,
-                                                   archive_dir=archive_dir,
-                                                   archive_full_path=archive_full_path)
+            file_names = self.download_from_kaggle(
+                data_source=self.script.data_source,
+                dataset_name=url,
+                archive_dir=archive_dir,
+                archive_full_path=archive_full_path)
 
         else:
             if not file_names:
@@ -659,11 +656,12 @@ class Engine():
 
     def process_json2csv(self, src_path, path_to_csv, headers, encoding=ENCODING):
         if self.find_file(src_path):
-            json2csv(input_file=src_path,
-                     output_file=path_to_csv,
-                     header_values=headers,
-                     encoding=encoding,
-                     row_key=None)
+            json2csv(
+                input_file=src_path,
+                output_file=path_to_csv,
+                header_values=headers,
+                encoding=encoding,
+                row_key=None)
 
     def process_xml2csv(self,
                         src_path,
@@ -684,12 +682,12 @@ class Engine():
             hdf2csv(src_path, path_to_csv, data_name, data_type, encoding=ENCODING)
 
     def extract_gz(
-        self,
-        archive_path,
-        archivedir_write_path,
-        file_name=None,
-        open_archive_file=None,
-        archive=None,
+            self,
+            archive_path,
+            archivedir_write_path,
+            file_name=None,
+            open_archive_file=None,
+            archive=None,
     ):
         """Extract gz files.
 
@@ -1030,12 +1028,12 @@ class Engine():
         self.warnings.append(new_warning)
 
     def write_fileobject(
-        self,
-        archivedir_write_path,
-        file_name,
-        file_obj=None,
-        archive=None,
-        open_object=False,
+            self,
+            archivedir_write_path,
+            file_name,
+            file_obj=None,
+            archive=None,
+            open_object=False,
     ):
         """Write a file object from a archive object to a given path
 

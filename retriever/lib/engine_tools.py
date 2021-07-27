@@ -66,17 +66,17 @@ def reset_retriever(scope="all", ask_permission=True):
     """Remove stored information on scripts and data."""
     warning_messages = {
         'all':
-            "\nThis will remove existing scripts and cached data."
-            "\nSpecifically it will remove the scripts and raw_data folders "
-            "in {}\nDo you want to proceed? (y/N)\n",
+        "\nThis will remove existing scripts and cached data."
+        "\nSpecifically it will remove the scripts and raw_data folders "
+        "in {}\nDo you want to proceed? (y/N)\n",
         'scripts':
-            "\nThis will remove existing scripts." +
-            "\nSpecifically it will remove the scripts folder in {}." +
-            "\nDo you want to proceed? (y/N)\n",
+        "\nThis will remove existing scripts." +
+        "\nSpecifically it will remove the scripts folder in {}." +
+        "\nDo you want to proceed? (y/N)\n",
         'data':
-            "\nThis will remove raw data cached by the Retriever." +
-            "\nSpecifically it will remove the raw_data folder in {}." +
-            "\nDo you want to proceed? (y/N)\n"
+        "\nThis will remove raw data cached by the Retriever." +
+        "\nSpecifically it will remove the raw_data folder in {}." +
+        "\nDo you want to proceed? (y/N)\n"
     }
 
     path = os.path.normpath(HOME_DIR)
@@ -127,20 +127,15 @@ def json2csv(input_file,
         output_file = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
     csv_out = open_fw(output_file, encoding=encoding)
     if os.name == 'nt':
-        outfile = csv.writer(csv_out,
-                             dialect='excel',
-                             escapechar="\\",
-                             lineterminator='\n')
+        outfile = csv.writer(
+            csv_out, dialect='excel', escapechar="\\", lineterminator='\n')
     else:
         outfile = csv.writer(csv_out, dialect='excel', escapechar="\\")
 
     raw_data = json.loads(file_out.read(), object_pairs_hook=OrderedDict)
 
-    raw_data, header_values = walker(raw_data,
-                                     row_key=row_key,
-                                     header_values=header_values,
-                                     rows=[],
-                                     normalize=False)
+    raw_data, header_values = walker(
+        raw_data, row_key=row_key, header_values=header_values, rows=[], normalize=False)
 
     if isinstance(raw_data[0], dict):
         # row values are in a list of dictionaries
@@ -170,9 +165,10 @@ def walker(raw_data, row_key=None, header_values=None, rows=[], normalize=False)
             # Create headers with values as alphabets like [a , b, c, d]
             num_columns = len(rows[0])
             header_values = list(
-                itertools.chain(ascii_lowercase, (
-                    ''.join(pair) for pair in itertools.product(ascii_lowercase, repeat=2)
-                )))[:num_columns]
+                itertools.chain(ascii_lowercase,
+                                (''.join(pair)
+                                 for pair in itertools.product(ascii_lowercase, repeat=2)
+                                )))[:num_columns]
             return rows, header_values
 
     if isinstance(raw_data, dict):
@@ -192,11 +188,8 @@ def walker(raw_data, row_key=None, header_values=None, rows=[], normalize=False)
             if normalize:
                 rows.extend(json_normalize(raw_data[row_key]).values)
             else:
-                rows, header_field = walker(raw_data[row_key],
-                                            row_key,
-                                            header_values,
-                                            rows,
-                                            normalize=True)
+                rows, header_field = walker(
+                    raw_data[row_key], row_key, header_values, rows, normalize=True)
                 return rows, header_values
 
         else:
@@ -207,11 +200,8 @@ def walker(raw_data, row_key=None, header_values=None, rows=[], normalize=False)
 
     if isinstance(raw_data, list):
         for item in raw_data:
-            rows, header_field = walker(item,
-                                        row_key,
-                                        header_values,
-                                        rows,
-                                        normalize=True)
+            rows, header_field = walker(
+                item, row_key, header_values, rows, normalize=True)
 
     return rows, header_values
 
@@ -238,10 +228,8 @@ def xml2csv_test(input_file, outputfile=None, header_values=None, row_tag="row")
         outputfile = os.path.splitext(os.path.basename(input_file))[0] + ".csv"
     csv_out = open_fw(outputfile)
     if os.name == 'nt':
-        csv_writer = csv.writer(csv_out,
-                                dialect='excel',
-                                escapechar='\\',
-                                lineterminator='\n')
+        csv_writer = csv.writer(
+            csv_out, dialect='excel', escapechar='\\', lineterminator='\n')
     else:
         csv_writer = csv.writer(csv_out, dialect='excel', escapechar='\\')
 

@@ -138,8 +138,8 @@ def name_matches(scripts, arg):
         if arg == script.name.lower():
             local_version = script.version
             if arg in RETRIEVER_DATASETS:
-                upstream_version = get_script_version_upstream(arg,
-                                                               repo=RETRIEVER_REPOSITORY)
+                upstream_version = get_script_version_upstream(
+                    arg, repo=RETRIEVER_REPOSITORY)
             else:
                 upstream_version = get_script_version_upstream(arg)
             if not upstream_version or parse_version(local_version) >= parse_version(
@@ -191,8 +191,8 @@ def get_script(dataset):
         script = scripts[dataset]
         local_version = script.version
         if dataset in RETRIEVER_DATASETS:
-            upstream_version = get_script_version_upstream(dataset,
-                                                           repo=RETRIEVER_REPOSITORY)
+            upstream_version = get_script_version_upstream(
+                dataset, repo=RETRIEVER_REPOSITORY)
         else:
             upstream_version = get_script_version_upstream(dataset)
         if not upstream_version or parse_version(local_version) >= parse_version(
@@ -398,10 +398,8 @@ def open_csvw(csv_file):
     Also sets dialect to 'excel' and escape characters to '\\'
     """
     if os.name == 'nt':
-        csv_writer = csv.writer(csv_file,
-                                dialect='excel',
-                                escapechar='\\',
-                                lineterminator='\n')
+        csv_writer = csv.writer(
+            csv_file, dialect='excel', escapechar='\\', lineterminator='\n')
     else:
         csv_writer = csv.writer(csv_file, dialect='excel', escapechar='\\')
     return csv_writer

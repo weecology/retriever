@@ -48,8 +48,8 @@ class engine(Engine):
         # testing python files having custom download function
         if self.script.name not in self.script_table_registry:
             self.script_table_registry[self.script.name] = []
-        self.script_table_registry[self.script.name].append(
-            (self.table_name(), self.table))
+        self.script_table_registry[self.script.name].append((self.table_name(),
+                                                             self.table))
 
     def disconnect(self):
         """Close out the JSON with a `\\n]}` and close the file.
@@ -131,10 +131,11 @@ class engine(Engine):
                 os.path.join(
                     path if path else '',
                     os.path.splitext(os.path.basename(table_item[0]))[0] + '.csv'))
-            csv_outfile = json2csv(table_item[0],
-                                   output_file=outputfile,
-                                   header_values=header,
-                                   encoding=self.encoding)
+            csv_outfile = json2csv(
+                table_item[0],
+                output_file=outputfile,
+                header_values=header,
+                encoding=self.encoding)
             sort_csv(csv_outfile, encoding=self.encoding)
 
     def get_connection(self):

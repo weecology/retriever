@@ -121,9 +121,8 @@ IGNORE """ + str(self.table.header_rows) + """ LINES
         args['client_flag'] = client.LOCAL_FILES
         self.get_input()
         try:
-            return dbapi.connect(charset=self.lookup_encoding(),
-                                 read_default_file='~/.my.cnf',
-                                 **args)
+            return dbapi.connect(
+                charset=self.lookup_encoding(), read_default_file='~/.my.cnf', **args)
         except dbapi.err.OperationalError as error:
             raise (error)
         except Exception as e:

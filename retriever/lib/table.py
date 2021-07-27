@@ -75,8 +75,8 @@ class TabularDataset(Dataset):
             if key == "missingValues":
                 if self.dialect["missingValues"]:
                     self.missingValues = self.dialect["missingValues"]
-                    self.cleanup = Cleanup(correct_invalid_value,
-                                           missingValues=self.missingValues)
+                    self.cleanup = Cleanup(
+                        correct_invalid_value, missingValues=self.missingValues)
             elif key == "delimiter":
                 self.delimiter = str(self.dialect["delimiter"])
             else:

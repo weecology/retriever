@@ -42,9 +42,8 @@ def datasets(keywords=None, licenses=None):
     # The offline scripts filtered by params
     offline_scripts = sorted(list(offline_scripts), key=lambda s: s.name.lower())
     # The scripts present in upstream retriever repository filtered by params
-    retriever_scripts = get_dataset_names_upstream(keywords,
-                                                   licenses,
-                                                   repo=RETRIEVER_REPOSITORY)
+    retriever_scripts = get_dataset_names_upstream(
+        keywords, licenses, repo=RETRIEVER_REPOSITORY)
     # The scripts present in upstream recipes repository filtered by params
     recipes_scripts = get_dataset_names_upstream(keywords, licenses)
     native_scripts = sorted(list(set(retriever_scripts + recipes_scripts)))
