@@ -5,6 +5,12 @@ This module handles the CLI for the Data retriever.
 import os
 import sys
 
+try:
+    import inquirer
+    from retriever.lib.defaults import INQUIRER_THEME
+except ModuleNotFoundError:
+    pass
+
 from retriever.engines import engine_list, choose_engine
 from retriever.lib.datasets import datasets, dataset_names, license, dataset_verbose_list
 from retriever.lib.defaults import sample_script, CITATION, SCRIPT_SEARCH_PATHS, LICENSE
@@ -12,9 +18,10 @@ from retriever.lib.engine_tools import reset_retriever
 from retriever.lib.get_opts import parser
 from retriever.lib.install import _install
 from retriever.lib.repository import check_for_updates
-from retriever.lib.scripts import SCRIPT_LIST, reload_scripts, get_script, name_matches, get_script_citation
+from retriever.lib.scripts import SCRIPT_LIST, reload_scripts, name_matches, get_script_citation
 from retriever.lib.create_scripts import create_package
 from retriever.lib.provenance import commit, commit_log
+from retriever.lib.socrata import socrata_autocomplete_search, socrata_dataset_info
 
 
 def main():
@@ -118,7 +125,7 @@ def main():
 
         if args.command == 'ls':
             # scripts should never be empty because check_for_updates is run on SCRIPT_LIST init
-            if not (args.l or args.k or isinstance(args.v, list)):
+            if not (args.l or args.k or isinstance(args.v, list) or args.s):
                 all_scripts = dataset_names()
                 from retriever import lscolumns
 
@@ -135,6 +142,41 @@ def main():
                 print("\nThe symbol * denotes the online datasets.")
                 print("To see the full list of available online datasets, visit\n"
                       "https://github.com/weecology/retriever-recipes.")
+
+            elif isinstance(args.s, list) and (not (args.l or args.k or args.v)):
+                try:
+                    theme = INQUIRER_THEME
+                except NameError:
+                    print("To use retriever ls -s, install inquirer")
+                    exit()
+
+                name_list = socrata_autocomplete_search(args.s)
+                print("Autocomplete suggestions : Total {} results\n".format(
+                    len(name_list)))
+                if len(name_list):
+                    question = [
+                        inquirer.List('dataset name',
+                                      message='Select the dataset name',
+                                      choices=name_list)
+                    ]
+                    answer = inquirer.prompt(question,
+                                             theme=INQUIRER_THEME,
+                                             raise_keyboard_interrupt=True)
+                    dataset_name = answer['dataset name']
+                    metadata = socrata_dataset_info(dataset_name)
+
+                    print("Dataset Information of {}: Total {} results\n".format(
+                        dataset_name, len(metadata)))
+
+                    for i in range(len(metadata)):
+                        print("{}. {}\n \tID : {}\n"
+                              "\tType : {}\n"
+                              "\tDescription : {}\n"
+                              "\tDomain : {}\n \tLink : {}\n".format(
+                                  i + 1, metadata[i]["name"], metadata[i]["id"],
+                                  metadata[i]["type"],
+                                  metadata[i]["description"][:50] + "...",
+                                  metadata[i]["domain"], metadata[i]["link"]))
 
             elif isinstance(args.v, list):
                 dataset_verbose_list(args.v)
@@ -204,7 +246,10 @@ def main():
             use_cache = True
         engine.use_cache = use_cache
         if args.dataset is not None:
-            scripts = name_matches(script_list, args.dataset)
+            if args.dataset.startswith('socrata'):
+                scripts = True
+            else:
+                scripts = name_matches(script_list, args.dataset)
         else:
             raise Exception("no dataset specified.")
         if scripts:

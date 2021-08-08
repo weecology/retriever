@@ -481,32 +481,57 @@ class Engine():
                 miniters=1,
                 desc='Downloading {}'.format(filename),
             )
+            if hasattr(self.script, "socrata"):
+                return self.download_from_socrata(url, path, progbar)
+            else:
+                return self.download_response(url, path, progbar)
 
+    def download_from_socrata(self, url, path, progbar):
+        """Download files from Socrata to the raw data directory"""
+        try:
+            filename = url.split('/')[-1]
+            row_count_url = url
+            row_count_url = row_count_url.replace(
+                url.split('/')[-1],
+                filename.partition('.')[0] +
+                "?$query=select%20count(*)%20as%20COLUMN_ALIAS_GUARD__count")
+            row_count = requests.get(row_count_url)
+            result = row_count.json()
+            rows = result[0]["COLUMN_ALIAS_GUARD__count"]
+
+            url = url + "?$limit=" + rows
+
+            return self.download_response(url, path, progbar)
+
+        except:
+            print("The download url {} is incorrect!!".format(url))
+            return False
+
+    def download_response(self, url, path, progbar):
+        """Returns True|None according to the download GET response"""
+        try:
+            response = requests.get(
+                url,
+                allow_redirects=True,
+                stream=True,
+                headers={
+                    'user-agent':
+                        'Weecology/Data-Retriever Package Manager: http://www.data-retriever.org/'
+                },
+                hooks={'response': reporthook(progbar, path)})
+
+            if response.status_code == 404:
+                print("The data source or server may be redirected or not found")
+
+        except InvalidSchema:
             try:
-                response = requests.get(
-                    url,
-                    allow_redirects=True,
-                    stream=True,
-                    headers={
-                        'user-agent':
-                            'Weecology/Data-Retriever \
-                                            Package Manager: http://www.data-retriever.org/'
-                    },
-                    hooks={'response': reporthook(progbar, path)},
-                )
+                urlretrieve(url, path, reporthook=reporthook(progbar))
+            except HTTPError as e:
+                print("HTTPError :", e)
+                return None
 
-                if response.status_code == 404:
-                    print("The data source or server may be redirected or not found")
-
-            except InvalidSchema:
-                try:
-                    urlretrieve(url, path, reporthook=reporthook(progbar))
-                except HTTPError as e:
-                    print("HTTPError :", e)
-                    return None
-
-            self.use_cache = True
-            progbar.close()
+        self.use_cache = True
+        progbar.close()
         return True
 
     def download_from_kaggle(

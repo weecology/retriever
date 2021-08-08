@@ -3,9 +3,10 @@ from collections import OrderedDict
 
 from retriever.engines import choose_engine
 from retriever.lib.defaults import DATA_DIR, SCRIPT_WRITE_PATH, PROVENANCE_DIR
-from retriever.lib.scripts import SCRIPT_LIST, name_matches
+from retriever.lib.scripts import SCRIPT_LIST, get_script, name_matches
 from retriever.lib.repository import check_for_updates
 from retriever.lib.provenance import install_committed
+from retriever.lib.socrata import find_socrata_dataset_by_id, create_socrata_dataset
 
 
 def _install(args, use_cache, debug):
@@ -53,6 +54,30 @@ def _install(args, use_cache, debug):
                 print(e)
                 if debug:
                     raise
+    elif args['dataset'].startswith('socrata') and not data_sets_scripts:
+        socrata_id = args['dataset'].split('-', 1)[1]
+        resource = find_socrata_dataset_by_id(socrata_id)
+
+        if "error" in resource.keys():
+            if resource["datatype"][0] == "map":
+                print("{} because map type datasets are not supported".format(
+                    resource["error"]))
+            else:
+                print("{} because it is of type {} and not tabular".format(
+                    resource["error"], resource["datatype"][1]))
+        elif len(resource.keys()) == 0:
+            return
+        else:
+            print("=> Installing", args['dataset'])
+            name = f"socrata-{socrata_id}"
+            create_socrata_dataset(engine, name, resource)
+            if args['command'] == 'download':
+                return engine
+            else:
+                script_list = SCRIPT_LIST()
+                script = get_script(args['dataset'])
+                script.download(engine, debug=debug)
+                script.engine.final_cleanup()
     else:
         message = "Run retriever.datasets() to list the currently available " \
                   "datasets."

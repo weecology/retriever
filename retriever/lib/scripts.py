@@ -178,6 +178,9 @@ def name_matches(scripts, arg):
 
     matches.sort(key=lambda x: -x[1])
 
+    if arg.startswith('socrata') and matches == []:
+        return None
+
     print('\nThe dataset "{}" ' "isn't currently available in the Retriever.".format(arg))
     if matches:
         print("Did you mean:" " \n\t{}".format("\n\t".join([i[0] for i in matches])))

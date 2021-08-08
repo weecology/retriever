@@ -124,6 +124,7 @@ ls_parser.add_argument('-k', help='search datasets with keyword(s)',
                        nargs='+').completer = ChoicesCompleter(list(keywords_options))
 ls_parser.add_argument('-v', help='verbose list of specified dataset(s)',
                        nargs='+').completer = ChoicesCompleter(list(scripts_options))
+ls_parser.add_argument('-s', help='search socrata datasets with name(s)', nargs='+')
 
 autocreate_parser.add_argument('path', help='path to the data file(s)')
 autocreate_parser.add_argument('-dt',
