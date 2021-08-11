@@ -3,6 +3,7 @@
 import os
 import random
 import subprocess
+from tqdm import tqdm
 
 import pytest
 import requests
@@ -80,11 +81,112 @@ tar_url = os.path.normpath(achive_url.format(file_path='sample_tar.tar'))
 tar_gz_url = os.path.normpath(achive_url.format(file_path='sample_tar.tar.gz'))
 gz_url = os.path.normpath(achive_url.format(file_path='sample.gz'))
 
+clinic_utah = {
+    "archived": "fill or remove this field if not archived",
+    "citation": "fill",
+    "description": "fill",
+    "encoding": "utf-8",
+    "homepage": "fill",
+    "keywords": [],
+    "licenses": [],
+    "name": "fill",
+    "resources": [
+        {
+            "name": "35s3_nmpm",
+            "path": "35s3-nmpm.csv",
+            "url": "fill"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.1.0",
+    "title": "fill",
+    "version": "1.0.0"
+}
+
+updated_clinic_utah = {
+    "citation": "",
+    "description": "This data set includes comparative information for clinics with five or more physicians for medical claims in 2015 - 2016. \r\n\r\nThis data set was calculated by the Utah Department of Health, Office of Healthcare Statistics (OHCS) using Utah\u2019s All Payer Claims Database (APCD).",
+    "encoding": "utf-8",
+    "homepage": "https://opendata.utah.gov/Health/2016-2015-Clinic-Quality-Comparisons-for-Clinics-w/35s3-nmpm",
+    "keywords": ["health","socrata"],
+    "licenses": [{"name": "Public Domain"}],
+    "name": "clinic-35s3",
+    "resources": [
+        {
+            "name": "clinic_35s3",
+            "url": "https://opendata.utah.gov/resource/35s3-nmpm.csv"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.1.0",
+    "socrata": "True",
+    "title": "2016 & 2015 Clinic Quality Comparisons for Clinics with Five or More Service Providers",
+    "version": "1.0.0"
+}
+
+fish_utah = {
+    "archived": "fill or remove this field if not archived",
+    "citation": "fill",
+    "description": "fill",
+    "encoding": "utf-8",
+    "homepage": "fill",
+    "keywords": [],
+    "licenses": [],
+    "name": "fill",
+    "resources": [
+        {
+            "name": "9m7z-mzh9",
+            "path": "9m7z-mzh9.csv",
+            "url": "fill"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.1.0",
+    "title": "fill",
+    "version": "1.0.0"
+}
+
+updated_fish_utah = {
+    "citation": "",
+    "description": "Utah Fish Stocking Report 2013",
+    "encoding": "utf-8",
+    "homepage": "https://opendata.utah.gov/Recreation/Fish-Stocked-in-Utah-by-Species/9m7z-mzh9",
+    "keywords": ["socrata"],
+    "licenses": [{"name": "Public Domain"}],
+    "name": "fish-stock-utah",
+    "resources": [
+        {
+            "name": "fish_stock_utah",
+            "url": "https://opendata.utah.gov/resource/9m7z-mzh9.csv"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.1.0",
+    "socrata": "True",
+    "title": "Fish Stocked in Utah by Species",
+    "version": "1.0.0"
+}
+
 kaggle_datasets = [
     # test_name, data_source, dataset_identifier, dataset_name, repath, expected
     ("kaggle_competition", "competition", "titanic", "titanic", ["gender_submission.csv",  "test.csv", "train.csv"]),
     ("kaggle_unknown", "dataset", "uciml/iris", "iris", ['Iris.csv', 'database.sqlite']),
     ("kaggle_dataset", "competition", "non_existent_dataset", "non_existent_dataset", []),
+]
+
+socrata_datasets = [
+    # test_name, filename, url, path, expected
+    ("utah_clinic_pass", "35s3-nmpm.csv", "https://opendata.utah.gov/resource/35s3-nmpm.csv", True),
+    ("utah_clinic_fail", "35s3-nmpm.csv", "https://opendata.utah.gov/resource/35s3nmpm", False),
+    ("utah_fish_pass", "9m7z-mzh9.csv", "https://opendata.utah.gov/resource/9m7z-mzh9.csv", True),
+    ("wa_patrol_fail", "iakd-awbx.csv", "https://data.auburnwa.gov/resource/iakd-awbx.csv", False),
+]
+
+update_socrata_datasets = [
+    # test_name, id, json_file, script_name, url, expected
+    ('utah_clinic_pass','35s3-nmpm', clinic_utah, 'clinic-35s3', "https://opendata.utah.gov/resource/35s3-nmpm.csv", [True, updated_clinic_utah]),
+    ('utah_fish_pass','9m7z-mzh9', fish_utah, 'fish-stock-utah', "https://opendata.utah.gov/resource/9m7z-mzh9.csv", [True, updated_fish_utah]),
+    ('utah_fish_fail','9m7z-mzh8', fish_utah, 'fish-stock-utah', "https://opendata.utah.gov/resource/9m7z-mzh9.csv", [False, None]),
 ]
 
 def setup_module():
@@ -243,6 +345,43 @@ def test_dataset_names_upstream():
     keyword_datasets = rt.get_dataset_names_upstream(keywords=['plants'])
     assert 'biodiversity-response' in keyword_datasets
 
+def test_socrata_autocomplete_search():
+    """Check if autocomplete search returns a list of names or not"""
+    names = rt.socrata_autocomplete_search(["building", "permits"])
+    assert isinstance(names, list) and (len(names) != 0)
+    names = rt.socrata_autocomplete_search([" "])
+    assert isinstance(names, list) and (len(names) == 0)
+    names = rt.socrata_autocomplete_search(["fshing"])
+    assert isinstance(names, list) and (len(names) == 0)
+
+def test_socrata_dataset_info():
+    """Check if socrata dataset info returns metadata for a dataset name"""
+    resource = rt.socrata_dataset_info("Building Permits")
+    assert all([isinstance(resource, list), len(resource), resource[0]["id"]])
+    resource = rt.socrata_dataset_info(" ")
+    assert isinstance(resource, list) and (len(resource) == 0)
+    resource = rt.socrata_dataset_info("Cook County - Fishing Lakes")
+    assert all([isinstance(resource, list), len(resource), resource[0]["id"]])
+
+def test_find_socrata_dataset_by_id():
+    """Check if find socrata dataset by id returns metadata for a dataset id"""
+    resource = rt.find_socrata_dataset_by_id("35s3-nmpm")
+    assert isinstance(resource, dict) and ("error" not in resource.keys())
+    resource = rt.find_socrata_dataset_by_id("35s3-Nmpm")
+    assert isinstance(resource, dict) and (len(resource.keys()) == 0)
+    resource = rt.find_socrata_dataset_by_id("abcde-12345")
+    assert isinstance(resource, dict) and (len(resource.keys()) == 0)
+    resource = rt.find_socrata_dataset_by_id("abcd-1234")
+    assert isinstance(resource, dict) and (len(resource.keys()) == 0)
+    resource = rt.find_socrata_dataset_by_id("nawu-wcvv")
+    assert isinstance(resource, dict) and ("error" in resource.keys())
+
+@pytest.mark.parametrize("test_name, id, json_file, script_name, url, expected", update_socrata_datasets)
+def test_update_socrata_contents(test_name, id, json_file, script_name, url, expected):
+    """Checks if the update socrata script updates the default script contents"""
+    resource = rt.find_socrata_dataset_by_id(id)
+    result, updated_json = rt.update_socrata_contents(json_file, script_name, url, resource)
+    assert (result == expected[0]) and (updated_json == expected[1])
 
 def test_drop_statement():
     """Test the creation of drop statements."""
@@ -269,6 +408,21 @@ def test_download_kaggle_dataset(test_name, data_source, dataset_identifier,  re
     else:
         assert files == None
 
+@pytest.mark.parametrize("test_name, filename, url, expected", socrata_datasets)
+def test_download_socrata_dataset(test_name, filename, url, expected):
+    """Test the downloading of dataset from socrata"""
+    setup_functions()
+    path = os.path.normpath(raw_dir_files.format(file_name=filename))
+    progbar = tqdm(
+                unit='B',
+                unit_scale=True,
+                unit_divisor=1024,
+                miniters=1,
+                desc='Downloading {}'.format(filename),
+            )
+    result = test_engine.download_from_socrata(url, path, progbar)
+    progbar.close()
+    assert (result == expected) and (os.path.exists(path) == expected)
 
 def test_download_archive_gz_known():
     """Download and extract known files
