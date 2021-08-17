@@ -374,10 +374,11 @@ Do not commit the temporary source directory.
 .. code-block:: bash
 
   cd  docs  # go the docs directory
-  make html # Run
+  make html && python3 -m http.server --directory _build/html
+  # Makes the html files and hosts a HTTP server on localhost:8000 to view the documentation pages locally
 
-  Note:
-  Do not commit the _build directory after making Html.
+.. note::
+  Do not commit the _build directory after making HTML.
 
 **Read The Docs configuration**
 

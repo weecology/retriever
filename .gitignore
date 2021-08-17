@@ -11,3 +11,5 @@ scripts/*.pyc
 .idea*
 *_pycache_
 .vscode/
+docs/_build/
+docs/source/

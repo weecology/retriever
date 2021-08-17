@@ -156,6 +156,14 @@ retriever.lib.scripts module
     :undoc-members:
     :show-inheritance:
 
+retriever.lib.socrata module
+----------------------------
+
+.. automodule:: retriever.lib.socrata
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 retriever.lib.table module
 --------------------------
 
