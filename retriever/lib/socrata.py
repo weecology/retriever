@@ -20,8 +20,7 @@ def url_response(url, params):
             'user-agent':
                 'Weecology/Data-Retriever Package Manager: http://www.data-retriever.org/'
         },
-        allow_redirects=True,
-        stream=True)
+        allow_redirects=True)
 
 
 def socrata_autocomplete_search(dataset):
@@ -201,8 +200,10 @@ def update_socrata_script(script_name, filename, url, resource, script_path):
             filename=filename, script_path=script_path))
 
 
-def create_socrata_dataset(engine, name, resource, script_path=SOCRATA_SCRIPT_WRITE_PATH):
+def create_socrata_dataset(engine, name, resource, script_path=None):
     """Downloads raw data and creates a script for the socrata dataset"""
+    if script_path is None:
+        script_path = SOCRATA_SCRIPT_WRITE_PATH
     filename = resource["id"] + '.csv'
     engine.script = BasicTextTemplate(**{"name": name})
     url = 'https://' + resource["domain"] + '/resource/' + filename
@@ -223,12 +224,11 @@ def create_socrata_dataset(engine, name, resource, script_path=SOCRATA_SCRIPT_WR
 
     elif engine.find_file(filename):
         path = engine.format_filename(filename)
-        print("File already exists at specified location")
-        print("Keeping existing copy.")
 
     engine.script = None
 
     if engine.opts["command"] == "download":
+        engine.final_cleanup()
         return
     else:
         if not os.path.exists(script_path):
@@ -244,5 +244,3 @@ def create_socrata_dataset(engine, name, resource, script_path=SOCRATA_SCRIPT_WR
             print("Updating the contents of script {}".format(name))
             update_socrata_script(name, filename, url, resource, script_path)
             reload_scripts()
-            print("* You can install {name} to other engines \
-                    using retriever install <engine> {name} *".format(name=name))
