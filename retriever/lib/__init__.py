@@ -21,11 +21,37 @@ from .scripts import get_script_upstream
 from .scripts import get_dataset_names_upstream
 from .scripts import get_script_citation
 from .._version import __version__
+from .socrata import (socrata_autocomplete_search, socrata_dataset_info,
+                      find_socrata_dataset_by_id, create_socrata_dataset,
+                      update_socrata_contents, update_socrata_script)
 
 __all__ = [
-    'check_for_updates', 'commit', 'commit_log', 'create_package', 'datasets',
-    'dataset_names', 'download', 'reload_scripts', 'reset_retriever', 'install_csv',
-    'install_mysql', 'install_postgres', 'install_sqlite', 'install_msaccess',
-    'install_json', 'install_xml', 'install_hdf5', 'fetch', 'get_script_upstream',
-    'get_dataset_names_upstream', 'get_script_citation', "__version__"
+    'check_for_updates',
+    'commit',
+    'commit_log',
+    'create_package',
+    'datasets',
+    'dataset_names',
+    'download',
+    'reload_scripts',
+    'reset_retriever',
+    'install_csv',
+    'install_mysql',
+    'install_postgres',
+    'install_sqlite',
+    'install_msaccess',
+    'install_json',
+    'install_xml',
+    'install_hdf5',
+    'fetch',
+    'get_script_upstream',
+    'get_dataset_names_upstream',
+    'get_script_citation',
+    "__version__",
+    'socrata_autocomplete_search',
+    'socrata_dataset_info',
+    'find_socrata_dataset_by_id',
+    'create_socrata_dataset',
+    'update_socrata_contents',
+    'update_socrata_script',
 ]

@@ -17,7 +17,16 @@ def to_str(object, object_encoding=encoding):
 
 # Create the .rst file for the available datasets
 datasetfile = open_fw("datasets_list.rst")
-datasetfile_title = """==================
+datasetfile_title = """==============
+APIs Available
+==============
+
+1. **Socrata API**
+------------------
+
+   Total number of datasets supported : 85,244 out of 213,965
+
+==================
 Datasets Available
 ==================
 

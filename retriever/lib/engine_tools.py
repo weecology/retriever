@@ -46,7 +46,10 @@ def create_home_dir():
 
     # create the necessary directory structure for storing scripts/raw_data
     # in the ~/.retriever directory
-    required_dirs = [os.path.join(HOME_DIR, dirs) for dirs in ['', 'raw_data', 'scripts']]
+    required_dirs = [
+        os.path.join(HOME_DIR, dirs)
+        for dirs in ['', 'raw_data', 'scripts', 'socrata-scripts']
+    ]
     for dir in required_dirs:
         if not os.path.exists(dir):
             try:
@@ -67,12 +70,12 @@ def reset_retriever(scope="all", ask_permission=True):
     warning_messages = {
         'all':
             "\nThis will remove existing scripts and cached data."
-            "\nSpecifically it will remove the scripts and raw_data folders "
+            "\nSpecifically it will remove the scripts, socrata-scripts and raw_data folders "
             "in {}\nDo you want to proceed? (y/N)\n",
         'scripts':
             "\nThis will remove existing scripts." +
-            "\nSpecifically it will remove the scripts folder in {}." +
-            "\nDo you want to proceed? (y/N)\n",
+            "\nSpecifically it will remove the scripts and socrata-scripts folders in {}."
+            + "\nDo you want to proceed? (y/N)\n",
         'data':
             "\nThis will remove raw data cached by the Retriever." +
             "\nSpecifically it will remove the raw_data folder in {}." +
@@ -82,6 +85,7 @@ def reset_retriever(scope="all", ask_permission=True):
     path = os.path.normpath(HOME_DIR)
     rw_dir = os.path.normpath(os.path.join(HOME_DIR, 'raw_data'))
     sc_dir = os.path.normpath(os.path.join(HOME_DIR, 'scripts'))
+    soc_dir = os.path.normpath(os.path.join(HOME_DIR, 'socrata-scripts'))
     if scope in ['all', 'scripts', 'data']:
         warn_msg = warning_messages[scope].format(path)
         if ask_permission:
@@ -98,6 +102,8 @@ def reset_retriever(scope="all", ask_permission=True):
             if scope in ['scripts', 'all']:
                 if os.path.exists(sc_dir):
                     shutil.rmtree(sc_dir)
+                if os.path.exists(soc_dir):
+                    shutil.rmtree(soc_dir)
     else:
         dataset_path = os.path.normpath(os.path.join(rw_dir, scope))
         if os.path.exists(dataset_path):
@@ -105,11 +111,16 @@ def reset_retriever(scope="all", ask_permission=True):
         script = scope.replace('-', '_')
         script_path_py = os.path.normpath(os.path.join(sc_dir, script + ".py"))
         script_path_json = os.path.normpath(os.path.join(sc_dir, script + ".json"))
+        socrata_script_path_json = os.path.normpath(
+            os.path.join(soc_dir, script + ".json"))
         if os.path.exists(script_path_py):
             os.remove(script_path_py)
             print("successfully removed the script {scp}".format(scp=scope))
         elif os.path.exists(script_path_json):
             os.remove(script_path_json)
+            print("successfully removed the script {scp}".format(scp=scope))
+        elif os.path.exists(socrata_script_path_json):
+            os.remove(socrata_script_path_json)
             print("successfully removed the script {scp}".format(scp=scope))
         else:
             print("can't find script {scp}".format(scp=scope))

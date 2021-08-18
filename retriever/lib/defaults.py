@@ -1,5 +1,13 @@
 import os
 
+try:
+    from inquirer.themes import load_theme_from_dict
+    INQUIRER_THEME = load_theme_from_dict(
+        {"List": {
+            "selection_color": "black_on_bright_green"
+        }})
+except ModuleNotFoundError:
+    pass
 from retriever._version import __version__
 
 VERSION = __version__
@@ -14,6 +22,7 @@ RETRIEVER_REPOSITORY = RETRIEVER_MAIN_BRANCH
 ENCODING = 'utf-8'
 HOME_DIR = os.path.expanduser('~/.retriever/')
 KAGGLE_TOKEN_PATH = os.path.expanduser('~/.kaggle/kaggle.json')
+SOCRATA_BASE_URL = "http://api.us.socrata.com/api/catalog/v1"
 RETRIEVER_DIR = 'retriever'
 if os.path.exists(os.path.join(HOME_DIR, 'retriever_path.txt')):
     with open(os.path.join(HOME_DIR, 'retriever_path.txt'), 'r') as f:
@@ -25,10 +34,12 @@ if os.path.exists(os.path.join(HOME_DIR, 'retriever_recipes_path.txt')):
 SCRIPT_SEARCH_PATHS = [
     "./", 'scripts',
     os.path.join(RETRIEVER_DIR, 'scripts/'),
+    os.path.join(HOME_DIR, 'socrata-scripts/'),
     os.path.join(RETRIEVER_RECIPES_DIR, 'scripts/'),
     os.path.join(HOME_DIR, 'scripts/')
 ]
 SCRIPT_WRITE_PATH = SCRIPT_SEARCH_PATHS[-1]
+SOCRATA_SCRIPT_WRITE_PATH = SCRIPT_SEARCH_PATHS[3]
 DATA_SEARCH_PATHS = [
     "./",
     "{dataset}",
