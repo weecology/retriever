@@ -19,6 +19,7 @@ MAIN_BRANCH = REPO_URL + "main/"
 RETRIEVER_MAIN_BRANCH = RETRIEVER_REPO_URL + "main/"
 REPOSITORY = MAIN_BRANCH
 RETRIEVER_REPOSITORY = RETRIEVER_MAIN_BRANCH
+RDATASETS_URL = "https://github.com/vincentarelbundock/Rdatasets/raw/master/datasets.csv"
 ENCODING = 'utf-8'
 HOME_DIR = os.path.expanduser('~/.retriever/')
 KAGGLE_TOKEN_PATH = os.path.expanduser('~/.kaggle/kaggle.json')
@@ -35,11 +36,15 @@ SCRIPT_SEARCH_PATHS = [
     "./", 'scripts',
     os.path.join(RETRIEVER_DIR, 'scripts/'),
     os.path.join(HOME_DIR, 'socrata-scripts/'),
+    os.path.join(HOME_DIR, 'rdataset-scripts/'),
     os.path.join(RETRIEVER_RECIPES_DIR, 'scripts/'),
     os.path.join(HOME_DIR, 'scripts/')
 ]
 SCRIPT_WRITE_PATH = SCRIPT_SEARCH_PATHS[-1]
 SOCRATA_SCRIPT_WRITE_PATH = SCRIPT_SEARCH_PATHS[3]
+RDATASET_SCRIPT_WRITE_PATH = SCRIPT_SEARCH_PATHS[4]
+RDATASET_PATH = os.path.normpath(
+    os.path.join(RDATASET_SCRIPT_WRITE_PATH, 'datasets_url.json'))
 DATA_SEARCH_PATHS = [
     "./",
     "{dataset}",

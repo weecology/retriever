@@ -2,6 +2,7 @@ import os
 
 from retriever.engines import choose_engine
 from retriever.lib.defaults import SCRIPT_WRITE_PATH
+from retriever.lib.rdatasets import create_rdataset, update_rdataset_catalog
 from retriever.lib.repository import check_for_updates
 from retriever.lib.scripts import SCRIPT_LIST, name_matches
 from retriever.lib.socrata import find_socrata_dataset_by_id, create_socrata_dataset
@@ -51,6 +52,12 @@ def download(dataset, path='./', quiet=False, sub_dir='', debug=False, use_cache
             print("=> Downloading", args['dataset'])
             name = f"socrata-{socrata_id}"
             create_socrata_dataset(engine, name, resource)
+    elif (scripts is None) and (args['dataset'].startswith('rdataset')):
+        print("=> Downloading", args['dataset'])
+        rdataset = args['dataset'].split('-')
+        update_rdataset_catalog()
+        package, dataset_name = rdataset[1], rdataset[2]
+        create_rdataset(engine, package, dataset_name)
     else:
         message = "Run retriever.datasets() to see the list of currently " \
                   "available datasets."

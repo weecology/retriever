@@ -126,6 +126,15 @@ ls_parser.add_argument('-v', help='verbose list of specified dataset(s)',
                        nargs='+').completer = ChoicesCompleter(list(scripts_options))
 ls_parser.add_argument('-s', help='search socrata datasets with name(s)', nargs='+')
 
+rdataset_ls_subparser = ls_parser.add_subparsers(help='ls rdatasets help',
+                                                 dest='rdataset')
+rdataset_parser = rdataset_ls_subparser.add_parser(
+    'rdataset',
+    help='Display a list of all available rdatasets',
+)
+rdataset_parser.add_argument(
+    '-p', help='display a list of all rdatasets present in the package(s)', nargs='+')
+
 autocreate_parser.add_argument('path', help='path to the data file(s)')
 autocreate_parser.add_argument('-dt',
                                help='datatype for files',

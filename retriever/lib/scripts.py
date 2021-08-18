@@ -175,6 +175,9 @@ def name_matches(scripts, arg):
         if arg.startswith('socrata') and script.name.startswith('socrata'):
             script_match_ratio = difflib.SequenceMatcher(None, script.name[8:],
                                                          arg[8:]).ratio()
+        elif arg.startswith('rdataset') and script.name.startswith('rdataset'):
+            script_match_ratio = difflib.SequenceMatcher(None, script.name[9:],
+                                                         arg[9:]).ratio()
         else:
             script_match_ratio = difflib.SequenceMatcher(None, script.name, arg).ratio()
         if script_match_ratio > 0.53:
@@ -182,9 +185,10 @@ def name_matches(scripts, arg):
 
     matches.sort(key=lambda x: -x[1])
 
-    if arg.startswith('socrata') and matches == []:
+    if arg.startswith(('socrata', 'rdataset')) and matches == []:
         return None
-    if not arg.startswith('socrata'):
+
+    if not arg.startswith(('socrata', 'rdataset')):
         print('\nThe dataset "{}" '
               "isn't currently available in the Retriever.".format(arg))
 
