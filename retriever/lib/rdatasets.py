@@ -1,6 +1,7 @@
 import os
 import json
 import pandas as pd
+from retriever import lscolumns
 
 from retriever.lib.templates import BasicTextTemplate
 from retriever.lib.defaults import RDATASETS_URL, RDATASET_PATH, RDATASET_SCRIPT_WRITE_PATH
@@ -37,8 +38,7 @@ def create_rdataset(engine, package, dataset_name, script_path=None):
     if script_path is None:
         script_path = RDATASET_SCRIPT_WRITE_PATH
 
-    if not os.path.exists(RDATASET_PATH):
-        update_rdataset_catalog()
+    update_rdataset_catalog()
 
     with open(RDATASET_PATH, 'r') as f:
         rdatasets = json.load(f)
@@ -128,9 +128,8 @@ def update_rdataset_contents(data_obj, package, dataset_name, json_file):
 
 
 def display_all_rdataset_names(package_name=None):
-    """Returns a dict of package names with a list of their dataset names"""
-    if not os.path.exists(RDATASET_PATH):
-        update_rdataset_catalog()
+    """displays the list of rdataset names present in the package(s) provided"""
+    update_rdataset_catalog()
 
     with open(RDATASET_PATH, 'r') as f:
         rdatasets = json.load(f)
@@ -140,13 +139,42 @@ def display_all_rdataset_names(package_name=None):
         print("List of all available Rdatasets\n")
         for package in rdatasets.keys():
             for dataset in rdatasets[package].keys():
-                print(f"Package: {package}\t Dataset: {dataset}")
+                script_name = f"rdataset-{package}-{dataset}"
+                print(
+                    f"Package: {package:<16} Dataset: {dataset:<25} Script Name: {script_name:<10}"
+                )
+
+    elif package_name == 'all':
+        print("List of all the packages present in Rdatasets\n")
+        packages = [(package, True) for package in rdatasets.keys()]
+        lscolumns.printls(packages)
+
     else:
         print(f"List of all available Rdatasets in packages: {package_name}")
         for package in package_name:
             try:
                 dataset_names = rdatasets[package].keys()
                 for dataset in dataset_names:
-                    print(f"Package: {package}\tDataset: {dataset}")
+                    script_name = f"rdataset-{package}-{dataset}"
+                    print(
+                        f"Package: {package:<16} Dataset: {dataset:<25} Script Name: {script_name:<10}"
+                    )
             except KeyError:
                 print(f"No package named \'{package}\' found in Rdatasets")
+
+
+def get_rdataset_names():
+    """returns a list of all the available RDataset names present"""
+    update_rdataset_catalog()
+
+    with open(RDATASET_PATH, 'r') as f:
+        rdatasets = json.load(f)
+    f.close()
+
+    scripts = []
+    for package in rdatasets.keys():
+        for dataset in rdatasets[package].keys():
+            script_name = f"rdataset-{package}-{dataset}"
+            scripts.append(script_name)
+
+    return sorted(scripts)

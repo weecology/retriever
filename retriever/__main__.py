@@ -180,8 +180,10 @@ def main():
                                   metadata[i]["domain"], metadata[i]["link"]))
 
             elif args.rdataset:
-                if not isinstance(args.p, list):
+                if not isinstance(args.p, list) and not args.all:
                     display_all_rdataset_names()
+                elif not isinstance(args.p, list) and args.all:
+                    display_all_rdataset_names(package_name='all')
                 else:
                     display_all_rdataset_names(package_name=args.p)
 

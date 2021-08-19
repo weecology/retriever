@@ -15,7 +15,7 @@ from .install import install_hdf5
 from .provenance import commit, commit_log
 from .rdatasets import (update_rdataset_catalog, create_rdataset,
                         update_rdataset_contents, update_rdataset_script,
-                        display_all_rdataset_names)
+                        display_all_rdataset_names, get_rdataset_names)
 from .repository import check_for_updates
 from .engine_tools import reset_retriever
 from .fetch import fetch
@@ -37,5 +37,5 @@ __all__ = [
     'socrata_autocomplete_search', 'socrata_dataset_info', 'find_socrata_dataset_by_id',
     'create_socrata_dataset', 'update_socrata_contents', 'update_socrata_script',
     'update_rdataset_catalog', 'create_rdataset', 'update_rdataset_contents',
-    'update_rdataset_script', 'display_all_rdataset_names'
+    'update_rdataset_script', 'display_all_rdataset_names', 'get_rdataset_names'
 ]

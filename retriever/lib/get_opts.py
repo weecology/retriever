@@ -6,6 +6,7 @@ from argcomplete.completers import ChoicesCompleter
 from retriever.engines import engine_list
 from retriever.lib.defaults import VERSION, RETRIEVER_REPOSITORY
 from retriever.lib.scripts import SCRIPT_LIST, get_dataset_names_upstream
+from retriever.lib.rdatasets import get_rdataset_names
 
 module_list = SCRIPT_LIST()
 script_list = []
@@ -29,6 +30,7 @@ for module in module_list:
 
 script_list.extend(get_dataset_names_upstream(repo=RETRIEVER_REPOSITORY))
 script_list.extend(get_dataset_names_upstream())
+script_list.extend(get_rdataset_names())
 script_list = sorted(set(script_list))
 
 # set of all possible licenses, keywords and scripts
@@ -134,6 +136,11 @@ rdataset_parser = rdataset_ls_subparser.add_parser(
 )
 rdataset_parser.add_argument(
     '-p', help='display a list of all rdatasets present in the package(s)', nargs='+')
+
+rdataset_parser.add_argument('all',
+                             help='display all the packages present in rdatasets',
+                             nargs='?',
+                             default=None)
 
 autocreate_parser.add_argument('path', help='path to the data file(s)')
 autocreate_parser.add_argument('-dt',
