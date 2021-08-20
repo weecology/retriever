@@ -140,6 +140,14 @@ retriever.lib.provenance\_tools module
     :undoc-members:
     :show-inheritance:
 
+retriever.lib.rdatasets module
+------------------------------
+
+.. automodule:: retriever.lib.rdatasets
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 retriever.lib.repository module
 -------------------------------
 
