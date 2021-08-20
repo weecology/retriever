@@ -9,7 +9,7 @@ from retriever.lib.create_scripts import create_package
 from retriever.lib.scripts import reload_scripts
 
 
-def update_rdataset_catalog():
+def update_rdataset_catalog(test=False):
     '''Updates the datasets_url.json from the github repo'''
     if not os.path.exists(RDATASET_SCRIPT_WRITE_PATH):
         os.makedirs(RDATASET_SCRIPT_WRITE_PATH)
@@ -26,11 +26,14 @@ def update_rdataset_catalog():
             'doc': df['Doc'][i],
             'title': df['Title'][i],
         }
-    json_data = dataset_url
-
-    with open(RDATASET_PATH, 'w') as f:
-        json.dump(json_data, f, sort_keys=True, indent=4)
-    f.close()
+    # for testing update_rdataset_catalog
+    if test:
+        return dataset_url
+    else:
+        json_data = dataset_url
+        with open(RDATASET_PATH, 'w') as f:
+            json.dump(json_data, f, sort_keys=True, indent=4)
+        f.close()
 
 
 def create_rdataset(engine, package, dataset_name, script_path=None):
@@ -89,16 +92,19 @@ def update_rdataset_script(data_obj, dataset_name, package, script_path):
             json_file = json.load(f)
         f.close()
 
-        json_file = update_rdataset_contents(data_obj, package, dataset_name, json_file)
+        result, json_file = update_rdataset_contents(data_obj, package, dataset_name,
+                                                     json_file)
 
-        json_obj = json.dumps(json_file, sort_keys=True, indent=4)
+        if result:
+            json_obj = json.dumps(json_file, sort_keys=True, indent=4)
 
-        with open(f"{script_path}/{script_filename}", 'w') as f:
-            f.write(json_obj)
-        f.close()
+            with open(f"{script_path}/{script_filename}", 'w') as f:
+                f.write(json_obj)
+            f.close()
 
-        print("Successfully updated {}".format(script_filename))
-
+            print("Successfully updated {}".format(script_filename))
+        else:
+            print(f"Could not update {script_filename} with the given data_obj")
     else:
         print("File {filename} does not exist in path {script_path}".format(
             filename=filename, script_path=script_path))
@@ -113,18 +119,29 @@ def update_rdataset_contents(data_obj, package, dataset_name, json_file):
             "path" in json_file["resources"][0].keys()):
         json_file["resources"][0].pop("path")
 
-    json_file["description"] = f"This is a rdataset from {package}"
-    json_file["homepage"] = data_obj['doc']
-    json_file["licenses"] = [{"name": "Public Domain"}]
-    json_file["keywords"] = ['rdataset', f'{dataset_name}', f'{package}']
-    json_file["name"] = f"rdataset-{package}-{dataset_name}"
-    json_file["resources"][0]["url"] = data_obj['csv']
-    json_file["rdatasets"] = "True"
-    json_file["title"] = data_obj["title"]
-    json_file["citation"] = ""
-    json_file["package"] = package
+    keys = ['csv', 'doc', 'title']
+    flag = True
+    for key in keys:
+        if key not in data_obj:
+            flag = False
+            break
 
-    return json_file
+    if flag:
+        json_file["description"] = f"This is a rdataset from {package}"
+        json_file["homepage"] = data_obj['doc']
+        json_file["licenses"] = [{"name": "Public Domain"}]
+        json_file["keywords"] = ['rdataset', f'{dataset_name}', f'{package}']
+        json_file["name"] = f"rdataset-{package}-{dataset_name}"
+        json_file["resources"][0]["url"] = data_obj['csv']
+        json_file["rdatasets"] = "True"
+        json_file["title"] = data_obj["title"]
+        json_file["citation"] = ""
+        json_file["package"] = package
+        json_file["retriever_minimum_version"] = "3.0.1-dev"
+
+        return True, json_file
+    else:
+        return False, None
 
 
 def display_all_rdataset_names(package_name=None):
@@ -135,7 +152,7 @@ def display_all_rdataset_names(package_name=None):
         rdatasets = json.load(f)
     f.close()
 
-    if package_name is None:
+    if not package_name:
         print("List of all available Rdatasets\n")
         for package in rdatasets.keys():
             for dataset in rdatasets[package].keys():

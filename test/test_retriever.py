@@ -118,7 +118,7 @@ updated_clinic_utah = {
         }
     ],
     "retriever": "True",
-    "retriever_minimum_version": "2.1.0",
+    "retriever_minimum_version": "3.0.1-dev",
     "socrata": "True",
     "title": "2016 & 2015 Clinic Quality Comparisons for Clinics with Five or More Service Providers",
     "version": "1.0.0"
@@ -161,9 +161,53 @@ updated_fish_utah = {
         }
     ],
     "retriever": "True",
-    "retriever_minimum_version": "2.1.0",
+    "retriever_minimum_version": "3.0.1-dev",
     "socrata": "True",
     "title": "Fish Stocked in Utah by Species",
+    "version": "1.0.0"
+}
+
+affairs_json = {
+    "archived": "fill or remove this field if not archived",
+    "citation": "fill",
+    "description": "fill",
+    "encoding": "utf-8",
+    "homepage": "fill",
+    "keywords": [],
+    "licenses": [],
+    "name": "fill",
+    "resources": [
+        {
+            "name": "affairs",
+            "path": "Affairs.csv",
+            "url": "fill"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.1.0",
+    "title": "fill",
+    "version": "1.0.0"
+}
+
+updated_affairs_json = {
+    "citation": "",
+    "description": "This is a rdataset from aer",
+    "encoding": "utf-8",
+    "homepage": "https://vincentarelbundock.github.io/Rdatasets/doc/AER/Affairs.html",
+    "keywords": ["rdataset","affairs","aer"],
+    "licenses": [{"name": "Public Domain"}],
+    "name": "rdataset-aer-affairs",
+    "package": "aer",
+    "rdatasets": "True",
+    "resources": [
+        {
+            "name": "affairs",
+            "url": "https://vincentarelbundock.github.io/Rdatasets/csv/AER/Affairs.csv"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "3.0.1-dev",
+    "title": "Fair's Extramarital Affairs Data",
     "version": "1.0.0"
 }
 
@@ -187,6 +231,12 @@ update_socrata_datasets = [
     ('utah_clinic_pass','35s3-nmpm', clinic_utah, 'clinic-35s3', "https://opendata.utah.gov/resource/35s3-nmpm.csv", [True, updated_clinic_utah]),
     ('utah_fish_pass','9m7z-mzh9', fish_utah, 'fish-stock-utah', "https://opendata.utah.gov/resource/9m7z-mzh9.csv", [True, updated_fish_utah]),
     ('utah_fish_fail','9m7z-mzh8', fish_utah, 'fish-stock-utah', "https://opendata.utah.gov/resource/9m7z-mzh9.csv", [False, None]),
+]
+
+update_rdatasets = [
+    # test_name, package, dataset_name, json_file, expected
+    ('affairs_pass', 'aer', 'affairs', affairs_json, [True, updated_affairs_json]),
+    ('affairs_fail', 'aer', 'affairs', affairs_json, [False, None]),
 ]
 
 def setup_module():
@@ -345,6 +395,7 @@ def test_dataset_names_upstream():
     keyword_datasets = rt.get_dataset_names_upstream(keywords=['plants'])
     assert 'biodiversity-response' in keyword_datasets
 
+
 def test_socrata_autocomplete_search():
     """Check if autocomplete search returns a list of names or not"""
     names = rt.socrata_autocomplete_search(["building", "permits"])
@@ -354,6 +405,7 @@ def test_socrata_autocomplete_search():
     names = rt.socrata_autocomplete_search(["fshing"])
     assert isinstance(names, list) and (len(names) == 0)
 
+
 def test_socrata_dataset_info():
     """Check if socrata dataset info returns metadata for a dataset name"""
     resource = rt.socrata_dataset_info("Building Permits")
@@ -362,6 +414,7 @@ def test_socrata_dataset_info():
     assert isinstance(resource, list) and (len(resource) == 0)
     resource = rt.socrata_dataset_info("Cook County - Fishing Lakes")
     assert all([isinstance(resource, list), len(resource), resource[0]["id"]])
+
 
 def test_find_socrata_dataset_by_id():
     """Check if find socrata dataset by id returns metadata for a dataset id"""
@@ -376,12 +429,44 @@ def test_find_socrata_dataset_by_id():
     resource = rt.find_socrata_dataset_by_id("nawu-wcvv")
     assert isinstance(resource, dict) and ("error" in resource.keys())
 
+
+def test_update_rdataset_catalog():
+    """Checks if update_rdataset_catalog creates a correct dict object or not"""
+    rdatasets = rt.update_rdataset_catalog(test=True)
+    assert isinstance(rdatasets, dict)
+    assert isinstance(rdatasets['aer'], dict)
+    assert isinstance(rdatasets['aer']['affairs'], dict)
+    keys = ['csv', 'doc', 'title']
+    assert all([True for key in keys if key in rdatasets['aer']['affairs']])
+
+
+def test_get_rdataset_names():
+    """Checks if get_rdataset_names returns a list of script names and if the script names are correct"""
+    script_names = rt.get_rdataset_names()
+    assert isinstance(script_names, list)
+    assert len(script_names)
+    assert (len(script_names[0].split('-')) == 3) and script_names[0].startswith('rdataset')
+
+
+@pytest.mark.parametrize("test_name, package, dataset_name, json_file, expected", update_rdatasets)
+def test_update_rdataset_contents(test_name, package, dataset_name, json_file, expected):
+    """Checks if the update_rdataset_contents function updates the contents correctly"""
+    rdatasets = rt.update_rdataset_catalog(test=True)
+    if test_name == 'affairs_fail':
+        data_obj = {'xyz': 'abc'}
+    else:
+        data_obj = rdatasets[package][dataset_name]
+    result, updated_json = rt.update_rdataset_contents(data_obj, package, dataset_name, json_file)
+    assert (result == expected[0]) and (updated_json == expected[1])
+
+
 @pytest.mark.parametrize("test_name, id, json_file, script_name, url, expected", update_socrata_datasets)
 def test_update_socrata_contents(test_name, id, json_file, script_name, url, expected):
     """Checks if the update socrata script updates the default script contents"""
     resource = rt.find_socrata_dataset_by_id(id)
     result, updated_json = rt.update_socrata_contents(json_file, script_name, url, resource)
     assert (result == expected[0]) and (updated_json == expected[1])
+
 
 def test_drop_statement():
     """Test the creation of drop statements."""
@@ -408,6 +493,7 @@ def test_download_kaggle_dataset(test_name, data_source, dataset_identifier,  re
     else:
         assert files == None
 
+
 @pytest.mark.parametrize("test_name, filename, url, expected", socrata_datasets)
 def test_download_socrata_dataset(test_name, filename, url, expected):
     """Test the downloading of dataset from socrata"""
@@ -423,6 +509,7 @@ def test_download_socrata_dataset(test_name, filename, url, expected):
     result = test_engine.download_from_socrata(url, path, progbar)
     progbar.close()
     assert (result == expected) and (os.path.exists(path) == expected)
+
 
 def test_download_archive_gz_known():
     """Download and extract known files

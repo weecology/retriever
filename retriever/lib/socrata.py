@@ -147,11 +147,12 @@ def update_socrata_contents(json_file, script_name, url, resource):
         json_file["resources"][0].pop("path")
 
     keys = ["name", "id", "description", "datatype", "keywords", "domain", "homepage"]
+    flag = True
     for key in keys:
-        if key in resource:
-            flag = True
-        else:
+        if key not in resource:
             flag = False
+            break
+
     if flag:
         json_file["description"] = resource["description"]
         json_file["homepage"] = resource["homepage"]
@@ -163,6 +164,7 @@ def update_socrata_contents(json_file, script_name, url, resource):
         json_file["socrata"] = "True"
         json_file["title"] = resource["name"]
         json_file["citation"] = ""
+        json_file["retriever_minimum_version"] = "3.0.1-dev"
 
         return True, json_file
     else:
