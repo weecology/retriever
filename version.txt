@@ -85,10 +85,10 @@ predator_prey_size_marine.py,2.0.2
 predicts.py,1.0.4
 prism_climate.py,1.2.3
 socean_diet_data.py,1.0.4
-soil_db.json,1.2.2
 sonoran_desert.json,1.0.0
 species_exctinction_rates.json,1.0.1
 streamflow_conditions.json,1.0.1
+tidycensus.py,1.0.0
 transparencia_dados_abertos_brasil.json,1.0.0
 tree_canopy_geometries.json,1.0.1
 tree_demog_wghats.py,1.3.2
