@@ -3,6 +3,7 @@ from collections import OrderedDict
 
 from retriever.engines import choose_engine
 from retriever.lib.defaults import DATA_DIR, SCRIPT_WRITE_PATH, PROVENANCE_DIR
+from retriever.lib.rdatasets import update_rdataset_catalog, create_rdataset
 from retriever.lib.scripts import SCRIPT_LIST, get_script, name_matches
 from retriever.lib.repository import check_for_updates
 from retriever.lib.provenance import install_committed
@@ -78,6 +79,19 @@ def _install(args, use_cache, debug):
                 script = get_script(args['dataset'])
                 script.download(engine, debug=debug)
                 script.engine.final_cleanup()
+    elif args['dataset'].startswith('rdataset') and not data_sets_scripts:
+        print("=> Installing", args['dataset'])
+        rdataset = args['dataset'].split('-')
+        update_rdataset_catalog()
+        package, dataset_name = rdataset[1], rdataset[2]
+        create_rdataset(engine, package, dataset_name)
+        if args['command'] == 'download':
+            return engine
+        else:
+            script_list = SCRIPT_LIST()
+            script = get_script(args['dataset'])
+            script.download(engine, debug=debug)
+            script.engine.final_cleanup()
     else:
         message = "Run retriever.datasets() to list the currently available " \
                   "datasets."

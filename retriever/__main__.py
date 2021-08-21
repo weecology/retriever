@@ -22,6 +22,7 @@ from retriever.lib.scripts import SCRIPT_LIST, reload_scripts, name_matches, get
 from retriever.lib.create_scripts import create_package
 from retriever.lib.provenance import commit, commit_log
 from retriever.lib.socrata import socrata_autocomplete_search, socrata_dataset_info
+from retriever.lib.rdatasets import display_all_rdataset_names
 
 
 def main():
@@ -125,7 +126,7 @@ def main():
 
         if args.command == 'ls':
             # scripts should never be empty because check_for_updates is run on SCRIPT_LIST init
-            if not (args.l or args.k or isinstance(args.v, list) or args.s):
+            if not any([args.l, args.k, args.v, args.s, args.rdataset]):
                 all_scripts = dataset_names()
                 from retriever import lscolumns
 
@@ -143,7 +144,7 @@ def main():
                 print("To see the full list of available online datasets, visit\n"
                       "https://github.com/weecology/retriever-recipes.")
 
-            elif isinstance(args.s, list) and (not (args.l or args.k or args.v)):
+            elif isinstance(args.s, list):
                 try:
                     theme = INQUIRER_THEME
                 except NameError:
@@ -177,6 +178,14 @@ def main():
                                   metadata[i]["type"],
                                   metadata[i]["description"][:50] + "...",
                                   metadata[i]["domain"], metadata[i]["link"]))
+
+            elif args.rdataset:
+                if not isinstance(args.p, list) and not args.all:
+                    display_all_rdataset_names()
+                elif not isinstance(args.p, list) and args.all:
+                    display_all_rdataset_names(package_name='all')
+                else:
+                    display_all_rdataset_names(package_name=args.p)
 
             elif isinstance(args.v, list):
                 dataset_verbose_list(args.v)
@@ -246,7 +255,7 @@ def main():
             use_cache = True
         engine.use_cache = use_cache
         if args.dataset is not None:
-            if args.dataset.startswith('socrata'):
+            if args.dataset.startswith(('socrata', 'rdataset')):
                 scripts = True
             else:
                 scripts = name_matches(script_list, args.dataset)

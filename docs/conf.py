@@ -9,24 +9,61 @@ from retriever.lib.defaults import VERSION, COPYRIGHT
 from retriever.lib.scripts import SCRIPT_LIST, reload_scripts
 from retriever.lib.tools import open_fw
 from retriever.lib.repository import check_for_updates
+from retriever.lib.rdatasets import update_rdataset_catalog
 
 
 def to_str(object, object_encoding=encoding):
     return str(object).encode('UTF-8').decode(encoding)
 
 
-# Create the .rst file for the available datasets
-datasetfile = open_fw("datasets_list.rst")
+# Rdatasets
+# Create the .rst file for the available APIs
+datasetfile = open_fw("available_apis.rst")
 datasetfile_title = """==============
 APIs Available
 ==============
 
-1. **Socrata API**
-------------------
+**Socrata API**
+---------------
 
-   Total number of datasets supported : 85,244 out of 213,965
+**Total number of datasets supported : 85,244 out of 213,965**
 
-==================
+**Rdatasets**
+-------------
+
+
+"""
+rdatasets = update_rdataset_catalog(test=True)
+datasetfile.write(datasetfile_title)
+
+index = 1
+for package in rdatasets.keys():
+    for dataset in rdatasets[package].keys():
+        script = rdatasets[package][dataset]
+
+        title = str(index) + ". **{}**\n".format(to_str(script['title'].strip(), encoding))
+        datasetfile.write(title)
+        datasetfile.write("~" * (len(title) - 1) + "\n\n")
+
+        name = f"rdataset-{package}-{dataset}"
+        # keep the gap between : {} standard as required by restructuredtext
+        datasetfile.write(":name: {}\n\n".format(name))
+        reference_link = script['doc']
+        # Long urls can't render well, embed them in a text(home link)
+        datasetfile.write(":reference: `{s}'s home link <{r}>`_.\n".format(
+            s=name, r=to_str(reference_link).rstrip("/")))
+
+        datasetfile.write(":R package: {}\n\n".format(package))
+        datasetfile.write(":R Dataset: {}\n\n".format(dataset))
+        index += 1
+
+datasetfile.write("\n\n")
+datasetfile.close()
+
+# Retriever Datasets
+# Create the .rst file for the available datasets
+datasetfile = open_fw("datasets_list.rst")
+datasetfile_title = """==================
 Datasets Available
 ==================
 

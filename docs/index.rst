@@ -18,7 +18,9 @@ Contents:
    pyretriever.rst
    provenance.rst
    datasets_list.rst
+   available_apis.rst
    socrata_api.rst
+   rdatasets_api.rst
    developer.rst
    spatial_dbms.rst
    code_of_conduct.rst
