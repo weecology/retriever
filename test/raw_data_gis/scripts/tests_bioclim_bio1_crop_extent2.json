@@ -1,5 +1,5 @@
 {
-    "name": "bioclim-bio1-crop-extent2",
+    "name": "tests-bioclim-bio1-crop-extent2",
     "url": "http://biogeo.ucdavis.edu/data/climate/worldclim/1_4/grid/cur/bio_2-5m_bil.zip",
     "title": "Bioclim 2.5 Minute Climate Data",
     "ref":"http://worldclim.org/bioclim",
