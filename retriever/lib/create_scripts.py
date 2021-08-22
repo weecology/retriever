@@ -113,7 +113,12 @@ class VectorPk(TabularPk):
         self.driver_name = "ESRI Shapefile"
         self.spatial_ref = "spatial_ref"
         self.resources = []
-        self.extent = ""
+        self.extent = {
+            "xMin": "fill a numerical value",
+            "yMax": "fill numerical value",
+            "xMax": "fill numerical value",
+            "yMin": "fill numerical value"
+        }
         self.geom_type = ""
 
     def get_source(self, source, driver_name=None):
@@ -186,6 +191,7 @@ class RasterPk(TabularPk):
         self.group_count = "--Number of groups in the dataset if applicable"
         self.dataset_count = "--The number of individual datasets"
         self.transform = ""
+        self.extent = []
         self.resources = []
 
     def get_source(self, file_path, driver=None):
