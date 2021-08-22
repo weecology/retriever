@@ -117,7 +117,7 @@ download_parser.add_argument('--not-cached',
 download_parser.add_argument('-b',
                              '--bbox',
                              nargs=4,
-                             help='Set bounding box xmin, ymin, xmax, ymax',
+                             help='Set bounding box xmin, ymax, xmax, ymin',
                              required=False)
 
 ls_parser.add_argument('-l', help='search datasets with specific license(s)',

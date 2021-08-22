@@ -58,10 +58,11 @@ db_md5 = [
 ]
 
 spatial_db_md5 = [
-    ("test-eco-level-four", ["gid", "us_l3code", "na_l3code", "na_l2code"], 'd1c01d8046143e9700f5cf92cbd6be3d'),
-    ("test-raster-bio1", ["rid", "filename"], '27e0472ddc2da9fe807bfb48b786a251'),
-    ("test-raster-bio2", ["rid", "filename"], '2983a9f7e099355db2ce2fa312a94cc6'),
-    ("test-us-eco", ["gid", "us_l3code", "na_l3code", "na_l2code"], 'eaab9fa30c745557ff6ba7c116910b45'),
+    ("test-eco-level-four", ["gid", "us_l3code", "na_l3code", "na_l2code"], 'd1c01d8046143e9700f5cf92cbd6be3d',[]),
+    # ("test-raster-bio1clip", ["rid","filename"], '29f702992ae42cc221d6ca9149635024',[60, 50, 100, 0]),
+    ("test-raster-bio1", ["rid", "filename"], '27e0472ddc2da9fe807bfb48b786a251',[]),
+    ("test-raster-bio2", ["rid", "filename"], '2983a9f7e099355db2ce2fa312a94cc6',[]),
+    ("test-us-eco", ["gid", "us_l3code", "na_l3code", "na_l2code"], 'eaab9fa30c745557ff6ba7c116910b45',[]),
     # h5py has compatibility issues in linux-Travis
     # Tests pass locally
     # ("sample-hdf", ["*"], '31e61867e9990138788a946542c4b1bf')
@@ -314,8 +315,8 @@ def test_fetch_order(dataset, expected):
     assert list(data_frame_dict.keys()) == expected
 
 
-@pytest.mark.parametrize("dataset, cols, expected", spatial_db_md5)
-def test_postgres_spatial(dataset, cols, expected, tmpdir):
+@pytest.mark.parametrize("dataset, cols, expected, bbox", spatial_db_md5)
+def test_postgres_spatial(dataset, cols, expected, bbox, tmpdir):
     """Check for postgres regression."""
     cmd = 'psql -U postgres -d ' + testdb_retriever + ' -h ' + pgdb_host + ' -w -c \"DROP SCHEMA IF EXISTS ' + testschema + ' CASCADE\"'
     subprocess.call(shlex.split(cmd))
@@ -333,5 +334,6 @@ def test_postgres_spatial(dataset, cols, expected, tmpdir):
                       'port': postgres_engine.opts['port'],
                       "database": postgres_engine.opts['database'],
                       "database_name": postgres_engine.opts['database_name'],
-                      "table_name": postgres_engine.opts['table_name']}
+                      "table_name": postgres_engine.opts['table_name'],
+                      "bbox": bbox}
     assert get_csv_md5(dataset, postgres_engine, tmpdir, rt.install_postgres, interface_opts, cols) == expected

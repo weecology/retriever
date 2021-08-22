@@ -231,7 +231,8 @@ CSV HEADER;"""
                         path = location_of_cropped_tif
                     else:
                         print("Bounding Box exceds image boundaries")
-
+                elif bbox:
+                    print("Invalid value of Extent, bbox[xmin, ymax, xmax, ymin]")
         raster_sql = ('raster2pgsql -Y -M -d -I -l 2 -s {SRID} "{path}"'
                       " -F -t 100x100 {SCHEMA_DBTABLE}".format(
                           SRID=srid,
