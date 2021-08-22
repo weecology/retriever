@@ -113,7 +113,12 @@ class VectorPk(TabularPk):
         self.driver_name = "ESRI Shapefile"
         self.spatial_ref = "spatial_ref"
         self.resources = []
-        self.extent = ""
+        self.extent = {
+            "xMin": "fill a numerical value",
+            "yMax": "fill numerical value",
+            "xMax": "fill numerical value",
+            "yMin": "fill numerical value"
+        }
         self.geom_type = ""
 
     def get_source(self, source, driver_name=None):
@@ -186,6 +191,7 @@ class RasterPk(TabularPk):
         self.group_count = "--Number of groups in the dataset if applicable"
         self.dataset_count = "--The number of individual datasets"
         self.transform = ""
+        self.extent = []
         self.resources = []
 
     def get_source(self, file_path, driver=None):
@@ -336,9 +342,8 @@ def create_script_dict(pk_type, path, file, skip_lines, encoding):
     """Create a script dict or skips file if resources cannot be made"""
     dict_values = pk_type.__dict__
     try:
-        resources = pk_type.get_resources(file_path=path,
-                                          skip_lines=skip_lines,
-                                          encoding=encoding)
+        resources = pk_type.get_resources(
+            file_path=path, skip_lines=skip_lines, encoding=encoding)
     except Exception as error:
         print("Skipped file: ", file, error)
         print("Remove the file from the folder and try again")
@@ -358,9 +363,8 @@ def process_dirs(pk_type, sub_dirs_path, out_path, skip_lines, encoding):
             if hasattr(pk_type, "pk_formats") and extension not in pk_type.pk_formats:
                 continue
             if file_name:
-                try_create_dict = create_script_dict(pk_type,
-                                                     os.path.join(path, file_name),
-                                                     file_name, skip_lines, encoding)
+                try_create_dict = create_script_dict(pk_type, os.path.join(
+                    path, file_name), file_name, skip_lines, encoding)
                 json_pk.update(try_create_dict)
         write_out_scripts(json_pk, path, out_path)
 
