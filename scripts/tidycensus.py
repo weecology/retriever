@@ -14,6 +14,14 @@ try:
 except ImportError:
     pass
 
+
+# This is a special script and requires external installation in addition to the retriever normal installation.
+# Additional procedure:
+# 1. Install R for your system.
+# 2. Install the package: libudunits2-dev (deb - Debian, Ubuntu etc.)/ udunits2-devel (rpm - Fedora) / udunits (brew - OSX)
+# 3. Create a local library path in R, this is usually done by running the R shell without root access and installing a library, and following the prompts that appear on the screen to install a local library.
+# Done! You will now be able to directly run "retriever download tidycensus"
+
 from retriever.lib.models import Table, VectorDataset
 from retriever.lib.templates import Script
 from retriever.lib.defaults import DATA_WRITE_PATH
