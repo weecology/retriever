@@ -14,6 +14,14 @@ try:
 except ImportError:
     pass
 
+
+# This is a special script and requires external installation in addition to the retriever normal installation.
+# Additional procedure:
+# 1. Install R for your system.
+# 2. Install the package: libudunits2-dev (deb - Debian, Ubuntu etc.)/ udunits2-devel (rpm - Fedora) / udunits (brew - OSX)
+# 3. Create a local library path in R, this is usually done by running the R shell without root access and installing a library, and following the prompts that appear on the screen to install a local library.
+# Done! You will now be able to directly run "retriever download tidycensus"
+
 from retriever.lib.models import Table, VectorDataset
 from retriever.lib.templates import Script
 from retriever.lib.defaults import DATA_WRITE_PATH
@@ -72,7 +80,7 @@ class main(Script):
             "'sf'-Ready Data Frames"
         self.name = "tidycensus"
         self.retriever_minimum_version = '3.0.1-dev'
-        self.version = '1.0.0'
+        self.version = '1.0.1'
         self.ref = "https://github.com/walkerke/tidycensus"
         self.citation = ""
         self.licenses = [{"name": "MIT"}]
@@ -83,7 +91,7 @@ class main(Script):
         self.keywords = ["census", "US", "tidycensus", "R", "geographic boundaries"]
         self.encoding = 'utf-8'
 
-    def download_raw_data(self, datasets):
+    def download_raw_data(self, datasets, engine):
         """Downloads the raw data files of all the datasets present in tidycensus"""
         # Load all the required libraries
         r_string = '''
@@ -92,11 +100,10 @@ class main(Script):
         library(readr)
         '''
         ro.r(r_string)
-
         for dataset_name in datasets:
             # saves mig_recodes raw data file
             if dataset_name == 'mig_recodes':
-                path = os.path.normpath(self.engine.format_filename('mig_recodes.csv'))
+                path = os.path.normpath(engine.format_filename('mig_recodes.csv'))
                 r_string = '''
                 rdf = as.data.frame.data.frame({dataset})
                 write_csv(rdf, "{path}", append=FALSE)
@@ -113,11 +120,12 @@ class main(Script):
             # saves raw data files of county_laea and state_laea
             elif dataset_name in ['county_laea', 'state_laea']:
                 path = os.path.normpath(
-                    os.path.join(self.engine.format_data_dir(), str(dataset_name)))
+                    os.path.join(engine.format_data_dir(), str(dataset_name)))
                 r_string = '''
                 dir.create("{path}/")
                 setwd("{path}/")
                 st_write({dataset}, "{dataset}.shp", delete_layer=TRUE)
+                setwd("../..")
                 '''.format(path=path, dataset=dataset_name)
 
                 ro.r(r_string)
@@ -136,7 +144,9 @@ class main(Script):
                 with localconverter(ro.default_converter + pandas2ri.converter):
                     pdf = ro.conversion.rpy2py(rdf)
                 path = os.path.normpath(
-                    self.engine.format_filename('{}.csv'.format(dataset_name)))
+                    engine.format_filename('{}.csv'.format(dataset_name)))
+                if not os.path.exists(os.path.dirname(path)):
+                    os.makedirs(os.path.dirname(path))
                 pdf.to_csv(path, index=False)
                 file_paths[dataset_name] = path
 
@@ -149,6 +159,12 @@ class main(Script):
         data_path = os.path.normpath(DATA_WRITE_PATH.format(dataset='tidycensus'))
         if not os.path.exists(data_path):
             engine.create_raw_data_dir()
+        elif engine.name == 'CSV':
+            engine.data_path = engine.opts['data_dir']
+            engine.create_raw_data_dir(engine.data_path)
+        else:
+            engine.data_path = engine.opts["path"]
+            engine.create_raw_data_dir(engine.data_path)
 
         api_key = census_api_key()
         packages_remaining = len([x for x in packages if not rpackages.isinstalled(x)])
@@ -158,7 +174,7 @@ class main(Script):
             if not installed:
                 exit()
         if api_key:
-            self.download_raw_data(datasets)
+            self.download_raw_data(datasets, engine)
         else:
             exit()
         # state_laea dataset
