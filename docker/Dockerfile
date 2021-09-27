@@ -1,5 +1,5 @@
-# Download base image ubuntu 18.04
-FROM ubuntu
+# Download base image ubuntu .04
+FROM ubuntu:20.04
 
 MAINTAINER Weecology "https://github.com/weecology/retriever"
 
