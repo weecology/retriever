@@ -1,7 +1,11 @@
 import os
 import sys
 import subprocess
-from osgeo import gdal
+try:
+    from osgeo import gdal
+except:
+    gdal = None
+    print("Install GDAL")
 from retriever.lib.models import Engine
 
 
@@ -194,7 +198,7 @@ CSV HEADER;"""
 
             bbox = [int(i) for i in bbox]
 
-            if bbox and bbox[2] > bbox[0] and bbox[1] > bbox[3]:
+            if gdal and bbox and bbox[2] > bbox[0] and bbox[1] > bbox[3]:
                 if self.script.tables[self.table.name].extensions:
                     converted_tif = path[:-3] + "tif"
                     if self.script.tables[self.table.name].extensions[0] == "bil":
