@@ -71,7 +71,9 @@ jobs:
           
       - name: Setup paths and files
         run : |
+          pwd
           cd ..
+          pwd
           chmod 0755 retriever/cli_tools/entrypoint.sh
           sh retriever/cli_tools/entrypoint.sh
           echo "export PATH="/usr/bin/python:$PATH"" >> ~/.profile
