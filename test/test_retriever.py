@@ -786,6 +786,12 @@ def test_format_insert_value_string_complex():
     assert test_engine.format_insert_value(test_str, 'char') == test_str
 
 
+def test_get_retriever_citation():
+    citation = rt.get_retriever_citation()
+    sub_str = "The EcoData Retriever: Improving Access to Existing Ecological Data"
+    assert sub_str.lower() in citation.lower()
+
+
 def test_get_script_citation():
     """Test get citation of a script"""
     cite = rt.get_script_citation("iris")

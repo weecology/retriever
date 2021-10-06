@@ -13,7 +13,7 @@ from collections import OrderedDict
 from pkg_resources import parse_version
 
 from retriever.lib.defaults import (SCRIPT_SEARCH_PATHS, VERSION, ENCODING,
-                                    SCRIPT_WRITE_PATH)
+                                    SCRIPT_WRITE_PATH, CITATION)
 from retriever.lib.defaults import (REPOSITORY, RETRIEVER_REPOSITORY, RETRIEVER_SCRIPTS,
                                     RETRIEVER_DATASETS)
 from retriever.lib.load_json import read_json
@@ -293,6 +293,10 @@ def get_script_version_upstream(dataset, repo=REPOSITORY):
     pattern = re.compile(r'[."]version[\'"\s":=]+(\d+\.\d+.\d+)')
     version = re.search(pattern, r.text).group(1)
     return version
+
+
+def get_retriever_citation():
+    return CITATION
 
 
 def get_script_citation(dataset=None):
