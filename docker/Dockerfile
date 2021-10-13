@@ -7,7 +7,7 @@ MAINTAINER Weecology "https://github.com/weecology/retriever"
 RUN export CPLUS_INCLUDE_PATH=/usr/include/gdal
 RUN export C_INCLUDE_PATH=/usr/include/gdal
     
-RUN add-apt-repository ppa:ubuntugis/ubuntugis-unstable 
+RUN add-apt-repository ppa:ubuntugis/ubuntugis-unstable --yes 
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils 
 
     # Manually install tzdata to allow for non-interactive install
