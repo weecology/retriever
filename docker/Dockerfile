@@ -6,8 +6,9 @@ MAINTAINER Weecology "https://github.com/weecology/retriever"
 # Installing Gdal and configuring it
 RUN export CPLUS_INCLUDE_PATH=/usr/include/gdal
 RUN export C_INCLUDE_PATH=/usr/include/gdal
-    
-RUN add-apt-repository ppa:ubuntugis/ubuntugis-unstable --yes 
+RUN apt install -y --force-yes software-properties-common python-software-properties
+RUN apt-add-repository ‘deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main’
+RUN add-apt-repository ppa:ubuntugis/ubuntugis-unstable
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils 
 
     # Manually install tzdata to allow for non-interactive install
