@@ -6,7 +6,6 @@ MAINTAINER Weecology "https://github.com/weecology/retriever"
 # Installing Gdal and configuring it
 RUN export CPLUS_INCLUDE_PATH=/usr/include/gdal
 RUN export C_INCLUDE_PATH=/usr/include/gdal
-RUN apt install -y --force-yes software-properties-common
 RUN apt-add-repository ‘deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main’
 RUN add-apt-repository ppa:ubuntugis/ubuntugis-unstable
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils 
