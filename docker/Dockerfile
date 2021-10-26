@@ -6,10 +6,11 @@ MAINTAINER Weecology "https://github.com/weecology/retriever"
 # Installing Gdal and configuring it
 RUN export CPLUS_INCLUDE_PATH=/usr/include/gdal
 RUN export C_INCLUDE_PATH=/usr/include/gdal
-RUN apt-add-repository ‘deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main’
-RUN add-apt-repository ppa:ubuntugis/ubuntugis-unstable
-RUN apt-get update && apt-get install -y --no-install-recommends apt-utils 
 
+
+RUN apt-get update && apt-get install -y --no-install-recommends apt-utils 
+# RUN apt-add-repository ‘deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main’
+# RUN add-apt-repository ppa:ubuntugis/ubuntugis-unstable
     # Manually install tzdata to allow for non-interactive install
 RUN apt-get install -y --force-yes tzdata
 RUN apt-get install -y --force-yes build-essential wget git locales locales-all > /dev/null 
