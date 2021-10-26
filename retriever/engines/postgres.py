@@ -5,7 +5,7 @@ try:
     from osgeo import gdal
 except:
     gdal = None
-    print("Install GDAL")
+
 from retriever.lib.models import Engine
 
 
