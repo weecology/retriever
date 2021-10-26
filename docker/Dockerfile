@@ -16,8 +16,8 @@ RUN apt-get install -y --force-yes tzdata
 RUN apt-get install -y --force-yes build-essential wget git locales locales-all > /dev/null 
 RUN apt-get install -y --force-yes postgresql-client mariadb-client > /dev/null 
 RUN apt-get install -y --force-yes libpq-dev 
-RUN apt-get install libgdal-dev 
-RUN apt install -y gdal-bin  
+RUN apt-get install -y --force-yes libgdal-dev 
+RUN apt install -y --force-yes  gdal-bin  
 RUN pip install GDAL==3.2.3  
 
     # Installing postgis
