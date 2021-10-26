@@ -18,7 +18,7 @@ RUN apt-get install -y --force-yes postgresql-client mariadb-client > /dev/null
 RUN apt-get install -y --force-yes libpq-dev 
 RUN apt-get install -y --force-yes libgdal-dev 
 RUN apt install -y --force-yes  gdal-bin  
-RUN pip install GDAL==3.2.3  
+  
 
     # Installing postgis
 RUN apt-get install -y --force-yes postgis
@@ -53,7 +53,7 @@ RUN pip install pymysql &&\
     pip install Pillow &&\
     pip install kaggle &&\
     pip install inquirer
-
+RUN pip install GDAL==3.2.3
 COPY . ./retriever
 RUN chmod 0755 /retriever/cli_tools/entrypoint.sh
 ENTRYPOINT ["/retriever/cli_tools/entrypoint.sh"]
