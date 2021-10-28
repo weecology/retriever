@@ -1,25 +1,21 @@
-# Download base image ubuntu 18.04
-FROM ubuntu:18.04
+# Download base image ubuntu .04
+FROM osgeo/gdal
 
 MAINTAINER Weecology "https://github.com/weecology/retriever"
 
 # Installing Gdal and configuring it
-RUN add-apt-repository ppa:ubuntugis/ppa &&\
+RUN export CPLUS_INCLUDE_PATH=/usr/include/gdal &&\
+    export C_INCLUDE_PATH=/usr/include/gdal &&\
     apt-get update && apt-get install -y --no-install-recommends apt-utils &&\
     # Manually install tzdata to allow for non-interactive install
     apt-get install -y --force-yes tzdata &&\
     apt-get install -y --force-yes build-essential wget git locales locales-all > /dev/null &&\
     apt-get install -y --force-yes postgresql-client mariadb-client > /dev/null &&\
     apt-get install -y --force-yes libpq-dev &&\
-    apt-get install gdal-bin &&\
-    apt-get install libgdal-dev &&\
-    export CPLUS_INCLUDE_PATH=/usr/include/gdal &&\
-    export C_INCLUDE_PATH=/usr/include/gdal &&\
-    pip install GDAL 
-
-# Installing GDAL
-RUN apt-add-repository ppa:ubuntugis/ubuntugis-unstable &&\
-    apt install -y gdal-bin python-gdal python3-gdal
+    apt-get install -y --force-yes libgdal-dev &&\
+    apt install -y --force-yes  gdal-bin &&\
+    # Installing postgis
+    apt-get install -y --force-yes postgis
 
 # Set encoding
 ENV LC_ALL en_US.UTF-8
@@ -51,10 +47,7 @@ RUN pip install pymysql &&\
     pip install Pillow &&\
     pip install kaggle &&\
     pip install inquirer
-
-# Install Postgis after Python is setup
-RUN apt-get install -y --force-yes postgis
-
+RUN pip install GDAL
 COPY . ./retriever
 RUN chmod 0755 /retriever/cli_tools/entrypoint.sh
 ENTRYPOINT ["/retriever/cli_tools/entrypoint.sh"]
