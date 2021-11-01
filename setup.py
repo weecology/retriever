@@ -99,6 +99,7 @@ setup(
     install_requires=[
         'xlrd',
         'future',
+        'kaggle',
         'argcomplete',
         'tqdm',
         'requests',
