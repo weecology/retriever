@@ -1,5 +1,6 @@
 future
 xlrd>=0.7
+openpyxl
 argcomplete
 kaggle
 PyMySQL>=0.4

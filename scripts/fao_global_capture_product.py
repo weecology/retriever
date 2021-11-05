@@ -9,7 +9,7 @@ from imp import reload
 reload(sys)
 if hasattr(sys, 'setdefaultencoding'):
     sys.setdefaultencoding("UTF-8")
-import xlrd
+import pandas as pd
 
 from retriever.lib.models import Table, Cleanup, correct_invalid_value
 from retriever.lib.templates import Script
@@ -33,7 +33,7 @@ class main(Script):
         self.retriever_minimum_version = '2.1.dev'
         self.urls = {
             "capture": "http://www.fao.org/fishery/static/Data/Capture_2018.1.2.zip"}
-        self.version = '1.0.0'
+        self.version = '1.1.0'
         self.ref = "http://www.fao.org/fishery/statistics/global-capture-production/"
         self.citation = "FAO. 2018. FAO yearbook. Fishery and Aquaculture Statistics " \
                         "2016/FAO annuaire. Statistiques des pêches et de l'aquaculture " \
@@ -49,32 +49,16 @@ class main(Script):
     def download(self, engine=None, debug=False):
         Script.download(self, engine, debug)
         engine = self.engine
-
         engine.download_files_from_archive(self.urls["capture"], archive_type="zip")
 
         # Convert xlsx to csv.
         xlsx_file = self.engine.format_filename("DSD_FI_CAPTURE.xlsx")
-        file_path = self.engine.format_filename("DSD_CAPTURE.csv")
-        book = xlrd.open_workbook(xlsx_file)
-        sh = book.sheet_by_index(0)
-        rows = sh.nrows
-
-        # Creating data files
-        new_data = open_fw(file_path)
-        csv_writer = open_csvw(new_data)
-        csv_writer.writerow(["Order", "Concept_id",
-                             "Role_Type", "Codelist_id",
-                             "Codelist_Code_id", "Description"])
-
-        for index in range(2, rows):
-            row = sh.row(index)
-            # Get each row and format the sell value.
-            # Data starts at index 2
-            row_as_list = [to_str(column_value.value) for column_value in row]
-            csv_writer.writerow(row_as_list)
-        new_data.close()
+        file_path = self.engine.format_filename("DSD_FI_CAPTURE.csv")
+        df = pd.read_excel(xlsx_file)
+        df.to_csv(file_path, sep=',', encoding=self.encoding, index=False, header=False)
 
         file_names = [
+            ('DSD_FI_CAPTURE.csv', 'capture_data'),
             ('CL_FI_UNIT.csv', 'unit_data'),
             ('CL_FI_WATERAREA_GROUPS.csv', 'waterarea_groups'),
             ('DSD_CAPTURE.csv', 'dsd_capture_data'),
