@@ -15,6 +15,8 @@ from retriever.lib.engine_tools import json2csv
 from retriever.lib.engine_tools import xml2csv_test
 from retriever.lib.table import TabularDataset
 from retriever.lib.templates import BasicTextTemplate
+from retriever.lib.socrata import update_socrata_contents
+from retriever.lib.rdatasets import update_rdataset_contents
 
 try:
     from retriever.lib.engine_tools import geojson2csv
@@ -456,7 +458,8 @@ def test_update_rdataset_contents(test_name, package, dataset_name, json_file, e
         data_obj = {'xyz': 'abc'}
     else:
         data_obj = rdatasets[package][dataset_name]
-    result, updated_json = rt.update_rdataset_contents(data_obj, package, dataset_name, json_file)
+    result, updated_json = update_rdataset_contents(data_obj, package, dataset_name,
+                                                    json_file)
     assert (result == expected[0]) and (updated_json == expected[1])
 
 
@@ -464,7 +467,7 @@ def test_update_rdataset_contents(test_name, package, dataset_name, json_file, e
 def test_update_socrata_contents(test_name, id, json_file, script_name, url, expected):
     """Checks if the update socrata script updates the default script contents"""
     resource = rt.find_socrata_dataset_by_id(id)
-    result, updated_json = rt.update_socrata_contents(json_file, script_name, url, resource)
+    result, updated_json = update_socrata_contents(json_file, script_name, url, resource)
     assert (result == expected[0]) and (updated_json == expected[1])
 
 
