@@ -140,7 +140,7 @@ $ ``retriever install postgres rdataset-aer-usmoney``
     Progress: 100%|█████████████████████████████████████████████████████████████████████████████████████████████| 136/136 [00:00<00:00, 2225.09rows/s]
     Done!
 
-The script created for the Socrata dataset is stored in the ``rdataset-scripts`` directory in the ``~/.retriever`` directory.
+The script created for the Rdataset is stored in the ``rdataset-scripts`` directory in the ``~/.retriever`` directory.
 
 
 Python Interface in Data Retriever
@@ -213,95 +213,6 @@ If no package is specified, it prints all the rdatasets, and if ``all`` is passe
   causaldata  dplyr     forecast   ggplot2movies  hwde      lmec     mstate      plm             reshape2  stat2data   vcd 
 
 
-Updating the Contents of Rdataset Script
-----------------------------------------
-
-The function ``update_socrata_contents`` updates the contents of the socrata script created by ``create_socrata_dataset``.
-
-The input arguments are:
-  - data_obj: The dict which contains the following keys: ``csv``, ``doc`` and ``title``. 
-  - package: The R package in which the dataset exists
-  - dataset_name: The dataset name
-  - json_file: The content of the script created
-
-The function returns ``True, json_file`` if the data_obj dict is correct,
-otherwise, it returns ``False, None``.
-
-.. code-block:: python
-
-  >>> import json
-  >>> import retriever as rt
-  >>> from retriever.lib.defaults import RDATASET_SCRIPT_WRITE_PATH
-  >>> data_obj = {
-  ...     'csv': 'https://vincentarelbundock.github.io/Rdatasets/csv/drc/metals.csv',   # csv file url
-  ...     'doc': 'https://vincentarelbundock.github.io/Rdatasets/doc/drc/metals.html',  # documentation url
-  ...     'title': 'Data from heavy metal mixture experiments',
-  ... }
-  >>> script_path = RDATASET_SCRIPT_WRITE_PATH
-  >>> script_filename = f"rdataset_{package}_{dataset_name}" + '.json'
-  >>> with open(f"{script_path}/{script_filename}", "r") as f:
-  ...       json_file = json.load(f)
-  >>> f.close()
-  >>> package = 'drc'
-  >>> dataset_name = 'metals'
-  >>> json_file = rt.update_rdataset_contents(data_obj, package, dataset_name, json_file)
-
-
-
-Updating and Renaming the Rdataset Script
------------------------------------------
-
-The function ``update_rdataset_script(data_obj, dataset_name, package, script_path)`` renames the script, 
-calls the ``update_rdataset_contents``, and then writes the new content returned by ``update_rdataset_contents``
-
-.. code-block:: python
-
-  >>> import retriever as rt
-  >>> from retriever.lib.defaults import RDATASET_SCRIPT_WRITE_PATH
-  >>> data_obj = {
-  ...     'csv': 'https://vincentarelbundock.github.io/Rdatasets/csv/drc/metals.csv',
-  ...     'doc': 'https://vincentarelbundock.github.io/Rdatasets/doc/drc/metals.html',
-  ...     'title': 'Data from heavy metal mixture experiments',
-  ... }
-  >>> script_path = RDATASET_SCRIPT_WRITE_PATH
-  >>> package = 'drc'
-  >>> dataset_name = 'metals'
-  >>> rt.update_rdataset_script(data_obj, dataset_name, package, script_path)
-
-
-Creating a Rdataset Script
---------------------------
-
-The function ``create_rdataset(engine, name, resource, script_path=None)`` creates rdataset scripts
-for retriever. This function downloads the raw data, creates the script, then updates it and at last,
-it installs the dataset according to the engine using that script.
-
-.. note::
-
-  If the engine is ``download`` then the function just downloads the raw data files.
-  But if the engine is other than ``download`` (e.g. ``postgres``), then it creates the script
-  and then installs the dataset into the engine provided.
-
-.. code-block:: python
-
-  >>> import retriever as rt
-  >>> from retriever.engines import choose_engine
-  >>> from retriever.lib.defaults import RDATASET_SCRIPT_WRITE_PATH
-  >>> 
-  >>> # engine = choose_engine({'command': 'install', 'engine': 'postgres'}) 
-  >>> # Every engine other than 'download' would download data, then create the script
-  >>> if the script does not exists, and then installs the dataset into the engine
-  >>> # Or
-  >>> engine = choose_engine({'command': 'download'})
-  >>> # The 'download' engine will just download the raw data files
-  >>> script_path = RDATASET_SCRIPT_WRITE_PATH
-  >>> package = 'drc'
-  >>> dataset_name = 'metals'
-  >>> rt.create_rdataset(engine, package, dataset_name, script_path)
-  Downloading metals.csv: 3.00B [00:00, 7.24B/s]                                                                                                    
-  >>> 
-
-
 Downloading a Rdataset
 ----------------------
 
@@ -319,3 +230,13 @@ Installing a Rdataset
   >>> import retriever as rt
   >>> rt.install_postgres('rdataset-mass-galaxies')
 
+.. note::
+
+  For downloading or installing the Rdatasets, the script name should follow the syntax given below.
+  The script name should be ``rdataset-<package name>-<dataset name>``. The ``package name`` and ``dataset name``
+  should be valid.
+
+  Example:
+    - Correct: ``rdataset-drc-earthworms``
+
+    - Incorrect:  ``rdataset-drcearthworms``, ``rdatasetdrcearthworms``

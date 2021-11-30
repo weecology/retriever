@@ -13,9 +13,8 @@ from .install import install_sqlite
 from .install import install_xml
 from .install import install_hdf5
 from .provenance import commit, commit_log
-from .rdatasets import (update_rdataset_catalog, create_rdataset,
-                        update_rdataset_contents, update_rdataset_script,
-                        display_all_rdataset_names, get_rdataset_names)
+from .rdatasets import (update_rdataset_catalog, display_all_rdataset_names,
+                        get_rdataset_names)
 from .repository import check_for_updates
 from .engine_tools import reset_retriever
 from .fetch import fetch
@@ -26,8 +25,7 @@ from .scripts import get_retriever_citation
 from .scripts import get_script_citation
 from .._version import __version__
 from .socrata import (socrata_autocomplete_search, socrata_dataset_info,
-                      find_socrata_dataset_by_id, create_socrata_dataset,
-                      update_socrata_contents, update_socrata_script)
+                      find_socrata_dataset_by_id)
 
 __all__ = [
     'check_for_updates', 'commit', 'commit_log', 'create_package', 'datasets',
@@ -36,8 +34,6 @@ __all__ = [
     'install_json', 'install_xml', 'install_hdf5', 'fetch', 'get_script_upstream',
     'get_dataset_names_upstream', 'get_retriever_citation', 'get_script_citation',
     "__version__", 'socrata_autocomplete_search', 'socrata_dataset_info',
-    'find_socrata_dataset_by_id', 'create_socrata_dataset', 'update_socrata_contents',
-    'update_socrata_script', 'update_rdataset_catalog', 'create_rdataset',
-    'update_rdataset_contents', 'update_rdataset_script', 'display_all_rdataset_names',
+    'find_socrata_dataset_by_id', 'update_rdataset_catalog', 'display_all_rdataset_names',
     'get_rdataset_names'
 ]
