@@ -104,8 +104,8 @@ jobs:
           yapf -d --recursive ./retriever/ --style=.style.yapf 2>&1
 
       - name: Upload coverage to Codecov
-            uses: codecov/codecov-action@v1
-            with:
-              # token: ${{ secrets.CODECOV_TOKEN }} not required for public project
-              file: ./coverage.xml
+        uses: codecov/codecov-action@v1
+        with:
+          # token: ${{ secrets.CODECOV_TOKEN }} not required for public project
+          file: ./coverage.xml
               
