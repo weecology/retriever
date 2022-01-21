@@ -30,7 +30,8 @@ def check_retriever_minimum_version(module):
 
     if hasattr(module, "retriever_minimum_version"):
         if not parse_version(VERSION) >= parse_version("{}".format(mod_ver)):
-            print("{} is supported by Retriever version " "{}".format(m, mod_ver))
+            print("{} is supported by Retriever version "
++                  "{}".format(m, mod_ver))
             print("Current version is {}".format(VERSION))
             return False
     return True
@@ -193,7 +194,8 @@ def name_matches(scripts, arg):
               "isn't currently available in the Retriever.".format(arg))
 
     if matches:
-        print("Did you mean:" " \n\t{}".format("\n\t".join([i[0] for i in matches])))
+        print("Did you mean:"
++              " \n\t{}".format("\n\t".join([i[0] for i in matches])))
     return None
 
 
