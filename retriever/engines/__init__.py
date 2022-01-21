@@ -46,6 +46,6 @@ def choose_engine(opts, choice=True):
             for opt in engine.required_opts:
                 if opt[0] == 'table_name':
                     raise Exception('Accepted Table format '
-+                                    '{fom}'.format(fom=opt[2]))
++                                   '{fom}'.format(fom=opt[2]))
     engine.opts = opts
     return engine
