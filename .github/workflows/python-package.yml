@@ -99,13 +99,14 @@ jobs:
 
       - name: Run pytest
         run: |
-          pytest -v -k "not test_geojson2csv  and not test_mysql_integration" --cov=retriever
+          pytest -v -k "not test_geojson2csv  and not test_mysql_integration" --cov=./ --cov-report=xml
           flake8 --ignore=E501,W503,E402,F401,F403,E722,F841,W504 retriever --max-line-length=90 2>&1
           yapf -d --recursive ./retriever/ --style=.style.yapf 2>&1
 
       - name: Upload coverage to Codecov
+        if: matrix.python-version == 3.9
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage.xml
+
               
