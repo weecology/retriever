@@ -15,10 +15,11 @@ def excel_csv(src_path, path_to_csv, excel_info=None, encoding=ENCODING):
     Read src_path excel file and write the excel sheet to path_to_csv
     excel_info contains the index of the sheet and the excel file name
     """
-    df = pd.read_excel(src_path, sheet_name=excel_info[1])
-    df.to_csv(path_to_csv, sep=',', encoding=encoding, index=False, header=True)
+    df = pd.read_excel(src_path,sheet_name=excel_info[1])
+    df_sheet_multi = pd.read_excel(src_path,sheet_name=excel_info[1])
+    df.to_excel(path_to_csv, sheet_name='new_sheet_name')
 
-
+    
 def open_fr(file_name, encoding=ENCODING, encode=True):
     """Open file for reading respecting Python version and OS differences.
 
