@@ -47,7 +47,7 @@ RUN pip install pymysql &&\
     pip install Pillow &&\
     pip install kaggle &&\
     pip install inquirer
-RUN pip install GDAL==3.0.2
+RUN pip install GDAL
 COPY . ./retriever
 RUN chmod 0755 /retriever/cli_tools/entrypoint.sh
 ENTRYPOINT ["/retriever/cli_tools/entrypoint.sh"]

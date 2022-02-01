@@ -76,7 +76,7 @@ jobs:
           sudo apt-get install gdal-bin
           export CPLUS_INCLUDE_PATH=/usr/include/gdal
           export C_INCLUDE_PATH=/usr/include/gdal
-          pip install GDAL==3.2.3 
+          pip install GDAL==3.0.2
           sudo apt-get install -y --force-yes postgis
           
       - name: Setup paths and files

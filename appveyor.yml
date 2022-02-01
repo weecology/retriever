@@ -41,7 +41,7 @@ install:
   - "%PYTHON%\\python.exe -m pip install -U flake8"
   - "%PYTHON%\\python.exe -m pip install -U yapf"
   - "%PYTHON%\\python.exe -m pip install -U pylint"
-  - "%PYTHON%\\Scripts\\pymy_install3 cartopy pyproj shapely fiona gdal llvmlite numba cpyquickhelper"
+  - "%PYTHON%\\Scripts\\pymy_install3 cartopy pyproj shapely fiona gdal==3.0.2 llvmlite numba cpyquickhelper"
   - set PYTHONPATH=src
   - "%PYTHON%\\python.exe -m  pip --version"
   - "python --version"
