@@ -243,8 +243,9 @@ update_rdatasets = [
 ]
 
 raster_dataset = [
-    # test_name , file_name , url,path, expected
-    ("raster_dataset_gif","sample-img-xview-od.tif","https://s3.amazonaws.com/azavea-research-public-data/raster-vision/examples/model-zoo-0.13/xview-od/sample-predictions/sample-img-xview-od.tif","sample_img_xview_od.tif",True)
+    # test_name , dataset_name, expected
+    ("test_raster_bio1_script","test_raster_bio1",["test_raster_bio1.json",True]),
+    ("test_raster_bio2_script","test_raster_bio2",["test_raster_bio2.json",True]),
 ]
 
 vector_dataset = [
@@ -526,14 +527,14 @@ def test_download_socrata_dataset(test_name, filename, url, expected):
     assert (result == expected) and (os.path.exists(path) == expected)
 
 
-@pytest.mark.parametrize("test_name,file_name,dataset_url,path,expected",raster_dataset)
-def test_raster_dataset_script(test_name,file_name,dataset_url,path,expected):
-    file_path = raw_dir_files.format(file_name=file_name)
-    script_path = raw_dir_files.format(file_name=path) + '.json'
-    r = requests.get(dataset_url)
-    open(file_path, 'wb').write(r.content)
-    create_package(file_path, 'raster', True)
-    assert os.path.exists(script_path) == expected
+@pytest.mark.parametrize("test_name,dataset_name,expected",raster_dataset)
+def test_raster_dataset_script(test_name,dataset_name,expected):
+    raw_gis_dir =  os.path.normpath(os.path.join(retriever_root_dir,'test/raw_data_gis/{file_name}'))
+    dataset_zip = raw_gis_dir.format(file_name=dataset_name) 
+    dataset_files =raw_dir_files.format(file_name=dataset_name)
+    test_engine.extract_zip(dataset_zip+".zip",dataset_files)
+    create_package(dataset_files, 'raster', False,dataset_files)
+    assert os.path.exists(os.path.join(dataset_files,expected[0])) == True
 
 
 @pytest.mark.parametrize("test_name,dataset_name,expected",vector_dataset)
