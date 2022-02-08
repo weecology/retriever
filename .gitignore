@@ -13,3 +13,4 @@ scripts/*.pyc
 .vscode/
 docs/_build/
 docs/source/
+.coverage

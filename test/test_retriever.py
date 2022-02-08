@@ -17,6 +17,7 @@ from retriever.lib.table import TabularDataset
 from retriever.lib.templates import BasicTextTemplate
 from retriever.lib.socrata import update_socrata_contents
 from retriever.lib.rdatasets import update_rdataset_contents
+from retriever.lib.create_scripts import create_package
 
 try:
     from retriever.lib.engine_tools import geojson2csv
@@ -65,6 +66,8 @@ retriever_root_dir = os.path.abspath(os.path.join(file_location, os.pardir))
 # Setup paths for the raw data files used
 raw_dir_files = os.path.normpath(os.path.join(retriever_root_dir,
                                               'raw_data/{file_name}'))
+raw_gis_dir = os.path.normpath(os.path.join(retriever_root_dir,
+                                            'test/raw_data_gis/{file_name}'))
 # file: sample_zip.csv
 achive_zip = raw_dir_files.format(file_name='sample_zip.zip')
 
@@ -75,8 +78,7 @@ achive_gz = raw_dir_files.format(file_name='sample.gz')
 
 # Setup urls for downloading raw data from the test/raw_data directory
 
-achive_url = """file://{loc}/raw_data/""" \
-    .format(loc=file_location) + '{file_path}'
+achive_url = """file://{loc}/raw_data/""".format(loc=file_location) + '{file_path}'
 
 zip_url = os.path.normpath(achive_url.format(file_path='sample_zip.zip'))
 tar_url = os.path.normpath(achive_url.format(file_path='sample_tar.tar'))
@@ -240,6 +242,19 @@ update_rdatasets = [
     ('affairs_pass', 'aer', 'affairs', affairs_json, [True, updated_affairs_json]),
     ('affairs_fail', 'aer', 'affairs', affairs_json, [False, None]),
 ]
+
+raster_dataset = [
+    # test_name , dataset_name, expected
+    ("test_raster_bio1_script","test_raster_bio1","test_raster_bio1.json"),
+    ("test_raster_bio2_script","test_raster_bio2","test_raster_bio2.json"),
+]
+
+vector_dataset = [
+    # test_name , dataset_name ,expected
+    ("test_eco_level_four_script","test_eco_level_four","test_eco_level_four.json"),
+    ("test_us_eco_script","test_us_eco","test_us_eco.json")
+]
+
 
 def setup_module():
     """"Automatically sets up the environment before the module runs.
@@ -478,7 +493,7 @@ def test_drop_statement():
 
 
 @pytest.mark.parametrize("test_name, data_source, dataset_identifier,  repath, expected", kaggle_datasets)
-def test_download_kaggle_dataset(test_name, data_source, dataset_identifier,  repath, expected):
+def test_download_kaggle_dataset(test_name, data_source, dataset_identifier, repath, expected):
     """Test the downloading of dataset from kaggle."""
     setup_functions()
     files = test_engine.download_from_kaggle(
@@ -503,15 +518,33 @@ def test_download_socrata_dataset(test_name, filename, url, expected):
     setup_functions()
     path = os.path.normpath(raw_dir_files.format(file_name=filename))
     progbar = tqdm(
-                unit='B',
-                unit_scale=True,
-                unit_divisor=1024,
-                miniters=1,
-                desc='Downloading {}'.format(filename),
-            )
+        unit='B',
+        unit_scale=True,
+        unit_divisor=1024,
+        miniters=1,
+        desc='Downloading {}'.format(filename),
+    )
     result = test_engine.download_from_socrata(url, path, progbar)
     progbar.close()
     assert (result == expected) and (os.path.exists(path) == expected)
+
+
+@pytest.mark.parametrize("test_name,dataset_name,expected", raster_dataset)
+def test_raster_dataset_script(test_name, dataset_name, expected):
+    dataset_zip = raw_gis_dir.format(file_name=dataset_name)
+    dataset_files = raw_dir_files.format(file_name=dataset_name)
+    test_engine.extract_zip(dataset_zip + ".zip", dataset_files)
+    create_package(dataset_files, 'raster', False, dataset_files)
+    assert os.path.exists(os.path.join(dataset_files, expected)) == True
+
+
+@pytest.mark.parametrize("test_name,dataset_name,expected", vector_dataset)
+def test_vector_dataset_script(test_name, dataset_name, expected):
+    dataset_zip = raw_gis_dir.format(file_name=dataset_name)
+    dataset_files = raw_dir_files.format(file_name=dataset_name)
+    test_engine.extract_zip(dataset_zip + ".zip", dataset_files)
+    create_package(dataset_files, "vector", False, dataset_files)
+    assert os.path.exists(os.path.join(dataset_files, expected)) == True
 
 
 def test_download_archive_gz_known():
@@ -801,6 +834,7 @@ def test_get_script_citation():
     expected_cite = "R. A. Fisher. 1936."
     assert expected_cite.lower() in cite[0].lower()
 
+
 def test_getmd5_lines():
     """Test md5 sum calculation given a line."""
     lines = ['a,b,c', '1,2,3', '4,5,6']
@@ -851,6 +885,7 @@ def test_geojson2csv(test_name, table_name, geojson_data_url, expected):
         os.remove(table_name)
         assert header_val == expected
 
+
 @pytest.mark.parametrize("test_name, db_name, sqlite_data_url, table_name, expected", sqlite2csv_dataset)
 def test_sqlite2csv(test_name, db_name, sqlite_data_url, table_name, expected):
     r = requests.get(sqlite_data_url, allow_redirects=True)
@@ -862,6 +897,7 @@ def test_sqlite2csv(test_name, db_name, sqlite_data_url, table_name, expected):
     os.remove(output_sqlite)
     os.remove(db_name)
     assert header_val == expected
+
 
 @pytest.mark.parametrize("test_name, xml_data, header_values, empty_rows, expected", xml2csv_dataset)
 def test_xml2csv(test_name, xml_data, header_values, empty_rows, expected):
