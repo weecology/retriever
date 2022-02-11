@@ -15,9 +15,10 @@ from retriever.lib.engine_tools import json2csv
 from retriever.lib.engine_tools import xml2csv_test
 from retriever.lib.table import TabularDataset
 from retriever.lib.templates import BasicTextTemplate
-from retriever.lib.socrata import update_socrata_contents
-from retriever.lib.rdatasets import update_rdataset_contents
+from retriever.lib.socrata import update_socrata_contents, create_socrata_dataset
+from retriever.lib.rdatasets import update_rdataset_contents, create_rdataset
 from retriever.lib.tools import excel_csv
+from retriever.lib.download import download
 
 try:
     from retriever.lib.engine_tools import geojson2csv
@@ -38,6 +39,13 @@ test_engine.table = TabularDataset(**{"name": "test"})
 test_engine.script = BasicTextTemplate(
     **{"tables": test_engine.table, "name": "test"})
 test_engine.opts = {'database_name': '{db}_abc'}
+
+# Engine for downloading datasets
+test_create_dataset_engine = Engine()
+test_create_dataset_engine.script = BasicTextTemplate(
+    **{"tables": test_engine.table, "name": "socrata"})
+test_create_dataset_engine.opts = {'database_name': '{db}_abc',
+                                   'command': 'install'}
 
 geojson2csv_dataset = [
     ("simple_geojson2csv", "lake_county.geojson", "http://data-lakecountyil.opendata.arcgis.com/datasets/cd63911cc52841f38b289aeeeff0f300_1.geojson", 'fid,zip,colorectal,lung_bronc,breast_can,prostate_c,urinary_sy,all_cancer,shape_length,shape_area,geometry')
@@ -239,6 +247,18 @@ update_socrata_datasets = [
     ('utah_clinic_pass','35s3-nmpm', clinic_utah, 'clinic-35s3', "https://opendata.utah.gov/resource/35s3-nmpm.csv", [True, updated_clinic_utah]),
     ('utah_fish_pass','9m7z-mzh9', fish_utah, 'fish-stock-utah', "https://opendata.utah.gov/resource/9m7z-mzh9.csv", [True, updated_fish_utah]),
     ('utah_fish_fail','9m7z-mzh8', fish_utah, 'fish-stock-utah', "https://opendata.utah.gov/resource/9m7z-mzh9.csv", [False, None]),
+]
+
+create_socrata_datasets = [
+    # test_name, id, name, expected
+    ('utah_clinic_pass', '35s3-nmpm', 'clinic-35s3', True),
+    ('directed_Patrols', '9cbi-474e', 'patrol-9cbi', True)
+]
+
+create_rdatasets = [
+    # test_name, package_name, dataset_name, expected
+    ('affairs_aer', 'aer', 'affairs', True),
+    ('forecast_gas', 'forecast', 'gas', True)
 ]
 
 update_rdatasets = [
@@ -476,6 +496,23 @@ def test_update_socrata_contents(test_name, id, json_file, script_name, url, exp
     resource = rt.find_socrata_dataset_by_id(id)
     result, updated_json = update_socrata_contents(json_file, script_name, url, resource)
     assert (result == expected[0]) and (updated_json == expected[1])
+
+
+@pytest.mark.parametrize("test_name, id, name, expected", create_socrata_datasets)
+def test_create_socrata_datasets(test_name, id, name, expected):
+    """Checks if the create_socrata_dataset creates scripts for a dataset"""
+    resources = rt.find_socrata_dataset_by_id(id)
+    script_path = raw_dir_files.format(file_name=name)
+    create_socrata_dataset(test_create_dataset_engine, name, resources, script_path)
+    assert (os.path.exists(script_path) == expected)
+
+
+@pytest.mark.parametrize("test_name, package_name, dataset_name, expected", create_rdatasets)
+def test_create_rdataset(test_name, package_name, dataset_name, expected):
+    """Checks if the create_rdataset creates scripts for a rdataset"""
+    script_path = raw_dir_files.format(file_name=dataset_name)
+    create_rdataset(test_create_dataset_engine, package_name, dataset_name, script_path)
+    assert (os.path.exists(script_path) == expected)
 
 
 def test_drop_statement():
