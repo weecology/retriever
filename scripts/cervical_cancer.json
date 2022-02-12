@@ -1,0 +1,172 @@
+{
+    "citation": "Kelwin Fernandes, Jaime S. Cardoso, and Jessica Fernandes. 'Transfer Learning with Partial Observability Applied to Cervical Cancer Screening.' Iberian Conference on Pattern Recognition and Image Analysis. Springer International Publishing, 2017.",
+    "description": "This dataset focuses on the prediction of indicators/diagnosis of cervical cancer. The features cover demographic information, habits, and historic medical records.",
+    "encoding": "ISO-8859-1",
+    "homepage": "http://archive.ics.uci.edu/ml/datasets/Cervical+cancer+%28Risk+Factors%29",
+    "keywords": [
+        "cervical cancer",
+        "classification"
+    ],
+    "name": "cervical-cancer",
+    "resources": [
+        {
+            "dialect": {
+                "delimiter": ","
+            },
+            "name": "risk_factors_cervical_cancer",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "Age",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Number of sexual partners",
+                        "type": "int"
+                    },
+                    {
+                        "name": "First sexual intercourse (age)",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Num of pregnancies",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Smokes",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Smokes (years)",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Smokes (packs/year)",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Hormonal Contraceptives",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Hormonal Contraceptives (years)",
+                        "type": "int"
+                    },
+                    {
+                        "name": "IUD",
+                        "type": "int"
+                    },
+                    {
+                        "name": "IUD (years)",
+                        "type": "int"
+                    },
+                    {
+                        "name": "STDs",
+                        "type": "int"
+                    },
+                    {
+                        "name": "STDs (number)",
+                        "type": "int"
+                    },
+                    {
+                        "name": "STDs:condylomatosis",
+                        "type": "int"
+                    },
+                    {
+                        "name": "STDs:cervical condylomatosis",
+                        "type": "int"
+                    },
+                    {
+                        "name": "STDs:vaginal condylomatosis",
+                        "type": "int"
+                    },
+                    {
+                        "name": "STDs:vulvo-perineal condylomatosis",
+                        "type": "int"
+                    },
+                    {
+                        "name": "STDs:syphilis",
+                        "type": "int"
+                    },
+                    {
+                        "name": "STDs:pelvic inflammatory disease",
+                        "type": "int"
+                    },
+                    {
+                        "name": "STDs:genital herpes",
+                        "type": "int"
+                    },
+                    {
+                        "name": "STDs:molluscum contagiosum",
+                        "type": "int"
+                    },
+                    {
+                        "name": "STDs:AIDS",
+                        "type": "int"
+                    },
+                    {
+                        "name": "STDs:HIV",
+                        "type": "int"
+                    },
+                    {
+                        "name": "STDs:Hepatitis B",
+                        "type": "int"
+                    },
+                    {
+                        "name": "STDs:HPV",
+                        "type": "int"
+                    },
+                    {
+                        "name": "STDs: Number of diagnosis",
+                        "type": "int"
+                    },
+                    {
+                        "name": "STDs: Time since first diagnosis",
+                        "type": "int"
+                    },
+                    {
+                        "name": "STDs: Time since last diagnosis",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Dx:Cancer",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Dx:CIN",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Dx:HPV",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Dx",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Hinselmann: target variable",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Schiller: target variable",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Cytology: target variable",
+                        "type": "int"
+                    },
+                    {
+                        "name": "Biopsy: target variable",
+                        "type": "int"
+                    }
+                ]
+            },
+            "url": "http://archive.ics.uci.edu/ml/machine-learning-databases/00383/risk_factors_cervical_cancer.csv"
+        }
+    ],
+    "retriever": "True",
+    "retriever_minimum_version": "2.0.dev",
+    "title": "Cervical cancer (Risk Factors) Data Set",
+    "version": "1.0.0"
+}
