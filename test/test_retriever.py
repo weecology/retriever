@@ -18,6 +18,7 @@ from retriever.lib.templates import BasicTextTemplate
 from retriever.lib.socrata import update_socrata_contents, create_socrata_dataset
 from retriever.lib.rdatasets import update_rdataset_contents, create_rdataset
 from retriever.lib.tools import excel_csv
+from retriever.lib.scripts import get_script, get_retriever_script_versions
 from retriever.lib.download import download
 
 try:
@@ -267,6 +268,11 @@ update_rdatasets = [
     ('affairs_fail', 'aer', 'affairs', affairs_json, [False, None]),
 ]
 
+download_datasets = [
+    # test_name, datasest, expected
+    ('download_socrata', 'socrata-9cbi-474e', '9cbi-474e.csv'),
+    ('download_rdatasest', 'rdataset-aer-affairs', 'Affairs.csv')
+]
 
 def setup_module():
     """"Automatically sets up the environment before the module runs.
@@ -477,6 +483,21 @@ def test_get_rdataset_names():
     assert (len(script_names[0].split('-')) == 3) and script_names[0].startswith('rdataset')
 
 
+def test_get_script():
+    """Checks if get_script return scripts for named dataset"""
+    script = get_script('fao-global-capture-product')
+    assert script.name == 'fao-global-capture-product' and script.version == '1.1.0'
+    script2 = get_script('iris')
+    assert script2.name == 'iris' and script2.version =='1.3.1'
+
+
+def test_get_retriever_script_version():
+    """Checks if get_script_version return version of scripts"""
+    scripts_version_list = get_retriever_script_versions()
+    assert scripts_version_list
+    assert 'mammal_super_tree.py,2.0.0' in scripts_version_list
+
+
 @pytest.mark.parametrize("test_name, package, dataset_name, json_file, expected", update_rdatasets)
 def test_update_rdataset_contents(test_name, package, dataset_name, json_file, expected):
     """Checks if the update_rdataset_contents function updates the contents correctly"""
@@ -513,6 +534,14 @@ def test_create_rdataset(test_name, package_name, dataset_name, expected):
     script_path = raw_dir_files.format(file_name=dataset_name)
     create_rdataset(test_create_dataset_engine, package_name, dataset_name, script_path)
     assert (os.path.exists(script_path) == expected)
+
+
+@pytest.mark.parametrize("test_name, dataset, expected", download_datasets)
+def test_download(test_name, dataset, expected):
+    """Checks if the download works """
+    download_path = raw_dir_files.format(file_name="")
+    download(dataset, download_path)
+    assert os.path.exists(os.path.join(download_path, expected)) == True
 
 
 def test_drop_statement():
