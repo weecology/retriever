@@ -268,12 +268,6 @@ update_rdatasets = [
     ('affairs_fail', 'aer', 'affairs', affairs_json, [False, None]),
 ]
 
-download_datasets = [
-    # test_name, datasest, expected
-    ('download_socrata', 'socrata-9cbi-474e', '9cbi-474e.csv'),
-    ('download_rdatasest', 'rdataset-aer-affairs', 'Affairs.csv')
-]
-
 def setup_module():
     """"Automatically sets up the environment before the module runs.
 
@@ -534,14 +528,6 @@ def test_create_rdataset(test_name, package_name, dataset_name, expected):
     script_path = raw_dir_files.format(file_name=dataset_name)
     create_rdataset(test_create_dataset_engine, package_name, dataset_name, script_path)
     assert (os.path.exists(script_path) == expected)
-
-
-@pytest.mark.parametrize("test_name, dataset, expected", download_datasets)
-def test_download(test_name, dataset, expected):
-    """Checks if the download works """
-    download_path = raw_dir_files.format(file_name="")
-    download(dataset, download_path)
-    assert os.path.exists(os.path.join(download_path, expected)) == True
 
 
 def test_drop_statement():
