@@ -19,7 +19,6 @@ from retriever.lib.socrata import update_socrata_contents, create_socrata_datase
 from retriever.lib.rdatasets import update_rdataset_contents, create_rdataset
 from retriever.lib.tools import excel_csv
 from retriever.lib.scripts import get_script, get_retriever_script_versions
-from retriever.lib.download import download
 
 try:
     from retriever.lib.engine_tools import geojson2csv
@@ -268,6 +267,7 @@ update_rdatasets = [
     ('affairs_fail', 'aer', 'affairs', affairs_json, [False, None]),
 ]
 
+
 def setup_module():
     """"Automatically sets up the environment before the module runs.
 
@@ -479,10 +479,10 @@ def test_get_rdataset_names():
 
 def test_get_script():
     """Checks if get_script return scripts for named dataset"""
-    script = get_script('fao-global-capture-product')
-    assert script.name == 'fao-global-capture-product' and script.version == '1.1.0'
-    script2 = get_script('iris')
-    assert script2.name == 'iris' and script2.version =='1.3.1'
+    script = get_script('flensburg-food-web')
+    assert script.name == 'flensburg-food-web' and script.version == '1.0.4'
+    script2 = get_script('abalone-age')
+    assert script2.name == 'abalone-age' and script2.version == '1.2.2'
 
 
 def test_get_retriever_script_version():
