@@ -18,6 +18,8 @@ from retriever.lib.templates import BasicTextTemplate
 from retriever.lib.socrata import update_socrata_contents
 from retriever.lib.rdatasets import update_rdataset_contents
 from retriever.lib.create_scripts import create_package
+from retriever.lib.tools import excel_csv
+
 
 try:
     from retriever.lib.engine_tools import geojson2csv
@@ -56,6 +58,12 @@ json2csv_datasets = [
 
 xml2csv_dataset = [
     ("simple_xml", ["""<root><row><User>Alex</User><Country>US</Country><Age>25</Age></row><row><User>Ben</User><Country>US</Country><Age>24</Age></row></root>"""], ["User", "Country", "Age"], 1, ['User,Country,Age', 'Alex,US,25', 'Ben,US,24'])
+]
+
+excel_csv_dataset = [
+    # test_name , file_name , output_file , expected
+    ("ubuntu_xlsx","sample_xlsx_data_1.xlsx",'sample_csv_data_1.csv',['User,Country,Age', 'Alex,US,25','Ben,US,24']),
+    ("google_sheet_xlsx", "sample_xlsx_data_2.xlsx",'sample_csv_data_2.csv',['User,Country,Age', 'Alex,US,25', 'Ben,US,24'])
 ]
 
 # Main paths
@@ -112,7 +120,7 @@ updated_clinic_utah = {
     "description": "This data set includes comparative information for clinics with five or more physicians for medical claims in 2015 - 2016. \r\n\r\nThis data set was calculated by the Utah Department of Health, Office of Healthcare Statistics (OHCS) using Utah\u2019s All Payer Claims Database (APCD).",
     "encoding": "utf-8",
     "homepage": "https://opendata.utah.gov/Health/2016-2015-Clinic-Quality-Comparisons-for-Clinics-w/35s3-nmpm",
-    "keywords": ["health","socrata"],
+    "keywords": ["health", "socrata"],
     "licenses": [{"name": "Public Domain"}],
     "name": "clinic-35s3",
     "resources": [
@@ -198,7 +206,7 @@ updated_affairs_json = {
     "description": "This is a rdataset from aer",
     "encoding": "utf-8",
     "homepage": "https://vincentarelbundock.github.io/Rdatasets/doc/AER/Affairs.html",
-    "keywords": ["rdataset","affairs","aer"],
+    "keywords": ["rdataset", "affairs", "aer"],
     "licenses": [{"name": "Public Domain"}],
     "name": "rdataset-aer-affairs",
     "package": "aer",
@@ -913,6 +921,17 @@ def test_xml2csv(test_name, xml_data, header_values, empty_rows, expected):
 
     obs_out = file_2list(output_xml)
     os.remove(output_xml)
+    assert obs_out == expected
+
+
+@pytest.mark.parametrize("test_name, file_name,output_file, expected", excel_csv_dataset)
+def test_excel_csv(test_name, file_name, output_file, expected):
+    """ Test excel_csv function"""
+    src_path = raw_dir_files.format(file_name=file_name)
+    path_output = raw_dir_files.format(file_name=output_file)
+    excel_csv(src_path, path_output)
+    obs_out = file_2list(path_output)
+    os.remove(path_output)
     assert obs_out == expected
 
 
