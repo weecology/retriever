@@ -480,16 +480,15 @@ def test_get_rdataset_names():
 def test_get_script():
     """Checks if get_script return scripts for named dataset"""
     script = get_script('flensburg-food-web')
-    assert script.name == 'flensburg-food-web' and script.version == '1.0.4'
-    script2 = get_script('abalone-age')
-    assert script2.name == 'abalone-age' and script2.version == '1.2.2'
+    assert script.name == 'flensburg-food-web'
+    script = get_script('abalone-age')
+    assert script.name == 'abalone-age'
 
 
 def test_get_retriever_script_version():
     """Checks if get_script_version return version of scripts"""
     scripts_version_list = get_retriever_script_versions()
     assert scripts_version_list
-    assert 'mammal_super_tree.py,2.0.0' in scripts_version_list
 
 
 @pytest.mark.parametrize("test_name, package, dataset_name, json_file, expected", update_rdatasets)
