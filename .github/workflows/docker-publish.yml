@@ -45,6 +45,7 @@ jobs:
           --health-retries=3
 
     steps:
+      - name: Checkout repository
       - uses: actions/checkout@v2
  
       - name: Set up Postgresql with Postgis
@@ -117,6 +118,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ env.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+          logout: false
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
