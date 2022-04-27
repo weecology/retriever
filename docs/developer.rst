@@ -241,9 +241,11 @@ Start
 1. **Run the tests**. Seriously, do it now.
 2. Update ``CHANGES.md`` with major updates since the last release
 3. Run ``python version.py`` (this will update ``version.txt``)
-4. In the `main` branch update the version number and create a tag, run `bumpversion release`
-5. Push the release commit and the tag
+4. Update the version number `bumpversion release` or provide a version as `bumpversion --new-version 3.1.0`
+5. On Github draft a release with the version changes. Provide a version as tag and publish.
 6. After the release, update the version to dev, run `bumpversion patch`
+
+Release on Test PyPi and PyPi is handled by Github actions.
 
    ::
 
