@@ -125,7 +125,7 @@ jobs:
         id: meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images: weecology/portalcasting
+          images: weecology/retriever
           tag-custom: latest
           tag-semver: |
             {{raw}}
