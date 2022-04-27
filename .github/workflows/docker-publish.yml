@@ -17,7 +17,7 @@ env:
   REGISTRY: docker.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
-  DOCKERHUB_USERNAME: henrykironde
+  DOCKERHUB_USERNAMEZZ: henrykironde
 
 
 jobs:
@@ -45,7 +45,6 @@ jobs:
           --health-retries=3
 
     steps:
-      - name: Checkout repository
       - uses: actions/checkout@v2
  
       - name: Set up Postgresql with Postgis
@@ -112,23 +111,21 @@ jobs:
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        uses: docker/login-action@v1
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ env.DOCKERHUB_USERNAME }}
+          username: ${{ env.DOCKERHUB_USERNAMEZZ }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
       - name: Extract Docker metadata
         id: meta
-        uses: crazy-max/ghaction-docker-meta@v1
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: weecology/retriever
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tag-custom: latest
-          tag-semver: |
-            {{raw}}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -136,6 +133,7 @@ jobs:
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: .
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           file: docker/Dockerfile
