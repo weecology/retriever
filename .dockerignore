@@ -1,1 +1,15 @@
+*.DS_Store
+*.pyc
+*_pycache_
+.cache/*
 .git
+.idea*
+.vscode/
+apidocs
+build/
+dist/
+docs/_build/
+docs/source/
+retriever.egg-info
+scripts/*.pyc
+sqlite.db*
