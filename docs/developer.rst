@@ -387,6 +387,17 @@ Do not commit the temporary source directory.
 Configure read the docs (advanced settings) so that the source is first installed then docs are built.
 This is already set up but could be changed if need be.
 
+Docker Hub Image Update
+=======================
+
+The docker-publish Github actions workflow builds, and tests the `weecology\retriever`image and pushes to the `Docker Hub`_ registry.
+
+To Build the image locally run the command below in the repo main directory.
+
+.. code-block:: bash
+
+  docker build -t weecology/retriever:$(retriever -v) -f docker/Dockerfile .
+
 Collaborative Workflows with GitHub
 ===================================
 
@@ -464,20 +475,21 @@ Use ``git commit --amend`` to add new changes to a branch.
 Use ``-f`` flag to force pushing changes to the branch. ``git push -f origin [branch_name]``
 
 
-.. _codecov: https://codecov.io/
-.. _project website: http://data-retriever.org
-.. _Sphinx: http://www.sphinx-doc.org/en/stable/
-.. _Read The Docs: https://readthedocs.org/
 .. _AppVeyor: https://www.appveyor.com/
-.. _documentation: https://pythonhosted.org/an_example_pypi_project/setuptools.html
-.. _installing: https://docs.python.org/3.6/install/
-.. _installing the wheel: http://www.lfd.uci.edu/~gohlke/pythonlibs/
-.. _setup tools: https://pythonhosted.org/an_example_pypi_project/setuptools.html
+.. _codecov: https://codecov.io/
 .. _Data Retriever repository: https://github.com/weecology/retriever
-.. _Spatial database setup: developer.html#Spatial-database-setup
-.. _PostgresSQL: https://www.postgresql.org/download/
-.. _SQlite: https://sqlite.org/download.html
-.. _MySQL: https://www.mysql.com/downloads/
+.. _Docker Hub: https://hub.docker.com/r/weecology/retriever
+.. _documentation: https://pythonhosted.org/an_example_pypi_project/setuptools.html
+.. _installing the wheel: http://www.lfd.uci.edu/~gohlke/pythonlibs/
+.. _installing: https://docs.python.org/3.6/install/
 .. _MSAccess: https://www.microsoft.com/en-ww/microsoft-365/access
-.. _PostgreSQL Password File : https://www.postgresql.org/docs/current/libpq-pgpass.html
 .. _MySQL Password File : https://dev.mysql.com/doc/refman/8.0/en/option-files.html
+.. _MySQL: https://www.mysql.com/downloads/
+.. _PostgreSQL Password File : https://www.postgresql.org/docs/current/libpq-pgpass.html
+.. _PostgresSQL: https://www.postgresql.org/download/
+.. _project website: http://data-retriever.org
+.. _Read The Docs: https://readthedocs.org/
+.. _setup tools: https://pythonhosted.org/an_example_pypi_project/setuptools.html
+.. _Spatial database setup: developer.html#Spatial-database-setup
+.. _Sphinx: http://www.sphinx-doc.org/en/stable/
+.. _SQlite: https://sqlite.org/download.html
