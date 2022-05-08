@@ -46,16 +46,15 @@ RUN pip install pymysql &&\
     pip install h5py &&\
     pip install Pillow &&\
     pip install kaggle &&\
-    pip install inquirer
+    pip install inquirer &&\
+    pip install numpy
 RUN pip install GDAL
-COPY . ./retriever
-RUN chmod 0755 /retriever/cli_tools/entrypoint.sh
-ENTRYPOINT ["/retriever/cli_tools/entrypoint.sh"]
+COPY . ./retriever/
+WORKDIR ./retriever/
+RUN chmod 0755 cli_tools/entrypoint.sh
+ENTRYPOINT ["cli_tools/entrypoint.sh"]
 
-
-WORKDIR ./retriever
-
-RUN pip install -e .
+RUN pip install git+https://git@github.com/weecology/retriever.git
 # Add permissions to config files
 # Do not run these cmds before Entrypoint.
 RUN export PGPASSFILE="~/.pgpass" &&\
