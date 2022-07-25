@@ -14,7 +14,7 @@ bird_migration_data.json,1.0.2
 bird_size.json,1.2.3
 breast_cancer_wi.json,1.2.2
 breed_bird_survey.py,4.0.0
-breed_bird_survey_50stop.py,3.0.0
+breed_bird_survey_50stop.py,3.1.0
 breed_bird_survey_nlcd.json,1.0.2
 bupa_liver_disorders.json,1.0.0
 butterfly_population_network.json,1.2.2
