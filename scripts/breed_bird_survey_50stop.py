@@ -38,7 +38,7 @@ class main(Script):
         self.ref = "http://www.pwrc.usgs.gov/BBS/"
         self.keywords = ["birds", "continental-scale"]
         self.retriever_minimum_version = '2.0.dev'
-        self.version = '3.0.0'
+        self.version = '3.1.0'
         base_url = "https://www.sciencebase.gov/catalog/file/get/5ea04e9a82cefae35a129d65?f=__disk__"
         self.urls = {
             "counts": base_url + "40%2Fe4%2F92%2F40e4925dde30ffd926b1b4d540b485d8a9a320ba",
@@ -275,21 +275,20 @@ class main(Script):
             for part in range(1, 11):
                 part = str(part)
                 try:
-                    print("Inserting data from part " + part + "...")
+                    print("Inserting data from counts fifty part " + part + "...")
+                    engine.extract_zip(
+                            engine.format_filename("50-StopData/1997ToPresent_SurveyWide/Fifty" + part + ".zip"),
+                            engine.format_filename("fifty" + part),
+                        )
                     try:
                         "1997ToPresent_SurveyWide"
                         engine.table.cleanup = Cleanup()
-                        engine.extract_zip(
-                            engine.format_filename("50-StopData/1997ToPresent_SurveyWide/Fifty" + part + ".zip"),
-                            engine.format_filename("fifty" + part + ".csv"),
-                        )
+                        engine.insert_data_from_file(engine.format_filename("fifty" + part + "/fifty" + part + ".csv"))
                     except:
                         print("fifty{}: Failed bulk insert on, inserting manually.".format(part))
                         engine.connection.rollback()
                         engine.table.cleanup = self.cleanup_func_clean
-                        engine.insert_data_from_archive(self.urls["counts"] +
-                                                        "Fifty" + part + ".zip",
-                                                        ["fifty" + part + ".csv"])
+                        engine.insert_data_from_file(engine.format_filename("fifty" + part + "/fifty" + part + ".csv"))
 
                 except:
                     print("There was an error in part " + part + ".")
