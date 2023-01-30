@@ -165,6 +165,17 @@ def display_all_rdataset_names(package_name=None):
         print("List of all the packages present in Rdatasets\n")
         packages = [(package, True) for package in rdatasets.keys()]
         lscolumns.printls(packages)
+    
+    elif isinstance(package_name,str):
+        try:
+            dataset_names = rdatasets[package_name].keys()
+            for dataset in dataset_names:
+                script_name = f"rdataset-{package_name}-{dataset}"
+                print(
+                    f"Package: {package_name:<16} Dataset: {dataset:<25} Script Name: {script_name:<10}"
+                )
+        except KeyError:
+            print(f"No package named \'{package_name}\' found in Rdatasets")
 
     else:
         print(f"List of all available Rdatasets in packages: {package_name}")
