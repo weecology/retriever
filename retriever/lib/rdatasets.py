@@ -165,8 +165,8 @@ def display_all_rdataset_names(package_name=None):
         print("List of all the packages present in Rdatasets\n")
         packages = [(package, True) for package in rdatasets.keys()]
         lscolumns.printls(packages)
-    
-    elif isinstance(package_name,str):
+
+    elif isinstance(package_name, str):
         try:
             dataset_names = rdatasets[package_name].keys()
             for dataset in dataset_names:
