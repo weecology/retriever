@@ -169,7 +169,7 @@ def display_all_rdataset_names(package_name=None):
     else:
         print(f"List of all available Rdatasets in packages: {package_name}")
         if isinstance(package_name, str):
-            package_name=[package_name]
+            package_name = [package_name]
 
         for package in package_name:
             try:
