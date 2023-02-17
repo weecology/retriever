@@ -62,6 +62,7 @@ To install the Data Retriever from source, you'll need Python 3.6.8+ with the fo
 
 * xlrd
 
+
 The following packages are optionally needed to interact with associated
 database management systems:
 
