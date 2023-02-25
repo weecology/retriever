@@ -40,7 +40,7 @@ gentry_forest_transects.py,1.4.4
 globi_interaction.json,1.0.2
 great_basin_mammal_abundance.json,1.0.1
 harvard_forest.json,2.0.0
-home_ranges.json,1.1.2
+home_ranges.json,1.1.4
 intertidal_abund_me.py,1.5.3
 iris.json,1.3.1
 la_selva_trees.py,1.4.2

@@ -9,21 +9,245 @@
         "reptiles",
         "fishes"
     ],
+    "encoding": "latin-1",
     "name": "home-ranges",
     "resources": [
         {
             "dialect": {
                 "missingValues": [
                     "NA", "\\"
+                ],
+                "delimiter": ","
+            },
+            "name": "tamburelloetal_homerangedatabase",
+            "path": "Tamburelloetal_HomeRangeDatabase.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "taxon",
+                        "size": "13",
+                        "type": "char"
+                    },
+                    {
+                        "name": "common_name",
+                        "size": "32",
+                        "type": "char"
+                    },
+                    {
+                        "name": "classes",
+                        "size": "14",
+                        "type": "char"
+                    },
+                    {
+                        "name": "ordered",
+                        "size": "17",
+                        "type": "char"
+                    },
+                    {
+                        "name": "family",
+                        "size": "17",
+                        "type": "char"
+                    },
+                    {
+                        "name": "genus",
+                        "size": "15",
+                        "type": "char"
+                    },
+                    {
+                        "name": "species",
+                        "size": "24",
+                        "type": "char"
+                    },
+                    {
+                        "name": "primarymethod",
+                        "size": "18",
+                        "type": "char"
+                    },
+                    {
+                        "name": "n",
+                        "size": "3",
+                        "type": "char"
+                    },
+                    {
+                        "name": "mean_mass_g",
+                        "type": "double"
+                    },
+                    {
+                        "name": "log10_mass",
+                        "type": "double"
+                    },
+                    {
+                        "name": "alternative_mass_reference",
+                        "size": "202",
+                        "type": "char"
+                    },
+                    {
+                        "name": "mean_hra_m2",
+                        "type": "double"
+                    },
+                    {
+                        "name": "log10_hra",
+                        "type": "double"
+                    },
+                    {
+                        "name": "hra_reference",
+                        "size": "313",
+                        "type": "char"
+                    },
+                    {
+                        "name": "realm",
+                        "size": "11",
+                        "type": "char"
+                    },
+                    {
+                        "name": "thermoregulation",
+                        "size": "9",
+                        "type": "char"
+                    },
+                    {
+                        "name": "locomotion",
+                        "size": "8",
+                        "type": "char"
+                    },
+                    {
+                        "name": "trophic_guild",
+                        "size": "9",
+                        "type": "char"
+                    },
+                    {
+                        "name": "dimension",
+                        "size": "2",
+                        "type": "char"
+                    },
+                    {
+                        "name": "preymass",
+                        "size": "8",
+                        "type": "char"
+                    },
+                    {
+                        "name": "log10_preymass",
+                        "size": "12",
+                        "type": "char"
+                    },
+                    {
+                        "name": "ppmr",
+                        "size": "11",
+                        "type": "char"
+                    },
+                    {
+                        "name": "prey_size_reference",
+                        "size": "284",
+                        "type": "char"
+                    }
                 ]
             },
-            "name": "ranges",
-            "schema": {},
-            "url": "http://datadryad.org/bitstream/handle/10255/dryad.84768/Tamburelloetal_HomeRangeDatabase.csv"
+            "url": "https://datadryad.org/stash/downloads/file_stream/90415"
+        },
+        {
+            "dialect": {
+                "delimiter": ","
+            },
+            "name": "tamburelloetal_figa2_masspredictiondataallmodels",
+            "path": "Tamburelloetal_FigA2_MassPredictionDataAllModels.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "grp",
+                        "type": "int"
+                    },
+                    {
+                        "name": "mass",
+                        "type": "int"
+                    },
+                    {
+                        "name": "log10_mass",
+                        "type": "double"
+                    },
+                    {
+                        "name": "locomotion",
+                        "size": "8",
+                        "type": "char"
+                    },
+                    {
+                        "name": "dimension",
+                        "size": "2",
+                        "type": "char"
+                    },
+                    {
+                        "name": "trophic_guild",
+                        "size": "9",
+                        "type": "char"
+                    },
+                    {
+                        "name": "classes",
+                        "size": "14",
+                        "type": "char"
+                    },
+                    {
+                        "name": "primarymethod",
+                        "size": "9",
+                        "type": "char"
+                    }
+                ]
+            },
+            "url": "https://datadryad.org/stash/downloads/file_stream/90417"
+        },
+        {
+            "dialect": {
+                "delimiter": ","
+            },
+            "name": "tamburelloetal_fig2_preymasspredictiondata",
+            "path": "Tamburelloetal_Fig2_PreymassPredictionData.csv",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "grp",
+                        "type": "int"
+                    },
+                    {
+                        "name": "taxon",
+                        "size": "11",
+                        "type": "char"
+                    },
+                    {
+                        "name": "mass",
+                        "type": "int"
+                    },
+                    {
+                        "name": "log10_mass",
+                        "type": "double"
+                    },
+                    {
+                        "name": "log10_preymass",
+                        "type": "double"
+                    },
+                    {
+                        "name": "locomotion",
+                        "size": "8",
+                        "type": "char"
+                    },
+                    {
+                        "name": "dimension",
+                        "size": "2",
+                        "type": "char"
+                    },
+                    {
+                        "name": "classes",
+                        "size": "14",
+                        "type": "char"
+                    },
+                    {
+                        "name": "primarymethod",
+                        "size": "9",
+                        "type": "char"
+                    }
+                ]
+            },
+            "url": "https://datadryad.org/stash/downloads/file_stream/90416"
         }
     ],
     "retriever": "True",
     "retriever_minimum_version": "2.0.dev",
     "title": "Database of Vertebrate Home Range Sizes - Tamburello et al., 2015",
-    "version": "1.1.2"
+    "version": "1.1.4"
 }
