@@ -26,7 +26,8 @@ The Data Retriever handles a number of common tasks including:
  #. Downloading the data
  #. Transforming data into appropriately normalized forms for database management systems (e.g., "wide" data into "long" data and splitting tables into proper sub-tables to reduce duplication)
  #. Converting heterogeneous null values (e.g., 999.0, -999, NaN) into standard null values
- #. Combining multiple data files into single tables; and 6) placing all related tables in a single database or schema.
+ #. Combining multiple data files into single tables
+ #. Placing all related tables in a single database or schema.
 
 A couple of examples on the more complicated end include the Breeding Bird
 Survey of North America (breed-bird-survey) and the Alwyn Gentry Tree Transect
