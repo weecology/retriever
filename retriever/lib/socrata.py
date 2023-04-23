@@ -41,8 +41,8 @@ def socrata_autocomplete_search(dataset):
             for i in range(len(datasets["results"])):
                 names.append(datasets["results"][i]["title"])
 
-    except HTTPError as e:
-        print("HTTPError :", e)
+    except (HTTPError, requests.exceptions.ConnectionError) as e:
+        print("Error Occured: ", e)
         return None
 
     return names
@@ -77,8 +77,8 @@ def socrata_dataset_info(dataset_name):
                     "link": result[i]["link"]
                 })
 
-    except HTTPError as e:
-        print("HTTPError : ", e)
+    except (HTTPError, requests.exceptions.ConnectionError) as e:
+        print("Error Occured: ", e)
         return None
 
     return resources
@@ -129,8 +129,8 @@ def find_socrata_dataset_by_id(dataset_id):
                 print("No socrata dataset exists for the id : {dataset_id}".format(
                     dataset_id=dataset_id))
 
-    except HTTPError as e:
-        print("HTTPError : ", e)
+    except (HTTPError, requests.exceptions.ConnectionError) as e:
+        print("Error Occured: ", e)
         return {}
 
     return resource
