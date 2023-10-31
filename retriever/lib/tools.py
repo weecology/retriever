@@ -4,6 +4,7 @@ import os
 import sys
 
 import xlrd
+import socket
 import pandas as pd
 
 from retriever.lib.defaults import ENCODING
@@ -78,3 +79,10 @@ def walk_relative_path(dir_name):
         for dir_, _, files in os.walk(dir_name, topdown=False)
         for file_name in files
     ]
+
+def check_network():
+    try:
+        socket.create_connection(("1.1.1.1", 53))
+    except OSError:
+        print("Network Error.")
+        sys.exit(1)
