@@ -18,6 +18,8 @@ from retriever.lib.defaults import (REPOSITORY, RETRIEVER_REPOSITORY, RETRIEVER_
                                     RETRIEVER_DATASETS)
 from retriever.lib.load_json import read_json
 from retriever.lib.provenance_tools import get_script_provenance
+from retriever.lib.tools import check_network
+
 
 global_script_list = None
 
@@ -322,6 +324,7 @@ def get_dataset_names_upstream(keywords=None, licenses=None, repo=REPOSITORY):
     in the repositories. Else, the version.txt file is read and the script
     names are then returned.
     """
+    check_network()
     if not keywords and not licenses:
         version_file_request = get_data_upstream(repo + "version.txt")
         if not version_file_request:

@@ -7,12 +7,15 @@ from retriever.lib.templates import BasicTextTemplate
 from retriever.lib.defaults import RDATASETS_URL, RDATASET_PATH, RDATASET_SCRIPT_WRITE_PATH
 from retriever.lib.create_scripts import create_package
 from retriever.lib.scripts import reload_scripts
+from retriever.lib.tools import check_network
 
 
 def update_rdataset_catalog(test=False):
     '''Updates the datasets_url.json from the github repo'''
     if not os.path.exists(RDATASET_SCRIPT_WRITE_PATH):
         os.makedirs(RDATASET_SCRIPT_WRITE_PATH)
+
+    check_network()
 
     df = pd.read_csv(RDATASETS_URL)
     dataset_url = {}
