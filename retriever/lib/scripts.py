@@ -29,7 +29,7 @@ def check_retriever_minimum_version(module):
     m = module.name
 
     if hasattr(module, "retriever_minimum_version"):
-        if not parse_version(VERSION) >= parse_version("{}".format(mod_ver)):
+        if mod_ver != "" and not parse_version(VERSION) >= parse_version("{}".format(mod_ver)):
             print("{} is supported by Retriever version "
                   "{}".format(m, mod_ver))
             print("Current version is {}".format(VERSION))
