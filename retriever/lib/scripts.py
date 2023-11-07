@@ -1,5 +1,5 @@
 import csv
-import imp
+import importlib.util
 import io
 import os
 import re
@@ -80,9 +80,11 @@ def reload_scripts():
             script_name = ".".join(script.split(".")[:-1])
             if script_name not in loaded_files:
                 loaded_files.append(script_name)
-                file, pathname, desc = imp.find_module(script_name, [search_path])
+                script_path = f"{search_path}/{script_name}.py"
+                spec = importlib.util.spec_from_file_location(script_name, script_path)
                 try:
-                    new_module = imp.load_module(script_name, file, pathname, desc)
+                    new_module = importlib.util.module_from_spec(spec)
+                    spec.loader.exec_module(new_module)
                     if not hasattr(new_module, "SCRIPT"):
                         continue
                     if hasattr(new_module.SCRIPT, "retriever_minimum_version"):
@@ -274,8 +276,10 @@ def get_script_upstream(dataset, repo=REPOSITORY):
         setattr(read_script, "_file", os.path.join(SCRIPT_WRITE_PATH, script_name))
         setattr(read_script, "_name", script)
         return read_script
-    file, pathname, desc = imp.find_module(script, [SCRIPT_WRITE_PATH])
-    new_module = imp.load_module(script, file, pathname, desc)
+    script_path = f"{SCRIPT_WRITE_PATH}/{script_name}.py"
+    spec = importlib.util.spec_from_file_location(script_name, script_path)
+    new_module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(new_module)
     setattr(new_module.SCRIPT, "_file", os.path.join(SCRIPT_WRITE_PATH, script_name))
     setattr(new_module.SCRIPT, "_name", script)
     return new_module.SCRIPT
@@ -461,9 +465,11 @@ def read_json_version(json_file):
 
 def read_py_version(script_name, search_path):
     """Read the version of a script from a python file"""
-    file, pathname, desc = imp.find_module(script_name, [search_path])
+    script_path = f"{search_path}/{script_name}.py"
+    spec = importlib.util.spec_from_file_location(script_name, script_path)
     try:
-        new_module = imp.load_module(script_name, file, pathname, desc)
+        new_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(new_module)
         if hasattr(new_module.SCRIPT, "version"):
             return new_module.SCRIPT.version
     except:
