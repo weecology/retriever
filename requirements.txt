@@ -16,5 +16,5 @@ sphinx_py3doc_enhanced_theme
 sphinx_rtd_theme
 sphinxcontrib-napoleon
 tables
-tqdm==4.30.0
+tqdm==4.66.3
 xlrd>=0.7
