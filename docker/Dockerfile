@@ -1,5 +1,5 @@
 # Download base image ubuntu .04
-FROM osgeo/gdal
+FROM osgeo/gdal:ubuntu-small-3.6.3
 
 MAINTAINER Weecology "https://github.com/weecology/retriever"
 

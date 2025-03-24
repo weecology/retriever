@@ -1,5 +1,6 @@
 import csv
-import imp
+import importlib
+import importlib.util
 import io
 import os
 import re
@@ -80,27 +81,27 @@ def reload_scripts():
             script_name = ".".join(script.split(".")[:-1])
             if script_name not in loaded_files:
                 loaded_files.append(script_name)
-                file, pathname, desc = imp.find_module(script_name, [search_path])
-                try:
-                    new_module = imp.load_module(script_name, file, pathname, desc)
-                    if not hasattr(new_module, "SCRIPT"):
-                        continue
-                    if hasattr(new_module.SCRIPT, "retriever_minimum_version"):
-                        # a script with retriever_minimum_version should be loaded
-                        # only if its compliant with the version of the retriever
-                        if not check_retriever_minimum_version(new_module.SCRIPT):
-                            continue
-                    # if the script wasn't found in an early search path
-                    # make sure it works and then add it
-                    new_module.SCRIPT.download  # pylint: disable=W0104
-                    setattr(new_module.SCRIPT, "_file", os.path.join(search_path, script))
-                    setattr(new_module.SCRIPT, "_name", script_name)
-                    modules.append(new_module.SCRIPT)
-                except Exception as e:
-                    raise (e)
-                    sys.stderr.write("Failed to load script: {} ({})\n"
-                                     "Exception: {} \n".format(script_name, search_path,
-                                                               str(e)))
+                spec = importlib.util.find_spec(script_name, [search_path])
+                if spec:
+                    try:
+                        new_module = importlib.util.module_from_spec(spec)
+                        spec.loader.exec_module(new_module)
+                        if hasattr(new_module.SCRIPT, "retriever_minimum_version"):
+                            # a script with retriever_minimum_version should be loaded
+                            # only if its compliant with the version of the retriever
+                            if not check_retriever_minimum_version(new_module.SCRIPT):
+                                continue
+                        # if the script wasn't found in an early search path
+                        # make sure it works and then add it
+                        new_module.SCRIPT.download  # pylint: disable=W0104
+                        setattr(new_module.SCRIPT, "_file", os.path.join(search_path, script))
+                        setattr(new_module.SCRIPT, "_name", script_name)
+                        modules.append(new_module.SCRIPT)
+                    except Exception as e:
+                        raise (e)
+                        sys.stderr.write("Failed to load script: {} ({})\n"
+                                         "Exception: {} \n".format(script_name, search_path,
+                                                                  str(e)))
     if global_script_list:
         global_script_list.set_scripts(modules)
     return modules
@@ -274,11 +275,14 @@ def get_script_upstream(dataset, repo=REPOSITORY):
         setattr(read_script, "_file", os.path.join(SCRIPT_WRITE_PATH, script_name))
         setattr(read_script, "_name", script)
         return read_script
-    file, pathname, desc = imp.find_module(script, [SCRIPT_WRITE_PATH])
-    new_module = imp.load_module(script, file, pathname, desc)
-    setattr(new_module.SCRIPT, "_file", os.path.join(SCRIPT_WRITE_PATH, script_name))
-    setattr(new_module.SCRIPT, "_name", script)
-    return new_module.SCRIPT
+    spec = importlib.util.find_spec(script, [SCRIPT_WRITE_PATH])
+    if spec:
+        new_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(new_module)
+        setattr(new_module.SCRIPT, "_file", os.path.join(SCRIPT_WRITE_PATH, script_name))
+        setattr(new_module.SCRIPT, "_name", script)
+        return new_module.SCRIPT
+    return None
 
 
 def get_script_version_upstream(dataset, repo=REPOSITORY):
@@ -461,11 +465,13 @@ def read_json_version(json_file):
 
 def read_py_version(script_name, search_path):
     """Read the version of a script from a python file"""
-    file, pathname, desc = imp.find_module(script_name, [search_path])
+    spec = importlib.util.find_spec(script_name, [search_path])
     try:
-        new_module = imp.load_module(script_name, file, pathname, desc)
-        if hasattr(new_module.SCRIPT, "version"):
-            return new_module.SCRIPT.version
+        if spec:
+            new_module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(new_module)
+            if hasattr(new_module.SCRIPT, "version"):
+                return new_module.SCRIPT.version
     except:
         pass
     return None

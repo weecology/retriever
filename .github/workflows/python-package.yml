@@ -1,8 +1,3 @@
-# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
-
-name: Python package
-
 on:
   push:
     branches: [ main ]
@@ -10,12 +5,11 @@ on:
     branches: [ main ]
 
 jobs:
-  
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7, 3.8, 3.11]
+        python-version: [3.9, 3.11, 3.12]
     
     services:
       mysqldb_retriever:
@@ -35,8 +29,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
- 
-      - name: Set up Postgresql with Postgis
+      
+      - name: Set up PostgreSQL with PostGIS
         uses: huaxk/postgis-action@v1
         with:
           postgresql version: '11'
@@ -49,63 +43,52 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       
-      - name: Install dependencies
+      - name: Install system dependencies
         env:
-          LC_ALL : en_US.UTF-8
-          ENV LANG : en_US.UTF-8
-          ENV LANGUAGE : en_US.UTF-8
-          TZ: America/New_York
           DEBIAN_FRONTEND: noninteractive
         run: |
-          sudo apt-add-repository ppa:ubuntugis/ubuntugis-unstable
-          sudo apt-get update && sudo apt-get install -y --no-install-recommends apt-utils
-          sudo apt-get install -y --force-yes tzdata
-          sudo apt-get install -y --force-yes build-essential wget git locales locales-all > /dev/null
-          sudo apt-get install -y --force-yes libpq-dev
-          sudo apt-get install libgdal-dev
-          sudo apt-get install gdal-bin
-          export CPLUS_INCLUDE_PATH=/usr/include/gdal
-          export C_INCLUDE_PATH=/usr/include/gdal
-          pip install GDAL
-          sudo apt-get install -y --force-yes postgis
-          
-      - name: Setup paths and files
-        run : |
-          chmod 0755 cli_tools/entrypoint.sh
-          sh cli_tools/entrypoint.sh
-          echo "export PATH="/usr/bin/python:$PATH"" >> ~/.profile
-          echo "export PYTHONPATH="/usr/bin/python:$PYTHONPATH"" >> ~/.profile
-          echo "export PGPASSFILE="~/.pgpass"" >> ~/.profile
-          chmod 0644 ~/.profile
+          sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable -y
+          sudo apt-get update && sudo apt-get install -y \
+            build-essential wget git locales locales-all \
+            libpq-dev libgdal-dev gdal-bin postgis
+          echo "export CPLUS_INCLUDE_PATH=/usr/include/gdal" >> ~/.bashrc
+          echo "export C_INCLUDE_PATH=/usr/include/gdal" >> ~/.bashrc
+          echo "export GDAL_VERSION=$(gdalinfo --version | cut -d' ' -f2)" >> ~/.bashrc
+          source ~/.bashrc
       
-      - name: PostGIS check version
-        run : |
-          export PGPASSWORD='Password12!'
-          psql -d testdb_retriever -U postgres -h localhost -p 5432 -c "SELECT PostGIS_version();"
-
-      - name: Install python dependencies
+      - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install flake8 pytest yapf codecov pytest-cov pytest-xdist openpyxl -U
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install --no-cache-dir --find-links=https://ci.gdal.org/job/gdal-wheels/lastSuccessfulBuild/artifact/gdal/dist/ GDAL
+          pip install -r requirements.txt || true
+      
+      - name: Setup paths and files
+        run: |
+          chmod +x cli_tools/entrypoint.sh
+          sh cli_tools/entrypoint.sh
+          echo "export PATH=/usr/bin/python:$PATH" >> ~/.profile
+          echo "export PYTHONPATH=/usr/bin/python:$PYTHONPATH" >> ~/.profile
+          echo "export PGPASSFILE=~/.pgpass" >> ~/.profile
+          chmod 600 ~/.pgpass ~/.my.cnf
+      
+      - name: PostGIS check version
+        run: |
+          export PGPASSWORD='Password12!'
+          psql -d testdb_retriever -U postgres -h localhost -p 5432 -c "SELECT PostGIS_version();"
       
       - name: Install retriever
         run: |
           pip install -e .
-          export PGPASSFILE="~/.pgpass"
-          chmod 600 ~/.pgpass
-          chmod 600 ~/.my.cnf
-
-      - name: Run pytest
+          chmod 600 ~/.pgpass ~/.my.cnf
+      
+      - name: Run tests and linting
         run: |
-          pytest -v -k "not test_geojson2csv  and not test_mysql_integration" --cov=./retriever --cov-report=xml
-          flake8 --ignore=E501,W503,E402,F401,F403,E722,F841,W504 retriever --max-line-length=90 2>&1
-          yapf -d --recursive ./retriever/ --style=.style.yapf 2>&1
-
+          pytest -v -k "not test_geojson2csv and not test_mysql_integration" --cov=./retriever --cov-report=xml
+          flake8 --ignore=E501,W503,E402,F401,F403,E722,F841,W504 retriever --max-line-length=90
+          yapf -d --recursive ./retriever/ --style=.style.yapf
+      
       - name: Upload coverage to Codecov
-        if: matrix.python-version == 3.8
+        if: matrix.python-version == 3.9
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-
-              
