@@ -1,7 +1,7 @@
 """Checks the repository for updates."""
 import os
 import requests
-import imp
+import importlib.util
 from tqdm import tqdm
 from pkg_resources import parse_version
 from retriever.lib.defaults import (REPOSITORY, RETRIEVER_REPOSITORY, SCRIPT_WRITE_PATH,
@@ -59,9 +59,11 @@ def check_for_updates(repo=REPOSITORY):
                 _download_from_repository("scripts/" + script_name, download_path, repo)
             need_to_download = False
             try:
-                file_object, pathname, desc = imp.find_module(
-                    ''.join(script_name.split('.')[:-1]), [SCRIPT_WRITE_PATH])
-                new_module = imp.load_module(script_name, file_object, pathname, desc)
+                _script_name = ''.join(script_name.split('.')[:-1])
+                script_path = f"{SCRIPT_WRITE_PATH}/{_script_name}.py"
+                spec = importlib.util.spec_from_file_location(_script_name, script_path)
+                new_module = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(new_module)
                 m = str(new_module.SCRIPT.version)
                 need_to_download = parse_version(str(script_version)) > parse_version(m)
             except:

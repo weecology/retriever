@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 
-import imp
+import importlib
 import os
 import shlex
 import shutil
@@ -8,7 +8,6 @@ import subprocess
 import sys
 import time
 from distutils.dir_util import copy_tree
-from imp import reload
 
 import pytest
 import retriever as rt
@@ -35,7 +34,7 @@ if docker_or_travis == "true":
     mysqldb_host = "mysqldb_retriever"
 
 mysql_engine, postgres_engine, sqlite_engine, msaccess_engine, \
-csv_engine, download_engine, json_engine, xml_engine, _ = engine_list
+    csv_engine, download_engine, json_engine, xml_engine, _ = engine_list
 file_location = os.path.dirname(os.path.realpath(__file__))
 retriever_root_dir = os.path.abspath(os.path.join(file_location, os.pardir))
 working_script_dir = os.path.abspath(os.path.join(retriever_root_dir, "scripts"))
@@ -58,11 +57,11 @@ db_md5 = [
 ]
 
 spatial_db_md5 = [
-    ("test-eco-level-four", ["gid", "us_l3code", "na_l3code", "na_l2code"], 'd1c01d8046143e9700f5cf92cbd6be3d',[]),
+    ("test-eco-level-four", ["gid", "us_l3code", "na_l3code", "na_l2code"], 'd1c01d8046143e9700f5cf92cbd6be3d', []),
     # ("test-raster-bio1clip", ["rid","filename"], '29f702992ae42cc221d6ca9149635024',[60, 50, 100, 0]),
-    ("test-raster-bio1", ["rid", "filename"], '27e0472ddc2da9fe807bfb48b786a251',[]),
-    ("test-raster-bio2", ["rid", "filename"], '2983a9f7e099355db2ce2fa312a94cc6',[]),
-    ("test-us-eco", ["gid", "us_l3code", "na_l3code", "na_l2code"], 'eaab9fa30c745557ff6ba7c116910b45',[]),
+    ("test-raster-bio1", ["rid", "filename"], '27e0472ddc2da9fe807bfb48b786a251', []),
+    ("test-raster-bio2", ["rid", "filename"], '2983a9f7e099355db2ce2fa312a94cc6', []),
+    ("test-us-eco", ["gid", "us_l3code", "na_l3code", "na_l2code"], 'eaab9fa30c745557ff6ba7c116910b45', []),
     # h5py has compatibility issues in linux-Travis
     # Tests pass locally
     # ("sample-hdf", ["*"], '31e61867e9990138788a946542c4b1bf')
@@ -99,7 +98,7 @@ fetch_tests = [
               'consumerstageid', 'resourcestageid', 'linknumber', 'linktype', 'linkevidence',
               'linkevidencenotes', 'linkfrequency', 'linkn',
               'dietfraction', 'consumptionrate', 'vectorfrom', 'preyfrom']
-         ]
+     ]
      }])
 ]
 
@@ -143,9 +142,11 @@ def teardown_module():
 def get_script_module(script_name):
     """Load a script module"""
     if script_name in python_files:
-        file, pathname, desc = imp.find_module(script_name,
-                                               [working_script_dir])
-        return imp.load_module(script_name + '.py', file, pathname, desc)
+        script_path = f"{working_script_dir}/{script_name}.py"
+        spec = importlib.util.spec_from_file_location(script_name, script_path)
+        new_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(new_module)
+        return new_module
     return read_json(os.path.join(retriever_root_dir, 'scripts', script_name))
 
 
