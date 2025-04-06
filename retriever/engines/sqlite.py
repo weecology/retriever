@@ -94,6 +94,8 @@ class engine(Engine):
             except:
                 self.connection.rollback()
         return Engine.insert_data_from_file(self, filename)
+        self.execute("CREATE INDEX idx_species_name ON species(Species_name);")
+
 
     def get_connection(self):
         """Get db connection."""
@@ -105,3 +107,16 @@ class engine(Engine):
         full_path = os.path.join(db_file, file)
         self.set_engine_encoding()
         return dbapi.connect(os.path.normpath(full_path))
+    def create_table(self, name, fields):
+    """Create table and auto-generate indexes if fields > 10."""
+    field_defs = ", ".join([f"{col} {datatype}" for col, datatype, _, _ in fields])
+    create_query = f"CREATE TABLE IF NOT EXISTS {name} ({field_defs});"
+    self.cursor.execute(create_query)
+
+    if len(fields) > 10:
+        for field in fields:
+            if field[1].upper() in ["INTEGER", "TEXT"]:  
+                index_name = f"{name}_{field[0]}_idx"
+                index_query = f"CREATE INDEX IF NOT EXISTS {index_name} ON {name} ({field[0]});"
+                self.cursor.execute(index_query)
+
