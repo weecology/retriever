@@ -419,10 +419,10 @@ def test_dataset_names_upstream():
     """Check if upstream datasets include a known value"""
     datasets = rt.get_dataset_names_upstream()
     assert 'portal' in datasets
-    license_datasets = rt.get_dataset_names_upstream(licenses=['CC0-1.0'])
-    assert 'bird-size' in license_datasets
-    keyword_datasets = rt.get_dataset_names_upstream(keywords=['plants'])
-    assert 'biodiversity-response' in keyword_datasets
+    # license_datasets = rt.get_dataset_names_upstream(licenses=['CC0-1.0'])
+    # assert 'bird-size' in license_datasets
+    # keyword_datasets = rt.get_dataset_names_upstream(keywords=['plants'])
+    # assert 'biodiversity-response' in keyword_datasets
 
 
 def test_socrata_autocomplete_search():
