@@ -13,6 +13,7 @@
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/retriever/badges/downloads.svg)](https://anaconda.org/conda-forge/retriever)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/retriever/badges/version.svg)](https://anaconda.org/conda-forge/retriever)
 [![Version](https://img.shields.io/pypi/v/retriever.svg)](https://pypi.python.org/pypi/retriever)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/weecology/retriever/badge)](https://scorecard.dev/viewer/?uri=github.com/weecology/retriever)
 <a href="https://numfocus.org/sponsored-projects">
 <img alt="NumFOCUS"
    src="https://i0.wp.com/numfocus.org/wp-content/uploads/2019/06/AffiliatedProject.png" width="100" height="18">
