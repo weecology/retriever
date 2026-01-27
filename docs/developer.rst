@@ -2,6 +2,7 @@
 Developer's guide
 =================
 
+
 1. Quickstart by forking the main repository https://github.com/weecology/retriever
 2. Clone your copy of the repository
 
