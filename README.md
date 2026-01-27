@@ -206,6 +206,11 @@ Website
 For more information see the
 [Data Retriever website](http://www.data-retriever.org/).
 
+## Developer Notes
+
+If you are new to the project, a good place to start is browsing issues labeled `getting-started`.
+These issues are designed to help new contributors become familiar with the codebase.
+
 Acknowledgments
 ---------------
 
