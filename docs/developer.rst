@@ -5,14 +5,14 @@ Developer's guide
 1. Quickstart by forking the main repository https://github.com/weecology/retriever
 2. Clone your copy of the repository
 
-    - Using https ``git clone https://github.com/henrykironde/retriever.git``
-    - Using ssh ``git clone git@github.com:henrykironde/retriever.git``
+    - Using https ``git clone https://github.com/[yourusername]/retriever.git``
+    - Using ssh ``git clone git@github.com:[yourusername]/retriever.git``
 
 3. Link or point your cloned copy to the main repository. (I always name it upstream)
 
     - ``git remote add upstream https://github.com/weecology/retriever.git``
 
-5. Check/confirm your settings using ``git remote -v``
+4. Check/confirm your settings using ``git remote -v``
 
 ::
 

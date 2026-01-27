@@ -20,7 +20,7 @@ branch of your fork and then submit a pull request.
 ## Running the tests
 
 We use [pytest](https://docs.pytest.org/en/latest/) for testing. To run the
-tests first install nose using pip:
+tests first install pytest using pip:
 
 `pip install pytest`
 

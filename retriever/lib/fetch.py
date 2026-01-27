@@ -1,3 +1,9 @@
+"""Data Retriever Fetch Module
+
+This module provides functionality to fetch datasets directly into pandas DataFrames
+using SQLite as an intermediate storage format.
+
+"""
 from retriever.engines.sqlite import engine
 from retriever.lib.defaults import DATA_DIR
 from retriever.lib.install import install_sqlite

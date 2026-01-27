@@ -40,7 +40,7 @@ $ ``rt.fetch('gdp')``
 Install the World Bank data on GDP into an SQLite databased named
 "gdp.sqlite":
 
-$ ``rt.install_sqlite('gdp', file='gdp.sqlite)``
+$ ``rt.install_sqlite('gdp', file='gdp.sqlite')``
 
 Command line interface
 ~~~~~~~~~~~~~~~~~~~~~~
