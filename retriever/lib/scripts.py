@@ -1,5 +1,5 @@
 import csv
-import imp
+import importlib.util
 import io
 import os
 import re
@@ -19,7 +19,18 @@ from retriever.lib.defaults import (REPOSITORY, RETRIEVER_REPOSITORY, RETRIEVER_
 from retriever.lib.load_json import read_json
 from retriever.lib.provenance_tools import get_script_provenance
 
+#For Backward compatibility of dataset scripts
+sys.modules['imp'] = type(sys)('imp')
+sys.modules['imp'].reload = importlib.reload
+
 global_script_list = None
+
+def load_module_from_path(module_name, path):
+    """Load a Python module from a file path."""
+    spec = importlib.util.spec_from_file_location(module_name, path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 def check_retriever_minimum_version(module):
@@ -80,9 +91,9 @@ def reload_scripts():
             script_name = ".".join(script.split(".")[:-1])
             if script_name not in loaded_files:
                 loaded_files.append(script_name)
-                file, pathname, desc = imp.find_module(script_name, [search_path])
+                module_path = os.path.join(search_path, script)
                 try:
-                    new_module = imp.load_module(script_name, file, pathname, desc)
+                    new_module = load_module_from_path(script_name, module_path)
                     if not hasattr(new_module, "SCRIPT"):
                         continue
                     if hasattr(new_module.SCRIPT, "retriever_minimum_version"):
@@ -274,8 +285,8 @@ def get_script_upstream(dataset, repo=REPOSITORY):
         setattr(read_script, "_file", os.path.join(SCRIPT_WRITE_PATH, script_name))
         setattr(read_script, "_name", script)
         return read_script
-    file, pathname, desc = imp.find_module(script, [SCRIPT_WRITE_PATH])
-    new_module = imp.load_module(script, file, pathname, desc)
+    module_path = os.path.join(SCRIPT_WRITE_PATH, script_name)
+    new_module = load_module_from_path(script, module_path)
     setattr(new_module.SCRIPT, "_file", os.path.join(SCRIPT_WRITE_PATH, script_name))
     setattr(new_module.SCRIPT, "_name", script)
     return new_module.SCRIPT
@@ -461,9 +472,9 @@ def read_json_version(json_file):
 
 def read_py_version(script_name, search_path):
     """Read the version of a script from a python file"""
-    file, pathname, desc = imp.find_module(script_name, [search_path])
+    module_path = os.path.join(search_path, script_name + ".py")
     try:
-        new_module = imp.load_module(script_name, file, pathname, desc)
+        new_module = load_module_from_path(script_name, module_path)
         if hasattr(new_module.SCRIPT, "version"):
             return new_module.SCRIPT.version
     except:
