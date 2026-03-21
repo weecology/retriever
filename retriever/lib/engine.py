@@ -1178,11 +1178,18 @@ def reporthook(tqdm_inst, filename=None):
         if r.headers.get('Transfer-Encoding', None) != 'chunked':
             total_size = int(r.headers['content-length'])
             tqdm_inst.total = ceil(total_size // (2 * 1024))
+# handle missing Content-Disposition safely
+cd = response.headers.get("Content-Disposition")
 
-        with open(filename, 'wb') as f:
-            for chunk in r.iter_content(2 * 1024):
-                f.write(chunk)
-                tqdm_inst.update(1)
-        f.close()
+filename = None
 
-    return update_rto if filename else update_to
+if cd and "filename=" in cd:
+    filename = cd.split("filename=")[-1].strip('"')
+
+if not filename:
+    filename = url.split("/")[-1]
+
+with open(filename, "wb") as f:
+    for chunk in response.iter_content(2 * 1024):
+        f.write(chunk)
+        tqdm_inst.update(1)
