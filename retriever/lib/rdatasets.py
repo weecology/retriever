@@ -145,6 +145,8 @@ def update_rdataset_contents(data_obj, package, dataset_name, json_file):
 
 
 def display_all_rdataset_names(package_name=None):
+    if isinstance(package_name, str):
+        package_name = [package_name]
     """displays the list of rdataset names present in the package(s) provided"""
     update_rdataset_catalog()
 
