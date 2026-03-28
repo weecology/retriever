@@ -215,3 +215,29 @@ Initiative](https://www.moore.org/initiative-strategy-detail?initiativeId=data-d
 [Grant GBMF4563](http://www.moore.org/grants/list/GBMF4563) to Ethan White and
 the [National Science Foundation](http://nsf.gov/) as part of a [CAREER award to
 Ethan White](http://nsf.gov/awardsearch/showAward.do?AwardNumber=0953694).
+
+
+🚀 Quick Start
+Get up and running with the Data Retriever in less than two minutes.
+
+1. Install the Package
+Open your terminal and run:
+
+Bash
+pip install retriever
+2. Update Dataset Scripts
+Ensure you have the latest dataset definitions:
+
+Bash
+retriever update
+3. Install a Sample Dataset
+Download the Iris flower dataset and save it as a local CSV file:
+
+Bash
+retriever install csv iris
+4. Verify the Output
+Check your directory to confirm the data was downloaded:
+
+Bash
+ls data/
+# You should see: iris.csv
