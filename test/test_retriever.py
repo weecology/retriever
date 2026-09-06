@@ -2,6 +2,7 @@
 """Tests for the Data Retriever"""
 import os
 import random
+import shutil
 import subprocess
 from tqdm import tqdm
 
@@ -274,7 +275,10 @@ def setup_module():
     Make sure you are in the main local retriever directory.
     """
     os.chdir(retriever_root_dir)
-    subprocess.call(['cp', '-r', 'test/raw_data', retriever_root_dir])
+    target_raw_data = os.path.join(retriever_root_dir, 'raw_data')
+    if os.path.exists(target_raw_data):
+        shutil.rmtree(target_raw_data)
+    shutil.copytree('test/raw_data', target_raw_data)
 
 
 def teardown_module():
@@ -283,8 +287,12 @@ def teardown_module():
     Make sure you are in the main local retriever directory after these tests.
     """
     os.chdir(retriever_root_dir)
-    subprocess.call(['rm', '-r', 'raw_data'])
-    subprocess.call(['rm', '-r', test_engine.format_data_dir()])
+    raw_data_dir = os.path.join(retriever_root_dir, 'raw_data')
+    if os.path.exists(raw_data_dir):
+        shutil.rmtree(raw_data_dir, ignore_errors=True)
+    formatted_data_dir = test_engine.format_data_dir()
+    if os.path.exists(formatted_data_dir):
+        shutil.rmtree(formatted_data_dir, ignore_errors=True)
 
 
 def setup_functions():
@@ -1122,7 +1130,11 @@ def test_setup_functions():
 
     Function uses teardown_module and setup_module functions."""
     file_path = raw_dir_files.format(file_name='')
-    subprocess.call(['rm', '-r', file_path])
+    if os.path.exists(file_path):
+        if os.path.isdir(file_path):
+            shutil.rmtree(file_path, ignore_errors=True)
+        else:
+            os.remove(file_path)
     assert os.path.exists(raw_dir_files.format(file_name="")) is False
     setup_functions()
     assert os.path.exists(raw_dir_files.format(file_name=""))

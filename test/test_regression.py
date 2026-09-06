@@ -120,7 +120,10 @@ python_files = ['flensburg_food_web']
 def setup_module():
     """Update retriever scripts and cd to test directory to find data."""
     os.chdir(retriever_root_dir)
-    subprocess.call(['cp', '-r', 'test/raw_data', retriever_root_dir])
+    target_raw_data = os.path.join(retriever_root_dir, 'raw_data')
+    if os.path.exists(target_raw_data):
+        shutil.rmtree(target_raw_data)
+    shutil.copytree('test/raw_data', target_raw_data)
 
     src = os.path.join(retriever_root_dir, 'scripts')
     copy_tree(src, script_home)
@@ -136,8 +139,11 @@ def setup_module():
 def teardown_module():
     """Cleanup temporary output files and return to root directory."""
     os.chdir(retriever_root_dir)
-    shutil.rmtree(os.path.join(retriever_root_dir, 'raw_data'))
-    subprocess.call(['rm', '-r', 'testdb_retriever.sqlite'])
+    raw_data_dir = os.path.join(retriever_root_dir, 'raw_data')
+    if os.path.exists(raw_data_dir):
+        shutil.rmtree(raw_data_dir, ignore_errors=True)
+    if os.path.exists('testdb_retriever.sqlite'):
+        os.remove('testdb_retriever.sqlite')
 
 
 def get_script_module(script_name):
@@ -165,10 +171,9 @@ def get_csv_md5(dataset, engine, tmpdir, install_function, config, cols=None):
 @pytest.mark.parametrize("dataset, expected", db_md5)
 def test_sqlite_regression(dataset, expected, tmpdir):
     """Check for sqlite regression."""
-    subprocess.call(['rm', '-r', 'testdb_retriever.sqlite'])
     dbfile = 'testdb_retriever.sqlite'
     if os.path.exists(dbfile):
-        subprocess.call(['rm', '-r', dbfile])
+        os.remove(dbfile)
     # SQlite should install datasets into a different folder from where .csv are dumped
     # This avoids having the `testdb.sqlite` being considered for md5 sum
     sqlite_engine.opts = {
