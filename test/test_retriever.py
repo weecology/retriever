@@ -3,7 +3,6 @@
 import os
 import random
 import shutil
-import subprocess
 from tqdm import tqdm
 
 import pytest
