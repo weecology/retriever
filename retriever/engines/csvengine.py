@@ -27,7 +27,9 @@ class engine(Engine):
         ("table_name", "Format of table name", "{db}_{table}.csv"),
         ("data_dir", "Install directory", DATA_DIR),
     ]
-    table_names = []
+
+    def __init__(self):
+        self.table_names = []
 
     def create_db(self):
         """Override create_db since there is no database just a CSV file"""
