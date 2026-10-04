@@ -1,3 +1,5 @@
 include CITATION
 include LICENSE
 include requirements.txt
+graft test
+recursive-exclude test *.py[cod]
