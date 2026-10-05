@@ -2,6 +2,9 @@
 Developer's guide
 =================
 
+**Note:** At this time, we are not accepting new pull requests in this repository. We appreciate the interest in contributing, and we encourage contributors to look at the DeepForest repository for active development and new contribution opportunities: https://github.com/weecology/DeepForest
+
+
 1. Quickstart by forking the main repository https://github.com/weecology/retriever
 2. Clone your copy of the repository
 
