@@ -5,7 +5,10 @@ from retriever.lib.install import install_sqlite
 
 def fetch(dataset, file='sqlite.db', table_name='{db}_{table}', data_dir=DATA_DIR):
     """Import a dataset into pandas data frames"""
-    res_engine = install_sqlite(dataset, file=file, table_name=table_name)
+    res_engine = install_sqlite(dataset,
+                                file=file,
+                                table_name=table_name,
+                                data_dir=data_dir)
     db_table_names = [name for name, _ in res_engine.script_table_registry[dataset]]
     sqlite = engine()
     sqlite.opts = {"file": file, "table_name": table_name, "data_dir": data_dir}
