@@ -131,7 +131,8 @@ class engine(Engine):
                                        outputfile,
                                        header_values,
                                        row_tag="row")
-            sort_csv(csv_outfile, encoding=self.encoding)
+            if sort:
+                sort_csv(csv_outfile, encoding=self.encoding)
 
     def get_connection(self):
         """Get db connection."""

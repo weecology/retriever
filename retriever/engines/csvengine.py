@@ -100,7 +100,8 @@ class engine(Engine):
     def to_csv(self, sort=True, path=None, select_columns=None):
         """Export sorted version of CSV file"""
         for table_item in self.script_table_registry[self.script.name]:
-            sort_csv(table_item[0], self.encoding)
+            if sort:
+                sort_csv(table_item[0], self.encoding)
 
     def get_connection(self):
         """Gets the db connection."""
