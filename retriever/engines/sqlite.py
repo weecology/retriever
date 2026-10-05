@@ -1,4 +1,6 @@
+import csv
 import os
+from itertools import islice
 import pandas as pd
 from collections import OrderedDict
 
@@ -68,27 +70,21 @@ class engine(Engine):
         it in chunks and inserts those chunks into the database using
         executemany.
         """
-        chunk_size = 1000000
         self.get_cursor()
         if [self.check_bulk_insert(), self.table.header_rows] == [True, 1]:
             filename = os.path.abspath(filename)
             try:
                 bulk_insert_statement = self.get_bulk_insert_statement()
-                line_endings = set(['\n', '\r', '\r\n'])
-                with open(filename, 'r') as data_file:
-                    data_chunk = data_file.readlines(chunk_size)
-                    data_chunk = [
-                        line.rstrip('\r\n')
-                        for line in data_chunk
-                        if line not in line_endings
-                    ]
-                    del data_chunk[:self.table.header_rows]
+                with open(filename, 'r', encoding=self.encoding, newline='') as data_file:
+                    reader = (
+                        row
+                        for row in csv.reader(data_file, delimiter=self.table.delimiter)
+                        if row)
+                    next(reader, None)
+                    data_chunk = list(islice(reader, self.insert_limit))
                     while data_chunk:
-                        data_chunk_split = [
-                            row.split(self.table.delimiter) for row in data_chunk
-                        ]
-                        self.cursor.executemany(bulk_insert_statement, data_chunk_split)
-                        data_chunk = data_file.readlines(chunk_size)
+                        self.cursor.executemany(bulk_insert_statement, data_chunk)
+                        data_chunk = list(islice(reader, self.insert_limit))
                 self.connection.commit()
                 return True
             except:
