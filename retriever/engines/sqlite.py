@@ -1,8 +1,9 @@
 import csv
 import os
-from itertools import islice
-import pandas as pd
 from collections import OrderedDict
+from itertools import islice
+
+import pandas as pd
 
 from retriever.lib.defaults import DATA_DIR
 from retriever.lib.models import Engine
