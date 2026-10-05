@@ -1,4 +1,5 @@
 import os
+from xml.sax.saxutils import escape
 
 from retriever.lib.defaults import DATA_DIR
 from retriever.lib.dummy import DummyConnection
@@ -142,7 +143,7 @@ class engine(Engine):
 def format_single_row(keys, line_data):
     """Create an xml string from the keys and line_data values."""
     row_values = [
-        '    <{key}>{value}</{key}>\n'.format(key=key, value=value)
+        '    <{key}>{value}</{key}>\n'.format(key=key, value=escape(str(value)))
         for key, value in zip(keys, line_data)
     ]
     return ''.join(row_values)
