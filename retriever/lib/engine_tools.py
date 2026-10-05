@@ -196,13 +196,11 @@ def walker(raw_data, row_key=None, header_values=None, rows=[], normalize=False)
         # dict_keys = [i.lower() for i in dictionary.keys()]
         raw_data = {k.lower(): v for k, v in raw_data.items()}
         if header_values and (set(header_values).issubset(raw_data.keys())):
+            selected = OrderedDict((key, raw_data[key]) for key in header_values)
             if normalize:
-                rows.extend(
-                    json_normalize(
-                        dict(
-                            i for i in raw_data.items() if i[0] in header_values)).values)
+                rows.extend(json_normalize(selected).values)
             else:
-                rows.extend([dict(i for i in raw_data.items() if i[0] in header_values)])
+                rows.append(selected)
 
         elif raw_data.get(row_key):
             if normalize:
