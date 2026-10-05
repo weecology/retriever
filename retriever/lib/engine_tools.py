@@ -341,41 +341,22 @@ def sort_file(file_path, encoding=ENCODING):
 
 
 def sort_csv(filename, encoding=ENCODING):
-    """Sort CSV rows minus the header and return the file.
+    """Sort CSV records by field values, keeping the header first.
 
     Function is used for only testing and can handle the file of the size.
     """
     filename = os.path.normpath(filename)
-    input_file = open_fr(filename, encoding)
-    csv_reader_infile = csv.reader(input_file, escapechar="\\")
-    #  write the data to a temporary file and sort it
-    temp_path = os.path.normpath("tempfile")
-    temp_file = open_fw(temp_path, encoding)
+    with open(filename, 'r', encoding=encoding, newline='') as input_file:
+        csv_reader = csv.reader(input_file, escapechar="\\")
+        header = next(csv_reader, None)
+        if header is None:
+            return filename
+        rows = sorted(csv_reader)
 
-    csv_writer = open_csvw(temp_file)
-    i = 0
-    infields = None
-    for row in csv_reader_infile:
-        if i == 0:
-            # The first entry is the header line
-            infields = row
-            i += 1
-        else:
-            csv_writer.writerow(row)
-    input_file.close()
-    temp_file.close()
-
-    # sort the temp file
-    sorted_txt = sort_file(temp_path, encoding)
-    tmp = open_fr(sorted_txt, encoding)
-    in_txt = csv.reader(tmp, delimiter=',', escapechar="\\")
-    csv_file = open_fw(filename, encoding)
-    csv_writer = open_csvw(csv_file)
-    csv_writer.writerow(infields)
-    csv_writer.writerows(in_txt)
-    tmp.close()
-    csv_file.close()
-    os.remove(os.path.normpath(temp_path))
+    with open_fw(filename, encoding) as output_file:
+        csv_writer = open_csvw(output_file)
+        csv_writer.writerow(header)
+        csv_writer.writerows(rows)
     return filename
 
 
