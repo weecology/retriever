@@ -136,7 +136,7 @@ def json2csv(input_file,
              header_values=None,
              encoding=ENCODING,
              row_key=None):
-    """Convert Json file to CSV."""
+    """Convert Json file to CSV without removing the source file."""
     file_out = open_fr(input_file, encoding=encoding)
     # set output file name and write header
     if output_file is None:
@@ -167,7 +167,6 @@ def json2csv(input_file,
         outfile.writerow(header_values)
     outfile.writerows(raw_data)
     file_out.close()
-    subprocess.call(['rm', '-r', input_file])
     return output_file
 
 
@@ -246,7 +245,8 @@ def sqlite2csv(input_file, output_file, table_name=None, encoding=ENCODING):
 def xml2csv_test(input_file, outputfile=None, header_values=None, row_tag="row"):
     """Convert xml to csv.
 
-    Function is used for only testing and can handle the file of the size.
+    Function is used for testing and file-engine exports. The source file is
+    preserved so installed data remains available for subsequent exports.
     """
     file_output = open_fr(input_file, encoding=ENCODING)
     # set output file name and write header
@@ -269,7 +269,6 @@ def xml2csv_test(input_file, outputfile=None, header_values=None, row_tag="row")
         x = [name.text for name in header_values for name in rows.findall(name)]
         csv_writer.writerow(x)
     file_output.close()
-    subprocess.call(['rm', '-r', input_file])
     return outputfile
 
 
